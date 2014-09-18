@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+  <display-name></display-name>	
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+    
+     <session-config>      
+       <session-timeout>120</session-timeout>   
+     </session-config> 
+    
+    <filter>
+  	<filter-name>EncodingFilter</filter-name>
+  	<filter-class>
+          filter.EncodingFilter
+     </filter-class>
+  	<init-param>
+  		
+  		<param-name>encoding</param-name>
+  		<param-value>UTF-8</param-value>
+  	</init-param> 
+  </filter>
+	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+   <servlet>
+  <servlet-name>Log4jInit</servlet-name>
+  <servlet-class>servlet.Log4jInit</servlet-class>
+  <init-param>
+   <param-name>log4j</param-name>
+   <param-value>/WEB-INF/classes/log4j.properties</param-value>
+  </init-param>
+  <load-on-startup>0</load-on-startup>
+ </servlet>
+ 
+  <servlet>  
+	        <servlet-name>OrderServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.OrderServlet  
+	        </servlet-class>  
+   </servlet>  
+	    <servlet-mapping>   
+	        <servlet-name>OrderServlet</servlet-name>  
+	        <url-pattern>/meidiserver/user/OrderServlet</url-pattern>  
+	    </servlet-mapping> 
+	    
+	<servlet>  
+	        <servlet-name>InventoryServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.InventoryServlet  
+	        </servlet-class>  
+   </servlet>  
+	    <servlet-mapping>     
+	        <servlet-name>InventoryServlet</servlet-name>  
+	        <url-pattern>/meidiserver/admin/inventory/InventoryServlet</url-pattern>  
+	    </servlet-mapping>     
+	    
+	 <servlet>  
+	        <servlet-name>RegistServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.RegistServlet  
+	        </servlet-class>  
+   </servlet>   
+	    <servlet-mapping>   
+	        <servlet-name>RegistServlet</servlet-name>  
+	        <url-pattern>/meidiserver/RegistServlet</url-pattern>  
+	    </servlet-mapping>  
+	<servlet>  
+	        <servlet-name>DatabaseServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.DatabaseServlet 
+	        </servlet-class>  
+   </servlet>  
+	    <servlet-mapping>  
+	        <servlet-name>DatabaseServlet</servlet-name>  
+	        <url-pattern>/meidiserver/admin/DatabaseServlet</url-pattern>  
+	    </servlet-mapping>   
+	  
+	    
+	 <servlet>  
+	        <servlet-name>PrintServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.PrintServlet  
+	        </servlet-class>  
+   </servlet>  
+        
+	    <servlet-mapping>  
+	        <servlet-name>PrintServlet</servlet-name>  
+	        <url-pattern>/meidiserver/Print</url-pattern>  
+	    </servlet-mapping> 
+	       
+	   
+	    <servlet>  
+	        <servlet-name>UpdateServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.UpdateServlet  
+	        </servlet-class>  
+   </servlet>  
+        
+	    <servlet-mapping>   
+	        <servlet-name>UpdateServlet</servlet-name>  
+ 	        <url-pattern>/meidiserver/Update</url-pattern>   
+	    </servlet-mapping>     
+	          
+	     <servlet>  
+	        <servlet-name>FileUpload</servlet-name>  
+	        <servlet-class>  
+	            servlet.FileUpload  
+	        </servlet-class>
+	        <init-param>
+			<param-name>uploadPath</param-name>
+			<param-value>
+				../../others
+			</param-value>
+		</init-param>  
+   </servlet>  
+           
+	    <servlet-mapping>    
+	        <servlet-name>FileUpload</servlet-name>  
+ 	        <url-pattern>/meidiserver/FileUpload</url-pattern>   
+	    </servlet-mapping>      
+	          
+	          
+	          
+	          
+	      <servlet>  
+	        <servlet-name>ModelServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.ModelServlet  
+	        </servlet-class>  
+   </servlet>  
+        
+	    <servlet-mapping>   
+	        <servlet-name>ModelServlet</servlet-name>  
+ 	        <url-pattern>/meidiserver/Model</url-pattern>   
+	    </servlet-mapping> 
+	      
+	       
+	    <filter>
+		<filter-name>AdminFilter</filter-name>
+		<filter-class>
+			filter.AdminFilter
+		</filter-class>
+	 </filter>
+	  <filter-mapping>
+	  
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/meidiserver/admin/*</url-pattern>
+	</filter-mapping>
+	
+	<filter>  
+		<filter-name>AuthFilter</filter-name>
+		<filter-class>
+			filter.UserFilter
+		</filter-class>
+	 </filter>
+	  <filter-mapping> 
+		<filter-name>AuthFilter</filter-name>
+		<url-pattern>/meidiserver/user/*</url-pattern>
+	</filter-mapping>
+
+	 
+	 
+    
+</web-app>

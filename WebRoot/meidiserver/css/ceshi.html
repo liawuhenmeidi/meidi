@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<link rel="stylesheet" type="text/css" rev="stylesheet" href="style/css/bass.css" />
+
+</head>
+
+<body>
+
+<EMBED style="LEFT: 0px; POSITION: absolute; TOP: 0px" align=center src="snow.swf" width=1280 height=1100 type=application/x-shockwave-flash WMODE="transparent" QUALITY="high"></EMBED>
+
+<!--   头部开始   -->
+<div class="head">
+  <div class="head_logo"><img src="style/image/logo.png" /></div>
+</div>
+
+<!--   头部结束   -->
+
+<div class="main">
+     <div class="main_l">
+         <div class="main_l_tit"></div>
+      
+         <ul class="main_l_ul">
+             <li><a href="dingdan.html">订单查询</a></li>
+             <li><a href="huiyuan.html">会员管理</a></li>
+             <li><a href="juese.html">角色管理</a></li>
+             <li><a href="print/print.html">订单打印</a></li>
+             
+         
+         </ul>   
+     </div>
+     
+ <!--       -->    
+     
+     <div class="main_r">
+<div class="weizhi_head">现在位置：会员管理</div>        
+   <div class="main_r_tianjia">
+   
+   <ul>
+     <li><a href="">添加订单</a></li>
+     </ul>
+   
+   </div>
+     
+   <div class="table-list">
+<table width="100%" cellspacing="0">
+	<thead>
+		<tr>
+			<th align="left" width="20"><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"></th>
+			<th align="left"></th>
+			<th align="left">产品ID</th>
+			<th align="left">产品类别</th>
+			<th align="left">型号</th>
+			<th align="left">数量</th>
+			<th align="left">安装日期</th>
+			<th align="left">购买日期</th>
+			<th align="left">店面</th>
+			<th align="left">销售员</th>
+			<th align="left">状态</th>
+            <th align="left">打印次数</th>
+			<th align="left">修改</th>
+		</tr>
+	</thead>
+<tbody>
+    <tr>
+		<td align="left"><input type="checkbox" value="1" name="userid[]"></td>
+		<td align="left"></td>
+		<td align="left">1</td>
+		<td align="left">美的热水器<a href="javascript:member_infomation(1, '10', '')"><img src="http://www.qw365.org/statics/images/admin_img/detail.png"></a></td>
+		<td align="left">112</td>
+		<td align="left">100</td>
+		<td align="left">2012-12-3</td>
+		<td align="left">2012-12-3</td>
+		<td align="left">红桥店</td>
+		<td align="left">张姐</td>
+		<td align="left">已打印</td>
+        <td align="left">0</td>
+        
+		<td align="left">
+			<a href="javascript:edit(1, 'vc400')">[修改]</a>
+		</td>
+    </tr>
+</tbody>
+</table>
+
+<div class="btn">
+<label for="check_box">全选/取消</label> <input type="submit" class="button" name="dosubmit" value="删除" onclick="return confirm('您确定要删除吗？')">
+<input type="submit" class="button" name="dosubmit" onclick="document.myform.action='?m=member&amp;c=member&amp;a=lock'" value="锁定">
+<input type="submit" class="button" name="dosubmit" onclick="document.myform.action='?m=member&amp;c=member&amp;a=unlock'" value="解锁">
+<input type="button" class="button" name="dosubmit" onclick="move();return false;" value="移动">
+</div>
+
+<div id="pages"></div>
+</div>  
+     
+     
+     </div>
+
+
+</div>
+
+
+
+</body>
+</html>

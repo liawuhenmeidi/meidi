@@ -1,0 +1,43 @@
+/* CSS Document */
+
+/* 总体 */
+
+body {
+    overflow-x: hidden;    -webkit-text-size-adjust: none;    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;    color: #000;    margin: 0;    padding: 0;    font-size: 14px;    display: -webkit-box;
+    BACKGROUND-IMAGE: url('../image/f.JPG');background-repeat:no-repeat";
+   /*  We want to layout our first container vertically */
+    -webkit-box-orient: vertical;
+    /* we want our child elements to stretch to fit the container */
+    -webkit-box-align: stretch;
+}
+
+rec{ color:#F00;}
+
+img{ width:99%; height:auto; overflow:hidden; margin:0px auto;}
+
+.bord{ border:1px #666 solid;}
+.center{ text-align:center;}
+
+
+/* 头文件 */
+.img { max-width:100%;height:auto; overflow:hidden; }
+
+#t{
+border:1px #000 solid;
+}
+
+#d{
+border-right:1px #000 solid;border-bottom:1px #000 solid;
+}
+
+#e{
+border-bottom:1px #000 solid;
+}
+
+#f{
+border-right:1px #000 solid;
+}
+
+#th{  
+	background-color:white;
+}

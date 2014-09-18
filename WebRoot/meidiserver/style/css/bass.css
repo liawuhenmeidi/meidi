@@ -1,0 +1,113 @@
+/* CSS Document */
+body{BACKGROUND-IMAGE: url('../image/f.JPG');background-repeat:no-repeat";  }   
+ 
+body, html, input {font: 12px/1.5 tahoma,arial,宋体b8b\4f53,sans-serif;}
+
+    
+thead {display: table-header-group;vertical-align: middle;border-color: inherit;}
+
+tr {display: table-row;vertical-align: inherit;border-color: inherit;}
+  
+.red{ color:#F00;}  
+/*  head  */   
+.head{ width:100%; height:50px; margin:0px auto; background;}
+.head_logo{ width:400px; height:auto; float:left;}
+ 
+/*  main  */
+.main{ margin:0px auto; width:100%; height:auto; overflow:hidden; margin-bottom:20px;}
+
+.main_l{ width:11.8%; height:auto; overflow:hidden; float:left; }
+   .main_l_tit{ width:11%; height:70px;}
+   .main_l_ul{ width:99%; height:auto; overflow:hidden; padding:0px;}
+      .main_l_ul li{ display:block; float:right; text-align:right;width:99%; margin-right:10px; height:40px; line-height:40px; font-size:22px; }
+	     .main_l_ul a{ text-decoration:none; color: #FFF;}
+		 
+		 .main_l_ul a:hover{ color:#F00;}
+
+.weizhi_head{ width:94%; height:30px; line-height:30px; padding-left:5%; margin:0px auto; border-bottom:1px #666 solid;}
+
+/*  main_r  */
+
+.main_r{ width:88%; height:auto; float:right; border:1px #999 solid; background:#FFF;}
+
+.main_r_tianjia{ width:99%; height:40px; margin-bottom:10px;}
+   .main_r_tianjia ul{ width:99%; height: auto;}
+      .main_r_tianjia li{ display:block; float:left; margin-left:10px; padding:5px 10px; background:#06F;
+	  -moz-border-radius: 8px;      /* Gecko browsers */
+    -webkit-border-radius: 8px;   /* Webkit browsers */
+    border-radius:8px;            /* W3C syntax */}
+	  .main_r_tianjia a{ text-decoration:none; color:#FFF;}
+
+
+
+.table-list thead th {height: 30px;background: #EEF3F7;border-bottom: 1px solid #D5DFE8;font-weight: normal; text-align:center;}
+
+
+.table-list td, .table-list th {padding-left: 12px; text-align:center;}
+input, label, img, th {vertical-align: middle;}
+ 
+.table-list a{ text-decoration:none; color:#333}
+
+/*订单查询超大页面*/  
+.main_a{ margin:0px auto;  height:auto; overflow:hidden; margin-bottom:20px;}
+.main_l_a{  height:auto; overflow:hidden; float:left; }
+.main_r_a{  height:auto; float:right; border:1px #999 solid; background:#FFF; padding-bottom:20px;}
+/*  角色管理 */    
+.juese_head{ width:94%; height:30px; line-height:30px; padding-left:5%;}
+
+.juese_add{ width:92%; margin-left:5%; height:auto; overflow:hidden; }
+   .juese_add li{ display:block; float:left; width:15%; height:20px; line-height:20px; text-align:left;}
+
+   
+#t{
+border:1px #000 solid;
+}
+
+#d{
+border-right:1px #000 solid;border-bottom:1px #000 solid;
+}
+
+#e{
+border-bottom:1px #000 solid;
+}
+ 
+#f{
+border-right:1px #000 solid;
+}
+
+.a{ font-size:16px;}
+ 
+   /*#4F9D9D  */  
+.asc{ background-color:#c4e1e1;} 
+ 
+.asc_enable{ background-color:#80ffff;}
+
+#headremind{ 
+	width:20%;
+	height:200px;
+	float:right;
+	padding-left:50px;
+	padding-top:20px;
+	padding-bottom:50px;
+}
+
+#th{  
+	background-color:white;
+} 
+ 
+#table{  
+     background-color:black;
+     table-layout:fixed ;
+} 
+
+
+
+
+
+
+
+
+
+
+
+

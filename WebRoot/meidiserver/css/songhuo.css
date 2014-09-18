@@ -1,0 +1,120 @@
+/* CSS Document */
+
+/* 总体 */
+
+body { 
+    overflow-x: hidden;    -webkit-text-size-adjust: none;    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;    color: #000;    margin: 0;    padding: 0;    font-size: 14px;    display: -webkit-box;
+   
+    BACKGROUND-IMAGE: url('../image/f.JPG');background-repeat:no-repeat"; 
+    /* We want to layout our first container vertically */
+    -webkit-box-orient: vertical;
+    /* we want our child elements to stretch to fit the container */
+    -webkit-box-align: stretch;
+} 
+
+rec{ color:#F00;}
+
+img{ width:99%; height:auto; overflow:hidden; margin:0px auto;}
+
+.bord{ border:1px #666 solid;}
+.center{ text-align:center;}
+.red{ color:#F00;}
+
+/* 登陆选项 */ 
+.main_a{ width:99%; height:auto; overflow:hidden;}
+.main_a li{ display:block; float:left; width:99%; height:60px; line-height:40px; font-size:30px; color:#00F;}
+.main_a a{ text-decoration:none; color:#00F;}
+ 
+/* 登陆进入界面 */
+.door{ width:98%; height:auto; overflow:hidden; margin:10px auto; padding:0px;}
+ .door li{ display:block; float:left; margin-left:10%; width:35%; height:60px; margin-top:20px; background:#01A6E8; font-size:20px; line-height:60px; text-align:center; font-family:"微软雅黑";
+      -moz-border-radius: 15px;      /* Gecko browsers */
+    -webkit-border-radius: 15px;   /* Webkit browsers */
+    border-radius:15px;            /* W3C syntax */
+  }
+   
+  .door li a{ text-decoration:none; color:#FFF;}
+
+/*  表格  */
+#t{border:1px #000 solid;}
+
+#fb{border-right:1px #000 solid;border-bottom:1px #000 solid;}
+
+#b{border-bottom:1px #000 solid;}
+
+#br{border-bottom:1px #000 solid;border-right:1px #000 solid;}
+#brl{border-bottom:1px #000 solid;border-right:1px #000 solid;border-left:1px #000 solid;}
+
+#brt{border-bottom:1px #000 solid;border-right:1px #000 solid; border-top:1px #000 solid;}
+
+#brlt{border:1px #000 solid;}
+
+#r{
+border-right:1px #000 solid;}
+
+#lt{border-left:1px #000 solid; border-top:1px #000 solid;}
+#ltr{border-left:1px #000 solid; border-top:1px #000 solid;border-right:1px #000 solid;}
+#blt{border-bottom:1px #000 solid;border-left:1px #000 solid; border-top:1px #000 solid;}
+
+
+
+/* 头文件 */
+.img { max-width:100%;height:auto; overflow:hidden; }
+
+
+
+/* 送货  */
+.s_main{ width:96%; height:auto; overflow:hidden; margin:0px auto;}
+
+  .s_main_logo{ width:99%; height:50px; margin:0px auto; text-align:left; margin-top:10px; }
+  .s_main_logo img{ width:100%; height:40px;}
+
+
+.s_main_tit{ width:96%; height:auto; margin:10px auto; font-size:16px; line-height:30px; height:30px; color:#000; border-bottom:1px #666 solid; font-size:18px; color:#00adf1;}
+   .qiangdan{ width: auto; float:right; margin-right:8px; padding:0px 10px; background:#00adf1; line-height:25px; 
+   -moz-border-radius: 5px;      /* Gecko browsers */
+    -webkit-border-radius: 5px;   /* Webkit browsers */
+    border-radius:5px;            /* W3C syntax */}
+   .qiangdan a{ text-decoration:none;font-family:"黑体";  color:#FFF; font-size:14px; font-weight:bolder;}
+ 
+ .s_list{ width:96%; height:auto; overflow:hidden; }
+   .s_list a{ text-decoration:none; color:#333;}
+   .s_list tr{ height:30px; line-height:30px;}
+   .s_list td{ text-align:center;}
+   
+   .s_list_m{ font-size:14px; font-family:"黑体"; color:#00ADF1;}
+
+
+/*  头  */
+.s_main_top{ width:96%; height: auto; overflow:hidden; margin:0px auto;}
+
+.s_main_fw{ width:96%; height: auto; overflow:hidden; margin:10px auto;}
+.s_main_fw li{ display:block; float:left; width:45%; text-align:center; padding-top:-5px;}
+   .s_main_fw img{ width:15px; height:15px; margin-top:15px;}
+ .s_main_fw a{ text-decoration:none; color:#333;}
+
+
+/*  查询详情   */
+.s_main_box{ width:96%; height:auto; overflow:hidden; margin:5px auto; font-size:12px;}
+   .s_main_box a{ text-decoration:none; color:#333;}
+ 
+ .s_main_table{ height:30px; line-height:30px; }
+ 
+ /*  报单后   */
+
+.s_type_box{ width:90%; height:auto; overflow:hidden; margin:0px auto;}
+.s_type_end{ width:35%; height:30px; margin:20px auto; text-align:center;}
+.s_type_end a{ display:block; text-decoration:none; font-size:18px; color:#666; width:auto; height:30px; line-height:30px; border:1px #666 solid;}
+
+/*  顶码后   */
+.dingma{ font-size:18px;}
+.dingma a{ display:block; text-decoration:none; color:#666; height:30px; line-height:30px;}
+
+/*  提单   */
+.s_dan_box{ width:96%; height:auto; overflow:hidden; margin:5px auto;}
+   .s_dan_box td{ height:20px; font-size:16px; line-height:20px;}
+   
+   .empty{ margin-top:5px;}
+   
+   
+
