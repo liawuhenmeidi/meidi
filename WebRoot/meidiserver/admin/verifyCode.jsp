@@ -1,6 +1,7 @@
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.net.URLEncoder"%>
 <%@ page language="java" import="java.util.*,wilson.verifyCode.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -29,15 +30,14 @@
 		password = request.getParameter("password");
 		saleOrderNo = request.getParameter("saleOrderNo");	
 		msg = "正在尝试中，请15分钟后在苏宁系统中刷新";
+
 		mc.setUserName(userName);
 		mc.setPassword(password);
 		mc.setSaleOrderNo(saleOrderNo);
 		mc.start();
+
 		response.sendRedirect(request.getRequestURI() + "?msg=" + URLEncoder.encode(msg));
-		//System.out.println(request.getRequestURI() + "?msg=" + URLEncoder.encode(msg));
-		//response.sendRedirect(request.getRequestURI() + "?msg=" + URLEncoder.encode(msg));
-		
-		//mc.startThis(userName, password, saleOrderNo);
+
 		return;
 	}
 

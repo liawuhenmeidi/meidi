@@ -749,13 +749,13 @@ public static void updateSendstat(int statues,int sid, int oid) {
 	   //  2  表示送货员  
 	   boolean flag = UserManager.checkPermissions(user, type);
 	  // boolean f = UserManager.checkPermissions(user, Group.Manger); 
-	   
+	    
 	   String sql = "";  
 	   logger.info(type);
 	   if(user.getUsertype() == 1    ){  
 		   sql = "select * from  mdorder where 1 =1 order by id " ;
-	   }else if(flag && Group.send == type){    
-		   sql = "select * from  mdorder where  ( sendId = "+user.getId() + " and deliveryStatues =0  and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (1,10,9)  and printSatuesp = 1  )  order by id  desc";
+	   }else if(flag && Group.send == type){      
+		   sql = "select * from  mdorder where  ( sendId = "+user.getId() + " and deliveryStatues in (0,9,10)   and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (1,10,9)  and printSatuesp = 1  )  order by id  desc";
 	   }else if(flag && Group.tuihuo == type){  
 		   sql = "select * from  mdorder where  ( returnid = "+user.getId() + " and returnstatues =0  and returnprintstatues = 1  )  order by id  desc";
 	   }else if(flag && Group.sale == type){  

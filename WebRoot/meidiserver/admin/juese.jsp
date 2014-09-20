@@ -93,7 +93,7 @@ List<Group> listg = GroupManager.getGroupdown(user, Integer.valueOf(ptype),1);
    </div>
       
    <div class="table-list">
-<table width="100%" cellspacing="0">
+<table width="100%" cellspacing="1" id="table">
 	<thead>
 		<tr>  
 			<th align="left" width="20"></th>
@@ -109,8 +109,8 @@ List<Group> listg = GroupManager.getGroupdown(user, Integer.valueOf(ptype),1);
 <tbody>
    <% for(int i=0;i<list.size();i++){
 	   Group g = list.get(i);
-    %>
-    <tr>
+    %> 
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
 		<th align="left" width="20"><input type="checkbox" value="" id="check_box" name = "<%=g.getId() %>"></input></th>
 	   <th align="left"></th>
 		<td align="left"><%=g.getName() %></td>
@@ -131,8 +131,7 @@ List<Group> listg = GroupManager.getGroupdown(user, Integer.valueOf(ptype),1);
         <a href="authority.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">权限设置</a> | <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">修改</a> 
         
         </td>	
-        <td>
-        </td>
+        
     </tr>
     <% }
     %>

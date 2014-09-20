@@ -2,13 +2,23 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
- 
+
+String branchid = "";   
+if(UserManager.checkPermissions(user, Group.Manger)){
+	branchid = request.getParameter("branchid");  
+}else if(UserManager.checkPermissions(user, Group.sencondDealsend)){
+	branchid = BranchManager.getBranchID(user.getBranch())+""; 
+}
+  
+String category = request.getParameter("category");
+
+Category c = CategoryManager.getCategory(category);  
+
+List<Branch> listbranch = BranchManager.getLocate(); 
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
   
 List<BranchType> listb = BranchTypeManager.getLocate();
   
-List<String> listbranch = BranchManager.getLocateAll(); 
-String listall = StringUtill.GetJson(listbranch);
 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
@@ -44,11 +54,12 @@ if(branchmap != null){
         int s =  it.next();
         newbranchmap.put(s+"", branchmap.get(s));
     }
+	
 }
 
 
 String branchstr = StringUtill.GetJson(newbranchmap); 
-System.out.println(branchstr);
+//System.out.println(branchstr);
 
 String inventoryid = request.getParameter("id");
 Inventory inventory = null ;
@@ -106,7 +117,7 @@ td {
 
 
 
-
+<script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
@@ -124,138 +135,60 @@ var disable = '<%=isdisabel %>';
  var jsonmap = '<%=mapjosn%>'; 
 
  var jsons =  <%=plist%>;
- 
- //var listallp = '<%=listallpp%>';
-//alert(listallp);
+
  var jsonallp = <%=listallpp%>; 
- 
- var jsonall = <%=listall%>;
  
  var row = 1; 
  var rows = new Array();
  var branchstr = <%=branchstr%>; 
  var Categorystr = <%=Categorystr%>;
  var inventoyr = '<%=invent%>';
- //alert(inventoyr); 
- var jsoninvent =  $.parseJSON(inventoyr);
   
+ var jsoninvent =  $.parseJSON(inventoyr);
+  var typeid = "";
  $(function () { 
-	 //initproduct();
-	          
-	 initTime();
-	 
-
-	 
-	 $("#branch").autocomplete({ 
-		 source: jsonall
-	    });  
-	    
-	 $("#ordertype0").autocomplete({ 
-		 source: jsonallp
-	    });  
-	 
+	 add();
  });
  
- function initTime(){ 
-	   var opt = { };
-	    opt.date = {preset : 'date'};
-		$('#saledateStart').val('').scroller('destroy').scroller($.extend(opt['date'], 
-		{ theme: 'android-ics light', mode: 'scroller', display: 'modal',lang: 'zh' ,startYear:'1980',endYear:'2020'}));
-		var opt2 = { };
-	    opt2.date = {preset : 'date'};
-		$('#saledateEnd').val('').scroller('destroy').scroller($.extend(opt2['date'], 
-		{ theme: 'android-ics light', mode: 'scroller', display: 'modal',lang: 'zh' ,startYear:'1980',endYear:'2020'}));
-}
- 
  function inventory(inventory){
-	 
 	 window.showModalDialog('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
-	 
  }
  
- 
- 
- 
- 
- function search(ctype){
-	 $("#serach table").remove();
-	 $.ajax({ 
-	        type: "post", 
-	         url: "../server.jsp",
-	         data:"method=inventorydetail&ctype="+ctype,
-	         dataType: "", 
-	         success: function (data) {
-	        	//alert(data);
-	        	 var addstr = '<table id ="serach" width="100%" border="1" cellpadding="0" cellspacing="0" > '+
-
-	        		     '<tr> '+
-	        		     ' <td>单号</td>'+
-	        		     ' <td>日期</td> '+
-	        		     ' <td>型号</td>'+
-	        		     ' <td>调拨数量</td> ' +
-	        		     ' <td>销售数量</td> ' + 
-	        		     ' <td>库存</td>' +  
-	        		    ' </tr>';
-	        		     
-	        		 
-	        	 var json =  $.parseJSON(data);
-		        	
-	        	 for(var i=0;i<json.length;i++){
-	        		 var str = json[i];
-	        		 
-	        		 addstr += '<tr id="record'+row+'" onclick="inventory('+str.inventoryid+')">' +  
-	        		     ' <td>'+str.inventoryid+'</td> ' +
-	        		     ' <td>'+str.time+'</td> ' + 
-	        		     ' <td>'+str.type+'</td> ' + 
-	        		     ' <td>'+str.realcount+'</td>' + 
-	        		     ' <td></td> ' +  
-	        		     ' <td>'+str.inventcount+'</td> ' +  
-	        		     ' </tr>'; 
-	        	 }
-	        		     
-	        	 addstr += '</table>' ;     
-	        		     
-	        			 $("#serach").append(addstr);  
-	           },  
-	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	            } 
-	           });
-
- }
-
- function search(ctype,branchid){
+ function search(ctype,branchid){ 
 	 window.showModalDialog('inventoryDetail.jsp?ctype='+ctype+"&branchid="+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
  }
  
+
+function distri(){
+ if(typeid == null || typeid == ""){
+	 alert("请选择产品型号"); 
+ }else { 
+     window.showModalDialog('distribution1.jsp?category='+categoryid+'&type='+typeid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+   }
+ }
  
- function add(){
-	 $("#table tr").remove();
-	 var ctype = $("#ordertype0").val();
-	 var branch = $("#branch").val(); 
-	 var saledateStart = $("#saledateStart").val();
-	 var saledateEnd = $("#saledateEnd").val();
-	 var str = ""; 
-	 var flag = false ; 
-	 // pos == "" || pos == null || pos == "null"
-	 if(saledateStart != null && saledateStart != "" && saledateStart != "null"){
-		 str += " and time BETWEEN '" + saledateStart + "'  and  ";
-	     flag = true ;
-	 } 
-	 
-	 if(saledateEnd != null && saledateEnd != "" && saledateEnd != "null"){
-		 str += " ' " + saledateEnd + "'";
-	 }else if(flag){
-		 str += "now()";
-	 }
-	 $.ajax({ 
+function serchclick(category,type,branchid,obj){
+	 categoryid = category;
+	 typeid = type ; 
+	 updateClass(obj);  
+ } 
+ 
+ function add(){     
+	 $("#table tr").remove();    
+	 var branch = "<%=branchid%>";
+	 var category = "<%=category%>"; 
+	 var b = $("#branch").val(); 
+	 if(branch == null || branch == ""){
+		 branch = b ; 
+	 }       
+	 $.ajax({  
 	        type: "post", 
-	         url: "../server.jsp",
-	         data:"method=inventory&branch="+branch+"&ctype="+ctype+"&time="+str,
-	         dataType: "", 
+	         url: "../server.jsp",    
+	         data:"method=inventoryall&branch="+branch+"&category="+category,
+	         dataType: "",   
 	         success: function (data) { 
 	        	 var addstr = '<tr class="asc"> '+
-	        	     ' <td>序号</td>'+ 
-	        	     ' <td>门店</td>'+  
+	        	    
 	        	     ' <td>产品类别</td>'+
 	        	     ' <td>产品型号</td> '+
 	        	     ' <td>账面库存数量</td>'+
@@ -265,19 +198,19 @@ var disable = '<%=isdisabel %>';
 	        	 var json =  $.parseJSON(data);
 	        	
 	        	 for(var i=0;i<json.length;i++){
-	        		 var str = json[i];
-	        		 
-	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="search(\''+str.type+'\',\''+str.branchid+'\')">' +  
-	        		     ' <td>'+str.id+'</td> ' +
-	        		     ' <td>'+branchstr[str.branchid].locateName+'</td> ' + 
-	        		     ' <td>'+Categorystr[str.inventoryid].name+'</td> ' + 
-	        		     ' <td>'+str.type+'</td> ' + 
+	        		 var str = json[i]; 
+	        		  
+	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.type+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+str.type+'\',\''+branch+'\',this)">' +  
+	        		    
+	        		     ' <td>'+str.cateoryName+'</td> ' +   
+	        		     ' <td>'+str.type+'</td> ' +   
 	        		     ' <td>'+str.papercount+'</td> ' +  
 	        		     // inventoryid
 	        		     ' <td>'+str.realcount+'</td> ' + 
-	        		     
+	        		      
 	        		     ' <td></td> ' +  
 	        		     ' </tr>'; 
+	        		     row++;
 	        	 }
 	        	
 	        	 $("#table").append(addstr);      
@@ -299,54 +232,40 @@ var disable = '<%=isdisabel %>';
   </jsp:include>
 
 <!--   头部结束   -->
-
-<div class="main">  
-   <div class="weizhi_head">现在位置：库存查询</div> 
-   <div class="main_r_tianjia">
-   
-   </div>      
-     <div>     
-     <form action="InventoryServlet"  method = "post"  onsubmit="return check()">
-      <input type="hidden" name="method" value="add"/>  
+<div class="main">    
+  <div class="weizhi_head">现在位置：<%=c.getName() %>库存
+   <%
+    if(UserManager.checkPermissions(user, Group.dealSend)){
+    	%>
+  
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
+    <a href="javascript:distri();"> 查看分布</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+         选择仓库:     
+	  <select id="branch">  
+	  <option value=""></option>
+	   <% if(listbranch != null){
+		   for(int i=0;i<listbranch.size();i++){
+			   Branch b = listbranch.get(i);
+	    %>   
+	    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
+	   <% 
+		   }   
+	   }
+	   %>
+	  </select>
+	   <input type="button" name="" value="查询" onclick="add()"/>   
+			   <%
+		   }  
+   %>
                      
-  <div style="background-color:;width:80%" > 
-                 仓库：  
-         <% if(UserManager.checkPermissions(user, Group.dealSend)){
-         %> 
-         <input type="text" name="branch" id="branch" class="cba" value="<%=outbranch %>"  <%=isdisabel %>/>                    
-         <%}else if(UserManager.checkPermissions(user, Group.sencondDealsend)){%> 
-         
-         <input type="hidden" name="branch" id="branch" class="cba" value="<%=user.getBranch() %>"/>
-         <%=user.getBranch() %> 
-             
-         <% }%>
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;           
-    类别:
-    <select>
-    
-    <% 
-    if(categorylist != null){
-    	for(int i=0;i<categorylist.size();i++){
-            Category category = categorylist.get(i); 
-     %> 
-     <option value="<%=category.getId()%>"><%=category.getName() %></option>
-    <%}
-    } %>
-    </select>
-     型号:                 
-  <input type="text" name="ordertype0"  id="ordertype0"   class="cba" <%=isdisabel %>/>    
-  开始时间:<input class="date" type="text" name="saledateStart"  id="saledateStart"  readonly="readonly" ></input>
-     
-  结束时间:<input class="date2" type="text" name="saledateEnd" id ="saledateEnd"   readonly="readonly"></input> 
-       
-  <input type="button" name="" value="查询" onclick="add()" <%=isdisabel %>/>        
-            
-    <br/>    
+ </div>      
+ </div>        
+     <div style="background-color:;width:80%" >
      <br/>        
    <table width="100%" border="1" id="table" cellpadding="0" cellspacing="0" >
      <tr class="asc"> 
-      <td>序号</td>
-      <td>门店</td> 
+      
       <td>产品类别</td>
       <td>产品型号</td> 
       <td>账面库存数量</td>
@@ -358,10 +277,6 @@ var disable = '<%=isdisabel %>';
  
   </div>
        
-    
-     
-   
- </form>
      </div>
 <br/>
 
@@ -369,13 +284,5 @@ var disable = '<%=isdisabel %>';
 
 
 </div>
-
-
-
-
-
-</div>
-
-
 </body>
 </html>

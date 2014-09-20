@@ -99,11 +99,11 @@ function changes(){
    </div>
      
    <div class="table-list">
-<table width="100%" cellspacing="0">
+<table width="100%" cellspacing="1" id="table">
 	<thead>
 		<tr>
-			<th align="left"><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th>
-			<th align="left"></th>
+			<th align="left" width="20"><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th>
+		
 			<th align="left">地区序号</th>
 			<th align="left">区域名称</th>
 		</tr>
@@ -113,10 +113,10 @@ function changes(){
   for(int i =0 ;i<list.size();i++){
 	 Locate u = list.get(i) ;
 %>
-    <tr>
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
     
 		<th align="left" width="20"><input type="checkbox" value="" id="check_box" name ="<%=u.getId() %>"></input></th>
-		<td align="left"></td>
+	
 		<td align="left"><%=i+1 %></td>
 		<td align="left"><%=u.getLocateName() %></td>
     </tr>

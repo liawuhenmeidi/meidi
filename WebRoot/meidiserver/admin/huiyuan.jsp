@@ -72,7 +72,7 @@ function changes(id,name,statues){
    </div> 
      -->
    <div class="table-list"> 
-<table width="100%" cellspacing="1" style="background-color:black;"> 
+<table width="100%" cellspacing="1" id="table"> 
 	<thead>
 		<tr>
 			

@@ -95,9 +95,9 @@ function seletall(all){
  
      
    <div class="table-list">
-<table width="100%" cellspacing="0">
+<table width="100%" cellspacing="1" id="table">
 	<thead>
-		<tr>
+		<tr >
 			<th align="left" width="20">
 			 <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th>
 			<th align="left">门店序列号</th>
@@ -113,7 +113,7 @@ if(list != null){
   for(int i =0 ;i<list.size();i++){
 	  BranchType category = list.get(i) ;
 %>   
-    <tr> 
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)"> 
 		  <td align="left"><input type="checkbox" value="1" name="<%=category.getId() %>"></input></td> 
 		<td align="left"><%=i+1 %></td>
 		<td align="left"><%=category.getName() %></td> 

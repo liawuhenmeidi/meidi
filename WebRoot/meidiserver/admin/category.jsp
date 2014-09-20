@@ -103,9 +103,9 @@ List<Category> list =CategoryManager.getCategory(user,Category.sale) ;
    </div>
      
    <div class="table-list">
-<table width="100%" cellspacing="0">
+<table width="100%" cellspacing="1" id="table">
 	<thead>
-		<tr>
+		<tr >
 			<!--<th align="left" width="20">
 			 <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th> -->
 			<th align="left"></th>
@@ -121,7 +121,7 @@ List<Category> list =CategoryManager.getCategory(user,Category.sale) ;
   for(int i =0 ;i<list.size();i++){
 	  Category category = list.get(i) ;
 %>
-    <tr>
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
 		<!--  <td align="left"><input type="checkbox" value="1" name="<%=category.getId() %>"></input></td> -->
 		<td align="left"></td>
 		<td align="left"><%=category.getName() %></td> 

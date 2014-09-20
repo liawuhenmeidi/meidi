@@ -12,7 +12,7 @@ Order or = OrderManager.getOrderID(user,Integer.valueOf(id));
 boolean flag = true ;
 int opstatues = -1;   
   
-if(or.getDeliveryStatues() == 0){ 
+if(or.getDeliveryStatues() == 0 || or.getDeliveryStatues() == 9 ){ 
 	opstatues = OrderPrintln.salerelease;     
 }else if (or.getDeliveryStatues() == 1){
 	

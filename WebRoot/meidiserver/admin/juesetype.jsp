@@ -87,7 +87,7 @@ List<Grouptype> list = GrouptypeManager.getGroup(user);
 
      
    <div class="table-list">
-<table width="100%" cellspacing="0">
+<table width="100%" cellspacing="1" id="table">
 	<thead>
 		<tr>  
 			
@@ -105,12 +105,14 @@ List<Grouptype> list = GrouptypeManager.getGroup(user);
    <% if(list != null){
       for(int i=0;i<list.size();i++){
 	   Grouptype g = list.get(i); 
-    %> 
-    <tr> 
+    %>  
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)"> 
 	   <td align="left"><%=i+1 %></td>
 		<td align="left"><%=g.getName() %></td>
 		<% if(g.getId() == 1) {%>
-		  
+		  <td align="left"></td>
+		  <td align="left"></td>
+		  	<td align="left"></td>
         <% }else {
         	
          %>
@@ -121,8 +123,7 @@ List<Grouptype> list = GrouptypeManager.getGroup(user);
          <a href="javascript:void(0);" onclick="winconfirm('<%=g.getId()%>')">[删除]</a>   
         </td>
         <% }%>	
-        <td>    
-        </td>
+        
     </tr>  
     <% } 
    }

@@ -106,7 +106,7 @@ function seletall(all){
      
      
    <div class="table-list">
-<table width="100%" cellspacing="0">
+<table width="100%" cellspacing="1" id="table">
 	<thead>
 		<tr>
 			<th align="left" width="20">
@@ -124,7 +124,7 @@ if(list != null){
 	  Branch category = list.get(i) ;
 	  //category.getId()
 %>    
-    <tr>  
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">  
 		<td align="left"><input type="checkbox" value="1" name="<%=category.getId() %>"></input></td> 
 		<td align="left"><%=i+1 %></td>
  		<td align="left"><%=category.getLocateName() %></td> 

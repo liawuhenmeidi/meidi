@@ -50,7 +50,7 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
    </div>  
    <div class="table-list">
 <div class="btn">
-<table width="100%" cellspacing="0">
+<table width="100%"  cellspacing="1" id="table">
 	<thead>
 		<tr>
 			<th align="left">序号</th>
@@ -66,16 +66,16 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
        for(int i=0;i<invetorylist.size();i++){ 
     	   Inventory invetory = invetorylist.get(i);
     	   %>
-    	   <tr>
+    	   <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
 			<td align="left"><%=invetory.getId() %></td>
 			<td align="left"><%=invetory.getIntime() %></td>
 			<td align="left">
-			 <%
+			 <% 
 			   if(branchmap != null){
 				   Branch branch = branchmap.get(invetory.getOutbranchid());
 			       if(branch != null){
 			    	   %>
-			    	   
+			    	      
 			    	   <%=branch.getLocateName() %>
 			    	   <%
 			       }
