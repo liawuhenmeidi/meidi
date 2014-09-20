@@ -22,7 +22,7 @@ List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
    
 Map<Integer,Branch> branchmap = BranchManager.getNameMap();
-
+  
 String inventoryid = request.getParameter("id");
 Inventory inventory = new Inventory() ;
 String invent = ""; 

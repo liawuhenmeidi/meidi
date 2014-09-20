@@ -75,7 +75,7 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 				   Branch branch = branchmap.get(invetory.getOutbranchid());
 			       if(branch != null){
 			    	   %>
-			    	   
+			    	      
 			    	   <%=branch.getLocateName() %>
 			    	   <%
 			       }

@@ -307,7 +307,7 @@ var disable = '<%=isdisabel %>';
    </div>      
      <div>     
      <form action="InventoryServlet"  method = "post"  onsubmit="return check()">
-      <input type="hidden" name="method" value="add"/> 
+      <input type="hidden" name="method" value="add"/>  
                      
   <div style="background-color:;width:80%" > 
                  仓库：  
