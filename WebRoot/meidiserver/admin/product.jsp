@@ -97,7 +97,7 @@ if(!StringUtill.isNull(categoryID)){
      </ul>
    </div> 
    <div class="table-list">
-<table width="100%" cellspacing="0">
+<table width="100%"  cellspacing="1" id="table">
 	<thead>
 		<tr>
 			<th align="left" width="20">
@@ -114,8 +114,8 @@ if(!StringUtill.isNull(categoryID)){
 	  Product product = list.get(i) ;
 	  
 %>
-    <tr>
-    
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
+        
 		<td align="left"><input type="checkbox" value="1" name="<%=product.getId() %>"></input></td>
 		<td align="left"></td>
 	<!-- 	<td align="left"><%=product.getId() %></td> -->

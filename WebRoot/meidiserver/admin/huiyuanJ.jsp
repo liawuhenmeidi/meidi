@@ -27,7 +27,7 @@ function changes(id,statues){
            }, 
          error: function (XMLHttpRequest, textStatus, errorThrown) { 
         // alert(errorThrown); 
-            } 
+            }  
            });
 
 }
@@ -54,9 +54,9 @@ function changes(id,statues){
      <div class="">
    <div class="weizhi_head">现在位置：职工管理</div>     
 
-     
+      
    <div class="table-list">
-<table width="100%" cellspacing="0">
+<table width="100%" cellspacing="1" id="table">
 	<thead>
 		<tr>
 			<th align="left" width="20"><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"></th>
@@ -76,7 +76,7 @@ function changes(id,statues){
   for(int i =0 ;i<list.size();i++){
 	 User u = list.get(i) ;
 %>
-    <tr>
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
     
 		<td align="left"><input type="checkbox" value="1" name="userid[]"></td>
 		<td align="left"></td>
