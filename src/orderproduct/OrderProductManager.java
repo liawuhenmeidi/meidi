@@ -24,17 +24,12 @@ import database.DB;
   
 public class OrderProductManager {
 	protected static Log logger = LogFactory.getLog(OrderProductManager.class);
-	   /*public boolean updateOrderStatues(User user, OrderStatues order){
+	   public boolean updateOrderStatues(User user, String type ,String oid){
 		   if(user.getUsertype() == 2  || user.getUsertype() == 1){
 			   Connection conn = DB.getConn();
-				String sql = "update mdorderStatues set shipmentStatues = ?, deliveryStatues = ?" +
-						", sendId = ?, installTime = ?";
+				String sql = "update mdorderproduct set saletype = "+ type + " where orderid = " + oid + " and statues = 1 ";
 				PreparedStatement pstmt = DB.prepare(conn, sql);
-				try {
-					pstmt.setInt(1, order.getShipmentStatues());
-					pstmt.setInt(2, order.getDeliveryStatues());
-					pstmt.setInt(3, order.getSendId());
-					pstmt.setString(4, order.getInstallTime());
+				try { 
 					pstmt.executeUpdate();
 					return true ;
 				} catch (SQLException e) {
@@ -45,7 +40,7 @@ public class OrderProductManager {
 				}
 			}
 		   return false;
-	   }*/
+	   }
 	public static String delete(int id) {
 		String sql = "delete from mdorderproduct where orderid = " + id;
         return sql ;

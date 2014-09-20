@@ -7,13 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import branch.Branch;
-import branch.BranchManager;
 
 
 
@@ -44,10 +40,16 @@ public class InventoryBranchMessageManager {
 	
 	
 public static List<InventoryBranchMessage> getCategory(String type,String branchid,String time) { 
-		
+		  
 		List<InventoryBranchMessage> categorys = new ArrayList<InventoryBranchMessage>();
-		Connection conn = DB.getConn(); 
-		String sql = "select * from mdinventorybranchmessage where type = '"+ type +"' and branchid = "+ branchid +time;
+		Connection conn = DB.getConn();  
+		String sql = "";
+		if(!StringUtill.isNull(branchid)){
+		    sql = "select * from mdinventorybranchmessage where type = '"+ type +"' and branchid = "+ branchid +time;
+		}else { 
+			 sql = "select * from mdinventorybranchmessage where type = '"+ type +"'"+time;
+		}
+		
 
 	logger.info(sql);	  
 		Statement stmt = DB.getStatement(conn); 

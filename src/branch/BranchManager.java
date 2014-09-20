@@ -95,6 +95,26 @@ public class BranchManager {
 			}
 			return users;
 		}
+		public static List<Branch> getLocate( ) {
+			List<Branch> users = new ArrayList<Branch>();
+			Connection conn = DB.getConn();   
+			String sql = "select * from mdbranch  " ;
+			Statement stmt = DB.getStatement(conn); 
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {  
+				while (rs.next()) {  
+					Branch g = getBranchFromRs(rs);
+					users.add(g);  
+				}   
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return users;
+		}
 		
 		public static Branch getLocatebyname(String name ) {
 			Branch branch = new Branch();

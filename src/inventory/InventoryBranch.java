@@ -3,7 +3,7 @@ package inventory;
 public class InventoryBranch {  
   private int id ;     
   private int inventoryid;  // 所包含的产品类别id
-  private int branchid ;
+  private int branchid ;  
       
   private String type ;   
    

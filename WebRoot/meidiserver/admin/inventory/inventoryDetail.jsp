@@ -5,9 +5,24 @@ User user = (User)session.getAttribute("user");
  
 String ctype = request.getParameter("ctype");
 String branchid = request.getParameter("branchid");
+Branch b = new Branch();
+if(!StringUtill.isNull(branchid)){
+	b = BranchManager.getLocatebyid(branchid);
+}
 
+String strbranch = b.getLocateName();
+Map<Integer,Branch> branchmap = BranchManager.getNameMap();
+Map<String,Branch> newbranchmap = new HashMap<String,Branch>();
+if(branchmap != null){
+	Set<Integer> key = branchmap.keySet();
+    for (Iterator<Integer> it = key.iterator(); it.hasNext();) {
+        int s =  it.next();
+        newbranchmap.put(s+"", branchmap.get(s));
+    }
+	
+}
 
-
+String branchstr = StringUtill.GetJson(newbranchmap);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -26,13 +41,13 @@ String branchid = request.getParameter("branchid");
 
 var ctype = '<%=ctype%>' ; 
 var branchid = '<%=branchid%>';
-var row = 1; 
+var row = 1;
+var branchstr = <%=branchstr%>; 
 //alert(ctype);
  $(function () {  
 	 //initproduct();
 	  search(ctype,branchid);        
-	 
-	 
+
  });
  
  function inventory(inventory,type){
@@ -71,19 +86,21 @@ var row = 1;
 	        		 var str = json[i];
 	        		 var strtype = "";
 	        		 var type = str.operatortype;
+	        		 var branch = branchstr[str.branchid].locateName;
+	        		 
 	        		 //alert(type); 
 	        		 if(type == 0 ){ 
-	        			 strtype = "仓库出货";
+	        			 strtype = branch+"出货";
 	        		 }else if(type == 1){
-	        			 strtype = "仓库入货";
+	        			 strtype = branch+"入货";
 	        		 }else if(type == 2){
-	        			 strtype = "文员派工";
+	        			 strtype = branch+"文员派工";
 	        		 }else if(type == 20){
-	        			 strtype = "安装公司释放";
+	        			 strtype = branch+"释放";
 	        		 }else if(type == 11){
-	        			 strtype = "安装公司派工";
-	        		 }else if(type == 6){ 
-	        			 strtype = "送货员释放";
+	        			 strtype = branch+"派工";
+	        		 }else if(type == 6){  
+	        			 strtype = branch+"送货员释放";
 	        		 } 
 	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="inventory('+str.inventoryid+','+type+')">' +  
 	        		     ' <td>'+str.inventoryid+'</td> ' +

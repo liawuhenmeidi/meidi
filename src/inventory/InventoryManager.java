@@ -1,8 +1,5 @@
 package inventory;
 
-
-import gift.GiftManager;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,6 +48,34 @@ public class InventoryManager {
 		} 
 		logger.info(categorys.size());
 		return categorys;
+	}
+	 
+	 
+	public static boolean check(String method,String id ) {    
+		boolean flag = false ;  
+		Connection conn = DB.getConn();    
+		String sql = "";   
+		if("outbranch".equals(method)){  
+			sql = "select * from inventory where  instatues = 1 and  id = " + id;  
+		}else if("inbranch".equals(method)){  
+			sql = "select * from inventory where  outstatues = 1 and id = "+ id; 
+		}
+		 
+		Statement stmt = DB.getStatement(conn);
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while (rs.next()) { 
+				flag = true ;
+			} 
+		} catch (SQLException e) {
+			logger.error(e);
+		} finally {
+			DB.close(rs);
+			DB.close(stmt); 
+			DB.close(conn);
+		}       
+		 
+		return flag;
 	}
 	
 

@@ -2,6 +2,7 @@ package utill;
 
 import group.Group;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -48,9 +49,15 @@ public class StringUtill {
     public static String GetJson(Object object){ 
  	   
     	if(null != object){
-    	 JSONObject jsObj = JSONObject.fromObject(object);
-    	 //logger.info(list.toString());
-       	 return jsObj.toString();
+         if(object instanceof Collection){  
+        	 JSONArray jsObj = JSONArray.fromObject(object); 
+        	 return jsObj.toString(); 
+         }else {
+        	 JSONObject jsObj = JSONObject.fromObject(object);
+        	 //logger.info(list.toString());
+           	 return jsObj.toString(); 
+         }
+    	 
     	} 
     	 return "";
     }

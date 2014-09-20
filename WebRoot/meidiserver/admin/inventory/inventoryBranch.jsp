@@ -44,7 +44,6 @@ if(branchmap != null){
         int s =  it.next();
         newbranchmap.put(s+"", branchmap.get(s));
     }
-	
 }
 
 
@@ -322,9 +321,19 @@ var disable = '<%=isdisabel %>';
              
          <% }%>
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;           
-
-     型号:           
-             
+    类别:
+    <select>
+    
+    <% 
+    if(categorylist != null){
+    	for(int i=0;i<categorylist.size();i++){
+            Category category = categorylist.get(i); 
+     %> 
+     <option value="<%=category.getId()%>"><%=category.getName() %></option>
+    <%}
+    } %>
+    </select>
+     型号:                 
   <input type="text" name="ordertype0"  id="ordertype0"   class="cba" <%=isdisabel %>/>    
   开始时间:<input class="date" type="text" name="saledateStart"  id="saledateStart"  readonly="readonly" ></input>
      

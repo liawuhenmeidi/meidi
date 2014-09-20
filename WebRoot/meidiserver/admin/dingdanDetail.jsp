@@ -256,20 +256,20 @@ function checkedd(){
        <%  
 		String tdcol = " bgcolor=\"red\"" ; 
        
-	    // String pcategory = "";
+	     String pcategory = "";
 	     String scategory = "";
-	    // String ptype = "";
+	     String ptype = "";
 	     String stype = "";
-	     //String pcountt = "";
+	     String pcountt = "";
 	     String scountt = "";
 	     List<OrderProduct> lists = OrPMap.get(o.getId());
 	     if(lists != null ){
 		     for(int g = 0 ;g<lists.size();g++){
 		    	 OrderProduct op = lists.get(g);
 		    	 if(op.getStatues() == 1 ){
-		    		// pcategory =  categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-			         //pcountt += op.getCount() +"</p>";
-			         //ptype += op.getSaleType()==null ||op.getSaleType() == "null" ? "":op.getSaleType() +"</p>";
+		    		 pcategory =  categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
+			         pcountt += op.getCount() +"</p>";
+			         ptype += op.getSaleType()==null ||op.getSaleType() == "null" ? "":op.getSaleType() +"</p>";
 		    	 }else {
 		    		 scategory += categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
 			         scountt += op.getCount() +"</p>";
@@ -392,6 +392,26 @@ function checkedd(){
 			<td align="center">送货名称</td>
 			<td align="center"><%=scategory%></td>
 			</tr>
+		<tr class="asc">
+		    <td align="center">票面型号</td> 
+			<td align="center">
+			<% if(UserManager.checkPermissions(user, Group.dealSend) ){
+	        	  %> 
+	        	 <input type="text" name="dingmatype" id ="dingmatype"  value="<%=ptype%>"  style="width:90% "></input>
+			   
+			   <% }else {      
+			   %>    
+			     <%=ptype%>
+			   <%
+			   } 
+			   %>
+			
+			</td> 
+			<td align="center">票面数量</td>
+			 
+			<td align="center"><%=pcountt%></td> 
+		
+		</tr>	
 		<tr  class="asc">
 			<td align="center">送货型号</td> 
 			<td align="center"><%=stype%></td> 

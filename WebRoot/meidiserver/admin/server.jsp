@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*,orderproduct.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;" pageEncoding="utf-8"%>
 <%
 
 request.setCharacterEncoding("utf-8");
@@ -175,6 +175,133 @@ if("peidan".equals(method)){
 	response.getWriter().write(str);   
 	response.getWriter().flush(); 
 	response.getWriter().close(); //inventory
+}else if("inventoryall".equals(method)){ 
+	String str = "";  
+	String branch = request.getParameter("branch"); 
+	String category = request.getParameter("category"); 
+ 
+	List<InventoryBranch> list = InventoryBranchManager.getCategoryid(branch, category); 
+	
+	if(StringUtill.isNull(category)){
+	    Map<Integer,InventoryAll> map  = new HashMap<Integer,InventoryAll>();  
+		 
+	    for(int i=0;i<list.size();i++){ 
+	    	InventoryBranch inb = list.get(i);
+	    	int categoryid = inb.getInventoryid();
+	    	InventoryAll listp= map.get(categoryid);  
+	    	if(listp == null){
+	    		listp = new InventoryAll();
+	    		Category c = CategoryManager.getCategory(categoryid+"");
+	    		listp.setCategoryid(c.getId());  
+	    		listp.setCateoryName(c.getName());  
+	    		listp.setPapercount(inb.getPapercount()); 
+	    		listp.setRealcount(inb.getRealcount()); 
+	    		map.put(categoryid, listp);
+	    	}else {
+	    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
+	    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
+	    	}
+	
+	    }
+		 
+		Collection<InventoryAll> c = map.values();
+		str = StringUtill.GetJson(c);
+	}else if(!StringUtill.isNull(category)){
+        Map<String,InventoryAll> map  = new HashMap<String,InventoryAll>();   
+		
+	    for(int i=0;i<list.size();i++){ 
+	    	InventoryBranch inb = list.get(i);
+	    	int categoryid = inb.getInventoryid();
+	    	String type = inb.getType();
+	    	InventoryAll listp= map.get(type);  
+	    	if(listp == null){
+	    		listp = new InventoryAll();  
+	    		Category c = CategoryManager.getCategory(categoryid+"");
+	    		listp.setCategoryid(c.getId());
+	    	    listp.setType(type); 
+	    		listp.setCateoryName(c.getName());  
+	    		listp.setPapercount(inb.getPapercount()); 
+	    		listp.setRealcount(inb.getRealcount()); 
+	    		map.put(type, listp);
+	    	}else {
+	    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
+	    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
+	    	}
+	    }
+	    Collection<InventoryAll> c = map.values();
+		str = StringUtill.GetJson(c);
+	}     
+	System.out.println(str+""); 
+	response.getWriter().write(str);   
+	response.getWriter().flush(); 
+	response.getWriter().close(); //inventory
+}else if("inventorydis".equals(method)){ 
+	String str = "";  
+	String branch = request.getParameter("branch"); 
+	String category = request.getParameter("category"); 
+    String type = request.getParameter("type");
+    if(StringUtill.isNull(type)){ 
+		List<InventoryBranch> list = InventoryBranchManager.getCategoryid(branch, category); 
+	    Map<String,InventoryAll> map  = new HashMap<String,InventoryAll>();   
+			
+		    for(int i=0;i<list.size();i++){ 
+		    	InventoryBranch inb = list.get(i);
+		    	int categoryid = inb.getInventoryid();
+		    	int branchid = inb.getBranchid();
+		    	InventoryAll listp= map.get(branchid+"");    
+		    	if(listp == null){ 
+		    		listp = new InventoryAll();   
+		    		Category c = CategoryManager.getCategory(categoryid+"");
+		    		listp.setCategoryid(c.getId());
+		    		listp.setCateoryName(c.getName());
+		    		listp.setBranchid(branchid); 
+		    		listp.setPapercount(inb.getPapercount()); 
+		    		listp.setRealcount(inb.getRealcount()); 
+		    		map.put(branchid+"", listp);
+		    	}else {       
+		    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
+		    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
+		    	}
+		  
+		    Collection<InventoryAll> c = map.values();
+			str = StringUtill.GetJson(c);
+		}   
+     }else {
+    	List<InventoryBranch> list = InventoryBranchManager.getCategory(branch, type); 
+ 	    Map<String,InventoryAll> map  = new HashMap<String,InventoryAll>();   
+ 			 
+ 		    for(int i=0;i<list.size();i++){ 
+ 		    	InventoryBranch inb = list.get(i); 
+ 		    	int categoryid = inb.getInventoryid();
+ 		    	int branchid = inb.getBranchid();
+ 		    	InventoryAll listp= map.get(type);     
+ 		    	if(listp == null){ 
+ 		    		listp = new InventoryAll();   
+ 		    		Category c = CategoryManager.getCategory(categoryid+"");
+ 		    		listp.setCategoryid(c.getId());
+ 		    		listp.setCateoryName(c.getName());
+ 		    		listp.setType(inb.getType());
+ 		    		listp.setBranchid(branchid);    
+ 		    		listp.setPapercount(inb.getPapercount()); 
+ 		    		listp.setRealcount(inb.getRealcount()); 
+ 		    		map.put(type, listp);
+ 		    	}else {       
+ 		    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
+ 		    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
+ 		    	}
+ 		  
+ 		    Collection<InventoryAll> c = map.values();
+ 			str = StringUtill.GetJson(c);
+ 		}    
+    	 
+    	 
+    	 
+    	 
+     }	    
+	System.out.println(str+""); 
+	response.getWriter().write(str);   
+	response.getWriter().flush(); 
+	response.getWriter().close(); //inventory
 }else if("inventorydetail".equals(method)){  
 
 	String ctype = request.getParameter("ctype"); 
@@ -184,7 +311,7 @@ if("peidan".equals(method)){
 		time = "";
 	}
 	List<InventoryBranchMessage > list = InventoryBranchMessageManager.getCategory(ctype,branchid,time);  
-	 
+	  
 	String str = StringUtill.GetJson(list);
 	response.getWriter().write(str);   
 	response.getWriter().flush(); 
@@ -206,8 +333,10 @@ if("peidan".equals(method)){
 		String POS = request.getParameter("pos");
 		String sailId = request.getParameter("sailid"); 
 		String check = request.getParameter("check");
-		String saledate = request.getParameter("saledate"); 
-		statues = OrderManager.updateMessage(phone1,andate,locations,POS,sailId,check,oid,remark,saledate); 
+		String saledate = request.getParameter("saledate");
+		String saleType = request.getParameter("dingmatype");
+		
+		statues = OrderManager.updateMessage(phone1,andate,locations,POS,sailId,check,oid,remark,saledate) ; 
 	}else {  
 		statues = OrderManager.updateMessage(phone1,andate,locations,oid,remark);  
 	} 

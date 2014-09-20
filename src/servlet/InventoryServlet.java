@@ -89,19 +89,24 @@ public class InventoryServlet extends HttpServlet {
 		String method = request.getParameter("method");
 		String id = request.getParameter("id");
 		String sql = ""; 
-		  
+		boolean flag =  InventoryManager.check(method,id); 
 		if(method.equals("outbranch")){
 			sql = "update inventory set outstatues = 1 where id = "+ id ;
 		}else if(method.equals("inbranch")){ 
 			sql = "update inventory set instatues = 1 where id = "+ id ;
 		}
 		  
-		Inventory inventory = InventoryManager.getInventoryID(user, Integer.valueOf(id));  
-		 
-		List<String> sqlp = InventoryBranchManager.save(user, inventory);
+		sqls.add(sql); 
 		
-		sqls.add(sql);  
-		sqls.addAll(sqlp);  
+		if(flag){ 
+			Inventory inventory = InventoryManager.getInventoryID(user, Integer.valueOf(id));  
+			 
+			List<String> sqlp = InventoryBranchManager.save(user, inventory);
+			
+			 
+			sqls.addAll(sqlp);
+		}
+		  
 		
 		Connection conn = DB.getConn();   
 		   
@@ -204,10 +209,6 @@ public class InventoryServlet extends HttpServlet {
 		}
 	}  
 
-	
-    private void save(HttpServletRequest request, HttpServletResponse response) throws IOException{
-    	
-    }
     
     
 	/**

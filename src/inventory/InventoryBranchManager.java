@@ -65,7 +65,41 @@ public class InventoryBranchManager {
 		logger.info(categorys.size());
 		return categorys;
 	}
-	   
+	 
+	
+public static List<InventoryBranch> getCategoryid(String branch , String categoryid) {  
+		
+		List<InventoryBranch> categorys = new ArrayList<InventoryBranch>();
+		Connection conn = DB.getConn();
+		String sql = ""; 
+		if(!StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
+			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and branchid in ("+branch+")  and branchid != 251";  
+		}else if(!StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
+			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and branchid != 251 ";  
+		}else if(StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
+			sql = "select * from mdinventorybranch where  branchid in ("+branch+") and branchid != 251";  
+		}else if(StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
+			sql = "select * from mdinventorybranch where 1= 1 and branchid != 251";    
+		} 
+	logger.info(sql);	
+		Statement stmt = DB.getStatement(conn);
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {   
+			while (rs.next()) {
+				InventoryBranch u = getCategoryFromRs(rs);
+				categorys.add(u);
+			}
+		} catch (SQLException e) {
+			logger.error(e);
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		} 
+		logger.info(categorys.size());
+		return categorys;
+	}
+
 	/*public static List<String> save(User user,Inventory inventory) {
 	     List<String> sqls = new ArrayList<String>(); 
 	     Map<Integer,Branch> branchmap = BranchManager.getNameMap();
@@ -145,6 +179,7 @@ public class InventoryBranchManager {
 	
 	
 	public static List<String> save(User user,Inventory inventory) {
+		
 	     List<String> sqls = new ArrayList<String>(); 
 	     Map<Integer,Branch> branchmap = BranchManager.getNameMap();
          int inbranchid = -1; 
@@ -164,24 +199,26 @@ public class InventoryBranchManager {
 		 List<InventoryMessage> orders = inventory.getInventory() ;
 		    
 			 for(int i=0;i<orders.size();i++){ 
-               String sql = "";
-               String sql1 = "";  
+               String insql = "";
+               String insql1 = "";
+               String outsql = "";
+               String outsql1 = "";  
                
                InventoryMessage order = orders.get(i);
                
 				if(getInventoryID(user,inbranchid,order.getProductId()) == null){
 
-						sql = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
+						insql = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
 		                         "  values ( null,"+order.getCategoryId()+", '"+order.getProductId()+"', '"+order.getCount()+"', '"+order.getCount()+"',"+inbranchid+")";
 					
-						sql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
+						insql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
 		                        "  values ( null, '"+inbranchid+"', '"+inventory.getId()+"','"+time+"','"+order.getProductId()+"',"+order.getCount()+","+1+","+order.getCount()+","+order.getCount()+")";    
 
 				}else { 
 					 
-						sql = "update mdinventorybranch set realcount =  ((mdinventorybranch.realcount)*1 + "+ order.getCount() + ")*1 , papercount =  ((mdinventorybranch.papercount)*1 + "+ order.getCount() + ")*1  where  branchid = " +inbranchid + " and  type = '"+order.getProductId()+"'"; 
+						insql = "update mdinventorybranch set realcount =  ((mdinventorybranch.realcount)*1 + "+ order.getCount() + ")*1 , papercount =  ((mdinventorybranch.papercount)*1 + "+ order.getCount() + ")*1  where  branchid = " +inbranchid + " and  type = '"+order.getProductId()+"'"; 
 					
-						sql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +     
+						insql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +     
 			                        "  values ( null, '"+inbranchid+"', '"+inventory.getId()+"','"+time+"','"+order.getProductId()+"',"+order.getCount()+","+1+",(select realcount from mdinventorybranch where branchid = " +inbranchid + " and  type = '"+order.getProductId()+"')*1,(select papercount from mdinventorybranch where branchid = " +inbranchid + " and  type = '"+order.getProductId()+"')*1)"; 
 					
 	     
@@ -191,26 +228,28 @@ public class InventoryBranchManager {
 					
 					
 					
-						sql = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
+						outsql = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
 		                         "  values ( null,"+order.getCategoryId()+",'"+order.getProductId()+"', '-"+order.getCount()+"', '-"+order.getCount()+"',"+outbranchid+")";
 					   
-						sql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
+						outsql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
 		                        "  values ( null, '"+outbranchid+"', '"+inventory.getId()+"','"+time+"','"+order.getProductId()+"',"+order.getCount()+","+0+",'-"+order.getCount()+"','-"+order.getCount()+"')";    
 					
 				}else { 
-					 
+					   
 					
-						sql = "update mdinventorybranch set realcount =  ((mdinventorybranch.realcount)*1 - "+ order.getCount() + ")*1  , papercount =  ((mdinventorybranch.papercount)*1 + "+ order.getCount() + ")*1  where  branchid = " +outbranchid + " and  type = '"+order.getProductId()+"'"; 
-						sql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +       
+						outsql = "update mdinventorybranch set realcount =  ((mdinventorybranch.realcount)*1 - "+ order.getCount() + ")*1  , papercount =  ((mdinventorybranch.papercount)*1 - "+ order.getCount() + ")*1  where  branchid = " +outbranchid + " and  type = '"+order.getProductId()+"'"; 
+						outsql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +       
 		                        "  values ( null, '"+outbranchid+"', '"+inventory.getId()+"','"+time+"','"+order.getProductId()+"',"+order.getCount()+","+0+",(select realcount from mdinventorybranch where branchid = " +outbranchid + " and  type = '"+order.getProductId()+"')*1,(select papercount from mdinventorybranch where branchid = " +outbranchid + " and  type = '"+order.getProductId()+"')*1)"; 
 				  
 	     
 				}
 
-				sqls.add(sql); 
-				sqls.add(sql1); 
-				logger.info(sql); 
-				logger.info(sql1);  
+				sqls.add(insql); 
+				sqls.add(insql1);
+				sqls.add(outsql); 
+				sqls.add(outsql1);   
+				logger.info(insql+"%%"+outsql); 
+				logger.info(insql1+"%%"+outsql1);  
 			} 
 			 return sqls; 
 	   } 

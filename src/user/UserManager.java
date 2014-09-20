@@ -201,10 +201,6 @@ logger.info(Permissions);
 	// 验证职工是否有某种权限
 		
 	public static boolean checkPermissions(User user , int permissions){
-		
-		
-		
-		
 		if(Group.tuihuo == permissions){
 			permissions = Group.send;
 		   }  

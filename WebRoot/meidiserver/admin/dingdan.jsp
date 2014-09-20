@@ -454,9 +454,9 @@ function adddetail(src){
 			<td align="center">验证码(联保单)</td>
 			<td align="center">顾客信息</td>
 			<td align="center">送货名称</td>
-			<td align="center" style="width:150px;">送货型号</td> 
-			 
-			<td align="center" style="width:50px;">送货数量</td>
+			<td align="center" >送货型号</td> 
+			   
+			<td align="center" >送货数量</td>
 			<td align="center">赠品</td>
 			<td align="center">赠品数量</td>
 			<td align="center">赠品状态</td>
@@ -487,7 +487,7 @@ function adddetail(src){
     	}
   %>  
      
-    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)">  
+    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)">   
 		<!--  <td align="center"><input type="checkbox" value="1" name="userid[]"/></td> -->
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
 		<td align="center"><%=o.getBranch()%></td> 
