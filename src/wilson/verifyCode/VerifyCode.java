@@ -38,7 +38,7 @@ public class VerifyCode {
 //                }
 //            }
             
-            CloseableHttpResponse response2 = HttpClientTest.getHttpclient().execute(verifyCodePost);
+            CloseableHttpResponse response2 = MainClient.getHttpclient().execute(verifyCodePost);
             
             try {
 

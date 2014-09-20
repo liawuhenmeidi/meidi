@@ -44,35 +44,35 @@ public class SelectDeliverInform {
 //                }
 //            }
             
-            CloseableHttpResponse response2 = HttpClientTest.getHttpclient().execute(selectPost);
+            CloseableHttpResponse response2 = MainClient.getHttpclient().execute(selectPost);
             
             try {
 
                 HttpEntity entity2 = response2.getEntity();
-                System.out.println("²éÑ¯ ÏúÊÛµ¥ºÅ = " + saleOrderNo);
+                System.out.println("æŸ¥è¯¢ é”€å”®å•å· = " + saleOrderNo);
                 System.out.println("selcet form  get: " + response2.getStatusLine());
                // System.out.println(response2.getHeaders("location")[0].toString());
                 if (entity2 != null) {  
                     System.out.println("--------------------------------------");  
                     String responseContent = EntityUtils.toString(entity2, "UTF-8");                        
                     
-                    //½ØÈ¡ĞÅÏ¢ÕæÀÛ..
+                    //æˆªå–ä¿¡æ¯çœŸç´¯..
                     responseContent = responseContent.substring(responseContent.indexOf("tbody"), responseContent.indexOf("/tbody"));
                     int location = responseContent.indexOf("hidreturnnoticedetailid\" value=\"") + "hidreturnnoticedetailid\" value=\"".length();
                     responseContent = responseContent.substring(location);
                    
-                    //È¡µÃHidreturnnoticedetailid
+                    //å–å¾—Hidreturnnoticedetailid
                     this.setHidreturnnoticedetailid(responseContent.substring(0,responseContent.indexOf("\""))); 
                     
                     
-                    //È¡²»µ½,¾ÍÊÇÃ»ÄÃµ½Êı¾İ,ÍË³ö
+                    //å–ä¸åˆ°,å°±æ˜¯æ²¡æ‹¿åˆ°æ•°æ®,é€€å‡º
                     try{
                     	int t = Integer.parseInt(this.getHidreturnnoticedetailid());
                     }catch(Exception e){
                     	return false;
                     }
                     
-                    //Çå¿ÕÏÂÔàÊı¾İ
+                    //æ¸…ç©ºä¸‹è„æ•°æ®
                     searchResult = "";
                     for(int i = 1 ; i <= 10 ; i ++){
                     	location = responseContent.indexOf("<td class=\"detail-content-td\">") + "<td class=\"detail-content-td\">".length();      
@@ -80,33 +80,33 @@ public class SelectDeliverInform {
                         searchResult += responseContent.substring(0,responseContent.indexOf("</td>")) + ",";
                     }
                     
-                    //µÚÊ®Ò»Ïî,¶©µ¥×´Ì¬(salestatus¸ÉÈÅ)
+                    //ç¬¬åä¸€é¡¹,è®¢å•çŠ¶æ€(salestatuså¹²æ‰°)
                     location = responseContent.indexOf("<td class=\"detail-content-td\">") + "<td class=\"detail-content-td\">".length();
                     responseContent = responseContent.substring(location);
                     searchResult += responseContent.substring(0,responseContent.indexOf("<input")) + ",";
                     
-                    //µÚÊ®¶şÏî,·¢»õ×÷Òµ
+                    //ç¬¬åäºŒé¡¹,å‘è´§ä½œä¸š
                     location = responseContent.indexOf("<td class=\"detail-content-td\">") + "<td class=\"detail-content-td\">".length();
                     responseContent = responseContent.substring(location);
                     searchResult += responseContent.substring(0,responseContent.indexOf("<input")) + ",";
                     
-                    //µÚÊ®ÈıÏî,¿ìµİÁ´½Ó
+                    //ç¬¬åä¸‰é¡¹,å¿«é€’é“¾æ¥
                     location = responseContent.indexOf("<td class=\"detail-content-td\">") + "<td class=\"detail-content-td\">".length();      
                     responseContent = responseContent.substring(location);
                     searchResult += responseContent.substring(0,responseContent.indexOf("</td>")) + ",";
                     
-                    //µÚÊ®ËÄÏî,¹Ë¿ÍÊÕ»õÊ±¼ä
+                    //ç¬¬åå››é¡¹,é¡¾å®¢æ”¶è´§æ—¶é—´
                     location = responseContent.indexOf("<td class=\"detail-content-td\" id=\"receiptdate\">") + "<td class=\"detail-content-td\" id=\"receiptdate\">".length();      
                     responseContent = responseContent.substring(location);
                     searchResult += responseContent.substring(0,responseContent.indexOf("</td>")) + ",";
                     
-                    //µÚÊ®ÎåÏî,ÏúÊÛÇşµÀ
+                    //ç¬¬åäº”é¡¹,é”€å”®æ¸ é“
                     location = responseContent.indexOf("<td class=\"detail-content-td\">") + "<td class=\"detail-content-td\">".length();      
                     responseContent = responseContent.substring(location);
                     searchResult += responseContent.substring(0,responseContent.indexOf("</td>"));
 
                     System.out.println("--------------------------------------"); 
-                    System.out.println("²éÑ¯½á¹û :" + searchResult);
+                    System.out.println("æŸ¥è¯¢ç»“æœ :" + searchResult);
                     System.out.println("Hidreturnnoticedetailid = " + this.getHidreturnnoticedetailid());
                 }  
                 EntityUtils.consume(entity2);

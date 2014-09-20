@@ -17,7 +17,7 @@ import org.apache.http.util.EntityUtils;
 
 public class Login {
 	public boolean login(URI uri,String userName,String password) {  
-    	// 创建默认的httpClient实例.     	
+    	// 鍒涘缓榛樿鐨刪ttpClient瀹炰緥.     	
         try{
         	
         	HttpUriRequest login = RequestBuilder.post()
@@ -26,11 +26,11 @@ public class Login {
             .addParameter("password", password)
             .build();
 	        System.out.println("executing request " + login.getURI());  
-	        CloseableHttpResponse response2 = HttpClientTest.getHttpclient().execute(login);
+	        CloseableHttpResponse response2 = MainClient.getHttpclient().execute(login);
 	        
 	        try {  
 	        	HttpEntity entity = response2.getEntity();
-	        	System.out.println("username :" + userName + "登录");
+	        	System.out.println("username :" + userName + "鐧诲綍");
                 System.out.println("Login form get: " + response2.getStatusLine());
                 if (entity != null) {  
 //                    System.out.println("--------------------------------------");  
@@ -46,8 +46,8 @@ public class Login {
 	            
 	            //cookies
 	            
-                List<Cookie> cookies = HttpClientTest.getCookieStore().getCookies();
-                HttpClientTest.setLoginCookies(cookies);
+                List<Cookie> cookies = MainClient.getCookieStore().getCookies();
+                MainClient.setLoginCookies(cookies);
 //                System.out.println("Post logon cookies:");
 //                if (cookies.isEmpty()) {
 //                    System.out.println("None");
@@ -58,7 +58,7 @@ public class Login {
 //                }
                 
                 
-                //301,302转向
+                //301,302杞悜
                 int statusCode = response2.getStatusLine().getStatusCode();
 	            if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY || 
 	            		statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
