@@ -1,6 +1,6 @@
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.net.URLEncoder"%>
-<%@ page language="java" import="java.util.*,wilson.verifyCode.*" pageEncoding="GBK"%>
+<%@ page language="java" import="java.util.*,wilson.verifyCode.*" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -27,7 +27,7 @@
 		userName = request.getParameter("userName");
 		password = request.getParameter("password");
 		saleOrderNo = request.getParameter("saleOrderNo");	
-		msg = "���ڳ����У���15���Ӻ�������ϵͳ��ˢ��";
+		msg = "正在尝试中，请15分钟后在苏宁系统中刷新";
 		response.sendRedirect(request.getRequestURI() + "?msg=" + URLEncoder.encode(msg));
 		hct.startThis(userName, password, saleOrderNo);
 		return;
@@ -43,18 +43,18 @@
 		saleOrderNo = request.getParameter("saleOrderNo");	
 		
 		if(saleOrderNo == null || saleOrderNo.equals("")){
-			msg = "���۶����Ų���Ϊ��";
+			msg = "销售订单号不能为空";
 			response.sendRedirect(request.getRequestURI() + "?msg=" + URLEncoder.encode(msg));
 			return;
 		}
 		
 		if(!hct.login(userName, password)){
-			msg = "��¼ʧ�ܣ���˶��û���������";
+			msg = "登录失败，请核对用户名，密码";
 			response.sendRedirect(request.getRequestURI() + "?msg=" + URLEncoder.encode(msg));
 			return;
 		}
 		if(!hct.select(saleOrderNo)){
-			msg = "��ѯʧ�ܣ���˶Զ�����";
+			msg = "查询失败，请核对订单号";
 			response.sendRedirect(request.getRequestURI() + "?msg=" + URLEncoder.encode(msg));
 			return;
 		}
@@ -68,7 +68,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>ǿ������ҳ</title>
+    <title>强制消单页</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -94,17 +94,17 @@
     	}
     	%>
     	<tr align="center">
-    		<td>�û���</td>
+    		<td>用户名</td>
     		<td><input type="text" name="userName" value="<%=userName.equals("")?"":userName%>"/></td>
     	</tr>
     	
     	<tr align="center">
-    		<td>����</td>
+    		<td>密码</td>
     		<td><input type="password" name="password" value="<%=password.equals("")?"":password%>"/></td>
     	</tr>
     	
     	<tr>   		
-    		<td>���۶������</td>
+    		<td>销售订单编号</td>
     		<td><input type="text" name="saleOrderNo" value="<%=saleOrderNo.equals("")?"":saleOrderNo%>"/></td>
     	</tr>   
     		
@@ -114,7 +114,7 @@
     	if(requestType == null){ 
     	%>
     	<tr align="center">
-    		<td align="center"><input type="submit" value="��ѯ"/>
+    		<td align="center"><input type="submit" value="查询"/>
     	</tr>
     	<%
     	}
@@ -128,21 +128,21 @@
     <table align="center" border="2px">   
     	<input type="hidden" name="confirm" value="confirm"/>
     	<tr align="center">
-    		<td>���۶������</td>
-    		<td>���۶����к�</td>
-    		<td>������Ʒ����</td>
-    		<td>��Ʒ����</td>
-    		<td>��������</td>
-    		<td>���۶���ʱ��</td>
-    		<td>�˿�Ҫ�󵽻�ʱ��</td>
-    		<td>�˿�����</td>
-    		<td>�˿���ϵ��ʽ</td>
-    		<td>�ͻ���ַ</td>
-    		<td>����״̬</td>
-    		<td>������ҵ</td>
-    		<td>�������</td>
-    		<td>�˿��ջ�ʱ��</td>
-    		<td>��������</td>
+    		<td>销售订单编号</td>
+    		<td>销售订单行号</td>
+    		<td>苏宁商品编码</td>
+    		<td>商品名称</td>
+    		<td>销售数量</td>
+    		<td>销售订单时间</td>
+    		<td>顾客要求到货时间</td>
+    		<td>顾客姓名</td>
+    		<td>顾客联系方式</td>
+    		<td>送货地址</td>
+    		<td>订单状态</td>
+    		<td>发货作业</td>
+    		<td>快递链接</td>
+    		<td>顾客收货时间</td>
+    		<td>销售渠道</td>
     	</tr>
     	
     	<tr align="center">
@@ -158,7 +158,7 @@
     	</tr>     		
     	<br/>
     	<tr>
-    		<td colspan="15" align="center"><input type="submit" value="ȷ������"/></td>
+    		<td colspan="15" align="center"><input type="submit" value="确认消单"/></td>
     	</tr>
     	</form>
     </table>

@@ -83,10 +83,10 @@ User user = (User)session.getAttribute("user");
             <h4 >库存管理</h4>
             <div class="list-item none"> 
               <p ><a href="inventory/receipts.jsp" target="contentpage">单据管理</a></p>
-              <p ><a href="inventory/inventoryBranch.jsp" target="contentpage">库存查询</a></p>
+              <p ><a href="inventory/inventory.jsp" target="contentpage">库存查询</a></p>
             </div>
-          </li>
-         <%
+          </li>  
+         <% 
           }
          if(UserManager.checkPermissions(user, Group.juese)){
          %>

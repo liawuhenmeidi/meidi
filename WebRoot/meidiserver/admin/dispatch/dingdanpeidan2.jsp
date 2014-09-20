@@ -8,10 +8,6 @@ int id = user.getId();
 int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
 int opstatues = OrderPrintln.release;   
 
-
-
-
-
 String serchProperty = ""; 
 String pageNum = request.getParameter("page");
 String numb = request.getParameter("numb");
@@ -21,8 +17,8 @@ if(StringUtill.isNull(pageNum)){
 }
 if(StringUtill.isNull(numb)){
 	numb = "100";
-}
-if(StringUtill.isNull(sort)){
+} 
+if(StringUtill.isNull(sort)){ 
 	sort = "id desc"; 
 }
 
@@ -738,9 +734,9 @@ function adddetail(src){
 			if(oppp != null && oppp.getStatues() == 0){
 				int statues = -1;    
 				  
-				if(o.getDeliveryStatues() == 0 ){
+				if(o.getDeliveryStatues() == 0 || o.getDeliveryStatues() == 9 ){
 					if(o.getSendId() == 0){
-						statues = 0; 
+						statues = 0;  
 					}else if(o.getSendId() != 0 ){
 						statues = 2;
 					}

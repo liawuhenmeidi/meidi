@@ -17,7 +17,7 @@ if(StringUtill.isNull(sear)){
 if(!StringUtill.isNull(sort)){
 	session.setAttribute("sort", sort);
 }else {
-	sort = "id"; 
+	sort = "id desc";   
 } 
 
 if(!StringUtill.isNull(numb)){
