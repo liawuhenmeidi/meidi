@@ -266,7 +266,7 @@ if("peidan".equals(method)){
 		    Collection<InventoryAll> c = map.values();
 			str = StringUtill.GetJson(c);
 		}   
-     }else {
+     }else { 
     	List<InventoryBranch> list = InventoryBranchManager.getCategory(branch, type); 
  	    Map<String,InventoryAll> map  = new HashMap<String,InventoryAll>();   
  			 
@@ -274,7 +274,7 @@ if("peidan".equals(method)){
  		    	InventoryBranch inb = list.get(i); 
  		    	int categoryid = inb.getInventoryid();
  		    	int branchid = inb.getBranchid();
- 		    	InventoryAll listp= map.get(type);     
+ 		    	InventoryAll listp= map.get(branchid+"");     
  		    	if(listp == null){ 
  		    		listp = new InventoryAll();   
  		    		Category c = CategoryManager.getCategory(categoryid+"");
@@ -284,8 +284,8 @@ if("peidan".equals(method)){
  		    		listp.setBranchid(branchid);    
  		    		listp.setPapercount(inb.getPapercount()); 
  		    		listp.setRealcount(inb.getRealcount()); 
- 		    		map.put(type, listp);
- 		    	}else {       
+ 		    		map.put(branchid+"", listp);  
+ 		    	}else {        
  		    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
  		    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
  		    	}
