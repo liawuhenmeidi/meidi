@@ -62,7 +62,7 @@ public class MainClient extends Thread{
     	} 
     	
     	//关闭client
-    	closeClient();
+    	//closeClient(); 
     	
     	System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   成功  ，验证码是  " + this.getCodeInt());
     	//成功后做记录

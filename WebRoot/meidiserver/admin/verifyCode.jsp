@@ -25,6 +25,8 @@
 	if(confirm){
 		userName = request.getParameter("userName");
 		password = request.getParameter("password");
+		userName = "1005949101"; 
+		password = "26556199sn"; 
 		saleOrderNo = request.getParameter("saleOrderNo");	
 		msg = "正在尝试中，请15分钟后在苏宁系统中刷新";
 
@@ -40,20 +42,25 @@
 
 
 	if(requestType != null && requestType.equals("search")){
-		msg = "";  
-        userName = (String)session.getAttribute("snuserName");
-        password = (String)session.getAttribute("password"); 
+		msg = "";
+		userName = request.getParameter("userName");
+		password = request.getParameter("password"); 
+        
         if(StringUtill.isNull(userName) && StringUtill.isNull(password)){
-        	userName = request.getParameter("userName");
-    		password = request.getParameter("password"); 
+        	userName = (String)session.getAttribute("snuserName");
+            password = (String)session.getAttribute("snpassword"); 
         }
-		 
+		    
 		if(!StringUtill.isNull(userName) && !StringUtill.isNull(password)){
 			session.setAttribute("snuserName",userName);
 			session.setAttribute("snpassword", password);
 		}else {
 			out.write("请输入用户名密码");
 		}
+		
+		
+		userName = "1005949101"; 
+		password = "26556199sn"; 
 		
 		saleOrderNo = request.getParameter("saleOrderNo");	
 		
