@@ -13,7 +13,8 @@ public class VerifyCodeManager {
 		sql = "insert into verifycode (saleorderno, verifycode,detail,recordtime) VALUES (?,?,?,?)";	
 		Connection conn = DB.getConn();
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
+		
+		detail = detail.substring(0,detail.length()>240?240:detail.length());
 
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		try {

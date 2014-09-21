@@ -11,7 +11,7 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-public class MainClient extends Thread{
+public class MainClient extends Thread{ 
 	private static List<Cookie> loginCookies;
 	private static BasicCookieStore cookieStore = new BasicCookieStore();
 	private static CloseableHttpClient httpclient = HttpClients.custom()
@@ -112,7 +112,8 @@ public class MainClient extends Thread{
     public boolean login(String userName,String password) throws URISyntaxException{
     	//登录
     	if(true == lg.login(new URI("http://scs.suning.com/sps/portal/showLoginPage.action"),userName,password)){
-    		System.out.println("登录成功");   		
+    		System.out.println("登录成功");  
+    		
 //    		if (null != loginCookies) {
 //    			System.out.println("登录cookies");
 //                for (int i = 0; i < loginCookies.size(); i++) {

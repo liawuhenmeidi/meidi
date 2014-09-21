@@ -1,12 +1,12 @@
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.net.URLEncoder"%>
-<%@ page language="java" import="java.util.*,wilson.verifyCode.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,wilson.verifyCode.*,utill.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-	request.setCharacterEncoding("ISO-8859-1");
-	
+	request.setCharacterEncoding("utf-8");
+	 
 	String msg = "";
 	Boolean confirm = false;
 	String requestType = "";
@@ -14,14 +14,11 @@
 	MainClient mc = new MainClient();
 	
 	String userName = "";
-	String password = "";
+	String password = ""; 
 	String saleOrderNo = "";		
 	
 	requestType = request.getParameter("requestType");
-	if(null != request.getParameter("msg")){
-		msg = new String(request.getParameter("msg").getBytes("ISO-8859-1"),"GBK");
-	}
-	
+
 	confirm = (request.getParameter("confirm") != null && request.getParameter("confirm").equals("confirm"))?true:false;
 
 	
@@ -42,12 +39,22 @@
 	}
 
 
-	
 	if(requestType != null && requestType.equals("search")){
-		msg = "";
-
-		userName = request.getParameter("userName");
-		password = request.getParameter("password");
+		msg = "";  
+        userName = (String)session.getAttribute("snuserName");
+        password = (String)session.getAttribute("password"); 
+        if(StringUtill.isNull(userName) && StringUtill.isNull(password)){
+        	userName = request.getParameter("userName");
+    		password = request.getParameter("password"); 
+        }
+		 
+		if(!StringUtill.isNull(userName) && !StringUtill.isNull(password)){
+			session.setAttribute("snuserName",userName);
+			session.setAttribute("snpassword", password);
+		}else {
+			out.write("请输入用户名密码");
+		}
+		
 		saleOrderNo = request.getParameter("saleOrderNo");	
 		
 		if(saleOrderNo == null || saleOrderNo.equals("")){
@@ -171,9 +178,9 @@
     	</form>
     </table>
     <%
-    }
+    }  
     %>
-    
+      
     <br>
   </form>
   </body>
