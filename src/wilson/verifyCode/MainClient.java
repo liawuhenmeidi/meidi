@@ -22,6 +22,15 @@ public class MainClient extends Thread{
 	private Login lg = new Login();
 	private VerifyCodeManager vcm = new VerifyCodeManager();
 	private int codeInt = 1;
+	private int codeNow = 1;
+	public int getCodeNow() {
+		return codeNow;
+	}
+
+	public void setCodeNow(int codeNow) {
+		this.codeNow = codeNow;
+	}
+
 	private String userName = "";
 	private String password = "";
 	private String saleOrderNo = "";
@@ -49,12 +58,12 @@ public class MainClient extends Thread{
     		return "查询失败";
     	} 
     	
-    	if(!tryCode(sdi.getHidreturnnoticedetailid(),saleOrderNo)){
+    	if(!tryCode(sdi.getHidreturnnoticedetailid(),saleOrderNo,1)){
     		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   失败 ，验证码测试到" + this.getCodeInt());
     		Thread.currentThread();
 			Thread.sleep(10000);
     		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   重试中");
-    		if(login(userName, password) && select(saleOrderNo) && tryCode(sdi.getHidreturnnoticedetailid(),saleOrderNo)){
+    		if(login(userName, password) && select(saleOrderNo) && tryCode(sdi.getHidreturnnoticedetailid(),saleOrderNo,this.getCodeNow())){
     			//continue;
     		}else{
     			return "破解失败";
@@ -85,11 +94,11 @@ public class MainClient extends Thread{
     	return false;
     }
     
-    private boolean tryCode(String hidReturnNoticeDetailId,String saleOrderNo) {
+    private boolean tryCode(String hidReturnNoticeDetailId,String saleOrderNo,int startCode) {
     	//尝试验证
     	try{
     		System.out.println("开始验证时间 =" + new Date());
-        	int verifycodeResult = verifycode(1,hidReturnNoticeDetailId,saleOrderNo);
+        	int verifycodeResult = verifycode(startCode,hidReturnNoticeDetailId,saleOrderNo);
 
     		if(verifycodeResult == 0){
         		System.out.println("验证完成，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
@@ -160,8 +169,12 @@ public class MainClient extends Thread{
             	while(codeStr.length() < 4){
             		codeStr = "0" + codeStr;
             	}
-    		}else{
+    		}else if (resultcode == 0){
             	System.out.println("saleOrderNo = " + saleOrderNo + " other result, result = " + resultcode);
+    			break;
+    		}else{
+    			this.setCodeNow(codeInt - 1);
+    			System.out.println("saleOrderNo = " + saleOrderNo + " other result, result = " + resultcode);
     			break;
     		}
     	}
