@@ -40,6 +40,10 @@ public class MatchOrder {
 		List <Order> ordersFromDB = new ArrayList<Order>();
 		
 		ordersFromDB = OrderManager.getOrderlist(new User());
+		
+		
+		//对照好了消除
+		//int statues = OrderManager.updateStatues(user,"orderCharge",Order.query, id); 
 		/**
 		 * User user = (User)session.getAttribute("user");
 		 * 
