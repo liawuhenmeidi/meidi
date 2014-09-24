@@ -12,6 +12,8 @@
 	String requestType = "";
 	String[] searchResult = {};
 	MainClient mc = new MainClient();
+	VerifyCodeManager vcm = new VerifyCodeManager();
+	String resultString = vcm.getVerifyCode();
 	
 	String userName = "";
 	String password = ""; 
@@ -190,5 +192,10 @@
       
     <br>
   </form>
+  <table>
+  	<tr>
+  		<td><%=resultString %></td>
+  	</tr>
+  </table>
   </body>
 </html>

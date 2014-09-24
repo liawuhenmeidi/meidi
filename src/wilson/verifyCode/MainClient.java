@@ -47,6 +47,7 @@ public class MainClient extends Thread{
     public String startThis(String userName,String password,String saleOrderNo) throws Exception {
     	
     	System.out.println("尝试中，用户名 = " + userName + "  销售单号 = " + saleOrderNo );
+    	vcm.saveVerifyCode(saleOrderNo,this.getCodeInt(),this.getSdi().getSearchResult(),1);
     	
     	if(!login(userName, password)){
     		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   失败 ，验证码测试到" + this.getCodeInt());
@@ -75,7 +76,7 @@ public class MainClient extends Thread{
     	
     	System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   成功  ，验证码是  " + this.getCodeInt());
     	//成功后做记录
-    	if(vcm.saveVerifyCode(saleOrderNo,this.getCodeInt(),this.getSdi().getSearchResult())){
+    	if(vcm.updateVerifyCode(saleOrderNo,this.getCodeInt(),this.getSdi().getSearchResult(),0)){
     		System.out.println("销售订单号=" + saleOrderNo + "验证码=" + this.getCodeInt() + " 保存成功");
     	}else{
     		System.out.println("销售订单号=" + saleOrderNo + "验证码=" + this.getCodeInt() + " 保存失败");
