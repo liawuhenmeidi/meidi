@@ -13,7 +13,7 @@
 	String[] searchResult = {};
 	MainClient mc = new MainClient();
 	VerifyCodeManager vcm = new VerifyCodeManager();
-	String resultString = vcm.getVerifyCode();
+	String resultString = vcm.getDoingVerifyCode();
 	
 	String userName = "";
 	String password = ""; 
@@ -193,9 +193,15 @@
     <br>
   </form>
   <table>
+  
+  	<tr>
+  		<td>正在消单中的单据有:</td>
+  	</tr>
+  	
   	<tr>
   		<td><%=resultString %></td>
   	</tr>
+  	
   </table>
   </body>
 </html>

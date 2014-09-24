@@ -46,12 +46,13 @@ public class VerifyCodeManager {
 		String sql = ""; 
 		
 		//sql = "insert into verifycode (saleorderno, verifycode,detail,recordtime) VALUES (?,?,?,?)";	
-		sql = "update verifycode set statues = ? where saleorderno = " + saleOrderNo;
+		sql = "update verifycode set statues = ? ,verifycode = ? where saleorderno = " + saleOrderNo;
 		Connection conn = DB.getConn();
 
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		try {
 			pstmt.setInt(1,statues);
+			pstmt.setString(2, String.valueOf(codeInt));
 			int count = pstmt.executeUpdate();
 			if(count > 0){
 				flag = true ;
@@ -65,16 +66,16 @@ public class VerifyCodeManager {
 		return flag ;  
 	}
 	
-	public String getVerifyCode(){
+	public String getDoingVerifyCode(){
 		String result = "";
 		Connection conn = DB.getConn(); 
-		String sql = "select * from verifycode order by recordtime desc limit 1,10";
+		String sql = "select * from verifycode where statues = 1";
 
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		try {     
 			while (rs.next()) {
-				result += rs.getString("saleorderno") + "," +  rs.getInt("statues") + ";";
+				result += rs.getString("saleorderno") + ",";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
