@@ -59,9 +59,9 @@ User user = (User)session.getAttribute("user");
                <p ><a href="dingdancallback.jsp"  target="contentpage">客服未回访页</a></p>
               <p ><a href="javascript:void(0);" target="contentpage">调账确认页</a></p>    
             <!--   <p ><a href="dingdanDingma.jsp" target="contentpage">调账确认页</a></p>  -->
-              <p ><a href="dingdanTuihuo.jsp" target="contentpage">退货订单</a></p> 
-              <p ><a href="updateExcel.jsp" target="contentpage">Excel上传页</a></p>
+              <p ><a href="dingdanTuihuo.jsp" target="contentpage">退货订单</a></p>               
               <p ><a href="./verifyCode.jsp" target="contentpage">强制消单页</a></p>
+              <p ><a href="updateExcel.jsp" target="contentpage">苏宁Excel上传页</a></p>
             </div>  
           </li> 
           

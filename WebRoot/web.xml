@@ -109,21 +109,21 @@
 	    </servlet-mapping>     
 	          
 	     <servlet>  
-	        <servlet-name>FileUpload</servlet-name>  
+	        <servlet-name>SuningDataUpload</servlet-name>  
 	        <servlet-class>  
-	            servlet.FileUpload  
+	            wilson.upload.SuningDataUpload  
 	        </servlet-class>
 	        <init-param>
 			<param-name>uploadPath</param-name>
 			<param-value>
-				../../others
+				data/xls
 			</param-value>
 		</init-param>  
-   </servlet>  
+   		</servlet>  
            
 	    <servlet-mapping>    
-	        <servlet-name>FileUpload</servlet-name>  
- 	        <url-pattern>/meidiserver/FileUpload</url-pattern>   
+	        <servlet-name>SuningDataUpload</servlet-name>  
+ 	        <url-pattern>/meidiserver/SuningDataUpload</url-pattern>   
 	    </servlet-mapping>      
 	          
 	          
