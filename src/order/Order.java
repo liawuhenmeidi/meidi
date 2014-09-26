@@ -4,7 +4,6 @@ import gift.Gift;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
@@ -99,6 +98,8 @@ public class Order {
   
   private int statues1 ; 
   private int statues2 ;
+  private int statues3 ;
+  private int statues4 ;  //是否给安装公司结款 
   private int printSatuesP;
   
   private int statuesPaigongQuery;  // 派工是否收到代理公司款项
@@ -410,8 +411,7 @@ public int getStatues4() {
 public void setStatues4(int statues4) {
 	this.statues4 = statues4;
 }
-private int statues3 ;
-  private int statues4 ;
+
   
   
   public int getDealsendId() {

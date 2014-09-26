@@ -19,19 +19,19 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import branch.Branch;
-import branch.BranchManager;
-
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
-import orderproduct.OrderProduct;
+
 import orderproduct.OrderProductManager;
- 
 import database.DB;
 import user.User;
 import user.UserManager;
 import utill.DBUtill;
 import utill.TimeUtill;
+
+
+
+
 
 public class OrderManager {
 	 protected static Log logger = LogFactory.getLog(OrderManager.class);
