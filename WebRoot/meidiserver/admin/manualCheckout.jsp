@@ -18,7 +18,6 @@
 	List <Order> unCheckedDBOrders = MatchOrderManager.getUnCheckedDBOrders();
 	//从上传列表取得需要匹配的Order
 	List <UploadOrder> unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders();
-	Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 	
 	
 %>
@@ -77,17 +76,8 @@
 		</tr> 
 		
 		<%
-		
-		String sendType = "";
-		String sendCount = "";
 			for(int i = 0 ;;){
 				if(unCheckedDBOrders != null && unCheckedDBOrders.size() > 0 && i< unCheckedDBOrders.size()){
-					List<OrderProduct> lists = OrPMap.get(unCheckedDBOrders.get(i).getId());
-					for(int g = 0 ;g<lists.size();g++){
-						OrderProduct op = lists.get(g);
-						sendType += (op.getSendType() == null || op.getSendType().equals("null"))?"":op.getSendType();
-						sendCount += op.getCount();
-					}
 		%>	
 					<tr>  
 					<td align="center"><input name="dbside" type="radio" value="<%=unCheckedDBOrders.get(i).getId() %>"/></td>
@@ -95,11 +85,9 @@
 					<td align="center"><%= unCheckedDBOrders.get(i).getPos() %></td>
 					<td align="center"><%= unCheckedDBOrders.get(i).getSaleTime() %></td>
 					<td align="center"><%= unCheckedDBOrders.get(i).getOdate() %></td> 
-					<td align="center"><%= sendType %></td> 
-					<td align="center"><%= sendCount %></td> 
+					<td align="center"><%= unCheckedDBOrders.get(i).getSendType() %></td> 
+					<td align="center"><%= unCheckedDBOrders.get(i).getSendCount() %></td> 
 		<%
-					sendType = "";
-					sendCount = "";
 				}else{
 		%>
 					<tr>

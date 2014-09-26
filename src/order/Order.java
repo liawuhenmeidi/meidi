@@ -4,8 +4,10 @@ import gift.Gift;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import orderproduct.OrderProduct;
+import orderproduct.OrderProductManager;
  
 public class Order {
   
@@ -146,6 +148,8 @@ public class Order {
   private int wenyuancallback;
   
   private String imagerUrl ; 
+  
+
   
   public String getImagerUrl() {
 	return imagerUrl;
@@ -610,8 +614,26 @@ public String getTime() {
 public void setTime(String time) {
 	this.otime = time;
 }
+ 
 
+public String getSendType(){
+	String sendType = "";
+	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
+	for(int g = 0 ;g<lists.size();g++){
+		String tempType = lists.get(g).getSendType();
+		sendType += (tempType == null || tempType.equals("null"))?"":tempType;
+	}
+	return sendType;
+}
 
+public String getSendCount(){
+	String sendCount = "";
+	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
+	for(int g = 0 ;g<lists.size();g++){
+		sendCount += lists.get(g).getCount();
+	}
+	return sendCount;
+}
 
   
 }

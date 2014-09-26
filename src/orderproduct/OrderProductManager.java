@@ -23,6 +23,16 @@ import utill.TimeUtill;
 import database.DB;
   
 public class OrderProductManager {
+	
+	public static Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM();
+	
+	public static Map<Integer,List<OrderProduct>> getStaticOrderStatuesM(){
+		if(OrPMap == null){
+			OrPMap = OrderProductManager.getOrderStatuesM();
+		}
+		return OrPMap;
+	}
+	
 	protected static Log logger = LogFactory.getLog(OrderProductManager.class);
 	   public boolean updateOrderStatues(User user, String type ,String oid){
 		   if(user.getUsertype() == 2  || user.getUsertype() == 1){
@@ -108,6 +118,33 @@ public class OrderProductManager {
 				return Orders;
 		 }
 	   
+	   
+	   //author wilsonlee
+	   public static Map<Integer,List<OrderProduct>> getOrderStatuesM(){
+		   return getOrderStatuesM(new User());
+	   }
+	   
+	   //author wilsonlee
+	   public static List<OrderProduct> getOrderStatuesMByOrderID(int orderID){
+		   List<OrderProduct> list = new ArrayList<OrderProduct>();
+		    Connection conn = DB.getConn();
+			Statement stmt = DB.getStatement(conn);
+			String sql = "select * from  mdorderproduct where orderid = " + String.valueOf(orderID);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try { 
+				while (rs.next()) {
+					OrderProduct Order = getOrderStatuesFromRs(rs);
+					list.add(Order);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(stmt);
+				DB.close(rs);
+				DB.close(conn);
+			 }
+			return list;
+	   }
 	   
         public static Map<Integer,List<OrderProduct>> getOrderStatuesM(User user){
 		   
