@@ -62,6 +62,8 @@ User user = (User)session.getAttribute("user");
               <p ><a href="dingdanTuihuo.jsp" target="contentpage">退货订单</a></p>               
               <p ><a href="./verifyCode.jsp" target="contentpage">强制消单页</a></p>
               <p ><a href="updateExcel.jsp" target="contentpage">苏宁Excel上传页</a></p>
+              <p ><a href="autoCheckout.jsp" target="contentpage">自动结款页</a></p>
+              <p ><a href="manualCheckout.jsp" target="contentpage">手动结款页</a></p>
             </div>  
           </li> 
           

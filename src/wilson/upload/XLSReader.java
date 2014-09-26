@@ -34,9 +34,9 @@ public class XLSReader {
 				uo.setSaleTime(sheet0.getCell(3,i).getContents());
 				uo.setDealTime(sheet0.getCell(4,i).getContents());
 				uo.setType(sheet0.getCell(5,i).getContents());
-				uo.setNum(sheet0.getCell(6,i).getContents());
-				uo.setSalePrice(sheet0.getCell(7,i).getContents());
-				uo.setBackPoint(sheet0.getCell(8,i).getContents());
+				uo.setNum(Integer.parseInt(sheet0.getCell(6,i).getContents()));
+				uo.setSalePrice(Double.parseDouble(sheet0.getCell(7,i).getContents()));
+				uo.setBackPoint(Double.parseDouble(sheet0.getCell(8,i).getContents()));
 				uo.setFileName(srcFile.getName());
 				UploadOrders.add(uo);
 				uo = new UploadOrder();

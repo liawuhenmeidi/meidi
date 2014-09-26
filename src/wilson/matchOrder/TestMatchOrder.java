@@ -9,7 +9,7 @@ public class TestMatchOrder {
 		MatchOrder mo = new MatchOrder();
 		List <Order> ll = mo.getOrdersFromDB();
 		for(int i=0 ; i< ll.size();i++){
-			System.out.println(ll.get(i).getPrintlnid());
+			System.out.println(ll.get(i).getPos());
 		}
 		System.out.println(ll.size());
 		

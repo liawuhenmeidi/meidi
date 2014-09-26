@@ -2,6 +2,8 @@ package wilson.upload;
 
 public class UploadOrder {
 	
+	private int id = -1; //id
+	
 	private String shop = ""; //销售门店
 	
 	private String saleNo = ""; //销售订单号
@@ -14,13 +16,17 @@ public class UploadOrder {
 
 	private String type = ""; //票面型号
 
-	private String num = ""; //票面数量
+	private int num = 0; //票面数量
 	
-	private String salePrice = ""; //供价
+	private Double salePrice = 0.0; //供价
 	
-	private String backPoint = ""; //扣点
+	private Double backPoint = 0.0; //扣点
 	
 	private String fileName = ""; //来自的文件名
+	
+	private int checked = 1; //1为没有 check 0 为已经check 默认为1
+	
+	private String checkedTime = ""; //check的时间，默认为null
 
 	public String getShop() {
 		return shop;
@@ -62,30 +68,6 @@ public class UploadOrder {
 		this.type = type;
 	}
 
-	public String getNum() {
-		return num;
-	}
-
-	public void setNum(String num) {
-		this.num = num;
-	}
-
-	public String getSalePrice() {
-		return salePrice;
-	}
-
-	public void setSalePrice(String salePrice) {
-		this.salePrice = salePrice;
-	}
-
-	public String getBackPoint() {
-		return backPoint;
-	}
-
-	public void setBackPoint(String backPoint) {
-		this.backPoint = backPoint;
-	}
-
 	public String getSaleNo() {
 		return saleNo;
 	}
@@ -102,14 +84,62 @@ public class UploadOrder {
 		this.fileName = fileName;
 	}
 
+
+	public int getChecked() {
+		return checked;
+	}
+
+	public void setChecked(int checked) {
+		this.checked = checked;
+	}
+
+	public String getCheckedTime() {
+		return checkedTime;
+	}
+
+	public void setCheckedTime(String checkedTime) {
+		this.checkedTime = checkedTime;
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+	public Double getSalePrice() {
+		return salePrice;
+	}
+
+	public void setSalePrice(Double salePrice) {
+		this.salePrice = salePrice;
+	}
+
+	public Double getBackPoint() {
+		return backPoint;
+	}
+
+	public void setBackPoint(Double backPoint) {
+		this.backPoint = backPoint;
+	}
+
 	@Override
 	public String toString() {
 		return "UploadOrder [shop=" + shop + ", saleNo=" + saleNo + ", posNo="
 				+ posNo + ", saleTime=" + saleTime + ", dealTime=" + dealTime
 				+ ", type=" + type + ", num=" + num + ", salePrice="
 				+ salePrice + ", backPoint=" + backPoint + ", fileName="
-				+ fileName + "]";
+				+ fileName + ", checked=" + checked + ", checkedTime="
+				+ checkedTime + "]";
 	}
 
-	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }

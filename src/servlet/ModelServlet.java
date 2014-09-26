@@ -5,9 +5,7 @@ import gift.GiftManager;
 import group.Group;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,21 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import order.Order;
-import order.OrderManager;
-import order.OrderStatues;
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
-
-import user.User;
-import user.UserManager;
-import utill.StringUtill;
-
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,6 +30,9 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import user.User;
+import user.UserManager;
+import utill.StringUtill;
 import category.Category;
 import category.CategoryManager;
 
@@ -132,26 +122,35 @@ public class ModelServlet extends HttpServlet {
 				int x = 0 ; 
 				HSSFCell cell = row.createCell((short) x++);
 				
-				cell.setCellValue("销售门店");
+				cell.setCellValue("门店名称");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
-				cell.setCellValue("pos(厂送)单号");
+				cell.setCellValue("销售订单号");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
-				cell.setCellValue("OMS订单号");
+				cell.setCellValue("POS订单号");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
-				cell.setCellValue("验证码(联保单)");
+				cell.setCellValue("销售日期");
 				cell.setCellStyle(style);
 				
 				
+				cell = row.createCell((short) x++);
+				cell.setCellValue("交货日期");
+				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
 				cell.setCellValue("票面型号");
 				cell.setCellStyle(style);
+				
 				cell = row.createCell((short) x++);
 				cell.setCellValue("票面数量");
 				cell.setCellStyle(style);
-				
+				cell = row.createCell((short) x++);
+				cell.setCellValue("供价");
+				cell.setCellStyle(style);				
+				cell = row.createCell((short) x++);
+				cell.setCellValue("扣点");
+				cell.setCellStyle(style);
 				
 
 				// 第六步，将文件存到指定位置

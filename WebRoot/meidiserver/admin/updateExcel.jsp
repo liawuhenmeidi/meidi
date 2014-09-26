@@ -9,12 +9,12 @@
 	String confirm = request.getParameter("confirm");
 	String filePath = new SuningDataUpload().getUploadPath();
 	List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
-	UploadOrderManager uom = new UploadOrderManager();
+	//UploadOrderManager uom = new UploadOrderManager();
 
 	boolean showContent =false;
 	
 	if(confirm != null && confirm != "" && confirm.equals("confirm")){
-		uom.saveFileToDB(filePath,fileName);
+		UploadOrderManager.saveFileToDB(filePath,fileName);
 		response.sendRedirect("/meidi/meidiserver/admin/updateExcel.jsp");
 		return;
 	}else{

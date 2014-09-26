@@ -1270,17 +1270,16 @@ logger.info(sql);
     
     //wrote by wilsonlee
     //已经结款的Order
-    public static List<Order> getOrderlist(User user){
+    public static List<Order> getUnCheckedDBOrders(){
     	  
     	
-    	boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
-    	flag = true;
+    	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
+    	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "";   
-    	sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0";                  
     	   
-    	if(flag){
+    	if(true){
     		Connection conn = DB.getConn();
             Statement stmt = DB.getStatement(conn);
             ResultSet rs = DB.getResultSet(stmt, sql);

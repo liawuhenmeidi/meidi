@@ -1,11 +1,10 @@
 package wilson.matchOrder;
 
-import group.Group;
-
 import java.util.ArrayList;
 import java.util.List;
-import order.*;
-import user.User;
+
+import order.Order;
+import wilson.upload.UploadOrder;
 
 public class MatchOrder {
 	
@@ -19,14 +18,14 @@ public class MatchOrder {
 	public boolean startMatch(){
 		
 		//从数据库中取到需要匹配的Order
-		List <Order> ordersFromDB = getOrdersFromDB();
+		List <Order> unCheckedDBOrders = getOrdersFromDB();
 		//从上传列表取得需要匹配的Order
-		List <Order> ordersFromUpload = getOrdersFromUpload ();
+		List <UploadOrder> unCheckedUploadOrders = getUnCheckedUploadOrders();
 		
-		matchOrder(ordersFromDB,ordersFromUpload);
+		//matchOrder(ordersFromDB,ordersFromUpload);
 		
-		mom.saveOrder(this.getOrdersMatched());
-		mom.saveOrder(this.getOrdersUnMatched());
+		//mom.saveOrder(this.getOrdersMatched());
+		//mom.saveOrder(this.getOrdersUnMatched());
 		
 		return false;
 	}
@@ -36,40 +35,18 @@ public class MatchOrder {
 		//set
 	}
 
-	public List<Order> getOrdersFromDB(){
-		List <Order> ordersFromDB = new ArrayList<Order>();
-		
-		ordersFromDB = OrderManager.getOrderlist(new User());
-		
-		
+	public static List<Order> getOrdersFromDB(){
+		List <Order> unCheckedDBOrders = new ArrayList<Order>();
+		unCheckedDBOrders = MatchOrderManager.getUnCheckedDBOrders();
+		return unCheckedDBOrders;
 		//对照好了消除
 		//int statues = OrderManager.updateStatues(user,"orderCharge",Order.query, id); 
-		/**
-		 * User user = (User)session.getAttribute("user");
-		 * 
-		 */
-		
-		return ordersFromDB;
 	}
 	
-	public List<Order> getOrdersFromUpload(){
-		List <Order> ordersFromDB = new ArrayList<Order>();
-		return ordersFromDB;
+	public static List<UploadOrder> getUnCheckedUploadOrders(){
+		List<UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
+		unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders();
+		return unCheckedUploadOrders;
 	}
 	
-	public List<Order> getOrdersMatched() {
-		return ordersMatched;
-	}
-
-	public void setOrdersMatched(List<Order> ordersMatched) {
-		this.ordersMatched = ordersMatched;
-	}
-
-	public List<Order> getOrdersUnMatched() {
-		return ordersUnMatched;
-	}
-
-	public void setOrdersUnMatched(List<Order> ordersUnMatched) {
-		this.ordersUnMatched = ordersUnMatched;
-	}
 }
