@@ -43,11 +43,11 @@ public static List<InventoryBranchMessage> getCategory(String type,String branch
 		  
 		List<InventoryBranchMessage> categorys = new ArrayList<InventoryBranchMessage>();
 		Connection conn = DB.getConn();  
-		String sql = "";
+		String sql = ""; 
 		if(!StringUtill.isNull(branchid)){
-		    sql = "select * from mdinventorybranchmessage where type = '"+ type +"' and branchid = "+ branchid +time;
+		    sql = "select * from mdinventorybranchmessage where type = '"+ type +"' and branchid not in (select id from mdbranch where statues = 1 ) and branchid = "+ branchid +time;
 		}else { 
-			 sql = "select * from mdinventorybranchmessage where type = '"+ type +"'"+time;
+			 sql = "select * from mdinventorybranchmessage where type = '"+ type +"' and branchid not in (select id from mdbranch where statues = 1 ) "+time;
 		}
 		
 

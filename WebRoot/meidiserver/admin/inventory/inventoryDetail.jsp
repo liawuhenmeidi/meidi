@@ -1,8 +1,7 @@
 <%@ page language="java" import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user"); 
- 
+User user = (User)session.getAttribute("user");  
 String ctype = request.getParameter("ctype");
 String branchid = request.getParameter("branchid");
 Branch b = new Branch();
@@ -52,11 +51,11 @@ var branchstr = <%=branchstr%>;
  
  function inventory(inventory,type){
 	 if(type == 0 || type == 1){
-		 window.showModalDialog('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
-	 }else {
-		 window.showModalDialog('../dingdanDetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+		 window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 }else { 
+		 window.open('dingdanDetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }
- }
+ } 
  
  function search(ctype,branchid){
 	 $("#serach table").remove();
@@ -75,8 +74,9 @@ var branchstr = <%=branchstr%>;
 	        		     ' <td>型号</td>'+
 	        		     ' <td>操作类型</td> ' +
 	        		     ' <td>调拨数量</td> ' +
+	        		     
+	        		     ' <td>账面库存数量</td>' + 
 	        		     ' <td>实际库存数量</td> ' + 
-	        		     ' <td>账面库存数量</td>' +  
 	        		    ' </tr>';
 	        		     
 	        		 
@@ -90,27 +90,31 @@ var branchstr = <%=branchstr%>;
 	        		 
 	        		 //alert(type); 
 	        		 if(type == 0 ){ 
-	        			 strtype = branch+"出货";
-	        		 }else if(type == 1){
-	        			 strtype = branch+"入货";
+	        			 strtype = branch+"出库";
+	        		 }else if(type == 1){ 
+	        			 strtype = branch+"入库";
 	        		 }else if(type == 2){
-	        			 strtype = branch+"文员派工";
+	        			 strtype = "文员派工给"+branch;
 	        		 }else if(type == 20){
-	        			 strtype = branch+"释放";
+	        			 strtype = branch+"释放"; 
 	        		 }else if(type == 11){
-	        			 strtype = branch+"派工";
-	        		 }else if(type == 6){  
-	        			 strtype = branch+"送货员释放";
-	        		 } 
+	        			 strtype = branch+"派工给送货员";
+	        		 }else if(type == 6){   
+	        			 strtype = "送货员释放给"+branch;
+	        		 }else if(type == 7){   
+	        			 strtype = "送货员拉回给"+branch;
+	        		 } else if(type == 8){    
+	        			 strtype = "文员同意"+branch+"退货";
+	        		 }  
 	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="inventory('+str.inventoryid+','+type+')">' +  
 	        		     ' <td>'+str.inventoryid+'</td> ' +
 	        		     ' <td>'+str.time+'</td> ' +  
 	        		     ' <td>'+str.type+'</td> ' + 
 	        		     ' <td>'+strtype+'</td> ' + 
 	        		     ' <td>'+str.count+'</td> ' +
-	        		     ' <td>'+str.realcount+'</td>' + 
+	        		     
 	        		     ' <td>'+str.papercount+'</td> ' +  
-	        		      
+	        		     ' <td>'+str.realcount+'</td>' + 
 	        		     ' </tr>'; 
 	        	 }
 	        		     
@@ -139,7 +143,10 @@ var branchstr = <%=branchstr%>;
 <!--   头部结束   -->
 
 <div class="main">  
-   <div class="weizhi_head">现在位置：库存查询</div>       
+   <div class="weizhi_head">现在位置：库存查询
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>
+   </div>       
 <br/>
 
 <div id="serach"> 

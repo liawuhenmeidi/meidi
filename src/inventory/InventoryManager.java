@@ -1,5 +1,7 @@
 package inventory;
 
+import group.Group;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,16 +24,33 @@ import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProductManager;
 
 import user.User;
+import user.UserManager;
 
 import database.DB;
 
 public class InventoryManager {
 	protected static Log logger = LogFactory.getLog(InventoryManager.class);
 	
-	public static List<Inventory> getCategory() { 
+	public static List<Inventory> getCategory(User user,String statues) { 
 		List<Inventory> categorys = new ArrayList<Inventory>();
 		Connection conn = DB.getConn();
-		String sql = "select * from inventory "; 
+		int branchid = BranchManager.getBranchID(user.getBranch()); 
+		String sql = "";
+		if(UserManager.checkPermissions(user, Group.dealSend)){
+			if("unconfirmed".equals(statues)){ 
+				sql = "select * from inventory where instatues = 0 or outstatues = 0";
+			}else if("confirmed".equals(statues)){
+				sql = "select * from inventory where instatues = 1 and outstatues = 1";
+			}
+		}else {       
+			if("unconfirmed".equals(statues)){ 
+				sql = "select * from inventory where (instatues = 0 or outstatues = 0) and (inbranchid = " + branchid +" or outbranchid = "+ branchid+")";
+			}else if("confirmed".equals(statues)){
+				sql = "select * from inventory where instatues = 1 and outstatues = 1 and (inbranchid = " + branchid +" or outbranchid = "+ branchid+")";
+			}
+			
+		} 
+		
 		Statement stmt = DB.getStatement(conn);
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		try {
@@ -297,6 +316,7 @@ public class InventoryManager {
 			c.setId(rs.getInt("id")); 
 			c.setRemark(rs.getString("remark")); 
 			c.setChekid(rs.getInt("chekid"));
+			c.setUid(rs.getInt("uid"));  
 			c.setIntime(rs.getString("intime"));
 			c.setInbranchid(rs.getInt("inbranchid"));
 			c.setOutbranchid(rs.getInt("outbranchid")); 

@@ -123,7 +123,6 @@ logger.info(message);
 			    
 			        String id = request.getParameter("orderid");
 			       
-			         
 					String saledate = request.getParameter("saledate");
 					String andate = request.getParameter("andate"); //安装日期
 					 

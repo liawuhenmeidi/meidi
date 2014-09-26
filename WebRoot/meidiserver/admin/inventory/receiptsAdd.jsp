@@ -6,9 +6,10 @@ User user = (User)session.getAttribute("user");
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
   
 List<BranchType> listb = BranchTypeManager.getLocate();
-  
-List<String> listbranch = BranchManager.getLocateAll();  
-String listall = StringUtill.GetJson(listbranch);
+List<Branch> listbranch = BranchManager.getLocate(); 
+
+List<String> listbranchp = BranchManager.getLocateAll();  
+String listall = StringUtill.GetJson(listbranchp); 
 
 Map<String,List<Branch>> map = BranchManager.getLocateMapBranch();  
     
@@ -44,17 +45,18 @@ if(!StringUtill.isNull(inventoryid)){
 	       branch = branchmap.get(inventory.getInbranchid());
 	       if(branch != null){ 
 	    	   inbranch = branch.getLocateName();  
-	       }
+	       } 
 	   }
+
 	
-	remark = inventory.getRemark();
-	inittime = inventory.getIntime(); 
+	remark = inventory.getRemark(); 
+	inittime = inventory.getIntime();  
 	List<InventoryMessage> list = inventory.getInventory();
 	invent = StringUtill.GetJson(list);  
-    if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0){
+    if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 && user.getId() == inventory.getUid()){
     	isdisabel = ""; 
     }
-}
+}  
 
   
 
@@ -109,12 +111,17 @@ var disable = '<%=isdisabel %>';
  $(function () { 
 	 initproduct();
 	 
-	 $("#branch").change(function(){
-		 var str = $("#branch").find("option:selected").text();
-		 $("#branchmessage").html(str+"入库单");
+	 $("#outbranchs").change(function(){
+		 var str = $("#outbranchs").find("option:selected").text();
+		 $("#outbranch").val(str);
 	 });
 	         
-	
+	 $("#inbranchs").change(function(){
+		 var str = $("#inbranchs").find("option:selected").text();
+		 $("#inbranch").val(str);
+	 });
+	 
+	 
 	 $("#outbranch").autocomplete({ 
 		 source: jsonall
 	    });  
@@ -170,7 +177,7 @@ var disable = '<%=isdisabel %>';
 		 return false ;
 	 }else {
 		 if($.inArray(ctype,ctypes) != -1){
-			 alert("您已添加此型号");
+			 alert("您已添加此型号"); 
 			 return ;
 		 }else{
 			 ctypes.push(ctype); 
@@ -258,17 +265,42 @@ var disable = '<%=isdisabel %>';
    </div>      
      <div>     
      <form action="InventoryServlet"  method = "post"  onsubmit="return check()">
-      <input type="hidden" name="method" value="add"/> 
+      <input type="hidden" name="method" value="add"/>  
       <input type="hidden" name="id" value="<%=inventoryid %>"/>
                      
-  <div style="background-color:;width:60%" > 
+  <div  > 
    <center><div id="branchmessage"><font style="color:red;font-size:20px;" >调拨单</font></div></center>
    <br/>
                  出库单位：  
-         <input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch %>"  <%=isdisabel %>/>                    
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
+         输入<input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch %>"  <%=isdisabel %>/>                    
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    选择 <select id="outbranchs" <%=isdisabel %>>  
+	  <option value=""></option>
+	   <% if(listbranch != null){
+		   for(int i=0;i<listbranch.size();i++){
+			   Branch b = listbranch.get(i);
+	    %>   
+	    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
+	   <% 
+		   }   
+	   }
+	   %>
+	  </select>   
+	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
                  入库单位： 
-        <input type="text" name="inbranch" id="inbranch" value="<%=inbranch %>" class="cba"  <%=isdisabel %>/>
+             输入<input type="text" name="inbranch" id="inbranch" value="<%=inbranch %>" class="cba"  <%=isdisabel %>/>
+    选择 <select id="inbranchs" <%=isdisabel %>>  
+	  <option value=""></option>
+	   <% if(listbranch != null){
+		   for(int i=0;i<listbranch.size();i++){
+			   Branch b = listbranch.get(i);
+	    %>   
+	    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
+	   <% 
+		   }   
+	   }
+	   %>
+	  </select> 
   <br/>
      备&nbsp;&nbsp;&nbsp;&nbsp;注：    
        <textarea  id="remark" name="remark"  <%=isdisabel %> ><%=remark %></textarea>
@@ -297,10 +329,10 @@ var disable = '<%=isdisabel %>';
    %>
    <input type="submit" id="submit" value="确认提 交" <%=isdisabel %>/>
   <% 
-	  }
-  }else {
-	  
- 
+	  } 
+  }else { 
+	   
+   
   %> 
     <input type="submit" id="submit" value="确认提 交" <%=isdisabel %>/>
   

@@ -94,7 +94,10 @@ function seletall(all){
    
  <!--       -->    
  
-   <div class="weizhi_head">现在位置：<%=branch.getName()%></div>     
+   <div class="weizhi_head">现在位置：<%=branch.getName()%>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>       
+   </div>     
      <div class="main_r_tianjia">
    <ul>                                                                                                     
      <li><a href="branch1add.jsp?pid=<%=id%>">添加门店</a></li>
@@ -114,6 +117,7 @@ function seletall(all){
 			<th align="left">门店序列号</th>
 			<th align="left">门店</th>
 			<th align="left">门店报装单所需信息</th>
+			<th align="left">是否做为总库</th>
 			<th align="left">修改</th>
 		</tr>
 	</thead>
@@ -142,7 +146,10 @@ if(list != null){
 		   
 		  
                <%=message%>    
-         </td>  
+         </td>
+         <td align="left">  
+            <%=category.getStatues() ==0?"否":"是" %> 
+         </td>   
          <td align="left">  
                <a href="branch1add.jsp?pid=<%=id%>&id=<%=category.getId()%>">[修改]</a>
          </td> 

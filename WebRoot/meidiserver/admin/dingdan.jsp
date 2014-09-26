@@ -111,7 +111,7 @@ List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDisp
 	    // listnew.add(neworder);
 		// it.remove();
 	///}  
-//}
+//} 
 //if(list != null){
 //System.out.println(list.size());
 //for(int i=0;i<list.size();i++){ 
@@ -137,13 +137,6 @@ Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
 
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
-
-//修改申请
-//Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,OrderPrintln.modify);
-// 退货申请
-//Map<Integer,OrderPrintln> opMap1 = OrderPrintlnManager.getOrderStatues(user,OrderPrintln.returns); 
-  
-//Map<Integer,OrderPrintln> opMap2 = OrderPrintlnManager.getOrderStatues(user,OrderPrintln.release);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -297,10 +290,11 @@ function changepeidan(str1,oid,deliveryStatues){
 }
 
 function addImage(src){
-	window.showModalDialog(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	window.open(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 } 
 
 function changes(str1,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type){
+	//alert(dealsendid); 
 	if( 2 == conmited ){         
 		if(type == '<%=OrderPrintln.releasemodfy %>' || type == '<%=OrderPrintln.releasedispatch %>'){
 			if(Returnstatuse != 2 ){         
@@ -388,14 +382,14 @@ function changes(str1,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type)
 }  
 
 function searchlocate(id){
-	window.showModalDialog('../adminmap.jsp?id="'+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+	window.open('../adminmap.jsp?id="'+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 }
 
  
 function adddetail(src){ 
 	//window.location.href=src ;
-	winPar=window.showModalDialog(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+	winPar=window.open(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 	if(winPar == "refresh"){
 	       window.location.reload();

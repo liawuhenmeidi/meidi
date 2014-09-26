@@ -35,7 +35,7 @@ int Page = Integer.valueOf(pageNum);
 
 int num = Integer.valueOf(numb);
 
-if(Page <=0){
+if(Page <=0){ 
 	Page =1 ;
 }
 
@@ -193,7 +193,8 @@ function add(){
     <option value="andate">安装日期</option> 
     <option value="dealsendTime">文员配单日期</option>  
     <option value="saleID">销售员</option>  
-    <option value="statues4">送货是否已结款</option> 
+    <option value="statues4">是否给安装公司结款</option>
+    <option value="statues4">是否给安装公司结款</option> 
     <option value="statues1">厂送票是否已回</option> 
     <option value="statues2">厂送票是否已消</option> 
     <option value="statues3">厂送票是否结款</option> 

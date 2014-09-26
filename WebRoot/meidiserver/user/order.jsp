@@ -1026,7 +1026,7 @@ System.out.println(11);
               	  <td width="50%" class=""> 
               	  <select  name="productsta0"   id="productsta0"  style="width:90%; " <%=isdisabel %>>
               	 <option value="" id=""></option>       
-              	 <option value="1" id="1">需配送安装</option>   
+              	 <option value="1" id="1">需配送安装</option>    
               	 <option value="0" id="0">已自提</option>     
               	 <option value="2" id="2">只安装(师傅门店提货)</option>   
               	 <option value="3" id="3">只安装(顾客已提)</option>  

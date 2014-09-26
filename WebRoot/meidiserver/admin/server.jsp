@@ -11,7 +11,7 @@ String method = request.getParameter("method");
  
 if("peidan".equals(method)){ 
 	String uid = request.getParameter("uid"); 
-	String id = request.getParameter("id");  
+	String id = request.getParameter("id");   
 	int statues = OrderManager.updateStatues(user,method,Integer.valueOf(uid), id);  
 	//int i = OrderManager.updatePeidan(Integer.valueOf(uid), Integer.valueOf(id));
 	response.getWriter().write(""+statues); 
@@ -32,8 +32,8 @@ if("peidan".equals(method)){
 	//int statues = OrderManager.delete(id); 
 	//int i = OrderManager.updatePeidan(Integer.valueOf(uid), Integer.valueOf(id));
 	response.getWriter().write(""+count);  
-	response.getWriter().flush();  
-	response.getWriter().close();  
+	response.getWriter().flush();   
+	response.getWriter().close();    
 }else if("dingdaned".equals(method)){  
 	String id = request.getParameter("id"); 
 	String oid = request.getParameter("oid");
@@ -41,7 +41,7 @@ if("peidan".equals(method)){
 	String uid = request.getParameter("uid");
 	if(StringUtill.isNull(uid)){
 		uid = "-1"; 
-	} 
+	}     
 	System.out.println("uid"+uid);
 	OrderPrintlnManager.updateOrderStatues(user,Integer.valueOf(id),Integer.valueOf(oid),Integer.valueOf(uid),Integer.valueOf(statues)); 
 }else if("category_add".equals(method)){     
@@ -195,9 +195,11 @@ if("peidan".equals(method)){
 	    		listp.setCategoryid(c.getId());  
 	    		listp.setCateoryName(c.getName());  
 	    		listp.setPapercount(inb.getPapercount()); 
-	    		listp.setRealcount(inb.getRealcount()); 
-	    		map.put(categoryid, listp);
-	    	}else {
+	    		listp.setRealcount(inb.getRealcount());  
+	    		System.out.println(inb.getPapercount()+"***"+inb.getRealcount());
+	    		map.put(categoryid, listp); 
+	    	}else { 
+	    		System.out.println(inb.getPapercount()+"***"+inb.getRealcount());
 	    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
 	    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
 	    	}

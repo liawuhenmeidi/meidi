@@ -286,6 +286,7 @@ function changes(oid,id,statues,flag,returnstatues,type){
 function change(str1,oid,type,statues){
 	
 	var uid = $("#"+str1).val();
+	
 	if(uid == null || uid == ""){
 		alert("请选择送货员");
 		return ;
@@ -324,7 +325,7 @@ function change(str1,oid,type,statues){
 
 function adddetail(src){ 
 	//window.location.href=src ;
-	window.showModalDialog(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+	window.open(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
 
 function winconfirm(str,str2,sendid){
@@ -373,7 +374,7 @@ function searchlocate(id){
 
 function adddetail(src){ 
 	//window.location.href=src ;
-	winPar=window.showModalDialog(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+	winPar=window.open(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 	if(winPar == "refresh"){
 	       window.location.reload();
@@ -746,7 +747,7 @@ function adddetail(src){
 				}else if(o.getDeliveryStatues() == 2){ 
 					statues = 1 ; 
 				}  
-								
+		
 				%> 
 				<%=oppp.getMessage() %>
 		    <input type="button" onclick="changes('<%=o.getId()%>','<%=oppp.getId() %>','<%=OrderPrintln.comited%>','<%=statues %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="同意"/> 

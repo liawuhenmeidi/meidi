@@ -6,9 +6,9 @@ User user = (User)session.getAttribute("user");
 String branchid = "";   
 if(UserManager.checkPermissions(user, Group.Manger)){
 	branchid = request.getParameter("branchid");  
-}else if(UserManager.checkPermissions(user, Group.sencondDealsend)){
+}else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
 	branchid = BranchManager.getBranchID(user.getBranch())+""; 
-}
+} 
   
 String category = request.getParameter("category");
 
@@ -145,17 +145,17 @@ var disable = '<%=isdisabel %>';
  var inventoyr = '<%=invent%>';
   
  var jsoninvent =  $.parseJSON(inventoyr);
-  var typeid = "";
- $(function () { 
+  var typeid = ""; 
+ $(function () {  
 	 add();
- });
+ }); 
  
  function inventory(inventory){
-	 window.showModalDialog('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
  }
  
  function search(ctype,branchid){ 
-	 window.showModalDialog('inventoryDetail.jsp?ctype='+ctype+"&branchid="+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 window.open('inventoryDetail.jsp?ctype='+ctype+"&branchid="+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
  }
  
 
@@ -163,10 +163,10 @@ function distri(){
  if(typeid == null || typeid == ""){
 	 alert("请选择产品型号"); 
  }else { 
-     window.showModalDialog('distribution1.jsp?category='+categoryid+'&type='+typeid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+     window.open('distribution1.jsp?category='+categoryid+'&type='+typeid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
    }
  }
- 
+  
 function serchclick(category,type,branchid,obj){
 	 categoryid = category;
 	 typeid = type ; 
@@ -180,7 +180,9 @@ function serchclick(category,type,branchid,obj){
 	 var b = $("#branch").val(); 
 	 if(branch == null || branch == ""){
 		 branch = b ; 
-	 }       
+	 }  
+	 $("#branch option[value='"+branch+"']").attr("selected","selected"); 
+	 //alert(branch);
 	 $.ajax({  
 	        type: "post", 
 	         url: "../server.jsp",    
@@ -258,10 +260,12 @@ function serchclick(category,type,branchid,obj){
 			   <%
 		   }  
    %>
-                     
- </div>      
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>       
+   </div>  
+       
  </div>        
-     <div style="background-color:;width:80%" >
+     <div style="background-color:;width:100%" >
      <br/>        
    <table width="100%" border="1" id="table" cellpadding="0" cellspacing="0" >
      <tr class="asc"> 

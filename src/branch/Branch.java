@@ -5,7 +5,17 @@ public class Branch {
    private int id ;
    private int pid ;
    private String message ;   // 门店订单需要的号，是否需要pos号，等
-    
+   private int statues ;   //  是否作为总库
+   
+   
+public int getStatues() {
+	return statues;
+}
+
+public void setStatues(int statues) {
+	this.statues = statues;
+}
+
 public int getId() {
 	return id;
 }

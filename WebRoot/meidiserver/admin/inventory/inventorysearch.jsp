@@ -143,21 +143,8 @@ var disable = '<%=isdisabel %>';
 		 }
 	 }
  }
- //function initproductSerch(str,str2){ 
-	 //   cid = $(str).val();
-	   
-		//$(str2).autocomplete({ 
-		//	 source: jsons[cid]
-		//    }); 
-		//$(str).change(function(){
-		//	$(str2).val("");
-		//	cid = $(str).val(); 
-		//	$(str2).autocomplete({
-		//		 source: jsons[cid]
-		//	    }); 
-		//	}) ; 
-   // } 
- 
+   
+  
  function add(){
 	 var ctype = $("#ordertype0").val();
 	 if(ctype == ""){
@@ -221,8 +208,11 @@ var disable = '<%=isdisabel %>';
 
 <!--   头部结束   -->
 
-<div class="main">  
-   <div class="weizhi_head">现在位置：</div> 
+<div class="main">   
+   <div class="weizhi_head">现在位置：单据
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>        
+   </div> 
         
      <div>     
     

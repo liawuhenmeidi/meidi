@@ -71,7 +71,7 @@
 			response.sendRedirect(request.getRequestURI() + "?msg=" + URLEncoder.encode(msg));
 			return;
 		}
-		
+		 
 		if(!mc.login(userName, password)){
 			msg = "登录失败，请核对用户名，密码";
 			response.sendRedirect(request.getRequestURI() + "?msg=" + URLEncoder.encode(msg));
@@ -148,7 +148,7 @@
     
     <%
     if(requestType != null && requestType.equals("search")){
-    %>
+    %> 
     <table align="center" border="2px">   
     	<input type="hidden" name="confirm" value="confirm"/>
     	<tr align="center">
@@ -180,11 +180,11 @@
     		}
     		%>
     	</tr>     		
-    	<br/>
+    	
     	<tr>
     		<td colspan="15" align="center"><input type="submit" value="确认消单"/></td>
     	</tr>
-    	</form>
+    	
     </table>
     <%
     }  

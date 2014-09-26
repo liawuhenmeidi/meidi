@@ -149,12 +149,12 @@ var disable = '<%=isdisabel %>';
  });
  
  function inventory(inventory){
-	 window.showModalDialog('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 
  }
  
  function search(category,branchid){ 
-	 window.showModalDialog('inventory.jsp?category='+category+"&branchid="+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 window.open('inventory.jsp?category='+category+"&branchid="+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
  }
  
  function add(){  

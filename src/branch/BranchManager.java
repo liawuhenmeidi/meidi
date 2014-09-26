@@ -298,6 +298,7 @@ logger.info(sql);
 				branch.setLocateName(rs.getString("bname"));
 				branch.setPid(rs.getInt("pid")); 
 				branch.setMessage(rs.getString("bmessage")); 
+				branch.setStatues(rs.getInt("statues")); 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}	

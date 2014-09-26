@@ -265,8 +265,8 @@ function change(str1,str2,type){
 
     %>
     <tr>
-    <td class="s_list_m">退货</td> 
-    <td class="s_list_m">
+    <td class="s_list_m">退货</td>  
+    <td class="s_list_m"> 
      <select class = "category" name="category"  id="return<%=or.getId() %>" >
      <%
        

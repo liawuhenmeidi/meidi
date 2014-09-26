@@ -98,7 +98,7 @@ $(function () {
      
 
 function addImage(src){
-	window.showModalDialog(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	window.open(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
 
 function changepeidan(str1,oid,deliveryStatues){
@@ -212,8 +212,8 @@ function changes(str1,str2,str3,str4,str5,str6,type){
 }  
 
 function searchlocate(id){
-	window.showModalDialog("../adminmap.jsp?id="+id, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
-	 // window.showModalDialog.href="../adminmap.jsp?id="+id;
+	window.open("../adminmap.jsp?id="+id, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 // window.open.href="../adminmap.jsp?id="+id;
 }
 
 function checkedd(){

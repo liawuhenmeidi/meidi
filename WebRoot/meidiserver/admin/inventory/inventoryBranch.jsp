@@ -169,17 +169,15 @@ var disable = '<%=isdisabel %>';
  
  function inventory(inventory){
 	 
-	 window.showModalDialog('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 
  }
  
  
- 
- 
- 
- function search(ctype){
+  
+ function search(ctype){ 
 	 $("#serach table").remove();
-	 $.ajax({ 
+	 $.ajax({  
 	        type: "post", 
 	         url: "../server.jsp",
 	         data:"method=inventorydetail&ctype="+ctype,
@@ -214,7 +212,6 @@ var disable = '<%=isdisabel %>';
 	        	 }
 	        		     
 	        	 addstr += '</table>' ;     
-	        		     
 	        			 $("#serach").append(addstr);  
 	           },  
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -224,7 +221,7 @@ var disable = '<%=isdisabel %>';
  }
 
  function search(ctype,branchid){
-	 window.showModalDialog('inventoryDetail.jsp?ctype='+ctype+"&branchid="+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 window.open('inventoryDetail.jsp?ctype='+ctype+"&branchid="+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
  }
  
  

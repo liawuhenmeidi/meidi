@@ -2,8 +2,8 @@
 <%
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user");
-
-List<Inventory> invetorylist = InventoryManager.getCategory(); 
+  
+List<Inventory> invetorylist = InventoryManager.getCategory(user,"unconfirmed");  
 Map<Integer,Branch> branchmap = BranchManager.getNameMap();   
 %>
   
@@ -37,14 +37,15 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
    <div class="weizhi_head">现在位置：单据管理</div>    
    
         <div class="main_r_tianjia">
-   <ul>    
+   <ul>     
    <% 
    if(UserManager.checkPermissions(user, Group.inventory)){
    %>                                                                                                    
      <li><a href="receiptsAdd.jsp?">新增单据</a></li>
     <%
-   }
+   } 
     %>
+     <li><a href="receiptsold.jsp?">查看已确认单据</a></li> 
      </ul>
      
    </div>  

@@ -41,11 +41,13 @@ function clear(){
    <%  
      if(UserManager.checkPermissions(user, Group.sale)){ 	 
    %>  
-   <li><a href="<%=realPath %>order.jsp">报装 </a></li>
+   <li><a href="<%=realPath %>order.jsp">报装 </a></li> 
    <li><a href="<%=realPath %>serch_list.jsp">查看报装单</a></li>
-   <%  
-     }  else
-   %>   
+   <li><a href="<%=realPath %>../admin/inventory/receipts.jsp">单据确认</a></li>
+   <li><a href="<%=realPath %>../admin/inventory/inventory.jsp">库存查询</a></li>
+   <%    
+     }  else 
+   %>    
    <%   
    if(UserManager.checkPermissions(user,Group.send)){ 	 
    %>

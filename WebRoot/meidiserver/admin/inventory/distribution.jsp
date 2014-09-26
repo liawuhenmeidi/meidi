@@ -69,7 +69,7 @@ td {
  });
  
  function search(category,branchid){
-	 window.showModalDialog('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
+	 window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
 }
   
  function add(){    
@@ -127,7 +127,8 @@ td {
 <!--   头部结束   -->
 <div class="main">   
   <div class="weizhi_head">现在位置：<%=c.getName() %>分布
-           
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>            
  </div>      
  </div>        
      <div style="background-color:;width:80%" >

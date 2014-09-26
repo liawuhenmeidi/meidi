@@ -6,9 +6,9 @@ User user = (User)session.getAttribute("user");
 String branchid = "";
 if(UserManager.checkPermissions(user, Group.Manger)){
 	branchid = request.getParameter("branchid");
-}else if(UserManager.checkPermissions(user, Group.sencondDealsend)){
+}else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
 	branchid = BranchManager.getBranchID(user.getBranch())+""; 
-}
+} 
   
 
   
@@ -53,14 +53,14 @@ td {
  }); 
    
  function search(category,branchid){ 
-		 window.showModalDialog('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
- }  
+		 window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
+ }   
  
  function distri(){
 	 if(categoryid == null || categoryid == ""){
 		 alert("请选择商品");
 	 }else { 
-	     window.showModalDialog('distribution.jsp?category='+categoryid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	     window.open('distribution.jsp?category='+categoryid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
        }
 	 }
  
@@ -76,6 +76,7 @@ td {
 	 if(branch == null || branch == ""){
 		 branch = b ;
 	 }   
+	// alert(branch);
 	 $.ajax({ 
 	        type: "post", 
 	         url: "../server.jsp",    
@@ -109,7 +110,7 @@ td {
 	        	 }
 	        	
 	        	 $("#table").append(addstr);      
-	           },  
+	           },   
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 	            } 
 	           });
@@ -129,10 +130,10 @@ td {
 <!--   头部结束   -->
 <div class="main">   
    <div class="weizhi_head">现在位置：库存查询
-   <%
+   <% 
     if(UserManager.checkPermissions(user, Group.dealSend)){
     	%>
-         列表：   
+   
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
     <a href="javascript:distri();"> 查看分布</a>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -155,18 +156,18 @@ td {
    %>
                     
  </div>        
-     <div style="background-color:;width:80%" >
+     <div class="table-list" >
      <br/>        
-   <table width="100%" border="1" id="table" cellpadding="0" cellspacing="0" >
-     <tr class="asc"> 
-      
+   <table width="100%"  cellspacing="1" id="table" >
+    <thead>
+     <tr >  
       <td>产品类别</td>
       <td>产品型号</td> 
       <td>账面库存数量</td>
       <td>实际库存数量</td>  
       <td>销量</td>   
      </tr>
- 
+ </thead>
    </table>
  
   </div>

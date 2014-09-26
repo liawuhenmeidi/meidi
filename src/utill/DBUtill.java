@@ -14,7 +14,7 @@ public class DBUtill {
   protected static Log logger = LogFactory.getLog(DBUtill.class);
    
   public static boolean sava(List<String> sqls){ 
-	  boolean flag = false ;
+	  boolean flag = false ; 
 	    Connection conn = DB.getConn();    
 	    Statement sm = null;  
       try {     

@@ -295,7 +295,7 @@ function change(str1,oid,type){
 
 function adddetail(src){ 
 	//window.location.href=src ;
-	window.showModalDialog(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+	window.open(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
 
 function wconfirm(){
@@ -371,7 +371,7 @@ function winconfirm(str,str2){
 }
 function adddetail(src){ 
 	//window.location.href=src ;
-	winPar=window.showModalDialog(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+	winPar=window.open(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 	if(winPar == "refresh"){
 	       window.location.reload();
