@@ -566,13 +566,13 @@ function orderPrint(id,statues,type,deliveryStatues){
 			     }
 		     }
 		     %> 
-		 
-		  <td align="center"><%=pcategory%></td>
-		  <td align="center"><%=ptype%></td>
-		  <td align="center"><%=pcountt%></td> 
-		  <td align="center"><%=scategory%></td> 
-		  <td align="center"><%=stype%></td>  
-		  <td align="center"><%=scountt%></td> 
+		   
+		  <td align="center"><%= o.getCategory(1,"</p>")%></td>    
+		  <td align="center" ><%=o.getSendType(1,"</p>")%></td>    
+		  <td align="center" ><%= o.getSendCount(1,"</p>")%></td>    
+		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
+		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>  
+		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>   
 		<% 
 		     String gstatues = ""; ;
 		     String gtype = "";

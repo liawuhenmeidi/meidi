@@ -370,38 +370,11 @@ function adddetail(src){
 		                      o.getPhone1()
 		%>
 		
-		</td>  
-		     <% 
-		     String pcategory = "";
-		     String scategory = "";
-		     String ptype = "";
-		     String stype = "";
-		     String pcountt = "";
-		     String scountt = "";
-		     
-		     List<OrderProduct> lists = OrPMap.get(o.getId());
-		     
-		     
-		     if(lists != null ){
-			     for(int g = 0 ;g<lists.size();g++){
-			    	 OrderProduct op = lists.get(g);
-			    	 if(op.getStatues() == 1 ){
-			    		 pcategory +=  categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-				         pcountt += op.getCount() +"</p>";
-				         ptype += op.getSaleType()==null ||op.getSaleType() == "null" ? "":op.getSaleType() +"</p>";
-			    	 }else {
-			    		 scategory += categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-				         scountt += op.getCount() +"</p>";
-				         stype += op.getSendType()==null ||op.getSendType() == "null" ? "":op.getSendType() +"</p>"; 
-			    	 }  
-			     }
-		     }
-		     %> 
+		</td>    
 		 
+		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
 		 
-		  <td align="center"><%=scategory%></td> 
-		 
-		<% 
+		<%   
 		     String gstatues = ""; ;
 		     String gtype = "";
 		     String gcountt = ""; 

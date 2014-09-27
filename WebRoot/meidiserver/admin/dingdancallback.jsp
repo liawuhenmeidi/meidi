@@ -427,8 +427,8 @@ function seletall(all){
 		String tdcol = " bgcolor=\"red\"" ;
 		if(o.getPhoneRemark()!=1){
 			tdcol = "";
-		}
-		  %>   
+		}  
+		  %>    
 		<td align="center"><%=o.getUsername()  +"</p>"+
 				"<p><font color=\""+tdcol+"\"> "+  
 		                      o.getPhone1()
@@ -438,36 +438,11 @@ function seletall(all){
 		
 		<td align="center">
 		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
-		</td>
-		     <%  
-		     String pcategory = "";
-		     String scategory = "";
-		     String ptype = "";
-		     String stype = "";
-		     String pcountt = "";
-		     String scountt = "";
-		     
-		     
-		     List<OrderProduct> lists = OrPMap.get(o.getId());
-		     if(lists != null ){
-			     for(int g = 0 ;g<lists.size();g++){
-			    	 OrderProduct op = lists.get(g);
-			    	 if(op.getStatues() == 1 ){
-			    		 pcategory +=  categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-				         pcountt += op.getCount() +"</p>";
-				         ptype += op.getSaleType()==null ||op.getSaleType() == "null" ? "":op.getSaleType() +"</p>";
-			    	 }else {
-			    		 scategory += categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-				         scountt += op.getCount() +"</p>";
-				         stype += op.getSendType()==null ||op.getSendType() == "null" ? "":op.getSendType() +"</p>"; 
-			    	 }  
-			     }
-		     }
-		     %> 
-		  <td align="center"><%=scategory%></td> 
-		  <td align="center"><%=stype%></td>  
-		  <td align="center"><%=scountt%></td> 
-		<%  
+		</td> 
+		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
+		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>     
+		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>  
+		<%   
 		     String gstatues = ""; ;
 		     String gtype = "";
 		     String gcountt = ""; 
