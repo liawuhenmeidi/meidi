@@ -42,84 +42,16 @@ if(Page <=0){
 }
 
 String searched = request.getParameter("searched");
+ 
 if("searched".equals(searched)){
-	
-	String[] search = request.getParameterValues("search");
-	if(search != null){ 
-		for(int i = 0 ;i<search.length;i++){
-			String str = search[i];
-			
-			boolean fflag = false ;  
-			if("saledate".equals(str) || "andate".equals(str) || "dealsendTime".equals(str)){
-				String start = request.getParameter(str+"start");
-				String end = request.getParameter(str+"end");
-				boolean flag = false ; 
-				if(start != null && start != "" && start != "null"){
-					sear += " and " + str + "  BETWEEN '" + start + "'  and  ";
-				    flag = true ;
-				}   
-				if(end != null && end != "" && end != "null"){
-					sear += " '" + end + "'";
-				}else if(flag){ 
-					sear += "now()";
-				}      
-			}else if("sendtype".equals(str) || "saletype".equals(str)){
-				String strr = request.getParameter(str); 
-				if(strr != "" && strr != null){   
-					//sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-					sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-				}  // giftName
-			}else if("categoryname".equals(str)){
-				String strr = request.getParameter(str); 
-				if(strr != "" && strr != null){    
-					//sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-					sear += " and id in ( select orderid  from mdorderproduct where categoryID in (select id  from mdcategory where " + str + " like '%" + strr +"%'))";
-				}  // giftName
-			}else if("giftName".equals(str) || "statues".equals(str)){ 
-				String strr = request.getParameter(str);  
-				if(strr != "" && strr != null){    
-					sear += " and id in (select orderid  from mdordergift where " + str + " like '%" + strr +"%')"; 
-				}  // giftName
-			}else if("dealSendid".equals(str) || "saleID".equals(str) || "sendId".equals(str)){
-				String strr = request.getParameter(str);
-				if(strr != "" && strr != null){ 
-				  sear += " and " + str + " in (select id from mduser  where username like '%" + strr +"%')"; 
-				}
-			}else {     
-				String strr = request.getParameter(str);
-				if(strr != "" && strr != null){
-				  sear += " and " + str + " like '%" + strr +"%'"; 
-				}  
-			}
-		} 	
-	}else { 
-		sear = "";
-	} 
-	//session.setAttribute("sear", sear); 
+	sear = HttpRequestUtill.getSearch(request);
 }  
 
 
 
 List<Order> listnew = new ArrayList<Order>(); 
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
-//if(list != null){
-//Iterator<Order> it = list.iterator();
- 
-//while(it.hasNext()){
-	//Order neworder = it.next();
-	//if(TimeUtill.getLongtime(neworder.getOdate())){
-	    // listnew.add(neworder);
-		// it.remove();
-	///}  
-//} 
-//if(list != null){
-//System.out.println(list.size());
-//for(int i=0;i<list.size();i++){ 
-	//Order neworder = list.get(i);
-	//listnew.add(neworder);
-//}
-//}
-//}
+
 
 session.setAttribute("exportList", list); 
 count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);    

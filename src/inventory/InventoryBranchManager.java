@@ -404,7 +404,6 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		    			if(or.getSalestatues() == 3 || or.getSalestatues() == 0 ){     
 				    		Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 				    		uid = order.getSaleID(); 
-				    	   
 				    	    if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"','"+or.getCount()+"', '"+or.getCount()+"',"+branch.getId()+")"; 
@@ -443,12 +442,12 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    			 
 			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
 			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+8+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
-			    			 }
-				    	} 
-				           
+			    			 }    
+				    	}    
+				            
 		    		}else if((Order.orderreturn+"").equals(method)){   
 		    			if(or.getSalestatues() == 3 || or.getSalestatues() == 0 ){     
-				    		Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
+				    		/*Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 				    		uid = order.getSaleID(); 
 				    	    System.out.println("uid****"+uid);
 				    	    if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
@@ -461,7 +460,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    			                 
 			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
 			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+7+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
-			    			 } 
+			    			 } */
 				    	}else if(or.getSalestatues() == 2 ){     
 				    		Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 				    		uid = order.getSaleID();  

@@ -142,8 +142,6 @@ logger.info(pstmt);
         	  str = "已安装";
 		
           }else if(3 == statues || 4 == statues || 5 == statues || 11 == statues || 13 == statues || 12 == statues){
-		
-		
         	  str = "已退货";
 		
           }else if( 8 == statues){ 
