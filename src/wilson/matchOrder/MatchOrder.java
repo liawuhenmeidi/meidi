@@ -26,19 +26,52 @@ public class MatchOrder {
 	
 	private boolean matchOrder(List <UploadOrder> unCheckedUploadOrders,List <Order> unCheckedDBOrders) {
 		boolean flag = false;
-		//AfterMatchOrder amo = new AfterMatchOrder();
+		AfterMatchOrder amo ;
 		
-		
+		//先过滤掉大多数posNo相等的
 		for(int i = 0 ; i < unCheckedUploadOrders.size(); i ++){
 			UploadOrder tempUo = unCheckedUploadOrders.get(i);
 			
-			for(int j = 0 ; j < unCheckedDBOrders.size() ; j ++ ){
-				
+			for(int j = 0 ; j < unCheckedDBOrders.size() ; j ++){	
 				Order tempDBO = unCheckedDBOrders.get(j);
 				
+				if(tempUo.getPosNo().equals(tempDBO.getPos())){
+					amo = new AfterMatchOrder(tempUo,tempDBO);
+					amo.calcLevel();
+					matchedOrders.add(amo);
+					unMatchedUploadOrders.remove(tempUo);
+					unMatchedDBOrders.remove(tempDBO);
+					i --;
+					break;
+				}
+			}
+		}
+		
+		//再用模糊对比进行过滤(日期相同，型号，数量和门店对的上的)
+		for(int i = 0 ; i < unCheckedUploadOrders.size(); i ++){
+			UploadOrder tempUo = unCheckedUploadOrders.get(i);
+			
+			for(int j = 0 ; j < unCheckedDBOrders.size() ; j ++){	
+				Order tempDBO = unCheckedDBOrders.get(j);
+				
+				if(fuzzyCompare(tempUo,tempDBO)){
+					amo = new AfterMatchOrder(tempUo,tempDBO);
+					amo.calcLevel();
+					matchedOrders.add(amo);
+					unMatchedUploadOrders.remove(tempUo);
+					unMatchedDBOrders.remove(tempDBO);
+					i --;
+					break;
+				}
 			}
 		}
 		return flag;
+	}
+	
+	//模糊对比，如果认为对比成功则返回true，否则返回false
+	private boolean fuzzyCompare(UploadOrder tempUo, Order tempDBO) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public static List<Order> getUnCheckedDBOrders(){
@@ -53,9 +86,5 @@ public class MatchOrder {
 		List<UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
 		unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders();
 		return unCheckedUploadOrders;
-	}
-	
-	public void HighLighter(String inputString,int start,int end){
-		String a = "<redTag class=\"style\">red</redTag>black";
 	}
 }

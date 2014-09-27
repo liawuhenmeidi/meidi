@@ -740,6 +740,9 @@ public String getSendType(int statues,String decollator){
 
 public String getSendCount(){
 	String sendCount = "";
+	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
+		OrderProductManager.resetOrPMap();
+	}
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	 if(null != lists){
 		for(int g = 0 ;g<lists.size();g++){
@@ -751,6 +754,9 @@ public String getSendCount(){
  
 public String getSendCount(int statues,String decollator){
 	String sendCount = "";
+	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
+		OrderProductManager.resetOrPMap();
+	}
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	 if(null != lists){
 		for(int g = 0 ;g<lists.size();g++){

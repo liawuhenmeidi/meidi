@@ -33,6 +33,10 @@ public class OrderProductManager {
 		return OrPMap;
 	}
 	
+	public static void resetOrPMap(){
+		 OrPMap = OrderProductManager.getOrderStatuesM();
+	}
+	
 	protected static Log logger = LogFactory.getLog(OrderProductManager.class);
 	   public boolean updateOrderStatues(User user, String type ,String oid){
 		   if(user.getUsertype() == 2  || user.getUsertype() == 1){

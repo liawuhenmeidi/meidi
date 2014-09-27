@@ -22,6 +22,9 @@ public class AfterMatchOrder {
 	private String UploadSideCount = "";
 	private int UploadSideOrderId = 0;
 	
+	public AfterMatchOrder() {
+		super();
+	}
 	public AfterMatchOrder(UploadOrder uploadOrder, Order dbOrder) {
 		setUploadOrder(uploadOrder);
 		setDBOrder(dbOrder);
@@ -155,4 +158,18 @@ public class AfterMatchOrder {
 	public void setUploadOrder(UploadOrder uploadOrder) {
 		this.uploadOrder = uploadOrder;
 	}
+	//给字符串加入<redTag class=\"style\"></redTag>标签，参数为加入的位置，比如:
+	//HighLighter("abcde",3,5) => abc<redTag class=\"style\">de</redTag>
+	public static String HighLighter(String inputString,int start,int end){
+		if(start<0||start>end||end>inputString.length()){
+			return inputString;
+		}
+		return inputString.substring(0,start) + "<redTag class=\"style\">" + inputString.substring(start,end) + "</redTag>" + inputString.substring(end);
+	}
+	
+	public void calcLevel(){
+		
+	}
+	
+	
 }
