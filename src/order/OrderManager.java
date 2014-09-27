@@ -19,19 +19,19 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import branch.Branch;
+import branch.BranchManager;
+
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
-
+import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
+ 
 import database.DB;
 import user.User;
 import user.UserManager;
 import utill.DBUtill;
 import utill.TimeUtill;
-
-
-
-
 
 public class OrderManager {
 	 protected static Log logger = LogFactory.getLog(OrderManager.class);
@@ -229,6 +229,11 @@ logger.info(pstmt);
 			    listsql.addAll(lists);   
 			}else if("tuihuo".equals(method)){     
 			    sql = "update mdorder set returnstatues = "+statues+" , returntime = '"+time+"'  where id in " + ids;
+			   // List<String> lists = InventoryBranchManager.chage(user, method, statues, id);
+			    //listsql.addAll(lists);   
+			
+			
+			
 			} else if("print".equals(method)){ //  
 				sql = "update mdorder set printSatues = "+statues+" where id in " + ids;
 			} else if("printdingma".equals(method)){    
@@ -271,7 +276,7 @@ logger.info(pstmt);
 		      listsql.addAll(lists);    
 		}else if(type == OrderPrintln.salerelease){        
 			sql = "update mdorder set sendId = 0, printSatuesp = 0  where id = " + id;
-			List<String> lists = InventoryBranchManager.chage(user,"salereleasesonghuo", user.getId(), id+"");    
+			  List<String> lists = InventoryBranchManager.chage(user,"salereleasesonghuo", user.getId(), id+"");    
 		      listsql.addAll(lists); 
 		}else if(type == OrderPrintln.salereleasesonghuo){          
 			//sql = "update mdorder set deliveryStatues = 3   where id = " + id;
@@ -283,8 +288,12 @@ logger.info(pstmt);
 			sql = "update mdorder set installid = 0,printSatuesp = 0  where id = " + id; 
 		}else if(type == OrderPrintln.modify){ 
 			return ;     
-		}else if(type == OrderPrintln.returns){  // releasedispatch 
+		}else if(type == OrderPrintln.returns){  // releasedispatch    
 			sql = "update mdorder set deliveryStatues  = (mdorder.deliveryStatues + 3)  where id = " + id;
+			List<String> lists = InventoryBranchManager.chage(user,"returns", uid, id+"");     
+		    listsql.addAll(lists); 
+			
+			
 		} else if(type == OrderPrintln.releasedispatch ){  // releasedispatch  
 			sql = "update mdorder set returnstatues = 2   where id = " + id; 
 		}            
@@ -354,12 +363,16 @@ logger.info(pstmt);
 			String sql = ""; 
 			if(Order.orderpeisong == type || Order.ordersong == type){ 
 				sql = "update mdorder set sendId = "+statues+"  , printSatuesp= 1  where id = " + id ;
-				  List<String> lists = InventoryBranchManager.chage(user,"orderpeisong", statues, id+""); 
+				  List<String> lists = InventoryBranchManager.chage(user,type+"", statues, id+""); 
 			      listsql.addAll(lists);     
 			}else if(Order.orderinstall == type){ 
 				sql = "update mdorder set installid = "+statues+" , printSatuesp= 1  where id = " + id ;
-			} else if(Order.orderreturn == type){ 
+			} else if(Order.orderreturn == type){  
 				sql = "update mdorder set returnid = "+statues+" , returnprintstatues = 1  where id = " + id ;
+				List<String> lists = InventoryBranchManager.chage(user, type+"", statues, id+"");
+			    listsql.addAll(lists);   
+			
+			
 			}   
 			listsql.add(sql); 
 			//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";

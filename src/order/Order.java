@@ -627,10 +627,12 @@ public String getCategory(){
 	String category = ""; 
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
-	for(int g = 0 ;g<lists.size();g++){   
-		String tempType = categorymap.get(Integer.valueOf(lists.get(g).getCategoryId())).getName();
-		category += (tempType == null || tempType.equals("null"))?"":tempType;
-	}  
+	 if(null != lists){
+		for(int g = 0 ;g<lists.size();g++){   
+			String tempType = categorymap.get(Integer.valueOf(lists.get(g).getCategoryId())).getName();
+			category += (tempType == null || tempType.equals("null"))?"":tempType;
+		}
+	 } 
 	return category;  
 }
 // 赠品
@@ -688,65 +690,75 @@ public String getCategory(){
 			}
 		return category;  
 	}
-
+ 
 public String getCategory(int statues,String decollator){   
-	String category = ""; 
+	String category = "";  
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
-	for(int g = 0 ;g<lists.size();g++){     
-		String tempType = categorymap.get(Integer.valueOf(lists.get(g).getCategoryId())).getName();
-		if(lists.get(g).getStatues() == statues){
-		   category += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);
+	if(lists != null){
+		for(int g = 0 ;g<lists.size();g++){     
+			String tempType = categorymap.get(Integer.valueOf(lists.get(g).getCategoryId())).getName();
+			if(lists.get(g).getStatues() == statues){
+			   category += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);
+			} 
 		} 
-	}  
+	}
 	return category; 
 }
 // 是否是顶码
 public String getSendType(){
 	String sendType = "";
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
-	for(int g = 0 ;g<lists.size();g++){
-		String tempType = lists.get(g).getSendType();
-			sendType += (tempType == null || tempType.equals("null"))?"":tempType;
-	}
+	 if(null != lists){	
+		for(int g = 0 ;g<lists.size();g++){
+				String tempType = lists.get(g).getSendType();
+					sendType += (tempType == null || tempType.equals("null"))?"":tempType;
+			}
+	 }
 	return sendType;
 }
 
 public String getSendType(int statues,String decollator){ 
 	String sendType = ""; 
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
-	for(int g = 0 ;g<lists.size();g++){
-		if(lists.get(g).getStatues() == statues){   
-			if(statues == 1){          
-				String tempType = lists.get(g).getSaleType();   
-				sendType += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);
-			}else {
-				String tempType = lists.get(g).getSendType(); 
-				sendType += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);
-			   }
+	if(lists != null){
+		for(int g = 0 ;g<lists.size();g++){
+			if(lists.get(g).getStatues() == statues){   
+				if(statues == 1){          
+					String tempType = lists.get(g).getSaleType();   
+					sendType += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);
+				}else {
+					String tempType = lists.get(g).getSendType(); 
+					sendType += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);
+				   }
+				}
+			   
 			}
-		   
-		}
+       }
 	return sendType;
 }
 
 public String getSendCount(){
 	String sendCount = "";
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
-	for(int g = 0 ;g<lists.size();g++){
-		  sendCount += lists.get(g).getCount();
-	}
+	 if(null != lists){
+		for(int g = 0 ;g<lists.size();g++){
+			  sendCount += lists.get(g).getCount();
+		}
+	 }
 	return sendCount;
 }
  
 public String getSendCount(int statues,String decollator){
 	String sendCount = "";
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
-	for(int g = 0 ;g<lists.size();g++){
-		if(lists.get(g).getStatues() == statues){
-		   sendCount += decollator + lists.get(g).getCount();
-		}
-	}
+	 if(null != lists){
+		for(int g = 0 ;g<lists.size();g++){
+			if(lists.get(g).getStatues() == statues){
+			   sendCount += decollator + lists.get(g).getCount();
+			}
+		} 
+	 }
 	return sendCount;
 }
   

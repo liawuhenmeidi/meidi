@@ -747,7 +747,7 @@ function adddetail(src){
 				    	   
 				    	 <%
 				    	 
-				    	  }else {
+				  }else {
 				    		  int statues = -1 ; 		  
 							    if(opmap.get(OrderPrintln.releasemodfy) != null){
 									OrderPrintln oppp = opmap.get(OrderPrintln.releasemodfy).get(o.getId());
@@ -764,8 +764,8 @@ function adddetail(src){
 		   安装公司处理中 
 		 <%}else if(statues == 2 || shifangstatues == 2){  
 		 %>
-		 <input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=statues %>','','<%=OrderPrintln.releasemodfy %>')"  value="同意"/>
-	     
+		 <input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=statues %>','','<%=OrderPrintln.modify %>')"  value="同意"/>
+	      
 		<%}else if(statues == -1){ %> 
 		<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=statues %>','','<%=OrderPrintln.releasemodfy %>')"  value="同意"/>
 		<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=statues %>','','<%=OrderPrintln.releasemodfy %>')"  value="不同意"/>
