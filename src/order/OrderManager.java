@@ -179,13 +179,13 @@ logger.info(pstmt);
 				List<OrderPrintln> list = OrderPrintlnManager.getOrderPrintlnbyOrderid(Integer.valueOf(idd));
 				for(int i=0;i<list.size();i++){ 
 					OrderPrintln o = list.get(i);  
-					if(o.getType() == OrderPrintln.modify && o.getStatues() != 4 && !"tuihuo".equals(method) && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method) && "orderover".equals(method)){
+					if(o.getType() == OrderPrintln.modify && o.getStatues() != 4 && !"tuihuo".equals(method) && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method) && !"orderover".equals(method)){
 						//logger.info(1); 
 						return OrderPrintln.modify;
-					}else if(o.getType() == OrderPrintln.returns && o.getStatues() != 4 && !"tuihuo".equals(method) && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method) && "orderover".equals(method)){
+					}else if(o.getType() == OrderPrintln.returns && o.getStatues() != 4 && !"tuihuo".equals(method) && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method) && !"orderover".equals(method)){
 						//logger.info(1);   
-						return 20 ;   
-					}else if(o.getType() == OrderPrintln.unmodify && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method)  && "orderover".equals(method)){
+						return 20 ;    
+					}else if(o.getType() == OrderPrintln.unmodify && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method)  && !"orderover".equals(method)){
 						//logger.info(1);   
 						return OrderPrintln.unmodify ;  
 					} 
