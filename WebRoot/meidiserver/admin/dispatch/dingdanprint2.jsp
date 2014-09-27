@@ -373,34 +373,9 @@ function adddetail(src){
 		</td>    
 		 
 		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
+		    
 		 
-		<%   
-		     String gstatues = ""; ;
-		     String gtype = "";
-		     String gcountt = ""; 
-		      
-		     List<Gift> glists = gMap.get(o.getId());
-		     
-		     if(null != glists){
-		
-		     for(int g = 0 ;g<glists.size();g++){
-		    	 
-		    	 Gift op = glists.get(g);
-		    	 if(null !=op){ 
-		    		 gtype += op.getName()+"</p>";
-			         gcountt += op.getCount()+"</p>";
-			         String statues = "";
-			         if(0==op.getStatues()){
-			        	 statues = "需配送";
-			         }else {
-			        	 statues = "已自提";
-			         }
-			         gstatues += statues +"</p>";
-		    	 }
-		     } 
-		     }  
-		     %>   
-		 
+		   
 		
 		<td align="center"><%=o.getOdate() %></td>
 		<td align="center"><%=o.getLocate()%></td>

@@ -418,35 +418,10 @@ function adddetail(src){
 		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
 		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>  
 		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>   
-		<% 
-		     String gstatues = ""; ;
-		     String gtype = "";
-		     String gcountt = ""; 
-		     
-		     List<Gift> glists = gMap.get(o.getId());
-		     
-		     if(null != glists){
-		
-		     for(int g = 0 ;g<glists.size();g++){
-		    	 
-		    	 Gift op = glists.get(g);
-		    	 if(null !=op ){ 
-		    		 gtype += op.getName()+"</p>";
-			         gcountt += op.getCount()+"</p>";
-			         String statues = "";
-			         if(0==op.getStatues()){
-			        	 statues = "需配送";
-			         }else { 
-			        	 statues = "已自提";
-			         }
-			         gstatues += statues +"</p>";
-		    	 }
-		     }
-		     }
-		     %> 
-		 <td align="center"><%=gtype%></td>
-		 <td align="center"><%=gcountt%></td>
-		 <td align="center"><%=gstatues%></td> 
+		<td align="center" ><%= o.getGifttype("</p>")%></td>  
+		<td align="center" ><%= o.getGifcount("</p>")%></td>  
+		<td align="center" ><%= o.getGifStatues("</p>")%></td>
+		 
 		<td align="center"><%=o.getSaleTime() %></td>
 		<td align="center"><%=o.getOdate() %></td>
 		<td align="center"><%=o.getLocate()%></td>

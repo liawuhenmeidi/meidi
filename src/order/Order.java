@@ -1,16 +1,19 @@
 package order;
 
 import gift.Gift;
+import gift.GiftManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import category.Category;
 import category.CategoryManager;
 
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
+import user.User;
  
 public class Order {
   
@@ -630,7 +633,61 @@ public String getCategory(){
 	}  
 	return category;  
 }
+// 赠品
+ public String getGifttype(String decollator){    
+	String category = "";   
+	Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(new User());
+	 List<Gift> lists = gMap.get(this.getId());  
+	 if(null != lists){
+		     for(int g = 0 ;g<lists.size();g++){
+		    	 Gift op = lists.get(g);
+		    	 if(null !=op ){
+		    		 category += decollator + op.getName();
+		    	 }
+		     } 
+		}
+	return category;  
+}
 
+ public String getGifcount(String decollator){   
+		String category = "";   
+		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(new User());
+		 List<Gift> lists = gMap.get(this.getId()); 
+		 if(null != lists){ 
+			     for(int g = 0 ;g<lists.size();g++){
+			    	 Gift op = lists.get(g);
+			    	 if(null !=op ){
+			    		 category += decollator +  op.getCount();
+			     }
+			}
+		 } 
+		return category;  
+	}
+  
+ public String getGifStatues(String decollator){   
+		String category = "";   
+		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(new User());
+		 List<Gift> lists = gMap.get(this.getId()); 
+		 if(null != lists){ 
+			     for(int g = 0 ;g<lists.size();g++){
+			    	 Gift op = lists.get(g);
+			    	 if(null !=op ){
+			    		 if(0==op.getStatues()){
+			    			 category = "需配送";
+				         }else if(1 == op.getStatues()) {
+				        	 category = "已自提";
+				         }else if(9 == op.getStatues()) { 
+				        	 category = "只安装(门店提货)";
+				         }else if(10 == op.getStatues()) {
+				        	 category = "只安装(顾客已提)";
+				         } 
+			    		 category += decollator +  op.getCount();
+			    	 } 
+			    		
+			     } 
+			}
+		return category;  
+	}
 
 public String getCategory(int statues,String decollator){   
 	String category = ""; 

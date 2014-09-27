@@ -412,62 +412,15 @@ function seletall(all){
 		<td align="center"><%= o.getCategory(0,"</p>")%></td>  
 		<td align="center" ><%=o.getSendType(0,"</p>")%></td>  
 		<td align="center" ><%= o.getSendCount(0,"</p>")%></td>   
-		<% 
-		     String gstatues = ""; ;
-		     String gtype = "";
-		     String gcountt = ""; 
-		      
-		     List<Gift> glists = gMap.get(o.getId());
-		     
-		     if(null != glists){
-		
-		     for(int g = 0 ;g<glists.size();g++){
-		    	 
-		    	 Gift op = glists.get(g);
-		    	 if(null !=op && 0==op.getStatues()){ 
-		    		 gtype += op.getName()+"</p>";
-			         gcountt += op.getCount()+"</p>";
-			         String statues = "";
-			         if(0==op.getStatues()){
-			        	 statues = "需配送";
-			         }else {
-			        	 statues = "已自提";
-			         }
-			         gstatues += statues +"</p>";
-		    	 }
-		     }
-		     }
-		     %> 
-		 <td align="center"><%=gtype%></td>
-		 <td align="center"><%=gcountt%></td>
-		 <td align="center"><%=gstatues%></td> 
+		<td align="center" ><%= o.getGifttype("</p>")%></td>  
+		<td align="center" ><%= o.getGifcount("</p>")%></td>  
+		<td align="center" ><%= o.getGifStatues("</p>")%></td>
 		
 		<td align="center"><%=o.getOdate() %></td>
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>
 		<td align="center">
-		<%
-		// 0 表示未送货  1 表示正在送  2 送货成功
-		 if(0 == o.getDeliveryStatues()){
-		%>
-		 未发货
-		<%
-          }else if(1 == o.getDeliveryStatues()){
-
-		%>
-		已送货
-		<%
-          }else if(2 == o.getDeliveryStatues()){
-		%>
-	      已安装
-		<%
-          }else if(3 == o.getDeliveryStatues()){
-		%>
-		
-		 已退货
-		<%
-          }
-		%>
+		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
 		</td>
 		
 		

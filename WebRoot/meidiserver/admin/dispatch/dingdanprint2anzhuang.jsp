@@ -385,7 +385,7 @@ function adddetail(src){
 		 未打印
 		<%
          }else if(1 == o.getPrintSatuesP()){
-        	
+        	 
 		%>
 		已打印
 		<%
