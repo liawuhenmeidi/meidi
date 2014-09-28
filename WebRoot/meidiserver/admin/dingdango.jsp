@@ -1,40 +1,9 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%  
+<%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+ 
+<%@ include file="searchdynamic.jsp"%>
+ <%  
   
 request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
- 
-String pageNum = request.getParameter("page");
-String numb = request.getParameter("numb");
-String sort = request.getParameter("sort");
-
-if(StringUtill.isNull(pageNum)){
-	pageNum = "1"; 
-}
-if(StringUtill.isNull(numb)){
-	numb = "100";
-}
-if(StringUtill.isNull(sort)){
-	sort = "id desc"; 
-}
-int count = 0;
-int Page = Integer.valueOf(pageNum);
-
-System.out.println("Page"+Page);
-
-int num = Integer.valueOf(numb);
-if(Page <=0){
-	Page =1 ;
-}
-//String sear = (String)session.getAttribute("sear");
-//if(StringUtill.isNull(sear)){ 
-//	sear = ""; 
-//}
-String sear = "";
-String searched = request.getParameter("searched");
-if("searched".equals(searched)){
-	sear = HttpRequestUtill.getSearch(request);
-}
 
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.go,num,Page,sort,sear);
 session.setAttribute("exportList", list); 

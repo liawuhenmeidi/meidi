@@ -1,45 +1,13 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-  
+<%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+ 
+<%@ include file="../searchdynamic.jsp"%>
+    
 <%  
 
 request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
-int id = user.getId(); 
-String serchProperty = ""; 
-String pageNum = request.getParameter("page");
-String numb = request.getParameter("numb");
-String sort = request.getParameter("sort");
-if(StringUtill.isNull(pageNum)){
-	pageNum = "1"; 
-}
-if(StringUtill.isNull(numb)){
-	numb = "100";
-}
-if(StringUtill.isNull(sort)){
-	sort = "id desc"; 
-}
-int count = 0;
-int Page = Integer.valueOf(pageNum);
 
-
-int num = Integer.valueOf(numb);
-if(Page <=0){ 
-	Page =1 ;
-}
-List<Order> list = null ;
-//String sear = (String)session.getAttribute("sear");
-//if(StringUtill.isNull(sear)){ 
-//	sear = ""; 
-//}
-String sear = "";
-String searched = request.getParameter("searched");
-if("searched".equals(searched)){
-	sear = HttpRequestUtill.getSearch(request);
-}
-
-  
 //list = OrderManager.getOrderlistPrintlnSend(user,Group.sencondDealsend,Integer.valueOf(num),Page,sort);  
-list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderPrint,num,Page,sort,"");  
+List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderPrint,num,Page,sort,"");  
 session.setAttribute("exportList", list); 
 count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.orderPrint,num,Page,sort,"");  
 Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);

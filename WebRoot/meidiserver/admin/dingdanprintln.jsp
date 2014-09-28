@@ -1,60 +1,9 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-
+<%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+ 
+<%@ include file="searchdynamic.jsp"%>
+ 
 <%   
 request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
-
-HashMap<Integer,User> usermap = UserManager.getMap();
- 
-String pageNum = request.getParameter("page");
-//String pageNum = (String)session.getAttribute("page");
-//String numb = (String)session.getAttribute("numb");
-String numb = request.getParameter("numb");  
-String sort = request.getParameter("sort");
-
-System.out.println("sortss"+sort);
- 
-if(!StringUtill.isNull(sort)){
-	session.setAttribute("sort", sort);
-} 
-if(!StringUtill.isNull(numb)){
-	session.setAttribute("numb", numb);
-}
-
-//String sear = request.getParameter("sear");
-
-
-
-if(StringUtill.isNull(pageNum)){
-	pageNum = "1";  
-}
-if(StringUtill.isNull(numb)){
-	numb = "100";
-}
-
-if(StringUtill.isNull(sort)){
-	sort = "id desc";  
-}
-
-
-int count = 0;
-int Page = Integer.valueOf(pageNum);
-//System.out.println("Page"+Page+"sort"+sort);
-
-int num = Integer.valueOf(numb);
-if(Page <=0){
-	Page =1 ;
-}
-
-//String sear = (String)session.getAttribute("sear");
-//if(StringUtill.isNull(sear)){ 
-//	sear = ""; 
-//}
-String sear = "";
-String searched = request.getParameter("searched");
-if("searched".equals(searched)){
-	sear = HttpRequestUtill.getSearch(request);
-} 
 
   
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.serach,num,Page,sort,sear); 

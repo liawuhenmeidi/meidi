@@ -1,53 +1,10 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-
-<%      
-
-request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
-int count = 0 ;   
-int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
-String pageNum = request.getParameter("page");
-String numb = request.getParameter("numb");  
-String sort = request.getParameter("sort");  
-int opstatues = OrderPrintln.releasedispatch;   
-//String sear = (String)session.getAttribute("sear");
-//if(StringUtill.isNull(sear)){ 
-//	sear = ""; 
-//}  
-String sear = "";
-if(!StringUtill.isNull(sort)){
-	session.setAttribute("sort", sort);
-}else {
-	sort = "id desc";   
-}  
+<%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
-if(!StringUtill.isNull(numb)){
-	session.setAttribute("numb", numb);
-}else {
-	numb = "100";
-}
-
-
-if(StringUtill.isNull(pageNum)){
-	pageNum = "1"; 
-} 
-
-
-int Page = Integer.valueOf(pageNum);
-
-int num = Integer.valueOf(numb);
-
-if(Page <=0){
-	Page =1 ;
-}
-
-String searched = request.getParameter("searched");
+<%@ include file="searchdynamic.jsp"%>
+    
+<%       
  
-if("searched".equals(searched)){
-	sear = HttpRequestUtill.getSearch(request);
-}  
-
-
+request.setCharacterEncoding("utf-8"); 
 
 List<Order> listnew = new ArrayList<Order>(); 
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
@@ -268,9 +225,11 @@ function changes(str1,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type)
 			         url: "server.jsp",   
 			         data:"method=dingdaned&id="+str1+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 			         dataType: "",  
-			         success: function (data) {  
-			        	 window.location.href="print.jsp?id="+oid+"&type="+type ;
-			           }, 
+			         success: function (data) {
+			        	 if(data == true){
+			        		 window.location.href="print.jsp?id="+oid+"&type="+type ;
+			        	 }
+			           },  
 			         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 			            } 
 			           });
