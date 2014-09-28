@@ -165,6 +165,11 @@ logger.info(pstmt);
 		
 		
 	}
+	
+	//by wilsonlee
+	public static int updateStatues(String method ,int statues,String id) {
+		return updateStatues(new User(),method,statues,id);
+	}
 	 // 确认厂送票已回
 		public static int updateStatues(User user ,String method ,int statues,String id) {
 			List<String> listsql = new ArrayList<String>(); 

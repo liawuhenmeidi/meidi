@@ -21,8 +21,8 @@ public class TestMatchOrder {
 //		if(auto.length > 0){
 //			//System.out.println("啊啊");
 //		}
-		String[] a = {};
-		System.out.println(a.length);
+		String a = "苏宁南楼";
+		System.out.println(a.substring(2,4));
 		
 	}
 	

@@ -181,6 +181,7 @@ public class AfterMatchOrder {
 		if(start<0||start>end||end>inputString.length()){
 			return inputString;
 		}
+		System.out.println("inputString = " + inputString + "start = " + start + "end = " + end);
 		return inputString.substring(0,start) + "<redTag class=\"style\">" + inputString.substring(start,end) + "</redTag>" + inputString.substring(end);
 	}
 	
@@ -194,11 +195,14 @@ public class AfterMatchOrder {
 	//计算相似度
 	public void calcLevel(){
 		
+		String key = "";
 		//对比posNo
-		String tempDB = this.getDBOrder().getPos();
-		String tempUpLoad = this.getUploadOrder().getPosNo();
+		String tempDB = this.getDBOrder().getPos().trim();
+		String tempUpLoad = this.getUploadOrder().getPosNo().trim();
 		if(tempDB.equals(tempUpLoad)){
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
+			this.setDBSidePosNo(HighLighter(tempDB));
+			this.setUploadSidePosNo(HighLighter(tempUpLoad));
 		}else{
 		//模糊对比posNo
 			int start = 0;
@@ -236,6 +240,7 @@ public class AfterMatchOrder {
 		//对比saleTime
 		tempDB = this.getDBOrder().getSaleTime();
 		tempUpLoad = this.getUploadOrder().getSaleTime();
+		tempDB = tempDB.length() > 10 ? tempDB.substring(0,10):tempDB;
 		if(tempDB.replace("-", "").equals(tempUpLoad)){
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setDBSideSaleTime(HighLighter(tempDB));
@@ -244,13 +249,14 @@ public class AfterMatchOrder {
 		//无模糊对比
 		}
 		
-		//对比saleTime
-		tempDB = this.getDBOrder().getSendtime();
+		//对比DealTime
+		tempDB = this.getDBOrder().getOdate();
 		tempUpLoad = this.getUploadOrder().getDealTime();
+		tempDB = tempDB.length() > 10 ? tempDB.substring(0,10):tempDB;
 		if(tempDB.replace("-", "").equals(tempUpLoad)){
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
-			this.setDBSideSaleTime(HighLighter(tempDB));
-			this.setUploadSideSaleTime(HighLighter(tempUpLoad));
+			this.setDBSideDealTime(HighLighter(tempDB));
+			this.setUploadSideDealTime(HighLighter(tempUpLoad));
 		}else{
 		//无模糊对比
 		}
@@ -267,9 +273,10 @@ public class AfterMatchOrder {
 		}
 			
 		//对比门店名称
-		tempDB = this.getDBOrder().getBranch();
-		tempUpLoad = this.getUploadOrder().getShop();
-		if(tempUpLoad.contains(tempDB.replace("苏宁", "").replace("店", ""))){
+		tempDB = this.getDBOrder().getBranch().trim();
+		tempUpLoad = this.getUploadOrder().getShop().trim();
+		key = tempDB.replace("苏宁", "").replace("店", "");
+		if(tempUpLoad.contains(key)){
 			//精准对比
 			if(tempUpLoad.equals(tempDB)){
 				this.setCompareLevel(this.getCompareLevel() + 1.0);
@@ -278,15 +285,16 @@ public class AfterMatchOrder {
 			}else{
 			//模糊对比
 				this.setCompareLevel(this.getCompareLevel() + 0.5);
-				this.setDBSideShop(HighLighter(tempDB,tempDB.indexOf(tempDB.replace("苏宁", "").replace("店", "")),tempDB.replace("苏宁", "").replace("店", "").length()));
-				this.setUploadSideShop(HighLighter(tempUpLoad,tempDB.indexOf(tempDB.replace("苏宁", "").replace("店", "")),tempDB.replace("苏宁", "").replace("店", "").length()));
+				this.setDBSideShop(HighLighter(tempDB,tempDB.indexOf(key),tempDB.indexOf(key) + key.length()));
+				this.setUploadSideShop(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()));
 			}
 		}
 		
 		//对比型号
-		tempDB = this.getDBOrder().getSendType();
-		tempUpLoad = this.getUploadOrder().getType();
-		if(tempUpLoad.contains(tempDB.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", ""))){
+		tempDB = this.getDBOrder().getSendType().trim();
+		tempUpLoad = this.getUploadOrder().getType().trim();
+		key = tempDB.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "");
+		if(tempUpLoad.contains(key)){
 			//精准对比
 			if(tempUpLoad.equals(tempDB)){
 				this.setCompareLevel(this.getCompareLevel() + 1.0);
@@ -294,8 +302,8 @@ public class AfterMatchOrder {
 				this.setUploadSideType(HighLighter(tempUpLoad));
 			}else{
 				this.setCompareLevel(this.getCompareLevel() + 0.5);
-				this.setDBSideType(HighLighter(tempDB,tempDB.indexOf(tempDB.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "")),tempDB.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "").length()));
-				this.setUploadSideType(HighLighter(tempUpLoad,tempDB.indexOf(tempDB.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "")),tempDB.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "").length()));
+				this.setDBSideType(HighLighter(tempDB,tempDB.indexOf(key),tempDB.indexOf(key) + key.length()));
+				this.setUploadSideType(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()));
 			}
 		}		
 					

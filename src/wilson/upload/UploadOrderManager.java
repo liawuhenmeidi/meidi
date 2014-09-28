@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import order.Order;
+import order.OrderManager;
+
 import database.DB;
 
 public class UploadOrderManager {
@@ -29,52 +32,77 @@ public class UploadOrderManager {
 	
 	public static boolean checkOrder(int uploadOrderId,int dbOrderId){
 		boolean flag = false;
-		String sql = "update uploadorder set checked = ? ,checkedtime = ? ,checkorderid= ? where id = " + uploadOrderId;
 		Connection conn = DB.getConn();
-		
+		String sql = "update uploadorder set checked = ? ,checkedtime = ? ,checkorderid= ? where id = " + uploadOrderId;
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		
 		try {
+			boolean autocommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);  // 事务开始  
 			pstmt.setInt(1,0);
 			pstmt.setString(2, fmt.format(new Date()));
 			pstmt.setInt(3, dbOrderId);
-			int count = pstmt.executeUpdate();
-			if(count > 0){
-				flag = true ;
+			pstmt.executeUpdate();
+			if(OrderManager.updateStatues("orderCharge",Order.query, String.valueOf(dbOrderId)) != 1){
+				throw new SQLException();
 			}
+			conn.commit();   // 提交给数据库处理   
+			conn.setAutoCommit(autocommit);
+			flag = true ;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				System.out.println("roll back失败!");
+			}
 		} finally {
 			DB.close(pstmt);
 			DB.close(conn);
 		}
 		return flag ;  
+		
 	}
 	
 	public static boolean checkOrder(String[] idString){
 		int DBOrderID = 0;
 		int UploadOrderID = 0;
-		for(int i = 0 ; i < idString.length ; i ++){
-			DBOrderID = Integer.parseInt(idString[i].split(",")[0]);
-			UploadOrderID = Integer.parseInt(idString[i].split(",")[1]);
-		}
-		
 		boolean flag = false;
-		String sql = "update uploadorder set checked = ? ,checkedtime = ?,checkorderid=? where id = " + UploadOrderID;
 		Connection conn = DB.getConn();
-		
+		String sql = "update uploadorder set checked = ? ,checkedtime = ?,checkorderid=? where id = ?";
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
 		try {
-			pstmt.setInt(1,0);
-			pstmt.setString(2, fmt.format(new Date()));
-			pstmt.setInt(3,DBOrderID);
-			int count = pstmt.executeUpdate();
-			if(count > 0){
-				flag = true ;
+			boolean autocommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);  // 事务开始  
+			for(int i = 0 ; i < idString.length ; i ++){
+				DBOrderID = Integer.parseInt(idString[i].split(",")[0]);
+				UploadOrderID = Integer.parseInt(idString[i].split(",")[1]);
+				pstmt.setInt(1,0);
+				pstmt.setString(2, fmt.format(new Date()));
+				pstmt.setInt(3,DBOrderID);
+				pstmt.setInt(4, UploadOrderID);
+				pstmt.executeUpdate();
+				if(OrderManager.updateStatues("orderCharge",Order.query, String.valueOf(DBOrderID)) != 1){
+					throw new SQLException();
+				}
 			}
+			conn.commit();
+			conn.setAutoCommit(autocommit);
+			flag = true ;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				System.out.println("roll back失败!");
+				e1.printStackTrace();
+			}
 		} finally {
 			DB.close(pstmt);
 			DB.close(conn);

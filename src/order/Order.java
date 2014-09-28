@@ -722,8 +722,8 @@ public String getSendType(){
 	 if(null != lists){	
 		for(int g = 0 ;g<lists.size();g++){
 				String tempType = lists.get(g).getSendType();
-					sendType += (tempType == null || tempType.equals("null"))?"":tempType;
-			}
+				sendType += (tempType == null || tempType.equals("null"))?"":tempType + "|";
+		}
 	 }
 	return sendType;
 }
@@ -751,15 +751,15 @@ public String getSendType(int statues,String decollator){
 	return sendType;
 }
 
-public int getSendCount(){
-	int sendCount = 0;
+public String getSendCount(){
+	String sendCount = "";
 	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
 		OrderProductManager.resetOrPMap();
 	}
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	 if(null != lists){
 		for(int g = 0 ;g<lists.size();g++){
-			  sendCount += lists.get(g).getCount();
+			  sendCount += lists.get(g).getCount() + "|";
 		}
 	 }
 	return sendCount;

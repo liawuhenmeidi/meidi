@@ -38,10 +38,10 @@ public class MatchOrderManager {
 	public static boolean checkOrder(int DBOrderID,int UploadOrderID){
 		//消除DB中的Order
 		//a.b();
-		
-		
+		//对照好了消除
+		//OrderManager.updateStatues("orderCharge",Order.query, String.valueOf(DBOrderID)); 
 		//消除Upload中的Order
-		if(UploadOrderManager.checkOrder(UploadOrderID, DBOrderID)){
+		if(UploadOrderManager.checkOrder(UploadOrderID,DBOrderID )){
 			return true;
 		}
 

@@ -104,8 +104,7 @@ public class MatchOrder {
 		List <Order> unCheckedDBOrders = new ArrayList<Order>();
 		unCheckedDBOrders = MatchOrderManager.getUnCheckedDBOrders();
 		return unCheckedDBOrders;
-		//对照好了消除
-		//int statues = OrderManager.updateStatues(user,"orderCharge",Order.query, id); 
+		
 	}
 	
 	public static List<UploadOrder> getUnCheckedUploadOrders(){
