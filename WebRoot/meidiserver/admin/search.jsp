@@ -161,19 +161,11 @@ function add(){
 		  alert("您已选择"+value+"搜索");    
 	  }
 	}
- 
- 
-
-
 </script>
-
-<form action="">  
-<input type="hidden" name="searched" value="searched"/>
-<input type="hidden" name="page" value="<%=pageNum%>"/> 
-<input type="hidden" name="numb" value="<%=numb %>"/>
-<input type="hidden" name="sort" value="<%=sort %>"/>
  
-<div id="search">     
+<form action="">  
+ <input type="hidden" name="searched" value="searched"/>
+<div id="search">      
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <select id="serch" name="serch"> 
     <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>

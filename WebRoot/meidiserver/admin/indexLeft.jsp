@@ -165,6 +165,8 @@ User user = (User)session.getAttribute("user");
                <% 
                 
                } %>
+              
+                <p ><a href="dispatch/dingdanquery.jsp"  target="contentpage">送货确认页</a></p> 
                <p ><a href="dispatch/dingdan_chargep.jsp"  target="contentpage">送货结款</a></p> 
                <p ><a href="dispatch/dingdanpeidan2anzhuang.jsp"  target="contentpage">安装派工</a></p> 
              <!--   <p ><a href="dispatch/dingdanprint2anzhuang.jsp"  target="contentpage">安装打印</a></p> -->

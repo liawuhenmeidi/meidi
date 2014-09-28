@@ -42,8 +42,15 @@ if("peidan".equals(method)){
 	if(StringUtill.isNull(uid)){
 		uid = "-1"; 
 	}     
-	System.out.println("uid"+uid);
-	OrderPrintlnManager.updateOrderStatues(user,Integer.valueOf(id),Integer.valueOf(oid),Integer.valueOf(uid),Integer.valueOf(statues)); 
+	System.out.println("uid"+uid); 
+	boolean flag= OrderPrintlnManager.updateOrderStatues(user,Integer.valueOf(id),Integer.valueOf(oid),Integer.valueOf(uid),Integer.valueOf(statues)); 
+	response.getWriter().write(""+flag); 
+	response.getWriter().flush(); 
+	response.getWriter().close(); 
+
+
+
+
 }else if("category_add".equals(method)){     
 	String categoryName = request.getParameter("categoryName");
 	boolean b = CategoryManager.getName(categoryName);

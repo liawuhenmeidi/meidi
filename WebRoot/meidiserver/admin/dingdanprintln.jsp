@@ -1,121 +1,9 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-
+<%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+ 
+<%@ include file="searchdynamic.jsp"%>
+ 
 <%   
 request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
-
-HashMap<Integer,User> usermap = UserManager.getMap();
- 
-String pageNum = request.getParameter("page");
-//String pageNum = (String)session.getAttribute("page");
-//String numb = (String)session.getAttribute("numb");
-String numb = request.getParameter("numb");  
-String sort = request.getParameter("sort");
-
-System.out.println("sortss"+sort);
- 
-if(!StringUtill.isNull(sort)){
-	session.setAttribute("sort", sort);
-} 
-if(!StringUtill.isNull(numb)){
-	session.setAttribute("numb", numb);
-}
-
-//String sear = request.getParameter("sear");
-
-
-
-if(StringUtill.isNull(pageNum)){
-	pageNum = "1";  
-}
-if(StringUtill.isNull(numb)){
-	numb = "100";
-}
-
-if(StringUtill.isNull(sort)){
-	sort = "id desc";  
-}
-
-
-int count = 0;
-int Page = Integer.valueOf(pageNum);
-//System.out.println("Page"+Page+"sort"+sort);
-
-int num = Integer.valueOf(numb);
-if(Page <=0){
-	Page =1 ;
-}
-
-//String sear = (String)session.getAttribute("sear");
-//if(StringUtill.isNull(sear)){ 
-//	sear = ""; 
-//}
-String sear = "";
-String searched = request.getParameter("searched");
-if("searched".equals(searched)){
-	
-	String[] search = request.getParameterValues("search");
-	if(search != null){ 
-		for(int i = 0 ;i<search.length;i++){
-			String str = search[i];
-			
-			boolean fflag = false ;  
-			if("saledate".equals(str) || "andate".equals(str) || "dealsendTime".equals(str)){
-				String start = request.getParameter(str+"start");
-				String end = request.getParameter(str+"end");
-				boolean flag = false ; 
-				if(start != null && start != "" && start != "null"){
-					sear += " and " + str + "  BETWEEN '" + start + "'  and  ";
-				    flag = true ;
-				}   
-				if(end != null && end != "" && end != "null"){
-					sear += " '" + end + "'";
-				}else if(flag){ 
-					sear += "now()";
-				}      
-			}else if("sendtype".equals(str) || "saletype".equals(str)){
-				String strr = request.getParameter(str); 
-				if(strr != "" && strr != null){   
-					//sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-					sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-				}  // giftName
-			}else if("sendtype".equals(str) || "saletype".equals(str)){
-				String strr = request.getParameter(str); 
-				if(strr != "" && strr != null){   
-					//sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-					sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-				}  // giftName
-			}else if("categoryname".equals(str)){
-				String strr = request.getParameter(str); 
-				if(strr != "" && strr != null){    
-					//sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-					sear += " and id in ( select orderid  from mdorderproduct where categoryID in (select id  from mdcategory where " + str + " like '%" + strr +"%'))";
-				}  // giftName
-			}else if("giftName".equals(str) || "statues".equals(str)){ 
-				String strr = request.getParameter(str);  
-				if(strr != "" && strr != null){    
-					sear += " and id in (select orderid  from mdordergift where " + str + " like '%" + strr +"%')"; 
-				}  // giftName
-			}else if("dealSendid".equals(str) || "saleID".equals(str) || "sendId".equals(str) || "installid".equals(str)){
-				String strr = request.getParameter(str);
-				if(strr != "" && strr != null){ 
-				  sear += " and " + str + " in (select id from mduser  where username like '%" + strr +"%')"; 
-				}
-			}else {     
-				String strr = request.getParameter(str);
-				if(strr != "" && strr != null){
-				  sear += " and " + str + " like '%" + strr +"%'"; 
-				}  
-			}
-		} 	
-	}else { 
-		sear = "";
-	} 
-	
-	//session.setAttribute("sear", sear); 
-	
-}
-  
 
   
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.serach,num,Page,sort,sear); 
@@ -125,12 +13,7 @@ count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.serach,num,Pa
 
 List<User> listS = UserManager.getUsers(user,Group.sencondDealsend);   
 
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
-//System.out.println("%%%%%"+gMap);     
-//修改申请      
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
 %>

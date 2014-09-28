@@ -1,111 +1,21 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-  
-<%  
-
-request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
-int id = user.getId();  
-int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
-int opstatues = OrderPrintln.release; 
-
-String serchProperty = ""; 
-String pageNum = request.getParameter("page");
-String numb = request.getParameter("numb");
-
-String sort = request.getParameter("sort");
-if(StringUtill.isNull(pageNum)){
-	pageNum = "1"; 
-}
-if(StringUtill.isNull(numb)){
-	numb = "100";
-}
-if(StringUtill.isNull(sort)){ 
-	sort = "id"; 
-}
-
-int count = 0;
-int Page = Integer.valueOf(pageNum);
-
-System.out.println("Page"+Page);
-
-int num = Integer.valueOf(numb);
-if(Page <=0){ 
-	Page =1 ;
-} 
-List<Order> list = null ;
-//String sear = (String)session.getAttribute("sear");
-//if(StringUtill.isNull(sear)){ 
-//	sear = ""; 
-//}
-String sear = "";
-String searched = request.getParameter("searched");
-if("searched".equals(searched)){
-	
-	String[] search = request.getParameterValues("search");
-	if(search != null){ 
-		for(int i = 0 ;i<search.length;i++){
-			String str = search[i];
-			
-			boolean fflag = false ;  
-			if("saledate".equals(str) || "andate".equals(str)){
-				String start = request.getParameter(str+"start");
-				String end = request.getParameter(str+"end");
-				boolean flag = false ; 
-				if(start != null && start != "" && start != "null"){
-					sear += " and " + str + "  BETWEEN '" + start + "'  and  ";
-				    flag = true ;
-				}   
-				if(end != null && end != "" && end != "null"){
-					sear += " '" + end + "'";
-				}else if(flag){ 
-					sear += "now()";
-				}      
-			}else if("categoryname".equals(str) || "sendtype".equals(str) || "saletype".equals(str)){
-				String strr = request.getParameter(str); 
-				if(strr != "" && strr != null){   
-					sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')"; 
-				}  // giftName
-			}else if("giftName".equals(str) || "statues".equals(str)){ 
-				String strr = request.getParameter(str);  
-				if(strr != "" && strr != null){    
-					sear += " and id in (select orderid  from mdordergift where " + str + " like '%" + strr +"%')"; 
-				}  // giftName
-			}else if("dealSendid".equals(str) || "saleID".equals(str) || "sendId".equals(str)){
-				String strr = request.getParameter(str);
-				if(strr != "" && strr != null){ 
-				  sear += " and " + str + " in (select id from mduser  where username like '%" + strr +"%')"; 
-				}
-			}else {     
-				String strr = request.getParameter(str);
-				if(strr != "" && strr != null){
-				  sear += " and " + str + " like '%" + strr +"%'"; 
-				}  
-			}
-		} 	
-	}else { 
-		sear = "";
-	} 
-	
-	//session.setAttribute("sear", sear); 
-	
-}
+<%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
+<%@ include file="searchdynamic.jsp"%>
+    
+<%  
+  
+request.setCharacterEncoding("utf-8");
+
 //list = OrderManager.getOrderlistl(user,Group.sencondDealsend,"",sort); 
      
-list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.pcharge,num,Page,sort,sear);  
+List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.pcharge,num,Page,sort,sear);  
 count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.pcharge,num,Page,sort,sear);  
      
 HashMap<Integer,User> usermap = UserManager.getMap(); 
 //获取送货员    
 Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
 List<User> listS = UserManager.getUsers(user,Group.send);
-    
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
-
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
-
-Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,3);
-
+   
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
