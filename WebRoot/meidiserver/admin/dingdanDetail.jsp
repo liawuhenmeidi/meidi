@@ -8,27 +8,16 @@ User user = (User)session.getAttribute("user");
 String id = request.getParameter("id");
 
 Order o = OrderManager.getOrderID(user,Integer.valueOf(id));
-  
+   
 HashMap<Integer,User> usermap = UserManager.getMap();
         
 //获取二次配单元（工队）
 List<User> listS = UserManager.getUsers(user ,Group.sencondDealsend);   
   
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
- 
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
-
 
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
 Message message = MessageManager.getMessagebyoid(id); 
-//修改申请
-//Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,OrderPrintln.modify);
-// 退货申请
-//Map<Integer,OrderPrintln> opMap1 = OrderPrintlnManager.getOrderStatues(user,OrderPrintln.returns); 
-  
-//Map<Integer,OrderPrintln> opMap2 = OrderPrintlnManager.getOrderStatues(user,OrderPrintln.release);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -244,7 +233,7 @@ function checkedd(){
 </div>
 
 
-
+ 
 <br/>  
 
 <div id="wrap"> 
@@ -255,60 +244,8 @@ function checkedd(){
 <table  cellspacing="1"  id="table" style="background-color:black" > 
        <%  
 		String tdcol = " bgcolor=\"red\"" ; 
-       
-	     String pcategory = "";
-	     String scategory = "";
-	     String ptype = "";
-	     String stype = "";
-	     String pcountt = "";
-	     String scountt = "";
-	     List<OrderProduct> lists = OrPMap.get(o.getId());
-	     if(lists != null ){
-		     for(int g = 0 ;g<lists.size();g++){
-		    	 OrderProduct op = lists.get(g);
-		    	 if(op.getStatues() == 1 ){
-		    		 pcategory =  categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-			         pcountt += op.getCount() +"</p>";
-			         ptype += op.getSaleType()==null ||op.getSaleType() == "null" ? "":op.getSaleType() +"</p>";
-		    	 }else {
-		    		 scategory += categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-			         scountt += op.getCount() +"</p>";
-			         stype += op.getSendType()==null ||op.getSendType() == "null" ? "":op.getSendType() +"</p>"; 
-		    	 }  
-		     }
-	     }
-	     
-	     
-	     String gstatues = "";
-	     String gtype = "";
-	     String gcountt = ""; 
-	     
-	     List<Gift> glists = gMap.get(o.getId());
-	     
-	     if(null != glists){
-	
-	     for(int g = 0 ;g<glists.size();g++){
-	    	 
-	    	 Gift op = glists.get(g);
-	    	 if(null !=op ){
-	    		 gtype += op.getName()+"</p>";
-		         gcountt += op.getCount()+"</p>";
-		         String statues = "";
-		         if(0==op.getStatues()){
-		        	 statues = "需配送";
-		         }else if(1 == op.getStatues()) {
-		        	 statues = "已自提";
-		         }else if(9 == op.getStatues()) { 
-		        	 statues = "只安装(门店提货)";
-		         }else if(10 == op.getStatues()) {
-		        	 statues = "只安装(顾客已提)";
-		         } 
-		         gstatues += statues +"</p>";
-	    	 }
-	     }
-	     }
-	     
 		  %>
+		  
 		<tr  class="asc">  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			<td align="center">单号</td> 
@@ -390,18 +327,18 @@ function checkedd(){
  
 		</td>
 			<td align="center">送货名称</td>
-			<td align="center"><%=scategory%></td>
+			<td align="center"><%= o.getCategory(0,"</p>")%></td>
 			</tr>
 		<tr class="asc">
 		    <td align="center">票面型号</td> 
 			<td align="center">
 			<% if(UserManager.checkPermissions(user, Group.dealSend) ){
 	        	  %> 
-	        	 <input type="text" name="dingmatype" id ="dingmatype"  value="<%=ptype%>"  style="width:90% "></input>
+	        	 <input type="text" name="dingmatype" id ="dingmatype"  value="<%=o.getSendType(1,"</p>")%>"  style="width:90% "></input>
 			   
 			   <% }else {      
 			   %>    
-			     <%=ptype%>
+			     <%=o.getSendType(1,"</p>")%>
 			   <%
 			   } 
 			   %>
@@ -409,26 +346,26 @@ function checkedd(){
 			</td> 
 			<td align="center">票面数量</td>
 			 
-			<td align="center"><%=pcountt%></td> 
+			<td align="center"><%= o.getSendCount(1,"</p>")%></td> 
 		
 		</tr>	
 		<tr  class="asc">
 			<td align="center">送货型号</td> 
-			<td align="center"><%=stype%></td> 
+			<td align="center"><%=o.getSendType(0,"</p>")%></td> 
 			<td align="center">送货数量</td>
 			
-			<td align="center"><%=scountt%></td> 
+			<td align="center"><%= o.getSendCount(0,"</p>")%></td> 
 			</tr>
 		<tr class="asc">
 			<td align="center">赠品</td>
-			<td align="center"><%=gtype%></td>
+			<td align="center"><%= o.getGifttype("</p>")%></td>
 			
 			<td align="center">赠品数量</td>
-			<td align="center"><%=gcountt%></td>
+			<td align="center"><%= o.getGifcount("</p>")%></td>
 			</tr>
 		<tr  class="asc">
 			<td align="center">赠品状态</td>
-			<td align="center"><%=gstatues%></td> 
+			<td align="center"><%= o.getGifStatues("</p>")%></td> 
             <td align="center">开票日期</td> 
             <td align="center">
             <% if(UserManager.checkPermissions(user, Group.dealSend) ){

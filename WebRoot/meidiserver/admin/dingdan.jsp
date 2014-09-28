@@ -1,12 +1,9 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
- 
-<%@ include file="searchdynamic.jsp"%>
-    
+<%@ include file="searchdynamic.jsp"%>    
 <%       
- 
+   
 request.setCharacterEncoding("utf-8"); 
 
-List<Order> listnew = new ArrayList<Order>(); 
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
 
 
@@ -17,13 +14,7 @@ HashMap<Integer,User> usermap = UserManager.getMap();
         
 //获取二次配单元（工队）
 List<User> listS = UserManager.getUsers(user ,Group.sencondDealsend);   
-  
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
  
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
-
-
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
 %>
@@ -392,11 +383,11 @@ function adddetail(src){
 				"<p><font color=\""+tdcol+"\"> "+  
 		                      o.getPhone1()
 		%> 
-		 
+		  
 		</td>
-		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
-		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>     
-		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>  
+		<td align="center"><%= o.getCategory(0,"</p>")%></td>  
+		<td align="center" ><%=o.getSendType(0,"</p>")%></td>     
+		<td align="center" ><%= o.getSendCount(0,"</p>")%></td>  
 		<td align="center" ><%= o.getGifttype("</p>")%></td>  
 		<td align="center" ><%= o.getGifcount("</p>")%></td>  
 		<td align="center" ><%= o.getGifStatues("</p>")%></td>   

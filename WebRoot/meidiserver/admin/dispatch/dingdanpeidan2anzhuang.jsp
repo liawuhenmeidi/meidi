@@ -11,18 +11,12 @@ List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.po
 session.setAttribute("exportList", list); 
 count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.porderDispatching,num,Page,sort,sear);  
     
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 HashMap<Integer,User> usermap = UserManager.getMap(); 
-//获取送货员    
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
+
 List<User> listS = UserManager.getUsers(user,Group.send);
     
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
+
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
-
-//Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,OrderPrintln.release);
-
-//Map<Integer,OrderPrintln> opMap1 = OrderPrintlnManager.getOrderStatues(user,1);
 
 
 %>

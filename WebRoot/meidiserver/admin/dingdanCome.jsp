@@ -13,15 +13,6 @@ HashMap<Integer,User> usermap = UserManager.getMap();
 //获取二次配单元（工队）
 List<User> listS = UserManager.getUsers(user,Group.sencondDealsend);   
 
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
-
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
-//  System.out.println("%%%%%"+gMap);
-//修改申请
-//Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,0);
-// 退货申请 
-//Map<Integer,OrderPrintln> opMap1 = OrderPrintlnManager.getOrderStatues(user,1);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -82,7 +73,7 @@ var num = "<%=num%>";
 
 $(function () {
 	$("#wrap").bind("scroll", function(){ 
-
+ 
 		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
 	        //滚动了竖直滚动条
 	        pre_scrollTop=($("#wrap").scrollTop() || document.body.scrollTop);

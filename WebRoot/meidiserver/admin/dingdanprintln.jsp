@@ -13,12 +13,7 @@ count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.serach,num,Pa
 
 List<User> listS = UserManager.getUsers(user,Group.sencondDealsend);   
 
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
-//System.out.println("%%%%%"+gMap);     
-//修改申请      
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
 %>

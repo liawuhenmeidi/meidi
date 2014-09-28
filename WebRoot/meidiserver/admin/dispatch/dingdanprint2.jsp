@@ -10,13 +10,11 @@ request.setCharacterEncoding("utf-8");
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderPrint,num,Page,sort,"");  
 session.setAttribute("exportList", list); 
 count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.orderPrint,num,Page,sort,"");  
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
+
 HashMap<Integer,User> usermap = UserManager.getMap(); 
 //获取送货员    
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
 List<User> listS = UserManager.getUsers(user,Group.send);
-    
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
+   
 Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,3);
 
 %>

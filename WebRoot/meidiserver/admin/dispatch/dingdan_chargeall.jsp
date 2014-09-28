@@ -14,14 +14,8 @@ count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.chargea
       
 HashMap<Integer,User> usermap = UserManager.getMap(); 
 //获取送货员    
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
 List<User> listS = UserManager.getUsers(user,Group.send);
     
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
-
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
-
-Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,3);
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
