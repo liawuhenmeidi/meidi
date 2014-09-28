@@ -738,8 +738,8 @@ public String getSendType(int statues,String decollator){
 	return sendType;
 }
 
-public String getSendCount(){
-	String sendCount = "";
+public int getSendCount(){
+	int sendCount = 0;
 	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
 		OrderProductManager.resetOrPMap();
 	}

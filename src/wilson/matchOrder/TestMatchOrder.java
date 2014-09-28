@@ -14,30 +14,15 @@ public class TestMatchOrder {
 //			System.out.println(ll.get(i).getPos());
 //		}
 //		System.out.println(ll.size());
-		List<String> a = new ArrayList<String>();
-		a.add("a1");
-		a.add("a2");
-		a.add("a3");
-		List<String> b = new ArrayList<String>();
-		b.add("b1");
-		b.add("a2");
-		b.add("b3");
-		for(int i = 0 ; i < a.size(); i ++){
-			System.out.println("外层循环次数" + i + "次数a.size=" + a.size());
-			String tempUo = a.get(i);
-			
-			for(int j = 0 ; j < b.size() ; j ++ ){
-				System.out.println("内层循环次数" + i + "次数b.size=" + b.size());
-				String tempDBO = b.get(j);
-				
-				if(tempUo.equals(tempDBO)){
-					b.remove(tempDBO);
-					a.remove(tempUo);
-					break;
-				}
-				continue;
-			}
-		}
+//		boolean a ="2014-09-05".replace("-", "").equals("20140905");
+//		//System.out.println(a);
+//		String[] auto = {"1,2","3,4"};
+//		//System.out.println(auto[0].split(",")[2]);
+//		if(auto.length > 0){
+//			//System.out.println("啊啊");
+//		}
+		String[] a = {};
+		System.out.println(a.length);
 		
 	}
 	

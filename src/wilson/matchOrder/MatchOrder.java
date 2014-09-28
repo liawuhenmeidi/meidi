@@ -17,15 +17,22 @@ public class MatchOrder {
 	
 	
 	public boolean startMatch(){
-		//从上传列表取得需要匹配的Order
-		List <UploadOrder> unCheckedUploadOrders = getUnCheckedUploadOrders();
-		//从数据库中取到需要匹配的Order
-		List <Order> unCheckedDBOrders = getUnCheckedDBOrders();		
-		return matchOrder(unCheckedUploadOrders,unCheckedDBOrders);
+		boolean flag = false;
+		try{
+			//从上传列表取得需要匹配的Order
+			unMatchedUploadOrders = getUnCheckedUploadOrders();
+			//从数据库中取到需要匹配的Order
+			unMatchedDBOrders = getUnCheckedDBOrders();		
+			matchOrder(unMatchedUploadOrders,unMatchedDBOrders);
+			flag = true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return flag;
 	}
 	
-	private boolean matchOrder(List <UploadOrder> unCheckedUploadOrders,List <Order> unCheckedDBOrders) {
-		boolean flag = false;
+	private void matchOrder(List <UploadOrder> unCheckedUploadOrders,List <Order> unCheckedDBOrders) {
 		AfterMatchOrder amo ;
 		
 		//先过滤掉大多数posNo相等的
@@ -65,13 +72,32 @@ public class MatchOrder {
 				}
 			}
 		}
-		return flag;
+
 	}
 	
 	//模糊对比，如果认为对比成功则返回true，否则返回false
 	private boolean fuzzyCompare(UploadOrder tempUo, Order tempDBO) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean flag = false;
+		AfterMatchOrder amo ;
+		//如果销售时间相同
+		if(tempDBO.getSaleTime().replace("-", "").equals(tempUo.getSaleTime())){
+			//而且票面数量一样
+			if(String.valueOf(tempUo.getNum()).equals(tempDBO.getSendCount())){
+				//而且销售门店一样
+				if(tempUo.getShop().contains(tempDBO.getBranch().replace("苏宁", "").replace("店", ""))){
+					//而且型号一样
+					if(tempUo.getType().replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "").equals(tempDBO.getSendType().replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", ""))){
+						amo = new AfterMatchOrder(tempUo,tempDBO);
+						amo.calcLevel();
+						matchedOrders.add(amo);
+						unMatchedUploadOrders.remove(tempUo);
+						unMatchedDBOrders.remove(tempDBO);
+						return true;
+					}
+				}
+			}
+		}
+		return flag;
 	}
 
 	public static List<Order> getUnCheckedDBOrders(){
@@ -86,5 +112,17 @@ public class MatchOrder {
 		List<UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
 		unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders();
 		return unCheckedUploadOrders;
+	}
+
+	public List<UploadOrder> getUnMatchedUploadOrders() {
+		return unMatchedUploadOrders;
+	}
+
+	public List<Order> getUnMatchedDBOrders() {
+		return unMatchedDBOrders;
+	}
+
+	public List<AfterMatchOrder> getMatchedOrders() {
+		return matchedOrders;
 	}
 }

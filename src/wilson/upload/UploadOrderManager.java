@@ -27,9 +27,9 @@ public class UploadOrderManager {
 		
 	}
 	
-	public static boolean checkOrder(int orderId){
+	public static boolean checkOrder(int uploadOrderId,int dbOrderId){
 		boolean flag = false;
-		String sql = "update uploadorder set checked = ? ,checkedtime = ? where id = " + orderId;
+		String sql = "update uploadorder set checked = ? ,checkedtime = ? ,checkorderid= ? where id = " + uploadOrderId;
 		Connection conn = DB.getConn();
 		
 		PreparedStatement pstmt = DB.prepare(conn, sql);
@@ -37,6 +37,38 @@ public class UploadOrderManager {
 		try {
 			pstmt.setInt(1,0);
 			pstmt.setString(2, fmt.format(new Date()));
+			pstmt.setInt(3, dbOrderId);
+			int count = pstmt.executeUpdate();
+			if(count > 0){
+				flag = true ;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return flag ;  
+	}
+	
+	public static boolean checkOrder(String[] idString){
+		int DBOrderID = 0;
+		int UploadOrderID = 0;
+		for(int i = 0 ; i < idString.length ; i ++){
+			DBOrderID = Integer.parseInt(idString[i].split(",")[0]);
+			UploadOrderID = Integer.parseInt(idString[i].split(",")[1]);
+		}
+		
+		boolean flag = false;
+		String sql = "update uploadorder set checked = ? ,checkedtime = ?,checkorderid=? where id = " + UploadOrderID;
+		Connection conn = DB.getConn();
+		
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		try {
+			pstmt.setInt(1,0);
+			pstmt.setString(2, fmt.format(new Date()));
+			pstmt.setInt(3,DBOrderID);
 			int count = pstmt.executeUpdate();
 			if(count > 0){
 				flag = true ;
@@ -53,7 +85,7 @@ public class UploadOrderManager {
 	
 	public static boolean saveOrderList(List <UploadOrder> UploadOrders){
 		String sql = ""; 
-		sql = "insert into uploadorder (id, shop,saleno,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,null)";	
+		sql = "insert into uploadorder (id, shop,saleno,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,null,null)";	
 		Connection conn = DB.getConn();
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 

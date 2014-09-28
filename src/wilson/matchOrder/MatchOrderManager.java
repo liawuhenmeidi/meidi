@@ -38,8 +38,21 @@ public class MatchOrderManager {
 	public static boolean checkOrder(int DBOrderID,int UploadOrderID){
 		//消除DB中的Order
 		//a.b();
+		
+		
 		//消除Upload中的Order
-		if(UploadOrderManager.checkOrder(UploadOrderID)){
+		if(UploadOrderManager.checkOrder(UploadOrderID, DBOrderID)){
+			return true;
+		}
+
+		return false;
+	}
+	
+	//接受{"1,2","2,3"}类型的ID输入,前一个是DB的Order，后一个是upload的Order哦~
+	public static boolean checkOrder(String[] idString){
+		
+		//消除Upload中的Order和消除DB中的Order(还没有添加完)
+		if(UploadOrderManager.checkOrder(idString)){
 			return true;
 		}
 		

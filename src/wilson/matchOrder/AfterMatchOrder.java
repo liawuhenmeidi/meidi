@@ -34,7 +34,7 @@ public class AfterMatchOrder {
 		DBSideSaleTime = dbOrder.getSaleTime();
 		DBSideDealTime = dbOrder.getOdate();
 		DBSideType = dbOrder.getSendType();
-		DBSideCount = dbOrder.getSendCount();
+		DBSideCount = String.valueOf(dbOrder.getSendCount());
 		DBSideOrderId = dbOrder.getId();
 		this.uploadOrder = uploadOrder;
 		UploadSideShop = uploadOrder.getShop();
@@ -158,6 +158,23 @@ public class AfterMatchOrder {
 	public void setUploadOrder(UploadOrder uploadOrder) {
 		this.uploadOrder = uploadOrder;
 	}
+	
+	//给字符串加入<redTag class=\"style\"></redTag>标签，参数为加入的位置，比如:
+	//HighLighter("abcde",3,5) => abc<redTag class=\"style\">de</redTag>
+	//接受参数start和end的类型为String，值为",1,2,3" ,"4,3,2"这样的类型
+	public static String HighLighter(String inputString,String start,String end){
+		if(start == null || end == null || start.length()*end.length() == 0){
+			return inputString;
+		}
+		String outPut = inputString.substring(0,Integer.parseInt(start.split(",")[1]));
+		for(int i = 0 ; i + 1< start.split(",").length;i++){
+			outPut += "<redTag class=\"style\">";
+			outPut += inputString.substring(Integer.parseInt(start.split(",")[i+1]),Integer.parseInt(end.split(",")[i+1]));
+			outPut += "</redTag>";
+		}
+		return outPut;
+	}
+		
 	//给字符串加入<redTag class=\"style\"></redTag>标签，参数为加入的位置，比如:
 	//HighLighter("abcde",3,5) => abc<redTag class=\"style\">de</redTag>
 	public static String HighLighter(String inputString,int start,int end){
@@ -167,8 +184,122 @@ public class AfterMatchOrder {
 		return inputString.substring(0,start) + "<redTag class=\"style\">" + inputString.substring(start,end) + "</redTag>" + inputString.substring(end);
 	}
 	
+	//给字符串加入<redTag class=\"style\"></redTag>标签，比如:
+	//HighLighter("abcde) => <redTag class=\"style\">abcde</redTag>
+	public static String HighLighter(String inputString){
+		return "<redTag class=\"style\">" + inputString + "</redTag>";
+	}
+	
+	
+	//计算相似度
 	public void calcLevel(){
 		
+		//对比posNo
+		String tempDB = this.getDBOrder().getPos();
+		String tempUpLoad = this.getUploadOrder().getPosNo();
+		if(tempDB.equals(tempUpLoad)){
+			this.setCompareLevel(this.getCompareLevel() + 1.0);
+		}else{
+		//模糊对比posNo
+			int start = 0;
+			int end = 0 ;
+			String startPoint = "";
+			String endPoint = "";
+			boolean combo = false;
+			for(int i = 0 ; i < tempUpLoad.length(); i ++ ){
+				if(tempDB.charAt(i) == tempUpLoad.charAt(i)){
+					if(combo == false){
+						start = i;
+					}
+					combo=true;
+				}else{
+					if(combo == true){
+						end = i;
+						startPoint += "," + start;
+						endPoint += "," + end;
+					}
+					combo=false;
+				}
+				if(i == tempUpLoad.length()-1){
+					if(combo == true){
+						end = tempUpLoad.length();
+						startPoint += "," + start;
+						endPoint += "," + end ;	
+					}
+				}
+			}
+			this.setDBSidePosNo(HighLighter(tempDB,startPoint,endPoint));
+			this.setUploadSidePosNo(HighLighter(tempUpLoad,startPoint,endPoint));
+			
+		}
+		
+		//对比saleTime
+		tempDB = this.getDBOrder().getSaleTime();
+		tempUpLoad = this.getUploadOrder().getSaleTime();
+		if(tempDB.replace("-", "").equals(tempUpLoad)){
+			this.setCompareLevel(this.getCompareLevel() + 1.0);
+			this.setDBSideSaleTime(HighLighter(tempDB));
+			this.setUploadSideSaleTime(HighLighter(tempUpLoad));
+		}else{
+		//无模糊对比
+		}
+		
+		//对比saleTime
+		tempDB = this.getDBOrder().getSendtime();
+		tempUpLoad = this.getUploadOrder().getDealTime();
+		if(tempDB.replace("-", "").equals(tempUpLoad)){
+			this.setCompareLevel(this.getCompareLevel() + 1.0);
+			this.setDBSideSaleTime(HighLighter(tempDB));
+			this.setUploadSideSaleTime(HighLighter(tempUpLoad));
+		}else{
+		//无模糊对比
+		}
+		
+		//对比票面数量
+		tempDB = String.valueOf(this.getUploadOrder().getNum());
+		tempUpLoad = String.valueOf(this.getDBOrder().getSendCount());
+		if(tempDB.equals(tempUpLoad)){
+			this.setCompareLevel(this.getCompareLevel() + 1.0);
+			this.setDBSideCount(HighLighter(tempDB));
+			this.setUploadSideCount(HighLighter(tempUpLoad));
+		}else{
+		//无模糊对比
+		}
+			
+		//对比门店名称
+		tempDB = this.getDBOrder().getBranch();
+		tempUpLoad = this.getUploadOrder().getShop();
+		if(tempUpLoad.contains(tempDB.replace("苏宁", "").replace("店", ""))){
+			//精准对比
+			if(tempUpLoad.equals(tempDB)){
+				this.setCompareLevel(this.getCompareLevel() + 1.0);
+				this.setDBSideShop(HighLighter(tempDB));
+				this.setUploadSideShop(HighLighter(tempUpLoad));
+			}else{
+			//模糊对比
+				this.setCompareLevel(this.getCompareLevel() + 0.5);
+				this.setDBSideShop(HighLighter(tempDB,tempDB.indexOf(tempDB.replace("苏宁", "").replace("店", "")),tempDB.replace("苏宁", "").replace("店", "").length()));
+				this.setUploadSideShop(HighLighter(tempUpLoad,tempDB.indexOf(tempDB.replace("苏宁", "").replace("店", "")),tempDB.replace("苏宁", "").replace("店", "").length()));
+			}
+		}
+		
+		//对比型号
+		tempDB = this.getDBOrder().getSendType();
+		tempUpLoad = this.getUploadOrder().getType();
+		if(tempUpLoad.contains(tempDB.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", ""))){
+			//精准对比
+			if(tempUpLoad.equals(tempDB)){
+				this.setCompareLevel(this.getCompareLevel() + 1.0);
+				this.setDBSideType(HighLighter(tempDB));
+				this.setUploadSideType(HighLighter(tempUpLoad));
+			}else{
+				this.setCompareLevel(this.getCompareLevel() + 0.5);
+				this.setDBSideType(HighLighter(tempDB,tempDB.indexOf(tempDB.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "")),tempDB.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "").length()));
+				this.setUploadSideType(HighLighter(tempUpLoad,tempDB.indexOf(tempDB.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "")),tempDB.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "").length()));
+			}
+		}		
+					
+			
 	}
 	
 	

@@ -27,6 +27,8 @@ public class UploadOrder {
 	private int checked = 1; //1为没有 check 0 为已经check 默认为1
 	
 	private String checkedTime = ""; //check的时间，默认为null
+	
+	private String checkOrderId = ""; //check后对应的orderID
 
 	public String getShop() {
 		return shop;
@@ -142,4 +144,14 @@ public class UploadOrder {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	public String getCheckOrderId() {
+		return checkOrderId;
+	}
+
+	public void setCheckOrderId(String checkOrderId) {
+		this.checkOrderId = checkOrderId;
+	}
+
+	
 }
