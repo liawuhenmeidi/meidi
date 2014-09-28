@@ -5,12 +5,11 @@
   
 request.setCharacterEncoding("utf-8");
 
+
  
- 
- SelectOrder sorder = OrderManager.getOrderlist(user,Group.dealSend,Order.orderPrint,num,Page,sort,sear);
-List<Order> list = sorder.getList(); 
-count = sorder.getCount(); 
+List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderPrint,num,Page,sort,sear);
 session.setAttribute("exportList", list); 
+count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.orderPrint,num,Page,sort,sear);   
  
 HashMap<Integer,User> usermap = UserManager.getMap();
    
@@ -218,9 +217,36 @@ function orderPrint(id,statues){
 		 
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
 		<td align="center"><%=o.getBranch()%></td>
-		   
-		  <td align="center"><%=o.getSendType(0,"</p>")%></td> 
+		
+	   <% 
+		    // String pcategory = "";
+		     String scategory = "";
+		    // String ptype = "";
+		    // String stype = "";
+		     //String pcountt = "";
+		    // String scountt = "";
+		     List<OrderProduct> lists = OrPMap.get(o.getId());
+		     if(lists != null ){
+			     for(int g = 0 ;g<lists.size();g++){
+			    	 OrderProduct op = lists.get(g);
+			    	 if(op.getStatues() == 1 ){
+			    		// pcategory =  categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
+				        // pcountt += op.getCount() +"</p>";
+				         //ptype += op.getSaleType()==null ||op.getSaleType() == "null" ? "":op.getSaleType() +"</p>";
+			    	 }else {
+			    		 scategory = categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
+				         //scountt += op.getCount() +"</p>";
+				        // stype += op.getSendType()==null ||op.getSendType() == "null" ? "":op.getSendType() +"</p>"; 
+			    	 }  
+			     }
+		     }
+		     %> 
 		 
+		  
+		  <td align="center"><%=scategory%></td> 
+		  
+		
+		
 		<td align="center"><%=o.getOdate() %></td>
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>

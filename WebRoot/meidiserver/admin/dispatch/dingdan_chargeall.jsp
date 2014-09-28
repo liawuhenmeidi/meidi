@@ -8,12 +8,10 @@ request.setCharacterEncoding("utf-8");
 
 //list = OrderManager.getOrderlistl(user,Group.sencondDealsend,"",sort); 
      
-SelectOrder sorder =   OrderManager.getOrderlist(user,Group.sencondDealsend,Order.chargeall,num,Page,sort,sear);  
-
-List<Order> list = sorder.getList(); 
-count = sorder.getCount(); 
+List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.chargeall,num,Page,sort,sear);  
 session.setAttribute("exportList", list); 
-    
+count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.chargeall,num,Page,sort,sear);  
+      
 HashMap<Integer,User> usermap = UserManager.getMap(); 
 //获取送货员    
 List<User> listS = UserManager.getUsers(user,Group.send);

@@ -19,8 +19,12 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import branch.Branch;
+import branch.BranchManager;
+
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
+import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
  
 import database.DB;
@@ -29,11 +33,11 @@ import user.UserManager;
 import utill.DBUtill;
 import utill.TimeUtill;
 
-public class OrderManager { 
+public class OrderManager {
 	 protected static Log logger = LogFactory.getLog(OrderManager.class);
 	 public static SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-     public static int selectcount ;   //  查询时获取的总条数    
-	 // 跟新打印方法  
+     
+	 // 跟新打印方法 
 	public static void updatePrint(int statues,int id) {
 		Connection conn = DB.getConn();
 		//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
@@ -961,10 +965,8 @@ logger.info(Orders.size());
    
    
    
-    public static SelectOrder getOrderlist(User user ,int type,int statues ,int num,int page,String sort,String search){
+    public static List<Order> getOrderlist(User user ,int type,int statues ,int num,int page,String sort,String search){
 	   
-      SelectOrder sorder = new SelectOrder();
-      
 	  boolean f = UserManager.checkPermissions(user, Group.Manger);  
 	   
 	  boolean flag = UserManager.checkPermissions(user, type);
@@ -1110,24 +1112,19 @@ logger.info(sql);
        Statement stmt = DB.getStatement(conn);
      
 	   ResultSet rs = DB.getResultSet(stmt, sql); 
-			try {  
-				rs.last();
-				int selectcount  = rs.getRow();
-				rs.first();
-				while (rs.next()) { 
+			try { 
+				while (rs.next()) {
 					Order p = gerOrderFromRs(rs);
-					Orders.add(p); 
+					Orders.add(p);
 				} 
-			 sorder.setCount(selectcount);
-			 sorder.setList(Orders);
 			} catch (SQLException e) { 
-				logger.info(e);
+				e.printStackTrace();
 			} finally {
 				DB.close(stmt);
 				DB.close(rs);
 				DB.close(conn);
 			 }
-			return sorder;  
+			return Orders; 
 	 }
     
      
@@ -1298,18 +1295,19 @@ logger.info(sql);
     	List<Order> Orders = new ArrayList<Order>();
    
     	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0";                  
-    	    
+    	   
     	if(true){
     		Connection conn = DB.getConn();
             Statement stmt = DB.getStatement(conn);
             ResultSet rs = DB.getResultSet(stmt, sql);
+
  			try { 
  				while (rs.next()) {
  					Order p = gerOrderFromRs(rs);
   					Orders.add(p);
  				}
  			} catch (SQLException e) {
- 				logger.info(e);
+ 				e.printStackTrace();
  			} finally {
  				DB.close(stmt);
  				DB.close(rs);

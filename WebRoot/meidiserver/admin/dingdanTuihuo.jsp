@@ -4,12 +4,11 @@
  <%  
   
 request.setCharacterEncoding("utf-8");
-   
- SelectOrder sorder = OrderManager.getOrderlist(user,Group.dealSend,Order.deliveryStatuesTuihuo,num,Page,sort,""); 
-List<Order> list = sorder.getList(); 
-count = sorder.getCount(); 
-
+  
+List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.deliveryStatuesTuihuo,num,Page,sort,""); 
 session.setAttribute("exportList", list); 
+count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.deliveryStatuesTuihuo,num,Page,sort,""); 
+//System.out.println("count"+count);  
 
 HashMap<Integer,User> usermap = UserManager.getMap();
   

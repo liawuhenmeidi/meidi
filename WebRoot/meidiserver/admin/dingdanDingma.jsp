@@ -6,12 +6,10 @@
 request.setCharacterEncoding("utf-8");
 
 
- SelectOrder sorder = OrderManager.getOrderlist(user,Group.dealSend,Order.dingma,num,Page,sort,sear); 
-List<Order> list = sorder.getList(); 
-count = sorder.getCount(); 
-
+List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.dingma,num,Page,sort,sear); 
 session.setAttribute("exportList", list); 
-
+count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.dingma,num,Page,sort,sear);    
+ 
   
 HashMap<Integer,User> usermap = UserManager.getMap();
   
@@ -341,11 +339,11 @@ function adddetail(src){
 		%>
 		
 		</td> 
-	  <td align="center"><%= o.getCategory(1,"</p>")%></td>     
+	  <td align="center"><%= o.getCategory(1,"</p>")%></td>    
 		  <td align="center" ><%=o.getSendType(1,"</p>")%></td>    
 		  <td align="center" ><%= o.getSendCount(1,"</p>")%></td>    
 		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
-		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>   
+		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>  
 		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>   
 		<td align="center" ><%= o.getGifttype("</p>")%></td>  
 		<td align="center" ><%= o.getGifcount("</p>")%></td>  

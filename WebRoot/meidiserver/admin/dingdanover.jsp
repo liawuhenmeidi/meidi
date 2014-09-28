@@ -5,11 +5,10 @@
 <%   
 request.setCharacterEncoding("utf-8");
 
-SelectOrder sorder = OrderManager.getOrderlist(user,Group.dealSend,Order.over,num,Page,sort,sear);
-List<Order> list = sorder.getList(); 
-count = sorder.getCount(); 
+List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.over,num,Page,sort,sear);
 session.setAttribute("exportList", list); 
- 
+count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.over,num,Page,sort,sear);
+  
 HashMap<Integer,User> usermap = UserManager.getMap();
 //     System.out.println(count+"**"+"num"+"");
 //获取二次配单元（工队）
