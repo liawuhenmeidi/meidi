@@ -425,7 +425,6 @@ function adddetail(src){
 					 }
 				 }
 					  
-		  
 		   if(o.getDealsendId() == 0 && o.getDeliveryStatues() != 8 && o.getPrintSatues() == 0){
 			   if(flag != 2 && flag != 0 && flag2 != 2 && flag2 != 0){
 			   %>

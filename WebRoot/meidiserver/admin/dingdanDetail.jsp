@@ -252,13 +252,12 @@ function checkedd(){
 			<td align="center"><%=o.getPrintlnid() == null?"":o.getPrintlnid()%></td>  
 			<td align="center">门店</td>
 			<td align="center"><%=o.getBranch()%></td> 
-		</tr>
-		<tr class="asc">	
 			<td align="center">销售员</td>
 			<td align="center">       		  
 		     <%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
 		    </td> 
-		    
+		</tr> 
+		<tr class="asc">	 
 			<td align="center">pos(厂送)单号</td>
 			<td align="center" <%=o.getPosremark()==1?tdcol:"" %>>
 	          <% if(UserManager.checkPermissions(user, Group.dealSend)){
@@ -271,10 +270,7 @@ function checkedd(){
 			   }
 			   %>
 			</td>
-			</tr>
-			
-		<tr  class="asc">
-			<td align="center">OMS订单号</td>
+				<td align="center">OMS订单号</td>
 			<td align="center" <%=o.getSailidrecked()==1?tdcol:"" %>>
 			
 			 <% if(UserManager.checkPermissions(user, Group.dealSend)){
@@ -301,11 +297,34 @@ function checkedd(){
 			   %>
 			 
 			 </td>
-			  
-			</tr> 
+			</tr>
+
 			<%if(o.getPhoneRemark()!=1){ 
 			tdcol = ""; 
 		} %>
+		<tr class="asc">
+		<td align="center">票面名称</td>
+			<td align="center"><%= o.getCategory(1,"")%></td>
+		
+		    <td align="center">票面型号</td> 
+			<td align="center">
+			<% if(UserManager.checkPermissions(user, Group.dealSend) ){
+	        	  %> 
+	        	 <input type="text" name="dingmatype" id ="dingmatype"  value="<%=o.getSendType(1,"")%>"  style="width:90% "></input>
+			   
+			   <% }else {      
+			   %>    
+			     <%=o.getSendType(1,"")%>
+			   <%
+			   } 
+			   %>
+			
+			</td> 
+			<td align="center">票面数量</td>
+			 
+			<td align="center"><%= o.getSendCount(1,"")%></td> 
+		
+		</tr>
 		<tr class="asc">
 			<td align="center">顾客信息</td>
 			<td align="center">
@@ -326,32 +345,13 @@ function checkedd(){
 			   %>
  
 		</td>
-			<td align="center">送货名称</td>
-			<td align="center"><%= o.getCategory(0,"</p>")%></td>
-			</tr>
-		<tr class="asc">
-		    <td align="center">票面型号</td> 
-			<td align="center">
-			<% if(UserManager.checkPermissions(user, Group.dealSend) ){
-	        	  %> 
-	        	 <input type="text" name="dingmatype" id ="dingmatype"  value="<%=o.getSendType(1,"</p>")%>"  style="width:90% "></input>
-			   
-			   <% }else {      
-			   %>    
-			     <%=o.getSendType(1,"</p>")%>
-			   <%
-			   } 
-			   %>
-			
-			</td> 
-			<td align="center">票面数量</td>
-			 
-			<td align="center"><%= o.getSendCount(1,"</p>")%></td> 
+				</tr>
 		
-		</tr>	
-		<tr  class="asc">
+		<tr  class="asc">  
+			<td align="center">送货名称</td> 
+			<td align="center"><%= o.getCategory(0,"\n")%></td> 
 			<td align="center">送货型号</td> 
-			<td align="center"><%=o.getSendType(0,"</p>")%></td> 
+			<td align="center"><%=o.getSendType(0,"\n")%></td> 
 			<td align="center">送货数量</td>
 			
 			<td align="center"><%= o.getSendCount(0,"</p>")%></td> 

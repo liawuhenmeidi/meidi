@@ -4,8 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
        
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
-  
-List<BranchType> listb = BranchTypeManager.getLocate();
+
 List<Branch> listbranch = BranchManager.getLocate(); 
 
 List<String> listbranchp = BranchManager.getLocateAll();  
@@ -18,7 +17,7 @@ String mapjosn = StringUtill.GetJson(map);
 HashMap<String,ArrayList<String>> listt = ProductManager.getProductName();
 
 String plist = StringUtill.GetJson(listt);
- 
+  
 List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
    
@@ -247,7 +246,7 @@ var disable = '<%=isdisabel %>';
    <ul>                                                                                                          
      <li><a href="receipts.jsp">返回</a></li>
       <% 
-      System.out.println("aa"+user.getBranch()+inventory.getOutstatues()+UserManager.checkPermissions(user, Group.inventoryquery));
+      //System.out.println("aa"+user.getBranch()+inventory.getOutstatues()+UserManager.checkPermissions(user, Group.inventoryquery));
       if(outbranch.equals(user.getBranch()) && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery)){ 
       %>  
       <li><a href="InventoryServlet?method=outbranch&id=<%=inventory.getId() %>">出库方确认</a></li>
@@ -258,9 +257,15 @@ var disable = '<%=isdisabel %>';
       %>  
       <li><a href="InventoryServlet?method=inbranch&id=<%=inventory.getId() %>">入库方确认</a></li>
       <% 
+      } 
+     
+      if(inventory.getInstatues() == 1 && inventory.getOutstatues() == 1){
+      %> 
+      <li><a href="print.jsp?id=<%=inventoryid%>">打印</a></li> 
+      <% 
       }
       %>
-     
+      
      </ul>   
    </div>      
      <div>     
