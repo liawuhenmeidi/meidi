@@ -15,6 +15,19 @@ public class OrderProduct {
     
     private String subtime;   
     
+    public String getSalestatues(int i){
+    	String str = "";
+    	if(i == 1){
+    		str = "需配送";
+    	}else if(i == 0 ){
+    		str = "已自提";
+    	}else if(i == 2){
+    		str = "只安装门店提货"; 
+    	}else if(i == 3){
+    		str = "只安装顾客已提";
+    	} 
+    	return str;
+    }
     
 	public String getSubtime() {
 		return subtime; 

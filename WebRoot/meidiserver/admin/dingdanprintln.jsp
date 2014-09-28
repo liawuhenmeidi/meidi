@@ -5,7 +5,7 @@
 <%   
 request.setCharacterEncoding("utf-8");
 
-  
+HashMap<Integer,User> usermap = UserManager.getMap();
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.serach,num,Page,sort,sear); 
 session.setAttribute("exportList", list); 
 count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.serach,num,Page,sort,sear);   
@@ -426,29 +426,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 		%>
 		
 		</td> 
-	    <% 
-		     String pcategory = "";
-		     String scategory = "";
-		     String ptype = "";
-		     String stype = "";
-		     String pcountt = "";
-		     String scountt = "";
-		     List<OrderProduct> lists = OrPMap.get(o.getId());
-		     if(lists != null ){
-			     for(int g = 0 ;g<lists.size();g++){
-			    	 OrderProduct op = lists.get(g);
-			    	 if(op.getStatues() == 1 ){
-			    		 pcategory +=  categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-				         pcountt += op.getCount() +"</p>";
-				         ptype += op.getSaleType()==null ||op.getSaleType() == "null" ? "":op.getSaleType() +"</p>";
-			    	 }else {
-			    		 scategory += categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-				         scountt += op.getCount() +"</p>";
-				         stype += op.getSendType()==null ||op.getSendType() == "null" ? "":op.getSendType() +"</p>"; 
-			    	 }  
-			     }
-		     }
-		     %> 
+	    
 		   
 		  <td align="center"><%= o.getCategory(1,"</p>")%></td>    
 		  <td align="center" ><%=o.getSendType(1,"</p>")%></td>    
