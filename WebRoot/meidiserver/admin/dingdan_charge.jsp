@@ -6,9 +6,10 @@
 
 request.setCharacterEncoding("utf-8");
      
-List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.charge,num,Page,sort,sear);  
-count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.charge,num,Page,sort,sear);  
-       
+SelectOrder sorder = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.charge,num,Page,sort,sear);  
+List<Order> list = sorder.getList();  
+count = sorder.getCount(); 
+
 HashMap<Integer,User> usermap = UserManager.getMap(); 
 //获取送货员    
 Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);

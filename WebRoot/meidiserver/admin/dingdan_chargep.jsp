@@ -5,17 +5,16 @@
 <%  
   
 request.setCharacterEncoding("utf-8");
+ 
+SelectOrder sorder = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.pcharge,num,Page,sort,sear);  
+List<Order> list = sorder.getList(); 
+count = sorder.getCount(); 
 
-//list = OrderManager.getOrderlistl(user,Group.sencondDealsend,"",sort); 
-     
-List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.pcharge,num,Page,sort,sear);  
-count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.pcharge,num,Page,sort,sear);  
-     
 HashMap<Integer,User> usermap = UserManager.getMap(); 
 //获取送货员    
 Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
 List<User> listS = UserManager.getUsers(user,Group.send);
-   
+    
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

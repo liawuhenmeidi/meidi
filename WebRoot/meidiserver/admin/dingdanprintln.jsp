@@ -6,13 +6,13 @@
 request.setCharacterEncoding("utf-8");
 
   
-List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.serach,num,Page,sort,sear); 
+SelectOrder sorder = OrderManager.getOrderlist(user,Group.dealSend,Order.serach,num,Page,sort,sear); 
+List<Order> list = sorder.getList();  
+count = sorder.getCount();  
 session.setAttribute("exportList", list); 
-count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.serach,num,Page,sort,sear);   
-//获取二次配单元（工队） 
-
+  
 List<User> listS = UserManager.getUsers(user,Group.sencondDealsend);   
-
+HashMap<Integer,User> usermap = UserManager.getMap();
 
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
@@ -426,30 +426,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 		%>
 		
 		</td> 
-	    <% 
-		     String pcategory = "";
-		     String scategory = "";
-		     String ptype = "";
-		     String stype = "";
-		     String pcountt = "";
-		     String scountt = "";
-		     List<OrderProduct> lists = OrPMap.get(o.getId());
-		     if(lists != null ){
-			     for(int g = 0 ;g<lists.size();g++){
-			    	 OrderProduct op = lists.get(g);
-			    	 if(op.getStatues() == 1 ){
-			    		 pcategory +=  categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-				         pcountt += op.getCount() +"</p>";
-				         ptype += op.getSaleType()==null ||op.getSaleType() == "null" ? "":op.getSaleType() +"</p>";
-			    	 }else {
-			    		 scategory += categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-				         scountt += op.getCount() +"</p>";
-				         stype += op.getSendType()==null ||op.getSendType() == "null" ? "":op.getSendType() +"</p>"; 
-			    	 }  
-			     }
-		     }
-		     %> 
-		   
+
 		  <td align="center"><%= o.getCategory(1,"</p>")%></td>    
 		  <td align="center" ><%=o.getSendType(1,"</p>")%></td>    
 		  <td align="center" ><%= o.getSendCount(1,"</p>")%></td>    
@@ -509,7 +486,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 		 <%
 		  }}
 		 %>
-		 
+		  
 		</td>
 		  <td align="center"> 
 		  <%=o.getInstalltime() 

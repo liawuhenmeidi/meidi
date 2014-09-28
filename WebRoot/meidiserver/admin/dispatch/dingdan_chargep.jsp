@@ -6,10 +6,11 @@
 
 request.setCharacterEncoding("utf-8");
     
-List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.pcharge,num,Page,sort,sear);  
+SelectOrder sorder = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.pcharge,num,Page,sort,sear);  
+List<Order> list = sorder.getList(); 
+count = sorder.getCount(); 
 session.setAttribute("exportList", list); 
-count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.pcharge,num,Page,sort,sear);  
-     
+ 
 HashMap<Integer,User> usermap = UserManager.getMap(); 
 //获取送货员    
 

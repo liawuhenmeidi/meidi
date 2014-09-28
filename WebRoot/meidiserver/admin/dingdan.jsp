@@ -3,15 +3,15 @@
 <%       
    
 request.setCharacterEncoding("utf-8"); 
-
-List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
-
-
+ 
+SelectOrder sorder = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
+List<Order> list = sorder.getList(); 
+count = sorder.getCount();  
+ 
 session.setAttribute("exportList", list); 
-count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);    
-   
+  
 HashMap<Integer,User> usermap = UserManager.getMap();
-        
+          
 //获取二次配单元（工队）
 List<User> listS = UserManager.getUsers(user ,Group.sencondDealsend);   
  
@@ -365,7 +365,7 @@ function adddetail(src){
 		<td align="center"><%=o.getBranch()%></td> 
 		<td align="center">
 		   
-                		  
+                 		   
 		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
 		
 		</td> 
@@ -421,7 +421,7 @@ function adddetail(src){
 				OrderPrintln op = opmap.get(OrderPrintln.returns).get(o.getId());
 				
 				 if(op != null){  
-					 flag2 = op.getStatues() ;
+					 flag2 = op.getStatues() ; 
 					 }
 				 }
 					  
