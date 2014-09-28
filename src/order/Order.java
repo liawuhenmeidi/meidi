@@ -626,6 +626,9 @@ public void setTime(String time) {
  
 public String getCategory(){   
 	String category = ""; 
+	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
+		OrderProductManager.resetOrPMap();
+	}
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 	 if(null != lists){
@@ -694,6 +697,9 @@ public String getCategory(){
  
 public String getCategory(int statues,String decollator){   
 	String category = "";  
+	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
+		OrderProductManager.resetOrPMap();
+	}
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 	if(lists != null){
@@ -709,6 +715,9 @@ public String getCategory(int statues,String decollator){
 // 是否是顶码
 public String getSendType(){
 	String sendType = "";
+	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
+		OrderProductManager.resetOrPMap();
+	}
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	 if(null != lists){	
 		for(int g = 0 ;g<lists.size();g++){
@@ -721,6 +730,9 @@ public String getSendType(){
 
 public String getSendType(int statues,String decollator){ 
 	String sendType = ""; 
+	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
+		OrderProductManager.resetOrPMap();
+	}
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	if(lists != null){
 		for(int g = 0 ;g<lists.size();g++){
