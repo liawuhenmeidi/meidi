@@ -113,7 +113,7 @@ public class UploadOrderManager {
 	
 	public static boolean saveOrderList(List <UploadOrder> UploadOrders){
 		String sql = ""; 
-		sql = "insert into uploadorder (id, shop,saleno,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,null,null)";	
+		sql = "insert ignore into uploadorder (id, shop,saleno,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,null,null)";	
 		Connection conn = DB.getConn();
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
