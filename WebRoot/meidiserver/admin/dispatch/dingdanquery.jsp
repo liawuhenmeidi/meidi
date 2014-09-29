@@ -180,43 +180,21 @@ function change(str1,str2,type){
 
 
 
-function winconfirm(){
-	var question = confirm("你确认要执行此操作吗？");	
-	if (question != "0"){
-		var attract = new Array();
-		var i = 0;
-		
-		$("input[type='checkbox']").each(function(){          
-	   		if($(this).attr("checked")){
-	   				var str = this.name; 
-	   				
-	   				if(str != null  &&  str != ""){
-		   				   attract[i] = str; 
-			   	            i++;
-		   				}	
-	   		}
-	   	}); 
-
-
-		$.ajax({ 
-	        type: "post", 
-	         url: "../server.jsp", 
-	         data:"method=deleteOrder&id="+attract.toString(),
-	         dataType: "",     
-	         success: function (data) {
-	        	 if(data == -1){
-	        		 alert("操作失败") ;
-	        		 return ;   
-	        	 }else if (data > 0){ 
-	        		  alert("共删除"+data+"条数据");  
-	        		  window.location.href="dingdanpeidan2s.jsp";
-	        	 };	  
-	           }, 
-	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	        	 alert("删除失败"); 
-	            } 
-	           });
-	}
+function winconfirm(statues,uid,oid){
+	$.ajax({   
+        type: "post",   
+         url: "../server.jsp", 
+         data:"method=dealshifang&statues="+statues+"&oid="+oid+"&uid="+uid,
+         dataType: "",   
+         success: function (date) { 
+        	
+        	 window.location.href="dingdanquery.jsp";
+           
+           },  
+         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+     
+            } 
+           });
 }
 
 function adddetail(src){ 
@@ -283,7 +261,8 @@ function orderPrint(id,statues){
 			<td align="center">送货时间</td>
 			<td align="center">安装员</td>
 			<td align="center">安装时间</td> 
-			<td align="center">释放状态</td>
+			<td align="center">释放</td>
+			<td align="center">操作</td>
 			<td align="center">退货</td> 
 			<td align="center">送货状态</td> 
 			
@@ -371,7 +350,20 @@ function orderPrint(id,statues){
 		<%=o.getInstalltime()==null?"":o.getInstalltime()
 		 %> 
 		 </td>
-		<td class="s_list_m">
+		 
+		<td align="center">
+
+     <%
+     int statues = OrderManager.getShifangStatues(o);
+	if(statues != -1){ 
+     %>
+    <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=statues%>','<%=user.getId() %>','<%=o.getId() %>')"></input>
+     <%
+     } 
+     %> 
+   </td> 
+		 
+		<td align="center">
     <%
     
     if(o.getReturnid() == 0 ){ 

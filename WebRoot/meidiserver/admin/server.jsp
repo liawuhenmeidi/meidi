@@ -28,9 +28,6 @@ if("peidan".equals(method)){
 	    	count ++ ;
 	    }
 	}
-	 
-	//int statues = OrderManager.delete(id); 
-	//int i = OrderManager.updatePeidan(Integer.valueOf(uid), Integer.valueOf(id));
 	response.getWriter().write(""+count);  
 	response.getWriter().flush();   
 	response.getWriter().close();    
@@ -47,10 +44,18 @@ if("peidan".equals(method)){
 	response.getWriter().write(""+flag); 
 	response.getWriter().flush(); 
 	response.getWriter().close(); 
-
-
-
-
+}else if("dealshifang".equals(method)){  
+	String statues = request.getParameter("statues"); 
+	String oid = request.getParameter("oid"); 
+	String uid = request.getParameter("uid"); 
+	System.out.println(oid+"**"+uid+"**"+statues);
+	
+	OrderManager.updateShifang(user,Integer.valueOf(oid),Integer.valueOf(uid),Integer.valueOf(statues));    
+	//boolean flag= OrderPrintlnManager.updateOrderStatues(user,Integer.valueOf(id),Integer.valueOf(oid),Integer.valueOf(uid),Integer.valueOf(statues)); 
+	//response.getWriter().write(""+flag); 
+	
+	//response.getWriter().flush(); 
+	//response.getWriter().close(); 
 }else if("category_add".equals(method)){     
 	String categoryName = request.getParameter("categoryName");
 	boolean b = CategoryManager.getName(categoryName);
