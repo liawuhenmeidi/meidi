@@ -38,22 +38,24 @@ public class OrderProductManager {
 	}
 	
 	protected static Log logger = LogFactory.getLog(OrderProductManager.class);
-	   public boolean updateOrderStatues(User user, String type ,String oid){
+	 
+	   public static int updateOrderStatues(User user, String categoryid ,String type ,String oid){
+		   int statues = -1 ;
 		   if(user.getUsertype() == 2  || user.getUsertype() == 1){
 			   Connection conn = DB.getConn();
-				String sql = "update mdorderproduct set saletype = "+ type + " where orderid = " + oid + " and statues = 1 ";
+				String sql = "update mdorderproduct set saletype = '"+ type + "' , categoryID = "+categoryid+" where orderid = " + oid + " and statues = 1 ";
+				logger.info(sql); 
 				PreparedStatement pstmt = DB.prepare(conn, sql);
 				try { 
-					pstmt.executeUpdate();
-					return true ;
+					statues = pstmt.executeUpdate();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} finally {
 					DB.close(pstmt);
 					DB.close(conn);
 				}
-			}
-		   return false;
+			} 
+		   return statues;
 	   }
 	public static String delete(int id) {
 		String sql = "delete from mdorderproduct where orderid = " + id;
@@ -161,7 +163,7 @@ public class OrderProductManager {
 					while (rs.next()) {
 						OrderProduct Order = getOrderStatuesFromRs(rs);
 						List<OrderProduct> list = Orders.get(Order.getOrderid());
-			 			if(list == null){
+			 			if(list == null){ 
 							list = new ArrayList<OrderProduct>();
 							Orders.put(Order.getOrderid(),list);
 						}

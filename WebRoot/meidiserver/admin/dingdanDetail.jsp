@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,message.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,message.*,utill.*,category.*,product.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%      
 
@@ -10,13 +10,17 @@ String id = request.getParameter("id");
 Order o = OrderManager.getOrderID(user,Integer.valueOf(id));
    
 HashMap<Integer,User> usermap = UserManager.getMap();
-        
+
+List<OrderProduct> list = o.getOrderproduct();         
 //获取二次配单元（工队）
 List<User> listS = UserManager.getUsers(user ,Group.sencondDealsend);   
   
+List<Category> listc = CategoryManager.getCategory(user,Category.sale); 
 
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
+HashMap<String,ArrayList<String>> listt = ProductManager.getProductName(); 
 
+String plist = StringUtill.GetJson(listt);
 Message message = MessageManager.getMessagebyoid(id); 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -72,6 +76,7 @@ body{BACKGROUND-IMAGE: white;background-repeat:no-repeat";  }
 
 <script type="text/javascript">
 var id = "";
+var jsons = <%=plist%> ; 
 
 $(function () {
 	var opt = { };
@@ -83,8 +88,23 @@ $(function () {
 	$('#serviceDate2').scroller('destroy').scroller($.extend(opt2['date'], 
 	{ theme: 'android-ics light', mode: 'scroller', display: 'modal',lang: 'zh' ,startYear:'1980',endYear:'2020'}));
    
+	initproductSerch("#dingmaordercategory","#dingmatype");
+	
 }); 
-     
+
+function initproductSerch(str,str2){ 
+    cid = $(str).val();
+	$(str2).autocomplete({
+		 source: jsons[cid]
+	    }); 
+	$(str).change(function(){
+		$(str2).val("");
+		cid = $(str).val();  
+		$(str2).autocomplete({
+			 source: jsons[cid]
+		    });
+		}) ;
+   } 
 
 function addImage(src){
 	window.open(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
@@ -235,8 +255,8 @@ function checkedd(){
 
  
 <br/>  
-
-<div id="wrap"> 
+ 
+<div id="wrap">  
 <form  action="server.jsp"  method ="post"  id="form"   onsubmit="return checkedd()"  >
 
 <input type="hidden" name="method" value="updateorder"/>
@@ -289,7 +309,8 @@ function checkedd(){
 			 <% if(UserManager.checkPermissions(user, Group.dealSend)){
 	        	  %> 
 			    <input type="text"  name="check" id="chek" value="<%=o.getCheck() %>"  />
-			   <% }else {    
+			   <% }else {  
+				  
 			   %>   
 			     <%=o.getCheck() %>
 			   <%
@@ -304,14 +325,44 @@ function checkedd(){
 		} %>
 		<tr class="asc">
 		<td align="center">票面名称</td>
-			<td align="center"><%= o.getCategory(1,"")%></td>
+			<td align="center">
+				<% if(UserManager.checkPermissions(user, Group.dealSend) ){
+	        	  %> 
+			      <select class="category" name="dingmaordercategory" id="dingmaordercategory" style="width:95% ">
+                      <option>&nbsp;&nbsp;&nbsp;&nbsp;</option>
+					  <%  
+					  for(int i=0;i<listc.size();i++){
+						  Category cate = listc.get(i);
+						  if(o.getCategory(1, "").equals(cate.getName())){
+							  %>
+							    <option value="<%= cate.getId()%>" id="<%= cate.getId()%>" selected="selected"><%=cate.getName()%></option>
+							  <%  
+						  }else { 
+							  %>
+							    <option value="<%= cate.getId()%>" id="<%= cate.getId()%>"><%=cate.getName()%></option>
+							  <%  
+						  }
+					  }
+					  %>
+  
+                   </select> 
+			   <% }else {      
+			   %>    
+			     <%= o.getCategory(1,"")%>
+			   <%
+			   } 
+			   %>
+			
+			
+			
+  
+			</td>
 		
 		    <td align="center">票面型号</td> 
 			<td align="center">
 			<% if(UserManager.checkPermissions(user, Group.dealSend) ){
 	        	  %> 
-	        	 <input type="text" name="dingmatype" id ="dingmatype"  value="<%=o.getSendType(1,"")%>"  style="width:90% "></input>
-			   
+	        	 <input type="text" name="dingmatype" id ="dingmatype"  value="<%=o.getSendType(1,"")%>"  onclick="serch(type1)" style="width:90% "></input>
 			   <% }else {      
 			   %>    
 			     <%=o.getSendType(1,"")%>
@@ -325,7 +376,34 @@ function checkedd(){
 			<td align="center"><%= o.getSendCount(1,"")%></td> 
 		
 		</tr>
+	 <% 
+	 for(int i = 0 ; i<list.size();i++){
+		 System.out.println(list.size());
+		 OrderProduct op = list.get(i);
+		 if(op.getStatues() == 0){
+	       
+	   %>
+		  
+		<tr  class="asc">  
+			<td align="center">送货名称</p>送货型号</td> 
+			<td align="center"><%=op.getCategoryName()+"</p>"+op.getSendType()%></td>  
+			<td align="center">送货状态</td>  
+			<td align="center"><%=op.getSalestatues(op.getSalestatues())%></td> 
+			<td align="center">送货数量</td>
+			
+			<td align="center"><%= op.getCount()%></td> 
+			</tr>
+      <%  }
+      }%>			
 		<tr class="asc">
+			<td align="center">赠品</td>
+			<td align="center"><%= o.getGifttype("</p>")%></td>
+			<td align="center">赠品状态</td>
+			<td align="center"><%= o.getGifStatues("</p>")%></td> 
+			<td align="center">赠品数量</td>
+			<td align="center"><%= o.getGifcount("</p>")%></td>
+			</tr>
+		<tr  class="asc">
 			<td align="center">顾客信息</td>
 			<td align="center">
 			
@@ -345,27 +423,6 @@ function checkedd(){
 			   %>
  
 		</td>
-				</tr>
-		
-		<tr  class="asc">  
-			<td align="center">送货名称</td> 
-			<td align="center"><%= o.getCategory(0,"\n")%></td> 
-			<td align="center">送货型号</td> 
-			<td align="center"><%=o.getSendType(0,"\n")%></td> 
-			<td align="center">送货数量</td>
-			
-			<td align="center"><%= o.getSendCount(0,"</p>")%></td> 
-			</tr>
-		<tr class="asc">
-			<td align="center">赠品</td>
-			<td align="center"><%= o.getGifttype("</p>")%></td>
-			
-			<td align="center">赠品数量</td>
-			<td align="center"><%= o.getGifcount("</p>")%></td>
-			</tr>
-		<tr  class="asc">
-			<td align="center">赠品状态</td>
-			<td align="center"><%= o.getGifStatues("</p>")%></td> 
             <td align="center">开票日期</td> 
             <td align="center">
             <% if(UserManager.checkPermissions(user, Group.dealSend) ){
@@ -380,8 +437,6 @@ function checkedd(){
 			   %>
             
             </td>  
-            </tr>
-		<tr class="asc">
             <td align="center">安装日期</td>
             <td align="center">
              <% if(UserManager.checkPermissions(user, Group.dealSend) || UserManager.checkPermissions(user, Group.sencondDealsend) ||  UserManager.checkPermissions(user, Group.sencondDealsend)){
@@ -396,10 +451,11 @@ function checkedd(){
 			   %>
             
             </td>
-            <td align="center">送货地区</td>
-            <td align="center"><%=o.getLocate()%></td>
+           
             </tr>
 		<tr  class="asc">
+		    <td align="center">送货地区</td>
+            <td align="center"><%=o.getLocate()%></td>
             <td align="center">送货地址</td>
             <td align="center">
             
@@ -415,29 +471,8 @@ function checkedd(){
 			   %>
             </td>
            <td align="center">送货状态</td>
-           <td align="center">
-		<%
-		// 0 表示未送货  1 表示正在送  2 送货成功
-		 if(0 == o.getDeliveryStatues()){
-		%>
-		 未发货
-		<%
-          }else if(1 == o.getDeliveryStatues()){
-
-		%>
-		已送货
-		<%
-          }else if(2 == o.getDeliveryStatues()){
-		%>
-	      已安装
-		<%
-          }else if(3 == o.getDeliveryStatues()){
-		%>
-		
-		 已退货
-		<%
-          }
-		%>
+          <td align="center">
+		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
 		</td>
            </tr> 
 		  <tr class="asc"> 
@@ -453,8 +488,6 @@ function checkedd(){
 			   <%
 			   } 
 			   %>
-			  
-			  
 		       
 		      </td>
              <td align="center">配单</td>
@@ -515,12 +548,13 @@ function checkedd(){
 		   }
 		 %>
 		</td> 
-			</tr>
-		<tr class="asc">
-			<td align="center">查看位置</td> 
+		<td align="center">查看位置</td> 
 			  <td align="center"> 
 		    <a href="javascript:void(0);"  onclick="searchlocate('<%=o.getId() %>')">[查看位置]</a> 
 		</td>
+			</tr>
+		<tr class="asc">
+			
              <td align="center">安装单位驳回</td> 
              <td align="center"> 
 		<% 
@@ -644,8 +678,6 @@ function checkedd(){
 		}
 		%>
 		</td> 
-			</tr>
-			<tr class="asc">
 			<td align="center">导购修改申请</td>
 			  <td align="center"> 
 		<%
@@ -756,8 +788,6 @@ function checkedd(){
 		}
 		%>
 			</tr>
-			
-
 </table> 
 
 <table cellspacing="1"  id="table" style="background-color:black">  
@@ -765,7 +795,7 @@ function checkedd(){
     <td align="center">留言</td>
     
        <td align="center">
-                <div> 
+                <div>  
                 <% 
                   if(message != null){
                 %>  

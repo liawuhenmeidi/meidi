@@ -331,6 +331,7 @@ if("peidan".equals(method)){
 	return ;   
 }else if("updateorder".equals(method)){
 	int statues = -1 ;
+	int pstatues = 0 ;
 	String oid = request.getParameter("oid"); 
 	String phone1 = request.getParameter("phone1");
 	String andate = request.getParameter("andate");
@@ -344,9 +345,13 @@ if("peidan".equals(method)){
 		String check = request.getParameter("check");
 		String saledate = request.getParameter("saledate");
 		String saleType = request.getParameter("dingmatype");
-		
+		String categoryId = request.getParameter("dingmaordercategory");
 		statues = OrderManager.updateMessage(phone1,andate,locations,POS,sailId,check,oid,remark,saledate) ; 
-	}else {  
+	    if(!StringUtill.isNull(saleType) && !StringUtill.isNull(categoryId)){
+	    	pstatues = OrderProductManager.updateOrderStatues(user,categoryId,saleType,oid);
+	    	OrderProductManager.resetOrPMap();   
+	    }
+	}else {    
 		statues = OrderManager.updateMessage(phone1,andate,locations,oid,remark);  
 	} 
 	  
@@ -355,18 +360,19 @@ if("peidan".equals(method)){
 		messa.setOid(Integer.valueOf(oid)); 
 		messa.setMessage(user.getUsername()+":"+message+"\n");     
 		MessageManager.save(user,messa);        
-	}   
+	}    
 	//response.sendRedirect("dingdanDetail.jsp?id="+oid);
-	//response.sendRedirect("");
-	
-	if(statues == -1){ 
+	//response.sendRedirect(""); 
+	 
+	if(statues == -1 ||  pstatues == -1){  
 		response.sendRedirect("../jieguo.jsp?type=update");
 		//System.out.println(123);  
 		session.setAttribute("message", "修改失败");
 		 
 	}else {
+		
 		response.sendRedirect("../jieguo.jsp?type=updated");
-		//System.out.println(123);  
+		//System.out.println(123);   
 		session.setAttribute("message", "修改成功");
 	}
 	return ;   

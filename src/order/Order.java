@@ -449,7 +449,11 @@ public void setBranch(String branch) {
 private List<OrderProduct> Orderproduct = new ArrayList<OrderProduct>();
   
   public List<OrderProduct> getOrderproduct() {
-	return Orderproduct;
+	  if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
+			OrderProductManager.resetOrPMap();
+		}  
+		List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
+	return lists; 
 }
 
 public void setOrderproduct(List<OrderProduct> orderproduct) {
