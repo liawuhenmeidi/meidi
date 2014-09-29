@@ -5,8 +5,6 @@
 <%  
 
 request.setCharacterEncoding("utf-8");
-
-//list = OrderManager.getOrderlistl(user,Group.sencondDealsend,sear,sort); 
    
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
 session.setAttribute("exportList", list); 
@@ -42,13 +40,13 @@ td{
 }
 
 #table{  
-    width:2600px;
+    width:2500px;
      table-layout:fixed ;
 }
 #th{
     background-color:white;
     position:absolute;
-    width:2600px; 
+    width:2500px; 
     height:30px;
     top:0;
     left:0; 
@@ -151,23 +149,35 @@ function changes(str1){
            });
 }
 
-function change(str1,str2){
-	var uid = $("#"+str1).val();
-	$.ajax({ 
-        type: "post",    
-         url: "../../user/server.jsp",
-         data:"method=peidan&id="+str2+"&uid="+uid,
-         dataType: "", 
-         success: function (data) {
-           alert("设置成功");  
-           window.location.href="dingdanpeidan2.jsp";
-           }, 
+function change(str1,str2,type){
+	var uid = $("#"+str1).val(); 
+	//alert(uid);
+	$.ajax({   
+        type: "post",   
+         url: "../../user/server.jsp", 
+         data:"method=songhuo&id="+str2+"&uid="+uid+"&type="+type,
+         dataType: "",  
+         success: function (date) {
+        	
+        	 if(date == 0){
+        		 alert("导购提交修改申请，不能配工");
+        		 return ; 
+        	 }else if(date == 20){  
+        		 alert("导购提交退货申请，不能配工");
+        		 return ;
+        	 } else{
+        		 alert("设置成功"); 
+  	        	   window.location.href="dingdanquery.jsp";
+        	 }
+           
+           
+           },  
          error: function (XMLHttpRequest, textStatus, errorThrown) { 
         // alert(errorThrown); 
             } 
            });
-
 }
+
 
 
 function winconfirm(){
@@ -268,10 +278,15 @@ function orderPrint(id,statues){
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  
 			
 			<td align="center"><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>-->
-			<td class="center">释放状态</td>
-			<td class="center">退货</td> 
-			<td class="center">送货状态</td> 
 			<td align="center">单号</td>
+			<td align="center">送货员</td>
+			<td align="center">送货时间</td>
+			<td align="center">安装员</td>
+			<td align="center">安装时间</td> 
+			<td align="center">释放状态</td>
+			<td align="center">退货</td> 
+			<td align="center">送货状态</td> 
+			
 			<td align="center">门店</td>
 			<td align="center">验证码</td>
 			<td align="center">销售员</td>
@@ -289,17 +304,14 @@ function orderPrint(id,statues){
            <td align="center">文员配单日期</td> 
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
-            <td align="center">送货状态</td>
 			<td align="center">打印状态</td>
 			
 			<td align="center">打印</td> 
 			
-			<td align="center">备注</td>
-			<td align="center">送货人员</td>
-			<td align="center">送货时间</td>
+			<td align="center">备注</td> 
+			
 			<td align="center">送货是否已结款</td>
-			<td align="center">安装人员</td>
-			<td align="center">安装时间</td> 
+			
 			<td align="center">先送货后安装</td>
 			<td align="center">是否已回访</td>
             <td align="center">安装是否已结款</td>
@@ -321,10 +333,80 @@ function orderPrint(id,statues){
 		
 		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>-->
 		
-		
-		
-		
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('../dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
+		<td align="center"> 
+		<% if(o.getSendId() != 0){
+			if(usermap.get(Integer.valueOf(o.getSendId())) != null){
+		 %>
+		 <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
+		 <%
+		  }
+		}
+		 %>
+		
+		</td>
+		<td align="center"> 
+		<%=o.getSendtime()==null?"":o.getSendtime()
+		 %>
+		
+		</td>
+		<td align="center"> 
+		<% if(o.getInstallid() != 0 ){
+			 if(usermap.get(o.getInstallid()) != null){
+		 %> 
+		 <%=usermap.get(o.getInstallid()).getUsername() %>
+		 <%
+			 } 
+			}else if(o.getInstallid() == 0 && o.getDeliveryStatues() == 2){ 
+				if(usermap.get(o.getSendId()) != null){
+		 %>
+		    <%=usermap.get(o.getSendId()).getUsername() %>
+		 <%
+				}
+		  } 
+		 %>
+		</td>
+		 <td align="center"> 
+		
+		<%=o.getInstalltime()==null?"":o.getInstalltime()
+		 %> 
+		 </td>
+		<td class="s_list_m">
+    <%
+    
+    if(o.getReturnid() == 0 ){ 
+        if(o.getDeliveryStatues() == 0 || 9 == o.getDeliveryStatues()){
+ 
+    %>
+     <select class = "category" name="category"  id="songh<%=o.getId() %>" >
+     
+     <%
+       
+     %>
+     <option value="1" >只送货 </option>
+     <option value="2" >送货+安装 </option>  
+      </select>  
+     <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','')"  value="确定"/>
+
+   
+   <%
+    }else if(1 == o.getDeliveryStatues()  || 10 == o.getDeliveryStatues()){
+        	   %>
+    		   <select class = "category" name="category"  id="songh<%=o.getId() %>" >
+                    <option value="4" >只安装 </option>  
+               </select>  
+              <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','')"  value="确定"/>
+    		<%  
+          }
+    }
+    	%>
+     
+    </td>
+		<td align="center"></td>
+		<td align="center">
+		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
+		</td>
+		
 		<td align="center"><%=o.getBranch()%></td>
 
 		<td align="center" ><%=o.getCheck() %></td>
@@ -355,9 +437,7 @@ function orderPrint(id,statues){
 		<td align="center"><%=o.getDealSendTime() %></td>
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>
-		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
-		</td>
+		
 		<td align="center">
 		 
 		<%
@@ -391,48 +471,14 @@ function orderPrint(id,statues){
         <td align="center">   
 		    <%=o.getRemark() %>
 		</td>
- 
-		<td align="center"> 
-		<% if(o.getSendId() != 0){
-			if(usermap.get(Integer.valueOf(o.getSendId())) != null){
-		 %>
-		 <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
-		 <%
-		  }
-		}
-		 %>
-		
-		</td>
-	    <td align="center"> 
-		<%=o.getSendtime()
-		 %>
-		
-		</td>
+
+
 		 <td align="center"> 
 		<%=o.getStatuesPaigong() == 1 ?"是":"否"
 		 %> 
 		 </td>
-		<td align="center"> 
-		<% if(o.getInstallid() != 0 ){
-			 if(usermap.get(o.getInstallid()) != null){
-		 %> 
-		 <%=usermap.get(o.getInstallid()).getUsername() %>
-		 <%
-			 }
-			}else if(o.getInstallid() == 0 && o.getDeliveryStatues() == 2){ 
-				if(usermap.get(o.getSendId()) != null){
-		 %>
-		    <%=usermap.get(o.getSendId()).getUsername() %>
-		 <%
-				}
-		  } 
-		 %>
-		</td>
-		 <td align="center"> 
 		
-		<%=o.getInstalltime()==null?"空":o.getInstalltime()
-		 %> 
-		 </td>
+	
 		<td align="center"> 
 		<%=o.getDeliverytype() == 2 ?"是":"否"
 		 %> 

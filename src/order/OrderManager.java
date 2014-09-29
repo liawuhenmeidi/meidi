@@ -1825,7 +1825,20 @@ logger.info(sql);
 		}
 		return b;
 	}
-    
+   
+   public static int getShifangStatues(Order or){
+	   int opstatues = -1 ; 
+	   if(or.getDeliveryStatues() == 0 || or.getDeliveryStatues() == 9 ){ 
+			opstatues = OrderPrintln.salerelease;     
+		}else if (or.getDeliveryStatues() == 1){
+			if(0 != or.getInstallid()){  
+				opstatues = OrderPrintln.salereleaseanzhuang;
+			}  
+		}
+	   
+	   return opstatues;
+   } 
+   
    public static Order gerOrderFromRs(ResultSet rs){
 	   Order p = null;
 		try { 

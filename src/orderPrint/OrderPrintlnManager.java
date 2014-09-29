@@ -261,7 +261,7 @@ logger.info(sql);
 			    Connection conn = DB.getConn();
 				Statement stmt = DB.getStatement(conn);
 				String sql = "select * from  mdorderupdateprint where orderid = "  + id+ " and mdtype = "+ type;
-				System.out.println(sql);
+logger.info(sql);  
 				ResultSet rs = DB.getResultSet(stmt, sql);
 				try {
 					while (rs.next()) { 
