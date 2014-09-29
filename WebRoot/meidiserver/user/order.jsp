@@ -119,9 +119,7 @@ System.out.println(11);
 	   var listgg = '<%=listgg%> ';
 	   listop =  $.parseJSON(listopp);
 	   listg =  $.parseJSON(listgg);
-	   //alert(5);
-	   //order = $.parseJSON(orderstr);
-	   //alert(4);
+
    }
 
    var branch = new Array();
@@ -242,7 +240,7 @@ System.out.println(11);
    }
     
    function initproductSerch(str,str2,str3){ 
-	    cid = $(str).val();
+	    cid = $(str).val(); 
 		$(str2).autocomplete({
 			 source: jsons[cid]
 		    }); 

@@ -22,8 +22,8 @@ if((Order.orderinstall+"").equals(type)){
 	username = usermap.get(order.getSendId()).getUsername();
 }else if((Order.returns+"").equals(type)  || (Order.orderreturn+"").equals(type)){
 	message = "退货单"; 
-	htmlname = "退货员";
-	username = usermap.get(order.getSendId()).getUsername();
+	htmlname = "退货员";  
+	username = usermap.get(order.getReturnid()).getUsername();
 }else if((Order.ordersong+"").equals(type)){
 	message = "只安装(门店提货)"; 
 	htmlname = "送货员";
@@ -87,10 +87,10 @@ body{
 <table width="1010"> 
   <tr>
     <td colspan="2">&nbsp;</td>
-    <td width="384" rowspan="2" align="center" style="font-size:30px; font-family:"楷体";><strong><%=message %></strong></td>
+    <td width="384" rowspan="2" align="center" style="font-size:30px; font-family:"楷体";><strong><%=user.getBranch()+message %></strong></td>
     <td width="300"><strong><FONT size=5>单&nbsp;&nbsp;号：<%=order.getPrintlnid() == null?"":order.getPrintlnid()%></strong></FONT></td> 
-  </tr> 
-  <tr>    
+  </tr>  
+  <tr>     
     <td width="110">&nbsp;&nbsp;&nbsp;<strong>&nbsp;门店：</strong></td> 
     <td width="212" style="font-size:25px; font-family:"楷体";><strong><%=order.getBranch()+"("+usermap.get(Integer.valueOf(order.getSaleID())).getUsername() +")"%></strong></td>
     <td><strong><FONT size=4>销售日期：<%=order.getSaleTime() %></strong></FONT></td>

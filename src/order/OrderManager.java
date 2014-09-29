@@ -234,9 +234,7 @@ logger.info(pstmt);
 			    sql = "update mdorder set returnstatues = "+statues+" , returntime = '"+time+"'  where id in " + ids;
 			   // List<String> lists = InventoryBranchManager.chage(user, method, statues, id);
 			    //listsql.addAll(lists);   
-			
-			
-			
+
 			} else if("print".equals(method)){ //  
 				sql = "update mdorder set printSatues = "+statues+" where id in " + ids;
 			} else if("printdingma".equals(method)){    
@@ -299,7 +297,7 @@ logger.info(pstmt);
 			
 		} else if(type == OrderPrintln.releasedispatch ){  // releasedispatch  
 			sql = "update mdorder set returnstatues = 2   where id = " + id; 
-		}            
+		}             
 		//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
          logger.info(sql);	
          listsql.add(sql);  
@@ -1827,7 +1825,20 @@ logger.info(sql);
 		}
 		return b;
 	}
-    
+   
+   public static int getShifangStatues(Order or){
+	   int opstatues = -1 ; 
+	   if(or.getDeliveryStatues() == 0 || or.getDeliveryStatues() == 9 ){ 
+			opstatues = OrderPrintln.salerelease;     
+		}else if (or.getDeliveryStatues() == 1 ||or.getDeliveryStatues() == 10){
+			if(0 != or.getInstallid()){   
+				opstatues = OrderPrintln.salereleaseanzhuang;
+			}  
+		}
+	   
+	   return opstatues;
+   } 
+   
    public static Order gerOrderFromRs(ResultSet rs){
 	   Order p = null;
 		try { 

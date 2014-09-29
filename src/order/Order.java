@@ -40,13 +40,13 @@ public class Order {
  public static int neworder = 18 ;
  public static int motify = 19 ;
  public static int release = 20 ; 
- public static int returns = 21 ; 
+ public static int returns = 21 ;   // 送货员退货
  public static int dispatch = 22 ;
  public static int installonly = 23 ;
  public static int chargeall = 24 ; 
- public static int orderquery = 24 ;
-  
- public static int orderpeisong= 1;
+ public static int orderquery = 25 ;
+   
+ public static int orderpeisong= 1;  
  public static int orderinstall = 2; 
  public static int orderreturn = 3;   
  public static int ordersong = 4; 
@@ -446,10 +446,17 @@ private String categoryID; // 对应的产品类别
 public void setBranch(String branch) {
 	this.branch = branch;
 }
-private List<OrderProduct> Orderproduct = new ArrayList<OrderProduct>();
+private List<OrderProduct> Orderproduct = null; 
   
   public List<OrderProduct> getOrderproduct() {
-	return Orderproduct;
+	  if(Orderproduct == null){
+		  if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
+				OrderProductManager.resetOrPMap();
+			}  
+		  Orderproduct = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
+	  }
+	  
+	return Orderproduct;  
 }
 
 public void setOrderproduct(List<OrderProduct> orderproduct) {

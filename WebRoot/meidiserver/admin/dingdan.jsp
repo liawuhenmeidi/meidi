@@ -217,7 +217,8 @@ function changes(str1,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type)
 			         data:"method=dingdaned&id="+str1+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 			         dataType: "",  
 			         success: function (data) {
-			        	 if(data == true){
+			        	 
+			        	 if(data == true || data == "true"){ 
 			        		 window.location.href="print.jsp?id="+oid+"&type="+type ;
 			        	 }
 			           },  
@@ -264,7 +265,7 @@ function changes(str1,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type)
 }  
 
 function searchlocate(id){
-	window.open('../adminmap.jsp?id="'+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+	window.open('../adminmap.jsp?id='+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 }
 
@@ -320,7 +321,7 @@ function adddetail(src){
 			<td align="center">单号</td> 
 			<td align="center">门店</td>
 			<td align="center">销售员</td>
-			<td align="center">pos(厂送)单号</td>
+			<td align="center">pos(提货)单号</td>
 			<td align="center">OMS订单号</td>
 			
 			<td align="center">验证码(联保单)</td>

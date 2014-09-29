@@ -630,7 +630,7 @@ function adddetail(src){
                     }
 	                	%>
          </select>   
-       
+        
          <input type="button" onclick="change('return<%=o.getId()%>','<%=o.getId()%>','<%=Order.orderreturn%>')"  value="确定"/>
 		<%} else { 
 		// 0 表示未送货  1 表示正在送  2 送货成功
