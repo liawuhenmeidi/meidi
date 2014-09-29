@@ -25,8 +25,12 @@ public class DBUtill {
            Object[] strsqls = sqls.toArray();
            logger.info(strsqls.toString());
           //依次执行传入的SQL语句      
-          for (int i = 0; i < strsqls.length; i++) {  
-              sm.execute((String)strsqls[i]);// 执行添加事物的语句  
+          for (int i = 0; i < strsqls.length; i++) {
+        	  String sql = (String)strsqls[i];
+        	  if(!StringUtill.isNull(sql)){   
+        		  sm.execute(sql);// 执行添加事物的语句  
+        	  } 
+             
           }  
           logger.info("提交事务处理！");  
              

@@ -217,7 +217,8 @@ function changes(str1,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type)
 			         data:"method=dingdaned&id="+str1+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 			         dataType: "",  
 			         success: function (data) {
-			        	 if(data == true){
+			        	 
+			        	 if(data == true || data == "true"){ 
 			        		 window.location.href="print.jsp?id="+oid+"&type="+type ;
 			        	 }
 			           },  

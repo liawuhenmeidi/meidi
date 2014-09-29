@@ -234,9 +234,7 @@ logger.info(pstmt);
 			    sql = "update mdorder set returnstatues = "+statues+" , returntime = '"+time+"'  where id in " + ids;
 			   // List<String> lists = InventoryBranchManager.chage(user, method, statues, id);
 			    //listsql.addAll(lists);   
-			
-			
-			
+
 			} else if("print".equals(method)){ //  
 				sql = "update mdorder set printSatues = "+statues+" where id in " + ids;
 			} else if("printdingma".equals(method)){    

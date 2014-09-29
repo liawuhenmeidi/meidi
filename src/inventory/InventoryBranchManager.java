@@ -99,84 +99,6 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		logger.info(categorys.size());
 		return categorys;
 	}
-
-	/*public static List<String> save(User user,Inventory inventory) {
-	     List<String> sqls = new ArrayList<String>(); 
-	     Map<Integer,Branch> branchmap = BranchManager.getNameMap();
-         int branchid = -1;    
-		 int type = -1 ;
-		 String time = TimeUtill.gettime();
-		 if(branchmap != null){
-		   Branch branch = branchmap.get(inventory.getOutbranchid());
-	       if(branch != null){
-	    	   if(user.getBranch().equals(branch.getLocateName())){
-	    		   branchid = inventory.getOutbranchid();
-	    		   type = 0 ;
-	    	   } 
-	       } 
-	        
-	       
-	       branch = branchmap.get(inventory.getInbranchid());
-	       if(branch != null){
-	    	   if(user.getBranch().equals(branch.getLocateName())){
-	    		   branchid = inventory.getInbranchid();
-	    		   type = 1 ;
-	    	   }
-	    	   
-	       } 
-	   }
-       
-		  
-		 List<InventoryMessage> orders = inventory.getInventory() ;
-		    
-			 for(int i=0;i<orders.size();i++){ 
-                String sql = "";
-                String sql1 = "";  
-                
-                InventoryMessage order = orders.get(i);
-                
-               
-				
-                
-				if(getInventoryID(user,branchid,order.getProductId()) == null){
-					
-					
-					if(1 == type){ 
-						sql = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
-		                         "  values ( null,"+order.getCategoryId()+", '"+order.getProductId()+"', '"+order.getCount()+"', '"+order.getCount()+"',"+branchid+")";
-					
-						sql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
-		                        "  values ( null, '"+branchid+"', '"+inventory.getId()+"','"+time+"','"+order.getProductId()+"',"+order.getCount()+","+type+","+order.getCount()+","+order.getCount()+")";    
-					
-					}else if(0 == type){ 
-						sql = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
-		                         "  values ( null,"+order.getCategoryId()+",'"+order.getProductId()+"', '-"+order.getCount()+"', '-"+order.getCount()+"',"+branchid+")";
-					   
-						sql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
-		                        "  values ( null, '"+branchid+"', '"+inventory.getId()+"','"+time+"','"+order.getProductId()+"',"+order.getCount()+","+type+",'-"+order.getCount()+"','-"+order.getCount()+"')";    
-					} 
-				}else { 
-					 
-					if(1 == type){ 
-						sql = "update mdinventorybranch set realcount =  ((mdinventorybranch.realcount)*1 + "+ order.getCount() + ")*1 , papercount =  ((mdinventorybranch.papercount)*1 + "+ order.getCount() + ")*1  where  branchid = " +branchid + " and  type = '"+order.getProductId()+"'"; 
-					
-						sql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +     
-			                        "  values ( null, '"+branchid+"', '"+inventory.getId()+"','"+time+"','"+order.getProductId()+"',"+order.getCount()+","+type+",(select realcount from mdinventorybranch where branchid = " +branchid + " and  type = '"+order.getProductId()+"')*1,(select papercount from mdinventorybranch where branchid = " +branchid + " and  type = '"+order.getProductId()+"')*1)"; 
-					}else if(0 == type){
-						sql = "update mdinventorybranch set realcount =  ((mdinventorybranch.realcount)*1 - "+ order.getCount() + ")*1  , papercount =  ((mdinventorybranch.papercount)*1 + "+ order.getCount() + ")*1  where  branchid = " +branchid + " and  type = '"+order.getProductId()+"'"; 
-						sql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +       
-		                        "  values ( null, '"+branchid+"', '"+inventory.getId()+"','"+time+"','"+order.getProductId()+"',"+order.getCount()+","+type+",(select realcount from mdinventorybranch where branchid = " +branchid + " and  type = '"+order.getProductId()+"')*1,(select papercount from mdinventorybranch where branchid = " +branchid + " and  type = '"+order.getProductId()+"')*1)"; 
-					}   
-	     
-				}
-				sqls.add(sql); 
-				sqls.add(sql1); 
-				logger.info(sql); 
-				logger.info(sql1);  
-			} 
-			 return sqls; 
-	   } */
-	
 	
 	public static List<String> save(User user,Inventory inventory) {
 		
@@ -401,7 +323,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 				           
 		    		}else if("returns".equals(method)){
 		    			logger.info("uid****"+uid); 
-		    			if(or.getSalestatues() == 3 || or.getSalestatues() == 0 ){     
+		    			if(or.getSalestatues() == 3 || or.getSalestatues() == 0 || or.getSalestatues() == 2){     
 				    		Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 				    		uid = order.getSaleID(); 
 				    	    if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
@@ -414,9 +336,9 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    			                 
 			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
 			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+8+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
-			    			 } 
+			    			 }  
 				    	}else if(or.getSalestatues() == 2){     
-				    		Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
+				    		/*Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 				    		uid = order.getSaleID(); 
 				    	    
 				    		if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
@@ -429,7 +351,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    			 
 			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
 			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+8+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
-			    			 }
+			    			 }*/   
 				    	}else{ 
 				    		System.out.println("uid****"+uid);
 			    			 if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
@@ -445,7 +367,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    			 }    
 				    	}    
 				            
-		    		}else if((Order.orderreturn+"").equals(method)){   
+		    		}else if((Order.orderreturn+"").equals(method)){      // 送货员拉回货物   
 		    			if(or.getSalestatues() == 3 || or.getSalestatues() == 0 ){     
 				    		/*Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 				    		uid = order.getSaleID(); 
@@ -462,7 +384,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+7+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
 			    			 } */
 				    	}else if(or.getSalestatues() == 2 ){     
-				    		Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
+				    		/*Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 				    		uid = order.getSaleID();  
 				    	    System.out.println("uid****"+uid);
 				    	    if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
@@ -475,7 +397,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    			  
 			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
 			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+7+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
-			    			 }
+			    			 }*/
 				    	}else{
 				    		Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 				    		uid = order.getDealsendId();  
