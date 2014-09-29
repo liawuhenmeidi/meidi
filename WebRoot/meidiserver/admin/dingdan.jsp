@@ -265,7 +265,7 @@ function changes(str1,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type)
 }  
 
 function searchlocate(id){
-	window.open('../adminmap.jsp?id="'+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+	window.open('../adminmap.jsp?id='+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 }
 
