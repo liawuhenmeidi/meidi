@@ -20,6 +20,8 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import branch.Branch;
+
 import utill.StringUtill;
 
 import category.Category;
@@ -244,7 +246,33 @@ logger.info(Permissions);
 		}
 		return users;
 	}
-	   
+	  // 获取门店导购员的个数
+	public static List<User> getUsers(Branch branch) {
+		List<User> users = new ArrayList<User>();
+		Connection conn = DB.getConn();
+		String sql = "select * from  mduser where branch = "+ branch.getLocateName();
+		Statement stmt = DB.getStatement(conn);
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while (rs.next()) {
+				User u = UserManager.getUserFromRs(rs);
+				users.add(u);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return users;
+	}
+	
+	public static int getUsersCount(Branch branch) {
+		List<User> list = getUsers(branch);
+		return list.size(); 
+	}
+	
 	public static User getUser(User user) {
 		User u  = null;
 		Connection conn = DB.getConn();
@@ -647,6 +675,34 @@ logger.info(sql);
 			}
 			return users;
 	   }
+	   
+	  // 获取门店和对应的导购员
+	   public static HashMap<String,List<User>> getMapBranch(){
+		   HashMap<String,List<User>> users = new HashMap<String,List<User>>();
+			Connection conn = DB.getConn();
+			String sql = "select * from  mduser";
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) {
+					User u = UserManager.getUserFromRs(rs);
+					List<User> list = users.get(u.getBranch());
+					if(list == null){ 
+						list = new ArrayList<User>();
+						users.put(u.getBranch(), list);
+					}
+					list.add(u);    
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return users;
+	   }
+	   
 	   
 	   // 
 	   public static HashMap<Integer,User> getMap(int type){

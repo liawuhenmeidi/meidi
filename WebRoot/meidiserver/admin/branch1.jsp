@@ -9,7 +9,8 @@ BranchType branch = BranchTypeManager.getLocate(Integer.valueOf(id));
 
 List<Branch> list =BranchManager.getLocate(id) ;
 
-System.out.println("list.size()"+list.size());
+HashMap<String,List<User>> map = UserManager.getMapBranch(); 
+// System.out.println("list.size()"+list.size());
 %>
   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -39,8 +40,8 @@ function winconfirm(){
 	         url: "delete.jsp",
 	         //data:"method=list_pic&page="+pageCount,
 	         data:"method=branch&id="+attract.toString(),
-	         dataType: "", 
-	         success: function (data) {
+	         dataType: "",  
+	         success: function (data) { 
 	          alert("删除成功");
 	          window.location.href="branch1.jsp?id="+pid;
 	           }, 
@@ -51,15 +52,11 @@ function winconfirm(){
 	 }
 }
 
-function changes(){
-	var str1 = $("#locate").val();
-	if(str1 == null || str1 == ""){
-		alert("不能为空");
-	}  
+function changes(bid,statues){
 	$.ajax({ 
         type: "post", 
          url: "server.jsp",
-         data:"method=branch&id="+str1+"&pid="+pid,
+         data:"method=branchinventory&bid="+bid+"&statues="+statues,
          dataType: "", 
          success: function (data) {
            window.location.href="branch1.jsp?id="+pid;
@@ -114,8 +111,9 @@ function seletall(all){
 		<tr>
 			<th align="left" width="20">
 			 <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th>
-			<th align="left">门店序列号</th>
+			<th align="left" width="40">门店号</th>
 			<th align="left">门店</th>
+			<th align="left">导购人数</th>
 			<th align="left">门店报装单所需信息</th>
 			<th align="left">是否做为总库</th>
 			<th align="left">修改</th>
@@ -130,11 +128,12 @@ if(list != null){
 %>    
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">  
 		<td align="left"><input type="checkbox" value="1" name="<%=category.getId() %>"></input></td> 
-		<td align="left"><%=i+1 %></td>
+		<td align="left"><%=i+1 %></td>   
  		<td align="left"><%=category.getLocateName() %></td> 
-		<td align="left">
+ 		<td align="left"><%=map.get(category.getLocateName())==null?0:map.get(category.getLocateName()).size()%></td>
+		<td align="left">  
 		        <%  
-		           String message = category.getMessage();
+		           String message = category.getMessage(); 
 		          if (StringUtill.isNull(message)){
 		        	  message = "无"; 
 		          }else{
@@ -148,7 +147,18 @@ if(list != null){
                <%=message%>    
          </td>
          <td align="left">  
-            <%=category.getStatues() ==0?"否":"是" %> 
+            <% if(category.getStatues() ==0){
+             %>
+                                           否<input type="button" onclick="changes('<%=category.getId()%>','1')"  value="开启"/> 
+                                           
+               &nbsp; &nbsp;&nbsp;&nbsp;                              
+            <%
+            }else {  
+            %>
+              
+                                             是<input type="button" onclick="changes('<%=category.getId()%>','0')"  value="关闭"/> 
+            <% }%>
+             
          </td>   
          <td align="left">  
                <a href="branch1add.jsp?pid=<%=id%>&id=<%=category.getId()%>">[修改]</a>
