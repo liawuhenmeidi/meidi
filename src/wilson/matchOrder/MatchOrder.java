@@ -79,14 +79,17 @@ public class MatchOrder {
 	private boolean fuzzyCompare(UploadOrder tempUo, Order tempDBO) {
 		boolean flag = false;
 		AfterMatchOrder amo ;
+		String key = "";
 		//如果销售时间相同
 		if(tempDBO.getSaleTime().replace("-", "").equals(tempUo.getSaleTime())){
 			//而且票面数量一样
 			if(String.valueOf(tempUo.getNum()).equals(tempDBO.getSendCount())){
 				//而且销售门店一样
-				if(tempUo.getShop().contains(tempDBO.getBranch().replace("苏宁", "").replace("店", ""))){
+				key = tempDBO.getBranch().replace("苏宁", "").replace("店", "");
+				if(tempUo.getShop().contains(key)){
 					//而且型号一样
-					if(tempUo.getType().replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "").equals(tempDBO.getSendType().replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", ""))){
+					key = tempUo.getType().replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "");
+					if(tempDBO.getSendType().contains(key)){
 						amo = new AfterMatchOrder(tempUo,tempDBO);
 						amo.calcLevel();
 						matchedOrders.add(amo);

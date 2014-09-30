@@ -293,10 +293,10 @@ public class AfterMatchOrder {
 		//对比型号
 		tempDB = this.getDBOrder().getSendType().trim();
 		tempUpLoad = this.getUploadOrder().getType().trim();
-		key = tempDB.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "");
-		if(tempUpLoad.contains(key)){
+		key = tempUpLoad.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "");
+		if(tempDB.contains(key)){
 			//精准对比
-			if(tempUpLoad.equals(tempDB)){
+			if(tempDB.equals(tempUpLoad)){
 				this.setCompareLevel(this.getCompareLevel() + 1.0);
 				this.setDBSideType(HighLighter(tempDB));
 				this.setUploadSideType(HighLighter(tempUpLoad));

@@ -64,6 +64,8 @@ User user = (User)session.getAttribute("user");
               <p ><a href="updateExcel.jsp" target="contentpage">苏宁Excel上传页</a></p>
               <p ><a href="autoCheckout.jsp" target="contentpage">自动结款页</a></p>
               <p ><a href="manualCheckout.jsp" target="contentpage">手动结款页</a></p>
+              <p ><a href="salaryModelUpload.jsp" target="contentpage">提成单上传页</a></p>
+              <p ><a href="salaryExport.jsp" target="contentpage">提成导出页</a></p>
             </div>  
           </li> 
           

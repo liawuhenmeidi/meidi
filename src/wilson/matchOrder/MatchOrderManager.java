@@ -6,7 +6,7 @@ import java.util.List;
 import order.Order;
 import order.OrderManager;
 import wilson.upload.UploadOrder;
-import wilson.upload.UploadOrderManager;
+import wilson.upload.UploadManager;
 
 public class MatchOrderManager {
 
@@ -17,7 +17,7 @@ public class MatchOrderManager {
 	
 	public static List <UploadOrder> getUnCheckedUploadOrders(){
 		List <UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
-		unCheckedUploadOrders = UploadOrderManager.getUnCheckedUploadOrders();
+		unCheckedUploadOrders = UploadManager.getUnCheckedUploadOrders();
 		if(unCheckedUploadOrders != null && unCheckedUploadOrders.size() >= 0){
 			return unCheckedUploadOrders;
 		}else{
@@ -41,7 +41,7 @@ public class MatchOrderManager {
 		//对照好了消除
 		//OrderManager.updateStatues("orderCharge",Order.query, String.valueOf(DBOrderID)); 
 		//消除Upload中的Order
-		if(UploadOrderManager.checkOrder(UploadOrderID,DBOrderID )){
+		if(UploadManager.checkOrder(UploadOrderID,DBOrderID )){
 			return true;
 		}
 
@@ -52,7 +52,7 @@ public class MatchOrderManager {
 	public static boolean checkOrder(String[] idString){
 		
 		//消除Upload中的Order和消除DB中的Order(还没有添加完)
-		if(UploadOrderManager.checkOrder(idString)){
+		if(UploadManager.checkOrder(idString)){
 			return true;
 		}
 		

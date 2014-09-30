@@ -25,7 +25,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.baidu.inf.iis.bcs.BaiduBCS;
 
-public class SuningDataUpload extends HttpServlet { 
+public class SalaryModelUpload extends HttpServlet { 
 	/**
 	 *  
 	 */ 
@@ -35,7 +35,7 @@ public class SuningDataUpload extends HttpServlet {
 	private ServletContext sc;
 
 	// BLOB
-	private static final Log log = LogFactory.getLog(SuningDataUpload.class);  
+	private static final Log log = LogFactory.getLog(SalaryModelUpload.class);  
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		this.config = config;
@@ -72,8 +72,8 @@ public class SuningDataUpload extends HttpServlet {
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		upload.setSizeMax(1000000*100); 
 		
-		//苏宁表单上传
-		System.out.println("检测到苏宁表单上传" + new Date());
+		//提成标准表单上传
+		System.out.println("检测到提成标准表单上传" + new Date());
 		//文件名起名为时间+uuid形式
      	SimpleDateFormat fmt=new SimpleDateFormat("yyyyMMdd");
 		String uuid = UUID.randomUUID().toString();
@@ -130,8 +130,7 @@ public class SuningDataUpload extends HttpServlet {
 			e.printStackTrace();
 			System.out.println(("upload.message" + "文件上传错误！"));
 		}
-		res.sendRedirect("/meidi/meidiserver/admin/updateExcel.jsp?fileName="+fileName);
-		//req.getRequestDispatcher("/meidiserver/admin/updateExcel.jsp").forward(req, res);
+		res.sendRedirect("/meidi/meidiserver/admin/salaryModelUpload.jsp?fileName="+fileName);
 	}
 
 }

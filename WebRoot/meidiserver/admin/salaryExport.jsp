@@ -4,33 +4,12 @@
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
 	
-	
-	String fileName = request.getParameter("fileName");
-	String confirm = request.getParameter("confirm");
-	String filePath = new SuningDataUpload().getUploadPath();
-	List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
-	//UploadOrderManager uom = new UploadOrderManager();
-
-	boolean showContent =false;
-	
-	boolean confirmResult = false;
-	
-	if(confirm != null && confirm != "" && confirm.equals("confirm")){
-		confirmResult = UploadManager.saveSuningFileToDB(filePath,fileName);
-		response.sendRedirect("/meidi/meidiserver/admin/updateExcel.jsp");
-		return;
-	}else{
-		if(fileName != null && fileName != "" && !fileName.equals("")){			
-			UploadOrders = new XLSReader().readSuningXLS(filePath,fileName);
-			showContent = true;
-		}	
-	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>苏宁消单明细上传页面</title>
+<title>提成导出页面</title>
   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <style type="text/css">
@@ -80,26 +59,10 @@ td {
 <!--   头部开始   --> 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript">
 
-<%
-	if(fileName != null && fileName != "" && !fileName.equals("")){	
-		String temp = "";
-		if(UploadOrders!=null&&UploadOrders.size()>0){
-			temp = "上传成功";
-		}else{
-			temp = "上传失败";
-%>
-			<script type="text/javascript">
-				alert('<%=temp%>');
-			
-			</script>
-<%
 
-		}
-	}
-
-%>
-
+</script>
 <div style="position:fixed;width:100%;height:200px;">
 <div style="position:fixed;width:80%;height:200px;">
   
@@ -146,39 +109,15 @@ td {
 			<td align="center">扣点</td> 
 		
 		</tr> 
-		<%
-		if(showContent){
-			for(int i = 0 ; i< UploadOrders.size();i++){
-		%>
 		
-		<tr>  
-			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
-			
-			<td align="center"><%= UploadOrders.get(i).getShop() %></td>
-			<td align="center"><%= UploadOrders.get(i).getSaleNo() %></td>
-			<td align="center"><%= UploadOrders.get(i).getPosNo() %></td>
-			<td align="center"><%= UploadOrders.get(i).getSaleTime() %></td>
-			<td align="center"><%= UploadOrders.get(i).getDealTime() %></td> 
-			<td align="center"><%= UploadOrders.get(i).getType() %></td> 
-			<td align="center"><%= UploadOrders.get(i).getNum() %></td> 
-			<td align="center"><%= UploadOrders.get(i).getSalePrice() %></td> 
-			<td align="center"><%= UploadOrders.get(i).getBackPoint() %></td> 
-		
-		</tr> 
-		<%
-			}
-		%>
-		<form method="post" action="">
-		<input type="hidden" name="fileName" value="<%=fileName %>"/>
+		<form method="post" action="/meidi/meidiserver/Model">
+		<input type="hidden" name="fileName" value=""/>
 		<input type="hidden" name="confirm" value="confirm"/>
 		<tr>
 			<td colspan="8" align="center" ><input name="submit" type="submit" value="确认"/></td>
 			<td colspan="1">  </td>
 		</tr>
 		</form>
-		<%
-		}
-		%>
 </table> 
      </div>
 

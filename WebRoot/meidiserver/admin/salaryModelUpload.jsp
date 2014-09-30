@@ -7,21 +7,21 @@
 	
 	String fileName = request.getParameter("fileName");
 	String confirm = request.getParameter("confirm");
-	String filePath = new SuningDataUpload().getUploadPath();
-	List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
-	//UploadOrderManager uom = new UploadOrderManager();
+	String filePath = new SalaryModelUpload().getUploadPath();
+	List <UploadSalaryModel> salaryModelList = new ArrayList<UploadSalaryModel>();
 
+	
 	boolean showContent =false;
 	
 	boolean confirmResult = false;
 	
 	if(confirm != null && confirm != "" && confirm.equals("confirm")){
-		confirmResult = UploadManager.saveSuningFileToDB(filePath,fileName);
-		response.sendRedirect("/meidi/meidiserver/admin/updateExcel.jsp");
+		confirmResult = UploadManager.saveSalaryFileToDB(filePath,fileName);
+		response.sendRedirect("/meidi/meidiserver/admin/salaryModelUpload.jsp");
 		return;
 	}else{
 		if(fileName != null && fileName != "" && !fileName.equals("")){			
-			UploadOrders = new XLSReader().readSuningXLS(filePath,fileName);
+			salaryModelList = new XLSReader().readSalaryModelXLS(filePath,fileName);
 			showContent = true;
 		}	
 	}
@@ -81,24 +81,7 @@ td {
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 
-<%
-	if(fileName != null && fileName != "" && !fileName.equals("")){	
-		String temp = "";
-		if(UploadOrders!=null&&UploadOrders.size()>0){
-			temp = "上传成功";
-		}else{
-			temp = "上传失败";
-%>
-			<script type="text/javascript">
-				alert('<%=temp%>');
-			
-			</script>
-<%
 
-		}
-	}
-
-%>
 
 <div style="position:fixed;width:100%;height:200px;">
 <div style="position:fixed;width:80%;height:200px;">
@@ -112,7 +95,7 @@ td {
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
   <a href="../Model"><font style="color:red;font-size:20px;" >下载模板</font> </a>
 
-  <form action="/meidi/meidiserver/SuningDataUpload" method="post" enctype ="multipart/form-data" runat="server"> 
+  <form action="/meidi/meidiserver/SalaryModelUpload" method="post" enctype ="multipart/form-data" runat="server"> 
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
       <font style="color:red;font-size:20px;" >导入数据 : </font>
       <input id="File1" runat="server" name="UpLoadFile" type="file" /> 
@@ -135,34 +118,46 @@ td {
 		<tr>  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			
-			<td align="center">销售门店</td>
-			<td align="center">销售订单号</td>
-			<td align="center">pos(厂送)单号</td>
-			<td align="center">销售日期</td>
-			<td align="center">交货日期</td> 
-			<td align="center">票面型号</td> 
-			<td align="center">票面数量</td> 
-			<td align="center">供价</td> 
-			<td align="center">扣点</td> 
+			<td align="center">类别</td>
+			<td align="center">型号</td>
+			<td align="center">零售价</td>
+			<td align="center">提成</td> 
 		
 		</tr> 
+		
+		<%
+		if(salaryModelList.size() == 1 && salaryModelList.get(0).getId() == -1){
+			
+		%>
+		<tr>
+			<td colspan="5" style="color:red"><h3><%=salaryModelList.get(0).getContent() %></h3></td>
+		</tr>
+		<%
+		return;
+		}
+		%>
+		
 		<%
 		if(showContent){
-			for(int i = 0 ; i< UploadOrders.size();i++){
+			for(int i = 0 ; i< salaryModelList.size();i++){
 		%>
 		
 		<tr>  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			
-			<td align="center"><%= UploadOrders.get(i).getShop() %></td>
-			<td align="center"><%= UploadOrders.get(i).getSaleNo() %></td>
-			<td align="center"><%= UploadOrders.get(i).getPosNo() %></td>
-			<td align="center"><%= UploadOrders.get(i).getSaleTime() %></td>
-			<td align="center"><%= UploadOrders.get(i).getDealTime() %></td> 
-			<td align="center"><%= UploadOrders.get(i).getType() %></td> 
-			<td align="center"><%= UploadOrders.get(i).getNum() %></td> 
-			<td align="center"><%= UploadOrders.get(i).getSalePrice() %></td> 
-			<td align="center"><%= UploadOrders.get(i).getBackPoint() %></td> 
+			<td align="center"><%= salaryModelList.get(i).getCatergory() %></td>
+			<td align="center"><%= salaryModelList.get(i).getType() %></td>
+			<%
+				String tempContent = salaryModelList.get(i).getContent();
+				tempContent = tempContent.replace("{", "").replace("}", "");
+				//System.out.println(tempContent);
+				for(int j = 0 ; j < tempContent.split(",").length ; j ++){
+			%>
+			<td align="center"><%= tempContent.split(",")[j].split(":")[0] %></td>
+			<td align="center"><%= tempContent.split(",")[j].split(":")[1] %></td> 
+			<%
+				}
+			%>
 		
 		</tr> 
 		<%
@@ -172,8 +167,8 @@ td {
 		<input type="hidden" name="fileName" value="<%=fileName %>"/>
 		<input type="hidden" name="confirm" value="confirm"/>
 		<tr>
-			<td colspan="8" align="center" ><input name="submit" type="submit" value="确认"/></td>
-			<td colspan="1">  </td>
+			<td colspan="4" align="center" ><input name="submit" type="submit" value="确认"/></td>
+
 		</tr>
 		</form>
 		<%

@@ -15,11 +15,24 @@ import order.OrderManager;
 
 import database.DB;
 
-public class UploadOrderManager {
-	public static boolean saveFileToDB(String path,String fileName){
-		XLSReader xlsreader = new XLSReader();
+public class UploadManager {
+	private static XLSReader xlsreader = new XLSReader();
+	
+	public static boolean saveSalaryFileToDB(String path,String fileName){
+		List <UploadSalaryModel> uploadSalaryModelList = new ArrayList<UploadSalaryModel>();
+		uploadSalaryModelList = xlsreader.readSalaryModelXLS(path, fileName);
+		if(saveSalaryModelList(uploadSalaryModelList)){
+			System.out.println("上传提成标准保存成功");
+			return true;
+		}else{
+			System.out.println("上传提成标准保存失败");
+			return false;
+		}
+	}
+	
+	public static boolean saveSuningFileToDB(String path,String fileName){
 		List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
-		UploadOrders = xlsreader.readXLS(path, fileName);
+		UploadOrders = xlsreader.readSuningXLS(path, fileName);
 		if(saveOrderList(UploadOrders)){
 			System.out.println("上传订单保存成功");
 			return true;
@@ -27,7 +40,6 @@ public class UploadOrderManager {
 			System.out.println("上传订单保存失败");
 			return false;
 		}
-		
 	}
 	
 	public static boolean checkOrder(int uploadOrderId,int dbOrderId){
@@ -150,6 +162,41 @@ public class UploadOrderManager {
 		return true;
 	}
 	
+	private static boolean saveSalaryModelList(List<UploadSalaryModel> uploadSalaryModelList) {
+		boolean flag = false;
+		String sql = "insert into uploadsalarymodel (id, name,starttime,endtime,catergory,type,content,committime,filename,status) VALUES (null,?,?,?,?,?,?,?,?,0)";	
+		Connection conn = DB.getConn();
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		
+		UploadSalaryModel usm = new UploadSalaryModel();
+		
+		try {
+			for(int i = 0 ; i < uploadSalaryModelList.size() ; i ++ ){
+				usm = uploadSalaryModelList.get(i);
+				pstmt.setString(1, usm.getName());
+				pstmt.setString(2, usm.getStartTime());
+				pstmt.setString(3, usm.getEndTime());
+				pstmt.setString(4, usm.getCatergory());
+				pstmt.setString(5, usm.getType());
+				pstmt.setString(6, usm.getContent());
+				pstmt.setString(7, fmt.format(new Date()));
+				pstmt.setString(8, usm.getFileName());
+				pstmt.executeUpdate();
+				usm = new UploadSalaryModel();
+			}		
+			flag = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return flag;
+	}
+
 	
 	public static List<UploadOrder> getUnCheckedUploadOrders(){
 		List <UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
