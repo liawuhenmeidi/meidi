@@ -158,6 +158,22 @@ public class BranchManager {
 			return id; 
 		}
 		
+		public static int update(String bid,String statues ) {
+		    int id = 0 ; 
+			Connection conn = DB.getConn();  
+			String sql = " update mdbranch set statues = " + statues + " where id = " + bid  ;
+			PreparedStatement pstmt = DB.prepare(conn, sql);
+			try {  
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {  		
+				DB.close(pstmt);
+				DB.close(conn);
+			}
+			return id; 
+		} 
+		
 		public static Branch getLocatebyid(String id ) {
 			Branch branch = new Branch();  
 			Connection conn = DB.getConn(); 

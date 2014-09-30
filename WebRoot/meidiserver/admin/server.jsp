@@ -88,7 +88,12 @@ if("peidan".equals(method)){
 	String bid = request.getParameter("bid");
 	String c = request.getParameter("id");
 	BranchTypeManager.update(c, bid) ; 
-	//branchtypeupdate
+	//branchinventory
+}else if("branchinventory".equals(method)){  
+	String bid = request.getParameter("bid");
+	String statues = request.getParameter("statues"); 
+	BranchManager.update(bid,statues) ;   
+	//branchinventory
 }else if("grouptypeupdate".equals(method)){ 
 	String bid = request.getParameter("bid");
 	String c = request.getParameter("id");
