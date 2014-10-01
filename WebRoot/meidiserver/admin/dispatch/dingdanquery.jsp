@@ -13,7 +13,8 @@ count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.orderqu
 HashMap<Integer,User> usermap = UserManager.getMap(); 
 //获取送货员    
 List<User> listS = UserManager.getUsers(user,Group.send);
- 
+
+Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -72,7 +73,7 @@ var id = "";
 var pages = "" ;
 var num = "";
 var oid ="<%=id%>";
-var pgroup = "<%=pgroup%>";
+var pgroup = "<%=pgroup%>"; 
 var opstatues = "<%=opstatues%>";
 
 $(function () {
@@ -180,23 +181,53 @@ function change(str1,str2,type){
 
 
 
-function winconfirm(statues,uid,oid){
-	$.ajax({   
-        type: "post",   
-         url: "../server.jsp", 
-         data:"method=dealshifang&statues="+statues+"&oid="+oid+"&uid="+uid,
-         dataType: "",   
-         success: function (date) { 
+//function winconfirm(statues,uid,oid){
+	//$.ajax({   
+  //      type: "post",   
+  //       url: "../server.jsp", 
+  //       data:"method=dealshifang&statues="+statues+"&oid="+oid+"&uid="+uid,
+  //       dataType: "",   
+  //       success: function (date) { 
         	
-        	 window.location.href="dingdanquery.jsp";
+    //    	 window.location.href="dingdanquery.jsp";
            
-           },  
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-     
-            } 
-           });
-}
-
+    //       },  
+    //     error: function (XMLHttpRequest, textStatus, errorThrown) { 
+    // 
+    //        } 
+    //       });
+//}
+ 
+function winconfirm(statues,uid,oid,opstatues){
+	if(opstatues == 0 ){
+		alert("您已经提交释放申请");
+		return ;
+	}else if(opstatues == 4){
+		question = confirm("您的申请被拒绝，是否继续提交？");
+	}else { 
+		question = confirm("你确认要释放吗？");
+	}
+		
+		if (question != "0"){
+			
+			//alert(attract.toString());
+			$.ajax({    
+		        type:"post", 
+		         url:"../../user/server.jsp",   
+		         //data:"method=list_pic&page="+pageCount,
+		        data:"method=shifang&oid="+oid+"&pGroupId="+uid+"&opstatues="+statues,
+		         dataType: "",   
+		         success: function (data) {  
+		          alert("释放申请已提交成功");    
+		          window.location.href="dingdanquery.jsp?id="+id;
+		           }, 
+		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+		          alert("释放申请失败");
+		            } 
+		           }); 
+		 }
+	}
+	
 function adddetail(src){ 
 	//window.location.href=src ;
 	winPar=window.open(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
@@ -355,9 +386,17 @@ function orderPrint(id,statues){
 
      <%
      int statues = OrderManager.getShifangStatues(o);
-	if(statues != -1){ 
+	if(statues != -1){
+		int shifang = -1 ;  
+		if(opmap.get(statues) != null){
+			OrderPrintln orp = opmap.get(statues).get(o.getId());    
+			if(orp != null){ 
+				shifang = orp.getStatues();
+			} 
+		}
+		 
      %>
-    <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=statues%>','<%=user.getId() %>','<%=o.getId() %>')"></input>
+    <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>
      <%
      } 
      %> 

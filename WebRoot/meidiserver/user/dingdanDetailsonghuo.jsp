@@ -248,7 +248,7 @@ function change(str1,str2,type){
 		if(orp != null){
 			shifang = orp.getStatues();
 		}
-     %>
+     %> 
     <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=shifang%>')"></input>
      <%
      } 
