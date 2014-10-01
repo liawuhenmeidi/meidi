@@ -373,7 +373,8 @@ function checkedd(){
 			</td> 
 			<td align="center">票面数量</td>
 			 
-			<td align="center"><%= o.getSendCount(1,"")%></td> 
+			<td align="center">
+			<%= o.getSendCount(1,"")%></td> 
 		
 		</tr>
 	 <% 
@@ -387,7 +388,7 @@ function checkedd(){
 		<tr  class="asc">  
 			<td align="center">送货名称</p>送货型号</td> 
 			<td align="center"><%=op.getCategoryName()+"</p>"+op.getSendType()%></td>  
-			<td align="center">送货状态</td>  
+			<td align="center">上报状态</td>  
 			<td align="center"><%=op.getSalestatues(op.getSalestatues())%></td> 
 			<td align="center">送货数量</td>
 			

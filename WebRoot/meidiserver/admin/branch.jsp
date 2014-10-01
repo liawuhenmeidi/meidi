@@ -47,6 +47,21 @@ function winconfirm(){
 	 }
 }
 
+function update(bid,statues){
+	$.ajax({ 
+        type: "post", 
+         url: "server.jsp",
+         data:"method=branchtypeinventory&bid="+bid+"&statues="+statues,
+         dataType: "", 
+         success: function (data) {
+           window.location.href="branch.jsp"; 
+           }, 
+         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+        // alert(errorThrown); 
+            } 
+           });
+}
+
 function changes(){
 	var str1 = $("#locate").val();
 	if(str1 == null || str1 == ""){
@@ -104,6 +119,7 @@ function seletall(all){
 			<th align="left">门店类别</th>
 			<th align="left">修改</th>  
 			<th align="left">查看具体门店</th>
+			<th align="left">导购是否可见</th>   
 		</tr>
 	</thead>
 <tbody>
@@ -120,8 +136,20 @@ if(list != null){
 		<td align="left"><a href="branchupdate.jsp?id=<%=category.getId() %>">[修改]</a></td>
 		<td align="left">
 			<a href="branch1.jsp?id=<%=category.getId() %>">[查看]</a>
-		</td>   
-    </tr> 
+		</td>
+		<td align="left">
+		<% if(category.getStatues() ==0){
+             %>
+                                           否<input type="button" onclick="update('<%=category.getId()%>','1')"  value="开启"/>                      
+                                            
+            <%
+            }else {   
+            %>
+                                      是<input type="button" onclick="update('<%=category.getId()%>','0')"  value="关闭"/> 
+            <%}%> 
+            
+        </td>
+    </tr>   
     <% } 
     }%>
 </tbody>

@@ -680,10 +680,10 @@ logger.info(sql);
 	   public static HashMap<String,List<User>> getMapBranch(){
 		   HashMap<String,List<User>> users = new HashMap<String,List<User>>();
 			Connection conn = DB.getConn();
-			String sql = "select * from  mduser";
+			String sql = "select * from  mduser where statues = 1 ";
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
-			try {
+			try { 
 				while (rs.next()) {
 					User u = UserManager.getUserFromRs(rs);
 					List<User> list = users.get(u.getBranch());

@@ -6,8 +6,16 @@ public class Branch {
    private int pid ;
    private String message ;   // 门店订单需要的号，是否需要pos号，等
    private int statues ;   //  是否作为总库
-   
-   
+   private String branchids ;
+    
+public String getBranchids() {
+	return branchids;
+}
+
+public void setBranchids(String branchids) {
+	this.branchids = branchids;
+}
+
 public int getStatues() {
 	return statues;
 }

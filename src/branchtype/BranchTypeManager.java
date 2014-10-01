@@ -16,6 +16,8 @@ import order.OrderManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import branch.Branch;
+
 import category.Category;
 import category.CategoryManager;
 
@@ -33,7 +35,7 @@ public class BranchTypeManager {
 		String sql = "insert into mdbranchtype(id,bname) values (null, ?)";
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		try {
-			pstmt.setString(1, c);
+			pstmt.setString(1, c); 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -59,6 +61,23 @@ public class BranchTypeManager {
 			}
 		   return true;
 		}
+	  
+	 
+	 public static boolean  update(int  statues ,String bid ){
+			Connection conn = DB.getConn(); 
+			String sql = "update mdbranchtype set statues = ? where id = " + bid ;
+			PreparedStatement pstmt = DB.prepare(conn, sql);
+			try { 
+				pstmt.setInt(1, statues);  
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(pstmt);
+				DB.close(conn);
+			}
+		   return true;
+		}
 	 
 		public static List<BranchType> getLocate() {
 			List<BranchType> users = new ArrayList<BranchType>();
@@ -68,9 +87,7 @@ public class BranchTypeManager {
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {  
 				while (rs.next()) { 
-					BranchType g = new BranchType();
-					g.setId(rs.getInt("id"));
-					g.setName(rs.getString("bname"));
+					BranchType g = getBranchFromRs(rs);
 					users.add(g);
 				}  
 			} catch (SQLException e) {
@@ -92,9 +109,7 @@ public class BranchTypeManager {
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {  
 				while (rs.next()) { 
-					
-					g.setId(rs.getInt("id"));
-					g.setName(rs.getString("bname"));
+					g = getBranchFromRs(rs);
 				}  
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -123,4 +138,19 @@ logger.info(sql);
 			}  
 			return b;
 		}
+		
+		
+		
+		private static BranchType getBranchFromRs(ResultSet rs){
+			BranchType branch= new BranchType();
+			try {   
+				branch.setId(rs.getInt("id"));  
+				branch.setName(rs.getString("bname"));
+				branch.setStatues(rs.getInt("statues")); 
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+			return branch ;
+		}	
+		
 }

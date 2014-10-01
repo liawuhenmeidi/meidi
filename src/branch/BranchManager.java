@@ -31,19 +31,15 @@ public class BranchManager {
 	 public static boolean  save(Branch branch ){
 		  
 		Connection conn = DB.getConn(); 
-		String sql = ""; 
+		String sql = "";  
 		if(branch.getId() == 0){   
-			sql = "insert into mdbranch(id,bname,pid,bmessage) values (null, '"+branch.getLocateName()+"','"+branch.getPid()+"','"+branch.getMessage()+"')";
-		}else{    
-			sql = "update mdbranch set bname = '"+branch.getLocateName()+"' , bmessage = '"+branch.getMessage()+"'  where id = "+ branch.getId();
+			sql = "insert into mdbranch(id,bname,pid,bmessage,relatebranch) values (null, '"+branch.getLocateName()+"','"+branch.getPid()+"','"+branch.getMessage()+"','"+branch.getBranchids()+"')";
+		}else{     
+			sql = "update mdbranch set bname = '"+branch.getLocateName()+"' , bmessage = '"+branch.getMessage()+"' , relatebranch = '"+branch.getBranchids()+"' where id = "+ branch.getId();
 		}
-		  
+		       
 		PreparedStatement pstmt = DB.prepare(conn, sql);
-		try {   
-			//pstmt.setString(1, branch.getLocateName());    
-			//pstmt.setInt(2,Integer.valueOf(branch.getPid()));
-			//pstmt.setString(3, branch.getMessage());
-	System.out.println(pstmt);		
+		try {   	
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -74,7 +70,28 @@ public class BranchManager {
 			}
 			return users;
 		}
-        
+         
+		public static List<Branch> getLocate(int statues ) {
+			List<Branch> users = new ArrayList<Branch>();
+			Connection conn = DB.getConn(); 
+			String sql = "select * from mdbranch where pid in (select id from mdbranchtype where statues = "+statues+")" ;
+			Statement stmt = DB.getStatement(conn); 
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {  
+				while (rs.next()) { 
+					Branch g = getBranchFromRs(rs);
+					users.add(g); 
+				}  
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return users;
+		}
+		
 		public static List<String> getLocateAll( ) {
 			List<String> users = new ArrayList<String>();
 			Connection conn = DB.getConn();   
@@ -314,7 +331,8 @@ logger.info(sql);
 				branch.setLocateName(rs.getString("bname"));
 				branch.setPid(rs.getInt("pid")); 
 				branch.setMessage(rs.getString("bmessage")); 
-				branch.setStatues(rs.getInt("statues")); 
+				branch.setStatues(rs.getInt("statues"));
+				branch.setBranchids(rs.getString("relatebranch"));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}	

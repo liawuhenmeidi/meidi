@@ -3,7 +3,14 @@ package branchtype;
 public class BranchType {
    private int id ;
    private String name ;
+   private int statues; 
    
+public int getStatues() {
+	return statues;
+}
+public void setStatues(int statues) {
+	this.statues = statues;
+}
 public int getId() {
 	return id;
 }

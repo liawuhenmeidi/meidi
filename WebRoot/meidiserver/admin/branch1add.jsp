@@ -5,15 +5,18 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 String pid = request.getParameter("pid");
 String id = request.getParameter("id"); 
-System.out.println(pid+")))"+id);
+ 
 Branch branchold = null;
 String branchoidname = "";
 String message = null;
+String branchids = null;
 String[] permission = null ;
+String[] branchid = null;
 if(!StringUtill.isNull(id)){
 	branchold= BranchManager.getLocatebyid(id);
 	branchoidname = branchold.getLocateName();
 	message = branchold.getMessage();
+	branchids = branchold.getBranchids();
 	//if(!StringUtill.isNull(message)){
 	//	permission = message.split("_");
 	//}
@@ -24,16 +27,25 @@ if(!StringUtill.isNull(id)){
 String action = request.getParameter("action");
 if("add".equals(action)){
 	String branchname = request.getParameter("locate"); 
-	System.out.println(branchname);
+	//System.out.println(branchname);
 	permission = request.getParameterValues("permission");
+	branchid = request.getParameterValues("branchid");
     String messagenew = "";
+    String branchidsnew = "";
     if(permission != null ){  
 		for(int i = 0;i<permission.length;i++){
 			if(!StringUtill.isNull(permission[i])){
 				messagenew += permission[i]+"_";
 			}
 		} 
-    } 
+    }
+    if(branchid != null ){  
+  		for(int i = 0;i<branchid.length;i++){
+  			if(!StringUtill.isNull(branchid[i])){
+  				branchidsnew += branchid[i]+"_";
+  			}
+  		} 
+      }
 	Branch branch = new Branch(); 
 	if(!StringUtill.isNull(id)){
 		branch.setId(Integer.valueOf(id)); 
@@ -41,7 +53,9 @@ if("add".equals(action)){
 	
 	branch.setLocateName(branchname);
 	branch.setPid(Integer.valueOf(pid));
-	branch.setMessage(messagenew);   
+	branch.setMessage(messagenew); 
+	branch.setBranchids(branchidsnew);  
+	                        
 	BranchManager.save(branch); 
 	response.sendRedirect("branch1.jsp?id="+pid); 
 }
@@ -61,14 +75,18 @@ BranchType branch = BranchTypeManager.getLocate(Integer.valueOf(pid));
 <script type="text/javascript">
 var pid = "<%=pid%>";
 var json = "<%=message%>";
+var jsons = "<%=branchids%>";
 var products = new Array();
+var branchid = new Array();
 $(document).ready(function(){
 	products = json.split("_"); 
 	 for(var i=0;i<products.length;i++){
 		 $("#"+products[i]).attr("checked","checked");
 	 }
-	
-	
+	branchid = jsons.split("_"); 
+	for(var i=0;i<branchid.length;i++){
+		 $("#"+branchid[i]).attr("checked","checked");
+	 }
 	
 	
   $("#locate").focus(function(){
@@ -130,7 +148,7 @@ function changes(){
    </div>
         
      <div> 
-     
+      
      <form action="branch1add.jsp"  method = "post"  onsubmit="return checkedd()">
       <input type="hidden" name="action" value="add"/>
       <input type="hidden" name="pid" value="<%=pid%>"/> 
@@ -142,7 +160,20 @@ function changes(){
         <li><input type="checkbox" value="pos" name = "permission" id="pos" />&nbsp;pos(厂送)单号</li>
         <li><input type="checkbox" value="sailId" name = "permission" id="sailId" />&nbsp;OMS订单号</li>
         <li><input type="checkbox" value="checked" name = "permission" id="checked" />&nbsp;验证码(联保单)</li>
-     </ul>  
+     </ul> 
+     </p> 
+     关联安装公司：
+ <ul class="juese_add">  
+        <% List<Branch> list = BranchManager.getLocate(1);
+        for(int i =0 ;i<list.size();i++){
+        	Branch b = list.get(i);
+        %>      
+        <li><input type="checkbox" value="<%=b.getId() %>" name = "branchid" id="<%=b.getId() %>" /><%=b.getLocateName() %></li>
+        <%
+        }
+        %>
+        
+            </ul> 
       <input type="submit" value="提  交" />
 
  </form>

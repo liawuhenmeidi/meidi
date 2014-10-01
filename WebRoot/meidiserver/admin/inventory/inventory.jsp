@@ -4,12 +4,15 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 
 String branchid = "";
+Branch branch = null;   
 if(UserManager.checkPermissions(user, Group.Manger)){
 	branchid = request.getParameter("branchid");
 }else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
 	branchid = BranchManager.getBranchID(user.getBranch())+""; 
+	branch = BranchManager.getLocatebyid(branchid);
 } 
   
+
 
   
 List<Branch> listbranch = BranchManager.getLocate(); 
@@ -73,9 +76,12 @@ td {
 	 $("#table tr").remove();
 	 var b = $("#branch").val();
 	 var branch = "<%=branchid%>";
-	 if(branch == null || branch == ""){
-		 branch = b ;
-	 }   
+	// if(branch == null || branch == ""){
+	//	 branch = b ;
+	// }  
+	if(b != null && b != ""){
+		branch = b ;
+	} 
 	// alert(branch);
 	 $.ajax({ 
 	        type: "post", 
@@ -152,6 +158,29 @@ td {
 	  </select>
 	   <input type="button" name="" value="查询" onclick="add()"/>   
 			   <%
+		   }else if(UserManager.checkPermissions(user, Group.sale)){   
+   %>
+   
+      选择仓库:     
+	  <select id="branch">  
+	  <option value=""></option>
+	   <%  
+	       String branchids = branch.getBranchids();
+	       String branchs[] = branchids.split("_"); 
+		   for(int i=0;i<listbranch.size();i++){
+			   Branch b = listbranch.get(i); 
+			   for(int j=0;j<branchs.length;j++){ 
+				   if(branchs[j].equals(b.getId()+"")){
+					   %>   
+					    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
+					   <%    
+				   }
+			   }
+		   }   
+	   %>
+	  </select>
+	   <input type="button" name="" value="查询" onclick="add()"/>  
+   <%
 		   }  
    %>
                     
