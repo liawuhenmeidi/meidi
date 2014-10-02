@@ -64,9 +64,9 @@ public class InventoryBranchManager {
 		} 
 		logger.info(categorys.size());
 		return categorys;
-	}
+	} 
 	 
-	
+
 public static List<InventoryBranch> getCategoryid(String branch , String categoryid) {  
 		//System.out.println(branch);
 		List<InventoryBranch> categorys = new ArrayList<InventoryBranch>();

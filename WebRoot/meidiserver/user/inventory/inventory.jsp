@@ -88,7 +88,7 @@ td {
 	// alert(branch);
 	 $.ajax({ 
 	        type: "post", 
-	         url: "../server.jsp",    
+	         url: "../../admin/server.jsp",    
 	         data:"method=inventoryall&branch="+branch,
 	         dataType: "",   
 	         success: function (data) { 

@@ -465,7 +465,13 @@ function orderPrint(id,statues){
 		%>  
     <td class="s_list_m">商品已退</td> 
    <%
-   }%>
+   }else {
+	   
+  %>
+  <td class="s_list_m"></td> 
+   <%
+   }
+   %>
 		<td align="center">
 		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
 		</td>

@@ -3,7 +3,7 @@
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
  
-String category = request.getParameter("category");
+String category = request.getParameter("category"); 
   
 Category c = CategoryManager.getCategory(category); 
  
@@ -81,7 +81,7 @@ td {
 
 	 $.ajax({ 
 	        type: "post",  
-	         url: "../server.jsp",     
+	         url: "../../admin/server.jsp",     
 	         data:"method=inventorydis&category="+category+"&type="+type,
 	         dataType: "",   
 	         success: function (data) { 
@@ -124,7 +124,7 @@ td {
 
 <body>
 <!--   头部开始   -->
- <jsp:include flush="true" page="../head.jsp">
+ <jsp:include flush="true" page="../../head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>
 

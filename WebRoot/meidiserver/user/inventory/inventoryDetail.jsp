@@ -61,7 +61,7 @@ var branchstr = <%=branchstr%>;
 	 $("#serach table").remove();
 	 $.ajax({ 
 	        type: "post", 
-	         url: "../server.jsp",
+	         url: "../../admin/server.jsp",
 	         data:"method=inventorydetail&ctype="+ctype+"&branchid="+branchid,
 	         dataType: "", 
 	         success: function (data) {

@@ -76,6 +76,7 @@ var pages = "<%=Page%>";
 var num = "<%=num%>"; 
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>"; 
+var inventory = "";
 $(function () { 
 	$("#wrap").bind("scroll", function(){ 
 
@@ -114,7 +115,23 @@ $(function () {
 	 }); 
 }); 
      
-function changepeidan(str1,oid,deliveryStatues){
+     
+function getinventory(uid,types){
+	$.ajax({ 
+        type: "post",  
+         url: "server.jsp",   
+         data:"method=getinventory&types="+types+"&uid="+uid,
+         dataType: "",  
+         success: function (data) { 
+        	 inventory = data; 
+           alert(data);
+           },  
+         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+            } 
+           });  
+}     
+     
+function changepeidan(str1,oid,deliveryStatues,types){
 	var uid = $("#"+str1).val();
 	
 	if(deliveryStatues != 8 ){ 
@@ -122,27 +139,45 @@ function changepeidan(str1,oid,deliveryStatues){
 			alert("请选择安装公司");
 			return ;
 		}
-		question = confirm("您确定要配单并打印吗？");
-		if (question != "0"){ 
-			//alert(deliveryStatues);
-			$.ajax({ 
-		        type: "post", 
-		         url: "server.jsp",
-		         data:"method=peidan&id="+oid+"&uid="+uid,
-		         dataType: "", 
-		         success: function (data) { 
-		            if(data == 8){
-		            	alert("导购修改中。稍后重试"); 
-		            }else{ 
-		            	 window.location.href="print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues;  
-		            }
-		           },  
-		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-		            } 
-		           });
-		}else {
-			return ;
-		}
+		
+		$.ajax({ 
+	        type: "post",  
+	         url: "server.jsp",   
+	         data:"method=getinventory&types="+types+"&uid="+uid,
+	         dataType: "",  
+	         success: function (data) {  
+	        	    inventory = data;
+	        	    data = data.replace(/{/g, "");
+	        	    data = data.replace(/}/g, "");
+	        	    data = data.replace(/,/g, "\n"); 
+	               // alert(str);  
+	                question = confirm("您确定要配单并打印吗？\n"+data);
+	        		if (question != "0"){  
+	        			//alert(deliveryStatues);
+	        			$.ajax({ 
+	        		        type: "post", 
+	        		         url: "server.jsp",
+	        		         data:"method=peidan&id="+oid+"&uid="+uid,
+	        		         dataType: "", 
+	        		         success: function (data) { 
+	        		            if(data == 8){
+	        		            	alert("导购修改中。稍后重试"); 
+	        		            }else{ 
+	        		            	 window.location.href="print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues;  
+	        		            }
+	        		           },  
+	        		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	        		            } 
+	        		           });
+	        		}else {
+	        			return ;
+	        		}
+	           },  
+	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	            } 
+	           });   
+		
+		
 	}else { 
 		uid = 0; 
 		$.ajax({ 
@@ -447,7 +482,7 @@ function adddetail(src){
 			            %>
 		         </select> 
 		      
-		         <input type="button" onclick="changepeidan('songh<%=o.getId()%>','<%=o.getId()%>','<%=o.getDeliveryStatues() %>')"  value="确定"/> 
+		         <input type="button" onclick="changepeidan('songh<%=o.getId()%>','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="确定"/> 
 		         
 			<% 	
 		     }
@@ -455,14 +490,14 @@ function adddetail(src){
 		
 			   if(OrderManager.Check(o.getId())){ 
 				  %>   
-				   <input type="button" onclick="changepeidan('2','<%=o.getId()%>','<%=o.getDeliveryStatues() %>')"  value="打印"/>
+				   <input type="button" onclick="changepeidan('2','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="打印"/>
 			         &nbsp;&nbsp;&nbsp;
 				  <%
 			   }else {
 				   %>
-				   <input type="button" onclick="changepeidan('1','<%=o.getId()%>','<%=o.getDeliveryStatues() %>')"  value="打印"/>
+				   <input type="button" onclick="changepeidan('1','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="打印"/>
 			         &nbsp;&nbsp;&nbsp;
-				   <input type="button" onclick="changepeidan('0','<%=o.getId()%>','<%=o.getDeliveryStatues() %>')"  value="确定"/>  
+				   <input type="button" onclick="changepeidan('0','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="确定"/>  
 				   
 				   
 				   <%

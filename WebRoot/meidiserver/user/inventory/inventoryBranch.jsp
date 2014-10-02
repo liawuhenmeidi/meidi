@@ -246,7 +246,7 @@ var disable = '<%=isdisabel %>';
 	 }
 	 $.ajax({ 
 	        type: "post", 
-	         url: "../server.jsp",
+	         url: "../../admin/server.jsp",
 	         data:"method=inventory&branch="+branch+"&ctype="+ctype+"&time="+str,
 	         dataType: "", 
 	         success: function (data) { 

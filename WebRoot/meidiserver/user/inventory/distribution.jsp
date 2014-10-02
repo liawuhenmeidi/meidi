@@ -120,9 +120,9 @@ td {
 
 <body>
 <!--   头部开始   -->
- <jsp:include flush="true" page="../head.jsp">
+ <jsp:include flush="true" page="../../head.jsp">
   <jsp:param name="dmsn" value="" />
-  </jsp:include>
+  </jsp:include> 
 
 <!--   头部结束   -->
 <div class="main">   

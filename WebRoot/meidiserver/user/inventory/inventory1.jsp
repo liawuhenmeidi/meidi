@@ -6,9 +6,14 @@ User user = (User)session.getAttribute("user");
 String branchid = "";   
 if(UserManager.checkPermissions(user, Group.Manger)){
 	branchid = request.getParameter("branchid");  
-}else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
+}else if(UserManager.checkPermissions(user, Group.sencondDealsend)){
 	branchid = BranchManager.getBranchID(user.getBranch())+""; 
-} 
+}else if(UserManager.checkPermissions(user, Group.sale)){
+	branchid = request.getParameter("branchid");  
+	if(StringUtill.isNull(branchid)){
+		branchid = BranchManager.getBranchID(user.getBranch())+"";
+	}
+}  
   
 String category = request.getParameter("category");
 
@@ -154,8 +159,10 @@ var disable = '<%=isdisabel %>';
 	 window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
  }
  
- function search(ctype,branchid){ 
-	 window.open('inventoryDetail.jsp?ctype='+ctype+"&branchid="+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+ function search(ctype,branchid){
+	 
+	// window.open('inventoryDetail.jsp?ctype='+ctype+"&branchid="+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 window.location.href="inventoryDetail.jsp?ctype="+ctype+"&branchid="+branchid; 
  }
  
 
@@ -169,8 +176,9 @@ function distri(){
   
 function serchclick(category,type,branchid,obj){
 	 categoryid = category;
-	 typeid = type ; 
-	 updateClass(obj);  
+	 typeid = type ;  
+	 search(type,branchid); 
+	// updateClass(obj);  
  } 
  
  function add(){     
@@ -185,7 +193,7 @@ function serchclick(category,type,branchid,obj){
 	 //alert(branch);
 	 $.ajax({  
 	        type: "post", 
-	         url: "../server.jsp",    
+	         url: "../../admin/server.jsp",    
 	         data:"method=inventoryall&branch="+branch+"&category="+category,
 	         dataType: "",   
 	         success: function (data) { 

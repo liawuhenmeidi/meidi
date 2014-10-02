@@ -106,14 +106,14 @@ public class PrintServlet extends HttpServlet {
 
 		Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
-		System.out.println("%%%%%"+gMap);  
-		//修改申请  
-		Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,0);
+		//System.out.println("%%%%%"+gMap);  
+		//修改申请   
+		//Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,0);
 		// 退货申请
-		Map<Integer,OrderPrintln> opMap1 = OrderPrintlnManager.getOrderStatues(user,1);
+		//Map<Integer,OrderPrintln> opMap1 = OrderPrintlnManager.getOrderStatues(user,1);
 
 		 
-		
+		 
 		
 		
 		
@@ -206,7 +206,7 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellValue("安装人员");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
-				cell.setCellValue("安装时间");
+				cell.setCellValue("预约日期");
 				cell.setCellStyle(style); 
 				cell = row.createCell((short) x++);
 				cell.setCellValue("派工公司");
