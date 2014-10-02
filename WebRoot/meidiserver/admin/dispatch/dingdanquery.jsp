@@ -310,7 +310,7 @@ function orderPrint(id,statues){
 			<td align="center">赠品数量</td>
 			<td align="center">赠品状态</td>
 			
-            <td align="center">安装日期</td> 
+            <td align="center">预约日期</td> 
            <td align="center">文员配单日期</td> 
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
@@ -392,13 +392,23 @@ function orderPrint(id,statues){
 			OrderPrintln orp = opmap.get(statues).get(o.getId());    
 			if(orp != null){ 
 				shifang = orp.getStatues();
-			} 
+				if(shifang == 4 ){
+				%>
+				   您的申请被拒绝
+				<%
+				}else if(shifang == 0){
+				%> 
+				您已提交
+				<%
+				}
+			}
 		}
-		 
-     %>
-    <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>
+     %> 
+    <input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>
      <%
-     } 
+         
+		
+	}
      %> 
    </td> 
 		 
@@ -414,8 +424,11 @@ function orderPrint(id,statues){
      <%
        
      %>
-     <option value="1" >只送货 </option>
+     <option value="" ></option> 
+     
      <option value="2" >送货+安装 </option>  
+     <option value="1" >只送货 </option>
+     
       </select>  
      <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','')"  value="确定"/>
 
@@ -433,7 +446,26 @@ function orderPrint(id,statues){
     	%>
      
     </td>
-		<td align="center"></td>
+		 <% 
+   
+    if(o.getReturnstatuse() == 0 && o.getReturnid() != 0 ){
+
+    %>
+    <td class="s_list_m"> 
+     <select class = "category" name="category"  id="return<%=o.getId() %>" >
+     <%
+       
+     %> 
+     <option value="1" >确认 </option> 
+      </select>  
+     <input type="button" onclick="change('return<%=o.getId()%>','<%=o.getId()%>','<%=Order.returns %>')"  value="确定"/>
+       </td>
+   <%
+    }else if(o.getReturnstatuse() == 1){   
+		%>  
+    <td class="s_list_m">商品已退</td> 
+   <%
+   }%>
 		<td align="center">
 		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
 		</td>

@@ -1102,7 +1102,7 @@ logger.info(Orders.size());
 				   }else if(Order.pcharge == statues){ 
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and   deliveryStatues in (1,2,4,5)  and deliverytype = 2  and statuespaigong  = 0  "+search+"  order by "+sort+"   limit " + ((page-1)*num)+","+ page*num; ; ; 
 				   }else if(Order.orderquery == statues){  
-					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" ( and deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9) )  and printSatuesp = 1    "+search+"  order by "+sort+"   limit " + ((page-1)*num)+","+ page*num;    
+					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9) )  and printSatuesp = 1    "+search+"  order by "+sort+"   limit " + ((page-1)*num)+","+ page*num;    
 				   }        
 			   }                    
 	    }      
@@ -1261,7 +1261,7 @@ logger.info(sql);
 				   } else if(Order.pcharge == statues){  
 					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+" and  deliveryStatues in (1,2,4,5)  and deliverytype = 2   and statuespaigong  = 0  "+search ; 
 				   }else if(Order.orderquery == statues){  
-					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+" ( and deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9) )  and printSatuesp = 1    "+search ; 
+					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+"  and (deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9) )  and printSatuesp = 1    "+search ; 
 				   }    
 			   }                    
 	    }       

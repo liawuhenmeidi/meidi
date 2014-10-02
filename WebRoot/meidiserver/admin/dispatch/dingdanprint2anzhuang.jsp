@@ -240,7 +240,7 @@ function adddetail(src){
 			
 			
 			
-            <td align="center">安装日期</td>
+            <td align="center">预约日期</td>
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
             <td align="center">送货状态</td>

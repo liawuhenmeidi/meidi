@@ -39,11 +39,11 @@ public class OrderProductManager {
 	
 	protected static Log logger = LogFactory.getLog(OrderProductManager.class);
 	 
-	   public static int updateOrderStatues(User user, String categoryid ,String type ,String oid){
+	   public static int updateOrderStatues(User user, String categoryid ,String type ,String count ,String oid){
 		   int statues = -1 ;
 		   if(user.getUsertype() == 2  || user.getUsertype() == 1){
-			   Connection conn = DB.getConn();
-				String sql = "update mdorderproduct set saletype = '"+ type + "' , categoryID = "+categoryid+" where orderid = " + oid + " and statues = 1 ";
+			   Connection conn = DB.getConn();  
+				String sql = "update mdorderproduct set saletype = '"+ type + "' , categoryID = "+categoryid+"  , count = "+count + " where orderid = " + oid + " and statues = 1 ";
 				logger.info(sql); 
 				PreparedStatement pstmt = DB.prepare(conn, sql);
 				try { 

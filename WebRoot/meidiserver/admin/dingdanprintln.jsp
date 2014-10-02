@@ -357,7 +357,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 			<td align="center">赠品数量</td>
 			<td align="center">赠品状态</td>
             <td align="center">开票日期</td>
-            <td align="center">安装日期</td>
+            <td align="center">预约日期</td>
             <td align="center">文员配单日期</td> 
             <td align="center">送货地区</td>
             

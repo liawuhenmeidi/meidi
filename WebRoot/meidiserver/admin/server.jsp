@@ -361,9 +361,10 @@ if("peidan".equals(method)){
 		String saledate = request.getParameter("saledate");
 		String saleType = request.getParameter("dingmatype");
 		String categoryId = request.getParameter("dingmaordercategory");
+		String count = request.getParameter("dingmaproductNum");
 		statues = OrderManager.updateMessage(phone1,andate,locations,POS,sailId,check,oid,remark,saledate) ; 
 	    if(!StringUtill.isNull(saleType) && !StringUtill.isNull(categoryId)){
-	    	pstatues = OrderProductManager.updateOrderStatues(user,categoryId,saleType,oid);
+	    	pstatues = OrderProductManager.updateOrderStatues(user,categoryId,saleType,count,oid);
 	    	OrderProductManager.resetOrPMap();   
 	    }
 	}else {    

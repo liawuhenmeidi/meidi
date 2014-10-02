@@ -33,8 +33,11 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
  
  <!--       -->    
      <div class=""> 
-   <div class="weizhi_head">现在位置：单据管理</div>    
+   <div class="weizhi_head">现在位置：单据管理
    
+   <a href="receipts.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
+   </div>     
+       
         <div class="main_r_tianjia">
    <ul>    
    <% 

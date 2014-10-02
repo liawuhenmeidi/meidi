@@ -2,13 +2,13 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
-       
+ 
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
-
-List<Branch> listbranch = BranchManager.getLocate(); 
-
-List<String> listbranchp = BranchManager.getLocateAll();  
-String listall = StringUtill.GetJson(listbranchp); 
+  
+List<BranchType> listb = BranchTypeManager.getLocate();
+  
+List<String> listbranch = BranchManager.getLocateAll(); 
+String listall = StringUtill.GetJson(listbranch);
 
 Map<String,List<Branch>> map = BranchManager.getLocateMapBranch();  
     
@@ -17,20 +17,20 @@ String mapjosn = StringUtill.GetJson(map);
 HashMap<String,ArrayList<String>> listt = ProductManager.getProductName();
 
 String plist = StringUtill.GetJson(listt);
-  
+ 
 List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
    
 Map<Integer,Branch> branchmap = BranchManager.getNameMap();
-  
+
 String inventoryid = request.getParameter("id");
-Inventory inventory = new Inventory() ;
+Inventory inventory = null ;
 String invent = ""; 
 String outbranch = "";
-String inbranch = ""; 
-String remark = ""; 
-String inittime = ""; 
-String isdisabel = " ";  
+String inbranch = "";
+String remark = "";
+String inittime = "";
+String isdisabel = " "; 
 
 if(!StringUtill.isNull(inventoryid)){
 	isdisabel = " disabled=\"disabled\" ";
@@ -44,20 +44,17 @@ if(!StringUtill.isNull(inventoryid)){
 	       branch = branchmap.get(inventory.getInbranchid());
 	       if(branch != null){ 
 	    	   inbranch = branch.getLocateName();  
-	       } 
+	       }
 	   }
-
 	
-	remark = inventory.getRemark(); 
-	inittime = inventory.getIntime();  
+	remark = inventory.getRemark();
+	inittime = inventory.getIntime(); 
 	List<InventoryMessage> list = inventory.getInventory();
 	invent = StringUtill.GetJson(list);  
-    if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 && user.getId() == inventory.getUid()){
+    if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0){
     	isdisabel = ""; 
     }
-}  
-
-  
+}
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -78,7 +75,7 @@ td {
 <title>产品管理</title>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/> 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 <script type="text/javascript">
@@ -104,23 +101,15 @@ var disable = '<%=isdisabel %>';
  //alert(inventoyr); 
  var jsoninvent =  $.parseJSON(inventoyr);
   
- var ctypes = new Array();  
- 
- 
  $(function () { 
 	 initproduct();
 	 
-	 $("#outbranchs").change(function(){
-		 var str = $("#outbranchs").find("option:selected").text();
-		 $("#outbranch").val(str);
+	 $("#branch").change(function(){
+		 var str = $("#branch").find("option:selected").text();
+		 $("#branchmessage").html(str+"入库单");
 	 });
 	         
-	 $("#inbranchs").change(function(){
-		 var str = $("#inbranchs").find("option:selected").text();
-		 $("#inbranch").val(str);
-	 });
-	 
-	 
+	
 	 $("#outbranch").autocomplete({ 
 		 source: jsonall
 	    });  
@@ -135,7 +124,7 @@ var disable = '<%=isdisabel %>';
  });
  
  function initproduct(){ 
-	// alert(jsoninvent);
+	// alert(jsoninvent); 
 	 if(jsoninvent != null && jsoninvent != "" ){
 		 for(var i=0;i<jsoninvent.length;i++){
 			 
@@ -154,35 +143,14 @@ var disable = '<%=isdisabel %>';
 		 }
 	 }
  }
- //function initproductSerch(str,str2){ 
-	 //   cid = $(str).val();
-	   
-		//$(str2).autocomplete({ 
-		//	 source: jsons[cid]
-		//    }); 
-		//$(str).change(function(){
-		//	$(str2).val("");
-		//	cid = $(str).val(); 
-		//	$(str2).autocomplete({
-		//		 source: jsons[cid]
-		//	    }); 
-		//	}) ; 
-   // } 
- 
+   
+  
  function add(){
 	 var ctype = $("#ordertype0").val();
 	 if(ctype == ""){
 		 alert("型号不能为空");
 		 return false ;
-	 }else {
-		 if($.inArray(ctype,ctypes) != -1){
-			 alert("您已添加此型号"); 
-			 return ;
-		 }else{
-			 ctypes.push(ctype); 
-		 }
 	 }
-	 
 	 rows.push(row);
 	 var count = 1;  
 	
@@ -234,87 +202,35 @@ var disable = '<%=isdisabel %>';
 
 <body>
 <!--   头部开始   -->
- <jsp:include flush="true" page="../head.jsp">
+ <jsp:include flush="true" page="../../head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>
 
 <!--   头部结束   -->
 
-<div class="main">  
-   <div class="weizhi_head">现在位置：库存单据管理页</div> 
-   <div class="main_r_tianjia">
-   <ul>                                                                                                          
-     <li><a href="receipts.jsp">返回</a></li>
-      <% 
-      //System.out.println("aa"+user.getBranch()+inventory.getOutstatues()+UserManager.checkPermissions(user, Group.inventoryquery));
-      if(outbranch.equals(user.getBranch()) && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery)){ 
-      %>  
-      <li><a href="InventoryServlet?method=outbranch&id=<%=inventory.getId() %>">出库方确认</a></li>
-      <%
-      }  
-      %>
-     <% if(inbranch.equals(user.getBranch()) && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery)){ 
-      %>  
-      <li><a href="InventoryServlet?method=inbranch&id=<%=inventory.getId() %>">入库方确认</a></li>
-      <% 
-      } 
-     
-      if(inventory.getInstatues() == 1 && inventory.getOutstatues() == 1){
-      %> 
-      <li><a href="print.jsp?id=<%=inventoryid%>">打印</a></li> 
-      <% 
-      }
-      %>
-      
-     </ul>   
-   </div>      
+<div class="main">   
+   <div class="weizhi_head">现在位置：单据
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>        
+   </div> 
+        
      <div>     
-     <form action="InventoryServlet"  method = "post"  onsubmit="return check()">
-      <input type="hidden" name="method" value="add"/>  
-      <input type="hidden" name="id" value="<%=inventoryid %>"/>
+    
                      
-  <div  > 
+  <div style="background-color:;width:60%" > 
    <center><div id="branchmessage"><font style="color:red;font-size:20px;" >调拨单</font></div></center>
    <br/>
                  出库单位：  
-         输入<input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch %>"  <%=isdisabel %>/>                    
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    选择 <select id="outbranchs" <%=isdisabel %>>  
-	  <option value=""></option>
-	   <% if(listbranch != null){
-		   for(int i=0;i<listbranch.size();i++){
-			   Branch b = listbranch.get(i);
-	    %>   
-	    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
-	   <% 
-		   }   
-	   }
-	   %>
-	  </select>   
-	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
+         <input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch %>"  <%=isdisabel %>/>                    
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
                  入库单位： 
-             输入<input type="text" name="inbranch" id="inbranch" value="<%=inbranch %>" class="cba"  <%=isdisabel %>/>
-    选择 <select id="inbranchs" <%=isdisabel %>>  
-	  <option value=""></option>
-	   <% if(listbranch != null){
-		   for(int i=0;i<listbranch.size();i++){
-			   Branch b = listbranch.get(i);
-	    %>   
-	    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
-	   <% 
-		   }   
-	   }
-	   %>
-	  </select> 
+        <input type="text" name="inbranch" id="inbranch" value="<%=inbranch %>" class="cba"  <%=isdisabel %>/>
   <br/>
      备&nbsp;&nbsp;&nbsp;&nbsp;注：    
        <textarea  id="remark" name="remark"  <%=isdisabel %> ><%=remark %></textarea>
   <br/>
   <br/>
-     增加型号:           
-           
-  <input type="text" name="ordertype0"  id="ordertype0"   class="cba" <%=isdisabel %>/>          
-  <input type="button" name="" value="+" onclick="add()" <%=isdisabel %>/>        
+    
             
     <br/>    
      <br/>        
@@ -329,14 +245,8 @@ var disable = '<%=isdisabel %>';
  
    </table>
    
-  <% 
-	  if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 ){
-   %>
-   <input type="submit" id="submit" value="确认提 交" <%=isdisabel %>/>
-  <%  
-	  } 
-  %> 
-
+   
+  
   &nbsp;&nbsp;&nbsp;&nbsp;合计
   
   </div>

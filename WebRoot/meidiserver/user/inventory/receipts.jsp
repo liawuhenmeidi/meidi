@@ -28,7 +28,7 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 
 <body>
 <!--   头部开始   -->
- <jsp:include flush="true" page="../head.jsp">
+ <jsp:include flush="true" page="../../head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>
 
@@ -41,7 +41,9 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
      <div class="">
    <div class="weizhi_head">现在位置：单据管理
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+   <a href="../welcom.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
    </div>    
+   
         <div class="main_r_tianjia">
    <ul>     
    <% 

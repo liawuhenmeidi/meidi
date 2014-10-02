@@ -224,7 +224,7 @@ function checkedd(){
             </td>  
             </tr>
 		<tr class="asc">
-            <td align="center">预约日期</td>
+            <td align="center">安装日期</td>
             <td align="center">
               
 			     <%=o.getOdate() %>

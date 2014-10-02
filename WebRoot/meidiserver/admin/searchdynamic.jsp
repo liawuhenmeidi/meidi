@@ -12,7 +12,7 @@ String pageNum = request.getParameter("page");
 String numb = request.getParameter("numb");  
 String sort = request.getParameter("sort");  
 int opstatues = OrderPrintln.releasedispatch;   
- 
+
 String sear = "";
 if(!StringUtill.isNull(sort)){
 	session.setAttribute("sort", sort);

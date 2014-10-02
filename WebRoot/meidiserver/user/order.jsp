@@ -615,8 +615,22 @@ System.out.println(11);
 	 messageflag = false ;
 	 var messflag = false ;  //是否有已自提
 	 var statues = -1 ;
+	 var product = new Array();
+	
 	 for(var i=0;i<rows.length;i++){
-		
+		 var pro = $("#ordertype"+rows[i]).val();
+		  
+		 if(i == 0 ){ 
+			 product.push(pro);
+		 }else {
+			
+			 if($.inArray(pro, product) == 0 ){
+				 alert("不能录入相同的送货型号");
+				 return false ;
+			 }else { 
+				 product.push(pro);
+			 }
+		 }
 		 var str = $("#productsta"+rows[i]).val();
 		 //alert(str); 
 		 //alert(statues);
@@ -792,6 +806,7 @@ System.out.println(11);
 	 
 	  
 	 var str = disbale(); 
+	 
 	  
 	  if(str == false){
 		  return false;

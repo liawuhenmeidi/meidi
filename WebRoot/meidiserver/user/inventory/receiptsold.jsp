@@ -3,7 +3,7 @@
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user");
   
-List<Inventory> invetorylist = InventoryManager.getCategory(user,"unconfirmed");  
+List<Inventory> invetorylist = InventoryManager.getCategory(user,"confirmed");  
 Map<Integer,Branch> branchmap = BranchManager.getNameMap();   
 %>
   
@@ -12,15 +12,10 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
-
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <script type="text/javascript">
- 
- function detail(id){
-	 window.location.href="receiptsAdd.jsp?id="+id;
- }
- 
+
 	
 	
 </script>
@@ -28,7 +23,7 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 
 <body>
 <!--   头部开始   -->
- <jsp:include flush="true" page="../head.jsp">
+ <jsp:include flush="true" page="../../head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>
 
@@ -37,21 +32,22 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 <div class="main">
  
  <!--       -->    
-     
-     <div class="">
+     <div class=""> 
    <div class="weizhi_head">现在位置：单据管理
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-   </div>    
+   
+   <a href="receipts.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
+   </div>     
+       
         <div class="main_r_tianjia">
-   <ul>     
+   <ul>    
    <% 
    if(UserManager.checkPermissions(user, Group.inventory)){
    %>                                                                                                    
      <li><a href="receiptsAdd.jsp?">新增单据</a></li>
+     <li><a href="receiptsold.jsp?">查看已确认单据</a></li> 
     <%
-   } 
+   }
     %>
-     <li><a href="receiptsold.jsp">查看已确认单据</a></li> 
      </ul>
      
    </div>  
@@ -65,13 +61,15 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 			<th align="left">出库单位</th>
 			<th align="left">入库单位</th>
 			<th align="left">状态</th> 
+			<th align="left">详情</th>
+			
 		</tr>
 	</thead>
       <% 
        for(int i=0;i<invetorylist.size();i++){ 
     	   Inventory invetory = invetorylist.get(i);
     	   %>
-    	   <tr id="<%=i%>" class="asc"  onclick="detail('<%=invetory.getId()%>')">
+    	   <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
 			<td align="left"><%=invetory.getId() %></td>
 			<td align="left"><%=invetory.getIntime() %></td>
 			<td align="left">
@@ -122,7 +120,8 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 			}
 			%>
 			</td>
-		</tr>
+			<td align="left"><a href="receiptsAdd.jsp?id=<%=invetory.getId()%>">详情</a></td>
+		</tr> 
 
     	   <%
        }

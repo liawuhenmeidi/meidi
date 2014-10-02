@@ -234,7 +234,7 @@ var disable = '<%=isdisabel %>';
 
 <body>
 <!--   头部开始   -->
- <jsp:include flush="true" page="../head.jsp">
+ <jsp:include flush="true" page="../../head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>
 

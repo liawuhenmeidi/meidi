@@ -191,7 +191,7 @@ function orderPrint(id,statues){
 			<td align="center">门店</td>
 			<td align="center">送货名称</td>
 
-            <td align="center">安装日期</td>
+            <td align="center">预约日期</td>
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
             <td align="center">送货状态</td>

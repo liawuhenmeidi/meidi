@@ -279,7 +279,7 @@ function seletall(all){
 			
 			<td align="left">赠品状态</td>
             <td align="left">开票日期</td>
-            <td align="left">安装日期</td>
+            <td align="left">预约日期</td>
             <td align="left">送货地区</td>
             <td align="left">送货地址</td>
             

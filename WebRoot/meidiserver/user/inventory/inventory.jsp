@@ -55,11 +55,12 @@ td {
  $(function () {  
 	 add();
  }); 
-   
+    
  function search(category,branchid){ 
-		 window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
+		// window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
+		 window.location.href="inventory1.jsp?category="+category+"&branchid="+branchid;
  }   
- 
+   
  function distri(){
 	 if(categoryid == null || categoryid == ""){
 		 alert("请选择商品");
@@ -69,8 +70,9 @@ td {
 	 }
  
  function serchclick(category,branchid,obj){
-	 categoryid = category;
-	 updateClass(obj);  
+	 search(category,branchid);
+	 //categoryid = category;
+	 //updateClass(obj);  
   } 
  
  function add(){  
@@ -130,15 +132,16 @@ td {
 
 <body>
 <!--   头部开始   -->
- <jsp:include flush="true" page="../head.jsp">
-  <jsp:param name="dmsn" value="" />
+ <jsp:include flush="true" page="../../head.jsp">
+  <jsp:param name="dmsn" value="" /> 
   </jsp:include>
 
 <!--   头部结束   -->
 <div class="main">   
    <div class="weizhi_head">现在位置：库存查询
      
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+   <a href="../welcom.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
    <% 
     if(UserManager.checkPermissions(user, Group.dealSend)){
     	%>

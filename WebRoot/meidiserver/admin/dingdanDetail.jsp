@@ -374,7 +374,17 @@ function checkedd(){
 			<td align="center">票面数量</td>
 			 
 			<td align="center">
-			<%= o.getSendCount(1,"")%></td> 
+			<% if(UserManager.checkPermissions(user, Group.dealSend) ){
+	        	  %> 
+	        	  <input type="text" id="dingmaproductNum" name="dingmaproductNum" value="<%= o.getSendCount(1,"")%>" style="width:50%" />
+			   <% }else {      
+			   %>    
+			     <%= o.getSendCount(1,"")%>
+			   <%
+			   } 
+			   %>
+			   
+			</td> 
 		
 		</tr>
 	 <% 
@@ -438,7 +448,7 @@ function checkedd(){
 			   %>
             
             </td>  
-            <td align="center">安装日期</td>
+            <td align="center">预约日期</td>
             <td align="center">
              <% if(UserManager.checkPermissions(user, Group.dealSend) || UserManager.checkPermissions(user, Group.sencondDealsend) ||  UserManager.checkPermissions(user, Group.sencondDealsend)){
 	        	  %> 

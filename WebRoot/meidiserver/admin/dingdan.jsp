@@ -6,7 +6,6 @@ request.setCharacterEncoding("utf-8");
 
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
 
-
 session.setAttribute("exportList", list); 
 count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);    
    
@@ -335,7 +334,7 @@ function adddetail(src){
 			<td align="center">赠品状态</td>
             <td align="center">开票日期</td>
             
-            <td align="center">安装日期</td>
+            <td align="center">预约日期</td>
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
            <td align="center">送货状态</td>
@@ -638,9 +637,9 @@ function adddetail(src){
 									} 
 							    }
 			 %>
-		  
+		   
 		 <%=op.getMessage() %>  
-		 <% if(statues == 0 || shifangstatues == 0){
+		 <% if(statues == 0 || shifangstatues == 0 || shifangstatues == 4){
 			 
 		  %> 
 		   安装公司处理中 
