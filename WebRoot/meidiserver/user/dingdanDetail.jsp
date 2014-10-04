@@ -206,9 +206,9 @@ function getmap(){
 <% if(statuess != 0 && statuess != 2 ){ %>
 <span class="qiangdan"><a href="javascript:void(0)" onclick="updateOeder()">修改</a></span>
 <%} 
- if(statues != 0 && statues != 2 ){
+ if(statues != 0 && statues != 2 ){ 
  %> 
-<span class="qiangdan"><a href="javascript:void(0)" onclick="updateOeders()">退货</a></span><span class="qiangdan"><a href="welcom.jsp">返回</a></span>
+<span class="qiangdan"><a href="javascript:void(0)" onclick="updateOeders()">退货</a></span><span class="qiangdan"><a href="serch_list.jsp">返回</a></span>
 <% }%>
 
 </div>

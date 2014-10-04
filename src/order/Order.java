@@ -694,7 +694,7 @@ public String getCategory(){
 				         }else if(10 == op.getStatues()) {
 				        	 category = "只安装(顾客已提)";
 				         } 
-			    		 category += decollator +  op.getCount();
+			    		 category += decollator;
 			    	 } 
 			    		
 			     } 

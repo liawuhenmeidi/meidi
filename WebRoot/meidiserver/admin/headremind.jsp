@@ -52,10 +52,10 @@ $(document).ready(function () {
 </script>
   
  
-<div class="head" > 
+<div class="head" >  
 <a href="javascript:void(0);" onclick="serach('neworder')" style="font-size:20px;"> 收到新单据</a><span style="color:red;font-size:20px;" id="neworder"></span>  <br/> 
   <a href="javascript:void(0);" onclick="serach('zhuce')" style="font-size:20px;">职工注册信息   </a><span style="color:red;font-size:20px;" id="zhuce"></span> <br/>
-  <a href="javascript:void(0);" onclick="serach('release')" style="font-size:20px;">安装单位释放信息   </a><span style="color:red;font-size:20px;" id="release"></span> <br/>
+  <a href="javascript:void(0);" onclick="serach('release')" style="font-size:20px;">安装单位释放   </a><span style="color:red;font-size:20px;" id="release"></span> <br/>
   <a href="javascript:void(0);" onclick="serach('motyfy')" style="font-size:20px;">导购修改申请   </a><span style="color:red;font-size:20px;" id="motyfy"></span> <br/> 
   <a href="javascript:void(0);" onclick="serach('returns')" style="font-size:20px;">导购退货申请   </a><span style="color:red;font-size:20px;" id="returns"></span> <br/> 
   

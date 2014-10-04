@@ -352,10 +352,10 @@ $(function () {
 <table>
  <tr> 
      <td width="25%"></td>
+    <td width="25%"><input type="button"  name="" value="登陆" onclick="regist()" /></td>
     <td width="25%"><input type="submit" value="注册"/></td>
-    <td width="25%"></td>
     <td width="25%"> 
-    <input type="button"  name="" value="登陆" onclick="regist()" /></td>
+    </td>
   </tr> 
  
 </table>

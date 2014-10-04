@@ -202,6 +202,7 @@ if("peidan".equals(method)){
 	String branch = request.getParameter("branch"); 
 	String category = request.getParameter("category"); 
 	String product = request.getParameter("product");
+	System.out.println(product);
 	List<InventoryBranch> list = null ;
     if(StringUtill.isNull(product)){ 
     	list = InventoryBranchManager.getCategoryid(branch, category);  

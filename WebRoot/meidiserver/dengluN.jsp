@@ -133,10 +133,11 @@ function regist(){
   </tr>
   <tr>
      <td></td>
+     <td> 
+    <input type="button"  name="" value="注册" onclick="regist()" /></td>
     <td><input type="submit" value="登陆"/></td>
     
-    <td> 
-    <input type="button"  name="" value="注册" onclick="regist()" /></td>
+    
   </tr>
   </table>
     </form>

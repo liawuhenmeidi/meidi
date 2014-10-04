@@ -200,10 +200,10 @@ function serchclick(category,type,branchid,obj){
 	 $("#table tr").remove();    
 	 var branch = "<%=branchid%>";
 	 var category = "<%=category%>"; 
-	 var b = $("#branch").val(); 
+	 var b = $("#branch").val();  
 	 
 	 var product = $("#product").val(); 
-	  
+
 	 if(branch == null || branch == ""){
 		 branch = b ; 
 	 }   
