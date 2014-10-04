@@ -12,6 +12,7 @@ import java.util.List;
 
 import order.Order;
 import order.OrderManager;
+import wilson.matchOrder.AfterMatchOrder;
 
 import database.DB;
 
@@ -47,7 +48,7 @@ public class UploadManager {
 		Connection conn = DB.getConn();
 		String sql = "update uploadorder set checked = ? ,checkedtime = ? ,checkorderid= ? where id = " + uploadOrderId;
 		PreparedStatement pstmt = DB.prepare(conn, sql);
-		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		try {
 			boolean autocommit = conn.getAutoCommit();
@@ -86,7 +87,7 @@ public class UploadManager {
 		Connection conn = DB.getConn();
 		String sql = "update uploadorder set checked = ? ,checkedtime = ?,checkorderid=? where id = ?";
 		PreparedStatement pstmt = DB.prepare(conn, sql);
-		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		try {
 			boolean autocommit = conn.getAutoCommit();
@@ -127,7 +128,7 @@ public class UploadManager {
 		String sql = ""; 
 		sql = "insert ignore into uploadorder (id, shop,saleno,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,null,null)";	
 		Connection conn = DB.getConn();
-		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		
@@ -166,7 +167,7 @@ public class UploadManager {
 		boolean flag = false;
 		String sql = "insert into uploadsalarymodel (id, name,starttime,endtime,catergory,type,content,committime,filename,status) VALUES (null,?,?,?,?,?,?,?,?,0)";	
 		Connection conn = DB.getConn();
-		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		
@@ -234,4 +235,97 @@ public class UploadManager {
 		}	
 		return unCheckedUploadOrders;
 	}
+	
+	public static List<AfterMatchOrder> getCheckedAfterMatchOrder(Date startDate,Date endDate){
+		List <AfterMatchOrder> checkedAfterMatchOrder = new ArrayList<AfterMatchOrder>();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Connection conn = DB.getConn(); 
+		String sql = "select * from uploadorder where checked = 0 and saletime > " + sdf.format(startDate)  + " and saletime < " + sdf.format(endDate);
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		AfterMatchOrder amo = new AfterMatchOrder();
+		UploadOrder uo = new UploadOrder();
+		try {     
+			while (rs.next()) {
+				uo.setId(rs.getInt("id"));
+				uo.setShop(rs.getString("shop"));
+				uo.setSaleNo(rs.getString("saleno"));
+				uo.setPosNo(rs.getString("posno"));
+				uo.setSaleTime(rs.getString("saletime"));
+				uo.setDealTime(rs.getString("dealtime"));
+				uo.setType(rs.getString("type"));
+				uo.setNum(rs.getInt("num"));
+				uo.setSalePrice(rs.getDouble("saleprice"));
+				uo.setBackPoint(rs.getDouble("backpoint"));
+				uo.setFileName(rs.getString("filename"));
+				uo.setChecked(rs.getInt("checked"));
+				uo.setCheckedTime(rs.getString("checkedtime"));
+				amo.initUploadSideOrder(uo);
+				checkedAfterMatchOrder.add(amo);
+				uo = new UploadOrder();
+				amo = new AfterMatchOrder();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		checkedAfterMatchOrder = initOrder(checkedAfterMatchOrder);
+		return checkedAfterMatchOrder;
+	}
+	
+	public static List<AfterMatchOrder> initOrder(List<AfterMatchOrder> lists){
+
+		List<Order> ordersFromDB = OrderManager.getCheckedDBOrders();
+		for(int i = 0 ; i < lists.size() ; i ++){
+			for(int j = 0 ; j < ordersFromDB.size() ; j ++){
+				if(lists.get(i).getUploadSideOrderId() == ordersFromDB.get(j).getId()){
+					lists.get(i).initDBSideOrder(ordersFromDB.get(j));
+					break;
+				}
+			}
+		}
+		return lists;
+	}
+	
+	public static List<UploadSalaryModel> getSalaryModelList(Date startDate ,Date endDate) {
+		List<UploadSalaryModel> result = new ArrayList<UploadSalaryModel>();
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String sql = "select * from uploadsalarymodel where ( status = 0 and starttime >= " + fmt.format(startDate)  + " and endtime <= " + fmt.format(endDate) + " ) " +
+				"or ( status = 0 and starttime < " + fmt.format(endDate)  + " and endtime > " + fmt.format(endDate) + " ) " +
+						"or ( status = 0 and starttime < " + fmt.format(startDate)  + " and endtime > " + fmt.format(startDate) + " ) ";
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadSalaryModel usm = new UploadSalaryModel();
+		try {
+			while(rs.next()){
+				usm.setName(rs.getString("name"));
+				usm.setId(rs.getInt("id"));
+				usm.setStartTime(rs.getString("starttime"));
+				usm.setEndTime(rs.getString("endtime"));
+				usm.setCatergory(rs.getString("catergory"));
+				usm.setType(rs.getString("type"));
+				usm.setContent(rs.getString("content"));
+				usm.setCommitTime(rs.getString("committime"));
+				usm.setFileName(rs.getString("filename"));
+				usm.setStatus(rs.getInt("status"));
+				result.add(usm);
+				usm = new UploadSalaryModel();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return result;
+	}
+	
 }

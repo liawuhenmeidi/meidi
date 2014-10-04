@@ -125,7 +125,7 @@ public class XLSReader {
 					uploadSalaryModelList.add(usm);
 					usm = new UploadSalaryModel();
 					tempInt = 0.0;
-					tempString = "";
+					tempString = "{";
 				}
 		        wb.close();
 			}catch (Exception e){

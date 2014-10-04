@@ -33,6 +33,14 @@ public class OrderProductManager {
 		return OrPMap;
 	}
 	
+	public static List<OrderProduct> getStaticOrderStatuesMByid(int id){
+		if(!OrderProductManager.getStaticOrderStatuesM().containsKey(id)){
+			OrderProductManager.resetOrPMap();
+		}
+		List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(id);
+		return lists;
+	}
+	
 	public static void resetOrPMap(){
 		 OrPMap = OrderProductManager.getOrderStatuesM();
 	}

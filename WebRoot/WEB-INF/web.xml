@@ -143,6 +143,17 @@
         <servlet-name>SalaryModelUpload</servlet-name>  
 	    <url-pattern>/meidiserver/SalaryModelUpload</url-pattern>   
     </servlet-mapping>
+    
+    <servlet>  
+	        <servlet-name>SalaryExport</servlet-name>  
+	        <servlet-class>  
+	            wilson.salaryCalc.ResponseServlet 
+	        </servlet-class>
+   </servlet> 
+   <servlet-mapping>    
+        <servlet-name>SalaryExport</servlet-name>  
+	    <url-pattern>/meidiserver/SalaryExport</url-pattern>   
+    </servlet-mapping>
 	          
 	          
 	          

@@ -9,11 +9,6 @@ import wilson.upload.UploadOrder;
 import wilson.upload.UploadManager;
 
 public class MatchOrderManager {
-
-	public void saveOrder(List<Order> ordersUnMatched) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public static List <UploadOrder> getUnCheckedUploadOrders(){
 		List <UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
