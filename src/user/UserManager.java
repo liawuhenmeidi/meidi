@@ -1,32 +1,23 @@
 package user;
 
-import group.*;
+import group.Group;
+import group.GroupManager;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder; 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import branch.Branch;
-
 import utill.StringUtill;
-
-import category.Category;
-import category.CategoryManager;
- 
+import branch.Branch;
 import database.DB;
     
 public class UserManager {  
@@ -674,6 +665,31 @@ logger.info(sql);
 				DB.close(conn);
 			}
 			return users;
+	   }
+	   
+	   /**
+	    * by wilsonlee
+	    * get static user map
+	    * @return
+	    */
+	   public static HashMap<Integer,User> staticUserMap =  getMap();
+			   
+	   public static HashMap<Integer,User> getStaticMap(){
+		   if(staticUserMap == null ){
+			   staticUserMap = getMap();
+		   }
+		   return staticUserMap;
+	   }
+		
+	   public static void resetStaticUserMap(){
+		   staticUserMap = getMap();
+	   }
+	   
+	   public static String getUsernameByOrderid(int orderId){
+		   if(!staticUserMap.containsKey(orderId)){
+			   resetStaticUserMap();
+			}
+		   return staticUserMap.get(orderId).getUsername();
 	   }
 	   
 	  // 获取门店和对应的导购员

@@ -1322,6 +1322,39 @@ logger.info(sql);
     	   
     }
     
+    //wrote by wilsonlee
+    //已经结款的Order
+    public static List<Order> getCheckedDBOrders(){
+    	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
+    	//flag = true;
+    	List<Order> Orders = new ArrayList<Order>();
+   
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1";                  
+    	   
+    	if(true){
+    		Connection conn = DB.getConn();
+            Statement stmt = DB.getStatement(conn);
+            ResultSet rs = DB.getResultSet(stmt, sql);
+
+ 			try { 
+ 				while (rs.next()) {
+ 					Order p = gerOrderFromRs(rs);
+  					Orders.add(p);
+ 				}
+ 			} catch (SQLException e) {
+ 				e.printStackTrace();
+ 			} finally {
+ 				DB.close(stmt);
+ 				DB.close(rs);
+ 				DB.close(conn);
+ 			}   
+    	}
+    	return Orders; 
+    	   
+    }
+    
+    
+    
    public static List<Order> getOrderlistPrintln(User user ,int type,int num,int page,String sort){
 	    boolean f = UserManager.checkPermissions(user, Group.Manger); 
 		  

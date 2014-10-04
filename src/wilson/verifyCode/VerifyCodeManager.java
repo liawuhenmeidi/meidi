@@ -16,7 +16,7 @@ public class VerifyCodeManager {
 		//不判断是否已经有这个verifyCode了，直接存
 		sql = "insert into verifycode (saleorderno, verifycode,detail,recordtime,statues) VALUES (?,?,?,?,?)";	
 		Connection conn = DB.getConn();
-		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		detail = detail.substring(0,detail.length()>240?240:detail.length());
 

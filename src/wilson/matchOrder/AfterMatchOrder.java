@@ -22,6 +22,30 @@ public class AfterMatchOrder {
 	private String UploadSideCount = "";
 	private int UploadSideOrderId = 0;
 	
+	
+	public void initDBSideOrder(Order dbOrder){
+		setDBOrder(dbOrder);
+		this.dbOrder = dbOrder;
+		DBSideShop = dbOrder.getBranch();
+		DBSidePosNo = dbOrder.getPos();
+		DBSideSaleTime = dbOrder.getSaleTime();
+		DBSideDealTime = dbOrder.getOdate();
+		DBSideType = dbOrder.getSendType();
+		DBSideCount = String.valueOf(dbOrder.getSendCount());
+		DBSideOrderId = dbOrder.getId();
+	}
+	
+	public void initUploadSideOrder(UploadOrder uploadOrder){
+		this.uploadOrder = uploadOrder;
+		UploadSideShop = uploadOrder.getShop();
+		UploadSidePosNo = uploadOrder.getPosNo();
+		UploadSideSaleTime = uploadOrder.getSaleTime();
+		UploadSideDealTime = uploadOrder.getDealTime();
+		UploadSideType = uploadOrder.getType();
+		UploadSideCount = String.valueOf(uploadOrder.getNum());
+		UploadSideOrderId = uploadOrder.getId();
+	}
+	
 	public AfterMatchOrder() {
 		super();
 	}
