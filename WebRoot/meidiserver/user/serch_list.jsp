@@ -63,7 +63,9 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
-
+function detail(src){
+	window.location.href=src;
+}
 </script>
 </head>
 
@@ -80,12 +82,11 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 <!--  订单详情  -->
 <div class="s_main_box">
 <table width="100%" class="s_main_table">
-  <tr>
-    <td width="20%" class="s_list_m">产品名称</td>
+  <tr >
+    <td width="20%" class="s_list_m">产品类别</td>
     <td width="20%" class="s_list_m">产品型号</td>
-    <td width="20%" class="s_list_m">安装日期</td>
+    <td width="20%" class="s_list_m">预约日期</td>
     <td width="30%" class="s_list_m">送货地点</td>
-    <td width="10%" class="s_list_m">详情</td>
   </tr>  
    <% 
     for(int i = 0;i<list.size();i++){
@@ -94,8 +95,8 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
     	if(i%2 == 0){
     		col = "style='background-color:yellow'";
     	}
-  %> 
- <tr <%=col %>>  
+  %>  
+ <tr <%=col %> onclick="detail('dingdanDetail.jsp?id=<%=o.getId()%>')">  
  
      <td align="left"> 
   <table>
@@ -142,7 +143,7 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
     <td><%=o.getOdate() %></td>
     
     <td><%=o.getLocateDetail()%></td>
-    <td> <a href="dingdanDetail.jsp?id=<%=o.getId()%>">[详情]</a></td>
+    
   </tr>
   
      <%} %>

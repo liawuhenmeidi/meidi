@@ -201,8 +201,20 @@ if("peidan".equals(method)){
 	String str = "";  
 	String branch = request.getParameter("branch"); 
 	String category = request.getParameter("category"); 
- 
-	List<InventoryBranch> list = InventoryBranchManager.getCategoryid(branch, category); 
+	String product = request.getParameter("product");
+	List<InventoryBranch> list = null ;
+    if(StringUtill.isNull(product)){ 
+    	list = InventoryBranchManager.getCategoryid(branch, category);  
+    }else {
+    	if(!StringUtill.isNull(branch)){
+    		System.out.println(branch);
+    		Branch b = BranchManager.getLocatebyid(branch);
+    		
+    		list = InventoryBranchManager.getCategory(b.getLocateName(), product);  
+    	}else {
+    		list = InventoryBranchManager.getCategory(branch, product);
+    	}
+    }
 	
 	if(StringUtill.isNull(category)){
 	    Map<Integer,InventoryAll> map  = new HashMap<Integer,InventoryAll>();  
@@ -330,8 +342,8 @@ if("peidan".equals(method)){
 
 	String ctype = request.getParameter("ctype"); 
 	String branchid = request.getParameter("branchid");
-	String time = (String)session.getAttribute("inventorytime");
-	if(StringUtill.isNull(time)){
+	String time = request.getParameter("time");
+	if(StringUtill.isNull(time)){ 
 		time = "";
 	}
 	List<InventoryBranchMessage > list = InventoryBranchMessageManager.getCategory(ctype,branchid,time);  

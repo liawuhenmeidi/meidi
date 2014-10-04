@@ -5,7 +5,6 @@ User user = (User)session.getAttribute("user");
 TokenGen.getInstance().saveToken(request);
 String s = (String)session.getAttribute("token");
 
-
 if(!UserManager.checkPermissions(user, Group.sale)){ 
 	response.sendRedirect("welcom.jsp");
 } 
@@ -241,7 +240,7 @@ System.out.println(11);
     
    function initproductSerch(str,str2,str3){ 
 	    cid = $(str).val(); 
-		$(str2).autocomplete({
+		$(str2).autocomplete({ 
 			 source: jsons[cid]
 		    }); 
 		$(str).change(function(){
@@ -466,7 +465,7 @@ System.out.println(11);
     	           '<input type="hidden" name="product" value="'+row+'"/>'+
     	    	   '<table style="width:100%;background-color:'+yellow+'">'+
                    ' <tr>' +
-                   '<td width="25%" class="center">送货名称<span style="color:red">*</span></td>'+
+                   '<td width="25%" class="center">送货类别<span style="color:red">*</span></td>'+
                    '<td width="50%" class="center"><select class = "category" name="ordercategory'+row+'"  id="ordercategory'+row+'"  style="width:95% " '+disable+'>'; 
                    for(var i=0;i<json.length;i++){
                 	   var ckeck = "";
@@ -498,8 +497,8 @@ System.out.println(11);
                    '<table>'+
                    '  </table>'+
               	 '  <table style="width:100%;background-color:'+yellow+'">'+
-              	 ' <tr>'+
-              	  '  <td width="25%" class="center">产品状态</td>'+
+              	 ' <tr>'+ 
+              	  '  <td width="25%" class="center">送货状态</td>'+
               	  '  <td width="50%" class="">'+
                 '  <select  name="productsta'+row+'" id="productsta'+row+'" style="width:90%; " '+disable+'>'+
                    
@@ -907,7 +906,7 @@ System.out.println(11);
 <table style="width:100% "> 
  
   <tr>   
-    <td width="25%" class="center">开票日期<span style="color:red">*</span></td>
+    <td width="25%" class="center">发票日期<span style="color:red">*</span></td>
     <td width="50%" class=""><input class="date" type="text" name="saledate" placeholder="必填"  id="serviceDate"  readonly="readonly" style="width:90% "></input>   </td>
     <td width="25%" class="center"></td>
   </tr>
@@ -962,7 +961,7 @@ System.out.println(11);
    <hr>
   <table style="width:100%;background-color:" > 
   <tr>
-  <td width="25%" class="center">票面名称<span style="color:red">*</span></td>
+  <td width="25%" class="center">票面类别<span style="color:red">*</span></td>
   <td width="50%" class="center">
   <select class="category" name="dingmaordercategory" id="dingmaordercategory" style="width:95% " <%=isdisabel %>>
   
@@ -1001,7 +1000,7 @@ System.out.println(11);
   <table style="width:100%;background-color:"> 
   <tbody>
   <tr>
-  <td width="25%" class="center">送货名称<span style="color:red">*</span></td>
+  <td width="25%" class="center">送货类别<span style="color:red">*</span></td>
   <td width="50%" class="center">
   <select class="category" name="ordercategory0" id="ordercategory0" style="width:95% " <%=isdisabel %>>
   
@@ -1035,7 +1034,7 @@ System.out.println(11);
    </table>  
   <table style="width:100%;background-color:"> 
               	 <tr>
-               	  <td width="25%" class="center">产品状态</td>
+               	  <td width="25%" class="center">送货状态</td>
               	  <td width="50%" class=""> 
               	  <select  name="productsta0"   id="productsta0"  style="width:90%; " <%=isdisabel %>>
               	 <option value="" id=""></option>       
@@ -1067,8 +1066,8 @@ System.out.println(11);
    </table> 
    <div id="disable">
    <table style="width:100% ">
-   <tr> 
-    <td width="25%" class="center">预约安装日期<span style="color:red">*</span></td>
+   <tr>  
+    <td width="25%" class="center">预约日期<span style="color:red">*</span></td>
     <td width="45%" class=""><input class="date2" type="text" name="andate" id ="serviceDate2" placeholder="必填"  readonly="readonly" style="width:90% "></input>   </td>
     <td width="25%" class="center" id="andates"></td> 
     <td width="5%"></td> 

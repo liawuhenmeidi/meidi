@@ -249,13 +249,13 @@ var disable = '<%=isdisabel %>';
       //System.out.println("aa"+user.getBranch()+inventory.getOutstatues()+UserManager.checkPermissions(user, Group.inventoryquery));
       if(outbranch.equals(user.getBranch()) && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery)){ 
       %>  
-      <li><a href="InventoryServlet?method=outbranch&id=<%=inventory.getId() %>">出库方确认</a></li>
+      <li><a href="../admin/InventoryServlet?method=outbranch&id=<%=inventory.getId() %>">出库方确认</a></li>
       <%
       }  
       %>
      <% if(inbranch.equals(user.getBranch()) && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery)){ 
       %>  
-      <li><a href="InventoryServlet?method=inbranch&id=<%=inventory.getId() %>">入库方确认</a></li>
+      <li><a href="../admin/InventoryServlet?method=inbranch&id=<%=inventory.getId() %>">入库方确认</a></li>
       <% 
       } 
      

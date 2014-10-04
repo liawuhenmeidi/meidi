@@ -4,6 +4,10 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");  
 String ctype = request.getParameter("ctype");
 String branchid = request.getParameter("branchid");
+String endtime = request.getParameter("endtime");
+System.out.println(endtime);
+String starttime = request.getParameter("starttime"); 
+
 Branch b = new Branch();
 if(!StringUtill.isNull(branchid)){
 	b = BranchManager.getLocatebyid(branchid);
@@ -42,27 +46,44 @@ var ctype = '<%=ctype%>' ;
 var branchid = '<%=branchid%>';
 var row = 1;
 var branchstr = <%=branchstr%>; 
+var starttime = '<%=starttime%>'; 
+var endtime = '<%=endtime%>';
 //alert(ctype);
  $(function () {  
 	 //initproduct();
-	  search(ctype,branchid);        
+	 var flag = false ;
+	 var str = "";
+	 if(starttime != null && starttime != "" && starttime != "null"){
+		 str += " and time  BETWEEN  '" + starttime + "'  and  ";
+	     flag = true ;
+	 } 
+	 
+	 if(endtime != null && endtime != "" && endtime != "null"){
+		 str += " ' " + endtime + "'";
+	 }else if(flag){
+		 str += "now()";
+	 } 
+	 //alert(str);
+	  search(ctype,branchid,str);        
 
  });
  
  function inventory(inventory,type){
 	 if(type == 0 || type == 1){
-		 window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
-	 }else { 
-		 window.open('dingdanDetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+		 window.location.href='inventorysearch.jsp?id='+inventory;
+		 //window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 }else {
+		 window.location.href='dingdanDetail.jsp?id='+inventory;
+		 //window.open('dingdanDetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }
  } 
  
- function search(ctype,branchid){
+ function search(ctype,branchid,time){
 	 $("#serach table").remove();
 	 $.ajax({ 
 	        type: "post", 
 	         url: "../../admin/server.jsp",
-	         data:"method=inventorydetail&ctype="+ctype+"&branchid="+branchid,
+	         data:"method=inventorydetail&ctype="+ctype+"&branchid="+branchid+"&time="+time,
 	         dataType: "", 
 	         success: function (data) {
 	        	//alert(data);
@@ -145,6 +166,7 @@ var branchstr = <%=branchstr%>;
 <div class="main">  
    <div class="weizhi_head">现在位置：库存查询
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   开始时间:<%=starttime%>---结束时间:<%=endtime %>
    <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>
    </div>       
 <br/>

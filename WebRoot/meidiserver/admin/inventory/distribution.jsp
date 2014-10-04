@@ -69,8 +69,9 @@ td {
  });
  
  function search(category,branchid){
-	 window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
-}
+	// window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
+	 window.location.href='inventory1.jsp?category='+category+'&branchid='+branchid;
+ }
   
  function add(){    
 	 $("#table tr").remove();
@@ -129,7 +130,9 @@ td {
   <div class="weizhi_head">现在位置：<%=c.getName() %>分布
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
     <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>            
- </div>      
+ </div>     
+ 
+  
  </div>        
      <div style="background-color:;width:80%" >
      <br/>        

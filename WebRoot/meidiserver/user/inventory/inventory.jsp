@@ -65,7 +65,8 @@ td {
 	 if(categoryid == null || categoryid == ""){
 		 alert("请选择商品");
 	 }else { 
-	     window.open('distribution.jsp?category='+categoryid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+		 window.location.href='distribution.jsp?category='+categoryid;
+		 //window.open('distribution.jsp?category='+categoryid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
        }
 	 }
  

@@ -57,15 +57,17 @@ td {
  }); 
    
  function search(category,branchid){ 
-		 window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
+	  window.location.href='inventory1.jsp?category='+category+'&branchid='+branchid;
+		// window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
  }   
  
  function distri(){
 	 if(categoryid == null || categoryid == ""){
 		 alert("请选择商品");
 	 }else { 
-	     window.open('distribution.jsp?category='+categoryid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
-       }
+	     //window.open('distribution.jsp?category='+categoryid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+		 window.location.href='distribution.jsp?category='+categoryid; 
+	   }
 	 }
  
  function serchclick(category,branchid,obj){
