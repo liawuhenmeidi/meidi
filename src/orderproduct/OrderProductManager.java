@@ -52,10 +52,11 @@ public class OrderProductManager {
 		   if(user.getUsertype() == 2  || user.getUsertype() == 1){
 			   Connection conn = DB.getConn();  
 				String sql = "update mdorderproduct set saletype = '"+ type + "' , categoryID = "+categoryid+"  , count = "+count + " where orderid = " + oid + " and statues = 1 ";
-				logger.info(sql); 
+				logger.info(sql);     
 				PreparedStatement pstmt = DB.prepare(conn, sql);
 				try { 
 					statues = pstmt.executeUpdate();
+					OrderProductManager.resetOrPMap(); 
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} finally {

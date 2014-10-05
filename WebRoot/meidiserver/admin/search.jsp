@@ -29,8 +29,8 @@ String searched = request.getParameter("searched");
 
 
 <script type="text/javascript"> 
-  var search = new Array();
-  
+var search = new Array();
+var searchstr = "";  
 function add(){
 	  var name = ($("#serch").children('option:selected').attr("value"));
 	  var value = ($("#serch").children('option:selected').text());  
@@ -44,7 +44,6 @@ function add(){
 		    	}else {
 		    		$("#search").append(value+":是<input type=\"radio\"  name=\""+name+"\"  value=\"1\" />否<input type=\"radio\"  name=\""+name+"\"  value=\"0\" /><input type=\"hidden\"  name=\"search\" value=\""+name+"\"></input>");  
 		    	}
-		    	
 		    }else if("saledate" == name || "andate" == name || "dealsendTime" == name ){ 
 		    	$("#search").append(value+":开始时间<input type=\"text\"  id=\""+name+"start\"  name=\""+name+"start\"  placeholder=\"yyyy-mm-dd\"></input> 结束时间<input type=\"text\"  id=\""+name+"end\"  name=\""+name+"end\" placeholder=\"yyyy-mm-dd\"></input><input type=\"hidden\"  name=\"search\" value=\""+name+"\"></input>");  
 		        var start = name+"start";

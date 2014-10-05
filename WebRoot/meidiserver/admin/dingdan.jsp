@@ -95,25 +95,6 @@ $(function () {
 	    }
 		}); 
 
-	
-	$("select[id='numb'] option[value='"+num+"']").attr("selected","selected");
-	
-	$("#page").blur(function(){
-		 pages = $("#page").val();
-		 window.location.href="dingdan.jsp?pages="+pages+"numb="+num;
-	 });
-
-	 $("#numb").change(function(){
-		 num = ($("#numb").children('option:selected').val());
-		// alert(num);
-		 window.location.href="dingdan.jsp?page="+pages+"&numb="+num;
-	 }); 
-	  
-	 $("#sort").change(function(){
-		 sort = ($("#sort").children('option:selected').val());
-		// alert(num);  
-		 window.location.href="dingdan.jsp?page="+pages+"&numb="+num+"&sort="+sort;
-	 }); 
 }); 
      
      
@@ -447,23 +428,8 @@ function adddetail(src){
  
 		<td align="center">
 		 <%   
-		    int flag = -1 ;
-		    int flag2 = -1 ;
-		    if(opmap.get(OrderPrintln.modify) != null){
-				OrderPrintln op = opmap.get(OrderPrintln.modify).get(o.getId());
-				
-				 if(op != null){  
-					 flag = op.getStatues() ;
-					 }
-				 }
-		    
-		    if(opmap.get(OrderPrintln.returns) != null){
-				OrderPrintln op = opmap.get(OrderPrintln.returns).get(o.getId());
-				
-				 if(op != null){  
-					 flag2 = op.getStatues() ;
-					 }
-				 }
+		    int flag = OrderPrintlnManager.getstatues(opmap, OrderPrintln.modify, o.getId()) ;
+		    int flag2 = OrderPrintlnManager.getstatues(opmap, OrderPrintln.returns, o.getId());
 					  
 		   if(o.getDealsendId() == 0 && o.getDeliveryStatues() != 8 && o.getPrintSatues() == 0){
 			   if(flag != 2 && flag != 0 && flag2 != 2 && flag2 != 0){
@@ -471,8 +437,6 @@ function adddetail(src){
 				<select class = "category" name="category"  id="songh<%=o.getId() %>" >
 				 <option value=""></option>
 				<%     if(listS != null ){
-					     
-			             
 		               for(int j=0;j< listS.size();j++){
 		            	   User u = listS.get(j);
 		            	   String str = "";  
@@ -486,7 +450,6 @@ function adddetail(src){
 				     }
 			            %>
 		         </select> 
-		      
 		         <input type="button" onclick="changepeidan('songh<%=o.getId()%>','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="确定"/> 
 		         
 			<% 	
@@ -503,17 +466,12 @@ function adddetail(src){
 				   <input type="button" onclick="changepeidan('1','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="打印"/>
 			         &nbsp;&nbsp;&nbsp;
 				   <input type="button" onclick="changepeidan('0','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="确定"/>  
-				   
-				   
+				   				   
 				   <%
 			   }
 		   }else if(o.getDealsendId() != 0){
-			  
-			   %>
-			    
+			   %>    
 			<%=usermap.get(o.getDealsendId()).getUsername() +"</p>"+ usermap.get(o.getDealsendId()).getPhone()%>
-			   
-			   
 			   <% 
 		   }
 		 %>

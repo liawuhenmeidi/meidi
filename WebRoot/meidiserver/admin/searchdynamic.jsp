@@ -20,7 +20,7 @@ if(StringUtill.isNull(sort)){
 }
 
 if(StringUtill.isNull(numb)){
-	numb = "10";
+	numb = "100";
 } 
 
 if(StringUtill.isNull(pageNum)){

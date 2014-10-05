@@ -404,24 +404,21 @@ function adddetail(src){
 		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
 		</td> 
 		<td align="center">
-		<%  
-		OrderPrintln or = opmap.get(OrderPrintln.releasemodfy) == null?null:opmap.get(OrderPrintln.releasemodfy).get(o.getId());  
-		
-		int substr = -1;
-		if(opmap.get(OrderPrintln.release) != null){
-			OrderPrintln orin = opmap.get(OrderPrintln.release).get(o.getId());
-		    if(orin != null){
-		    	substr = opmap.get(OrderPrintln.release).get(o.getId()).getStatues();
-		    }
-		}
-		   int statuesnew = Order.orderpeisong;
-		   if(o.getSendId() == 0 ){
+		<%    
+
+		int releasemodfy = OrderPrintlnManager.statues(opmap, OrderPrintln.releasemodfy, o.getId()) ;	
+		int release = OrderPrintlnManager.statues(opmap, OrderPrintln.release, o.getId()) ;
+	    int releasedispatch = OrderPrintlnManager.statues(opmap, OrderPrintln.releasedispatch, o.getId()) ;
+		int statuesnew = Order.orderpeisong; 
+		   
+		if(o.getSendId() == 0 ){
 			   if(o.getDeliveryStatues() == 9){
 				   statuesnew = Order.ordersong;
 			   }else if(o.getDeliveryStatues() == 10){
 				   statuesnew = Order.orderinsta; 
 			   }
-			   if(or!= null && or.getStatues() != 0 || or == null){
+			   
+			   if(releasemodfy == 4 || releasemodfy == -1){
 			    	  
 		%> 
 		<select class = "category" name="category"  id="songh<%=o.getId() %>" >
@@ -442,100 +439,44 @@ function adddetail(src){
 	                	%>
          </select>   
            
-         <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','<%=statuesnew %>',<%=substr %>)"  value="确定"/>
+         <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','<%=statuesnew %>',<%=release %>)"  value="确定"/>
 		<% }
 		} else {
 			
-		 %>
-		
-		<% if(o.getSendId() != 0){
-			if(usermap.get(Integer.valueOf(o.getSendId())) != null){
-		 %>
-		 <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
-		 <%
-		  }
-		}
-		 %>
-		<%
+		    if(usermap.get(Integer.valueOf(o.getSendId())) != null){
+		       %>
+		       <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
+		     <%
+		      }
 		}
 		%>
 		</td> 
 		<td align="center"> 
 		    <a href="javascript:void(0);"  onclick="searchlocate('<%=o.getId() %>')">[查看位置]</a> 
 		</td>
-		<!--  
-		<td align="center">
-		<% 
-		   if(o.getDeliveryStatues() == 1){
-			   
-		   
-		   if(o.getInstallid() == 0){
-		%>
-		<select class = "category" name="category"  id="songh<%=o.getId() %>" >
-		 <option value="0"></option>
-		<%    
-               for(int j=0;j< listS.size();j++){
-            	   User u = listS.get(j);
-            	   String str1 = "";
-            	   if(u.getId() == o.getInstallid()){
-            		   str1 = "selected=selected" ;
-            		   
-            	   } 
-            	   %> 
-            	    <option value=<%=u.getId() %>  <%= str1%>> <%=u.getUsername() %></option>
-            	   <% 
-            	   
-                    }
-	                	%>
-         </select>  
-      
-         <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','<%=Order.orderinstall%>')"  value="确定"/>
-		<%} else {
-			
-		 %>  
-		     <%=usermap.get(Integer.valueOf(o.getInstallid())).getUsername() %>
-		<%
-		     } 
-		   } 
-		%>
-		</td> 
-		-->
-	
+		
 		<td align="center"> 
 		 <%
-		     // OrderPrintln or = opmap.get(OrderPrintln.releasemodfy) == null?null:opmap.get(OrderPrintln.releasemodfy).get(o.getId()); 
-		      if(or!= null){
-		    	  if(or.getStatues() == 0 ){ 
-		    		  
-		    %>
-		<%=or.getMessage() %>
-			<%
-		        }
-                }
-		%>
+		      
+		 if(releasedispatch == -1 ){      
+			 if(releasemodfy == 0 ){ 
+				 OrderPrintln or = opmap.get(OrderPrintln.releasemodfy) == null?null:opmap.get(OrderPrintln.releasemodfy).get(o.getId()); 
+			    %> 
+			<%=or.getMessage() %>
+				<%
+			        }
+			%>
 		     
-		    <input type="submit" class="button" name="dosubmit" value="驳回订单" onclick="winconfirm('<%=o.getId()%>','<%= substr %>','<%=o.getSendId()%>')"></input>
+		    <input type="submit" class="button" name="dosubmit" value="驳回订单" onclick="winconfirm('<%=o.getId()%>','<%= release %>','<%=o.getSendId()%>')"></input>
+		  <% } %>
 		</td>
+		 
 		<td align="center">     
 		    <%
 		      OrderPrintln opp = opmap.get(OrderPrintln.salerelease) == null?null:opmap.get(OrderPrintln.salerelease).get(o.getId()); 
 		      if(opp!= null){
 		    	  if(opp.getStatues() == 0 ){
 		    %>
-		  
-		<!-- <span style="cursor:hand" onclick="funcc('ddiv<%=o.getId() %>',<%=o.getId() %>)">有申请驳回请求</span>  
-		 <div id="ddiv<%=o.getId()%>"   >
-		   <table>
-		    	 <tr> 
-		    	     <td> --> 
-		    	     <%=opp.getMessage() %>
-		    	     
-		    	   <!--  </td>
-		    	 </tr> 
-		   </table> -->    
-		   <input type="button" onclick="changes('<%=o.getId()%>','<%=opp.getId() %>','<%=OrderPrintln.comited%>','','','<%=OrderPrintln.salerelease%>')"  value="同意"/> 
-		    <input type="button" onclick="changes('<%=o.getId()%>','<%=opp.getId() %>','<%=OrderPrintln.uncomited%>','','','<%=OrderPrintln.salerelease%>')"  value="不同意"/>
-		<!-- </div> -->
 		<%
 		}
      }
@@ -566,9 +507,9 @@ function adddetail(src){
 		</td>
 		<td align="center"> 
 		<%    
-		if(opmap.get(OrderPrintln.releasedispatch) != null){
+		if(releasedispatch != -1){
 			OrderPrintln oppp = opmap.get(OrderPrintln.releasedispatch).get(o.getId());
-			if(oppp != null && oppp.getStatues() == 0){
+			if(releasedispatch == 0){
 				int statues = -1;    
 				  
 				if(o.getDeliveryStatues() == 0 || o.getDeliveryStatues() == 9 ){
