@@ -62,7 +62,7 @@ public class SalaryModelUpload extends HttpServlet {
 		String tempPath = req.getSession().getServletContext().getRealPath("/") + "data\\" + "/tempFile";                 
 		tempFile = new File(tempPath); 
 		if(!tempFile.exists()){
-			tempFile.mkdir();
+			tempFile.mkdirs();
 		}
 		res.setContentType("text/html; charset=UTF-8");   
 
@@ -103,7 +103,7 @@ public class SalaryModelUpload extends HttpServlet {
 					     	realPath = sc.getRealPath("/") + uploadPath;
 					     	File upperFolder = new File(sc.getRealPath("/") + uploadPath);
 					     	if(!upperFolder.exists()){
-					     		upperFolder.mkdir();
+					     		upperFolder.mkdirs();
 					     	}
 					     	File file = new File(sc.getRealPath("/") + uploadPath, fileName);
 					     	item.write(file);
@@ -131,6 +131,18 @@ public class SalaryModelUpload extends HttpServlet {
 			System.out.println(("upload.message" + "文件上传错误！"));
 		}
 		res.sendRedirect("/meidi/meidiserver/admin/salaryModelUpload.jsp?fileName="+fileName);
+	}
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// 将请求、响应的编码均设置为UTF-8（防止中文乱码）
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+  
+		// 调用核心业务类接收消息、处理消息
+		doPost(request,response);
+
+		// 响应消息
 	}
 
 }

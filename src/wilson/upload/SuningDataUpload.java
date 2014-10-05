@@ -59,10 +59,11 @@ public class SuningDataUpload extends HttpServlet {
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException { 
-		String tempPath = req.getSession().getServletContext().getRealPath("/") + "data\\" + "/tempFile";                 
+		String tempPath = req.getSession().getServletContext().getRealPath("/") + "data\\" + "/tempFile";      
+		
 		tempFile = new File(tempPath); 
 		if(!tempFile.exists()){
-			tempFile.mkdir();
+			tempFile.mkdirs();
 		}
 		res.setContentType("text/html; charset=UTF-8");   
 
@@ -103,7 +104,7 @@ public class SuningDataUpload extends HttpServlet {
 					     	realPath = sc.getRealPath("/") + uploadPath;
 					     	File upperFolder = new File(sc.getRealPath("/") + uploadPath);
 					     	if(!upperFolder.exists()){
-					     		upperFolder.mkdir();
+					     		upperFolder.mkdirs();
 					     	}
 					     	File file = new File(sc.getRealPath("/") + uploadPath, fileName);
 					     	item.write(file);

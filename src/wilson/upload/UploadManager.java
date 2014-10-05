@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import order.Order;
 import order.OrderManager;
 import wilson.matchOrder.AfterMatchOrder;
@@ -18,15 +21,16 @@ import database.DB;
 
 public class UploadManager {
 	private static XLSReader xlsreader = new XLSReader();
+	protected static Log logger = LogFactory.getLog(UploadManager.class);
 	
 	public static boolean saveSalaryFileToDB(String path,String fileName){
 		List <UploadSalaryModel> uploadSalaryModelList = new ArrayList<UploadSalaryModel>();
 		uploadSalaryModelList = xlsreader.readSalaryModelXLS(path, fileName);
 		if(saveSalaryModelList(uploadSalaryModelList)){
-			System.out.println("上传提成标准保存成功");
+			logger.info("上传提成标准保存成功");
 			return true;
 		}else{
-			System.out.println("上传提成标准保存失败");
+			logger.info("上传提成标准保存失败");
 			return false;
 		}
 	}
@@ -35,10 +39,10 @@ public class UploadManager {
 		List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
 		UploadOrders = xlsreader.readSuningXLS(path, fileName);
 		if(saveOrderList(UploadOrders)){
-			System.out.println("上传订单保存成功");
+			logger.info("上传订单保存成功");
 			return true;
 		}else{
-			System.out.println("上传订单保存失败");
+			logger.info("上传订单保存失败");
 			return false;
 		}
 	}
@@ -70,7 +74,7 @@ public class UploadManager {
 				conn.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				System.out.println("roll back失败!");
+				logger.info("roll back失败!");
 			}
 		} finally {
 			DB.close(pstmt);
@@ -113,7 +117,7 @@ public class UploadManager {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				System.out.println("roll back失败!");
+				logger.info("roll back失败!");
 				e1.printStackTrace();
 			}
 		} finally {
@@ -298,6 +302,7 @@ public class UploadManager {
 		String sql = "select * from uploadsalarymodel where ( status = 0 and starttime >= " + fmt.format(startDate)  + " and endtime <= " + fmt.format(endDate) + " ) " +
 				"or ( status = 0 and starttime < " + fmt.format(endDate)  + " and endtime > " + fmt.format(endDate) + " ) " +
 						"or ( status = 0 and starttime < " + fmt.format(startDate)  + " and endtime > " + fmt.format(startDate) + " ) ";
+		System.out.print("sql");
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
