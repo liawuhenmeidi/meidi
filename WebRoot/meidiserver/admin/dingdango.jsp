@@ -89,24 +89,7 @@ $(function () {
 	    }
 		}); 
 	
-	$("select[id='numb'] option[value='"+num+"']").attr("selected","selected");
 	
-	 $("#page").blur(function(){
-		 pages = $("#page").val();
-		 window.location.href="dingdango.jsp?pages="+pages+"&munb="+num;
-	 });
-	 
-	 $("#numb").change(function(){
-		 num = ($("#numb").children('option:selected').val());
-		// alert(num);
-		 window.location.href="dingdango.jsp?pages="+pages+"&munb="+num;
-	 });
-	 
-	 $("#sort").change(function(){
-		 sort = ($("#sort").children('option:selected').val());
-		// alert(num);  
-		 window.location.href="dingdango.jsp?page="+pages+"&numb="+num+"&sort="+sort;
-	 }); 
 });
 
 function serch(){
@@ -192,6 +175,7 @@ function adddetail(src){
   </jsp:include>
   
 <jsp:include flush="true" page="page.jsp">
+    <jsp:param name="searched" value="<%=searched %>" /> 
 	<jsp:param name="page" value="<%=pageNum %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  

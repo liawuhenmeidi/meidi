@@ -1,35 +1,27 @@
 <%@ page language="java"  import="java.util.*,utill.*,order.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
-String message = "";  
+int type = Integer.valueOf(request.getParameter("type"));
+String message = "";
+String href = request.getParameter("href");
 int count = 0 ;
 
-String pageNum = request.getParameter("page");
-int type = Integer.valueOf(request.getParameter("type"));
-String href = request.getParameter("href");
-//String sear = (String)session.getAttribute("sear");
-String numb = (String)session.getAttribute("numb"); 
-String sort = (String)session.getAttribute("sort");
-  
 if(request.getParameter("count") != null && !"".equals(request.getParameter("count"))){
 	count = Integer.valueOf(request.getParameter("count"));
 } 
-   
 
-if(StringUtill.isNull(pageNum)){
-	pageNum = "1";  
-}
-if(StringUtill.isNull(numb)){
-	numb = "100";
-}
+String pageNum = request.getParameter("page");
+String numb = request.getParameter("numb");  
+String sort = request.getParameter("sort");  
+String sear = request.getParameter("sear");
 
-if(StringUtill.isNull(sort)){
-	sort = "id";  
-}
+//System.out.println("page"+sear);
 
 int Page = Integer.valueOf(pageNum);
 int num = Integer.valueOf(numb);
  
+
+
 if(Order.orderDispatching == type){
 	message = "文员派工页";
 }else if(Order.charge == type){
@@ -78,19 +70,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 <script type="text/javascript">
 
-var id = "";
-var pages = "<%=Page%>";   
 var num = "<%=num%>";
-var search = new Array();
-var href = "<%=href %>";
 var sort = "<%=sort%>" ;
+var href = "<%=href%>";
+var page = "<%=pageNum%>";
+var sear = "<%=sear%>";
 
-$(function () {
-	 $("select[id='numb'] option[value='"+num+"']").attr("selected","selected");
-	 $("select[id='sort'] option[value='"+sort+"']").attr("selected","selected");
+$(function () { 
+	
+	$("select[id='numb'] option[value='"+num+"']").attr("selected","selected");
+	$("select[id='sort'] option[value='"+sort+"']").attr("selected","selected");
+	
+	$("#page").blur(function(){
+		 page = $("#page").val();
+		
+		 window.location.href=href+"?page="+page+"&numb="+num+"&sort="+sort+"&sear="+sear;
+	 });
 
- 
+	 $("#numb").change(function(){
+		 num = ($("#numb").children('option:selected').val());
+		// alert(num);
+		 window.location.href=href+"?page="+page+"&numb="+num+"&sort="+sort+"&sear="+sear;
+	 }); 
+	   
+	 $("#sort").change(function(){
+		 sort = ($("#sort").children('option:selected').val()); 
+		 window.location.href=href+"?page="+page+"&numb="+num+"&sort="+sort+"&sear="+sear;
+	 }); 
 }); 
+
+
 
 </script>
 
@@ -104,21 +113,22 @@ $(function () {
    <div class="btn">
     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;行数
      	<select class = "category" name="category"  id="numb">
-     	 <option value="100">100</option> 
-     	 <option value="200">200</option>
-     	 <option value="500">500</option>
-     	 <option value="1000">1000</option>
+     	 <option value="10">10</option> 
+     	 <option value="20">20</option>
+     	 <option value="50">50</option>
+     	 <option value="100">100</option>
+     	 <option value="-1">所有</option>
      	</select>     
-  &nbsp; &nbsp; &nbsp; &nbsp; 
-   
-     <a href="<%=href %>?page=1&numb=<%=num %>">首页</a>    
-     <a href="<%=href %>?page=<%=Page-1%>">上一页</a>
-     <a href="<%=href %>?page=<%=Page+1%>">下一页</a>
-     <a href="<%=href %>?page=<%=count/num+1%>">尾页</a>   
+  &nbsp; &nbsp; &nbsp; &nbsp;  
+    
+     <a href="<%=href %>?page=1&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">首页</a>     
+     <a href="<%=href %>?page=<%=Page-1%>&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">上一页</a>
+     <a href="<%=href %>?page=<%=Page+1%>&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">下一页</a>
+     <a href="<%=href %>?page=<%=count/num+1%>&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">尾页</a>   
        &nbsp; &nbsp; &nbsp; &nbsp; 
    
       第    
-     <input type="text" size="5" name="username" value="<%=Page%>"id ="page"/>    
+     <input type="text" size="5" name="username" value="<%=Page%>"  id="page"/>    
         页
         
     共
@@ -126,13 +136,13 @@ $(function () {
     
    条记录  
 &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
-        按 
+     按 
        <select class ="" name=""  id="sort" >  
        <option value="andate asc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
      	 <option value="andate asc">安装日期</option> 
      	 <option value="saledate asc">开票日期 </option>  
      	</select>
-        排序 <br />   
+        排序 <br />      
    <br/>         
 </div>
 

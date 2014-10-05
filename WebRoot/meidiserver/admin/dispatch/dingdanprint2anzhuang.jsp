@@ -93,31 +93,7 @@ $(function () {
 	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
 	    }
 		});   
-	$("select[id='numb'] option[value='"+num+"']").attr("selected","selected");
 	
-	 $("#page").blur(function(){ 
-		 pages = $("#page").val();
-		 window.location.href="dingdanprint2anzhuang.jsp?pages="+pages+"&numb="+num;
-	 });
-	 
-	// $("#search").blur(function(){
-	 	
-		// var search = $("#search").val();
-		// var serchProperty = $("#serchProperty").val();
-		 
-		// window.location.href="dingdan.jsp?search="+search+"&serchProperty="+serchProperty;
-	// });
-	 $("#numb").change(function(){
-		 num = ($("#numb").children('option:selected').val());
-		// alert(num);
-		 window.location.href="dingdanprint2anzhuang.jsp?pages="+pages+"&numb="+num;
-	 }); 
-	 
-	 $("#sort").change(function(){
-		 sort = ($("#sort").children('option:selected').val());
-		// alert(num);  
-		 window.location.href="dingdanprint2anzhuang.jsp?page="+pages+"&numb="+num+"&sort="+sort;
-	 }); 
 });
 function func(str){
     $(id).css("display","none");
@@ -209,6 +185,7 @@ function adddetail(src){
   </jsp:include>
   
 <jsp:include flush="true" page="../page.jsp">
+    <jsp:param name="searched" value="<%=searched %>" /> 
 	<jsp:param name="page" value="<%=pageNum %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  

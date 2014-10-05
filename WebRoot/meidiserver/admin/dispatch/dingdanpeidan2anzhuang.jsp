@@ -96,24 +96,7 @@ $(function () {
 	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
 	    }
 		}); 
-	$("select[id='numb'] option[value='"+num+"']").attr("selected","selected");
 	
-	 $("#page").blur(function(){
-		 pages = $("#page").val();
-		 window.location.href="dingdanpeidan2anzhuang.jsp?pages="+pages+"&numb="+num;
-	 });
-	 
-	 $("#numb").change(function(){
-		 num = ($("#numb").children('option:selected').val());
-		// alert(num);
-		 window.location.href="dingdanpeidan2anzhuang.jsp?pages="+pages+"&numb="+num;
-	 });  
-	 
-	 $("#sort").change(function(){
-		 sort = ($("#sort").children('option:selected').val());
-		// alert(num);  
-		 window.location.href="dingdanpeidan2anzhuang.jsp?page="+pages+"&numb="+num+"&sort="+sort;
-	 }); 
 });
 
 function func(str){
@@ -288,7 +271,8 @@ function adddetail(src){
   <jsp:param name="dmsn" value="" />
   </jsp:include>
    
-<jsp:include flush="true" page="../page.jsp">  
+<jsp:include flush="true" page="../page.jsp"> 
+    <jsp:param name="searched" value="<%=searched %>" />  
 	<jsp:param name="page" value="<%=pageNum %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  

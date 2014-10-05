@@ -88,17 +88,7 @@ td{
 
 <script type="text/javascript">
 
-$(function () {
-	
-	 $("#numb").change(function(){
-		 num = ($("#numb").children('option:selected').val());
-		 window.location.href="dingdanprintln.jsp?page="+pages+"&numb="+num; 
-	 }); 
-	  
-	 $("#sort").change(function(){
-		 sort = ($("#sort").children('option:selected').val());
-		 window.location.href="dingdanprintln.jsp?sort="+sort;   
-	 }); 
+$(function () { 
 	 
 	$("#wrap").bind("scroll", function(){ 
 		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
@@ -294,9 +284,10 @@ function orderPrint(id,statues,type,deliveryStatues){
  <jsp:include flush="true" page="head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>
-    
+     
 <jsp:include flush="true" page="page.jsp">
     <jsp:param name="href" value="dingdanprintln.jsp" />
+    <jsp:param name="sear" value="<%=sear %>" /> 
 	<jsp:param name="page" value="<%=pageNum %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" /> 

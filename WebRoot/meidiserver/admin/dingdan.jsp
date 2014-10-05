@@ -6,7 +6,8 @@ request.setCharacterEncoding("utf-8");
 
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
 
-session.setAttribute("exportList", list); 
+session.setAttribute("exportList", list);
+
 count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);    
    
 HashMap<Integer,User> usermap = UserManager.getMap();
@@ -319,10 +320,11 @@ function adddetail(src){
 <div style="position:fixed;width:70%;height:200px;">
   
   <jsp:include flush="true" page="head.jsp">
-  <jsp:param name="dmsn" value="" />
+  <jsp:param name="" value="" />
   </jsp:include> 
       
 <jsp:include flush="true" page="page.jsp">
+    <jsp:param name="sear" value="<%=sear %>" /> 
 	<jsp:param name="page" value="<%=pageNum %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  
@@ -331,9 +333,12 @@ function adddetail(src){
 </jsp:include> 
 
 
-<jsp:include page="search.jsp"/>
-
-
+<jsp:include page="search.jsp">
+ <jsp:param name="page" value="<%=pageNum %>" />
+	<jsp:param name="numb" value="<%=numb %>" />
+	<jsp:param name="sort" value="<%=sort %>" />  
+	<jsp:param name="count" value="<%=count %>"/> 
+</jsp:include> 
 </div >
  
 <div id="headremind">

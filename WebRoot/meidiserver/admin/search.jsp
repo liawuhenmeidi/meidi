@@ -2,101 +2,11 @@
 
 <%    
 request.setCharacterEncoding("utf-8");
-int count = 0 ;  
- 
+
 String pageNum = request.getParameter("page");
 String numb = request.getParameter("numb");  
-String sort = request.getParameter("sort");
-
-String sear = (String)session.getAttribute("sear");
-
-if(StringUtill.isNull(sear)){ 
-	sear = ""; 
-}
-
-if(!StringUtill.isNull(sort)){
-	session.setAttribute("sort", sort);
-}else {
-	sort = "id desc";   
-} 
-
-if(!StringUtill.isNull(numb)){
-	session.setAttribute("numb", numb);
-}else{
-	numb = "100";
-}
-
-
-if(StringUtill.isNull(pageNum)){
-	pageNum = "1"; 
-} 
-
-int Page = Integer.valueOf(pageNum);
-
-int num = Integer.valueOf(numb);
-
-if(Page <=0){ 
-	Page =1 ;
-}
-
+String sort = request.getParameter("sort");  
 String searched = request.getParameter("searched");
-
-if("searched".equals(searched)){
-	
-	String[] search = request.getParameterValues("search");
-	if(search != null){ 
-		for(int i = 0 ;i<search.length;i++){
-			String str = search[i];
-			
-			boolean fflag = false ;  
-			if("saledate".equals(str) || "andate".equals(str) || "dealsendTime".equals(str)){
-				String start = request.getParameter(str+"start");
-				String end = request.getParameter(str+"end");
-				boolean flag = false ; 
-				if(start != null && start != "" && start != "null"){
-					sear += " and " + str + "  BETWEEN '" + start + "'  and  ";
-				    flag = true ;
-				}   
-				if(end != null && end != "" && end != "null"){
-					sear += " '" + end + "'";
-				}else if(flag){ 
-					sear += "now()";
-				}      
-			}else if("sendtype".equals(str) || "saletype".equals(str)){
-				String strr = request.getParameter(str); 
-				if(strr != "" && strr != null){   
-					//sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-					sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-				}  // giftName
-			}else if("categoryname".equals(str)){
-				String strr = request.getParameter(str); 
-				if(strr != "" && strr != null){    
-					//sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-					sear += " and id in ( select orderid  from mdorderproduct where categoryID in (select id  from mdcategory where " + str + " like '%" + strr +"%'))";
-				}  // giftName
-			}else if("giftName".equals(str) || "statues".equals(str)){ 
-				String strr = request.getParameter(str);  
-				if(strr != "" && strr != null){    
-					sear += " and id in (select orderid  from mdordergift where " + str + " like '%" + strr +"%')"; 
-				}  // giftName
-			}else if("dealSendid".equals(str) || "saleID".equals(str) || "sendId".equals(str) || "installid".equals(str)){
-				String strr = request.getParameter(str);
-				if(strr != "" && strr != null){  
-				  sear += " and " + str + " in (select id from mduser  where username like '%" + strr +"%')"; 
-				}
-			}else {     
-				String strr = request.getParameter(str);
-				if(strr != "" && strr != null){
-				  sear += " and " + str + " like '%" + strr +"%'"; 
-				}  
-			}
-		} 	
-	}else { 
-		sear = "";
-	} 
-	
-	session.setAttribute("sear", sear); 
-}    
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -118,14 +28,8 @@ if("searched".equals(searched)){
 <!--   头部开始   --> 
 
 
-<script type="text/javascript">
-var id = "";
-var pages = "<%=Page%>";     
-var num = "<%=num%>";
- 
-$(function () { 
-
-}); 
+<script type="text/javascript"> 
+  var search = new Array();
   
 function add(){
 	  var name = ($("#serch").children('option:selected').attr("value"));
@@ -165,6 +69,9 @@ function add(){
  
 <form action="">  
  <input type="hidden" name="searched" value="searched"/>
+ <input type="hidden" name="page" value="<%=pageNum%>"/>
+ <input type="hidden" name="numb" value="<%=numb%>"/>
+ <input type="hidden" name="sort" value="<%=sort%>"/>
 <div id="search">      
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <select id="serch" name="serch"> 
