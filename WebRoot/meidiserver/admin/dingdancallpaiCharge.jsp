@@ -293,7 +293,7 @@ function seletall(all){
    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
 		<td align="left" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>
 		<td align="left"><%=o.getPrintlnid() == null?"":o.getPrintlnid()%></td>
-		<td align="left"><%=o.getBranch()%></td>
+		<td align="left"><%=o.getbranchName(o.getBranch())%></td>
 		<td align="left"><%=o.getPos() %></td>
 		<td align="left"><%=o.getSailId() %></td>
 		<td align="left"><%=o.getCheck() %></td>

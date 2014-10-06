@@ -7,7 +7,9 @@ public class InventoryBranch {
       
   private String type ;   
    
-  private int realcount ;  
+  private String typeid ;
+
+private int realcount ;  
   
   private int papercount;
 	public int getId() {
@@ -16,6 +18,14 @@ public class InventoryBranch {
 	
 public void setId(int id) {
 	this.id = id;
+}
+
+public String getTypeid() {
+	return typeid;
+}
+
+public void setTypeid(String typeid) {
+	this.typeid = typeid;
 }
 
 public int getInventoryid() {  

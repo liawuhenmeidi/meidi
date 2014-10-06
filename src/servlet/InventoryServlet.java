@@ -1,23 +1,15 @@
 package servlet;
 
-import gift.Gift;
-import group.Group;
-import group.GroupManager;
-
 import inventory.Inventory;
 import inventory.InventoryBranchManager;
 import inventory.InventoryManager;
 import inventory.InventoryMessage;
-import inventory.InventoryMessageManager;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList; 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -30,23 +22,15 @@ import org.apache.commons.logging.LogFactory;
 
 import branch.BranchManager;
 
-import category.Category;
-import category.CategoryManager;
 import database.DB;
 
-
-import order.Order;
-import order.OrderManager;
-import orderPrint.OrderPrintln;
-import orderPrint.OrderPrintlnManager;
-import orderproduct.OrderProduct;
+import product.Product;
 import product.ProductManager;
+import product.ProductService;
 
 import user.User;
-import user.UserManager;
 import utill.StringUtill;
 import utill.TimeUtill;
-import utill.TokenGen;
 
 
  
@@ -95,7 +79,7 @@ public class InventoryServlet extends HttpServlet {
 		}else if(method.equals("inbranch")){ 
 			sql = "update inventory set instatues = 1 where id = "+ id ;
 		}
-		  
+		   
 		sqls.add(sql); 
 		
 		if(flag){ 
@@ -181,11 +165,12 @@ public class InventoryServlet extends HttpServlet {
 		for(int i=0;i<producs.length;i++){      
 			InventoryMessage inven = new InventoryMessage();  
 			String type = request.getParameter("orderproductType"+producs[i]);
-			int categoryId = ProductManager.getProductbyname(type).getCategoryID();
+			Product p = ProductService.gettypemap().get(type);
+			int categoryId = p.getCategoryID();
+			type = p.getId()+""; 
 			String count = request.getParameter("orderproductNum"+producs[i]);
 			inven.setProductId(type);   
-			inven.setCategoryId(categoryId);
-			//inven.setInventoryId(Integer.valueOf(id));   
+			inven.setCategoryId(categoryId);  
 			inven.setCount(Integer.valueOf(count));   
 			inventoryMessage.add(inven); 			
 		}

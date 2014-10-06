@@ -240,7 +240,7 @@ function change(str1,str2){
            });
 
 }
-
+ 
 function changes(str1){
 	$.ajax({ 
         type: "post", 

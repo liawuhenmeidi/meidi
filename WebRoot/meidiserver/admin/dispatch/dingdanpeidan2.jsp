@@ -74,10 +74,9 @@ td{
 <!--   头部开始   -->
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
-var id = "";
 var pages = "" ;
 var num = "";
-var oid ="<%=id%>";
+var uuid ="<%=id%>";
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";
 
@@ -170,7 +169,7 @@ function changes(oid,id,statues,flag,returnstatues,type){
 	
 }
  
-function change(str1,oid,type,statues){
+function change(str1,oid,type,statues,types){
 	
 	var uid = $("#"+str1).val();
 	
@@ -180,33 +179,47 @@ function change(str1,oid,type,statues){
 	}
 	if(0 == statues){   
 		alert("您已提交驳回申请，不能派工");
-	}else { 
-		question = confirm("您确定要配单并打印吗？");
-		if (question != "0"){
-			
-			$.ajax({   
-		        type: "post",     
-		         url: "../../user/server.jsp",
-		         data:"method=peidan&id="+oid+"&uid="+uid+"&type="+type,
-		         dataType: "",  
-		         success: function (data) { 
-		        	 if(data == 0){
-		        		 alert("导购提交修改申请，不能配工");
-		        		 return ; 
-		        	 }else if(data == 20){ 
-		        		 alert("导购提交退货申请，不能配工");
-		        		 return ; 
-		        	 }else {   
-		        		 window.location.href="../printPaigong.jsp?id="+oid+"&type="+type;
-		        	 }   
-		        	 
-		           },  
-		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-		        // alert(errorThrown); 
-		            } 
-		           });
-	}
-	
+	}else {  
+		$.ajax({ 
+	        type: "post",  
+	         url: "../server.jsp",    
+	         data:"method=getinventory&types="+types+"&uid="+uuid,
+	         dataType: "",  
+	         success: function (data) {  
+	        	    inventory = data;
+	        	    data = data.replace(/{/g, "");
+	        	    data = data.replace(/}/g, "");
+	        	    data = data.replace(/,/g, "\n"); 
+				     question = confirm("您确定要配单并打印吗？\n"+data);
+				     if (question != "0"){
+								$.ajax({   
+							        type: "post",     
+							         url: "../../user/server.jsp",
+							         data:"method=peidan&id="+oid+"&uid="+id+"&type="+type,
+							         dataType: "",  
+							         success: function (data) { 
+							        	 if(data == 0){
+							        		 alert("导购提交修改申请，不能配工");
+							        		 return ; 
+							        	 }else if(data == 20){ 
+							        		 alert("导购提交退货申请，不能配工");
+							        		 return ; 
+							        	 }else {   
+							        		 window.location.href="../printPaigong.jsp?id="+oid+"&type="+type;
+							        	 }   
+							        	 
+							           },  
+							         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+							        // alert(errorThrown); 
+							            } 
+							           });
+				        			
+			           } 
+	         },  
+	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	        // alert(errorThrown); 
+	            } 
+	           });
 	}
 }
 
@@ -347,9 +360,9 @@ function adddetail(src){
     <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
 		<!--  <td align="center"><input type="checkbox" value="1" name="userid[]"/></td> -->
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('../dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getBranch()%></td>  
+		<td align="center"><%=o.getbranchName(o.getBranch())%></td>  
 		
-		<% 
+		<%  
 		String tdcol = " bgcolor=\"red\"" ;
 		if(o.getPhoneRemark()!=1){
 			tdcol = "";
@@ -406,9 +419,9 @@ function adddetail(src){
 		<td align="center">
 		<%    
 
-		int releasemodfy = OrderPrintlnManager.statues(opmap, OrderPrintln.releasemodfy, o.getId()) ;	
-		int release = OrderPrintlnManager.statues(opmap, OrderPrintln.release, o.getId()) ;
-	    int releasedispatch = OrderPrintlnManager.statues(opmap, OrderPrintln.releasedispatch, o.getId()) ;
+		int releasemodfy = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasemodfy, o.getId()) ;	
+		int release = OrderPrintlnManager.getstatues(opmap, OrderPrintln.release, o.getId()) ;
+	    int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId()) ;
 		int statuesnew = Order.orderpeisong; 
 		   
 		if(o.getSendId() == 0 ){
@@ -439,8 +452,8 @@ function adddetail(src){
 	                	%>
          </select>   
            
-         <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','<%=statuesnew %>',<%=release %>)"  value="确定"/>
-		<% }
+         <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','<%=statuesnew %>',<%=release %>,'<%=o.getSendType(0,"</p>")%>')"  value="确定"/>
+		<% } 
 		} else {
 			
 		    if(usermap.get(Integer.valueOf(o.getSendId())) != null){
@@ -469,7 +482,7 @@ function adddetail(src){
 		     
 		    <input type="submit" class="button" name="dosubmit" value="驳回订单" onclick="winconfirm('<%=o.getId()%>','<%= release %>','<%=o.getSendId()%>')"></input>
 		  <% } %>
-		</td>
+		</td> 
 		 
 		<td align="center">     
 		    <%
@@ -557,7 +570,7 @@ function adddetail(src){
 	                	%>
          </select>   
         
-         <input type="button" onclick="change('return<%=o.getId()%>','<%=o.getId()%>','<%=Order.orderreturn%>')"  value="确定"/>
+         <input type="button" onclick="change('return<%=o.getId()%>','<%=o.getId()%>','<%=Order.orderreturn%>','')"  value="确定"/>
 		<%} else { 
 		// 0 表示未送货  1 表示正在送  2 送货成功
 		 if(0 == o.getReturnstatuse()){

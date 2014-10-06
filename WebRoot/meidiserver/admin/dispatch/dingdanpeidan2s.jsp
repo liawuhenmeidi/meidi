@@ -231,7 +231,7 @@ function orderPrint(id,statues){
 	<jsp:param name="sort" value="<%=sort %>" />  
 	<jsp:param name="count" value="<%=count %>"/> 
 	<jsp:param name="type" value="<%=Order.pserach%>"/> 
-</jsp:include> 
+</jsp:include>  
 <jsp:include page="../search.jsp"/>
  
 </div>

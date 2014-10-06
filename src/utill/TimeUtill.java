@@ -1,8 +1,11 @@
 package utill;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import order.OrderManager;
 
@@ -52,7 +55,23 @@ public class TimeUtill {
     	Date date = new Date();  
     	return date.getDate() ;   
     } 
-      
+       
+    public static String  dataAdd(String data,int count){    
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String putdate =  ""; 
+        try {   
+            Date date = sdf.parse(data);   
+            Calendar   calendar   =   new   GregorianCalendar();   
+            calendar.setTime(date);   
+            calendar.add(calendar.DATE,count);//把日期往后增加一天.整数往后推,负数往前移动   
+            date=calendar.getTime();   //这个时间就是日期往后推一天的结果   
+            String putDate = sdf.format(date); //增加一天后的日期    
+        } catch (ParseException e) {  
+            e.printStackTrace();   
+        } 
+        return putdate; 
+    }
+    
     public static boolean getLongtime(String time){
     	long days = 100; 
     	boolean flag = false ;

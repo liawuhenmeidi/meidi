@@ -460,7 +460,7 @@ function orderPrint(id,statues){
 		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
 		</td>
 		
-		<td align="center"><%=o.getBranch()%></td>
+		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
 
 		<td align="center" ><%=o.getCheck() %></td>
 		<td align="center"> 		  

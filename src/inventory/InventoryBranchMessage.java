@@ -19,7 +19,15 @@ public class InventoryBranchMessage {
   
   private int papercount ;  //  虚拟库存
   
- 
+ private String typeid ;  
+
+public String getTypeid() {
+	return typeid;
+}
+
+public void setTypeid(String typeid) {
+	this.typeid = typeid;
+}
 
 public int getRealcount() {
 	return realcount;

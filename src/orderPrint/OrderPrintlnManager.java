@@ -205,18 +205,19 @@ logger.info(pstmt);
 			return map;
 	 }   
 	   
-	   public static int statues(Map<Integer,Map<Integer,OrderPrintln>> opmap,int type ,int orderid){
-		   int statues = -1 ;
-		   if(opmap.get(OrderPrintln.modify) != null){
+	   
+	   public static int getstatues(Map<Integer,Map<Integer,OrderPrintln>> opmap,int type ,int orderid){
+		   int statues = -1 ;  
+		   if(opmap.get(type) != null){
 				OrderPrintln op = opmap.get(type).get(orderid);
-				
 				 if(op != null){  
 					 statues = op.getStatues() ;
-					 }
-				 } 
+					 } 
+				 }  
 		   
 		   return statues ;
 	   }
+	    
 	   public static  Map<Integer,Map<Integer,OrderPrintln>>  getOrderStatuesMap(User user){
 		   Map<Integer,Map<Integer,OrderPrintln>> maps = new HashMap<Integer,Map<Integer,OrderPrintln>>();
 		    Connection conn = DB.getConn();

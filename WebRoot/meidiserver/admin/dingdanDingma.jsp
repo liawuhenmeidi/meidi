@@ -305,7 +305,7 @@ function adddetail(src){
 		    <a href="javascript:void(0);" onclick="orderPrint('<%=o.getId()%>',1,'<%= Order.dingma%>')">[打印]</a>
 		</td>
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getBranch()%></td>
+		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
 		<td align="center"> 		  
 		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
 		</td> 

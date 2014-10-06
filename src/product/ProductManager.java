@@ -8,6 +8,8 @@ package product;
 import java.util.HashMap;
 	import java.util.List;
 
+import orderproduct.OrderProduct;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -95,10 +97,12 @@ logger.info(sql);
 			return categorys;
 		}
 		
+	
+		
 		public static HashMap<Integer,ArrayList<Product>> getProduct() {
 			HashMap<Integer,ArrayList<Product>> map = new HashMap<Integer,ArrayList<Product>>();
 			Connection conn = DB.getConn();
-			String sql = "select * from mdproduct ";
+			String sql = "select * from mdproduct where pstatues = 0";
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {
@@ -124,28 +128,39 @@ logger.info(sql);
 				DB.close(conn);
 			}
 			return map;
-		}
+		} 
 		
-		public static HashMap<Integer,ArrayList<Product>> getProduct(int statues) {
-			HashMap<Integer,ArrayList<Product>> map = new HashMap<Integer,ArrayList<Product>>();
-			Connection conn = DB.getConn();
+		public static HashMap<String,Product> getProductType() {  
+			HashMap<String,Product> map = new HashMap<String,Product>();
+			Connection conn = DB.getConn(); 
 			String sql = "select * from mdproduct where pstatues = 0";
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {
 				while (rs.next()) {
-					int categoryID = rs.getInt("categoryID");
-					ArrayList<Product> list = map.get(categoryID);
-					if(list == null){
-						list = new ArrayList<Product>();
-						map.put(categoryID, list);
-					}
-					Product p = new Product();
-					p.setId(rs.getInt("id"));
-					p.setCategoryID(categoryID);
-					p.setType(rs.getString("ptype"));
-					p.setName(rs.getString("name"));
-					list.add(p);
+					Product p = getOrderStatuesFromRs(rs);
+					map.put(p.getType(), p);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return map;
+		} 
+		
+		public static HashMap<Integer,Product> getProductID() {   
+			HashMap<Integer,Product> map = new HashMap<Integer,Product>();
+			Connection conn = DB.getConn();  
+			String sql = "select * from mdproduct";
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) { 
+					Product p = getOrderStatuesFromRs(rs);
+					map.put(p.getId(), p);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -275,6 +290,22 @@ logger.info(sql);
 		 
 		}
 		
+		
+		 public static Product getOrderStatuesFromRs(ResultSet rs){
+			 Product p = new Product();  
+				try { 
+					p.setId(rs.getInt("id"));  
+					p.setCategoryID(rs.getInt("categoryID"));
+					p.setType(rs.getString("ptype"));  
+					p.setName(rs.getString("name")); 
+					p.setStatues(rs.getInt("pstatues"));
+				} catch (SQLException e) { 
+					e.printStackTrace();
+				}
+				return p;
+		   }
+		  
+		 
  
 	}
 

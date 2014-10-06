@@ -8,11 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import branch.BranchManager;
+
 import category.Category;
 import category.CategoryManager;
 
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
+import product.ProductService;
 import user.User;
  
 public class Order {
@@ -100,7 +103,7 @@ public class Order {
   
   private String remark;
   
-  private String branch;
+  private int branch;
   
   private int dealsendId ;
   
@@ -439,16 +442,17 @@ public void setCategoryID(String categoryID) {
 }
 private String categoryID; // 对应的产品类别
   
-  public String getBranch() {
+  public int getBranch() {
 	return branch;
 }
 
-public void setBranch(String branch) {
-	this.branch = branch;
+public void setBranch(int branch) {
+	this.branch = branch; 
 }
 private List<OrderProduct> Orderproduct = null; 
   
   public List<OrderProduct> getOrderproduct() {
+	  
 	  if(Orderproduct == null){
 		  if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
 				OrderProductManager.resetOrPMap();
@@ -730,10 +734,12 @@ public String getSendType(){
 		for(int g = 0 ;g<lists.size();g++){
 				if(lists.get(g).getStatues() == 1){        
 					String tempType = lists.get(g).getSaleType();   
+					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
 					sendType += ((tempType == null || tempType.equals("null"))?"":tempType) +"|" ;
 					return sendType;
 				}else{
 					String tempType = lists.get(g).getSendType(); 
+					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
 					sendType += ((tempType == null || tempType.equals("null"))?"":tempType) +"|"  ;
 				}
 				   
@@ -748,15 +754,18 @@ public String getSendType(int statues,String decollator){
 	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
 		OrderProductManager.resetOrPMap();
 	}
+	
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	if(lists != null){
 		for(int g = 0 ;g<lists.size();g++){
 			if(lists.get(g).getStatues() == statues){   
 				if(statues == 1){          
-					String tempType = lists.get(g).getSaleType();   
+					String tempType = lists.get(g).getSaleType(); 
+					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
 					sendType += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);
 				}else {
 					String tempType = lists.get(g).getSendType(); 
+					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
 					sendType += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);
 				   }
 				}
@@ -787,6 +796,10 @@ public String getSendCount(){
 	return sendCount;
 }
  
+public String getbranchName(int branchid){
+	return OrderService.getBranchName(branchid);
+}
+
 public String getSendCount(int statues,String decollator){
 	String sendCount = "";
 	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){

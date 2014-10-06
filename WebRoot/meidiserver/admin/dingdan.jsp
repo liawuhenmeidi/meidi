@@ -73,8 +73,6 @@ td {
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 var id = "";
-var pages = "<%=Page%>";   
-var num = "<%=num%>"; 
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>"; 
 var inventory = "";
@@ -112,7 +110,7 @@ function getinventory(uid,types){
             } 
            });  
 }     
-     
+      
 function changepeidan(str1,oid,deliveryStatues,types){
 	var uid = $("#"+str1).val();
 	
@@ -383,9 +381,9 @@ function adddetail(src){
     <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)">   
 		<!--  <td align="center"><input type="checkbox" value="1" name="userid[]"/></td> -->
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getBranch()%></td> 
-		<td align="center">
-		   
+		<td align="center"><%=o.getbranchName(o.getBranch())%></td>  
+		<td align="center">  
+		     
                 		  
 		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
 		
@@ -426,8 +424,8 @@ function adddetail(src){
  
  
  
-		<td align="center">
-		 <%   
+		<td align="center"> 
+		 <%    
 		    int flag = OrderPrintlnManager.getstatues(opmap, OrderPrintln.modify, o.getId()) ;
 		    int flag2 = OrderPrintlnManager.getstatues(opmap, OrderPrintln.returns, o.getId());
 					  

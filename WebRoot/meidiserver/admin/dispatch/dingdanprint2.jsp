@@ -244,7 +244,7 @@ function adddetail(src){
     <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
 		<!--  <td align="center"><input type="checkbox" value="1" name="userid[]"/></td> -->
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('../dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getBranch()%></td>
+		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
 		<td align="center"> 		  
 		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
 		</td> 

@@ -1900,7 +1900,7 @@ logger.info(sql);
 			p.setSailId(rs.getString("sailId"));
 			p.setCheck(rs.getString("checked"));
 			p.setRemark(rs.getString("remark"));
-			p.setBranch(rs.getString("orderbranch"));
+			p.setBranch(rs.getInt("orderbranch")); 
 			p.setCategoryID(rs.getString("categoryID"));
 			p.setDealsendId(rs.getInt("dealSendid"));
 			p.setStatues1(rs.getInt("statues1"));

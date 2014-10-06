@@ -28,6 +28,8 @@ import order.OrderManager;
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
+import product.Product;
+import product.ProductService;
 
 import user.User;
 import user.UserManager;
@@ -161,6 +163,15 @@ logger.info(message);
 			              
 						String saleType = request.getParameter("dingmatype");
 				        
+						Product p = ProductService.gettypemap().get(saleType);
+						 
+						if(p != null){
+							saleType = p.getId()+""; 
+						}else {
+							request.getSession().setAttribute("message","对不起，您提交的型号被修改，请重新提交");  
+							response.sendRedirect("../jieguo.jsp?type=order");
+						}
+						
 						String dingmaproductNum = request.getParameter("dingmaproductNum");
 						
 						String categoryName = categorymap.get(Integer.valueOf(categoryId)).getName() ;
@@ -181,7 +192,17 @@ logger.info(message);
 						String categoryName = categorymap.get(Integer.valueOf(categoryId)).getName() ;
 						//String categoryname = CategoryManager.getCategoryMap()
 						String sendType = request.getParameter("ordertype"+producs[i]);
-				
+				         
+						Product p = ProductService.gettypemap().get(sendType);
+						   
+						if(p != null){ 
+							sendType = p.getId()+"";  
+						}else {
+							request.getSession().setAttribute("message","对不起，您提交的型号被修改，请重新提交");  
+							response.sendRedirect("../jieguo.jsp?type=order");
+						}
+						
+						
 						String productNum = request.getParameter("orderproductNum"+producs[i]);
 						// productsta
 						String salestatues = request.getParameter("productsta"+producs[i]); 

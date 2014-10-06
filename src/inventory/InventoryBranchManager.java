@@ -22,6 +22,7 @@ import order.OrderManager;
 
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
+import product.ProductService;
 
 import user.User;
 import user.UserManager;
@@ -101,21 +102,19 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 	}
 	
 	public static List<String> save(User user,Inventory inventory) {
-		
+		 
 	     List<String> sqls = new ArrayList<String>(); 
-	     Map<Integer,Branch> branchmap = BranchManager.getNameMap();
          int inbranchid = -1; 
          int outbranchid = -1; 
 
 		 String time = TimeUtill.gettime();
-		 if(branchmap != null){
-		   //Branch branchout = branchmap.get(inventory.getOutbranchid());
+
 	       outbranchid = inventory.getOutbranchid();
        
-	     //  Branch branchin = branchmap.get(inventory.getInbranchid());
+	   
 	       inbranchid = inventory.getInbranchid();
 	      
-	   }
+	 
       
 		  
 		 List<InventoryMessage> orders = inventory.getInventory() ;
@@ -483,7 +482,8 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			c.setRealcount(rs.getInt("realcount")); 
 			c.setPapercount(rs.getInt("papercount")); 
 			c.setInventoryid(rs.getInt("inventoryid"));
-			c.setType(rs.getString("type"));  
+			c.setTypeid(rs.getString("type"));    
+			c.setType(ProductService.getIDmap().get(Integer.valueOf(c.getTypeid())).getType());    
 		} catch (SQLException e) { 
 			e.printStackTrace();
 		}	

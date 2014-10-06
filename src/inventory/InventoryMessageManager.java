@@ -10,6 +10,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import product.ProductService;
+
 import user.User;
 import database.DB;
 
@@ -71,12 +73,12 @@ public class InventoryMessageManager {
 		InventoryMessage c = new InventoryMessage();
 		try {    
 			c.setId(rs.getInt("id")); 
-			c.setCount(rs.getInt("count")); 
+			c.setCount(rs.getInt("count"));  
 			c.setInventoryId(rs.getInt("inventoryId"));
 			c.setProductId(rs.getString("productId")); 
-			c.setCategoryId(rs.getInt("categoryId"));
-			
-		} catch (SQLException e) {
+			c.setCategoryId(rs.getInt("categoryId"));     
+			c.setProductname(ProductService.getIDmap().get(Integer.valueOf(c.getProductId())).getType()); 
+		} catch (SQLException e) { 
 			e.printStackTrace();
 		}	
 		return c ;

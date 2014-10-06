@@ -20,10 +20,10 @@ if("peidan".equals(method)){
 }else if("dingdaned".equals(method)){  
 	String id = request.getParameter("id"); 
 	String oid = request.getParameter("oid");
-	String statues = request.getParameter("statues");  
-	OrderPrintlnManager.updateOrderStatues(Integer.valueOf(id),Integer.valueOf(oid),user.getId(),Integer.valueOf(statues)); 
+	String statues = request.getParameter("statues");   
+	OrderPrintlnManager.updateOrderStatues(user,Integer.valueOf(id),Integer.valueOf(oid),user.getId(),Integer.valueOf(statues)); 
 }else if("huiyuan_add".equals(method)){ 
-	System.out.println("&&&&&");  
+	System.out.println("&&&&&");   
 	String categoryName = request.getParameter("huiyuanName");
 	boolean b = UserManager.getName(categoryName);
 	response.getWriter().write(""+b);

@@ -11,6 +11,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import product.ProductService;
+
 
 
 import user.User;
@@ -103,7 +105,8 @@ public static List<InventoryBranchMessage> getCategory(String type,String branch
 			c.setBranchid(rs.getInt("branchid"));
 			c.setCount(rs.getInt("count"));  
 			c.setInventoryid(rs.getInt("inventoryid"));
-			c.setType(rs.getString("type")); 
+			c.setTypeid(rs.getString("type")); 
+			c.setType(rs.getString(ProductService.getIDmap().get(Integer.valueOf(c.getType())).getType()));
 			c.setTime(rs.getString("time")); 
 			c.setOperatortype(rs.getInt("operatortype"));
 			c.setRealcount(rs.getInt("realcount"));

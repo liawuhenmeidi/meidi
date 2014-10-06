@@ -2,28 +2,20 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
-       
+String inventoryid = request.getParameter("id");
+
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
-
-List<Branch> listbranch = BranchManager.getLocate(); 
-
+List<Branch> listbranch = BranchService.getList();
+ 
 List<String> listbranchp = BranchManager.getLocateAll();  
 String listall = StringUtill.GetJson(listbranchp); 
-
-Map<String,List<Branch>> map = BranchManager.getLocateMapBranch();  
-    
-String mapjosn = StringUtill.GetJson(map);
- 
-HashMap<String,ArrayList<String>> listt = ProductManager.getProductName();
-
-String plist = StringUtill.GetJson(listt);
   
 List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
    
 Map<Integer,Branch> branchmap = BranchManager.getNameMap();
   
-String inventoryid = request.getParameter("id");
+
 Inventory inventory = new Inventory() ;
 String invent = ""; 
 Branch outbranch = new Branch();
@@ -40,7 +32,6 @@ if(!StringUtill.isNull(inventoryid)){
 		   outbranch = branchmap.get(inventory.getOutbranchid());
 		   inbranch = branchmap.get(inventory.getInbranchid());
 	   }
-
 	
 	remark = inventory.getRemark(); 
 	inittime = inventory.getIntime();  
@@ -74,30 +65,24 @@ td {
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/> 
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-
+ 
 <script type="text/javascript">
 var disable = '<%=isdisabel %>';
-
- var jsonmap = '<%=mapjosn%>'; 
- var availableTags = '<%=plist%>';
- var jsons =  $.parseJSON(availableTags);
- 
+  
  var listallp = '<%=listallpp%>';
 //alert(listallp);
  var jsonallp =  $.parseJSON(listallp); 
  
- var listall = '<%=listall%>';
+ var jsonall = <%=listall%>;
   
  //alert(listall);
- var jsonall =  $.parseJSON(listall);
+ //var jsonall =  $.parseJSON(listall);
  
  var row = 1; 
  var rows = new Array();
   
- var inventoyr = '<%=invent%>';
- //alert(inventoyr); 
- var jsoninvent =  $.parseJSON(inventoyr);
-  
+ //var jsoninvent =  $.parseJSON(inventoyr);
+ var jsoninvent =  <%=invent%>;
  var ctypes = new Array();  
  
  
@@ -138,7 +123,7 @@ var disable = '<%=isdisabel %>';
 			 rows.push(row);
 			 var str = '';   
 			 str += '<tr id="record'+row+'" class="asc">' +  
-			     ' <td>'+json.productId+'<input type="hidden" name="orderproductType'+row+'" value="'+json.productId+'"/><input type="hidden" name="product" value="'+row+'"/></td> ' +
+			     ' <td>'+json.productname+'<input type="hidden" name="orderproductType'+row+'" value="'+json.productId+'"/><input type="hidden" name="product" value="'+row+'"/></td> ' +
 			     ' <td><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'" value="'+json.count+'" style="width:50%" '+disable+'/></td> ' +
 			     ' <td><input type="button" value="删除" onclick="delet(record'+row+','+row+')" '+disable+'/></td> ' +  
 			     ' </tr>';  
@@ -148,21 +133,7 @@ var disable = '<%=isdisabel %>';
 		 }
 	 }
  }
- //function initproductSerch(str,str2){ 
-	 //   cid = $(str).val();
-	   
-		//$(str2).autocomplete({ 
-		//	 source: jsons[cid]
-		//    }); 
-		//$(str).change(function(){
-		//	$(str2).val("");
-		//	cid = $(str).val(); 
-		//	$(str2).autocomplete({
-		//		 source: jsons[cid]
-		//	    }); 
-		//	}) ; 
-   // } 
- 
+
  function add(){
 	 var ctype = $("#ordertype0").val();
 	 if(ctype == ""){
@@ -241,13 +212,13 @@ var disable = '<%=isdisabel %>';
      <li><a href="javascript:history.go(-1);">返回</a></li>
       <%  
       //System.out.println("aa"+user.getBranch()+inventory.getOutstatues()+UserManager.checkPermissions(user, Group.inventoryquery));
-      if(user.getBranch().equals(outbranch.getLocateName()) && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || outbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend) ){ 
-      %>   
+      if(user.getBranch().equals(outbranch.getId()+"") && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || outbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend) ){ 
+      %>    
       <li><a href="InventoryServlet?method=outbranch&id=<%=inventory.getId() %>">出库方确认</a></li>
       <%
       }  
       %>
-     <% if(user.getBranch().equals(inbranch.getLocateName()) && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || inbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend)){ 
+     <% if(user.getBranch().equals(inbranch.getId()+"") && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || inbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend)){ 
       %>   
       <li><a href="InventoryServlet?method=inbranch&id=<%=inventory.getId() %>">入库方确认</a></li>
       <% 
@@ -267,7 +238,7 @@ var disable = '<%=isdisabel %>';
       <input type="hidden" name="method" value="add"/>  
       <input type="hidden" name="id" value="<%=inventoryid %>"/>
                      
-  <div  > 
+  <div > 
    <center><div id="branchmessage"><font style="color:red;font-size:20px;" >调拨单</font></div></center>
    <br/>
                  出库单位：  

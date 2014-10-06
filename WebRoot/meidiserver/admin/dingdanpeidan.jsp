@@ -193,8 +193,8 @@ function orderPrint(id,statues){
    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
 		 
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getBranch()%></td>
-		  
+		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
+		   
 		 <td align="center"><%= o.getCategory(0,"</p>")%></td>  
 
 		<td align="center"><%=o.getOdate() %></td>

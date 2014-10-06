@@ -297,11 +297,11 @@ function seletall(all){
    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
 		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('../dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getBranch()%></td>
+		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
 		<%  
 		String tdcol = " bgcolor=\"red\"" ;
 		if(o.getPhoneRemark()!=1){
-			tdcol = "";
+			tdcol = ""; 
 		}
 		  %>   
 		<td align="center"><%=o.getUsername()  +"</p>"+

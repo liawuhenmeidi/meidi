@@ -7,6 +7,7 @@ public class OrderProduct {
     private String sendType;
   
 	private String saleType;
+	
     private  int orderid ;
     private  int count ;
     private int statues ;    // 1 顶码   0 非顶码

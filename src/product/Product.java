@@ -1,8 +1,9 @@
 package product;
 
 public class Product {
-	public static int sale = 0;
-	public static int unsale = 1;
+  public static int sale = 0;
+   public static int unsale = 1;
+   
    private int id ;
    private String type ; // 型号
    private String name ;

@@ -1,11 +1,21 @@
 package inventory;
 
+import product.ProductService;
+
 public class InventoryMessage {
   private int id ; 
   private int categoryId; 
   private String  productId ; 
-    
-  private int count ;   	  
+  
+  private String  productname;
+  
+public String getProductname() {
+	return productname;
+}
+public void setProductname(String productname) {
+	this.productname = productname;
+}
+private int count ;   	  
   private int inventoryId; // 订单信息所属单据号
    
   public String getProductId() {

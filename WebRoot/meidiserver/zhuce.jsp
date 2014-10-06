@@ -20,8 +20,10 @@ String mapgg = StringUtill.GetJson(mapg);
  
 List<BranchType> listb = BranchTypeManager.getLocate();
 
-Map<String,List<String>> map = BranchManager.getLocateMap();  
+//Map<String,List<String>> map = BranchManager.getLocateMap();  
     
+Map<String,List<Branch>> map = BranchManager.getLocateMapBranch(); 
+ 
 String mapjosn = StringUtill.GetJson(map);
 //List<User> listu = UserManager.getUsersregist(Group.Charge); 
 
@@ -138,7 +140,7 @@ $(function () {
 	          var options = '<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>'; 
 	          for(var i=0; i<json.length; i++) 
 	        	 {
-	        	 options +=  "<option value='"+json[i]+"'>"+json[i]+"</option>";
+	        	 options +=  "<option value='"+json[i].id+"'>"+json[i].locateName+"</option>";
 	        	 }
 	        	 $("#branch").html(options);    	  
 		  }); 

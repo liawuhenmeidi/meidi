@@ -309,7 +309,7 @@ function adddetail(src){
    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
 		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>
 		<td align="center"><%=o.getPrintlnid() == null?"":o.getPrintlnid()%></td>
-		<td align="center"><%=o.getBranch()%></td>
+		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
 		<td align="center">
 		    
                 		  

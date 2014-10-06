@@ -356,24 +356,25 @@ if("peidan".equals(method)){
 }else if("getinventory".equals(method)){ 
 	String types = request.getParameter("types"); 
 	String uid = request.getParameter("uid"); 
-	System.out.println(types); 
 	Map<String,String> map = new HashMap<String,String>(); 
-	User u = UserManager.getUesrByID(uid); 
-	List<InventoryBranch> list = InventoryBranchManager.getCategory(u.getBranch(), "");  
-	String[] type = types.split("</p>");
-	System.out.println(type.length); 
-	for(int i = 0 ; i<type.length;i++){
-		if(!StringUtill.isNull(type[i])){ 
-			map.put(type[i], "实际库存："+0+"  账面库存:"+0);
-			for(int j=0;j<list.size();j++){
-				InventoryBranch inb = list.get(j);
-				System.out.println("type[i]"+type[i]);
-				if(inb.getType().equals(type[i])){
-					map.put(type[i], "实际库存："+inb.getRealcount()+"  账面库存:"+inb.getPapercount());
-				} 
+	if(!StringUtill.isNull(types) && !StringUtill.isNull(uid)){
+		User u = UserManager.getUesrByID(uid); 
+		List<InventoryBranch> list = InventoryBranchManager.getCategory(u.getBranch(), "");  
+		String[] type = types.split("</p>");
+		System.out.println(type.length); 
+		for(int i = 0 ; i<type.length;i++){
+			if(!StringUtill.isNull(type[i])){ 
+				map.put(type[i], "实际库存："+0+"  账面库存:"+0);
+				for(int j=0;j<list.size();j++){
+					InventoryBranch inb = list.get(j);
+					System.out.println("type[i]"+type[i]);
+					if(inb.getType().equals(type[i])){
+						map.put(type[i], "实际库存："+inb.getRealcount()+"  账面库存:"+inb.getPapercount());
+					} 
+				}
 			}
-		}
-	} 
+		} 
+	}
 	String str = StringUtill.GetJson(map);
 	response.getWriter().write(str);   
 	response.getWriter().flush(); 

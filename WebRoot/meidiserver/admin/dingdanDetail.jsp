@@ -271,7 +271,7 @@ function checkedd(){
 			<td align="center">单号</td> 
 			<td align="center"><%=o.getPrintlnid() == null?"":o.getPrintlnid()%></td>  
 			<td align="center">门店</td>
-			<td align="center"><%=o.getBranch()%></td> 
+			<td align="center"><%=o.getbranchName(o.getBranch())%></td> 
 			<td align="center">销售员</td>
 			<td align="center">       		  
 		     <%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>

@@ -1,7 +1,5 @@
 package branch;
 
-import group.Group;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,17 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import order.OrderManager;
-
+ 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import category.Category;
-import category.CategoryManager;
-
-import user.User;
-import user.UserManager;
 import database.DB;
   
 public class BranchManager {
@@ -95,11 +86,11 @@ public class BranchManager {
 		public static List<String> getLocateAll( ) {
 			List<String> users = new ArrayList<String>();
 			Connection conn = DB.getConn();   
-			String sql = "select * from mdbranch  " ;
+			String sql = "select * from mdbranch " ;
 			Statement stmt = DB.getStatement(conn); 
 			ResultSet rs = DB.getResultSet(stmt, sql);
-			try {  
-				while (rs.next()) { 
+			try {    
+				while (rs.next()) {  
 					Branch g = getBranchFromRs(rs);
 					users.add(g.getLocateName()); 
 				}   
