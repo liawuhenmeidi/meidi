@@ -40,7 +40,7 @@ if(!StringUtill.isNull(id)){
 
 	List<Gift> listg = GiftManager.getGift(user, Integer.valueOf(id));
 	listgg = StringUtill.GetJson(listg);
-	isdisabel = " disabled=\"disabled\" "; 
+	isdisabel = " disabled=\"disabled\" ";  
 }
  
 
@@ -899,8 +899,8 @@ String[] branlist =  branchmessage.split("_");
 <input type="hidden" name="token" value="<%=s%>"/> 
  
 <div class="s_main_tit">销售报单<span class="qiangdan"></span></div>
-<div class="s_main_tit">门店:<span class="qian"><%=user.getBranch() %></span></div>  
-<!--  订单详情  --> 
+<div class="s_main_tit">门店:<span class="qian"><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %></span></div>  
+<!--  订单详情  -->  
 <div class="s_dan_box"> </div>
 
 <table style="width:100% "> 

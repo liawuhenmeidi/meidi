@@ -194,8 +194,8 @@ function change(str1,oid,type,statues,types){
 				     if (question != "0"){
 								$.ajax({   
 							        type: "post",     
-							         url: "../../user/server.jsp",
-							         data:"method=peidan&id="+oid+"&uid="+id+"&type="+type,
+							         url: "../../user/server.jsp", 
+							         data:"method=peidan&id="+oid+"&uid="+uid+"&type="+type,
 							         dataType: "",  
 							         success: function (data) { 
 							        	 if(data == 0){

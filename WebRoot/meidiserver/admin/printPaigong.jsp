@@ -1,6 +1,6 @@
-<%@ page language="java" import="java.util.*,utill.*,java.text.SimpleDateFormat,category.*,orderPrint.*,gift.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,java.text.SimpleDateFormat,category.*,product.*,branch.*,orderPrint.*,gift.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
-<%  
+<%   
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user");
 String id = request.getParameter("id");
@@ -87,12 +87,12 @@ body{
 <table width="1010"> 
   <tr>
     <td colspan="2">&nbsp;</td>
-    <td width="384" rowspan="2" align="center" style="font-size:30px; font-family:"楷体";><strong><%=user.getBranch()+message %></strong></td>
+    <td width="384" rowspan="2" align="center" style="font-size:30px; font-family:"楷体";><strong><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName()+message %></strong></td>
     <td width="300"><strong><FONT size=5>单&nbsp;&nbsp;号：<%=order.getPrintlnid() == null?"":order.getPrintlnid()%></strong></FONT></td> 
   </tr>  
   <tr>     
     <td width="110">&nbsp;&nbsp;&nbsp;<strong>&nbsp;门店：</strong></td> 
-    <td width="212" style="font-size:25px; font-family:"楷体";><strong><%=order.getBranch()+"("+usermap.get(Integer.valueOf(order.getSaleID())).getUsername() +")"%></strong></td>
+    <td width="212" style="font-size:25px; font-family:"楷体";><strong><%=order.getbranchName(order.getBranch())+"("+usermap.get(Integer.valueOf(order.getSaleID())).getUsername() +")"%></strong></td>
     <td><strong><FONT size=4>销售日期：<%=order.getSaleTime() %></strong></FONT></td>
   </tr>
  
@@ -136,7 +136,7 @@ body{
       <td width="9%" height="30" align="center" valign="middle" id="d">品类</td>
       <td width="17%" height="30" align="center"  id="d">&nbsp;<%=categorymap.get(Integer.valueOf(op.getCategoryId())).getName() %></td>
       <td width="11%" height="30" align="center" valign="middle" id="d">型号</td>
-      <td width="38%" height="30" align="center" valign="middle" id="d"><%=op.getSendType() %></td>
+      <td width="38%" height="30" align="center" valign="middle" id="d"><%=ProductService.getIDmap().get(Integer.valueOf(op.getSendType())).getType() %></td>
       <td width="12%" height="30" align="center" valign="middle" id="d">数量</td>
       <td width="9%" height="30" align="center"valign="middle" id="e"><%=op.getCount() %></td>
     </tr>

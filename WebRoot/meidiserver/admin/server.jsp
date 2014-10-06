@@ -330,10 +330,6 @@ if("peidan".equals(method)){
  		    Collection<InventoryAll> c = map.values();
  			str = StringUtill.GetJson(c);
  		}    
-    	 
-    	 
-    	 
-    	 
      }	    
 	System.out.println(str+""); 
 	response.getWriter().write(str);   

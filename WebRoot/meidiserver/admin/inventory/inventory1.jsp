@@ -50,6 +50,7 @@ List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
    
 Map<Integer,Branch> branchmap = BranchManager.getNameMap();
+
 Map<String,Branch> newbranchmap = new HashMap<String,Branch>();
 if(branchmap != null){
 	Set<Integer> key = branchmap.keySet();
@@ -227,8 +228,8 @@ function serchclick(category,type,branchid,obj){
 	        	
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
-	        		  
-	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.type+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+str.type+'\',\''+branch+'\',this)">' +  
+	        		    
+	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.type+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+str.typeid+'\',\''+branch+'\',this)">' +  
 	        		    
 	        		     ' <td>'+str.cateoryName+'</td> ' +   
 	        		     ' <td>'+str.type+'</td> ' +   
