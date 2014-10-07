@@ -26,7 +26,7 @@ public class AfterMatchOrder {
 	public void initDBSideOrder(Order dbOrder){
 		setDBOrder(dbOrder);
 		this.dbOrder = dbOrder;
-		DBSideShop = dbOrder.getBranch();
+		DBSideShop = dbOrder.getbranchName(dbOrder.getBranch()); 
 		DBSidePosNo = dbOrder.getPos();
 		DBSideSaleTime = dbOrder.getSaleTime();
 		DBSideDealTime = dbOrder.getOdate();
@@ -53,7 +53,7 @@ public class AfterMatchOrder {
 		setUploadOrder(uploadOrder);
 		setDBOrder(dbOrder);
 		this.dbOrder = dbOrder;
-		DBSideShop = dbOrder.getBranch();
+		DBSideShop = dbOrder.getbranchName(dbOrder.getBranch());
 		DBSidePosNo = dbOrder.getPos();
 		DBSideSaleTime = dbOrder.getSaleTime();
 		DBSideDealTime = dbOrder.getOdate();
@@ -297,7 +297,7 @@ public class AfterMatchOrder {
 		}
 			
 		//对比门店名称
-		tempDB = this.getDBOrder().getBranch().trim();
+		tempDB = dbOrder.getbranchName(dbOrder.getBranch());
 		tempUpLoad = this.getUploadOrder().getShop().trim();
 		key = tempDB.replace("苏宁", "").replace("店", "");
 		if(tempUpLoad.contains(key)){

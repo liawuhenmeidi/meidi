@@ -85,7 +85,7 @@ public class MatchOrder {
 			//而且票面数量一样
 			if(String.valueOf(tempUo.getNum()).equals(tempDBO.getSendCount())){
 				//而且销售门店一样
-				key = tempDBO.getBranch().replace("苏宁", "").replace("店", "");
+				key = tempDBO.getbranchName(tempDBO.getBranch()).replace("苏宁", "").replace("店", "");
 				if(tempUo.getShop().contains(key)){
 					//而且型号一样
 					key = tempUo.getType().replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "");
