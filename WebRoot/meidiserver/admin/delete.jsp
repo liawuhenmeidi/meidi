@@ -21,7 +21,7 @@ if("category".equals(method)){
 	CategoryManager.delete(str);
 }else if("product".equals(method)){
 	String str = request.getParameter("id");
-	System.out.println(str);
+	//System.out.println(str);
 	ProductManager.delete(str);
 }else if("juese".equals(method)){ //juesetype
 	String str = request.getParameter("id");
@@ -37,12 +37,15 @@ if("category".equals(method)){
 	response.getWriter().close();
 }else if("branch".equals(method)){
 	String str = request.getParameter("id");
-	System.out.println(str);
+	//System.out.println(str);
 	BranchManager.delete(str);
 }else if("branchtype".equals(method)){
 	String str = request.getParameter("id");
-	System.out.println(str); 
-	BranchTypeManager.delete(str); 
+	//System.out.println(str); 
+	boolean flag = BranchTypeManager.delete(str);
+	response.getWriter().write(""+flag);  
+	response.getWriter().flush();
+	response.getWriter().close();
 }else if("locate".equals(method)){
 	String str = request.getParameter("id");
 	System.out.println(str);

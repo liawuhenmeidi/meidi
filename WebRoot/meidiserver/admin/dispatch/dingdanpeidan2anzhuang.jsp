@@ -404,7 +404,7 @@ function adddetail(src){
 		<% if(o.getSendId() != 0){
 			if(usermap.get(Integer.valueOf(o.getSendId())) != null){
 		 %>
-		 <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
+		 <%=usermap.get(Integer.valueOf(o.getSendId())) == null?"":usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
 		 <%
 		  }
 		}

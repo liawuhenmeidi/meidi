@@ -38,7 +38,11 @@ function winconfirm(){
 	         data:"method=branchtype&id="+attract.toString(),
 	         dataType: "", 
 	         success: function (data) {
-	          alert("删除成功");
+	          if(data == false || data == "false"){
+	        	  alert("删除失败");
+	          }else {
+	        	  alert("删除成功");
+	          } 
 	          window.location.href="branch.jsp";
 	           }, 
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 

@@ -17,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import branch.Branch;
+import branch.BranchManager;
 
 import category.Category;
 import category.CategoryManager;
@@ -125,6 +126,11 @@ public class BranchTypeManager {
 		public static boolean delete(String str ) {
 			String ids = "(" + str + ")";
 			boolean b = false;
+			int count = BranchManager.getcount(ids);
+			if(count > 0){
+				return false ;
+			}
+			 
 			Connection conn = DB.getConn();
 			String sql = "delete from mdbranchtype where id in " + ids;
 logger.info(sql);

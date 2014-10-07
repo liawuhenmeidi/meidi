@@ -535,7 +535,7 @@ function winconfirm(str,str2){
  
 		<td align="center">
 
-		 <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
+		 <%=usermap.get(Integer.valueOf(o.getSendId())) == null ? "":usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
 
 		</td> 
 		<td align="center">

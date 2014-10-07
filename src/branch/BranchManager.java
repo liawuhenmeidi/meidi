@@ -61,7 +61,27 @@ public class BranchManager {
 			}
 			return users;
 		}
-         
+          
+		public static int getcount(String id ) {
+			int count = 0;   
+			Connection conn = DB.getConn();
+			String sql = "select * from mdbranch where pid in "+ id ;
+			Statement stmt = DB.getStatement(conn); 
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {  
+				while (rs.next()) { 
+					count++; 
+				}  
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return count;
+		}
+		
 		public static List<Branch> getLocate(int statues ) {
 			List<Branch> users = new ArrayList<Branch>();
 			Connection conn = DB.getConn(); 
@@ -277,11 +297,12 @@ public class BranchManager {
 		}
 		
 		public static boolean delete(String str ) {
-			String ids = "(" + str + ")";
-			boolean b = false;
-			Connection conn = DB.getConn();
-			String sql = "delete from mdbranch where id in " + ids;
-logger.info(sql);
+			
+			String ids = "(" + str + ")"; 
+			boolean b = false;  
+			Connection conn = DB.getConn();  
+			String sql = "update mdbranch set disable = 1 where id in " + ids;
+logger.info(sql); 
 			Statement stmt = DB.getStatement(conn);
 			try {
 				DB.executeUpdate(stmt, sql);
@@ -324,6 +345,7 @@ logger.info(sql);
 				branch.setMessage(rs.getString("bmessage")); 
 				branch.setStatues(rs.getInt("statues"));
 				branch.setBranchids(rs.getString("relatebranch"));
+				branch.setDisable(rs.getInt("disable"));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}	

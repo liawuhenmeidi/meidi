@@ -7,7 +7,16 @@ public class Branch {
    private String message ;   // 门店订单需要的号，是否需要pos号，等
    private int statues ;   //  是否作为总库
    private String branchids ;
-    
+   private int disable ;
+   
+public int getDisable() {
+	return disable;
+}
+
+public void setDisable(int disable) {
+	this.disable = disable;
+}
+
 public String getBranchids() {
 	return branchids;
 }
