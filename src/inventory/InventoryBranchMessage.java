@@ -19,7 +19,8 @@ public class InventoryBranchMessage {
   
   private int papercount ;  //  虚拟库存
   
- private String typeid ;  
+   private String typeid ;
+   
 
 public String getTypeid() {
 	return typeid;

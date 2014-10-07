@@ -149,14 +149,9 @@ var disable = '<%=isdisabel %>';
   
  function startRequest(ctype,branchid){ 
 	 var time = $("#time").val();
-	 
-	
 	 if("fresh" == time){
 		 var starttime = $("#starttime").val(); 
 		 var endtime = $("#endtime").val(); 
-
-		 
-		 
 		 window.location.href='inventoryDetail.jsp?ctype='+ctype+'&branchid='+branchid+'&starttime='+starttime+'&endtime='+endtime; 
 	 }
 	
@@ -173,9 +168,10 @@ var disable = '<%=isdisabel %>';
 	 $("#starttime").val(""); 
 	 $("#endtime").val(""); 
 	 winPar = window.open("time.jsp","time","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
+	 //alert(ctype);
 	 setInterval("startRequest('"+ctype+"','"+branchid+"')",500);  
  } 
-  
+   
 
 function distri(){
  if(typeid == null || typeid == ""){
@@ -188,6 +184,7 @@ function distri(){
   
 function serchclick(category,type,branchid,obj){
 	 categoryid = category;
+	// alert(type);
 	 typeid = type ; 
 	 updateClass(obj);  
  } 
@@ -222,14 +219,14 @@ function serchclick(category,type,branchid,obj){
 	        	     ' <td>产品型号</td> '+
 	        	     ' <td>账面库存数量</td>'+
 	        	     ' <td>实际库存数量</td> ' +
-	        	     ' <td>销量</td> ' + 
+	        	     ' <td>盘点</td> ' + 
 	        	    ' </tr>';
 	        	 var json =  $.parseJSON(data);
 	        	
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
-	        		    
-	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.type+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+str.typeid+'\',\''+branch+'\',this)">' +  
+	       
+	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.typeid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+str.typeid+'\',\''+branch+'\',this)">' +  
 	        		    
 	        		     ' <td>'+str.cateoryName+'</td> ' +   
 	        		     ' <td>'+str.type+'</td> ' +   
@@ -322,7 +319,7 @@ function serchclick(category,type,branchid,obj){
       <td>产品型号</td> 
       <td>账面库存数量</td>
       <td>实际库存数量</td>  
-      <td>销量</td>   
+      <td>盘点</td>   
      </tr>
  
    </table>

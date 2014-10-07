@@ -258,9 +258,8 @@ logger.info(sql);
 			boolean b = false;
 			Connection conn = DB.getConn();
 			String sql = "update  mdproduct set pstatues = 1 where  id in " + ids; 
-			System.out.println(sql);
 			Statement stmt = DB.getStatement(conn);
-
+			ProductService.flag = true ;
 			try {
 				DB.executeUpdate(stmt, sql);
 				b = true;
@@ -281,6 +280,7 @@ logger.info(sql);
 				pstmt.setString(1, type);
 				pstmt.setString(2, id);
 				pstmt.executeUpdate();
+				ProductService.flag = true ;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {

@@ -228,7 +228,8 @@ if("peidan".equals(method)){
 	    		listp = new InventoryAll();
 	    		Category c = CategoryManager.getCategory(categoryid+"");
 	    		listp.setCategoryid(c.getId());  
-	    		listp.setCateoryName(c.getName());  
+	    		listp.setCateoryName(c.getName());
+	    		listp.setTypeid(inb.getTypeid());
 	    		listp.setPapercount(inb.getPapercount()); 
 	    		listp.setRealcount(inb.getRealcount());  
 	    		System.out.println(inb.getPapercount()+"***"+inb.getRealcount());
@@ -256,6 +257,7 @@ if("peidan".equals(method)){
 	    		Category c = CategoryManager.getCategory(categoryid+"");
 	    		listp.setCategoryid(c.getId());
 	    	    listp.setType(type); 
+	    	    listp.setTypeid(inb.getTypeid());
 	    		listp.setCateoryName(c.getName());  
 	    		listp.setPapercount(inb.getPapercount()); 
 	    		listp.setRealcount(inb.getRealcount()); 
@@ -268,7 +270,7 @@ if("peidan".equals(method)){
 	    Collection<InventoryAll> c = map.values();
 		str = StringUtill.GetJson(c);
 	}     
-	System.out.println(str+""); 
+	//System.out.println(str+""); 
 	response.getWriter().write(str);   
 	response.getWriter().flush(); 
 	response.getWriter().close(); //inventory
@@ -292,6 +294,7 @@ if("peidan".equals(method)){
 		    		listp.setCategoryid(c.getId());
 		    		listp.setCateoryName(c.getName());
 		    		listp.setBranchid(branchid); 
+		    		listp.setTypeid(inb.getTypeid());
 		    		listp.setPapercount(inb.getPapercount()); 
 		    		listp.setRealcount(inb.getRealcount()); 
 		    		map.put(branchid+"", listp);
@@ -318,6 +321,7 @@ if("peidan".equals(method)){
  		    		listp.setCategoryid(c.getId());
  		    		listp.setCateoryName(c.getName());
  		    		listp.setType(inb.getType());
+ 		    		listp.setTypeid(inb.getTypeid());
  		    		listp.setBranchid(branchid);    
  		    		listp.setPapercount(inb.getPapercount()); 
  		    		listp.setRealcount(inb.getRealcount()); 

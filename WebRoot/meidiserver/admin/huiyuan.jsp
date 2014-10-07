@@ -1,6 +1,6 @@
-<%@ page language="java"  import="java.util.*,category.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,category.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <% 
-request.setCharacterEncoding("utf-8"); 
+request.setCharacterEncoding("utf-8");  
 User user = (User)session.getAttribute("user");
 List<User> list = UserManager.getUsersNodelete(user);  
 List<User> listg = new ArrayList<User>(); 
@@ -103,7 +103,7 @@ function changes(id,name,statues){
 		<td align="left"><%=u.getPhone() %></td>
 		<td align="left"><%=map.get(u.getUsertype()).getName() %></td>
 		<td align="left"><%=u.getCharge()==null?"暂无主管":u.getCharge()%></td>
-		<td align="left"><%=u.getBranch() %></td>
+		<td align="left"><%=BranchService.getMap().get(Integer.valueOf(u.getBranch())) == null ? "":BranchService.getMap().get(Integer.valueOf(u.getBranch())).getLocateName() %></td>
 		<td align="left"><%=u.getEntryTime() %></td> 
 		<td align="left">
 		 <% 
@@ -151,7 +151,7 @@ function changes(id,name,statues){
 		<td align="left"><%=u.getPhone() %></td> 
 		<td align="left"><%=map.get(u.getUsertype()).getName() %></td>
 		<td align="left"><%=u.getCharge()==null?"暂无主管":u.getCharge()%></td>
-		<td align="left"><%=u.getBranch() %></td>
+		<td align="left"><%=BranchService.getMap().get(Integer.valueOf(u.getBranch())) == null ? "":BranchService.getMap().get(Integer.valueOf(u.getBranch())).getLocateName() %></td>
 		<td align="left"><%=u.getEntryTime() %></td> 
 		<td align="left">
 		 <%

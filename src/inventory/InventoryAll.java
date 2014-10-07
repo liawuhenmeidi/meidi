@@ -5,7 +5,14 @@ public class InventoryAll {
    
    public String cateoryName ;
    private String type ;
-   private int branchid ;
+   private String typeid ;
+   public String getTypeid() {
+	return typeid;
+}
+public void setTypeid(String typeid) {
+	this.typeid = typeid;
+}
+private int branchid ;
    public int getBranchid() {
 	return branchid;
 }

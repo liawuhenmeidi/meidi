@@ -131,7 +131,7 @@ if(list != null){
 		<td align="left"><input type="checkbox" value="1" name="<%=category.getId() %>"></input></td> 
 		<td align="left"><%=i+1 %></td>   
  		<td align="left"><%=category.getLocateName() %></td> 
- 		<td align="left"><%=map.get(category.getLocateName())==null?0:map.get(category.getLocateName()).size()%></td>
+ 		<td align="left"><%=map.get(category.getId()+"")==null?0:map.get(category.getId()+"").size()%></td>
 		<td align="left">  
 		        <%  
 		           String message = category.getMessage(); 

@@ -48,7 +48,7 @@ if("category".equals(method)){
 	response.getWriter().close();
 }else if("locate".equals(method)){
 	String str = request.getParameter("id");
-	System.out.println(str);
+	//System.out.println(str);
 	LocateManager.delete(str);
 }
  %>

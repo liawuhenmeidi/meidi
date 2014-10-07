@@ -9,7 +9,7 @@ public class InventoryBranch {
    
   private String typeid ;
 
-private int realcount ;  
+  private int realcount ;  
   
   private int papercount;
 	public int getId() {

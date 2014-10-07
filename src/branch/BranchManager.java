@@ -32,6 +32,7 @@ public class BranchManager {
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		try {   	
 			pstmt.executeUpdate();
+			BranchService.flag = true ;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -193,6 +194,7 @@ public class BranchManager {
 			PreparedStatement pstmt = DB.prepare(conn, sql);
 			try {  
 				pstmt.executeUpdate();
+				BranchService.flag = true ;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {  		
@@ -306,6 +308,7 @@ logger.info(sql);
 			Statement stmt = DB.getStatement(conn);
 			try {
 				DB.executeUpdate(stmt, sql);
+				BranchService.flag = true ;
 				b = true;
 			} finally {
 				DB.close(stmt);
@@ -351,10 +354,6 @@ logger.info(sql);
 			}	
 			return branch ;
 		}	
-		
-		
-		
-		
 }
 
 

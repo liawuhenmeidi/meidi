@@ -1,4 +1,4 @@
-<%@ page language="java"  import="java.util.*,category.*,group.*,user.*,utill.*,company.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,category.*,group.*,user.*,branch.*,utill.*,company.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
     Company company = CompanyManager.getLocate(); 
     User user = (User)session.getAttribute("user");
@@ -14,7 +14,7 @@
   
   <center><FONT  size=5>
   <%if(user != null){%>
-  <%=user.getBranch() %>
+  <%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %>
   <%}%> 
   </FONT></center>  
     

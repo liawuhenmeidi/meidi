@@ -98,7 +98,7 @@ td {
 	        	     ' <td>产品型号</td> '+
 	        	     ' <td>账面库存数量</td>'+
 	        	     ' <td>实际库存数量</td> ' +
-	        	     ' <td>销量</td> ' + 
+	        	     ' <td>盘点</td> ' + 
 	        	    ' </tr>';
 	        	 var json =  $.parseJSON(data);
 	        	
@@ -204,7 +204,7 @@ td {
       <td>产品型号</td> 
       <td>账面库存数量</td>
       <td>实际库存数量</td>  
-      <td>销量</td>   
+      <td>盘点</td>   
      </tr>
  </thead>
    </table>
