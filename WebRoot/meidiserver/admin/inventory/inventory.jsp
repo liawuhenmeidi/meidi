@@ -9,14 +9,14 @@ Branch branch = null;
 if(UserManager.checkPermissions(user, Group.Manger)){
 	branchid = request.getParameter("branchid");
 }else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
-	branchid = BranchManager.getBranchID(user.getBranch())+""; 
+	branchid = user.getBranch()+"";   
 	branch = BranchManager.getLocatebyid(branchid);
 } 
   
 
 
   
-List<Branch> listbranch = BranchManager.getLocate(); 
+List<Branch> listbranch = BranchService.getList(); 
 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 

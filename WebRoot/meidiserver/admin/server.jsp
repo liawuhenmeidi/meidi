@@ -202,7 +202,7 @@ if("peidan".equals(method)){
 	String branch = request.getParameter("branch"); 
 	String category = request.getParameter("category"); 
 	String product = request.getParameter("product");
-	System.out.println(product);
+	//System.out.println(product);
 	List<InventoryBranch> list = null ;
     if(StringUtill.isNull(product)){ 
     	list = InventoryBranchManager.getCategoryid(branch, category);  
@@ -232,10 +232,10 @@ if("peidan".equals(method)){
 	    		listp.setTypeid(inb.getTypeid());
 	    		listp.setPapercount(inb.getPapercount()); 
 	    		listp.setRealcount(inb.getRealcount());  
-	    		System.out.println(inb.getPapercount()+"***"+inb.getRealcount());
+	    		//System.out.println(inb.getPapercount()+"***"+inb.getRealcount());
 	    		map.put(categoryid, listp); 
 	    	}else { 
-	    		System.out.println(inb.getPapercount()+"***"+inb.getRealcount());
+	    		//System.out.println(inb.getPapercount()+"***"+inb.getRealcount());
 	    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
 	    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
 	    	}

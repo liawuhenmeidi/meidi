@@ -3,20 +3,16 @@
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 
-
 String branchid = "";
 Branch branch = null;   
 if(UserManager.checkPermissions(user, Group.Manger)){
 	branchid = request.getParameter("branchid");
 }else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
-	branchid = BranchManager.getBranchID(user.getBranch())+""; 
+	branchid = user.getBranch()+""; 
 	branch = BranchManager.getLocatebyid(branchid);
 } 
   
-
-
-  
-List<Branch> listbranch = BranchManager.getLocate(); 
+List<Branch> listbranch = BranchService.getList(); 
 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
@@ -32,14 +28,9 @@ td {
 }
 
 
-
-
 </style>  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
-
-
-
 
 
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>

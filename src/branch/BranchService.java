@@ -3,11 +3,10 @@ package branch;
 import java.util.List;
 import java.util.Map;
 
-
 public class BranchService {
 	public static boolean flag = false ;
-   public static Map<Integer,Branch>  map = null;
-   public static List<Branch>  list = null; 
+    public static Map<Integer,Branch>  map = null;
+    public static List<Branch>  list = null; 
    
 	public static Map<Integer, Branch> getMap() {
 		if(map == null || flag ){
@@ -15,7 +14,7 @@ public class BranchService {
 		}
 		return map ;
 	}
- 
+    
 	public static List<Branch> getList() {
 		if(list == null || flag ){ 
 			list = BranchManager.getLocate(); 
@@ -23,10 +22,11 @@ public class BranchService {
 		return list ;
 	}
  
-	
-	
-public static void restartMap() {
-	map = BranchManager.getNameMap();
-}	
-
+   public static void restartMap() {
+	  map = BranchManager.getNameMap();
+   }	
+   
+   public static void restartList() {
+	   list = BranchManager.getLocate(); 
+	}
 }
