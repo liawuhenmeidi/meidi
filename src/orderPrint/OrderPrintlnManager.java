@@ -223,7 +223,7 @@ logger.info(pstmt);
 		    Connection conn = DB.getConn();
 			Statement stmt = DB.getStatement(conn); 
 			String 	sql = "select * from  mdorderupdateprint " ;
-logger.info(sql);  
+//logger.info(sql);  
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {
 				while (rs.next()) { 

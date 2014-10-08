@@ -3,14 +3,8 @@
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 
-String branchid = "";   
-if(UserManager.checkPermissions(user, Group.Manger)){
-	branchid = request.getParameter("branchid");  
-}else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
-	branchid = BranchManager.getBranchID(user.getBranch())+""; 
-} 
-  
 String category = request.getParameter("category");
+String branchid = request.getParameter("branchid");
 
 Category c = CategoryManager.getCategory(category);
 
@@ -228,7 +222,7 @@ function serchclick(category,type,branchid,obj){
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
 	        		  
-	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="search(\''+str.type+'\',\''+branch+'\')">' +  
+	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="search(\''+str.typeid+'\',\''+branch+'\')">' +  
 	        		    
 	        		     ' <td>'+str.cateoryName+'</td> ' +   
 	        		     ' <td>'+str.type+'</td> ' +   

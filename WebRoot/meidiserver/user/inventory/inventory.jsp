@@ -5,9 +5,7 @@ User user = (User)session.getAttribute("user");
 
 String branchid = "";
 Branch branch = null;   
-if(UserManager.checkPermissions(user, Group.Manger)){
-	branchid = request.getParameter("branchid");
-}else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
+if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
 	branchid = user.getBranch()+""; 
 	branch = BranchManager.getLocatebyid(branchid);
 } 
@@ -132,8 +130,7 @@ td {
 <div class="main">   
    <div class="weizhi_head">现在位置：库存查询
      
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-   <a href="../welcom.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
+   
    <% 
     if(UserManager.checkPermissions(user, Group.dealSend)){
     	%>
@@ -186,7 +183,8 @@ td {
 		   }  
 	}
    %>
-                    
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+   <a href="../welcom.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>                     
  </div>        
      <div class="table-list" >
      <br/>        

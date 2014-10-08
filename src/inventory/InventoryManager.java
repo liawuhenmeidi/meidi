@@ -34,7 +34,7 @@ public class InventoryManager {
 	public static List<Inventory> getCategory(User user,String statues) { 
 		List<Inventory> categorys = new ArrayList<Inventory>();
 		Connection conn = DB.getConn();
-		int branchid = BranchManager.getBranchID(user.getBranch()); 
+		int branchid = Integer.valueOf(user.getBranch());  
 		String sql = "";
 		if(UserManager.checkPermissions(user, Group.dealSend)){
 			if("unconfirmed".equals(statues)){ 

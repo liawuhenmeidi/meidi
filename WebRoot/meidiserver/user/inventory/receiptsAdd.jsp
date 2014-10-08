@@ -21,13 +21,12 @@ String plist = StringUtill.GetJson(listt);
 List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
    
-Map<Integer,Branch> branchmap = BranchManager.getNameMap();
-  
+Map<Integer,Branch> branchmap = BranchService.getMap(); 
 String inventoryid = request.getParameter("id");
 Inventory inventory = new Inventory() ;
 String invent = ""; 
-String outbranch = "";
-String inbranch = ""; 
+Branch outbranch = new Branch();
+Branch inbranch = new Branch(); 
 String remark = ""; 
 String inittime = ""; 
 String isdisabel = " ";  
@@ -36,15 +35,9 @@ if(!StringUtill.isNull(inventoryid)){
 	isdisabel = " disabled=\"disabled\" ";
 	inventory = InventoryManager.getInventoryID(user, Integer.valueOf(inventoryid));  
 	
-	if(branchmap != null){
-		   Branch branch = branchmap.get(inventory.getOutbranchid());
-	       if(branch != null){
-	    	   outbranch = branch.getLocateName(); 
-	       } 
-	       branch = branchmap.get(inventory.getInbranchid());
-	       if(branch != null){ 
-	    	   inbranch = branch.getLocateName();  
-	       } 
+	if(branchmap != null){ 
+		   outbranch = branchmap.get(inventory.getOutbranchid());
+		   inbranch = branchmap.get(inventory.getInbranchid());
 	   }
 
 	
@@ -245,17 +238,18 @@ var disable = '<%=isdisabel %>';
    <div class="main_r_tianjia">
    <ul>                                                                                                          
      <li><a href="receipts.jsp">返回</a></li>
+     
       <% 
       //System.out.println("aa"+user.getBranch()+inventory.getOutstatues()+UserManager.checkPermissions(user, Group.inventoryquery));
-      if(outbranch.equals(user.getBranch()) && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery)){ 
+      if((outbranch.getId()+"").equals(user.getBranch()) && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) ){ 
       %>  
-      <li><a href="../admin/InventoryServlet?method=outbranch&id=<%=inventory.getId() %>">出库方确认</a></li>
+      <li><a href="../../admin/inventory/InventoryServlet?method=outbranch&id=<%=inventory.getId() %>">出库方确认</a></li>
       <%
       }  
       %>
-     <% if(inbranch.equals(user.getBranch()) && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery)){ 
+     <% if((inbranch.getId()+"").equals(user.getBranch()) && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) ){ 
       %>  
-      <li><a href="../admin/InventoryServlet?method=inbranch&id=<%=inventory.getId() %>">入库方确认</a></li>
+      <li><a href="../../admin/inventory/InventoryServlet?method=inbranch&id=<%=inventory.getId() %>">入库方确认</a></li>
       <% 
       } 
      
@@ -277,7 +271,7 @@ var disable = '<%=isdisabel %>';
    <center><div id="branchmessage"><font style="color:red;font-size:20px;" >调拨单</font></div></center>
    <br/>
                  出库单位：  
-         输入<input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch %>"  <%=isdisabel %>/>                    
+         输入<input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch.getLocateName() %>"  <%=isdisabel %>/>                    
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     选择 <select id="outbranchs" <%=isdisabel %>>  
 	  <option value=""></option>
@@ -293,7 +287,7 @@ var disable = '<%=isdisabel %>';
 	  </select>   
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
                  入库单位： 
-             输入<input type="text" name="inbranch" id="inbranch" value="<%=inbranch %>" class="cba"  <%=isdisabel %>/>
+             输入<input type="text" name="inbranch" id="inbranch" value="<%=inbranch.getLocateName() %>" class="cba"  <%=isdisabel %>/>
     选择 <select id="inbranchs" <%=isdisabel %>>  
 	  <option value=""></option>
 	   <% if(listbranch != null){

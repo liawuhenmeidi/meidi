@@ -975,7 +975,7 @@ logger.info(Orders.size());
 	  boolean flag = UserManager.checkPermissions(user, type);
 		  
 	  String str = "";
-	  logger.info("num"+num);
+	  //logger.info("num"+num);
 	  if(num != -1){
 		 str = "  limit " + ((page-1)*num)+","+ page*num ; 
 	  }
@@ -984,7 +984,7 @@ logger.info(Orders.size());
 	  
 	  String sql = "";    
 	  
-	  logger.info(f); 
+	  //logger.info(f); 
 	  if(f){  
 		  if(Group.dealSend == type){ 
 			  if(Order.orderDispatching == statues){    

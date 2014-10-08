@@ -276,7 +276,7 @@ logger.info(sql);
 					}
 					
 				}
-		logger.info(list.size());	  	
+		//logger.info(list.size());	  	
 			} catch (SQLException e) {
 				logger.info(e);
 			} finally {

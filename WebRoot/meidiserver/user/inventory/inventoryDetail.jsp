@@ -5,7 +5,8 @@ User user = (User)session.getAttribute("user");
 String ctype = request.getParameter("ctype");
 String branchid = request.getParameter("branchid");
 String endtime = request.getParameter("endtime");
-System.out.println(endtime);
+endtime = TimeUtill.dataAdd(endtime,1); 
+
 String starttime = request.getParameter("starttime"); 
 
 Branch b = new Branch();

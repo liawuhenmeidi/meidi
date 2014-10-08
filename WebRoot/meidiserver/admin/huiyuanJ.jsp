@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,category.*,group.*,branch.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
@@ -60,7 +60,6 @@ function changes(id,statues){
 	<thead>
 		<tr>
 			<th align="left" width="20"><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"></th>
-			<th align="left"></th>
 			<th align="left">职工ID</th>
 			<th align="left">职工名称</th>
 			<th align="left">职工类别</th>
@@ -79,12 +78,11 @@ function changes(id,statues){
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
     
 		<td align="left"><input type="checkbox" value="1" name="userid[]"></td>
-		<td align="left"></td>
 		<td align="left"><%=i+1 %></td>
 		<td align="left"><%=u.getUsername() %></td>
 		<td align="left"><%=map.get(u.getUsertype()).getName() %></td>
 	<!--	<td align="left"><%=u.getPositions() %></td>   -->
-		<td align="left"><%=u.getBranch() %></td>
+		<td align="left"><%=BranchService.getMap().get(Integer.valueOf(u.getBranch())).getLocateName() %></td>
 		<td align="left"><%=u.getEntryTime() %></td>       
 		<!--  <td align="left">
 			<a href="huiyuanUpdate.jsp?id=<%=u.getId() %>">[修改]</a>

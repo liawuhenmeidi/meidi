@@ -45,7 +45,7 @@ List<InventoryMessage> list = inventory.getInventory();
 
   <tr>
     <td colspan="2">&nbsp;</td> 
-    <td width="384" rowspan="2" align="center" style="font-size:30px; font-family:"楷体";><strong><%=user.getBranch() %></strong></td>
+    <td width="384" rowspan="2" align="center" style="font-size:30px; font-family:"楷体";><strong><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %></strong></td>
     <td width="300"><strong><FONT size=5>单&nbsp;&nbsp;号：<%=inventory.getId() %></strong></FONT></td> 
   </tr>
   <tr>  

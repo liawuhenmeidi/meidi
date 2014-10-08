@@ -13,8 +13,8 @@ String listall = StringUtill.GetJson(listbranchp);
 List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
    
-Map<Integer,Branch> branchmap = BranchManager.getNameMap();
-  
+//Map<Integer,Branch> branchmap = BranchManager.getNameMap();
+Map<Integer,Branch> branchmap = BranchService.getMap();
 
 Inventory inventory = new Inventory() ;
 String invent = ""; 
@@ -74,15 +74,14 @@ var disable = '<%=isdisabel %>';
  var jsonallp =  $.parseJSON(listallp); 
  
  var jsonall = <%=listall%>;
-  
- //alert(listall);
- //var jsonall =  $.parseJSON(listall);
- 
+
  var row = 1; 
  var rows = new Array();
-  
- //var jsoninvent =  $.parseJSON(inventoyr);
- var jsoninvent =  <%=invent%>;
+   
+ var jsoninventstr =  '<%=invent%>';
+ 
+ var jsoninvent =  $.parseJSON(jsoninventstr); 
+ 
  var ctypes = new Array();  
  
  
@@ -212,13 +211,13 @@ var disable = '<%=isdisabel %>';
      <li><a href="javascript:history.go(-1);">返回</a></li>
       <%  
       //System.out.println("aa"+user.getBranch()+inventory.getOutstatues()+UserManager.checkPermissions(user, Group.inventoryquery));
-      if(user.getBranch().equals(outbranch.getId()+"") && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || outbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend) ){ 
+      if(user.getBranch().equals(outbranch.getId()+"") && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || outbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend) && inventory.getOutstatues() == 0 ){ 
       %>    
       <li><a href="InventoryServlet?method=outbranch&id=<%=inventory.getId() %>">出库方确认</a></li>
       <%
       }  
       %>
-     <% if(user.getBranch().equals(inbranch.getId()+"") && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || inbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend)){ 
+     <% if(user.getBranch().equals(inbranch.getId()+"") && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || inbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend) && inventory.getOutstatues() == 0){ 
       %>   
       <li><a href="InventoryServlet?method=inbranch&id=<%=inventory.getId() %>">入库方确认</a></li>
       <% 

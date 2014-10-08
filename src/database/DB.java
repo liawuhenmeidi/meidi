@@ -6,9 +6,9 @@ public class DB {
 		Connection conn = null; 
 		try {                                                                                              
 			Class.forName("com.mysql.jdbc.Driver");            
-			//conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/meidi?user=root&password=liaowuhen&characterEncoding=utf-8");
+			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/meidi?user=root&password=liaowuhen&characterEncoding=utf-8");
 		    //conn = DriverManager.getConnection("jdbc:mysql://voip022.gotoftp3.com/voip022?user=voip022&password=808080&characterEncoding=utf-8");
-		    conn = DriverManager.getConnection("jdbc:mysql://liaowuhentest.gotoftp5.com/liaowuhentest?user=liaowuhentest&password=liaowuhen&characterEncoding=utf-8");
+		    //conn = DriverManager.getConnection("jdbc:mysql://liaowuhentest.gotoftp5.com/liaowuhentest?user=liaowuhentest&password=liaowuhen&characterEncoding=utf-8");
 			//conn = DriverManager.getConnection("jdbc:mysql://liaowuhen.gotoftp3.com/liaowuhen?user=liaowuhen&password=liaowuhen&characterEncoding=utf-8");   //   聚美
 			//conn = DriverManager.getConnection("jdbc:mysql://114.113.99.7/ccwic?user=ccwic&password=1234abcd&characterEncoding=utf-8"); 
 			//conn = DriverManager.getConnection("jdbc:mysql://meidiserver.mysql.rds.aliyuncs.com/meidi?user=liaowuhen&password=liaowuhen&characterEncoding=utf-8");
