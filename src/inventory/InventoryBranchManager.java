@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 import branch.Branch;
 import branch.BranchManager;
+import branch.BranchService;
 
 
 
@@ -191,7 +192,8 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		    		logger.info("uid****"+uid);
 		    	} 
 		    	User u = UserManager.getUesrByID(uid+"");
-		    	Branch branch = BranchManager.getLocatebyname(u.getBranch());
+		    	//Branch branch = BranchManager.getLocatebyname(u.getBranch());
+		    	Branch branch = BranchService.getMap().get(Integer.valueOf(u.getBranch())); 
 		    	String sqlnew = "";  
 	    		String sql = "";        
 		    		if("peidan".equals(method)){
@@ -237,7 +239,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    			 } 
 				    	} 
 		    		}else if((Order.orderpeisong+"").equals(method) || (Order.ordersong+"").equals(method)){     
-		    			branch = BranchManager.getLocatebyname(user.getBranch()); 
+		    			branch = BranchService.getMap().get(Integer.valueOf(user.getBranch())); 
 		    			logger.info(Order.orderpeisong);       
 		    			if(or.getSalestatues() == 3 || or.getSalestatues() == 0 ){     
 				    		
@@ -400,7 +402,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 				    	}else{
 				    		Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 				    		uid = order.getDealsendId();  
-				    		branch = BranchManager.getLocatebyname(u.getBranch());
+				    		branch = BranchService.getMap().get(Integer.valueOf(u.getBranch())); 
 			    			 if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" +   
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"',"+or.getCount()+", 0,"+branch.getId()+")"; 
@@ -414,7 +416,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    			 }
 				    	} 
 				          
-		    		}    
+		    		}     
 		    		 logger.info(sql); 
 		    		 logger.info(sqlnew);
 			          listsql.add(sqlnew);
