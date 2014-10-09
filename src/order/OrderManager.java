@@ -975,7 +975,6 @@ logger.info(Orders.size());
 	  boolean flag = UserManager.checkPermissions(user, type);
 		  
 	  String str = "";
-	  //logger.info("num"+num);
 	  if(num != -1){
 		 str = "  limit " + ((page-1)*num)+","+ page*num ; 
 	  }

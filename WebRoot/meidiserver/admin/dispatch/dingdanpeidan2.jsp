@@ -2,20 +2,14 @@
  
 <%@ include file="../searchdynamic.jsp"%>
   
-<%  
-
-request.setCharacterEncoding("utf-8");
-
-//list = OrderManager.getOrderlist(user,Group.sencondDealsend,str,sort);      
+<%   
+     
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderDispatching,num,Page,sort,sear);  
 session.setAttribute("exportList", list); 
 count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.orderDispatching,num,Page,sort,sear);  
     
-  
 HashMap<Integer,User> usermap = UserManager.getMap(); 
-//获取送货员      
 List<User> listS = UserManager.getUsers(user,Group.send);
-
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
  
 opstatues = OrderPrintln.release;  
@@ -177,6 +171,7 @@ function change(str1,oid,type,statues,types){
 		alert("请选择送货员");
 		return ;
 	}
+	alert(statues == 0);
 	if(0 == statues){   
 		alert("您已提交驳回申请，不能派工");
 	}else {  
@@ -419,49 +414,52 @@ function adddetail(src){
 		<td align="center">
 		<%    
 
+		
 		int releasemodfy = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasemodfy, o.getId()) ;	
 		int release = OrderPrintlnManager.getstatues(opmap, OrderPrintln.release, o.getId()) ;
 	    int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId()) ;
-		int statuesnew = Order.orderpeisong; 
-		   
-		if(o.getSendId() == 0 ){
-			   if(o.getDeliveryStatues() == 9){
-				   statuesnew = Order.ordersong;
-			   }else if(o.getDeliveryStatues() == 10){
-				   statuesnew = Order.orderinsta; 
-			   }
-			   
-			   if(releasemodfy == 4 || releasemodfy == -1){
-			    	  
-		%> 
-		<select class = "category" name="category"  id="songh<%=o.getId() %>" >
-		 <option value=""></option>
-		<%     
-               for(int j=0;j< listS.size();j++){
-            	   User u = listS.get(j);
-            	   String str1 = "";
-            	   if(u.getId() == o.getSendId()){
-            		   str1 = "selected=selected" ;
-            		   
-            	   } 
-            	   %> 
-            	    <option value=<%=u.getId() %>  <%= str1%>> <%=u.getUsername() %></option>
-            	   <% 
-            	   
-                    }
-	                	%>
-         </select>   
-           
-         <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','<%=statuesnew %>',<%=release %>,'<%=o.getSendType(0,"</p>")%>')"  value="确定"/>
-		<% } 
-		} else {
-			
-		    if(usermap.get(Integer.valueOf(o.getSendId())) != null){
-		       %>
-		       <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
-		     <%
-		      }
-		}
+	    int salerelease = OrderPrintlnManager.getstatues(opmap, OrderPrintln.salerelease, o.getId()) ;
+	    
+	    
+	    int statuesnew = Order.orderpeisong; 
+			if(o.getSendId() == 0 && release != 0 && releasedispatch != 0 ){
+				   if(o.getDeliveryStatues() == 9){
+					   statuesnew = Order.ordersong;
+				   }else if(o.getDeliveryStatues() == 10){
+					   statuesnew = Order.orderinsta; 
+				   }
+				   
+				   if(releasemodfy == 4 || releasemodfy == -1){
+				    	  
+			%> 
+			<select class = "category" name="category"  id="songh<%=o.getId() %>" >
+			 <option value=""></option>
+			<%     
+	               for(int j=0;j< listS.size();j++){
+	            	   User u = listS.get(j);
+	            	   String str1 = "";
+	            	   if(u.getId() == o.getSendId()){
+	            		   str1 = "selected=selected" ;
+	            		   
+	            	   } 
+	            	   %> 
+	            	    <option value=<%=u.getId() %>  <%= str1%>> <%=u.getUsername() %></option>
+	            	   <% 
+	            	   
+	                    }
+		                	%>
+	         </select>   
+	           
+	         <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','<%=statuesnew %>',<%=release %>,'<%=o.getSendType(0,"</p>")%>')"  value="确定"/>
+			<% } 
+			} else {
+				
+			    if(usermap.get(Integer.valueOf(o.getSendId())) != null){
+			       %>
+			       <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
+			     <%
+			      }
+			}
 		%>
 		</td> 
 		<td align="center"> 
@@ -469,19 +467,19 @@ function adddetail(src){
 		</td>
 		
 		<td align="center"> 
-		 <%
-		      
-		 if(releasedispatch == -1 ){      
-			 if(releasemodfy == 0 ){ 
-				 OrderPrintln or = opmap.get(OrderPrintln.releasemodfy) == null?null:opmap.get(OrderPrintln.releasemodfy).get(o.getId()); 
-			    %> 
-			<%=or.getMessage() %>
-				<%
-			        }
-			%>
-		     
-		    <input type="submit" class="button" name="dosubmit" value="驳回订单" onclick="winconfirm('<%=o.getId()%>','<%= release %>','<%=o.getSendId()%>')"></input>
-		  <% } %>
+		 <% 
+		   if(release != 0 && releasedispatch != 0 && salerelease != 0 ){       
+				 if(releasemodfy == 0 ){ 
+					 OrderPrintln or = opmap.get(OrderPrintln.releasemodfy) == null?null:opmap.get(OrderPrintln.releasemodfy).get(o.getId()); 
+				    %> 
+				<%=or.getMessage() %>
+					<%
+				        }
+				%>
+			     
+			    <input type="submit" class="button" name="dosubmit" value="驳回订单" onclick="winconfirm('<%=o.getId()%>','<%= release %>','<%=o.getSendId()%>')"></input>
+			  <% 
+			 } %>
 		</td> 
 		 
 		<td align="center">     
@@ -490,6 +488,9 @@ function adddetail(src){
 		      if(opp!= null){
 		    	  if(opp.getStatues() == 0 ){
 		    %>
+		    <%=opp.getMessage() %>
+		    <input type="button" onclick="changes('<%=o.getId()%>','<%=opp.getId() %>','<%=OrderPrintln.comited%>','','','<%=OrderPrintln.salerelease%>')"  value="同意"/> 
+		    <input type="button" onclick="changes('<%=o.getId()%>','<%=opp.getId() %>','<%=OrderPrintln.uncomited%>','','','<%=OrderPrintln.salerelease%>')"  value="不同意"/>
 		<%
 		}
      }
@@ -549,9 +550,9 @@ function adddetail(src){
 		</td>
 		
 		<td align="center">
-		<%  if(o.getDeliverytype() != 0)
+		<%  if( o.getDeliverytype() != 0){
 		   if(o.getReturnid() == 0){    
-		%>
+		%> 
 		<select class = "category" name="category"  id="return<%=o.getId() %>" >
 		 <option value="0"></option>
 		<%    
@@ -570,7 +571,7 @@ function adddetail(src){
 	                	%>
          </select>   
         
-         <input type="button" onclick="change('return<%=o.getId()%>','<%=o.getId()%>','<%=Order.orderreturn%>','')"  value="确定"/>
+         <input type="button" onclick="change('return<%=o.getId()%>','<%=o.getId()%>','<%=Order.orderreturn%>','-1','<%=o.getSendType(0,"</p>")%>')"  value="确定"/>
 		<%} else { 
 		// 0 表示未送货  1 表示正在送  2 送货成功
 		 if(0 == o.getReturnstatuse()){
@@ -592,7 +593,7 @@ function adddetail(src){
 		</td> 
     </tr>
     <%}
-    
+    }
     }%>
 </tbody>
 </table>

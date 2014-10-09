@@ -1,8 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="searchdynamic.jsp"%>    
 <%       
-   
-request.setCharacterEncoding("utf-8"); 
 
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
 
