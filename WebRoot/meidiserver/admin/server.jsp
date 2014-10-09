@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,orderproduct.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*,orderproduct.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;" pageEncoding="utf-8"%>
 <%
 
 request.setCharacterEncoding("utf-8");
@@ -210,7 +210,6 @@ if("peidan".equals(method)){
     	if(!StringUtill.isNull(branch)){
     		System.out.println(branch);
     		Branch b = BranchManager.getLocatebyid(branch);
-    		
     		list = InventoryBranchManager.getCategory(b.getLocateName(), product);  
     	}else {
     		list = InventoryBranchManager.getCategory(branch, product);
@@ -368,7 +367,8 @@ if("peidan".equals(method)){
 				for(int j=0;j<list.size();j++){
 					InventoryBranch inb = list.get(j);
 					System.out.println("type[i]"+type[i]);
-					if(inb.getType().equals(type[i])){
+					String realtype = ProductService.getIDmap().get(Integer.valueOf(type[i])).getType();
+					if(inb.getType().equals(realtype)){ 
 						map.put(type[i], "实际库存："+inb.getRealcount()+"  账面库存:"+inb.getPapercount());
 					} 
 				}

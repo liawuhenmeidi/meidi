@@ -20,8 +20,8 @@ HashMap<String,ArrayList<String>> listt = ProductManager.getProductName();
 
 String plist = StringUtill.GetJson(listt);
 
-Branch branch = BranchManager.getLocatebyname(user.getBranch()); 
-
+Branch branch = BranchService.getMap().get(Integer.valueOf(user.getBranch())); 
+  
 
 String id = request.getParameter("id");
 Order order = null ; 
@@ -53,12 +53,6 @@ if(StringUtill.isNull( branchmessage)){
 }   
 String[] branlist =  branchmessage.split("_");
 
-
-//System.out.println(11);
-
-//System.out.println("*******"+strorder);  
-
-
 %> 
    
 <!DOCTYPE html>
@@ -78,6 +72,8 @@ String[] branlist =  branchmessage.split("_");
 <script src="../js/mobiscroll.datetime-2.6.2.js" type="text/javascript"></script>
 <script src="../js/mobiscroll.android-ics-2.6.2.js" type="text/javascript"></script>
  <link href="../css/mobiscroll.android-ics-2.6.2.css" rel="stylesheet" type="text/css" />
+ 
+<script type="text/javascript" src="../js/calendar.js"></script> 
 <link rel="stylesheet" href="../css/songhuo.css">
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
@@ -88,15 +84,10 @@ String[] branlist =  branchmessage.split("_");
    var messageflag = false;  // 是否需要填写顾客信息
    var flag = false ;
   
-  // var availableTags = '<%=plist%>'; 
-  // alert(availableTags);
-  // var jsons =  $.parseJSON(availableTags);
   var jsons = <%=plist%> ; 
 
    var cid = "";  
    var ids = "";  
- //  var CList = '<%=clist%>';
- //  var json =  $.parseJSON(CList);
    var json = <%=clist%>;
    var row = 1;  
 
@@ -310,15 +301,7 @@ String[] branlist =  branchmessage.split("_");
    }
     
    function initTime(){
-	   var opt = { };
-	    opt.date = {preset : 'date'};
-		$('#serviceDate').val('').scroller('destroy').scroller($.extend(opt['date'], 
-		{ theme: 'android-ics light', mode: 'scroller', display: 'modal',lang: 'zh' ,startYear:'1980',endYear:'2020',maxDate: new Date()}));
-		var opt2 = { };   
-	    opt2.date = {preset : 'date'};
-		$('#serviceDate2').val('').scroller('destroy').scroller($.extend(opt2['date'], 
-		{ theme: 'android-ics light', mode: 'scroller', display: 'modal',lang: 'zh' ,startYear:new Date(),endYear:'2020',minDate: new Date()}));
-		//var ids = ($(this).children('option:selected').val());
+	   
    }
  
  function initpos(str){
@@ -503,8 +486,8 @@ String[] branlist =  branchmessage.split("_");
                 '  <select  name="productsta'+row+'" id="productsta'+row+'" style="width:90%; " '+disable+'>'+
                    
                '  <option value="" id=""></option>    '+ 
-                ' <option value="0" id="0">已自提</option>'+
                 ' <option value="1" id="1">需配送安装</option>'+
+                ' <option value="0" id="0">已自提</option>'+
                 ' <option value="2" id="2">只安装(师傅门店提货)</option> '+  
              	' <option value="3" id="3">只安装(顾客已提)</option> '+ 
               	  '  </select>'+
@@ -905,9 +888,9 @@ String[] branlist =  branchmessage.split("_");
 
 <table style="width:100% "> 
  
-  <tr>   
+  <tr>    
     <td width="25%" class="center">发票日期<span style="color:red">*</span></td>
-    <td width="50%" class=""><input class="date" type="text" name="saledate" placeholder="必填"  id="serviceDate"  readonly="readonly" style="width:90% "></input>   </td>
+    <td width="50%" class=""><input class="date" type="text" name="saledate" placeholder="必填"  id = "serviceDate" onclick="new Calendar().show(this);" readonly="readonly" style="width:90% "></input>   </td>
     <td width="25%" class="center"></td>
   </tr>
    <% 
@@ -1068,7 +1051,7 @@ String[] branlist =  branchmessage.split("_");
    <table style="width:100% ">
    <tr>  
     <td width="25%" class="center">预约日期<span style="color:red">*</span></td>
-    <td width="45%" class=""><input class="date2" type="text" name="andate" id ="serviceDate2" placeholder="必填"  readonly="readonly" style="width:90% "></input>   </td>
+    <td width="45%" class=""><input class="date2" type="text" name="andate" id ="serviceDate2" onclick="new Calendar().show(this);"  placeholder="必填"  readonly="readonly" style="width:90% "></input>   </td>
     <td width="25%" class="center" id="andates"></td> 
     <td width="5%"></td> 
    </tr> 

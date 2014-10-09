@@ -289,7 +289,7 @@ function serchclick(category,type,branchid,obj){
 			   Product b = listp.get(i);
 			   
 	    %>    
-	    <option value="<%=b.getType()%>"><%= b.getType()%></option>
+	    <option value="<%=b.getId()%>"><%= b.getType()%></option>
 	   <% 
 		   }    
 	   }

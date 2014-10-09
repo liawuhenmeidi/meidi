@@ -41,11 +41,13 @@ public class InventoryBranchManager {
 		Connection conn = DB.getConn();
 		String sql = "";
 		if(!StringUtill.isNull(type) && !StringUtill.isNull(branch)){ 
+			//type = ProductService.gettypemap().get(type).getId()+""; 
 			sql = "select * from mdinventorybranch where type = '"+type +"' and branchid in (select id from mdbranch where bname = '"+branch+"') and branchid not in (select id from mdbranch where statues = 1 )";  
 		}else if(!StringUtill.isNull(type) && StringUtill.isNull(branch)){
+			//type = ProductService.gettypemap().get(type).getId()+""; 
 			sql = "select * from mdinventorybranch where type = '"+type +"' and branchid not in (select id from mdbranch where statues = 1 )";  
-		}else if(StringUtill.isNull(type) && !StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where  branchid in (select id from mdbranch where bname = '"+branch+"') and branchid not in (select id from mdbranch where statues = 1 )";  
+		}else if(StringUtill.isNull(type) && !StringUtill.isNull(branch)){ 
+			sql = "select * from mdinventorybranch where  branchid in ("+branch+") and branchid not in (select id from mdbranch where statues = 1 )";  
 		}else if(StringUtill.isNull(type) && StringUtill.isNull(branch)){
 			sql = "select * from mdinventorybranch where branchid not in (select id from mdbranch where statues = 1 )";    
 		}
@@ -75,13 +77,13 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		Connection conn = DB.getConn();
 		String sql = ""; 
 		if(!StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and branchid in ("+branch+")  and branchid not in (select id from mdbranch where statues = 1 )";  
+			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and branchid in ("+branch+")  and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
 		}else if(!StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and branchid not in (select id from mdbranch where statues = 1 ) ";  
+			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
 		}else if(StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where  branchid in ("+branch+") and branchid not in (select id from mdbranch where statues = 1 )";  
+			sql = "select * from mdinventorybranch where  branchid in ("+branch+") and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
 		}else if(StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where 1= 1 and branchid not in (select id from mdbranch where statues = 1 )";    
+			sql = "select * from mdinventorybranch where 1= 1 and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";    
 		}  
 	logger.info(sql);	
 		Statement stmt = DB.getStatement(conn);

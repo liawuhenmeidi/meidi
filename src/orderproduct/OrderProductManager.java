@@ -68,6 +68,7 @@ public class OrderProductManager {
 	   }
 	public static String delete(int id) {
 		String sql = "delete from mdorderproduct where orderid = " + id;
+		OrderProductManager.resetOrPMap(); 
         return sql ;
 	}
 	  
@@ -82,11 +83,12 @@ public class OrderProductManager {
 				String sql = "insert into  mdorderproduct (id, categoryID ,sendtype,saletype, count,orderid ,statues ,categoryname,salestatues,subtime)" +  
 	                         "  values ( null, "+order.getCategoryId()+", '"+order.getSendType()+"', '"+order.getSaleType()+"',"+order.getCount()+","+id+","+order.getStatues()+",'"+order.getCategoryName()+"',"+order.getSalestatues()+",'"+TimeUtill.gettime()+"')";
 				logger.info(sql); 
-				sqls.add(sql);
+				sqls.add(sql); 
+				OrderProductManager.resetOrPMap();
 			} 
 			 return sqls; 
 	   }
-	   
+	    
 	    
 	   public static int getMaxid(){
 		   int id = 0 ;
@@ -132,7 +134,7 @@ public class OrderProductManager {
 				 }
 				return Orders;
 		 }
-	   
+	    
 	   
 	   //author wilsonlee
 	   public static Map<Integer,List<OrderProduct>> getOrderStatuesM(){
