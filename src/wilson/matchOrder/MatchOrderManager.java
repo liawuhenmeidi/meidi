@@ -45,12 +45,31 @@ public class MatchOrderManager {
 	
 	//接受{"1,2","2,3"}类型的ID输入,前一个是DB的Order，后一个是upload的Order哦~
 	public static boolean checkOrder(String[] idString){
+		int DBOrderID = 0;
+		int UploadOrderID = 0;
+		for(int i = 0 ; i < idString.length ; i ++){
+			DBOrderID = Integer.parseInt(idString[i].split(",")[0]);
+			UploadOrderID = Integer.parseInt(idString[i].split(",")[1]);
+			UploadManager.checkOrder(UploadOrderID,DBOrderID );
+		}
+		return true;
+	}
+	
+	public static boolean checkDBOrder(int DBOrderID){
 		
-		//消除Upload中的Order和消除DB中的Order(还没有添加完)
-		if(UploadManager.checkOrder(idString)){
+		if(UploadManager.checkDBOrder(DBOrderID )){
 			return true;
 		}
-		
+
+		return false;
+	}
+	
+	public static boolean checkUploadOrder(int UploadOrderID){
+
+		if(UploadManager.checkUploadOrder(UploadOrderID)){
+			return true;
+		}
+
 		return false;
 	}
 

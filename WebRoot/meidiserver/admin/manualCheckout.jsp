@@ -8,10 +8,14 @@
 	String uploadSide = request.getParameter("uploadside");
 	
 	if(dbSide != null && !dbSide.equals("") && uploadSide != null && !uploadSide.equals("")){
+		
 		System.out.println();
-		System.out.println("dbside = " + dbSide);
-		System.out.println("uploadSide = " + uploadSide);
 		MatchOrderManager.checkOrder(Integer.parseInt(dbSide), Integer.parseInt(uploadSide));
+		
+	}else if(dbSide != null && !dbSide.equals("")){
+		MatchOrderManager.checkDBOrder(Integer.parseInt(dbSide));
+	}else if(uploadSide != null && !uploadSide.equals("")){
+		MatchOrderManager.checkUploadOrder(Integer.parseInt(uploadSide));
 	}
 	
 	//从数据库中取到需要匹配的Order
@@ -50,9 +54,9 @@
 <table  cellspacing="1" border="2px">
 		<form action="" method="post">
 		<tr>
-			<td colspan="7" align="center"><h3>本地记录的订单</h3></td>
+			<td colspan="6" align="center"><h3>本地记录的订单</h3></td>
 			<td align="center"></td> 
-			<td colspan="7" align="center"><h3>苏宁返回的订单</h3></td>
+			<td colspan="6" align="center"><h3>苏宁返回的订单</h3></td>
 		</tr>
 
 		<tr>  
@@ -61,7 +65,6 @@
 			<td align="center">销售门店</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
-			<td align="center">交货日期</td> 
 			<td align="center">票面型号</td> 
 			<td align="center">票面数量</td> 
 			<td align="center"></td> 
@@ -69,7 +72,6 @@
 			<td align="center">销售门店</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
-			<td align="center">交货日期</td> 
 			<td align="center">票面型号</td> 
 			<td align="center">票面数量</td> 
 	
@@ -84,14 +86,12 @@
 					<td align="center"><%= unCheckedDBOrders.get(i).getBranch() %></td>
 					<td align="center"><%= unCheckedDBOrders.get(i).getPos() %></td>
 					<td align="center"><%= unCheckedDBOrders.get(i).getSaleTime() %></td>
-					<td align="center"><%= unCheckedDBOrders.get(i).getOdate() %></td> 
 					<td align="center"><%= unCheckedDBOrders.get(i).getSendType() %></td> 
 					<td align="center"><%= unCheckedDBOrders.get(i).getSendCount() %></td> 
 		<%
 				}else{
 		%>
 					<tr>
-					<td align="center"></td>
 					<td align="center"></td>
 					<td align="center"></td>
 					<td align="center"></td> 
@@ -107,7 +107,6 @@
 							<td align="center"><%= unCheckedUploadOrders.get(i).getShop() %></td>
 							<td align="center"><%= unCheckedUploadOrders.get(i).getPosNo() %></td>
 							<td align="center"><%= unCheckedUploadOrders.get(i).getSaleTime() %></td>
-							<td align="center"><%= unCheckedUploadOrders.get(i).getDealTime() %></td> 
 							<td align="center"><%= unCheckedUploadOrders.get(i).getType() %></td> 
 							<td align="center"><%= unCheckedUploadOrders.get(i).getNum() %></td> 
 							</tr>
@@ -120,7 +119,6 @@
 							<td align="center"></td>
 							<td align="center"></td> 
 							<td align="center"></td> 
-							<td align="center"></td> 
 							</tr>
 		<%
 				}
@@ -131,7 +129,7 @@
 			}
 		%>
 		<tr>
-			<td colspan="14" align="center"><input type="submit" value="提交"/></td>
+			<td colspan="12" align="center"><input type="submit" value="提交"/></td>
 		</tr>
 		</form>
 </table> 

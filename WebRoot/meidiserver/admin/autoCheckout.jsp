@@ -54,9 +54,9 @@
 <table  cellspacing="1" border="2px">
 		<form action="" method="post">
 		<tr>
-			<td colspan="7" align="center"><h3>本地记录的订单</h3></td>
+			<td colspan="6" align="center"><h3>本地记录的订单</h3></td>
 			<td align="center"></td> 
-			<td colspan="7" align="center"><h3>苏宁返回的订单</h3></td>
+			<td colspan="6" align="center"><h3>苏宁返回的订单</h3></td>
 		</tr>
 
 		<tr>  
@@ -65,14 +65,12 @@
 			<td align="center">销售门店</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
-			<td align="center">交货日期</td> 
 			<td align="center">票面型号</td> 
 			<td align="center">票面数量</td> 
 			<td align="center"></td> 
 			<td align="center">销售门店</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
-			<td align="center">交货日期</td> 
 			<td align="center">票面型号</td> 
 			<td align="center">票面数量</td> 
 	
@@ -83,18 +81,16 @@
 			if(afterMatchOrders.get(i).getCompareLevel() >= 5.0){
 		%>
 		<tr>
-			<td align="center"><input name="auto"  checked="checked" type="checkbox" value="<%=unCheckedDBOrders.get(i).getId() %>,<%=unCheckedUploadOrders.get(i).getId() %>"/></td>		
+			<td align="center"><input name="auto"  checked="checked" type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>,<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
 			<td align="center"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
 			<td align="center"><%= afterMatchOrders.get(i).getDBSidePosNo() %></td>
 			<td align="center"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideDealTime() %></td> 
 			<td align="center"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
 			<td align="center"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
 			<td align="center"></td>
 			<td align="center"><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
 			<td align="center"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
 			<td align="center"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideDealTime() %></td> 
 			<td align="center"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
 			<td align="center"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
@@ -109,18 +105,16 @@
 			if(afterMatchOrders.get(i).getCompareLevel() < 5.0){
 		%>
 		<tr>
-			<td align="center"><input name="auto"  type="checkbox" value="<%=unCheckedDBOrders.get(i).getId() %>,<%=unCheckedUploadOrders.get(i).getId() %>"/></td>		
+			<td align="center"><input name="auto"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>,<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
 			<td align="center"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
 			<td align="center"><%= afterMatchOrders.get(i).getDBSidePosNo() %></td>
 			<td align="center"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideDealTime() %></td> 
 			<td align="center"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
 			<td align="center"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
 			<td align="center"></td>
 			<td align="center"><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
 			<td align="center"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
 			<td align="center"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideDealTime() %></td> 
 			<td align="center"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
 			<td align="center"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
@@ -142,14 +136,12 @@
 					<td align="center"><%= unCheckedDBOrders.get(i).getBranch() %></td>
 					<td align="center"><%= unCheckedDBOrders.get(i).getPos() %></td>
 					<td align="center"><%= unCheckedDBOrders.get(i).getSaleTime() %></td>
-					<td align="center"><%= unCheckedDBOrders.get(i).getOdate() %></td> 
 					<td align="center"><%= unCheckedDBOrders.get(i).getSendType() %></td> 
 					<td align="center"><%= unCheckedDBOrders.get(i).getSendCount() %></td> 
 		<%
 				}else{
 		%>
 					<tr>
-					<td align="center"></td>
 					<td align="center"></td>
 					<td align="center"></td>
 					<td align="center"></td> 
@@ -165,7 +157,6 @@
 							<td align="center"><%= unCheckedUploadOrders.get(i).getShop() %></td>
 							<td align="center"><%= unCheckedUploadOrders.get(i).getPosNo() %></td>
 							<td align="center"><%= unCheckedUploadOrders.get(i).getSaleTime() %></td>
-							<td align="center"><%= unCheckedUploadOrders.get(i).getDealTime() %></td> 
 							<td align="center"><%= unCheckedUploadOrders.get(i).getType() %></td> 
 							<td align="center"><%= unCheckedUploadOrders.get(i).getNum() %></td> 
 							</tr>
@@ -176,7 +167,6 @@
 							<td align="center"></td>
 							<td align="center"></td>
 							<td align="center"></td>
-							<td align="center"></td> 
 							<td align="center"></td> 
 							<td align="center"></td>
 							</tr>
@@ -189,7 +179,7 @@
 			}
 		%>
 		<tr>
-			<td colspan="14" align="center"><input type="submit" value="提交"/></td>
+			<td colspan="12" align="center"><input type="submit" value="提交"/></td>
 		</tr>
 		</form>
 </table> 

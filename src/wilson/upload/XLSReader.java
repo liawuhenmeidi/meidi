@@ -27,6 +27,9 @@ public class XLSReader {
 			Workbook wb = Workbook.getWorkbook(srcFile);
 			Sheet sheet0 = wb.getSheet(0);
 			for(int i = 1 ; i < sheet0.getRows(); i ++){
+				if(sheet0.getCell(0,i).getContents().equals("")){
+					continue;
+				}
 				uo.setShop(sheet0.getCell(0,i).getContents());
 				uo.setSaleNo(sheet0.getCell(1,i).getContents());
 				uo.setPosNo(sheet0.getCell(2,i).getContents());
@@ -99,6 +102,10 @@ public class XLSReader {
 					for(j = 3 ; j < sheet0.getColumns();j = j+2){
 						if(sheet0.getCell(j,i).getContents()==""||sheet0.getCell(j,i).getContents().equals("")){
 							break;
+						}
+						
+						if(sheet0.getCell(j+1,i).getContents()==""||sheet0.getCell(j+1,i).getContents().equals("")){
+							throw new Exception();
 						}
 						
 						tempString += "\"" + sheet0.getCell(j,i).getContents() + "\"" + ":" + "\"" + sheet0.getCell(j+1,i).getContents() + "\""+",";
