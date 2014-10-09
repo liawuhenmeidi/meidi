@@ -20,7 +20,7 @@ import utill.StringUtill;
 import branch.Branch;
 import database.DB;
     
-public class UserManager {  
+public class UserManager {   
 	protected static Log logger = LogFactory.getLog(UserManager .class);
 	//  验证是否有相同的用户名
 	public static boolean getName(String c){

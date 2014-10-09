@@ -134,7 +134,8 @@ var disable = '<%=isdisabel %>';
  var inventoyr = '<%=invent%>';
  var winPar = null;
  var jsoninvent =  $.parseJSON(inventoyr);
-  var typeid = ""; 
+ var typeid = ""; 
+  
  $(function () {  
 	 add();
      
@@ -162,12 +163,17 @@ var disable = '<%=isdisabel %>';
  }
   
  function search(ctype,branchid){ 
-	 $("#time").val("");
-	 $("#starttime").val(""); 
-	 $("#endtime").val(""); 
-	 winPar = window.open("time.jsp","time","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
-	 setInterval("startRequest('"+ctype+"','"+branchid+"')",500);  
- } 
+		 if('<%=user.getBranch()%>' != branchid ){ 
+			 alert("对不起，您不能查看");
+		 }else {
+			 $("#time").val("");
+			 $("#starttime").val(""); 
+			 $("#endtime").val(""); 
+			 winPar = window.open("time.jsp","time","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
+			 setInterval("startRequest('"+ctype+"','"+branchid+"')",500);  
+	 
+		 }
+    } 
   
 
 function distri(){
@@ -193,6 +199,7 @@ function serchclick(category,type,branchid,obj){
 	 
 	 $("#table tr").remove();    
 	 var branch = "<%=branchid%>";
+	 
 	 var category = "<%=category%>"; 
 	 var b = $("#branch").val(); 
 	 
@@ -201,6 +208,7 @@ function serchclick(category,type,branchid,obj){
 	 if(branch == null || branch == ""){
 		 branch = b ; 
 	 }   
+	 
 	 $("#branch option[value='"+branch+"']").attr("selected","selected"); 
 	 //alert(branch);
 	 $.ajax({   

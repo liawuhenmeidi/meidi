@@ -92,7 +92,7 @@ var disable = '<%=isdisabel %>';
 		 var str = $("#outbranchs").find("option:selected").text();
 		 $("#outbranch").val(str);
 	 });
-	         
+	          
 	 $("#inbranchs").change(function(){
 		 var str = $("#inbranchs").find("option:selected").text();
 		 $("#inbranch").val(str);
@@ -131,8 +131,20 @@ var disable = '<%=isdisabel %>';
 			  
 		 }
 	 }
+	  
+	 addcount();
  }
-
+ 
+ function addcount(){
+	 var totalcount = 0 ;
+	 for(var i=0;i<rows.length;i++){
+		 var countrow = $("#orderproductNum"+rows[i]).val();
+		 totalcount += countrow*1;
+	 }
+	 $("#addcount").html(totalcount);
+ }
+ 
+ 
  function add(){
 	 var ctype = $("#ordertype0").val();
 	 if(ctype == ""){
@@ -153,12 +165,14 @@ var disable = '<%=isdisabel %>';
 	 var str = '';  
 	 str += '<tr id="record'+row+'" class="asc">' +  
 	     ' <td>'+ctype+'<input type="hidden" name="orderproductType'+row+'" value="'+ctype+'"/><input type="hidden" name="product" value="'+row+'"/></td> ' +
-	     ' <td><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'" value="'+count+'" style="width:50%" /></td> ' +
+	     ' <td><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'" value="'+count+'" onBlur="addcount()" style="width:50%" /></td> ' +
 	     ' <td><input type="button" value="删除" onclick="delet(record'+row+','+row+')"/></td> ' +  
 	     ' </tr>'; 
 	$("#table").append(str);      
 	row++;   
 	$("#ordertype0").val(""); 
+	
+	 addcount();
  }
   
  function delet(str,str2){ 
@@ -291,8 +305,11 @@ var disable = '<%=isdisabel %>';
      
      </tr>
  
-   </table>
-   
+   </table>  
+     &nbsp;&nbsp;&nbsp;&nbsp;
+    <font style="color:blue;font-size:20px;" >合计:<span style="color:red;font-size:20px;" id="addcount"></span></font>
+    <br/>
+    
   <% 
 	  if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 ){
    %>
@@ -301,16 +318,10 @@ var disable = '<%=isdisabel %>';
 	  } 
   %> 
 
-  &nbsp;&nbsp;&nbsp;&nbsp;合计
-  
   </div>
-       
-    
-     
    
  </form>
      </div>
-
 </div>
 
 

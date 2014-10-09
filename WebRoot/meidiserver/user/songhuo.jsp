@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,category.*,product.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%  
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
@@ -119,7 +119,7 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
 		    	 %> 
 		    	 <tr>
-		    	 <td ><%=op.getSendType()%></td>
+		    	 <td ><%=ProductService.getIDmap().get(Integer.valueOf(op.getSendType())).getType()%></td>
 		    	 </tr>
 		    	 <% 
 		        }

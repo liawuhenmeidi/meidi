@@ -733,7 +733,8 @@ public String getSendType(){
 	if(null != lists){	
 		for(int g = 0 ;g<lists.size();g++){
 				if(lists.get(g).getStatues() == 1){        
-					String tempType = lists.get(g).getSaleType();   
+					String tempType = lists.get(g).getSaleType();
+					//System.out.println(tempType);
 					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
 					sendType += ((tempType == null || tempType.equals("null"))?"":tempType) +"|" ;
 					return sendType;

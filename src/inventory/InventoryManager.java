@@ -38,15 +38,15 @@ public class InventoryManager {
 		String sql = "";
 		if(UserManager.checkPermissions(user, Group.dealSend)){
 			if("unconfirmed".equals(statues)){ 
-				sql = "select * from inventory where instatues = 0 or outstatues = 0";
+				sql = "select * from inventory where instatues = 0 or outstatues = 0 order by id desc";
 			}else if("confirmed".equals(statues)){
-				sql = "select * from inventory where instatues = 1 and outstatues = 1";
+				sql = "select * from inventory where instatues = 1 and outstatues = 1 order by id desc";
 			}
 		}else {       
 			if("unconfirmed".equals(statues)){ 
-				sql = "select * from inventory where (instatues = 0 or outstatues = 0) and (inbranchid = " + branchid +" or outbranchid = "+ branchid+")";
+				sql = "select * from inventory where (instatues = 0 or outstatues = 0) and (inbranchid = " + branchid +" or outbranchid = "+ branchid+") order by id desc";
 			}else if("confirmed".equals(statues)){
-				sql = "select * from inventory where instatues = 1 and outstatues = 1 and (inbranchid = " + branchid +" or outbranchid = "+ branchid+")";
+				sql = "select * from inventory where instatues = 1 and outstatues = 1 and (inbranchid = " + branchid +" or outbranchid = "+ branchid+") order by id desc";
 			}
 			
 		} 

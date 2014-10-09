@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,product.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%  
  
@@ -129,7 +129,7 @@ function detail(src){
 
 		    	 %> 
 		    	 <tr>
-		    	 <td ><%=op.getSendType()%></td>
+		    	 <td ><%=ProductService.getIDmap().get(Integer.valueOf(op.getSendType())).getType()%></td>
 		    	 </tr>
 		    	 <% 
 		        }

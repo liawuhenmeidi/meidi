@@ -133,7 +133,7 @@ var disable = '<%=isdisabel %>';
 			 rows.push(row);
 			 var str = '';   
 			 str += '<tr id="record'+row+'" class="asc">' +  
-			     ' <td>'+json.productId+'<input type="hidden" name="orderproductType'+row+'" value="'+json.productId+'"/><input type="hidden" name="product" value="'+row+'"/></td> ' +
+			     ' <td>'+json.productname+'<input type="hidden" name="orderproductType'+row+'" value="'+json.productId+'"/><input type="hidden" name="product" value="'+row+'"/></td> ' +
 			     ' <td><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'" value="'+json.count+'" style="width:50%" '+disable+'/></td> ' +
 			     ' <td><input type="button" value="删除" onclick="delet(record'+row+','+row+')" '+disable+'/></td> ' +  
 			     ' </tr>';  
@@ -142,9 +142,18 @@ var disable = '<%=isdisabel %>';
 			  
 		 }
 	 }
+	 addcount();
  }
    
-  
+ function addcount(){
+	 var totalcount = 0 ;
+	 for(var i=0;i<rows.length;i++){
+		 var countrow = $("#orderproductNum"+rows[i]).val();
+		 totalcount += countrow*1;
+	 }
+	 $("#addcount").html(totalcount);
+ }
+ 
  function add(){
 	 var ctype = $("#ordertype0").val();
 	 if(ctype == ""){
@@ -232,7 +241,7 @@ var disable = '<%=isdisabel %>';
   <br/>
     
             
-    <br/>    
+   
      <br/>        
    <table width="100%" border="1" cellpadding="0" cellspacing="0" id="table">
      <tr class="asc"> 
@@ -247,7 +256,8 @@ var disable = '<%=isdisabel %>';
    
    
   
-  &nbsp;&nbsp;&nbsp;&nbsp;合计
+  <font style="color:blue;font-size:20px;" >合计:<span style="color:red;font-size:20px;" id="addcount"></span></font>
+    <br/> 
   
   </div>
        

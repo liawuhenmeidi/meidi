@@ -323,6 +323,8 @@ var disable = '<%=isdisabel %>';
  
    </table>
    
+    &nbsp;&nbsp;&nbsp;&nbsp;<font style="color:red;font-size:20px;" >合计</font>
+    <br/>
   <% 
 	  if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 ){
    %>
@@ -331,13 +333,10 @@ var disable = '<%=isdisabel %>';
 	  } 
   %> 
 
-  &nbsp;&nbsp;&nbsp;&nbsp;合计
+
   
   </div>
-       
-    
-     
-   
+
  </form>
      </div>
 

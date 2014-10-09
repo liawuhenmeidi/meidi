@@ -93,15 +93,19 @@ List<Category> list =CategoryManager.getCategory(user,Category.sale) ;
  <!--       -->    
      
      <div class="">
-   <div class="weizhi_head">现在位置：产品类别管理</div>     
+   <div class="weizhi_head">现在位置：产品类别管理</div> 
+    <% 
+     if(UserManager.checkPermissions(user, Group.Manger)){
+    %>     
    <div class="main_r_tianjia">
-   
-   <ul>                                                                                                 
+    <ul>                                                                                                 
      <li><a href="categoryAdd.jsp">添加产品类别</a></li>
      </ul>
    
    </div>
-     
+   <%
+     }
+   %>  
    <div class="table-list">
 <table width="100%" cellspacing="1" id="table">
 	<thead>
@@ -131,7 +135,7 @@ List<Category> list =CategoryManager.getCategory(user,Category.sale) ;
 		   if(0 == category.getStatues()){
 		 %>
 		 否
-		 <input type="button" onclick="changes('<%=category.getId()%>',1)"  value="删除"/>
+		 <input type="button" onclick="changes('<%=category.getId()%>',1)"  value="断货"/>
 		 <%
 		   }else {
 		 %>

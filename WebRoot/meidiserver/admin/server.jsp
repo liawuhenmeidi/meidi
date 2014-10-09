@@ -365,9 +365,9 @@ if("peidan".equals(method)){
 			if(!StringUtill.isNull(type[i])){ 
 				map.put(type[i], "实际库存："+0+"  账面库存:"+0);
 				for(int j=0;j<list.size();j++){
-					InventoryBranch inb = list.get(j);
-					System.out.println("type[i]"+type[i]);
-					String realtype = ProductService.getIDmap().get(Integer.valueOf(type[i])).getType();
+					InventoryBranch inb = list.get(j); 
+					//System.out.println("type[i]"+type[i]);
+					String realtype = inb.getType();
 					if(inb.getType().equals(realtype)){ 
 						map.put(type[i], "实际库存："+inb.getRealcount()+"  账面库存:"+inb.getPapercount());
 					} 

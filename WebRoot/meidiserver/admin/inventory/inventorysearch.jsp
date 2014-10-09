@@ -129,11 +129,11 @@ var disable = '<%=isdisabel %>';
 		 for(var i=0;i<jsoninvent.length;i++){
 			 
 			 var json = jsoninvent[i];
-			 //alert(json);
+			
 			 rows.push(row);
 			 var str = '';   
 			 str += '<tr id="record'+row+'" class="asc">' +  
-			     ' <td>'+json.productId+'<input type="hidden" name="orderproductType'+row+'" value="'+json.productId+'"/><input type="hidden" name="product" value="'+row+'"/></td> ' +
+			     ' <td>'+json.productname+'<input type="hidden" name="orderproductType'+row+'" value="'+json.productId+'"/><input type="hidden" name="product" value="'+row+'"/></td> ' +
 			     ' <td><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'" value="'+json.count+'" style="width:50%" '+disable+'/></td> ' +
 			     ' <td><input type="button" value="删除" onclick="delet(record'+row+','+row+')" '+disable+'/></td> ' +  
 			     ' </tr>';  
@@ -142,9 +142,20 @@ var disable = '<%=isdisabel %>';
 			  
 		 }
 	 }
+	 
+	 addcount();
  }
    
-  
+   
+ function addcount(){
+	 var totalcount = 0 ;
+	 for(var i=0;i<rows.length;i++){
+		 var countrow = $("#orderproductNum"+rows[i]).val();
+		 totalcount += countrow*1;
+	 }
+	 $("#addcount").html(totalcount);
+ }
+ 
  function add(){
 	 var ctype = $("#ordertype0").val();
 	 if(ctype == ""){
@@ -217,9 +228,7 @@ var disable = '<%=isdisabel %>';
      <div>     
     
                      
-  <div style="background-color:;width:60%" > 
-   <center><div id="branchmessage"><font style="color:red;font-size:20px;" >调拨单</font></div></center>
-   <br/>
+    <br/>
                  出库单位：  
          <input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch %>"  <%=isdisabel %>/>                    
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
@@ -231,8 +240,7 @@ var disable = '<%=isdisabel %>';
   <br/>
   <br/>
     
-            
-    <br/>    
+       
      <br/>        
    <table width="100%" border="1" cellpadding="0" cellspacing="0" id="table">
      <tr class="asc"> 
@@ -247,7 +255,8 @@ var disable = '<%=isdisabel %>';
    
    
   
-  &nbsp;&nbsp;&nbsp;&nbsp;合计
+ <font style="color:blue;font-size:20px;" >合计:<span style="color:red;font-size:20px;" id="addcount"></span></font>
+    <br/> 
   
   </div>
        

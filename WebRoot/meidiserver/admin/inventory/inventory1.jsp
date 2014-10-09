@@ -3,14 +3,8 @@
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 
-String branchid = "";   
-if(UserManager.checkPermissions(user, Group.Manger)){
-	branchid = request.getParameter("branchid");  
-}else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
-	branchid = BranchManager.getBranchID(user.getBranch())+""; 
-} 
-  
 String category = request.getParameter("category");
+String branchid = request.getParameter("branchid");
 
 Category c = CategoryManager.getCategory(category);
 
@@ -142,6 +136,7 @@ var disable = '<%=isdisabel %>';
  var winPar = null;
  var jsoninvent =  $.parseJSON(inventoyr);
   var typeid = ""; 
+  var branch = "<%=branchid%>"; 
  $(function () {  
 	 add();
      
@@ -194,12 +189,11 @@ function serchclick(category,type,branchid,obj){
  
  
  function add(){   
-	 
+	
 	 $("#table tr").remove();    
-	 var branch = "<%=branchid%>";
+	 
 	 var category = "<%=category%>"; 
 	 var b = $("#branch").val();  
-	 
 	 var product = $("#product").val(); 
 
 	 if(branch == null || branch == ""){
