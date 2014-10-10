@@ -146,4 +146,43 @@ public class XLSReader {
 			}
 			return uploadSalaryModelList;
 		}
+		
+		//读取指定位置的xls内容，并解析成UploadOrder对象进行返回(已经checked的uploadOrder对象)
+		public List<UploadOrder> readSalesXLS(String path,String fileName){
+			if(fileName == null || path == null){
+				return null;
+			}
+			
+			String filepath = path.replace("\\", "/");
+			List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
+			UploadOrder uo = new UploadOrder();
+			try{
+				File srcFile = new File(filepath,fileName); 
+				Workbook wb = Workbook.getWorkbook(srcFile);
+				Sheet sheet0 = wb.getSheet(0);
+				SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				for(int i = 1 ; i < sheet0.getRows(); i ++){
+					if(sheet0.getCell(0,i).getContents().equals("")){
+						continue;
+					}
+					uo.setShop(sheet0.getCell(1,i).getContents());
+					uo.setType(sheet0.getCell(2,i).getContents());
+					uo.setSaleManName(sheet0.getCell(3,i).getContents());
+					uo.setSalePrice(Double.parseDouble(sheet0.getCell(4,i).getContents()));
+					uo.setNum(Integer.parseInt(sheet0.getCell(5,i).getContents()));
+					uo.setSaleTime(sheet0.getCell(6,i).getContents());
+					uo.setFileName(srcFile.getName());
+					uo.setChecked(0);
+					uo.setCheckedTime(fmt.format(new Date()));
+					uo.setCheckOrderId(-1);
+					UploadOrders.add(uo);
+					uo = new UploadOrder();
+				}
+		        wb.close();
+			}catch (Exception e){
+				e.printStackTrace();
+				return null;
+			}
+			return UploadOrders;
+		}
 }

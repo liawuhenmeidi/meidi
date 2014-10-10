@@ -65,7 +65,7 @@ User user = (User)session.getAttribute("user");
                <p ><a href="dingdanCome.jsp" target="contentpage">确认厂送票已回</a></p>
                <p ><a href="dingdango.jsp" target="contentpage">确认厂送票已消</a></p>
                <p ><a href="dingdanCharge.jsp" target="contentpage">确认厂送票已结款</a></p>
-               <p ><a href="updateExcel.jsp" target="contentpage">苏宁Excel上传页</a></p>
+               <p ><a href="excelUpload.jsp" target="contentpage">Excel上传页</a></p>
               <p ><a href="autoCheckout.jsp" target="contentpage">自动结款页</a></p>
               <p ><a href="manualCheckout.jsp" target="contentpage">手动结款页</a></p>
             </div>
@@ -73,7 +73,6 @@ User user = (User)session.getAttribute("user");
            <li >
             <h4 >工资管理</h4>
             <div class="list-item none">
-                <p ><a href="salaryModelUpload.jsp" target="contentpage">提成单上传页</a></p>
               <p ><a href="salaryExport.jsp" target="contentpage">提成导出页</a></p>
             </div>
           </li>

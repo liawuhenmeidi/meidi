@@ -8,6 +8,8 @@ public class UploadOrder {
 	
 	private String posNo = ""; //pos(厂送)单号
 	
+	private String saleManName = "";//销售员姓名
+	
 	private String saleTime = ""; //销售日期
 
 	private String dealTime = ""; //交货日期
@@ -26,7 +28,7 @@ public class UploadOrder {
 	
 	private String checkedTime = ""; //check的时间，默认为null
 	
-	private String checkOrderId = ""; //check后对应的orderID
+	private int checkOrderId = 0; //check后对应的orderID
 
 	public String getShop() {
 		return shop;
@@ -136,11 +138,21 @@ public class UploadOrder {
 		this.id = id;
 	}
 
-	public String getCheckOrderId() {
+
+
+	public String getSaleManName() {
+		return saleManName;
+	}
+
+	public void setSaleManName(String saleManName) {
+		this.saleManName = saleManName;
+	}
+
+	public int getCheckOrderId() {
 		return checkOrderId;
 	}
 
-	public void setCheckOrderId(String checkOrderId) {
+	public void setCheckOrderId(int checkOrderId) {
 		this.checkOrderId = checkOrderId;
 	}
 

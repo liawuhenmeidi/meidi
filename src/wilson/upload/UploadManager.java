@@ -35,6 +35,18 @@ public class UploadManager {
 		}
 	}
 	
+	public static boolean saveSalesFileToDB(String path,String fileName){
+		List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
+		UploadOrders = xlsreader.readSalesXLS(path, fileName);
+		if(saveOrderList(UploadOrders)){
+			logger.info("上传销售单保存成功");
+			return true;
+		}else{
+			logger.info("上传销售单保存失败");
+			return false;
+		}
+	}
+	
 	public static boolean saveSuningFileToDB(String path,String fileName){
 		List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
 		UploadOrders = xlsreader.readSuningXLS(path, fileName);
@@ -165,7 +177,7 @@ public class UploadManager {
 	
 	public static boolean saveOrderList(List <UploadOrder> UploadOrders){
 		String sql = ""; 
-		sql = "insert ignore into uploadorder (id,shop,saleno,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,null,null)";	
+		sql = "insert ignore into uploadorder (id,salesman,shop,saleno,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
 		Connection conn = DB.getConn();
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -176,17 +188,20 @@ public class UploadManager {
 		try {
 			for(int i = 0 ; i < UploadOrders.size() ; i ++ ){
 				uo = UploadOrders.get(i);
-				pstmt.setString(1, uo.getShop());
-				pstmt.setString(2, uo.getPosNo());
-				pstmt.setString(3, uo.getSaleTime());
-				pstmt.setString(4, uo.getDealTime());
-				pstmt.setString(5, uo.getType());
-				pstmt.setInt(6, uo.getNum());
-				pstmt.setDouble(7, uo.getSalePrice());
-				pstmt.setDouble(8, uo.getBackPoint());
-				pstmt.setString(9, uo.getFileName());
-				pstmt.setString(10, fmt.format(new Date()));
-				pstmt.setInt(11, uo.getChecked());
+				pstmt.setString(1, uo.getSaleManName());
+				pstmt.setString(2, uo.getShop());
+				pstmt.setString(3, uo.getPosNo());
+				pstmt.setString(4, uo.getSaleTime());
+				pstmt.setString(5, uo.getDealTime());
+				pstmt.setString(6, uo.getType());
+				pstmt.setInt(7, uo.getNum());
+				pstmt.setDouble(8, uo.getSalePrice());
+				pstmt.setDouble(9, uo.getBackPoint());
+				pstmt.setString(10, uo.getFileName());
+				pstmt.setString(11, fmt.format(new Date()));
+				pstmt.setInt(12, uo.getChecked());
+				pstmt.setString(13, uo.getCheckedTime());
+				pstmt.setInt(14, uo.getCheckOrderId());
 				pstmt.executeUpdate();
 				uo = new UploadOrder();
 			}		
@@ -250,6 +265,7 @@ public class UploadManager {
 		try {     
 			while (rs.next()) {
 				uo.setId(rs.getInt("id"));
+				uo.setSaleManName(rs.getString("salesman"));
 				uo.setShop(rs.getString("shop"));
 				uo.setPosNo(rs.getString("posno"));
 				uo.setSaleTime(rs.getString("saletime"));
@@ -288,6 +304,7 @@ public class UploadManager {
 		try {     
 			while (rs.next()) {
 				uo.setId(rs.getInt("id"));
+				uo.setSaleManName(rs.getString("salesman"));
 				uo.setShop(rs.getString("shop"));
 				uo.setPosNo(rs.getString("posno"));
 				uo.setSaleTime(rs.getString("saletime"));
@@ -299,6 +316,7 @@ public class UploadManager {
 				uo.setFileName(rs.getString("filename"));
 				uo.setChecked(rs.getInt("checked"));
 				uo.setCheckedTime(rs.getString("checkedtime"));
+				uo.setCheckOrderId(rs.getInt("checkorderid"));
 				amo.initUploadSideOrder(uo);
 				checkedAfterMatchOrder.add(amo);
 				uo = new UploadOrder();

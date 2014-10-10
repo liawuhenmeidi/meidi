@@ -150,6 +150,8 @@
 	    <url-pattern>/meidiserver/SuningDataUpload</url-pattern>   
     </servlet-mapping>  
     
+    
+    
     <servlet>  
 	        <servlet-name>SalaryModelUpload</servlet-name>  
 	        <servlet-class>  
@@ -179,7 +181,30 @@
     </servlet-mapping>
 	          
 	          
-	          
+	    <servlet>  
+	        <servlet-name>ExcelUpload</servlet-name>  
+	        <servlet-class>  
+	            wilson.upload.ExcelUpload 
+	        </servlet-class>
+	        <init-param>
+			<param-name>suningFilePath</param-name>
+			<param-value>
+				data/suningXLS
+			</param-value>
+			<param-name>salaryFilePath</param-name>
+			<param-value>
+				data/salaryModelXLS
+			</param-value>
+			<param-name>salesFilePath</param-name>
+			<param-value>
+				data/salesXLS
+			</param-value>
+   </servlet>  
+           
+    <servlet-mapping>    
+        <servlet-name>ExcelUpload</servlet-name>  
+	    <url-pattern>/meidiserver/ExcelUpload</url-pattern>   
+    </servlet-mapping>      
 	          
 	      <servlet>  
 	        <servlet-name>ModelServlet</servlet-name>  
