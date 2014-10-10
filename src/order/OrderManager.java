@@ -876,8 +876,7 @@ logger.info(sql);
 					   sql = "select * from  mdorder where orderbranch in (select branch from mduser where id = "+user.getId()+" ) " + str + " order by id desc " ;
 				   }else { 
 					   sql = "select * from  mdorder where sendId = "+user.getId() + str + " order by id desc " ;
-				   }
-				         
+				   }       
 			   }else if(flag && Group.sale == type){  
 				   sql = "select * from  mdorder where  saleID = '"+ user.getId() +"' "+ str + " order by id desc ";
 			   }    
@@ -984,7 +983,15 @@ logger.info(Orders.size());
 	  
 	  //logger.info(f); 
 	  if(f){  
-		  if(Group.dealSend == type){ 
+	     if(Group.send == type){
+			   if(Order.serach == statues){
+				   sql = "select * from  mdorder where  deliveryStatues in (0,9,10)   and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (1,10,9)  and printSatuesp = 1    order by id  desc";
+			   } 
+		   }else if(Group.sale == type){
+			   if(Order.serach == statues){
+				   sql = "select * from  mdorder where  1 =1 "+ str + " order by id desc ";
+			   }
+		   }else if(Group.dealSend == type){ 
 			  if(Order.orderDispatching == statues){    
 				 // sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5)  and  ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search+"  order by  "+sort+"  limit " + ((page-1)*num)+","+ page*num ;  
 				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5) or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search+"  order by  "+sort+str ;  
@@ -1046,10 +1053,14 @@ logger.info(Orders.size());
 				   }            
 		     } 
 		 }else{       
-			   if(flag && Group.send == type){    
-				   sql = "select * from  mdorder where sendId = "+user.getId(); 
+			   if(flag && Group.send == type){
+				   if(Order.serach == statues){
+					   sql = "select * from  mdorder where  ( sendId = "+user.getId() + " and deliveryStatues in (0,9,10)   and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (1,10,9)  and printSatuesp = 1   order by id  desc";
+				   } 
 			   }else if(flag && Group.sale == type){
-				   sql = "select * from  mdorder where  orderbranch = '"+ user.getBranch() +"' and  deliveryStatues= 0 order by saledate";
+				   if(Order.serach == statues){
+					   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' "+ str + " order by id desc ";
+				   }
 			   }else if(flag && Group.dealSend == type){
 				   if(Order.orderDispatching == statues){     
 					   sql = "select * from mdorder where   ( mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and  dealSendid = 0   and sendId = 0  and printSatues = 0 and deliveryStatues != 3  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in (select orderid from mdorderupdateprint where   pGroupId= '"+user.getUsertype()+"'  and statues = 0  and mdtype in (0 ,1,2,4) ))  "+search+" order by  "+sort+str;  
@@ -1118,7 +1129,7 @@ logger.info(Orders.size());
 logger.info(sql); 
 	   Connection conn = DB.getConn();
        Statement stmt = DB.getStatement(conn);
-     
+      
 	   ResultSet rs = DB.getResultSet(stmt, sql); 
 			try { 
 				while (rs.next()) {

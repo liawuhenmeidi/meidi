@@ -1,35 +1,8 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,product.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ include file="searchdynamic.jsp"%> 
 <%  
-request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
   
-int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
-String saledateStart = request.getParameter("saledateStart");
-String saledateEnd = request.getParameter("saledateEnd");
-String deliveryStatues  = request.getParameter("deliveryStatues"); 
-String printlnid = request.getParameter("printlnid");
-
-String str = ""; 
-// pos == "" || pos == null || pos == "null"
-if(saledateStart != null && saledateStart != "" && saledateStart != "null"){
-	 str += " and saledate like '%"+saledateStart+"%'";
-} 
-if(saledateEnd != null && saledateEnd != "" && saledateEnd != "null"){
-	 str += " and saledate like '%25"+saledateEnd+"%'";
-}
-if(deliveryStatues != null && deliveryStatues != "" && deliveryStatues != "null"){
-	 str += " and deliveryStatues like '%"+deliveryStatues+"%'";
-}
-if(!StringUtill.isNull(printlnid)){
-	str += "and printlnid like '%" + printlnid +"%'";
-}
-  
-List<Order> list = null ;
-if(StringUtill.isNull(str)){   
-   list = OrderManager.getOrderlist(user,Group.send);
-}else {  
-   list = OrderManager.getOrderlist(user,Group.send,str,"id");
-} 
+List<Order> list = OrderManager.getOrderlist(user,Group.send,Order.serach,-1,0,sort,"");
 Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 //System.out.println(user);
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();

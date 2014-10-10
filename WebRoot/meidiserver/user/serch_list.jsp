@@ -1,48 +1,9 @@
-<%@ page language="java" import="java.util.*,product.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ include file="searchdynamic.jsp"%> 
 
-<%  
- 
-request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
-  
-boolean flag = false ;
-String saledateStart = request.getParameter("saledateStart");
-String saledateEnd = request.getParameter("saledateEnd");
-String sailId = request.getParameter("sailId");
-String pos = request.getParameter("pos");
-String username = request.getParameter("username");
-String phone1 = request.getParameter("phone1");
-String printlnid = request.getParameter("printlnid"); 
-String str = "";   
-// pos == "" || pos == null || pos == "null"
-if(saledateStart != null && saledateStart != "" && saledateStart != "null"){
-	 str += " and saledate BETWEEN '" + saledateStart + "'  and  ";
-    flag = true ;
-}   
-  
-if(saledateEnd != null && saledateEnd != "" && saledateEnd != "null"){
-	 str += " ' " + saledateEnd + "'";
-}else if(flag){
-	 str += "now()";
-}
-  
-if(sailId != null && sailId  != "" && sailId  != "null"){
-	 str += " and sailId like '%"+sailId+"%'";
-}
-if(pos != null && pos != "" && pos != "null"){
-	 str += " and pos like '%"+pos+"%'";
-}  
-if(username != null && username != "" && username != "null"){
-	 str += " and username like '%"+username+"%'";
-}     
-if(phone1 != null && phone1 != "" && phone1 != "null"){
-	 str += " and phone1 like '%"+phone1+"%'";
-};
-if(!StringUtill.isNull(printlnid)){
-	str += "and printlnid like '%" + printlnid +"%'";
-}
-List<Order> list = OrderManager.getOrderlist(user,Group.sale,str,"id"); 
-
+<%     
+     
+List<Order> list = OrderManager.getOrderlist(user,Group.sale,Order.serach,-1,0,sort,"");
 Map<Integer,List<OrderProduct>> mapOP = OrderProductManager.getOrderStatuesM(user);
 HashMap<Integer,User> usermap = UserManager.getMap();   // 获取送货员
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
