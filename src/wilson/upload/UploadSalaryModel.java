@@ -12,6 +12,7 @@ public class UploadSalaryModel {
 	
 	private String commitTime = ""; //存储的时间
 	private String fileName = ""; //存储的文件名
+	private String shop = "";
 	private int status = 0 ; //状态，留个备用，默认为0
 	public String getName() {
 		return name;
@@ -80,5 +81,11 @@ public class UploadSalaryModel {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public String getShop() {
+		return shop;
+	}
+	public void setShop(String shop) {
+		this.shop = shop;
 	}
 }

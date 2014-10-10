@@ -72,6 +72,7 @@ public class XLSReader {
 				String name = sheet0.getCell(1,0).getContents();
 				String startTime = "";
 				String endTime = "";
+				String shop = sheet0.getCell(7,0).getContents();
 				
 				//excel取到格式有问题，做下特殊处理
 				SimpleDateFormat s1 = new SimpleDateFormat("M/dd/yy HH:mm");
@@ -93,6 +94,7 @@ public class XLSReader {
 					usm.setStartTime(startTime);
 					usm.setName(name);
 					usm.setEndTime(endTime);
+					usm.setShop(shop);
 					if(sheet0.getCell(1,i).getContents().equals("")||sheet0.getCell(2,i).getContents().equals("")){
 						break;
 					}

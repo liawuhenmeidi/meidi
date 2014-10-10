@@ -165,7 +165,7 @@ public class UploadManager {
 	
 	public static boolean saveOrderList(List <UploadOrder> UploadOrders){
 		String sql = ""; 
-		sql = "insert ignore into uploadorder (id, shop,saleno,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,null,null)";	
+		sql = "insert ignore into uploadorder (id,shop,saleno,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,null,null)";	
 		Connection conn = DB.getConn();
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -203,7 +203,7 @@ public class UploadManager {
 	
 	private static boolean saveSalaryModelList(List<UploadSalaryModel> uploadSalaryModelList) {
 		boolean flag = false;
-		String sql = "insert into uploadsalarymodel (id, name,starttime,endtime,catergory,type,content,committime,filename,status) VALUES (null,?,?,?,?,?,?,?,?,0)";	
+		String sql = "insert into uploadsalarymodel (id,shop,name,starttime,endtime,catergory,type,content,committime,filename,status) VALUES (null,?,?,?,?,?,?,?,?,?,0)";	
 		Connection conn = DB.getConn();
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -214,14 +214,15 @@ public class UploadManager {
 		try {
 			for(int i = 0 ; i < uploadSalaryModelList.size() ; i ++ ){
 				usm = uploadSalaryModelList.get(i);
-				pstmt.setString(1, usm.getName());
-				pstmt.setString(2, usm.getStartTime());
-				pstmt.setString(3, usm.getEndTime());
-				pstmt.setString(4, usm.getCatergory());
-				pstmt.setString(5, usm.getType());
-				pstmt.setString(6, usm.getContent());
-				pstmt.setString(7, fmt.format(new Date()));
-				pstmt.setString(8, usm.getFileName());
+				pstmt.setString(1, usm.getShop());
+				pstmt.setString(2, usm.getName());
+				pstmt.setString(3, usm.getStartTime());
+				pstmt.setString(4, usm.getEndTime());
+				pstmt.setString(5, usm.getCatergory());
+				pstmt.setString(6, usm.getType());
+				pstmt.setString(7, usm.getContent());
+				pstmt.setString(8, fmt.format(new Date()));
+				pstmt.setString(9, usm.getFileName());
 				pstmt.executeUpdate();
 				usm = new UploadSalaryModel();
 			}		
