@@ -3,7 +3,7 @@
 
 <%     
      
-List<Order> list = OrderManager.getOrderlist(user,Group.sale,Order.serach,-1,0,sort,"");
+List<Order> list = OrderManager.getOrderlist(user,Group.sale,Order.serach,-1,0,sort,sear); 
 Map<Integer,List<OrderProduct>> mapOP = OrderProductManager.getOrderStatuesM(user);
 HashMap<Integer,User> usermap = UserManager.getMap();   // 获取送货员
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();

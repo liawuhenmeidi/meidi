@@ -53,22 +53,30 @@ User user = (User)session.getAttribute("user");
             <!--    <p ><a href="dingdanpeidan.jsp" target="contentpage">文员打印页</a></p> -->  
               <p ><a href="dingdanprintln.jsp" target="contentpage">查看订单页</a></p>
                <p ><a href="dingdanover.jsp" target="contentpage">安装单位结款页</a></p>  
-              <p ><a href="dingdanCome.jsp" target="contentpage">确认厂送票已回</a></p>
-              <p ><a href="dingdango.jsp" target="contentpage">确认厂送票已消</a></p>
-              <p ><a href="dingdanCharge.jsp" target="contentpage">确认厂送票已结款</a></p>
                <p ><a href="dingdancallback.jsp"  target="contentpage">客服未回访页</a></p>
-              <p ><a href="javascript:void(0);" target="contentpage">调账确认页</a></p>    
-            <!--   <p ><a href="dingdanDingma.jsp" target="contentpage">调账确认页</a></p>  -->
               <p ><a href="dingdanTuihuo.jsp" target="contentpage">退货订单</a></p>               
              <!-- <p ><a href="./verifyCode.jsp" target="contentpage">强制消单页</a></p>  --> 
-              <p ><a href="updateExcel.jsp" target="contentpage">苏宁Excel上传页</a></p>
-              <p ><a href="autoCheckout.jsp" target="contentpage">自动结款页</a></p>
-              <p ><a href="manualCheckout.jsp" target="contentpage">手动结款页</a></p>
-              <p ><a href="salaryModelUpload.jsp" target="contentpage">提成单上传页</a></p>
-              <p ><a href="salaryExport.jsp" target="contentpage">提成导出页</a></p>
+              
             </div>  
           </li> 
-          
+          <li >
+            <h4 >厂送单管理</h4>
+            <div class="list-item none">
+               <p ><a href="dingdanCome.jsp" target="contentpage">确认厂送票已回</a></p>
+               <p ><a href="dingdango.jsp" target="contentpage">确认厂送票已消</a></p>
+               <p ><a href="dingdanCharge.jsp" target="contentpage">确认厂送票已结款</a></p>
+               <p ><a href="updateExcel.jsp" target="contentpage">苏宁Excel上传页</a></p>
+              <p ><a href="autoCheckout.jsp" target="contentpage">自动结款页</a></p>
+              <p ><a href="manualCheckout.jsp" target="contentpage">手动结款页</a></p>
+            </div>
+          </li>
+           <li >
+            <h4 >工资管理</h4>
+            <div class="list-item none">
+                <p ><a href="salaryModelUpload.jsp" target="contentpage">提成单上传页</a></p>
+              <p ><a href="salaryExport.jsp" target="contentpage">提成导出页</a></p>
+            </div>
+          </li>
           <%
           }
          if(UserManager.checkPermissions(user, Group.ManagerUser)){

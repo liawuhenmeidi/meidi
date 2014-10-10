@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
   
 String sort =  "id desc"; 
-boolean flag = false ;
+boolean flag = false ; 
 String saledateStart = request.getParameter("saledateStart");
 String saledateEnd = request.getParameter("saledateEnd");
 String sailId = request.getParameter("sailId");
@@ -12,33 +12,33 @@ String pos = request.getParameter("pos");
 String username = request.getParameter("username");
 String phone1 = request.getParameter("phone1");
 String printlnid = request.getParameter("printlnid"); 
-String str = "";   
+String sear = "";   
 // pos == "" || pos == null || pos == "null"
 if(saledateStart != null && saledateStart != "" && saledateStart != "null"){
-	 str += " and saledate BETWEEN '" + saledateStart + "'  and  ";
+	sear += " and saledate BETWEEN '" + saledateStart + "'  and  ";
     flag = true ;
-}   
+}    
   
 if(saledateEnd != null && saledateEnd != "" && saledateEnd != "null"){
-	 str += " ' " + saledateEnd + "'";
+	sear += " ' " + saledateEnd + "'";
 }else if(flag){
-	 str += "now()";
+	sear += "now()";
 }
   
 if(sailId != null && sailId  != "" && sailId  != "null"){
-	 str += " and sailId like '%"+sailId+"%'";
+	sear += " and sailId like '%"+sailId+"%'";
 }
 if(pos != null && pos != "" && pos != "null"){
-	 str += " and pos like '%"+pos+"%'";
+	sear += " and pos like '%"+pos+"%'";
 }  
 if(username != null && username != "" && username != "null"){
-	 str += " and username like '%"+username+"%'";
+	sear += " and username like '%"+username+"%'";
 }     
 if(phone1 != null && phone1 != "" && phone1 != "null"){
-	 str += " and phone1 like '%"+phone1+"%'";
+	sear += " and phone1 like '%"+phone1+"%'";
 };
 if(!StringUtill.isNull(printlnid)){
-	str += "and printlnid like '%" + printlnid +"%'";
+	sear += "and printlnid like '%" + printlnid +"%'";
 }
 
 %>

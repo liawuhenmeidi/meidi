@@ -2,7 +2,7 @@
 <%@ include file="searchdynamic.jsp"%> 
 <%  
   
-List<Order> list = OrderManager.getOrderlist(user,Group.send,Order.serach,-1,0,sort,"");
+List<Order> list = OrderManager.getOrderlist(user,Group.send,Order.serach,-1,0,sort,sear);
 Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 //System.out.println(user);
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();

@@ -15,8 +15,9 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <script type="text/javascript">
-
-	
+function detail(id){
+	 window.location.href="receiptsAdd.jsp?id="+id;
+}
 	
 </script>
 </head>
@@ -61,7 +62,6 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 			<th align="left">出库单位</th>
 			<th align="left">入库单位</th>
 			<th align="left">状态</th> 
-			<th align="left">详情</th>
 			
 		</tr>
 	</thead>
@@ -69,7 +69,7 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
        for(int i=0;i<invetorylist.size();i++){ 
     	   Inventory invetory = invetorylist.get(i);
     	   %>
-    	   <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
+    	   <tr id="<%=i%>" class="asc"  onclick="detail('<%=invetory.getId()%>')">
 			<td align="left"><%=invetory.getId() %></td>
 			<td align="left"><%=invetory.getIntime() %></td>
 			<td align="left">
@@ -120,7 +120,6 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 			}
 			%>
 			</td>
-			<td align="left"><a href="receiptsAdd.jsp?id=<%=invetory.getId()%>">详情</a></td>
 		</tr> 
 
     	   <%

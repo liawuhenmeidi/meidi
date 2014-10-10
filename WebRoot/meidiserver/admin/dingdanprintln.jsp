@@ -13,7 +13,6 @@ count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.serach,num,Pa
 
 List<User> listS = UserManager.getUsers(user,Group.sencondDealsend);   
 
-
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
 %>
@@ -56,14 +55,14 @@ td{
 
 #table{  
     
-     width:4400px;
+     width:4200px;
      table-layout:fixed ;
 } 
  
 #th{
     background-color:white;
     position:absolute;
-    width:4400px;
+    width:4200px;
     height:30px; 
     top:0;
     left:0;
@@ -366,8 +365,6 @@ function orderPrint(id,statues,type,deliveryStatues){
 			
 			<td align="center">厂送票是否已消</td>
 			<td align="center">厂送票是否结款</td>
-			<td align="center">是否已调账</td>
-			<td align="center">是否已退货</td> 
 			<td align="center">备注</td> 
 			
 			<td align="center">打印</td> 
@@ -507,13 +504,6 @@ function orderPrint(id,statues,type,deliveryStatues){
 		<td align="center">   
 		    <%=o.getStatues3()==0?"否":"是" %> 
 		</td>
-		
-		  <td align="center">   
-		    <%=o.getStatuesDingma()==1?"是":"否" %> 
-		</td> 
-		<td align="center">   
-		    <%=o.getDeliveryStatues()==3?"是":"否" %> 
-		</td> 
 		
 		 <td align="center"> 
 		    <%=o.getRemark() %>

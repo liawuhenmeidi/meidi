@@ -308,7 +308,7 @@ function getmap(){
     <td width="25%" class="s_list_m">票面型号</td>
     <td class="s_list_m">
 
-		    	 <%=op.getSaleType()%>
+		    	 <%=ProductService.getIDmap().get(Integer.valueOf(op.getSaleType())).getType()%> 
  
     </td>
    
@@ -343,8 +343,7 @@ function getmap(){
      <tr <%=col %>>
      <td width="55%" class="s_list_m">送货型号</td>
      <td class="s_list_m">
-		    
-		    	<%=op.getSendType()%>
+		     <%=ProductService.getIDmap().get(Integer.valueOf(op.getSendType())).getType()%>
       </td>
       </tr>
     	 

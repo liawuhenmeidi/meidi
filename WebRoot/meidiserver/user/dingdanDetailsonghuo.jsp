@@ -321,7 +321,7 @@ function change(str1,str2,type){
      <td width="55%" class="s_list_m">送货型号</td>
      <td class="s_list_m">
 		    
-		    	<%=op.getSendType()%>
+		    	<%=ProductService.getIDmap().get(Integer.valueOf(op.getSendType())).getType()%>
       </td>
       </tr>
     	 

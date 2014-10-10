@@ -146,53 +146,17 @@ var disable = '<%=isdisabel %>';
 			  
 		 }
 	 }
- }
- //function initproductSerch(str,str2){ 
-	 //   cid = $(str).val();
-	   
-		//$(str2).autocomplete({ 
-		//	 source: jsons[cid]
-		//    }); 
-		//$(str).change(function(){
-		//	$(str2).val("");
-		//	cid = $(str).val(); 
-		//	$(str2).autocomplete({
-		//		 source: jsons[cid]
-		//	    }); 
-		//	}) ; 
-   // } 
- 
- function add(){
-	 var ctype = $("#ordertype0").val();
-	 if(ctype == ""){
-		 alert("型号不能为空");
-		 return false ;
-	 }else {
-		 if($.inArray(ctype,ctypes) != -1){
-			 alert("您已添加此型号"); 
-			 return ;
-		 }else{
-			 ctypes.push(ctype); 
-		 }
-	 }
 	 
-	 rows.push(row);
-	 var count = 1;  
-	
-	 var str = '';  
-	 str += '<tr id="record'+row+'" class="asc">' +  
-	     ' <td>'+ctype+'<input type="hidden" name="orderproductType'+row+'" value="'+ctype+'"/><input type="hidden" name="product" value="'+row+'"/></td> ' +
-	     ' <td><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'" value="'+count+'" style="width:50%" /></td> ' +
-	     ' <td><input type="button" value="删除" onclick="delet(record'+row+','+row+')"/></td> ' +  
-	     ' </tr>'; 
-	$("#table").append(str);      
-	row++;   
-	$("#ordertype0").val(""); 
+	 addcount();
  }
-  
- function delet(str,str2){ 
-	rows.splice($.inArray(str2,rows),1);
-	$(str).remove();
+ 
+ function addcount(){
+	 var totalcount = 0 ;
+	 for(var i=0;i<rows.length;i++){
+		 var countrow = $("#orderproductNum"+rows[i]).val();
+		 totalcount += countrow*1;
+	 }
+	 $("#addcount").html(totalcount);
  }
  
  function check(){
@@ -323,7 +287,7 @@ var disable = '<%=isdisabel %>';
  
    </table>
    
-    &nbsp;&nbsp;&nbsp;&nbsp;<font style="color:red;font-size:20px;" >合计</font>
+    &nbsp;&nbsp;&nbsp;&nbsp;<font style="color:blue;font-size:20px;" >合计:<span style="color:red;font-size:20px;" id="addcount"></span></font>
     <br/>
   <% 
 	  if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 ){

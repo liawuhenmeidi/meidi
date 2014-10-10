@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,inventory.*,branch.*,utill.*,java.text.SimpleDateFormat,category.*,orderPrint.*,gift.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,inventory.*,product.*,branch.*,utill.*,java.text.SimpleDateFormat,category.*,orderPrint.*,gift.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
 <%   
 request.setCharacterEncoding("utf-8"); 
@@ -83,7 +83,7 @@ List<InventoryMessage> list = inventory.getInventory();
       <td width="9%" height="30" align="center" valign="middle" id="d">品类</td> 
       <td width="17%" height="30" align="center"  id="d">&nbsp;<%=categorymap.get(in.getCategoryId()).getName() %></td>
       <td width="11%" height="30" align="center" valign="middle" id="d">型号</td> 
-      <td width="38%" height="30" align="center" valign="middle" id="d"><%=in.getProductId() %></td>
+      <td width="38%" height="30" align="center" valign="middle" id="d"><%=ProductService.getIDmap().get(Integer.valueOf(in.getProductId())).getType() %></td>
       <td width="12%" height="30" align="center" valign="middle" id="d">数量</td>
       <td width="9%" height="30" align="center"valign="middle" id="e"><%=in.getCount() %></td>
     </tr> 
