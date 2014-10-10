@@ -177,18 +177,17 @@ logger.info(pstmt);
 			if(listt.length <2){  
 				for(int j=0;j<listt.length;j++){
 					String idd = listt[j]; 
-				
-				
-				List<OrderPrintln> list = OrderPrintlnManager.getOrderPrintlnbyOrderid(Integer.valueOf(idd));
+				    List<OrderPrintln> list = OrderPrintlnManager.getOrderPrintlnbyOrderid(Integer.valueOf(idd));
+				    
 				for(int i=0;i<list.size();i++){ 
 					OrderPrintln o = list.get(i);  
-					if(o.getType() == OrderPrintln.modify && o.getStatues() != 4 && !"tuihuo".equals(method) && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method) && !"orderover".equals(method)){
+					if(o.getType() == OrderPrintln.modify &&  o.getStatues() != 4 && !"tuihuo".equals(method) && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method) && !"orderover".equals(method) && !"statuescallback".equals(method)){
 						//logger.info(1); 
 						return OrderPrintln.modify;
-					}else if(o.getType() == OrderPrintln.returns && o.getStatues() != 4 && !"tuihuo".equals(method) && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method) && !"orderover".equals(method)){
+					}else if(o.getType() == OrderPrintln.returns && o.getStatues() != 4 && !"tuihuo".equals(method) && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method) && !"orderover".equals(method) && !"statuescallback".equals(method)){
 						//logger.info(1);   
-						return 20 ;    
-					}else if(o.getType() == OrderPrintln.unmodify && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method)  && !"orderover".equals(method)){
+						return 20 ;     
+					}else if(o.getType() == OrderPrintln.unmodify && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method)  && !"orderover".equals(method) && !"statuescallback".equals(method)){
 						//logger.info(1);   
 						return OrderPrintln.unmodify ;  
 					} 
@@ -347,7 +346,7 @@ logger.info(pstmt);
 	}
 	
 	// 第二次配单 
-		public static int updatePeisong(User user,int statues,int id,int type) {
+		public static int updatePeisong(User user,int uid,int id,int type) {
 			List<OrderPrintln> list = OrderPrintlnManager.getOrderPrintlnbyOrderid(id);
 			List<String> listsql = new ArrayList<String>(); 
 			for(int i=0;i<list.size();i++){
@@ -363,14 +362,14 @@ logger.info(pstmt);
 			  
 			String sql = ""; 
 			if(Order.orderpeisong == type || Order.ordersong == type){ 
-				sql = "update mdorder set sendId = "+statues+"  , printSatuesp= 1  where id = " + id ;
-				  List<String> lists = InventoryBranchManager.chage(user,type+"", statues, id+""); 
-			      listsql.addAll(lists);     
+				sql = "update mdorder set sendId = "+uid+"  , printSatuesp= 1  where id = " + id ;
+				  List<String> lists = InventoryBranchManager.chage(user,type+"", uid, id+""); 
+			      listsql.addAll(lists);      
 			}else if(Order.orderinstall == type){ 
-				sql = "update mdorder set installid = "+statues+" , printSatuesp= 1  where id = " + id ;
+				sql = "update mdorder set installid = "+uid+" , printSatuesp= 1  where id = " + id ;
 			} else if(Order.orderreturn == type){  
-				sql = "update mdorder set returnid = "+statues+" , returnprintstatues = 1  where id = " + id ;
-				List<String> lists = InventoryBranchManager.chage(user, type+"", statues, id+"");
+				sql = "update mdorder set returnid = "+uid+" , returnprintstatues = 1  where id = " + id ;
+				List<String> lists = InventoryBranchManager.chage(user, type+"", uid, id+"");
 			    listsql.addAll(lists);   
 			
 			
@@ -1000,7 +999,7 @@ logger.info(Orders.size());
 			  }else if(Order.orderPrint == statues){   
 				  sql = "select * from  mdorder  where  dealSendid != 0   and sendId = 0 and printSatues = 0  and deliveryStatues != 3    "+search+"  order by "+sort+str ;  
 			  }else if(Order.serach == statues){ 
-				  sql = "select * from  mdorder  where 1 =1 "+search+" order by "+sort+"   limit " + ((page-1)*num)+","+ page*num ;
+				  sql = "select * from  mdorder  where 1 =1 "+search+" order by "+sort ;
 			  }else if(Order.charge == statues){ 
 				  sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0  "+search+" order by "+sort+str ;
 			  }else if(Order.callback == statues){ 
@@ -1100,7 +1099,7 @@ logger.info(Orders.size());
 				   }else if(Order.serach == statues){   
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+ "  and printSatues = 1 "+search+"  order by "+sort+str;
 				   }else if(Order.callback == statues){ 
-					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and  deliveryStatues in (2)  and statuescallback = 0 "+search+" order by "+sort+  str; 
+					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and  deliveryStatues in (2,5)  and statuescallback = 0 "+search+" order by "+sort+  str; 
 				   }else if(Order.charge == statues){ //and deliverytype = 1  
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and   deliveryStatues in (2,5)  and statuescallback = 1  and deliverytype = 2  and  statuesinstall = 0  "+search+"  order by "+sort+str; 
 				   }else if(Order.chargeall == statues){ // 
@@ -1108,7 +1107,7 @@ logger.info(Orders.size());
 				   }else if(Order.pcharge == statues){ 
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and   deliveryStatues in (1,2,4,5)  and deliverytype = 2  and statuespaigong  = 0  "+search+"  order by "+sort+str ; 
 				   }else if(Order.orderquery == statues){  
-					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )  and printSatuesp = 1    "+search+"  order by "+sort+str;    
+					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )      "+search+"  order by "+sort+str;    
 				   }        
 			   }                    
 	    }      

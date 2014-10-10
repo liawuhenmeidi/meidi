@@ -54,7 +54,7 @@ if("songhuo".equals(method)){
 	String uid = request.getParameter("uid");
 	String id = request.getParameter("id"); 
 	String type = request.getParameter("type"); 
-	System.out.println(uid+"****"+id+"****"+type);       
+	//System.out.println(uid+"****"+id+"****"+type);       
 	int i = OrderManager.updatePeisong(user,Integer.valueOf(uid), Integer.valueOf(id),Integer.valueOf(type));
 	response.getWriter().write(""+i);
 	response.getWriter().flush(); 

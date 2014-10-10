@@ -218,6 +218,16 @@ logger.info(pstmt);
 		   return statues ;
 	   }
 	    
+	   public static OrderPrintln getOrderPrintln(Map<Integer,Map<Integer,OrderPrintln>> opmap,int type ,int orderid){
+		   OrderPrintln op = null ; 
+		   if(opmap.get(type) != null){
+				op = opmap.get(type).get(orderid);
+				 
+				 }  
+		   
+		   return op ;
+	   }
+	   
 	   public static  Map<Integer,Map<Integer,OrderPrintln>>  getOrderStatuesMap(User user){
 		   Map<Integer,Map<Integer,OrderPrintln>> maps = new HashMap<Integer,Map<Integer,OrderPrintln>>();
 		    Connection conn = DB.getConn();

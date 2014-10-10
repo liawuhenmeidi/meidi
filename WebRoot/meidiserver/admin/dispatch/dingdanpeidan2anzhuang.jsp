@@ -416,8 +416,13 @@ function adddetail(src){
 		 <%=o.getSendtime() %>
   
 		</td>  
+		
+		
+		
+		<%  int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId()) ; %>
 		<td align="center">
 		<%  
+		if(releasedispatch != 0){
 		   if(o.getDeliveryStatues() == 1 || o.getDeliveryStatues() == 9 || o.getDeliveryStatues() == 10){
 			   
 		   if(o.getInstallid() == 0){ 
@@ -455,27 +460,12 @@ function adddetail(src){
 		<%=usermap.get(o.getInstallid()).getUsername() %>
 		<%
 		   } 
-		   }		    
+		   }	
+		}
 		%>
 		</td> 
 		 
-		<%--<td align="center">      
-		    <%   
-		        int tatues = 0;
-		    if(opmap != null ){
-		        if( null == opmap.get(OrderPrintln.salereleaseanzhuang)){
-		        	tatues = -1 ;
-		        }else if(null == opmap.get(OrderPrintln.salereleaseanzhuang).get(o.getId())){
-		        	tatues = -1 ;
-		        }else {
-		        	tatues = opmap.get(OrderPrintln.salereleaseanzhuang).get(o.getId()).getStatues();
-		        }
-		    } 
-		    %>
-		     
-		    <input type="submit" class="button" name="dosubmit" value="驳回订单" onclick="winconfirm('<%=o.getId()%>','<%=tatues%>')"></input>
-		</td>
-		--%><td align="center">
+		<td align="center">
 		<%      
 		     if(null != opmap.get(OrderPrintln.salereleaseanzhuang)){
 			 OrderPrintln orp = opmap.get(OrderPrintln.salereleaseanzhuang).get(o.getId()); 
@@ -511,15 +501,7 @@ function adddetail(src){
 	       } 
 		 }%>
 		</td>
-		   
-		   
-		   
-		   
-		   
-		   
-		   
-		</td>
-		
+
 		
     </tr>
     <%
@@ -531,9 +513,6 @@ function adddetail(src){
 
      </div>
 
-
-</div>
-</div>
 
 
 </body>

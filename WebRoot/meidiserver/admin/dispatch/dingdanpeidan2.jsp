@@ -422,6 +422,7 @@ function adddetail(src){
 	    
 	    
 	    int statuesnew = Order.orderpeisong; 
+	    
 			if(o.getSendId() == 0 && release != 0 && releasedispatch != 0 ){
 				   if(o.getDeliveryStatues() == 9){
 					   statuesnew = Order.ordersong;

@@ -391,15 +391,15 @@ function orderPrint(id,statues){
     <input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>
      <%
          
-		
+
 	}
      %> 
    </td> 
 		 
 		<td align="center">
     <%
-    
-    if(o.getReturnid() == 0 ){ 
+ int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId()) ; 
+    if(o.getReturnid() == 0 && releasedispatch != 0 ){ 
         if(o.getDeliveryStatues() == 0 || 9 == o.getDeliveryStatues()){
  
     %>
@@ -562,10 +562,6 @@ function orderPrint(id,statues){
 
 
      </div>
-
-
-</div>
-</div>
 
 
 </body>
