@@ -93,7 +93,7 @@ td {
       
     <div > 
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-  <a href="../data/model/tichengmuban.xls"><font style="color:red;font-size:20px;" >下载模板</font> </a>
+  <a href="../../data/model/tichengmuban.xls"><font style="color:red;font-size:20px;" >下载模板</font> </a>
 
   <form action="../SalaryModelUpload" method="post" enctype ="multipart/form-data" runat="server"> 
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
