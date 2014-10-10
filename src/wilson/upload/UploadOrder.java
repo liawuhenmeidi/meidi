@@ -6,8 +6,6 @@ public class UploadOrder {
 	
 	private String shop = ""; //销售门店
 	
-	private String saleNo = ""; //销售订单号
-	
 	private String posNo = ""; //pos(厂送)单号
 	
 	private String saleTime = ""; //销售日期
@@ -70,13 +68,6 @@ public class UploadOrder {
 		this.type = type;
 	}
 
-	public String getSaleNo() {
-		return saleNo;
-	}
-
-	public void setSaleNo(String saleNo) {
-		this.saleNo = saleNo;
-	}
 
 	public String getFileName() {
 		return fileName;
@@ -129,7 +120,7 @@ public class UploadOrder {
 
 	@Override
 	public String toString() {
-		return "UploadOrder [shop=" + shop + ", saleNo=" + saleNo + ", posNo="
+		return "UploadOrder [shop=" + shop + ", posNo="
 				+ posNo + ", saleTime=" + saleTime + ", dealTime=" + dealTime
 				+ ", type=" + type + ", num=" + num + ", salePrice="
 				+ salePrice + ", backPoint=" + backPoint + ", fileName="

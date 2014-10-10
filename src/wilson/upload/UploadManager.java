@@ -177,17 +177,16 @@ public class UploadManager {
 			for(int i = 0 ; i < UploadOrders.size() ; i ++ ){
 				uo = UploadOrders.get(i);
 				pstmt.setString(1, uo.getShop());
-				pstmt.setString(2, uo.getSaleNo());
-				pstmt.setString(3, uo.getPosNo());
-				pstmt.setString(4, uo.getSaleTime());
-				pstmt.setString(5, uo.getDealTime());
-				pstmt.setString(6, uo.getType());
-				pstmt.setInt(7, uo.getNum());
-				pstmt.setDouble(8, uo.getSalePrice());
-				pstmt.setDouble(9, uo.getBackPoint());
-				pstmt.setString(10, uo.getFileName());
-				pstmt.setString(11, fmt.format(new Date()));
-				pstmt.setInt(12, uo.getChecked());
+				pstmt.setString(2, uo.getPosNo());
+				pstmt.setString(3, uo.getSaleTime());
+				pstmt.setString(4, uo.getDealTime());
+				pstmt.setString(5, uo.getType());
+				pstmt.setInt(6, uo.getNum());
+				pstmt.setDouble(7, uo.getSalePrice());
+				pstmt.setDouble(8, uo.getBackPoint());
+				pstmt.setString(9, uo.getFileName());
+				pstmt.setString(10, fmt.format(new Date()));
+				pstmt.setInt(11, uo.getChecked());
 				pstmt.executeUpdate();
 				uo = new UploadOrder();
 			}		
@@ -251,7 +250,6 @@ public class UploadManager {
 			while (rs.next()) {
 				uo.setId(rs.getInt("id"));
 				uo.setShop(rs.getString("shop"));
-				uo.setSaleNo(rs.getString("saleno"));
 				uo.setPosNo(rs.getString("posno"));
 				uo.setSaleTime(rs.getString("saletime"));
 				uo.setDealTime(rs.getString("dealtime"));
@@ -290,7 +288,6 @@ public class UploadManager {
 			while (rs.next()) {
 				uo.setId(rs.getInt("id"));
 				uo.setShop(rs.getString("shop"));
-				uo.setSaleNo(rs.getString("saleno"));
 				uo.setPosNo(rs.getString("posno"));
 				uo.setSaleTime(rs.getString("saletime"));
 				uo.setDealTime(rs.getString("dealtime"));

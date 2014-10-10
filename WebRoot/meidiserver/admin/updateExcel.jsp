@@ -136,7 +136,6 @@ td {
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			
 			<td align="center">销售门店</td>
-			<td align="center">销售订单号</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
 			<td align="center">交货日期</td> 
@@ -155,7 +154,6 @@ td {
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			
 			<td align="center"><%= UploadOrders.get(i).getShop() %></td>
-			<td align="center"><%= UploadOrders.get(i).getSaleNo() %></td>
 			<td align="center"><%= UploadOrders.get(i).getPosNo() %></td>
 			<td align="center"><%= UploadOrders.get(i).getSaleTime() %></td>
 			<td align="center"><%= UploadOrders.get(i).getDealTime() %></td> 

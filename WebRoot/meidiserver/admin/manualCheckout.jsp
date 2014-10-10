@@ -18,10 +18,16 @@
 		MatchOrderManager.checkUploadOrder(Integer.parseInt(uploadSide));
 	}
 	
+	MatchOrder mo = new MatchOrder();
+	if(!mo.startMatch()){
+		return;
+	}
+	//去自动匹配好的Order
+	List<AfterMatchOrder> afterMatchOrders = mo.getMatchedOrders();
 	//从数据库中取到需要匹配的Order
-	List <Order> unCheckedDBOrders = MatchOrderManager.getUnCheckedDBOrders();
+	List <Order> unCheckedDBOrders = mo.getUnMatchedDBOrders();
 	//从上传列表取得需要匹配的Order
-	List <UploadOrder> unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders();
+	List <UploadOrder> unCheckedUploadOrders = mo.getUnMatchedUploadOrders();
 	
 	
 %>
@@ -76,6 +82,31 @@
 			<td align="center">票面数量</td> 
 	
 		</tr> 
+		
+		<%
+		for(int i = 0 ; i < afterMatchOrders.size();i++	){
+			
+		%>
+		<tr>
+			<td align="center"><input name="dbside"  type="radio" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>		
+			<td align="center"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center"><%= afterMatchOrders.get(i).getDBSidePosNo() %></td>
+			<td align="center"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center"></td>
+			<td align="center"><input name="uploadside"  type="radio" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
+			<td align="center"><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+		</tr>
+		<%
+		}
+		%>
+		
+		
 		
 		<%
 			for(int i = 0 ;;){

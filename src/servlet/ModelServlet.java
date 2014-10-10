@@ -124,9 +124,7 @@ public class ModelServlet extends HttpServlet {
 				
 				cell.setCellValue("门店名称");
 				cell.setCellStyle(style);
-				cell = row.createCell((short) x++);
-				cell.setCellValue("销售订单号");
-				cell.setCellStyle(style);
+				
 				cell = row.createCell((short) x++);
 				cell.setCellValue("POS订单号");
 				cell.setCellStyle(style);

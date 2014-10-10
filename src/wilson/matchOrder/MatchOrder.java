@@ -80,26 +80,35 @@ public class MatchOrder {
 		boolean flag = false;
 		AfterMatchOrder amo ;
 		String key = "";
+		
+		int level = 0 ; //相似等级 3项相同，就给弄一起吧
 		//如果销售时间相同
 		if(tempDBO.getSaleTime().replace("-", "").equals(tempUo.getSaleTime())){
-			//而且票面数量一样
-			if(String.valueOf(tempUo.getNum()).equals(tempDBO.getSendCount())){
-				//而且销售门店一样
-				key = tempDBO.getbranchName(tempDBO.getBranch()).replace("苏宁", "").replace("店", "");
-				if(tempUo.getShop().contains(key)){
-					//而且型号一样
-					key = tempUo.getType().replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "");
-					if(tempDBO.getSendType().contains(key)){
-						amo = new AfterMatchOrder(tempUo,tempDBO);
-						amo.calcLevel();
-						matchedOrders.add(amo);
-						unMatchedUploadOrders.remove(tempUo);
-						unMatchedDBOrders.remove(tempDBO);
-						return true;
-					}
-				}
-			}
+			level += 1;
+			
 		}
+		
+		//而且票面数量一样
+		if(String.valueOf(tempUo.getNum()).equals(tempDBO.getSendCount())){
+			level += 1;
+		}
+		
+		//而且销售门店一样
+		key = tempDBO.getbranchName(tempDBO.getBranch()).replace("苏宁", "").replace("店", "");
+		if(tempUo.getShop().contains(key)){
+			level += 1;
+		}
+		
+		//而且型号一样
+		key = tempUo.getType().replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "");
+		if(tempDBO.getSendType().contains(key)){
+			level += 1;
+		}
+		
+		if(level >= 3){
+			flag = true;
+		}			
+			
 		return flag;
 	}
 
