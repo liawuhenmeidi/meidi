@@ -229,6 +229,8 @@ var disable = '<%=isdisabel %>';
   <div style="background-color:;width:60%" > 
    <center><div id="branchmessage"><font style="color:red;font-size:20px;" >调拨单</font></div></center>
    <br/>
+         单号：<%=inventoryid %> 
+         日期：<%=inventory.getIntime()==null?"":inventory.getIntime() %> <br/>
                  出库单位：  
          <input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch %>"  <%=isdisabel %>/>                    
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          

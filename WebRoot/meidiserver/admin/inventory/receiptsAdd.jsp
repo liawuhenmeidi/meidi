@@ -122,7 +122,7 @@ var disable = '<%=isdisabel %>';
 			 rows.push(row);
 			 var str = '';   
 			 str += '<tr id="record'+row+'" class="asc">' +  
-			     ' <td>'+json.productname+'<input type="hidden" name="orderproductType'+row+'" value="'+json.productId+'"/><input type="hidden" name="product" value="'+row+'"/></td> ' +
+			     ' <td>'+json.productname+'<input type="hidden" name="orderproductType'+row+'" value="'+json.productname+'"/><input type="hidden" name="product" value="'+row+'"/></td> ' +
 			     ' <td><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'" value="'+json.count+'" style="width:50%" '+disable+'/></td> ' +
 			     ' <td><input type="button" value="删除" onclick="delet(record'+row+','+row+')" '+disable+'/></td> ' +  
 			     ' </tr>';  
@@ -254,47 +254,25 @@ var disable = '<%=isdisabel %>';
   <div > 
    <center><div id="branchmessage"><font style="color:red;font-size:20px;" >调拨单</font></div></center>
    <br/>
+      单号：<%=inventoryid %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日期：<%=inventory.getIntime()==null?"":inventory.getIntime() %> <br/>
                  出库单位：  
          输入<input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch.getLocateName()==null?"":outbranch.getLocateName() %>"  <%=isdisabel %>/>                    
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    选择 <select id="outbranchs" <%=isdisabel %>>  
-	  <option value=""></option>
-	   <% if(listbranch != null){
-		   for(int i=0;i<listbranch.size();i++){
-			   Branch b = listbranch.get(i);
-	    %>   
-	    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
-	   <% 
-		   }   
-	   }
-	   %>
-	  </select>   
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
                  入库单位： 
              输入<input type="text" name="inbranch" id="inbranch" value="<%=inbranch.getLocateName()==null?"":inbranch.getLocateName() %>" class="cba"  <%=isdisabel %>/>
-    选择 <select id="inbranchs" <%=isdisabel %>>  
-	  <option value=""></option>
-	   <% if(listbranch != null){
-		   for(int i=0;i<listbranch.size();i++){
-			   Branch b = listbranch.get(i);
-	    %>   
-	    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
-	   <% 
-		   }   
-	   }
-	   %>
-	  </select> 
+ 
   <br/>
-     备&nbsp;&nbsp;&nbsp;&nbsp;注：    
-       <textarea  id="remark" name="remark"  <%=isdisabel %> ><%=remark %></textarea>
-  <br/>
-  <br/>
+   
      增加型号:           
            
   <input type="text" name="ordertype0"  id="ordertype0"   class="cba" <%=isdisabel %>/>          
   <input type="button" name="" value="+" onclick="add()" <%=isdisabel %>/>        
             
-    <br/>    
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      备&nbsp;&nbsp;&nbsp;&nbsp;注：    
+       <textarea  id="remark" name="remark"  style="height:18px;width:200px"  <%=isdisabel %> ><%=remark %></textarea>
+  
      <br/>        
    <table width="100%" border="1" cellpadding="0" cellspacing="0" id="table">
      <tr class="asc"> 

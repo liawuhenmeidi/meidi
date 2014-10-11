@@ -53,7 +53,7 @@ public class InventoryServlet extends HttpServlet {
 		Object object = new Object();
 		   
 		String method = request.getParameter("method");
-		System.out.println("method"+method); 
+		//System.out.println("method"+method);  
 		synchronized(object){
 			if("add".equals(method)){ 
 				saveBranch(request,response);
@@ -138,8 +138,6 @@ public class InventoryServlet extends HttpServlet {
 		}
 	}  
 	
-	
-	
      private void saveBranch(HttpServletRequest request, HttpServletResponse response){
 		
 		User user  = (User)request.getSession().getAttribute("user");
@@ -151,8 +149,10 @@ public class InventoryServlet extends HttpServlet {
         if(StringUtill.isNull(id)){
         	id = -1+"" ;  
         }
+        
 		String outbranch = request.getParameter("outbranch");
 		String inbranch = request.getParameter("inbranch");
+		 
 		int outbranchid = BranchManager.getBranchID(outbranch);
 		int inbranchid = BranchManager.getBranchID(inbranch); 
 		String remark = request.getParameter("remark");   

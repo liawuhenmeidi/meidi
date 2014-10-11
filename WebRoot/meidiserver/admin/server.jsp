@@ -62,6 +62,15 @@ if("peidan".equals(method)){
 	response.getWriter().write(""+b);
 	response.getWriter().flush();
 	response.getWriter().close();
+	//updatePhone
+}else if("updatePhone".equals(method)){     
+	String uid = request.getParameter("uid");
+	String phone = request.getParameter("phone");
+	boolean b = UserManager.updatePhone(uid, phone);
+	response.getWriter().write(""+b);
+	response.getWriter().flush();
+	response.getWriter().close();
+	//updatePhone
 }else if("locate".equals(method)){ 
 	String locateName = request.getParameter("id");
 	LocateManager.save(locateName);

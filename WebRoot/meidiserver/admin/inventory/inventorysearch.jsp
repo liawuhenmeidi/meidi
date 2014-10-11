@@ -227,7 +227,8 @@ var disable = '<%=isdisabel %>';
         
      <div>     
     
-                     
+         单号：<%=inventoryid %> 
+         日期：<%=inventory.getIntime()==null?"":inventory.getIntime() %> <br/>               
     <br/>
                  出库单位：  
          <input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch %>"  <%=isdisabel %>/>                    

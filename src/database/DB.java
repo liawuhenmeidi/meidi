@@ -4,7 +4,7 @@ import java.sql.*;
 public class DB { 
 	public static Connection getConn() {
 		Connection conn = null; 
-		try {                                                                                               
+		try {                                                                                                 
 			Class.forName("com.mysql.jdbc.Driver");            
 			//conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/meidi?user=root&password=liaowuhen&characterEncoding=utf-8");
 			//conn = DriverManager.getConnection("jdbc:mysql://liaowuhendg.gotoftp1.com/liaowuhendg?user=liaowuhendg&password=eWp2046Mdaq76&characterEncoding=utf-8");

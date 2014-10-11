@@ -234,9 +234,12 @@ var disable = '<%=isdisabel %>';
   <div  > 
    <center><div id="branchmessage"><font style="color:red;font-size:20px;" >调拨单</font></div></center>
    <br/>
+         单号：<%=inventoryid %> 
+         日期：<%=inventory.getIntime()==null?"":inventory.getIntime() %> <br/>
                  出库单位：  
          输入<input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch.getLocateName() %>"  <%=isdisabel %>/>                    
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <!-- 
     选择 <select id="outbranchs" <%=isdisabel %>>  
 	  <option value=""></option>
 	   <% if(listbranch != null){
@@ -249,10 +252,11 @@ var disable = '<%=isdisabel %>';
 	   }
 	   %>
 	  </select>   
+	   -->
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
                  入库单位： 
              输入<input type="text" name="inbranch" id="inbranch" value="<%=inbranch.getLocateName() %>" class="cba"  <%=isdisabel %>/>
-    选择 <select id="inbranchs" <%=isdisabel %>>  
+     <!--  选择 <select id="inbranchs" <%=isdisabel %>>  
 	  <option value=""></option>
 	   <% if(listbranch != null){
 		   for(int i=0;i<listbranch.size();i++){
@@ -264,6 +268,7 @@ var disable = '<%=isdisabel %>';
 	   }
 	   %>
 	  </select> 
+	  -->
   <br/>
      备&nbsp;&nbsp;&nbsp;&nbsp;注：    
        <textarea  id="remark" name="remark"  <%=isdisabel %> ><%=remark %></textarea>

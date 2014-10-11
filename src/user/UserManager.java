@@ -69,6 +69,27 @@ logger.info(sql);
 
 	   }
 	 
+	 
+	 public static boolean updatePhone(String uid,String phone){
+		   boolean flag = false ;
+		    Connection conn = DB.getConn();
+			Statement stmt = DB.getStatement(conn); 
+			String  sql = "update mduser set phone = '"+phone+"' where id = " + uid ;
+			try {
+				stmt.executeUpdate(sql);
+				flag = true ; 
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(stmt);
+				DB.close(conn);
+			 }
+			return flag;
+
+	   }
+	 
+	 
+	 
 	 // 保存职工
 	public static boolean save(User user) {
 		boolean flag = false ;
