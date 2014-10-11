@@ -73,6 +73,7 @@ User user = (User)session.getAttribute("user");
            <li >
             <h4 >工资管理</h4>
             <div class="list-item none">
+            <p ><a href="salaryCalc.jsp" target="contentpage">提成计算页</a></p>
               <p ><a href="salaryExport.jsp" target="contentpage">提成导出页</a></p>
             </div>
           </li>
