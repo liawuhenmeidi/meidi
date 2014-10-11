@@ -7,7 +7,7 @@
 	
 	String fileName = request.getParameter("fileName");
 	String confirm = request.getParameter("confirm");
-	String filePath = new ExcelUpload().getSalaryFilePath();
+	String filePath = new ExcelUpload().getSalesFilePath();
 	List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
 	//UploadOrderManager uom = new UploadOrderManager();
 
@@ -17,7 +17,7 @@
 	
 	if(confirm != null && confirm != "" && confirm.equals("confirm")){
 		confirmResult = UploadManager.saveSalesFileToDB(filePath,fileName);
-		response.sendRedirect("/meidi/meidiserver/admin/suningExcelUpload.jsp");
+		response.sendRedirect("/meidi/meidiserver/admin/excelUpload.jsp");
 		return;
 	}else{
 		if(fileName != null && fileName != "" && !fileName.equals("")){			
@@ -88,6 +88,7 @@ td {
 			temp = "上传成功";
 		}else{
 			temp = "上传失败";
+			showContent =false;
 %>
 			<script type="text/javascript">
 				alert('<%=temp%>');
@@ -155,7 +156,6 @@ td {
 		<input type="hidden" name="confirm" value="confirm"/>
 		<tr>
 			<td colspan="6" align="center" ><input name="submit" type="submit" value="确认"/></td>
-			<td colspan="1">  </td>
 		</tr>
 		</form>
 		<%

@@ -177,7 +177,7 @@ public class UploadManager {
 	
 	public static boolean saveOrderList(List <UploadOrder> UploadOrders){
 		String sql = ""; 
-		sql = "insert ignore into uploadorder (id,salesman,shop,saleno,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
+		sql = "insert ignore into uploadorder (id,salesman,shop,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
 		Connection conn = DB.getConn();
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

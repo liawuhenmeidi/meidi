@@ -38,7 +38,9 @@
 <title>手动结款页</title>
   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
-
+	<style>
+     redTag{color:red}
+	</style>
 </head>
 
 <body>

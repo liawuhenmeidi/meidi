@@ -86,7 +86,9 @@ td {
     <div > 
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
   <a href="../../data/model/suningmuban.xls"><font style="color:red;font-size:20px;" >苏宁excel模板</font> </a><br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
   <a href="../../data/model/tichengmuban.xls"><font style="color:red;font-size:20px;" >提成标准模板</font> </a><br />
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
   <a href="../../data/model/xiaoshoudanmuban.xls"><font style="color:red;font-size:20px;" >销售单模板</font> </a>
   
 

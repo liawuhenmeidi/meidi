@@ -161,6 +161,8 @@ public class XLSReader {
 				Workbook wb = Workbook.getWorkbook(srcFile);
 				Sheet sheet0 = wb.getSheet(0);
 				SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat s1 = new SimpleDateFormat("yy-MM-dd");
+				SimpleDateFormat s2 = new SimpleDateFormat("yyyyMMdd");
 				for(int i = 1 ; i < sheet0.getRows(); i ++){
 					if(sheet0.getCell(0,i).getContents().equals("")){
 						continue;
@@ -170,7 +172,7 @@ public class XLSReader {
 					uo.setSaleManName(sheet0.getCell(3,i).getContents());
 					uo.setSalePrice(Double.parseDouble(sheet0.getCell(4,i).getContents()));
 					uo.setNum(Integer.parseInt(sheet0.getCell(5,i).getContents()));
-					uo.setSaleTime(sheet0.getCell(6,i).getContents());
+					uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents())));
 					uo.setFileName(srcFile.getName());
 					uo.setChecked(0);
 					uo.setCheckedTime(fmt.format(new Date()));

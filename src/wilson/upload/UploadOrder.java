@@ -6,7 +6,7 @@ public class UploadOrder {
 	
 	private String shop = ""; //销售门店
 	
-	private String posNo = ""; //pos(厂送)单号
+	private String posNo = null; //pos(厂送)单号
 	
 	private String saleManName = "";//销售员姓名
 	

@@ -17,7 +17,7 @@
 	
 	if(confirm != null && confirm != "" && confirm.equals("confirm")){
 		confirmResult = UploadManager.saveSalaryFileToDB(filePath,fileName);
-		response.sendRedirect("/meidi/meidiserver/admin/salaryModelUpload.jsp");
+		response.sendRedirect("/meidi/meidiserver/admin/excelUpload.jsp");
 		return;
 	}else{
 		if(fileName != null && fileName != "" && !fileName.equals("")){			
@@ -80,7 +80,25 @@ td {
 <!--   头部开始   --> 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
+<%
+	if(fileName != null && fileName != "" && !fileName.equals("")){	
+		String temp = "";
+		if(salaryModelList!=null&&salaryModelList.size()>0){
+			temp = "上传成功";
+		}else{
+			temp = "上传失败";
+			showContent =false;
+%>
+			<script type="text/javascript">
+				alert('<%=temp%>');
+			
+			</script>
+<%
 
+		}
+	}
+
+%>
 
 
 <div style="position:fixed;width:100%;height:200px;">

@@ -87,34 +87,48 @@ public class ExcelUpload extends HttpServlet {
 		String fileName = fmt.format(new Date()) + "-" + uuid + ".xls";
 		
 		
-		String type = req.getParameter("uploadType");
+		String type = "";
 		String directUrl = "";
 		String filePath = "";
 		
-		if(type.equals("1")){
-			//苏宁excel
-			directUrl = "/meidi/meidiserver/admin/updateExcel.jsp?fileName=";
-			filePath = suningFilePath;
-		}else if(type.equals("2")){
-			//提成标准
-			directUrl = "/meidi/meidiserver/admin/salaryModelUpload.jsp?fileName=";
-			filePath = salaryFilePath;
-		}else if(type.equals("3")){
-			//销售单上传
-			directUrl = "/meidi/meidiserver/admin/salesUpload.jsp?fileName=";
-			filePath = salaryFilePath;
-		}else{
-			directUrl = "/meidi/meidiserver/admin/excelUpload.jsp?fileName=";
-			res.sendRedirect(directUrl+fileName);
-			return;
-		}
+		
 		
 		try {
 			List fileItems = upload.parseRequest(req);
 			Iterator iter = fileItems.iterator();
+			FileItem item;
+			
+			while(iter.hasNext()){
+				item = (FileItem) iter.next();
+				if(item.isFormField()){
+					if(item.getFieldName().equals("uploadType")){
+						type = item.getString("UTF-8");
+						if(type.equals("1")){
+							//苏宁excel
+							directUrl = "/meidi/meidiserver/admin/suningExcelUpload.jsp?fileName=";
+							filePath = suningFilePath;
+						}else if(type.equals("2")){
+							//提成标准
+							directUrl = "/meidi/meidiserver/admin/salaryModelUpload.jsp?fileName=";
+							filePath = salaryFilePath;
+						}else if(type.equals("3")){
+							//销售单上传
+							directUrl = "/meidi/meidiserver/admin/salesUpload.jsp?fileName=";
+							filePath = salesFilePath;
+						}else{
+							directUrl = "/meidi/meidiserver/admin/excelUpload.jsp?fileName=";
+							res.sendRedirect(directUrl+fileName);
+							return;
+						}
+					}
+				}
+			}
+			
+			iter = fileItems.iterator();
 
 			while (iter.hasNext()) {
-				FileItem item = (FileItem) iter.next();
+				item = (FileItem) iter.next();
+				
 				if (item.isFormField()) {
 					System.out.println("表单参数名:" + item.getFieldName() + "，表单参数值:" + item.getString("UTF-8"));
 				}
