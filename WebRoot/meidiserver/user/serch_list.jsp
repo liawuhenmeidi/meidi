@@ -2,8 +2,9 @@
 <%@ include file="searchdynamic.jsp"%> 
 
 <%     
-     
-List<Order> list = OrderManager.getOrderlist(user,Group.sale,Order.serach,-1,0,sort,sear); 
+
+
+List<Order> list = OrderManager.getOrderlist(user,Group.sale,Integer.valueOf(type),-1,0,sort,sear); 
 Map<Integer,List<OrderProduct>> mapOP = OrderProductManager.getOrderStatuesM(user);
 HashMap<Integer,User> usermap = UserManager.getMap();   // 获取送货员
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
@@ -24,8 +25,19 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
+
+var type = "<%=type%>";
+
+$(function () { 
+	$("#"+type).css("color","red");
+});
+
 function detail(src){
 	window.location.href=src;
+}
+
+function search(type){
+	window.location.href="serch_list.jsp?type="+type;
 }
 </script>
 </head>
@@ -35,21 +47,22 @@ function detail(src){
 <jsp:include flush="true" page="../head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>
-
+  
 <!--  头 单种类  -->
 <div class="s_main_tit"><span class="qiangdan"><a href="chaxun_sale.jsp">我要查询</a></span><span class="qiangdan"><a href="order.jsp">我要报装</a></span><span class="qiangdan"><a href="welcom.jsp">返回</a></span><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span></div>
-<div class="s_main_tit">订单查询页面</div>
+<div class="s_main_tit"><span style="cursor:hand" id="<%=Order.serach%>" onclick="search('<%=Order.serach%>')">待派送安装</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.orderDispatching%>" onclick="search('<%=Order.orderDispatching%>')">已派送</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.over%>" onclick="search('<%=Order.over%>')">已安装</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.returns%>" onclick="search('<%=Order.returns%>')">退货</span></div>
  
 <!--  订单详情  -->
 <div class="s_main_box">
 <table width="100%" class="s_main_table">
   <tr >
     <td width="20%" class="s_list_m">产品类别</td>
-    <td width="20%" class="s_list_m">产品型号</td>
+    <td width="30%" class="s_list_m">产品型号</td>
     <td width="20%" class="s_list_m">预约日期</td>
     <td width="30%" class="s_list_m">送货地点</td>
   </tr>  
    <% 
+   if(list != null){
     for(int i = 0;i<list.size();i++){
     	Order o = list.get(i);
     	String col = "";
@@ -107,7 +120,8 @@ function detail(src){
     
   </tr>
   
-     <%} %>
+     <%} 
+     }%>
 </table>
 <br/>
 

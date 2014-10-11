@@ -13,14 +13,14 @@ User user = (User)session.getAttribute("user");
 String method = request.getParameter("method");
 System.out.println("*************method"+method);
 if("songhuo".equals(method)){
-	String uid = request.getParameter("uid");
+	String statues = request.getParameter("statues");
 	String id = request.getParameter("id"); 
 	String type = request.getParameter("type");
 	if(type.equals(""+Order.returns)){
 		method = "tuihuo"; 
 	} 
-	int statues = OrderManager.updateStatues(user,method,Integer.valueOf(uid), id);  
-	response.getWriter().write(""+statues);
+	int statuesflag = OrderManager.updateStatues(user,method,Integer.valueOf(statues), id);  
+	response.getWriter().write(""+statuesflag);
 	response.getWriter().flush(); 
 	response.getWriter().close(); 
 

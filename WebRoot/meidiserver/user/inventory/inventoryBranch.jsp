@@ -100,6 +100,7 @@ td {
 
 
 </style>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
 
@@ -109,14 +110,6 @@ td {
 
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script src="../../js/mobiscroll.core-2.6.2.js" type="text/javascript"></script>
-<script src="../../js/mobiscroll.core-2.6.2-zh.js" type="text/javascript"></script>
-<link href="../../css/mobiscroll.core-2.6.2.css" rel="stylesheet" type="text/css" />
-<script src="../../js/mobiscroll.datetime-2.6.2.js" type="text/javascript"></script>
-<script src="../../js/mobiscroll.android-ics-2.6.2.js" type="text/javascript"></script>
-<link href="../../css/mobiscroll.android-ics-2.6.2.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
 var disable = '<%=isdisabel %>';
@@ -291,10 +284,6 @@ var disable = '<%=isdisabel %>';
 
 <body>
 <!--   头部开始   -->
- <jsp:include flush="true" page="../../head.jsp">
-  <jsp:param name="dmsn" value="" />
-  </jsp:include>
-
 <!--   头部结束   -->
 
 <div class="main">  

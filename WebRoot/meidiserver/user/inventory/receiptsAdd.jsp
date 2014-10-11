@@ -67,6 +67,7 @@ td {
 
 
 </style>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
@@ -190,12 +191,6 @@ var disable = '<%=isdisabel %>';
 </head>
 
 <body>
-<!--   头部开始   -->
- <jsp:include flush="true" page="../../head.jsp">
-  <jsp:param name="dmsn" value="" />
-  </jsp:include>
-
-<!--   头部结束   -->
 
 <div class="main">  
    <div class="weizhi_head">现在位置：库存单据管理页</div> 

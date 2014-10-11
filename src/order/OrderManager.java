@@ -1052,14 +1052,26 @@ logger.info(Orders.size());
 					   //returnid = "+user.getId() + " and returnstatues =0  and returnprintstatues = 1 
 				   }            
 		     } 
-		 }else{       
-			   if(flag && Group.send == type){
-				   if(Order.serach == statues){
-					   sql = "select * from  mdorder where  ( sendId = "+user.getId() + " and deliveryStatues in (0,9,10)   and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (1,10,9)  and printSatuesp = 1   order by id  desc";
-				   } 
+		 }else{        
+			   if(flag && Group.send == type){  
+				   if(Order.serach == statues){ 
+					   sql = "select * from  mdorder where  sendId = "+user.getId() + " and deliveryStatues in (0,9,10)   and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (1,10)  and printSatuesp = 1   order by id  desc";
+				   }else if(Order.orderDispatching == statues){
+					   sql = "select * from  mdorder where  sendId = "+user.getId() + " and deliveryStatues in (1)  order by id  desc"; 
+				   }else if(Order.over == statues){ 
+					   sql = "select * from  mdorder where  ( sendId = "+user.getId() + "  or  installid = "+user.getId() + " )  and deliveryStatues in (1)  order by id  desc";
+				   }else if(Order.returns == statues){
+					   sql = "select * from  mdorder where  sendId = "+user.getId() + " and deliveryStatues in (0,9,10)   and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (1,10)  and printSatuesp = 1   order by id  desc";
+				   }
 			   }else if(flag && Group.sale == type){
 				   if(Order.serach == statues){
-					   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' "+ str + " order by id desc ";
+					   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (0,9,10) "+ str + " order by id desc ";
+				   }else if(Order.orderDispatching == statues){
+					   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (1)  "+ str + " order by id desc ";
+				   }else if(Order.over == statues){
+					   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (2)  "+ str + " order by id desc ";
+				   }else if(Order.returns == statues){
+					   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (3,4,5,12,13)  "+ str + " order by id desc ";
 				   }
 			   }else if(flag && Group.dealSend == type){
 				   if(Order.orderDispatching == statues){     

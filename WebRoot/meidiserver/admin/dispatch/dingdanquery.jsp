@@ -134,12 +134,12 @@ function changes(str1){
 }
 
 function change(str1,str2,type){
-	var uid = $("#"+str1).val(); 
+	var statues = $("#"+str1).val(); 
 	//alert(uid);
 	$.ajax({   
         type: "post",   
          url: "../../user/server.jsp", 
-         data:"method=songhuo&id="+str2+"&uid="+uid+"&type="+type,
+         data:"method=songhuo&id="+str2+"&statues="+statues+"&type="+type,
          dataType: "",  
          success: function (date) {
         	
@@ -422,7 +422,7 @@ function orderPrint(id,statues){
         	   %>
     		   <select class = "category" name="category"  id="songh<%=o.getId() %>" >
                     <option value="4" >只安装 </option>  
-               </select>  
+               </select>   
               <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','')"  value="确定"/>
     		<%  
           }

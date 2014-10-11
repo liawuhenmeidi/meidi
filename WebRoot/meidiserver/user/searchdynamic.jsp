@@ -2,7 +2,12 @@
 <%    
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
-  
+
+String type = request.getParameter("type"); 
+if(StringUtill.isNull(type)){
+	type = Order.serach+"";
+}
+
 String sort =  "id desc"; 
 boolean flag = false ; 
 String saledateStart = request.getParameter("saledateStart");
@@ -12,7 +17,7 @@ String pos = request.getParameter("pos");
 String username = request.getParameter("username");
 String phone1 = request.getParameter("phone1");
 String printlnid = request.getParameter("printlnid"); 
-String sear = "";   
+String sear = "";    
 // pos == "" || pos == null || pos == "null"
 if(saledateStart != null && saledateStart != "" && saledateStart != "null"){
 	sear += " and saledate BETWEEN '" + saledateStart + "'  and  ";

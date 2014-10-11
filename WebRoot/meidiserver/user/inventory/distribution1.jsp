@@ -41,6 +41,7 @@ td {
 
 
 </style>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
 
@@ -50,14 +51,6 @@ td {
 
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script src="../../js/mobiscroll.core-2.6.2.js" type="text/javascript"></script>
-<script src="../../js/mobiscroll.core-2.6.2-zh.js" type="text/javascript"></script>
-<link href="../../css/mobiscroll.core-2.6.2.css" rel="stylesheet" type="text/css" />
-<script src="../../js/mobiscroll.datetime-2.6.2.js" type="text/javascript"></script>
-<script src="../../js/mobiscroll.android-ics-2.6.2.js" type="text/javascript"></script>
-<link href="../../css/mobiscroll.android-ics-2.6.2.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
  
@@ -125,10 +118,6 @@ td {
 
 <body>
 <!--   头部开始   -->
- <jsp:include flush="true" page="../../head.jsp">
-  <jsp:param name="dmsn" value="" />
-  </jsp:include>
-
 <!--   头部结束   -->
 <div class="main">   
   <div class="weizhi_head">现在位置：<%=c.getName() %>分布
@@ -137,7 +126,7 @@ td {
     <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>       
  </div>      
  </div>        
-     <div style="background-color:;width:80%" >
+     <div style="background-color:;width:100%" >
      <br/>        
    <table width="100%" border="1" id="table" cellpadding="0" cellspacing="0" >
      <tr class="asc"> 

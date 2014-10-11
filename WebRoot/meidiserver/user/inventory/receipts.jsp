@@ -10,6 +10,7 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
 
@@ -20,31 +21,22 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
  function detail(id){
 	 window.location.href="receiptsAdd.jsp?id="+id;
  }
- 
-	
-	
+
 </script>
 </head>
 
 <body>
-<!--   头部开始   -->
- <jsp:include flush="true" page="../../head.jsp">
-  <jsp:param name="dmsn" value="" />
-  </jsp:include>
 
-<!--   头部结束   -->
+<div class="s_main">
 
-<div class="main">
- 
- <!--       -->    
-     
-     <div class="">
+    
+ <!--       -->   
    <div class="weizhi_head">现在位置：单据管理
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
    <a href="../welcom.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
    </div>    
    
-        <div class="main_r_tianjia">
+  <div class="main_r_tianjia">
    <ul>     
    <% 
    if(UserManager.checkPermissions(user, Group.inventory)){
@@ -58,6 +50,11 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
      
    </div>  
    <div class="table-list">
+   
+   
+   
+   
+   
 <div class="btn">
 <table width="100%"  cellspacing="1" id="table">
 	<thead>
@@ -139,8 +136,6 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 </div>
 <div id="pages"></div>
 </div>  
-
-     </div>
 
 </div>
 

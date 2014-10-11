@@ -39,6 +39,7 @@ td {
 
 
 </style>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
 
@@ -121,9 +122,6 @@ td {
 
 <body>
 <!--   头部开始   -->
- <jsp:include flush="true" page="../../head.jsp">
-  <jsp:param name="dmsn" value="" />
-  </jsp:include> 
 
 <!--   头部结束   -->
 <div class="main">   
@@ -132,7 +130,7 @@ td {
     <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>            
  </div>      
  </div>        
-     <div style="background-color:;width:80%" >
+     <div style="background-color:;width:100%" >
      <br/>        
    <table width="100%" border="1" id="table" cellpadding="0" cellspacing="0" >
      <tr class="asc"> 
