@@ -252,7 +252,7 @@ function serchclick(category,type,branchid,obj){
   </jsp:include>
 
 <!--   头部结束   -->
-<div class="main">  
+<div class="main">   
    
   <input type="hidden" id="time"  value=""/>
   <input type="hidden" id="starttime"  value=""/>

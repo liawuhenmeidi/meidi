@@ -3,7 +3,7 @@
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 
-String category = request.getParameter("category");
+String category = request.getParameter("category"); 
 String branchid = request.getParameter("branchid");
 
 Branch branch = null;   
@@ -58,9 +58,6 @@ function startRequest(ctype,branchid){
 	 if("fresh" == time){
 		 var starttime = $("#starttime").val(); 
 		 var endtime = $("#endtime").val(); 
-
-		 
-		 
 		 window.location.href='inventoryDetail.jsp?ctype='+ctype+'&branchid='+branchid+'&starttime='+starttime+'&endtime='+endtime; 
 	 }
 	
@@ -100,10 +97,6 @@ function serchclick(category,type,branchid,obj){
 	 typeid = type ; 
 	 updateClass(obj);  
 } 
-
-
-
-
 
 function add(){   
 	 
@@ -166,7 +159,9 @@ function add(){
 <body>
 
 <div class="s_main">
-
+  <input type="hidden" id="time"  value=""/>
+  <input type="hidden" id="starttime"  value=""/>
+  <input type="hidden" id="endtime"  value=""/>
     
  <!--       -->   
    <div class="weizhi_head">现在位置：单据管理
