@@ -50,11 +50,7 @@ Map<Integer,Branch> branchmap = BranchManager.getNameMap();
      
    </div>  
    <div class="table-list">
-   
-   
-   
-   
-   
+
 <div class="btn">
 <table width="100%"  cellspacing="1" id="table">
 	<thead>

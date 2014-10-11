@@ -1,11 +1,11 @@
-<%@ page language="java" import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,inventory.*,branch.*,category.*,branchtype.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 
 String branchid = "";
 Branch branch = null;   
-if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
+if(UserManager.checkPermissions(user, Group.sale)){
 	branchid = user.getBranch()+""; 
 	branch = BranchManager.getLocatebyid(branchid);
 } 
@@ -13,60 +13,47 @@ if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.chec
 List<Branch> listbranch = BranchService.getList(); 
 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
-
+ 
 %>
+  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<style type="text/css">
-
-td {  
-    width:100px;
-    line-height:30px;
-}
-
-
-</style>  
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
 
-
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="../../js/common.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
-
 <script type="text/javascript">
-  
- var row = 1; 
- var rows = new Array();
- var categoryid = "";
- $(function () {  
+var row = 1; 
+var rows = new Array();
+var categoryid = "";
+$(function () {  
 	 add();
- }); 
-    
- function search(category,branchid){ 
+}); 
+   
+function search(category,branchid){ 
 		// window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
 		 window.location.href="inventory1.jsp?category="+category+"&branchid="+branchid;
- }   
-   
- function distri(){
+}   
+  
+function distri(){
 	 if(categoryid == null || categoryid == ""){
 		 alert("请选择商品");
 	 }else { 
 		 window.location.href='distribution.jsp?category='+categoryid;
 		 //window.open('distribution.jsp?category='+categoryid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
-       }
+      }
 	 }
- 
- function serchclick(category,branchid,obj){
+
+function serchclick(category,branchid,obj){
 	 search(category,branchid);
 	 //categoryid = category;
 	 //updateClass(obj);  
-  } 
- 
- function add(){  
+ } 
+
+function add(){  
 	 $("#table tr").remove();
 	 var b = $("#branch").val();
 	 var branch = "<%=branchid%>";
@@ -114,97 +101,70 @@ td {
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 	            } 
 	           });
-
- }
-  
+    }
+ 
 
 </script>
 </head>
 
 <body>
-<!--   头部开始   -->
-<!--   头部结束   -->
-<div class="main">   
-   <div class="weizhi_head">现在位置：库存查询
-     
-   
-   <% 
-    if(UserManager.checkPermissions(user, Group.dealSend)){
-    	%>
-   
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
-    <a href="javascript:distri();"> 查看分布</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-         选择仓库:     
-	  <select id="branch">  
-	  <option value=""></option>
-	   <% if(listbranch != null){
-		   for(int i=0;i<listbranch.size();i++){
-			   Branch b = listbranch.get(i);
-	    %>   
-	    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
-	   <% 
-		   }   
-	   }
-	   %>
-	  </select>
-	   <input type="button" name="" value="查询" onclick="add()"/>   
-			   <%
-		   }else if(UserManager.checkPermissions(user, Group.sale)){ 
-			   String branchids = branch.getBranchids();
-			   if(branchids != null){
-   %>
-   
-      选择仓库:     
-	  <select id="branch">  
-	  <option value=""></option>
-	   <%  
-	       
-	
-	       String branchs[] = branchids.split("_"); 
-		   for(int i=0;i<listbranch.size();i++){
-			   Branch b = listbranch.get(i); 
-			   for(int j=0;j<branchs.length;j++){ 
-				   if(branchs[j].equals(b.getId()+"")){
-					   %>   
-					    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
-					   <%    
-				   } 
-			   }
-		   }  
-	  
-	   %>
-	  </select>
-	   <input type="button" name="" value="查询" onclick="add()"/>  
-   <%
-		   }  
-	}
-   %>
-       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-   <a href="../welcom.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>                     
- </div>        
-     <div class="table-list" >
-     <br/>        
-   <table width="100%"  cellspacing="1" id="table" >
-    <thead>
-     <tr >  
-      <td>产品类别</td>
-      <td>产品型号</td> 
-      <td>账面库存数量</td>
-      <td>实际库存数量</td>  
-      <td>盘点</td>   
-     </tr>
- </thead>
-   </table>
- 
-  </div>
-       
-     </div>
-<br/>
 
-<div id="serach"> 
+<div class="s_main">
+
+    
+ <!--       -->   
+   <div class="weizhi_head">现在位置：单据管理
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+   <a href="../welcom.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
+   </div>    
+   
+  <div class="main_r_tianjia">
+      
+	     <%
+    if(UserManager.checkPermissions(user, Group.sale)){ 
+		  String branchids = branch.getBranchids();
+		   if(branchids != null){
+%>
+
+  选择仓库:     
+  <select id="branch">  
+  <option value=""></option>
+   <%  
+       String branchs[] = branchids.split("_"); 
+	   for(int i=0;i<listbranch.size();i++){
+		   Branch b = listbranch.get(i); 
+		   for(int j=0;j<branchs.length;j++){ 
+			   if(branchs[j].equals(b.getId()+"")){
+				   %>   
+				    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
+				   <%    
+			   } 
+		   }
+	   }  
+  
+   %>
+  </select>
+   <input type="button" name="" value="查询" onclick="add()"/>  
+<%
+	   }  
+       }
+    %>
+   </div>  
+   <div class="table-list">
+
+<div class="btn">
+<table width="100%"  cellspacing="1" id="table">
+
+</table>
 
 
 </div>
+
+
+</div>
+</div>
+
+
+
 </body>
 </html>

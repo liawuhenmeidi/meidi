@@ -15,8 +15,6 @@ User user = (User)session.getAttribute("user");
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
  function gettime(){
-	 
-	 
 	 var starttime = $("#starttime").val(); 
 	 var endtime = $("#endtime").val(); 
 
