@@ -272,25 +272,34 @@ function orderPrint(id,statues,type,deliveryStatues){
 
 <body>
  
-<div style="position:fixed;width:100%;height:200px;">
-<div style="position:fixed;width:80%;height:200px;">
-
- <jsp:include flush="true" page="head.jsp">
-  <jsp:param name="dmsn" value="" />
-  </jsp:include>
-     
-<jsp:include flush="true" page="page.jsp">
-    <jsp:param name="href" value="dingdanprintln.jsp" />
-    <jsp:param name="sear" value="<%=sear %>" /> 
-	<jsp:param name="page" value="<%=pageNum %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" /> 
-	<jsp:param name="count" value="<%=count %>" /> 
-	<jsp:param name="type" value="<%=Order.serach%>"/>  
-</jsp:include>     
  
-<jsp:include page="search.jsp"/>
-<% if(UserManager.checkPermissions(user, Group.Manger)){
+ <div style="position:fixed;width:100%;height:20%;">
+  <jsp:include flush="true" page="head.jsp">
+  <jsp:param name="" value="" />
+  </jsp:include>   
+      
+<jsp:include flush="true" page="page.jsp">
+    <jsp:param name="sear" value="<%=sear %>" /> 
+	<jsp:param name="page" value="<%=Page %>" />
+	<jsp:param name="numb" value="<%=numb %>" />
+	<jsp:param name="sort" value="<%=sort %>" />  
+	<jsp:param name="count" value="<%=count %>"/> 
+	<jsp:param name="type" value="<%=Order.serach%>"/>  
+</jsp:include> 
+
+<div id="headremind">
+<jsp:include page="headremind.jsp"/>
+</div>
+
+<jsp:include page="search.jsp">
+ <jsp:param name="page" value="<%=pageNum %>" />
+	<jsp:param name="numb" value="<%=numb %>" />
+	<jsp:param name="sort" value="<%=sort %>" />  
+	<jsp:param name="count" value="<%=count %>"/> 
+</jsp:include> 
+
+<div class="btn">
+ <% if(UserManager.checkPermissions(user, Group.Manger)){
 	
  %>
   
@@ -301,20 +310,14 @@ function orderPrint(id,statues,type,deliveryStatues){
 <%
 }
 %>
-
 </div>
 
- 
-<div id="headremind">
-<jsp:include page="headremind.jsp"/>
-</div>
-</div>
-
+</div > 
 <div style=" height:170px;">
 </div>
- 
- 
 <br/>  
+
+ 
 <div id="wrap">
 <table  cellspacing="1" id="table" >
 		<tr id="th">  

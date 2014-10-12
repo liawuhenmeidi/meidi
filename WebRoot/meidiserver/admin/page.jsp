@@ -5,7 +5,7 @@ int type = Integer.valueOf(request.getParameter("type"));
 String message = "";
 String href = request.getParameter("href");
 int count = 0 ;
-
+ 
 if(request.getParameter("count") != null && !"".equals(request.getParameter("count"))){
 	count = Integer.valueOf(request.getParameter("count"));
 } 
@@ -14,8 +14,6 @@ String pageNum = request.getParameter("page");
 String numb = request.getParameter("numb");  
 String sort = request.getParameter("sort");  
 String sear = request.getParameter("sear");
-
-//System.out.println("page"+sear);
 
 int Page = Integer.valueOf(pageNum);
 int num = Integer.valueOf(numb);
@@ -68,6 +66,17 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/meidiserver/";
 
 %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style type="text/css">
+td {
+ align:center
+}
+</style> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
+<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <script type="text/javascript">
 
 var num = "<%=num%>";
@@ -102,16 +111,17 @@ $(function () {
 
 
 </script>
-
-  <div class="weizhi_head">现在位置：<%=message %> 
-  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-  <a href="<%=basePath %>Print"><font style="color:red;font-size:20px;" >导出数据</font> </a>
-  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-  <font style="color:red;font-size:20px;" >导入数据</font>
-  </div>        
-   
-   <div class="btn">
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;行数
+</head>  
+<body>
+   <div style="text-align:center">
+ <table  cellspacing="1" style="width: 95%;margin:auto"> 
+  <tr >  
+   <td >
+        现在位置：<%=message %> 
+   &nbsp;&nbsp;&nbsp;&nbsp;
+   </td>
+   <td>
+                     行数
      	<select class = "category" name="category"  id="numb">
      	 <option value="100">100</option> 
      	 <option value="200">200</option>
@@ -119,31 +129,42 @@ $(function () {
      	 <option value="1000">1000</option>
      	 <option value="-1">所有</option>
      	</select>     
-  &nbsp; &nbsp; &nbsp; &nbsp;  
-    
-     <a href="<%=href %>?page=1&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">首页</a>     
+   </td>
+   <td>
+  <a href="<%=href %>?page=1&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">首页</a>     
      <a href="<%=href %>?page=<%=Page-1%>&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">上一页</a>
      <a href="<%=href %>?page=<%=Page+1%>&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">下一页</a>
      <a href="<%=href %>?page=<%=count/num+1%>&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">尾页</a>   
-       &nbsp; &nbsp; &nbsp; &nbsp; 
-   
-      第    
+   </td>
+   <td>
+    第    
      <input type="text" size="5" name="username" value="<%=Page%>"  id="page"/>    
         页
-        
-    共
+   </td>
+   <td>
+      共
     <%=count %> 
     
    条记录  
-&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
-     按 
+   </td>
+   <td>
+   按 
        <select class ="" name=""  id="sort" >  
        <option value="andate asc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
      	 <option value="andate asc">安装日期</option> 
      	 <option value="saledate asc">开票日期 </option>  
      	</select>
-        排序 <br />      
-   <br/>         
-</div>
+        排序 
+   
+   </td>
+   <td>
+   <a href="<%=basePath %>Print"><font style="color:red;font-size:20px;" >导出数据</font> </a>        
+   </td>
+  </tr>
+  </table> 
+  </div>
 
-
+<hr>
+</hr>
+</body>
+</html>

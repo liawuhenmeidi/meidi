@@ -44,7 +44,6 @@ if("searched".equals(searched)){
 int id = user.getId(); 
 int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
 int opstatues = OrderPrintln.releasedispatch; 
-
 int count = 0 ;   
   
 

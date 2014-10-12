@@ -211,39 +211,42 @@ function seletall(all){
 	};
 }  
 </script>
-<div style="position:fixed;width:100%;height:200px;">
-<div style="position:fixed;width:80%;height:200px;">
 
- <jsp:include flush="true" page="../head.jsp">
-  <jsp:param name="dmsn" value="" />
-  </jsp:include>
-  
+<div style="position:fixed;width:100%;height:20%;">
+  <jsp:include flush="true" page="../head.jsp">
+  <jsp:param name="" value="" />
+  </jsp:include>   
+      
 <jsp:include flush="true" page="../page.jsp">
-    <jsp:param name="searched" value="<%=searched %>" /> 
-	<jsp:param name="page" value="<%=pageNum %>" />
+    <jsp:param name="sear" value="<%=sear %>" /> 
+	<jsp:param name="page" value="<%=Page %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  
 	<jsp:param name="count" value="<%=count %>"/> 
-	<jsp:param name="type" value="<%=Order.callback%>"/> 
+    <jsp:param name="type" value="<%=Order.callback%>"/> 
 </jsp:include> 
 
-<jsp:include page="../search.jsp"/>
+<div id="headremind">
+<jsp:include page="headremind.jsp"/>
+</div>
+
+<jsp:include page="../search.jsp">
+ <jsp:param name="page" value="<%=pageNum %>" />
+	<jsp:param name="numb" value="<%=numb %>" />
+	<jsp:param name="sort" value="<%=sort %>" />  
+	<jsp:param name="count" value="<%=count %>"/> 
+</jsp:include> 
 
 <div class="btn">
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input>  
 </div>
 
-</div>
-<div id="headremind">
-<jsp:include page="headremind.jsp"/>
-</div>
-
-</div>
+</div > 
 <div style=" height:170px;">
 </div>
-
  
-<br/>  
+<br/> 
+
 <div id="wrap">
 <table  cellspacing="1" id="table">
 		<tr id="th">  

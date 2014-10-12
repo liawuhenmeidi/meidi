@@ -4,7 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <style type="text/css">
-
+td {
+ align:center
+}
 </style> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
@@ -60,48 +62,37 @@ $(document).ready(function () {
   
  </head>
  <body>
- <table width="100%"  cellspacing="1" > 
+ <div style="text-align:center">
+ <table  cellspacing="1" style="width: 95%;margin:auto"> 
   <tr class="asc">  
-   <td width="80%">
-   <a href="javascript:void(0);" onclick="serach('neworder')" style="font-size:20px;"> 收到新单据</a>  <br/> 
-   </td>
-   <td width="20%">
+   <td >
+   <a href="javascript:void(0);" onclick="serach('neworder')" style="font-size:15px;"> 收到新单据</a> 
+   &nbsp;&nbsp;&nbsp;&nbsp;
    <span style="color:red;font-size:20px;" id="neworder"></span>
    </td>
-  </tr >
-   <tr class="asc">
    <td>
-  <a href="javascript:void(0);" onclick="serach('zhuce')" style="font-size:20px;">职工注册信息   </a> <br/>
-  </td>
-  <td>
+  <a href="javascript:void(0);" onclick="serach('zhuce')" style="font-size:15px;">职工注册信息</a>
+   &nbsp;&nbsp;&nbsp;&nbsp; 
   <span style="color:red;font-size:20px;" id="zhuce"></span>
    </td>
-  </tr>
-   <tr class="asc">
    <td>
-  <a href="javascript:void(0);" onclick="serach('release')" style="font-size:20px;">安装单位释放   </a> <br/>
-  </td>
-  <td>
+  <a href="javascript:void(0);" onclick="serach('release')" style="font-size:15px;">安装单位释放</a> 
+  &nbsp;&nbsp;&nbsp;&nbsp;   
   <span style="color:red;font-size:20px;" id="release"></span>
    </td>
-  </tr>
-   <tr class="asc">
    <td>
-  <a href="javascript:void(0);" onclick="serach('motyfy')" style="font-size:20px;">导购修改申请   </a><br/> 
- </td>
- <td>
+  <a href="javascript:void(0);" onclick="serach('motyfy')" style="font-size:15px;">导购修改申请</a>
+  &nbsp;&nbsp;&nbsp;&nbsp;   
  <span style="color:red;font-size:20px;" id="motyfy"></span> 
    </td>
-  </tr >
-   <tr class="asc"> 
    <td>
-  <a href="javascript:void(0);" onclick="serach('returns')" style="font-size:20px;">导购退货申请   </a> <br/> 
-  </td>
-  <td>
+  <a href="javascript:void(0);" onclick="serach('returns')" style="font-size:15px;">导购退货申请</a> 
+  &nbsp;&nbsp;&nbsp;&nbsp;   
   <span style="color:red;font-size:20px;" id="returns"></span>
    </td>
   </tr>
   </table> 
+  </div>
 </body>
 
 </html>

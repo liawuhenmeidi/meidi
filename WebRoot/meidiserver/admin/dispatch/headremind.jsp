@@ -58,32 +58,27 @@ $(document).ready(function () {
 </script>
   </head>
  <body>
- <table width="100%"  cellspacing="1" > 
+ <div style="text-align:center">
+ <table  cellspacing="1" style="width: 95%;margin:auto"> 
   <tr class="asc" id="1">  
-   <td width="80%">
+   <td>
     <a href="javascript:void(0);" onclick="serach('Dispatching')" style="font-size:20px;">送货派工  </a>
    </td>
-   <td width="20%">
+   <td>
     <span style="color:red;font-size:20px;" id="disptach"></span> <br/>
    </td>
-  </tr >
-   <tr class="asc" id = "2">
    <td>
     <a href="javascript:void(0);" onclick="serach('installonly')" style="font-size:20px;">安装派工  </a>
   </td>
   <td>
  <span style="color:red;font-size:20px;" id="installonly"></span> <br/>
    </td>
-  </tr>
-   <tr class="asc" id="3">
    <td>
   <a href="javascript:void(0);" onclick="serach('release')" style="font-size:20px;">释放信息  </a>
   </td>
   <td>
    <span style="color:red;font-size:20px;" id="release"></span> <br/>
    </td>
-  </tr>
-   <tr class="asc" id="4">
    <td>
   <a href="javascript:void(0);" onclick="serach('huiyuan')" style="font-size:20px;">员工注册  </a>
  </td>
@@ -93,6 +88,7 @@ $(document).ready(function () {
   </tr >
   
   </table> 
+  </div>
 </body>
 
 </html>

@@ -285,22 +285,23 @@ function adddetail(src){
 }
 
 </script>
-<div style="position:fixed;width:100%;height:200px;">
-<div style="position:fixed;width:70%;height:200px;">
-  
+<div style="position:fixed;width:100%;height:20%;">
   <jsp:include flush="true" page="head.jsp">
   <jsp:param name="" value="" />
-  </jsp:include> 
+  </jsp:include>   
       
 <jsp:include flush="true" page="page.jsp">
     <jsp:param name="sear" value="<%=sear %>" /> 
-	<jsp:param name="page" value="<%=pageNum %>" />
+	<jsp:param name="page" value="<%=Page %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  
 	<jsp:param name="count" value="<%=count %>"/> 
 	<jsp:param name="type" value="<%=Order.orderDispatching %>"/> 
 </jsp:include> 
 
+<div id="headremind">
+<jsp:include page="headremind.jsp"/>
+</div>
 
 <jsp:include page="search.jsp">
  <jsp:param name="page" value="<%=pageNum %>" />
@@ -308,22 +309,13 @@ function adddetail(src){
 	<jsp:param name="sort" value="<%=sort %>" />  
 	<jsp:param name="count" value="<%=count %>"/> 
 </jsp:include> 
-</div >
- 
-<div id="headremind">
-<jsp:include page="headremind.jsp"/>
+</div > 
+<div style=" height:170px;">
 </div>
-
-</div>
-
-<div style=" height:150px;">
-</div>
-
- 
 <br/>  
 
 <div id="wrap">
-<table  cellspacing="1" id="table">
+<table  cellspacing="1" id="table" >
 		<tr id="th">  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			<td align="center">单号</td> 
