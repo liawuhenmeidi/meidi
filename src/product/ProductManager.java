@@ -24,7 +24,7 @@ import user.User;
 		 public static List<Product> getProduct(String id) {
 			List<Product> categorys = new ArrayList<Product>();
 			Connection conn = DB.getConn();
-			String sql = "select * from mdproduct where categoryID = "+ id;
+			String sql = "select * from mdproduct where categoryID = "+ id + " and pstatues = 0";
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {

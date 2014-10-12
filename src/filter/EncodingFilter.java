@@ -52,6 +52,11 @@ class MyRequest extends HttpServletRequestWrapper {
 			if("".equals(val) || "null".equals(val) || null == val){
 				return "";
 			}else {
+				
+				
+				
+				
+				
 				val = new String(val.getBytes("ISO-8859-1"),
 						super.getCharacterEncoding());
 			}

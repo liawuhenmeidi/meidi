@@ -1,8 +1,14 @@
-<%@ page language="java"  import="java.util.*,category.*,group.*,user.*,utill.*,company.*,order.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%
-User user = (User)session.getAttribute("user");
-%>  
-<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style type="text/css">
+
+</style> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
+<script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
+<link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
+
 <script type="text/javascript"> 
 $(document).ready(function () { 
 	  init();
@@ -50,12 +56,50 @@ $(document).ready(function () {
  
  
 </script>
- 
-<div class="head" >  
-  <a href="javascript:void(0);" onclick="serach('Dispatching')" style="font-size:20px;">送货派工  </a><span style="color:red;font-size:20px;" id="disptach"></span> <br/>
-  <a href="javascript:void(0);" onclick="serach('installonly')" style="font-size:20px;">安装派工  </a><span style="color:red;font-size:20px;" id="installonly"></span> <br/>
-  <a href="javascript:void(0);" onclick="serach('release')" style="font-size:20px;">释放信息  </a><span style="color:red;font-size:20px;" id="release"></span> <br/>
-  <a href="javascript:void(0);" onclick="serach('huiyuan')" style="font-size:20px;">员工注册  </a><span style="color:red;font-size:20px;" id="huiyuan"></span> <br/>
+  </head>
+ <body>
+ <table width="100%"  cellspacing="1" > 
+  <tr class="asc" id="1">  
+   <td width="80%">
+    <a href="javascript:void(0);" onclick="serach('Dispatching')" style="font-size:20px;">送货派工  </a>
+   </td>
+   <td width="20%">
+    <span style="color:red;font-size:20px;" id="disptach"></span> <br/>
+   </td>
+  </tr >
+   <tr class="asc" id = "2">
+   <td>
+    <a href="javascript:void(0);" onclick="serach('installonly')" style="font-size:20px;">安装派工  </a>
+  </td>
+  <td>
+ <span style="color:red;font-size:20px;" id="installonly"></span> <br/>
+   </td>
+  </tr>
+   <tr class="asc" id="3">
+   <td>
+  <a href="javascript:void(0);" onclick="serach('release')" style="font-size:20px;">释放信息  </a>
+  </td>
+  <td>
+   <span style="color:red;font-size:20px;" id="release"></span> <br/>
+   </td>
+  </tr>
+   <tr class="asc" id="4">
+   <td>
+  <a href="javascript:void(0);" onclick="serach('huiyuan')" style="font-size:20px;">员工注册  </a>
+ </td>
+ <td>
+ <span style="color:red;font-size:20px;" id="huiyuan"></span> <br/>
+   </td>
+  </tr >
+  
+  </table> 
+</body>
 
-</div>    
+</html>
+ 
+
+
+ 
+  
+
 

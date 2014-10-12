@@ -47,26 +47,6 @@ Message message = MessageManager.getMessagebyoid(id);
 .fixedHead { 
 position:fixed;
 }  
-.tabled tr td{ 
-width:50px
-}  
-
-
-td { 
-    width:200px;
-    line-height:30px;
-}
-
-body{BACKGROUND-IMAGE: white;background-repeat:no-repeat";  } 
-*{
-    margin:0;
-    padding:0;
-}
-#table{  
-   
-    table-layout:fixed ;
-}
-
 </style>
 </head>
 

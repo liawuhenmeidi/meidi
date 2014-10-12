@@ -27,19 +27,11 @@ Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatu
 .fixedHead { 
 position:fixed;
 }  
-.tabled tr td{ 
-width:50px
-}  
+ 
 *{
     margin:0;
     padding:0;
 }
-
-td { 
-    width:100px;
-    line-height:15px;
-}
- 
 #table{  
     width:2400px;
     table-layout:fixed ;

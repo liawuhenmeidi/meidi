@@ -34,12 +34,6 @@ width:50px
     margin:0;
     padding:0;
 }
-
-td{ 
-    width:100px;
-    line-height:15px;
-}
-
 #table{  
     width:2300px;
      table-layout:fixed ;

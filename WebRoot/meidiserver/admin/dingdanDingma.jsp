@@ -23,17 +23,6 @@ List<User> listS = UserManager.getUsers(user,Group.sencondDealsend);
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>订单管理</title>
 <style type="text/css">
- 
-*{
-    margin:0;
-    padding:0;
-}
-
-td{ 
-    width:100px;
-    line-height:15px;
-}
-
 #table{  
     width:2400px;
      table-layout:fixed ;

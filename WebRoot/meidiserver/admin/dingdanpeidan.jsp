@@ -34,11 +34,6 @@ position:fixed;
     padding:0;
 }
 
-td{ 
-    width:100px;
-    line-height:15px;
-}
-
 #table{   
    
      table-layout:fixed ;

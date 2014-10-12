@@ -90,14 +90,8 @@ function changes(){
 
 
 <div class="main">
-    
- <!--       -->    
-     
      <div class=""> 
    <div class="weizhi_head">现在位置：地区管理</div>     
-   <div class="main_r_tianjia"> 
-   </div>
-     
    <div class="table-list">
 <table width="100%" cellspacing="1" id="table">
 	<thead>

@@ -112,7 +112,6 @@ List<Category> list =CategoryManager.getCategory(user,Category.sale) ;
 		<tr >
 			<!--<th align="left" width="20">
 			 <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th> -->
-			<th align="left"></th>
 			<th align="left">产品列别描述</th>
 			<th align="left">预约安装截止日期</th>
 			<th align="left">是否已断货</th> 
@@ -127,7 +126,6 @@ List<Category> list =CategoryManager.getCategory(user,Category.sale) ;
 %>
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
 		<!--  <td align="left"><input type="checkbox" value="1" name="<%=category.getId() %>"></input></td> -->
-		<td align="left"></td>
 		<td align="left"><%=category.getName() %></td> 
 		<td align="left"><%=category.getTime() %></td>
 		<td align="left">

@@ -48,11 +48,6 @@ width:50px
     padding:0;
 }
 
-td{ 
-    width:110px;
-    line-height:15px;
-}
-
 #table{  
     
      width:4200px;

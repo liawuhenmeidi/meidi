@@ -35,11 +35,6 @@ width:50px
     padding:0;
 }
 
-td{ 
-    width:100px;
-    line-height:30px;
-}
-
 table{  
     width:2700px;
 }

@@ -166,25 +166,19 @@ User user = (User)session.getAttribute("user");
             <h4 >工长派工</h4>     
             <div class="list-item none">
               <p ><a href="dispatch/dingdanpeidan2.jsp"  target="contentpage">工长派工</a></p>
-               <%
-        	 if(UserManager.checkPermissions(user,Group.println)){
-        		%>
-               
-              <!--   <p ><a href="dispatch/dingdanprint2.jsp"  target="contentpage">工长打印</a></p> -->
-
-               <% 
-                
-               } %>
-              
                 <p ><a href="dispatch/dingdanquery.jsp"  target="contentpage">送货确认页</a></p> 
-               <p ><a href="dispatch/dingdan_chargep.jsp"  target="contentpage">送货结款</a></p> 
                <p ><a href="dispatch/dingdanpeidan2anzhuang.jsp"  target="contentpage">安装派工</a></p> 
-             <!--   <p ><a href="dispatch/dingdanprint2anzhuang.jsp"  target="contentpage">安装打印</a></p> -->
               <p ><a href="dispatch/dingdancallback.jsp"  target="contentpage">客服未回访页</a></p>
+              <p ><a href="dispatch/dingdanpeidan2s.jsp"  target="contentpage">工长查询</a></p>
+            </div>  
+             <h4 >费用结算</h4>     
+            <div class="list-item none">
+           
+              <p ><a href="dispatch/dingdan_chargep.jsp"  target="contentpage">送货结款</a></p> 
               <p ><a href="dispatch/dingdan_charge.jsp"  target="contentpage">安装结款</a></p> 
                <p ><a href="dispatch/dingdan_chargeall.jsp"  target="contentpage">送货安装结款</a></p>  
               <p ><a href="dispatch/dingdanpeidan2s.jsp"  target="contentpage">工长查询</a></p>
-            </div>     
+            </div>        
           </li> 
 
         	 
