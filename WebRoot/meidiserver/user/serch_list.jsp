@@ -2,8 +2,6 @@
 <%@ include file="searchdynamic.jsp"%> 
 
 <%     
-
-
 List<Order> list = OrderManager.getOrderlist(user,Group.sale,Integer.valueOf(type),-1,0,sort,sear); 
 Map<Integer,List<OrderProduct>> mapOP = OrderProductManager.getOrderStatuesM(user);
 HashMap<Integer,User> usermap = UserManager.getMap();   // 获取送货员

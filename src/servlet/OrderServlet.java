@@ -74,7 +74,7 @@ public class OrderServlet extends HttpServlet {
 		String mm = request.getParameter("mm");
 		User user  = (User)request.getSession().getAttribute("user");
 logger.info(id); 
-        Object object = new Object();
+        Object object = new Object(); 
 		String message = request.getParameter("message");
         if(""==id || null == id){
         	id = "0";
@@ -86,11 +86,13 @@ logger.info(message);
 		or.setStatues(OrderPrintln.comit);
 		int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
 		or.setpGroupId(pgroup);        
-		if("tuihuo".equals(mm)){ 
-			or.setType(1);   
+		if("tuihuo".equals(mm)){  
+			or.setType(OrderPrintln.returns);   
+		}else if("huanhuo".equals(mm)){
+			or.setType(OrderPrintln.huanhuo);
 		}else {
-			or.setType(0);
-		} 
+			or.setType(OrderPrintln.modify);
+		}  
 			OrderPrintlnManager.save(or);
 		
 	  try {
@@ -113,6 +115,7 @@ logger.info(message);
 	    	      boolean bflag = true ; 
 	    	      boolean bbflag = true ; 
 	    	      int devedity = -1 ;
+	    	      
 	    	     if(UserManager.checkPermissions(user, Group.sale) ){
 			    	HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 			    	

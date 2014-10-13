@@ -6,8 +6,6 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 // peidan
 String method = request.getParameter("method");
-   
-//System.out.println("******2134*******method"+method);
  
 if("peidan".equals(method)){ 
 	String uid = request.getParameter("uid"); 

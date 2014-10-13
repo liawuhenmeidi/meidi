@@ -1,19 +1,15 @@
 <%@ page language="java" import="java.util.*,category.*,orderproduct.*,group.*,user.*,utill.*,product.*,order.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%
+<% 
 User user = (User)session.getAttribute("user");
 String id = request.getParameter("id");
 String method = request.getParameter("method");
 String message = "";
-if("tuihuo".equals(method)){
-	 
+if("tuihuo".equals(method)){ 
 	message = "订单已打印，请输入退货理由";
-
-
+}else if("huanhuo".equals(method)){
+	message = "订单已打印，请输入换货理由";
 }else {
-
 	message = "订单已打印，请输入修改申请";
-
-
 }
 
 %>
@@ -61,7 +57,7 @@ function checkedd(){
   <jsp:param name="dmsn" value="" /> 
   </jsp:include>
 <form action="OrderServlet"  method ="post"  id="form"  onsubmit="return checkedd()" >
-<!--  头 单种类  -->
+<!--  头 单种类  --> 
  
 <input type="hidden" name="id" value="<%=id%>"/>
 <input type="hidden" name="mm" value="<%=method%>"/>

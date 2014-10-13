@@ -10,7 +10,6 @@ String sort = request.getParameter("sort");
 String searched = request.getParameter("searched");
 String sear = (String)session.getAttribute("sear"); 
  
-
 if(StringUtill.isNull(sear)){
 	sear = "";   
 }

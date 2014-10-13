@@ -1,46 +1,7 @@
-<%@ page language="java" import="java.util.*,gift.*,orderPrint.*,category.*,group.*,user.*,utill.*,product.*,order.*,orderproduct.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%
-
-request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
-
-String id = request.getParameter("id");
-
-Order or = OrderManager.getOrderID(user,Integer.valueOf(id));
-
-int uid = user.getId();
- 
-HashMap<Integer,User> usermap = UserManager.getMap();
-
-// 售货员的id号
-int saleid = or.getSaleID();
-int delivery = or.getDeliveryStatues();
-int canupdate = 0;
-if(saleid == uid || UserManager.checkPermissions(user, Group.Manger)){
-	
-	canupdate = 1 ;
-} 
-
-OrderPrintln oor = OrderPrintlnManager.getOrderStatues(user, or.getId(),0);
-int statues = -1 ;
- 
-if(oor != null){
- statues = oor.getStatues();	
-}
-System.out.println("statues"+statues);
-OrderPrintln oop = OrderPrintlnManager.getOrderStatues(user, or.getId(),1);
-int statuess = -1 ;
-
-if(oop != null){
-	 statuess = oop.getStatues();	
-	}
-
-//request.setAttribute("order", or);
-
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
+<%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ include file="detaildynamic.jsp"%> 
+<%  
 Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user); 
-int printstatues = or.getPrintSatues();
-int printpaidan = or.getPrintSatuesP();
 %>
 <!DOCTYPE html>
 <html>
@@ -58,13 +19,13 @@ int printpaidan = or.getPrintSatuesP();
 
 <script type="text/javascript">
 
-var id = "<%=id%>";
+var id = "<%=id%>"; 
 var statues = "";
-var oppstatues = "<%=statues%>" ;
-var orpstatues = "<%=statuess%>" ;
+var oppstatues = "<%=modify%>" ; 
+var orpstatues = "<%=returns%>" ;
+var huanhuo = "<%=huanhuo%>"; 
 var canupdate = "<%=canupdate%>";
 var delivery = "<%=delivery%>";
-var pritlnpaidan = "<%=printpaidan%>"; 
 var imageflag = 1 ;
 function updateOeder(){ 
 	if(1 == canupdate){
@@ -115,8 +76,12 @@ function updateOeder(){
 
 }
   
-function updateOeders(){ 
-	var question = confirm("你确认要退货吗？");
+function updateOeders(type){ 
+	var message = "退货";
+	if(type == "huanhuo"){
+		message = "换货";
+	}
+	var question = confirm("你确认要"+message+"吗？");
 	if(question != "0"){
 		if(1 == canupdate){
 			   $.ajax({  
@@ -128,24 +93,29 @@ function updateOeders(){
 			         success: function (data) {  
 			        	 statues = data ;
 			        	 if(statues == 1){ 
-			      			if(orpstatues == 2 ){ 
-			      				alert("您的订单已退货"); 
+			      			if(orpstatues == 2 || huanhuo == 2){ 
+			      				alert("您的订单已"+message); 
 			      				//window.location.href="server.jsp?method=tuihuoed&oid="+id;
-			      				return ;  
-			      			}else if(orpstatues == -1){
-			      				 window.location.href="updatedingmayPrintl.jsp?id="+id+"&method=tuihuo";
+			      				return ;   
+			      			}else if(orpstatues == -1 || huanhuo == -1){
+			      				 window.location.href="updatedingmayPrintl.jsp?id="+id+"&method="+type;
 			      			    return ;  
-			      			}if(orpstatues == 4 ){
+			      			}if(orpstatues == 4 || huanhuo == 4){
 			      				var question = confirm("您的申请被拒绝，确定要重新提交申请吗？");
 			      				if(question != "0"){
-			      					window.location.href="updatedingmayPrintl.jsp?id="+id+"&method=tuihuo";
+			      					window.location.href="updatedingmayPrintl.jsp?id="+id+"&method="+type;
 			      				}
 			      				return ; 
 			      			}else {       
 			      				alert("您已经提交退货申请"); 
 			      			} 
 			      		}else if(statues ==0 ){
-			      			window.location.href="server.jsp?method=tuihuo&oid="+id;
+			      			if(type == "huanhuo"){
+			      				alert("商品未送货，不能换货");
+			      			}else {
+			      				window.location.href="server.jsp?method=tuihuo&oid="+id;
+			      			}
+			      			
 			      			  return ;
 			      		   } 
 			           }, 
@@ -202,14 +172,28 @@ function getmap(){
   <jsp:param name="dmsn" value="" />
   </jsp:include>
   
-<span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span><span class="qiangdan"><a href="chaxun_sale.jsp">订单查询</a></span>
-<% if(statuess != 0 && statuess != 2 ){ %>
-<span class="qiangdan"><a href="javascript:void(0)" onclick="updateOeder()">修改</a></span>
-<%} 
- if(statues != 0 && statues != 2 ){ 
- %> 
-<span class="qiangdan"><a href="javascript:void(0)" onclick="updateOeders()">退货</a></span><span class="qiangdan"><a href="serch_list.jsp">返回</a></span>
-<% }%>
+  <table> 
+     <tr> 
+          <td></td>
+          <td><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span></td>
+          <td><span class="qiangdan"><a href="chaxun_sale.jsp">订单查询</a></span></td>
+           <% if(returns != 0 && returns != 2 && huanhuo != 0 && huanhuo != 2){ %>
+          <td><span class="qiangdan"><a href="javascript:void(0)" onclick="updateOeder()">修改</a></span></td>
+               <%}  
+               if(modify != 0 && modify != 2 && huanhuo != 0 && huanhuo != 2){ 
+             %> 
+          <td><span class="qiangdan"><a href="javascript:void(0)" onclick="updateOeders('tuihuo')">退货</a></span></td>
+              <% } 
+              if(modify != 0 && modify != 2 && returns != 0 && returns != 2 && ( or.getDeliveryStatues() == 1 ||  or.getDeliveryStatues() == 2) ){ 
+                   %> 
+               <td><span class="qiangdan"><a href="javascript:void(0)" onclick="updateOeders('huanhuo')">换货</a></span></td>
+                <% }
+                %>
+         <td><span class="qiangdan"><a href="serch_list.jsp">返回</a></span></td>
+     </tr>
+  
+  </table>
+
 
 </div>
  
@@ -225,23 +209,21 @@ function getmap(){
 		 <td align="left" class="s_list_m">
 		 <%
 		 String col = "";
-		 if(-1 != statues){  
+		 if(-1 != modify){  
           String sm = "";
-          if(0 == statues){
+          if(0 == modify){
         	  sm = "待确认";
-          }else if(1== statues){
+          }else if(1== modify){
         	  sm = "确认中";
-          }else if(2== statues){ 
+          }else if(2== modify){ 
         	  sm = "已同意";
         	  col= "red";
-          }else if(4 == statues){
+          }else if(4 == modify){
         	  sm = "已拒绝"; 
         	  col= "red";
           }
 		 %>
-		 <FONT color=<%=col %>><%=sm %></FONT>
-		  
-		 
+		 <FONT color=<%=col %>><%=sm %></FONT> 
 		 <%
 		 }else {
 		
@@ -258,15 +240,15 @@ function getmap(){
 		<td align="left" class="s_list_m">退货状态</td>
 		 <td align="left" class="s_list_m">
 		 <%
-		 if(-1 != statuess){  
+		 if(-1 != returns){  
           String sm = "";
-          if(0 == statuess){
+          if(0 == returns){
         	  sm = "待确认";
-          }else if(1== statuess){
+          }else if(1== returns){
         	  sm = "确认中";
-          }else if(2== statuess){
+          }else if(2== returns){
         	  sm = "已同意";
-          }else if(4== statuess){
+          }else if(4== returns){
         	  sm = "已拒绝";  
           }
 		 %> 

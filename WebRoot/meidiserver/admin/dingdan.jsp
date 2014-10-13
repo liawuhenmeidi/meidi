@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%@ include file="searchdynamic.jsp"%>    
-<%       
-
+<%@ include file="searchdynamic.jsp"%>      
+<%         
+  
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
 
 session.setAttribute("exportList", list);
@@ -177,7 +177,7 @@ function addImage(src){
 	window.open(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 } 
 
-function changes(str1,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type){
+function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type){
 	//alert(dealsendid); 
 	if( 2 == conmited ){         
 		if(type == '<%=OrderPrintln.releasemodfy %>' || type == '<%=OrderPrintln.releasedispatch %>'){
@@ -218,7 +218,7 @@ function changes(str1,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type)
 				$.ajax({  
 			        type: "post", 
 			         url: "server.jsp",   
-			         data:"method=dingdaned&id="+str1+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
+			         data:"method=dingdaned&id="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 			         dataType: "",  
 			         success: function (data) {
 			        	 
@@ -239,7 +239,7 @@ function changes(str1,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type)
 			$.ajax({    
 		        type: "post", 
 		         url: "server.jsp",   
-		         data:"method=dingdaned&id="+str1+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
+		         data:"method=dingdaned&id="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 		         dataType: "",   
 		         success: function (data) {
 		             window.location.href="dingdan.jsp";
@@ -253,7 +253,7 @@ function changes(str1,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type)
 		$.ajax({   
 	        type: "post", 
 	         url: "server.jsp",   
-	         data:"method=dingdaned&id="+str1+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
+	         data:"method=dingdaned&id="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 	         dataType: "",   
 	         success: function (data) {
 	             window.location.href="dingdan.jsp";
@@ -346,248 +346,258 @@ function adddetail(src){
 			<td align="center">安装单位驳回</td> 
 			<td align="center">导购修改申请</td> 
 			<td align="center">导购退货申请</td> 
-           
+            <td align="center">导购换货申请</td> 
 		</tr>
 	
   <% 
    if(null != list){
-    for(int i = 0;i<list.size();i++){
-    	Order o = list.get(i);
-    	 
-    	String col = "";
-    	if(i%2 == 0){
-    		col = "style='background-color:yellow'";
-    	}
-  %>  
-     
-    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)">   
-		<!--  <td align="center"><input type="checkbox" value="1" name="userid[]"/></td> -->
-		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getbranchName(o.getBranch())%></td>  
-		<td align="center">  
+		for(int i = 0;i<list.size();i++){
+		    	Order o = list.get(i);
+		    	String col = "";
+		    	if(i%2 == 0){
+		    		col = "style='background-color:yellow'";
+		    	}
+		  %>  
 		     
-                		  
-		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
-		
-		</td> 
-		<% 
-		String tdcol = " bgcolor=\"red\"" ;
-		
-		  %>   
-		<td align="center" <%=o.getPosremark()==1?tdcol:"" %>><%=o.getPos() %></td>
-		<td align="center" <%=o.getSailidrecked()==1?tdcol:"" %>><%=o.getSailId() %></td>
-		<td align="center" <%=o.getReckedremark()==1?tdcol:"" %>><%=o.getCheck() %></td>
-		<%if(o.getPhoneRemark()!=1){ 
-			tdcol = ""; 
-		} %>
-			<td align="center"><%=o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+  
-		                      o.getPhone1()
-		%> 
-		  
-		</td>
-		<td align="center"><%= o.getCategory(0,"</p>")%></td>  
-		<td align="center" ><%=o.getSendType(0,"</p>")%></td>     
-		<td align="center" ><%= o.getSendCount(0,"</p>")%></td>  
-		<td align="center" ><%= o.getGifttype("</p>")%></td>  
-		<td align="center" ><%= o.getGifcount("</p>")%></td>  
-		<td align="center" ><%= o.getGifStatues("</p>")%></td>   
-		<td align="center"><%=o.getSaleTime() %></td>
-		<td align="center"><%=o.getOdate() %></td>
-		<td align="center"><%=o.getLocate()%></td>
-		<td align="center"><%=o.getLocateDetail() %></td>
-		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
-		</td>
-        <td align="center"> 
-		    <%=o.getRemark() %>
-		</td>
- 
-       <%  
-        int totalshifang = -1 ; 
-        OrderPrintln orp = null ; 
-        OrderPrintln op = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.modify, o.getId()) ;
-        OrderPrintln op1 = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.returns, o.getId()) ;
-         
-        int modify = OrderPrintlnManager.getstatues(opmap, OrderPrintln.modify, o.getId()) ;
-	    int returns = OrderPrintlnManager.getstatues(opmap, OrderPrintln.returns, o.getId());
-	    int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId());
-	    int salereleasesonghuo = OrderPrintlnManager.getstatues(opmap, OrderPrintln.salereleasesonghuo, o.getId());
-	    int release	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.release, o.getId());
-	    int salereleaseanzhuang	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.salereleaseanzhuang, o.getId());
-	    int releasemodfy	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasemodfy, o.getId());
-	    
-	    if(release != -1){  
-	    	totalshifang = release ;
-	    	orp = opmap.get(OrderPrintln.release).get(o.getId()); 
-	    } 
-	    if(salereleasesonghuo != -1){
-	    	totalshifang = salereleasesonghuo ;
-	    	orp = opmap.get(OrderPrintln.salereleasesonghuo).get(o.getId()); 
-	    }
-	    if(salereleaseanzhuang != -1){
-	    	totalshifang = salereleaseanzhuang ;
-	    	orp = opmap.get(OrderPrintln.salereleaseanzhuang).get(o.getId()); 
-	    }
-       %>
- 
-		<td align="center"> 
-		
-		 <%    	  
-		   if(o.getDealsendId() == 0 && o.getDeliveryStatues() != 8 && o.getPrintSatues() == 0){
-			   if(modify != 2 && modify != 0 && returns != 2 && returns != 0){
-			   %>
-				<select class = "category" name="category"  id="songh<%=o.getId() %>" >
-				 <option value=""></option>
-				<%     if(listS != null ){
-		               for(int j=0;j< listS.size();j++){
-		            	   User u = listS.get(j);
-		            	   String str = "";  
-		            	   if(u.getId() == o.getDealsendId()){ 
-		            		   str = "selected=selected" ;
-		            	   }     
-		            	   %> 
-		            	    <option value=<%=u.getId() %>  <%= str%>> <%=u.getUsername() %></option>
-		            	   <% 
-		                    }
-				     }
-			            %>
-		         </select> 
-		         <input type="button" onclick="changepeidan('songh<%=o.getId()%>','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="确定"/> 
-		         
-			<% 	
-		     }
-		   }else if(o.getDealsendId() == 0 && o.getDeliveryStatues() == 8 && o.getPrintSatues() == 0){
-		
-			   if(OrderManager.Check(o.getId())){ 
+		    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)">   
+				<!--  <td align="center"><input type="checkbox" value="1" name="userid[]"/></td> -->
+				<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
+				<td align="center"><%=o.getbranchName(o.getBranch())%></td>  
+				<td align="center"> 	                		  
+				<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
+				
+				</td> 
+				<% 
+				String tdcol = " bgcolor=\"red\"" ;
+				
 				  %>   
-				   <input type="button" onclick="changepeidan('2','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="打印"/>
-			         &nbsp;&nbsp;&nbsp;
-				  <%
-			   }else {
-				   %>
-				   <input type="button" onclick="changepeidan('1','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="打印"/>
-			         &nbsp;&nbsp;&nbsp;
-				   <input type="button" onclick="changepeidan('0','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="确定"/>  
-				   				   
-				   <%
-			   }
-		   }else if(o.getDealsendId() != 0){
-			   %>    
-			<%=usermap.get(o.getDealsendId()).getUsername() +"</p>"+ usermap.get(o.getDealsendId()).getPhone()%>
-			   <% 
-		   }
-		 %>
-		</td> 
-		
-		<td align="center"> 
-		    <a href="javascript:void(0);"  onclick="searchlocate('<%=o.getId() %>')">[查看位置]</a> 
-		</td>
-		
-		<td align="center"> 
-		<%    
-		    if(modify == -1 && returns == -1 )
-			 if(totalshifang == 2){ 
-		    	 %> 
-		    	  <%=orp== null ?"":orp.getMessage()  %>
-		    	   <p>驳回申请已同意</p>
-		    	 <%
-		    	  }else if(totalshifang == 4){ 
-				 %> 
-				    	 
-				 <p>驳回申请已拒绝</p> 
-			    <%
-				}else if(totalshifang != -1){
-			 %> 
-		  
-		 <%=orp== null ?"":orp.getMessage() %> 
-		    	       
-		 <input type="button" onclick="changes('<%=orp.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','','','<%=totalshifang %>')"  value="同意"/>
-		 <input type="button" onclick="changes('<%=orp.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','','','<%=totalshifang%>')"  value="不同意"/>
-		<%
-		   }   
-		%>
-		</td> 
-		<td align="center"> 
-		<%
-			 if(modify == 2){ 
-		    	 %> 
-		    	   <p>导购修改中</p>  
-		    	   
-		    	 <%
-		    	  }else if(modify == 4){ 
-				    	 %> 
-				    	   <p>修改申请已拒绝</p>
-				    	 <% 	 
-				  }else if(modify != -1){	  
-			 %>
-		   
-		 <%=op == null ? "":op.getMessage() %>  
-		 <% if(releasemodfy == 0 || totalshifang== 0 || totalshifang == 4){
-			 
-		  %> 
-		   安装公司处理中 
-		 <%}else if(releasemodfy == 2 || totalshifang == 2){  
-		 %>
-		 <input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.modify %>')"  value="同意"/>
-	      
-		<%}else if(releasemodfy == -1){ %> 
-		<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.releasemodfy %>')"  value="同意"/>
-		<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.releasemodfy %>')"  value="不同意"/>
-		<% }%>
+				<td align="center" <%=o.getPosremark()==1?tdcol:"" %>><%=o.getPos() %></td>
+				<td align="center" <%=o.getSailidrecked()==1?tdcol:"" %>><%=o.getSailId() %></td>
+				<td align="center" <%=o.getReckedremark()==1?tdcol:"" %>><%=o.getCheck() %></td>
+				<%if(o.getPhoneRemark()!=1){ 
+					tdcol = ""; 
+				} %>
+					<td align="center"><%=o.getUsername()  +"</p>"+
+						"<p><font color=\""+tdcol+"\"> "+  
+				                      o.getPhone1()
+				%> 
+				  
+				</td>
+				<td align="center"><%= o.getCategory(0,"</p>")%></td>  
+				<td align="center" ><%=o.getSendType(0,"</p>")%></td>     
+				<td align="center" ><%= o.getSendCount(0,"</p>")%></td>  
+				<td align="center" ><%= o.getGifttype("</p>")%></td>  
+				<td align="center" ><%= o.getGifcount("</p>")%></td>  
+				<td align="center" ><%= o.getGifStatues("</p>")%></td>   
+				<td align="center"><%=o.getSaleTime() %></td>
+				<td align="center"><%=o.getOdate() %></td>
+				<td align="center"><%=o.getLocate()%></td>
+				<td align="center"><%=o.getLocateDetail() %></td>
+				<td align="center">
+				<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
+				</td>
+		        <td align="center"> 
+				    <%=o.getRemark() %>
+				</td>
 		 
-		</td>
-		<%
-		 } 
-		%>
-		<td align="center"> 
-		<% 
-			 if(returns == 2){ 
-		    	 %> 
-		    	   <p>退货申请已同意</p>
-		    	 <% 
-		    	  }else if(returns == 4){ 
-				     	
+		       <%  
+		        int totalshifang = -1 ; 
+		        OrderPrintln orp = null ; 
+		        OrderPrintln op = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.modify, o.getId()) ;
+		        OrderPrintln op1 = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.returns, o.getId()) ;
+		        OrderPrintln huanhuoObject = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.huanhuo, o.getId()) ;
+		        
+		        int modify = OrderPrintlnManager.getstatues(opmap, OrderPrintln.modify, o.getId()) ;
+			    int returns = OrderPrintlnManager.getstatues(opmap, OrderPrintln.returns, o.getId());
+			    int huanhuo = OrderPrintlnManager.getstatues(opmap, OrderPrintln.huanhuo, o.getId());
+			    int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId());
+			    int salereleasesonghuo = OrderPrintlnManager.getstatues(opmap, OrderPrintln.salereleasesonghuo, o.getId());
+			    int release	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.release, o.getId());
+			    int salereleaseanzhuang	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.salereleaseanzhuang, o.getId());
+			    int releasemodfy	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasemodfy, o.getId());
+			    
+			    if(release != -1){  
+			    	totalshifang = release ;
+			    	orp = opmap.get(OrderPrintln.release).get(o.getId()); 
+			    } 
+			    if(salereleasesonghuo != -1){
+			    	totalshifang = salereleasesonghuo ;
+			    	orp = opmap.get(OrderPrintln.salereleasesonghuo).get(o.getId()); 
+			    }
+			    if(salereleaseanzhuang != -1){
+			    	totalshifang = salereleaseanzhuang ;
+			    	orp = opmap.get(OrderPrintln.salereleaseanzhuang).get(o.getId()); 
+			    }
+		       %>
+		 
+				<td align="center"> 
+				
+				 <%    	  
+				   if(o.getDealsendId() == 0 && o.getDeliveryStatues() != 8 && o.getPrintSatues() == 0){
+					   if(modify != 2 && modify != 0 && returns != 2 && returns != 0){
+					   %>
+						<select class = "category" name="category"  id="songh<%=o.getId() %>" >
+						 <option value=""></option>
+						<%     if(listS != null ){
+				               for(int j=0;j< listS.size();j++){
+				            	   User u = listS.get(j);
+				            	   String str = "";  
+				            	   if(u.getId() == o.getDealsendId()){ 
+				            		   str = "selected=selected" ;
+				            	   }     
+				            	   %> 
+				            	    <option value=<%=u.getId() %>  <%= str%>> <%=u.getUsername() %></option>
+				            	   <% 
+				                    }
+						     }
+					            %>
+				         </select> 
+				         <input type="button" onclick="changepeidan('songh<%=o.getId()%>','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="确定"/> 
+				         
+					<% 	
+				     }
+				   }else if(o.getDealsendId() == 0 && o.getDeliveryStatues() == 8 && o.getPrintSatues() == 0){
+				
+					   if(OrderManager.Check(o.getId())){ 
+						  %>   
+						   <input type="button" onclick="changepeidan('2','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="打印"/>
+					         &nbsp;&nbsp;&nbsp;
+						  <%
+					   }else {
+						   %>
+						   <input type="button" onclick="changepeidan('1','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="打印"/>
+					         &nbsp;&nbsp;&nbsp;
+						   <input type="button" onclick="changepeidan('0','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="确定"/>  
+						   				   
+						   <%
+					   }
+				   }else if(o.getDealsendId() != 0){
+					   %>    
+					<%=usermap.get(o.getDealsendId()).getUsername() +"</p>"+ usermap.get(o.getDealsendId()).getPhone()%>
+					   <% 
+				   }
+				 %>
+				</td> 
+				
+				<td align="center"> 
+				    <a href="javascript:void(0);"  onclick="searchlocate('<%=o.getId() %>')">[查看位置]</a> 
+				</td>
+				
+				<td align="center"> 
+				<%    
+				    if(modify == -1 && returns == -1 ){
+						 if(totalshifang == 2){ 
+					    	 %> 
+					    	  <%=orp== null ?"":orp.getMessage()  %>
+					    	   <p>驳回申请已同意</p>
+					    	 <%
+					    	  }else if(totalshifang == 4){ 
+							 %> 
+							    	 
+							 <p>驳回申请已拒绝</p> 
+						    <%
+							}else if(totalshifang != -1){
+						 %> 
+					  
+					 <%=orp== null ?"":orp.getMessage() %> 
+					    	       
+					 <input type="button" onclick="changes('<%=orp.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','','','<%=totalshifang %>')"  value="同意"/>
+					 <input type="button" onclick="changes('<%=orp.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','','','<%=totalshifang%>')"  value="不同意"/>
+					<%
+					   }  
+				   }
+				%>
+				</td> 
+				<td align="center"> 
+				<%
+					 if(modify == 2){ 
 				    	 %> 
-				    	   <p>退货申请已拒绝</p>
+				    	   <p>导购修改中</p>  
+				    	   
 				    	 <%
-				    	 
-				   }else if(returns != -1){
-			 %>
-		 <%=op1.getMessage() %>
-		  <%if(releasedispatch == 0 ){
-		   %>    
-		   安装公司处理中 
-		  <% } else if(releasedispatch == 2 ){%>
-		  
-		  <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="同意退货"/>
-		   
-		  <%}else {
-			  if(o.getDeliveryStatues() == 8){
-				  %>
-		     <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.release %>')"  value="打印"/>
-		     <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','')"  value="确定"/>  
-
-				  <%
-			  }else {
-			  %>	         
-		 <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="同意"/>
-		 <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="不同意"/> 
-		
-		<% }
-		}%>
-		</td>
-		<%
+				    	  }else if(modify == 4){ 
+						    	 %> 
+						    	   <p>修改申请已拒绝</p>
+						    	 <% 	 
+						  }else if(modify != -1){	  
+					 %>
+				   
+				 <%=op == null ? "":op.getMessage() %>  
+				 <% if(releasemodfy == 0 || totalshifang== 0 || totalshifang == 4){
+					 
+				  %> 
+				   安装公司处理中 
+				 <%}else if(releasemodfy == 2 || totalshifang == 2){  
+				 %>
+				 <input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.modify %>')"  value="同意"/>
+			      
+				<%}else if(releasemodfy == -1){ %> 
+				<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.releasemodfy %>')"  value="同意"/>
+				<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.releasemodfy %>')"  value="不同意"/>
+				<% }%>
+				 
+				</td>
+				<%
+				 } 
+				%>
+				<td align="center"> 
+				<% 
+					 if(returns == 2){ 
+				    	 %> 
+				    	   <p>退货申请已同意</p>
+				    	 <% 
+				    	  }else if(returns == 4){ 
+						     	
+						    	 %> 
+						    	   <p>退货申请已拒绝</p>
+						    	 <%
+						    	 
+						   }else if(returns != -1){
+									 %>
+								 <%=op1.getMessage() %>
+								  <%if(releasedispatch == 0 ){
+								   %>    
+								   安装公司处理中 
+								  <% } else if(releasedispatch == 2 ){%>
+								  
+								  <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="同意退货"/>
+								   
+								  <%}else {
+									  if(o.getDeliveryStatues() == 8){
+										  %>
+								     <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.release %>')"  value="打印"/>
+								     <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','')"  value="确定"/>  
+						
+										  <%
+									  }else {
+									  %>	         
+								    <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="同意"/>
+								    <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="不同意"/> 
+								 
+								  <% }
+						  }
+				         }%>
+				</td>
+             
+              <td>
+              <%if(huanhuo == 2){
+               %>
+                                                          安装公司处理中
+              <%
+                }else if(huanhuo == 0){
+              %>
+              <input type="button" onclick="changes('<%=huanhuoObject.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=huanhuo%>','','')"  value="打印"/>
+			  <input type="button" onclick="changes('<%=huanhuoObject.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=huanhuo %>','','')"  value="确定"/>  
+						
+              <%
+               }
+              %>
+              </td>
+		    </tr>
+      <% 
 		 }
-		}
-		%>
-     
-     
-     
-    </tr>
-  
-    <% 
-    }%>
+      }
+    %>
     
     
     

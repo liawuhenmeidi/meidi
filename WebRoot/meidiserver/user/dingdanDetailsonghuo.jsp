@@ -1,56 +1,11 @@
-<%@ page language="java" import="java.util.*,gift.*,orderPrint.*,category.*,group.*,user.*,utill.*,product.*,order.*,orderproduct.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%
- 
-request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
-int uid = user.getId(); 
+<%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ include file="detaildynamic.jsp"%> 
+<% 
 int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
 Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user); 
-HashMap<Integer,User> usermap = UserManager.getMap();
-String id = request.getParameter("id");
-Order or = OrderManager.getOrderID(user,Integer.valueOf(id));
-boolean flag = true ;
-int opstatues = -1;   
-  
-if(or.getDeliveryStatues() == 0 || or.getDeliveryStatues() == 9 ){ 
-	opstatues = OrderPrintln.salerelease;     
-}else if (or.getDeliveryStatues() == 1){
-	
-	if(or.getInstallid() == 0){   
-		//opstatues = OrderPrintln.salereleasesonghuo;
-		flag = false ; 
-	}  
-	if(uid == or.getInstallid()){  
-		opstatues = OrderPrintln.salereleaseanzhuang;
-	}  
-}else if(or.getDeliveryStatues() == 2){ 
-	// 安装完不符合要求释放   
-	//opstatues = OrderPrintln.salereleaseanzhuang;
-	flag = false ; 
-} 
  
-// 售货员的id号
-int saleid = or.getSaleID();
-int canupdate = 0;
-if(saleid == uid){
-	canupdate = 1 ;
-}
-OrderPrintln oor = OrderPrintlnManager.getOrderStatues(user, or.getId(),0);
-int statues = -1 ;
-
-if(oor != null){  
- statues = oor.getStatues();	
-}  
-OrderPrintln oop = OrderPrintlnManager.getOrderStatues(user, or.getId(),1);
-int statuess = -1 ;
-
-if(oop != null){
-	 statuess = oop.getStatues();	
-	}
-
 request.setAttribute("order", or);
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
-int printstatues = or.getPrintSatues();
+
 %>
 <!DOCTYPE html>
 <html>
@@ -70,7 +25,7 @@ int printstatues = or.getPrintSatues();
 
 var id = "<%=id%>";
 var statues = "";
-var oppstatues = "<%=statues%>" ;
+var oppstatues = "<%=modify%>" ;
 var canupdate = "<%=canupdate%>";
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";

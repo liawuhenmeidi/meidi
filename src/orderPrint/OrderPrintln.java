@@ -7,6 +7,7 @@ public class OrderPrintln {
   public static int uncomited = 4;    // 拒绝请求
   public static int comiteded = 3;   // 订单被修改，状态已过期  
     
+  public static int huanhuo = 10;     // 换货
   public static int unmodify = 8 ;      // 导购修改申请       
   public static int modify = 0 ;      // 导购修改申请 
   public static int returns = 1 ;     //    导购退货 

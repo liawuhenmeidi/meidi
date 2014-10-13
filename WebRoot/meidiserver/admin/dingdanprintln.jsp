@@ -19,30 +19,16 @@ Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatu
   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<head> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta name="apple-mobile-web-app-capable" content="yes" />
   
-<title>文员派工页</title> 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>文员派工页</title>  
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
-<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
-<script src="../js/mobiscroll.core-2.6.2.js" type="text/javascript"></script>
-<script src="../js/mobiscroll.core-2.6.2-zh.js" type="text/javascript"></script>
-<link href="../css/mobiscroll.core-2.6.2.css" rel="stylesheet" type="text/css" />
-<script src="../js/mobiscroll.datetime-2.6.2.js" type="text/javascript"></script>
-<script src="../js/mobiscroll.android-ics-2.6.2.js" type="text/javascript"></script>
- <link href="../css/mobiscroll.android-ics-2.6.2.css" rel="stylesheet" type="text/css" />
-
-
 <style type="text/css">
 .fixedHead {  
 position:fixed;
 }
- .tabled tr td{ 
-width:50px
-}  
+  
 *{
     margin:0;
     padding:0;
@@ -50,20 +36,19 @@ width:50px
 
 #table{  
     
-     width:4200px;
+     width:3800px;
      table-layout:fixed ;
 } 
  
 #th{
     background-color:white;
     position:absolute;
-    width:4200px;
+    width:3800px;
     height:30px; 
     top:0;
     left:0;
    
 }
-  
   
 #wrap{  
     clear:both; 
@@ -76,10 +61,11 @@ width:50px
 </style>
 
 </head>
-
+<body style="scoll:no">
 
 <!--   头部开始   -->
-
+<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 
 $(function () { 
@@ -269,9 +255,6 @@ function orderPrint(id,statues,type,deliveryStatues){
 	 } 
 } 
 </script>
-
-<body>
- 
  
  <div style="position:fixed;width:100%;height:20%;">
   <jsp:include flush="true" page="head.jsp">

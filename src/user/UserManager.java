@@ -78,6 +78,7 @@ logger.info(sql);
 			try {
 				stmt.executeUpdate(sql);
 				flag = true ; 
+				UserService.flag = true ;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -96,7 +97,7 @@ logger.info(sql);
 		if(UserManager.getName(user.getUsername())){
 			return flag; 
 		}
-	
+	  
 		String sql = ""; 
 		User old = UserManager.getUser(user);
 		if(old != null){     
@@ -126,6 +127,7 @@ logger.info(sql);
 			if(count > 0){
 				flag = true ;
 			}
+			UserService.flag = true ;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -161,6 +163,7 @@ logger.info(sql);
 			pstmt.setInt(11, user.getChargeid());   
 logger.info(pstmt);   
 			pstmt.executeUpdate();
+			UserService.flag = true ;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -658,6 +661,7 @@ logger.info(sql);
 		Statement stmt = DB.getStatement(conn);
 		try {
 			DB.executeUpdate(stmt, sql);
+			UserService.flag = true ;
 			b = true;
 		} finally {
 			DB.close(stmt);
@@ -834,6 +838,7 @@ logger.info(username);
 		Statement stmt = DB.getStatement(conn);
 		try {
 			flag = stmt.execute(sql);
+			UserService.flag = true ;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

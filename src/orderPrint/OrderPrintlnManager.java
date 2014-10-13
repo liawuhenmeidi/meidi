@@ -1,6 +1,11 @@
 package orderPrint;
 
 
+import gift.Gift;
+import gift.GiftManager;
+import huanhuo.HuanHuo;
+import huanhuo.HuanhuoManager;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,9 +19,13 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import order.Order;
 import order.OrderManager;
+import orderproduct.OrderProduct;
+import orderproduct.OrderProductManager;
 
 import user.User;
+import utill.TimeUtill;
 import database.DB;
  
 public class OrderPrintlnManager { 
@@ -57,10 +66,51 @@ logger.info(pstmt);
 						//OrderPrintlnManager.delete(id);         
 						OrderManager.updateShifang(user,oid,uid,OrderPrintln.releasedispatch); 
 					} else  if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.modify){
-						OrderPrintlnManager.delete(oid, statues);
-						//OrderPrintlnManager.delete(id);         
+						OrderPrintlnManager.delete(oid, statues);       
 						//OrderManager.updateShifang(oid,uid,OrderPrintln.releasedispatch); 
-					} 
+					}else  if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.huanhuo){
+						OrderPrintln  or = new OrderPrintln(); 
+						or.setOrderid(Integer.valueOf(oid));
+					    or.setMessage("文员申请退货");  
+						or.setStatues(OrderPrintln.comit);
+						or.setType(OrderPrintln.releasedispatch);     
+						or.setpGroupId(o.getpGroupId());  
+						OrderPrintlnManager.save(or); 
+						
+						Order oldOrder = OrderManager.getOrderID(user, oid);
+						 
+						Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
+						Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
+						
+					    List<OrderProduct> listp = OrPMap.get(oid);
+					    List<Gift> listg = gMap.get(Integer.valueOf(id));
+						Order order = new Order();
+						order.setId(0);
+						order.setSaleTime(order.getSaleTime());
+				        order.setOdate(order.getOdate());
+				        order.setPos(order.getPos());
+				        order.setSailId(order.getSailId());
+				        order.setCheck(order.getCheck());
+				     	order.setUsername(order.getUsername());
+				     	order.setPhone1(order.getPhone1());
+				     	order.setLocate(order.getLocate());
+				        order.setLocateDetail(order.getLocateDetail()); 
+				        order.setRemark(order.getRemark());
+				        
+						order.setOrderproduct(listp);
+						order.setOrdergift(listg); 
+						order.setSubmitTime(order.getSubmitTime());
+						order.setPrintlnid(TimeUtill.getdatesimple());  
+						order.setDeliveryStatues(order.getDeliveryStatues());
+						order.setPhoneRemark(order.getPhoneRemark()); 
+						order.setPosremark(order.getPosremark());
+						order.setReckedremark(order.getReckedremark());
+						order.setSailidrecked(order.getSailidrecked());
+						OrderManager.save(user, order);  
+						
+						
+						
+					}  
 					return true ;
 				} catch (SQLException e) {
 					e.printStackTrace();
