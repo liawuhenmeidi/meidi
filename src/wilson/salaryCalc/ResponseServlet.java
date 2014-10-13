@@ -64,16 +64,16 @@ public class ResponseServlet extends HttpServlet {
         sheet.addCell(label3);
         sheet.addCell(label4);
 		
-        List<ExcelPrintResultModel> lists = calcSalary(startDate,endDate);
+        List<SalaryResult> lists = SalaryCalcManager.getSalaryResult(startDate,endDate);
         lists = sortExcelPrintResultModel(lists);
         
         Double tempSum = 0.0;
         
         for(int i = 0 ; i < lists.size() ; i ++ ){
-        	label0 = new Label(0,i+1,lists.get(i).getShop());
-        	label1 = new Label(1,i+1,lists.get(i).getName());
-        	label2 = new Label(2,i+1,lists.get(i).getSaleTime());
-        	label3 = new Label(3,i+1,String.valueOf(lists.get(i).getSalePrice()));
+        	label0 = new Label(0,i+1,lists.get(i).getUploadOrder().getShop());
+        	label1 = new Label(1,i+1,lists.get(i).getUploadOrder().getSaleManName());
+        	label2 = new Label(2,i+1,lists.get(i).getUploadOrder().getSaleTime());
+        	label3 = new Label(3,i+1,String.valueOf(lists.get(i).getUploadOrder().getSalePrice()));
         	label4 = new Label(4,i+1,String.valueOf(lists.get(i).getSalary()));
         	tempSum += lists.get(i).getSalary();
         	
@@ -83,7 +83,7 @@ public class ResponseServlet extends HttpServlet {
             sheet.addCell(label3);
             sheet.addCell(label4);	
             
-            if((i+1) < lists.size() && !lists.get(i+1).getName().equals(lists.get(i).getName())){
+            if((i+1) < lists.size() && !lists.get(i+1).getUploadOrder().getShop().equals(lists.get(i).getUploadOrder().getShop())){
         		label0 = new Label(5,i+1,"总计");
         		label1 = new Label(6,i+1,String.valueOf(tempSum));
         		sheet.addCell(label0);
@@ -99,20 +99,20 @@ public class ResponseServlet extends HttpServlet {
         }    
         
       //以下单据没有解析成功
-        int rowNum = lists.size() + 1;
-        for(int i = 0 ;  i < unMatchOrders.size() ; i ++){
-        	label0 = new Label(0,rowNum + i,unMatchOrders.get(i).getUploadSideShop());
-        	label1 = new Label(1,rowNum + i,UserManager.getUsernameByOrderid(unMatchOrders.get(i).getDBSideOrderId()));
-        	label2 = new Label(2,rowNum + i,unMatchOrders.get(i).getUploadSideSaleTime());
-        	label3 = new Label(3,rowNum + i,String.valueOf(unMatchOrders.get(i).getUploadOrder().getSalePrice()));
-        	label4 = new Label(4,rowNum + i,"");
-        	
-        	sheet.addCell(label0);
-            sheet.addCell(label1);
-            sheet.addCell(label2);
-            sheet.addCell(label3);
-            sheet.addCell(label4);
-        }
+//        int rowNum = lists.size() + 1;
+//        for(int i = 0 ;  i < unMatchOrders.size() ; i ++){
+//        	label0 = new Label(0,rowNum + i,unMatchOrders.get(i).getUploadSideShop());
+//        	label1 = new Label(1,rowNum + i,UserManager.getUsernameByOrderid(unMatchOrders.get(i).getDBSideOrderId()));
+//        	label2 = new Label(2,rowNum + i,unMatchOrders.get(i).getUploadSideSaleTime());
+//        	label3 = new Label(3,rowNum + i,String.valueOf(unMatchOrders.get(i).getUploadOrder().getSalePrice()));
+//        	label4 = new Label(4,rowNum + i,"");
+//        	
+//        	sheet.addCell(label0);
+//            sheet.addCell(label1);
+//            sheet.addCell(label2);
+//            sheet.addCell(label3);
+//            sheet.addCell(label4);
+//        }
         
 		// 将文件存到指定位置
 		  
@@ -130,22 +130,21 @@ public class ResponseServlet extends HttpServlet {
 		
     }
 
-	private List<ExcelPrintResultModel> sortExcelPrintResultModel(
-			List<ExcelPrintResultModel> lists) {
+	private List<SalaryResult> sortExcelPrintResultModel(
+			List<SalaryResult> lists) {
 		//目测貌似可以用递归搞一下？算了。。。免得以后看不懂
 		
 		String tempName = "";
 		String tempShop = "";
-		List<ExcelPrintResultModel> sameShopList = new ArrayList<ExcelPrintResultModel>();
-		List<ExcelPrintResultModel> sameNameList = new ArrayList<ExcelPrintResultModel>();
-		List<ExcelPrintResultModel> result = new ArrayList<ExcelPrintResultModel>();
+		List<SalaryResult> sameShopList = new ArrayList<SalaryResult>();
+		List<SalaryResult> result = new ArrayList<SalaryResult>();
 		
 		while(lists.size() != 0){
-			tempShop = lists.get(0).getShop();
+			tempShop = lists.get(0).getUploadOrder().getShop();
 			sameShopList.add(lists.get(0));
 			lists.remove(0);
 			for(int i = 1 ; i < lists.size() ; i++){
-				if(lists.get(i).getShop().equals(tempShop)){
+				if(lists.get(i).getUploadOrder().getShop().equals(tempShop)){
 					sameShopList.add(lists.get(i));
 					lists.remove(i);
 				}
@@ -153,12 +152,12 @@ public class ResponseServlet extends HttpServlet {
 			tempShop = "";
 			
 			while(sameShopList.size() != 0){
-				tempName = sameShopList.get(0).getName();
+				tempName = sameShopList.get(0).getUploadOrder().getSaleManName();
 				result.add(sameShopList.get(0));
 				sameShopList.remove(0);
 				for(int i = 1 ; i < sameShopList.size() ; i++){
-					if(sameShopList.get(i).getName().equals(tempName)){
-						result.add(lists.get(i));
+					if(sameShopList.get(i).getUploadOrder().getSaleManName().equals(tempName)){
+						result.add(sameShopList.get(i));
 						sameShopList.remove(i);
 					}
 				}
@@ -287,6 +286,109 @@ public class ResponseServlet extends HttpServlet {
 		
 		return result;
 	}
+	
+	public void doGetDepereted(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		try{  
+		//inout -> 2014-10-16|2014-10-25
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		String startDateSTR = request.getParameter("startDate");
+		String endDateSTR = request.getParameter("endDate");
+		SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = df1.parse(startDateSTR);
+        Date endDate = df1.parse(endDateSTR);
+        String printName = df1.format(new Date());
+        
+        //  打开文件 
+        WritableWorkbook book  =  Workbook.createWorkbook(response.getOutputStream());
+        //  生成名为“第一页”的工作表，参数0表示这是第一页 
+        WritableSheet sheet  =  book.createSheet( " 第一页 " ,  0 );
+        //  在Label对象的构造子中指名单元格位置是第一列第一行(0,0)
+        //  以及单元格内容为test 
+        
+        
+        
+        
+        
+        Label label0  =   new  Label( 0 ,  0 ,  " 门店 " );
+        Label label1  =   new  Label( 1 ,  0 ,  " 导购员姓名 " );
+        Label label2  =   new  Label( 2 ,  0 ,  " 销售日期 " );
+        Label label3  =   new  Label( 3 ,  0 ,  " 供价 " );
+        Label label4  =   new  Label( 4 ,  0 ,  " 提成 " );
+
+        //  将定义好的单元格添加到工作表中 
+        sheet.addCell(label0);
+        sheet.addCell(label1);
+        sheet.addCell(label2);
+        sheet.addCell(label3);
+        sheet.addCell(label4);
+		
+        List<ExcelPrintResultModel> lists = calcSalary(startDate,endDate);
+        //lists = sortExcelPrintResultModel(lists);
+        
+        Double tempSum = 0.0;
+        
+        for(int i = 0 ; i < lists.size() ; i ++ ){
+        	label0 = new Label(0,i+1,lists.get(i).getShop());
+        	label1 = new Label(1,i+1,lists.get(i).getName());
+        	label2 = new Label(2,i+1,lists.get(i).getSaleTime());
+        	label3 = new Label(3,i+1,String.valueOf(lists.get(i).getSalePrice()));
+        	label4 = new Label(4,i+1,String.valueOf(lists.get(i).getSalary()));
+        	tempSum += lists.get(i).getSalary();
+        	
+        	sheet.addCell(label0);
+            sheet.addCell(label1);
+            sheet.addCell(label2);
+            sheet.addCell(label3);
+            sheet.addCell(label4);	
+            
+            if((i+1) < lists.size() && !lists.get(i+1).getName().equals(lists.get(i).getName())){
+        		label0 = new Label(5,i+1,"总计");
+        		label1 = new Label(6,i+1,String.valueOf(tempSum));
+        		sheet.addCell(label0);
+                sheet.addCell(label1);
+                tempSum = 0.0;
+        	}else if((i+1) == lists.size()){
+        		label0 = new Label(5,i+1,"总计");
+        		label1 = new Label(6,i+1,String.valueOf(tempSum));
+        		sheet.addCell(label0);
+                sheet.addCell(label1);
+                tempSum = 0.0;
+        	}
+        }    
+        
+      //以下单据没有解析成功
+        int rowNum = lists.size() + 1;
+        for(int i = 0 ;  i < unMatchOrders.size() ; i ++){
+        	label0 = new Label(0,rowNum + i,unMatchOrders.get(i).getUploadSideShop());
+        	label1 = new Label(1,rowNum + i,UserManager.getUsernameByOrderid(unMatchOrders.get(i).getDBSideOrderId()));
+        	label2 = new Label(2,rowNum + i,unMatchOrders.get(i).getUploadSideSaleTime());
+        	label3 = new Label(3,rowNum + i,String.valueOf(unMatchOrders.get(i).getUploadOrder().getSalePrice()));
+        	label4 = new Label(4,rowNum + i,"");
+        	
+        	sheet.addCell(label0);
+            sheet.addCell(label1);
+            sheet.addCell(label2);
+            sheet.addCell(label3);
+            sheet.addCell(label4);
+        }
+        
+		// 将文件存到指定位置
+		  
+		response.setContentType("APPLICATION/OCTET-STREAM");
+		response.setHeader("Content-Disposition", "attachment; filename=\""+ printName + ".xls\"");
+		book.write();
+		book.close();
+		response.getOutputStream().close();
+	
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+    }
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

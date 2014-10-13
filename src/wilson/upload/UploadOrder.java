@@ -4,6 +4,8 @@ public class UploadOrder {
 	
 	private int id = -1; //id
 	
+	private String name = ""; 
+	
 	private String shop = ""; //销售门店
 	
 	private String posNo = null; //pos(厂送)单号
@@ -24,7 +26,7 @@ public class UploadOrder {
 	
 	private String fileName = ""; //来自的文件名
 	
-	private int checked = 1; //1为没有 check 0 为已经check 默认为1
+	private int checked = 1; //1为没有 check 0 为已经check 2为已经与提成标准匹配好  默认为1
 	
 	private String checkedTime = ""; //check的时间，默认为null
 	
@@ -154,6 +156,14 @@ public class UploadOrder {
 
 	public void setCheckOrderId(int checkOrderId) {
 		this.checkOrderId = checkOrderId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	

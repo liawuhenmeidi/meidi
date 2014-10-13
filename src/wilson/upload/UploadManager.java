@@ -78,7 +78,7 @@ public class UploadManager {
 
 			pstmt.setInt(1,0);
 			pstmt.setString(2, fmt.format(new Date()));
-			pstmt.setInt(3, uploadOrderId);
+			pstmt.setInt(3, -1);
 			pstmt.executeUpdate();
 			
 			flag = true ;
@@ -177,7 +177,7 @@ public class UploadManager {
 	
 	public static boolean saveOrderList(List <UploadOrder> UploadOrders){
 		String sql = ""; 
-		sql = "insert ignore into uploadorder (id,salesman,shop,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
+		sql = "insert ignore into uploadorder (id,name,salesman,shop,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
 		Connection conn = DB.getConn();
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -188,20 +188,21 @@ public class UploadManager {
 		try {
 			for(int i = 0 ; i < UploadOrders.size() ; i ++ ){
 				uo = UploadOrders.get(i);
-				pstmt.setString(1, uo.getSaleManName());
-				pstmt.setString(2, uo.getShop());
-				pstmt.setString(3, uo.getPosNo());
-				pstmt.setString(4, uo.getSaleTime());
-				pstmt.setString(5, uo.getDealTime());
-				pstmt.setString(6, uo.getType());
-				pstmt.setInt(7, uo.getNum());
-				pstmt.setDouble(8, uo.getSalePrice());
-				pstmt.setDouble(9, uo.getBackPoint());
-				pstmt.setString(10, uo.getFileName());
-				pstmt.setString(11, fmt.format(new Date()));
-				pstmt.setInt(12, uo.getChecked());
-				pstmt.setString(13, uo.getCheckedTime());
-				pstmt.setInt(14, uo.getCheckOrderId());
+				pstmt.setString(1, uo.getName());
+				pstmt.setString(2, uo.getSaleManName());
+				pstmt.setString(3, uo.getShop());
+				pstmt.setString(4, uo.getPosNo());
+				pstmt.setString(5, uo.getSaleTime());
+				pstmt.setString(6, uo.getDealTime());
+				pstmt.setString(7, uo.getType());
+				pstmt.setInt(8, uo.getNum());
+				pstmt.setDouble(9, uo.getSalePrice());
+				pstmt.setDouble(10, uo.getBackPoint());
+				pstmt.setString(11, uo.getFileName());
+				pstmt.setString(12, fmt.format(new Date()));
+				pstmt.setInt(13, uo.getChecked());
+				pstmt.setString(14, uo.getCheckedTime());
+				pstmt.setInt(15, uo.getCheckOrderId());
 				pstmt.executeUpdate();
 				uo = new UploadOrder();
 			}		
@@ -265,6 +266,7 @@ public class UploadManager {
 		try {     
 			while (rs.next()) {
 				uo.setId(rs.getInt("id"));
+				uo.setName(rs.getString("name"));
 				uo.setSaleManName(rs.getString("salesman"));
 				uo.setShop(rs.getString("shop"));
 				uo.setPosNo(rs.getString("posno"));
@@ -290,6 +292,47 @@ public class UploadManager {
 		return unCheckedUploadOrders;
 	}
 	
+	public static List<UploadOrder> getCheckedUploadOrders(){
+		List <UploadOrder> checkedUploadOrders = new ArrayList<UploadOrder>();
+
+		Connection conn = DB.getConn(); 
+		String sql = "select * from uploadorder where checked = 0";
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadOrder uo = new UploadOrder();
+		try {     
+			while (rs.next()) {
+				uo.setId(rs.getInt("id"));
+				uo.setName(rs.getString("name"));
+				uo.setSaleManName(rs.getString("salesman"));
+				uo.setShop(rs.getString("shop"));
+				uo.setPosNo(rs.getString("posno"));
+				if(uo.getPosNo()==null||uo.getPosNo().equals("")){
+					uo.setPosNo("");
+				}
+				uo.setSaleTime(rs.getString("saletime"));
+				uo.setDealTime(rs.getString("dealtime"));
+				uo.setType(rs.getString("type"));
+				uo.setNum(rs.getInt("num"));
+				uo.setSalePrice(rs.getDouble("saleprice"));
+				uo.setBackPoint(rs.getDouble("backpoint"));
+				uo.setFileName(rs.getString("filename"));
+				uo.setChecked(rs.getInt("checked"));
+				uo.setCheckedTime(rs.getString("checkedtime"));
+				checkedUploadOrders.add(uo);
+				uo = new UploadOrder();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return checkedUploadOrders;
+	}
+	
 	public static List<AfterMatchOrder> getCheckedAfterMatchOrder(Date startDate,Date endDate){
 		List <AfterMatchOrder> checkedAfterMatchOrder = new ArrayList<AfterMatchOrder>();
 		
@@ -304,6 +347,7 @@ public class UploadManager {
 		try {     
 			while (rs.next()) {
 				uo.setId(rs.getInt("id"));
+				uo.setName(rs.getString("name"));
 				uo.setSaleManName(rs.getString("salesman"));
 				uo.setShop(rs.getString("shop"));
 				uo.setPosNo(rs.getString("posno"));
@@ -361,6 +405,7 @@ public class UploadManager {
 		try {
 			while(rs.next()){
 				usm.setName(rs.getString("name"));
+				usm.setShop(rs.getString("shop"));
 				usm.setId(rs.getInt("id"));
 				usm.setStartTime(rs.getString("starttime"));
 				usm.setEndTime(rs.getString("endtime"));
@@ -381,6 +426,140 @@ public class UploadManager {
 			DB.close(stmt);
 			DB.close(conn);
 		}
+		return result;
+	}
+	
+	public static List<UploadSalaryModel> getAllSalaryModel(){
+		List<UploadSalaryModel> result = new ArrayList<UploadSalaryModel>();
+		String sql = "select * from uploadsalarymodel";
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadSalaryModel usm = new UploadSalaryModel();
+		try {
+			while(rs.next()){
+				usm.setId(rs.getInt("id"));
+				usm.setShop(rs.getString("shop"));
+				usm.setName(rs.getString("name"));
+				usm.setStartTime(rs.getString("starttime"));
+				usm.setEndTime(rs.getString("endtime"));
+				usm.setCatergory(rs.getString("catergory"));
+				usm.setType(rs.getString("type"));
+				usm.setContent(rs.getString("content"));
+				usm.setCommitTime(rs.getString("committime"));
+				usm.setFileName(rs.getString("filename"));
+				usm.setStatus(rs.getInt("status"));
+				result.add(usm);
+				usm = new UploadSalaryModel();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result.clear();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return result;
+	}
+	
+	//传入salaryModels的list对象，取出名称返回
+	public static List<String> getAllSalaryModelNames(List<UploadSalaryModel> salaryModels){
+		List<String> result = new ArrayList<String>();
+
+		for(int i = 0 ; i < salaryModels.size() ; i ++){
+			if(!result.contains(salaryModels.get(i).getName())){
+				result.add(salaryModels.get(i).getName());
+			}
+		}
+		return result;
+	}
+	
+	//传入uploadorders的list对象，取出名称返回
+	public static List<String> getAllUploadOrderNames(List<UploadOrder> uploadorders){
+		List<String> result = new ArrayList<String>();
+
+		for(int i = 0 ; i < uploadorders.size() ; i ++){
+			if(!result.contains(uploadorders.get(i).getName())){
+				result.add(uploadorders.get(i).getName());
+			}
+		}
+		return result;
+	}
+	
+	public static List<UploadOrder> getCheckedOrdersByName(String name){
+		List <UploadOrder> result = new ArrayList<UploadOrder>();
+
+		Connection conn = DB.getConn(); 
+		String sql = "select * from uploadorder where name = '" + name + "' and checked = 0";
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadOrder uo = new UploadOrder();
+		try {     
+			while (rs.next()) {
+				uo.setId(rs.getInt("id"));
+				uo.setName(rs.getString("name"));
+				uo.setSaleManName(rs.getString("salesman"));
+				uo.setShop(rs.getString("shop"));
+				uo.setPosNo(rs.getString("posno"));
+				if(uo.getPosNo()==null||uo.getPosNo().equals("")){
+					uo.setPosNo("");
+				}
+				uo.setSaleTime(rs.getString("saletime"));
+				uo.setDealTime(rs.getString("dealtime"));
+				uo.setType(rs.getString("type"));
+				uo.setNum(rs.getInt("num"));
+				uo.setSalePrice(rs.getDouble("saleprice"));
+				uo.setBackPoint(rs.getDouble("backpoint"));
+				uo.setFileName(rs.getString("filename"));
+				uo.setChecked(rs.getInt("checked"));
+				uo.setCheckedTime(rs.getString("checkedtime"));
+				result.add(uo);
+				uo = new UploadOrder();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
+	}
+	
+	public static List<UploadSalaryModel> getSalaryModelsByName(String name){
+		List <UploadSalaryModel> result = new ArrayList<UploadSalaryModel>();
+
+		Connection conn = DB.getConn(); 
+		String sql = "select * from uploadsalarymodel where name = '" + name + "'";
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadSalaryModel usm = new UploadSalaryModel();
+		try {     
+			while (rs.next()) {
+				usm.setId(rs.getInt("id"));
+				usm.setShop(rs.getString("shop"));
+				usm.setName(rs.getString("name"));
+				usm.setStartTime(rs.getString("starttime"));
+				usm.setEndTime(rs.getString("endtime"));
+				usm.setCatergory(rs.getString("catergory"));
+				usm.setType(rs.getString("type"));
+				usm.setContent(rs.getString("content"));
+				usm.setCommitTime(rs.getString("committime"));
+				usm.setFileName(rs.getString("filename"));
+				usm.setStatus(rs.getInt("status"));
+				result.add(usm);
+				usm = new UploadSalaryModel();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
 		return result;
 	}
 	

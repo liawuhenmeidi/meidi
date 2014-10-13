@@ -26,10 +26,13 @@ public class XLSReader {
 			File srcFile = new File(filepath,fileName); 
 			Workbook wb = Workbook.getWorkbook(srcFile);
 			Sheet sheet0 = wb.getSheet(0);
-			for(int i = 1 ; i < sheet0.getRows(); i ++){
+			
+			String name = sheet0.getCell(1,0).getContents();
+			for(int i = 2 ; i < sheet0.getRows(); i ++){
 				if(sheet0.getCell(0,i).getContents().equals("")){
 					continue;
 				}
+				uo.setName(name);
 				uo.setShop(sheet0.getCell(0,i).getContents());
 				uo.setPosNo(sheet0.getCell(1,i).getContents());
 				uo.setSaleTime(sheet0.getCell(2,i).getContents());
@@ -163,10 +166,12 @@ public class XLSReader {
 				SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				SimpleDateFormat s1 = new SimpleDateFormat("yy-MM-dd");
 				SimpleDateFormat s2 = new SimpleDateFormat("yyyyMMdd");
-				for(int i = 1 ; i < sheet0.getRows(); i ++){
+				String name = sheet0.getCell(1,0).getContents();
+				for(int i = 2 ; i < sheet0.getRows(); i ++){
 					if(sheet0.getCell(0,i).getContents().equals("")){
 						continue;
 					}
+					uo.setName(name);
 					uo.setShop(sheet0.getCell(1,i).getContents());
 					uo.setType(sheet0.getCell(2,i).getContents());
 					uo.setSaleManName(sheet0.getCell(3,i).getContents());

@@ -1,35 +1,51 @@
-<%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,order.*,orderproduct.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@page import="wilson.salaryCalc.SalaryCalcManager"%>
+<%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,wilson.salaryCalc.*,order.*,orderproduct.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
 	
-	String dbSide = request.getParameter("dbside");
-	String uploadSide = request.getParameter("uploadside");
 	
-	if(dbSide != null && !dbSide.equals("") && uploadSide != null && !uploadSide.equals("")){
-		
-		System.out.println();
-		MatchOrderManager.checkOrder(Integer.parseInt(dbSide), Integer.parseInt(uploadSide));
-		
-	}else if(dbSide != null && !dbSide.equals("")){
-		MatchOrderManager.checkDBOrder(Integer.parseInt(dbSide));
-	}else if(uploadSide != null && !uploadSide.equals("")){
-		MatchOrderManager.checkUploadOrder(Integer.parseInt(uploadSide));
+	
+	String paraOrderName = request.getParameter("orders");
+	String paraSalaryModelName = request.getParameter("models");
+	String paraSave = request.getParameter("save");
+	
+	List<UploadOrder> showOrders = new ArrayList<UploadOrder>();
+	List<UploadSalaryModel> showSalaryModels = new ArrayList<UploadSalaryModel>();
+	
+	if(paraOrderName != null && !paraOrderName.equals("")){
+		showOrders = UploadManager.getCheckedOrdersByName(paraOrderName);
 	}
 	
-	MatchOrder mo = new MatchOrder();
-	if(!mo.startMatch()){
-		return;
+	if(paraSalaryModelName != null && !paraSalaryModelName.equals("")){
+		showSalaryModels = UploadManager.getSalaryModelsByName(paraSalaryModelName);
 	}
-	//去自动匹配好的Order
-	List<AfterMatchOrder> afterMatchOrders = mo.getMatchedOrders();
-	//从数据库中取到需要匹配的Order
-	List <Order> unCheckedDBOrders = mo.getUnMatchedDBOrders();
-	//从上传列表取得需要匹配的Order
-	List <UploadOrder> unCheckedUploadOrders = mo.getUnMatchedUploadOrders();
+
+	//取要显示的order和salarymodel实例的集合
+	List<UploadOrder> uploadOrders = UploadManager.getCheckedUploadOrders();
+	List<UploadSalaryModel> salaryModels = UploadManager.getAllSalaryModel();
+	
+	//取出其中的名称
+	List<String> orderNames = UploadManager.getAllUploadOrderNames(uploadOrders);
+	List<String> salaryModelsNames = UploadManager.getAllSalaryModelNames(salaryModels);
+	
+	//下面用到的
+	String tempString = "";
 	
 	
+	List<SalaryResult> salaryResult = SalaryCalcManager.calcSalary(showOrders, showSalaryModels);
+	List<UploadOrder> unCalcUploadOrders = SalaryCalcManager.getUnCalcUploadOrders();
+	
+	
+	
+	if(paraSave != null && !paraSave.equals("")){
+		if(showOrders!=null&&showOrders.size()>0 && showSalaryModels!=null&&showSalaryModels.size()>0){
+			SalaryCalcManager.saveSalaryResult(salaryResult);
+			response.sendRedirect("/meidi/meidiserver/admin/salaryCalc.jsp");
+			return;
+		}
+	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -38,9 +54,6 @@
 <title>手动结款页</title>
   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
-	<style>
-     redTag{color:red}
-	</style>
 </head>
 
 <body>
@@ -58,115 +71,194 @@
 <jsp:param name="dmsn" value="" />
 </jsp:include>
 
-
-<table  cellspacing="1" border="2px">
-		<form action="" method="post">
-		<tr>
-			<td colspan="6" align="center"><h3>本地记录的订单</h3></td>
-			<td align="center"></td> 
-			<td colspan="6" align="center"><h3>苏宁返回的订单</h3></td>
-		</tr>
-
-		<tr>  
-
-			<td align="center">选中</td>
-			<td align="center">销售门店</td>
-			<td align="center">pos(厂送)单号</td>
-			<td align="center">销售日期</td>
-			<td align="center">票面型号</td> 
-			<td align="center">票面数量</td> 
-			<td align="center"></td> 
-			<td align="center">选中</td>
-			<td align="center">销售门店</td>
-			<td align="center">pos(厂送)单号</td>
-			<td align="center">销售日期</td>
-			<td align="center">票面型号</td> 
-			<td align="center">票面数量</td> 
+<table>
+<tr>
+<td align="left">
+	<table  cellspacing="1" border="2px" >
+			<tr>
+				<form method="post" action="">
+				<td colspan="6" align="center">
+				<h3>需要提成的订单</h3>
+				&nbsp;&nbsp;
+				<select name="orders"/>
+				<%
+				for(int i = 0 ; i < orderNames.size() ; i ++){
+					tempString = orderNames.get(i);
+					
+				%>
+				<option <%	if(tempString.equals(paraOrderName)){%>selected="selected"<% }%>  value="<%=tempString %>"><%=tempString %></option>
+				}
+				<%
+				}
+				%>
+				&nbsp;&nbsp;
+				<input type="submit" value="显示"/>
+				</td>
+				
+			</tr>
+			<tr>  
 	
-		</tr> 
+				<td align="center">销售门店</td>
+				<td align="center">pos(厂送)单号</td>
+				<td align="center">销售日期</td>
+				<td align="center">票面型号</td> 
+				<td align="center">票面数量</td> 
+				<td align="center">供价</td>
+				
+			</tr>
+			<%
+			for(int i = 0 ; i < showOrders.size() ; i ++){
+			%>
+			<tr>  
+	
+				<td align="center"><%=showOrders.get(i).getShop() %></td>
+				<td align="center"><%=showOrders.get(i).getPosNo()%></td>
+				<td align="center"><%=showOrders.get(i).getSaleTime() %></td>
+				<td align="center"><%=showOrders.get(i).getType() %></td> 
+				<td align="center"><%=showOrders.get(i).getNum() %></td> 
+				<td align="center"><%=showOrders.get(i).getSalePrice() %></td>
+				
+			</tr>
+			<%
+			}
+			%>
+	</table>
+</td>
+<td width="100px"></td>
+<td align="right">
+	<table cellspacing="1" border="2px">
+			<tr>
+				
+				<td colspan="6" align="center">
+				<h3>提成标准</h3>
+				&nbsp;&nbsp;
+				<select name="models"/>
+				<%
+				for(int i = 0 ; i < salaryModelsNames.size() ; i ++){
+					tempString = salaryModelsNames.get(i);
+				%>
+				<option <%	if(tempString.equals(paraSalaryModelName)){%>selected="selected"<% }%> value="<%=tempString %>"><%=tempString %></option>
+				<%
+				}
+				%>
+				&nbsp;&nbsp;
+				<input type="submit" value="显示"/>
+				</td>
+				</form>
+			</tr>
+			<tr>
+				<td align="center">门店</td>
+				<td align="center">类别</td>
+				<td align="center">型号</td>
+				<td align="center">提成标准</td>
+				<td align="center">生效日期</td>
+				<td align="center">截至日期</td> 
 		
+			</tr> 
+			<%
+			for(int i = 0 ; i < showSalaryModels.size() ; i ++){
+			%>
+			<tr>
+				<td align="center"><%=showSalaryModels.get(i).getShop() %></td>
+				<td align="center"><%=showSalaryModels.get(i).getCatergory() %></td>
+				<td align="center"><%=showSalaryModels.get(i).getType() %></td>
+				<td align="center"><%=showSalaryModels.get(i).getContent() %></td>
+				<td align="center"><%=showSalaryModels.get(i).getStartTime() %></td>
+				<td align="center"><%=showSalaryModels.get(i).getEndTime() %></td> 
+		
+			</tr> 
+			<%
+			}
+			%>
+	</table>
+</td> 
+</tr>
+
+
+<tr>
+<td colspan="3" align="center">
+	<table border="2px" align="center">
+		<tr>
+			<td align="center" colspan="9"><h3>提成结果</h3></td>
+		</tr>
+		<tr>
+			<td align="center">销售门店</td>
+			<td align="center">pos(厂送)单号</td>
+			<td align="center">销售日期</td>
+			<td align="center">类别</td> 
+			<td align="center">票面型号</td> 
+			<td align="center">票面数量</td> 
+			<td align="center">供价</td>
+			<td align="center">提成标准</td>
+			<td align="center">提成</td>
+		</tr>
+		<%for(int i = 0 ; i < salaryResult.size() ; i ++){
+		%>
+		<tr>
+			<td align="center"><%=salaryResult.get(i).getUploadOrder().getShop() %></td>
+			<td align="center"><%=salaryResult.get(i).getUploadOrder().getPosNo() %></td>
+			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSaleTime() %></td>
+			<td align="center"><%=salaryResult.get(i).getSalaryModel().getCatergory() %></td> 
+			<td align="center"><%=salaryResult.get(i).getUploadOrder().getType() %></td> 
+			<td align="center"><%=salaryResult.get(i).getUploadOrder().getNum() %></td> 
+			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSalePrice() %></td>
+			<td align="center"><%=salaryResult.get(i).getSalaryModel().getContent() %></td>
+			<td align="center"><%=salaryResult.get(i).getSalary() %></td>
+		</tr>	
 		<%
-		for(int i = 0 ; i < afterMatchOrders.size();i++	){
+		}
+		%>
+		
+		<tr>
+			<td align="center" colspan="9"><h3>无对应提成标准的订单</h3></td>
+		</tr>
+		
+		<tr>
+			<td align="center">销售门店</td>
+			<td align="center">pos(厂送)单号</td>
+			<td align="center">销售日期</td>
+			<td align="center">票面型号</td> 
+			<td align="center">票面数量</td> 
+			<td align="center">供价</td>
+		</tr>
+		<%
+		for(int i = 0 ; i < unCalcUploadOrders.size() ; i ++){
 			
 		%>
 		<tr>
-			<td align="center"><input name="dbside"  type="radio" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center"></td>
-			<td align="center"><input name="uploadside"  type="radio" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center"><%=unCalcUploadOrders.get(i).getShop() %></td>
+			<td align="center"><%=unCalcUploadOrders.get(i).getPosNo() %></td>
+			<td align="center"><%=unCalcUploadOrders.get(i).getSaleTime() %></td>
+			<td align="center"><%=unCalcUploadOrders.get(i).getType() %></td> 
+			<td align="center"><%=unCalcUploadOrders.get(i).getNum() %></td> 
+			<td align="center"><%=unCalcUploadOrders.get(i).getSalePrice() %></td>
 		</tr>
 		<%
 		}
 		%>
 		
-		
-		
-		<%
-			for(int i = 0 ;;){
-				if(unCheckedDBOrders != null && unCheckedDBOrders.size() > 0 && i< unCheckedDBOrders.size()){
-		%>	
-					<tr>  
-					<td align="center"><input name="dbside" type="radio" value="<%=unCheckedDBOrders.get(i).getId() %>"/></td>
-					<td align="center"><%= unCheckedDBOrders.get(i).getBranch() %></td>
-					<td align="center"><%= unCheckedDBOrders.get(i).getPos() %></td>
-					<td align="center"><%= unCheckedDBOrders.get(i).getSaleTime() %></td>
-					<td align="center"><%= unCheckedDBOrders.get(i).getSendType() %></td> 
-					<td align="center"><%= unCheckedDBOrders.get(i).getSendCount() %></td> 
-		<%
-				}else{
-		%>
-					<tr>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"></td> 
-					<td align="center"></td> 
-					<td align="center"></td> 
-		<%
-				}
-			
-				if(unCheckedUploadOrders != null && unCheckedUploadOrders.size() > 0 && i< unCheckedUploadOrders.size()){
-		%>
-							<td align="center"></td>
-							<td align="center"><input name="uploadside" type="radio" value="<%=unCheckedUploadOrders.get(i).getId() %>"/></td>
-							<td align="center"><%= unCheckedUploadOrders.get(i).getShop() %></td>
-							<td align="center"><%= unCheckedUploadOrders.get(i).getPosNo() %></td>
-							<td align="center"><%= unCheckedUploadOrders.get(i).getSaleTime() %></td>
-							<td align="center"><%= unCheckedUploadOrders.get(i).getType() %></td> 
-							<td align="center"><%= unCheckedUploadOrders.get(i).getNum() %></td> 
-							</tr>
-		<%
-				}else{
-		%>
-							<td align="center"></td>
-							<td align="center"></td>
-							<td align="center"></td>
-							<td align="center"></td>
-							<td align="center"></td> 
-							<td align="center"></td> 
-							</tr>
-		<%
-				}
-				i ++ ;
-				if(i >= unCheckedDBOrders.size() && i >=unCheckedUploadOrders.size()){
-					break;
-				}
-			}
+		<%if(salaryResult.size() > 0 )
+		{ 
 		%>
 		<tr>
-			<td colspan="12" align="center"><input type="submit" value="提交"/></td>
+			<td align="center" colspan="9">
+			<form method="post" action="">
+			<input type="hidden"  name="save" value="true" />
+			<input type="hidden"  name="orders" value="<%=paraOrderName%>"/>
+			<input type="hidden"  name="models" value="<%=paraSalaryModelName%>"/>
+			<input type="submit" value="提交保存"/>
+			</form>
+			</td>	
 		</tr>
-		</form>
-</table> 
+		<%
+		}
+		%>
+	</table>
+</td>
+</tr>
 
+
+</table>
 
 </body>
 </html>
