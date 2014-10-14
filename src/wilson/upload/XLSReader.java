@@ -112,18 +112,23 @@ public class XLSReader {
 							throw new Exception();
 						}
 						
-						tempString += "\"" + sheet0.getCell(j,i).getContents() + "\"" + ":" + "\"" + sheet0.getCell(j+1,i).getContents() + "\""+",";
-						
-						//判断是否是完整的价格区间
-						boolean zone = Double.parseDouble(sheet0.getCell(j,i).getContents().split("-")[0]) == tempInt; 
-						if(zone){
-							if(sheet0.getCell(j,i).getContents().split("-")[1].equals("/")){
-								break;
-							}else{
+						if(!sheet0.getCell(j,i).getContents().contains("以上")){
+							tempString += "\"" + sheet0.getCell(j,i).getContents() + "\"" + ":" + "\"" + sheet0.getCell(j+1,i).getContents() + "\""+",";
+							//判断是否是完整的价格区间
+							boolean zone = Double.parseDouble(sheet0.getCell(j,i).getContents().split("-")[0]) == tempInt; 
+							if(zone){
 								tempInt = Double.parseDouble(sheet0.getCell(j,i).getContents().split("-")[1]);
+							}else{
+								throw new Exception();
 							}
 						}else{
-							throw new Exception();
+							tempString += "\"" + sheet0.getCell(j,i).getContents().trim().replace("以上", "-/") + "\"" + ":" + "\"" + sheet0.getCell(j+1,i).getContents() + "\""+",";
+							boolean zone = Double.parseDouble(sheet0.getCell(j,i).getContents().replace("以上", "").trim()) == tempInt;
+							if(zone){
+								break;
+							}else{
+								throw new Exception();
+							}
 						}
 					}
 					
