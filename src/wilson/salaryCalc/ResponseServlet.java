@@ -18,7 +18,9 @@ import wilson.upload.UploadManager;
 import wilson.upload.UploadSalaryModel;
 
 import jxl.Workbook;
+import jxl.format.Colour;
 import jxl.write.Label;
+import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
@@ -33,12 +35,41 @@ public class ResponseServlet extends HttpServlet {
 		//inout -> 2014-10-16|2014-10-25
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
+		String type = request.getParameter("type");
 		String startDateSTR = request.getParameter("startDate");
 		String endDateSTR = request.getParameter("endDate");
+		String name = request.getParameter("name");
 		SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = df1.parse(startDateSTR);
-        Date endDate = df1.parse(endDateSTR);
+		Date startDate = new Date();
+        Date endDate = new Date();
         String printName = df1.format(new Date());
+        List<SalaryResult> lists = new ArrayList<SalaryResult>();
+        
+        
+		if(type != null && !type.equals("")){
+			if(type.equals("bydate")){
+				
+				
+				startDate = df1.parse(startDateSTR);
+		        endDate = df1.parse(endDateSTR);
+		        lists = SalaryCalcManager.getSalaryResultByDate(startDate,endDate);
+		        
+			}else if(type.equals("byname")){
+				
+				if(name != null && !name.equals("")){
+					lists = SalaryCalcManager.getSalaryResultByName(name);
+				}else{
+					return;
+				}
+				
+			}
+		}else{
+			return;
+		}
+        
+        
+		//排序
+        lists = sortExcelPrintResultModel(lists);
         
         //  打开文件 
         WritableWorkbook book  =  Workbook.createWorkbook(response.getOutputStream());
@@ -48,8 +79,10 @@ public class ResponseServlet extends HttpServlet {
         //  以及单元格内容为test 
         
         
-        
-        
+        //设置颜色
+        Colour red = Colour.RED;
+        WritableCellFormat wcf = new WritableCellFormat();
+        wcf.setBackground(red);
         
         Label label0  =   new  Label( 0 ,  0 ,  " 门店 " );
         Label label1  =   new  Label( 1 ,  0 ,  " 导购员姓名 " );
@@ -64,8 +97,7 @@ public class ResponseServlet extends HttpServlet {
         sheet.addCell(label3);
         sheet.addCell(label4);
 		
-        List<SalaryResult> lists = SalaryCalcManager.getSalaryResult(startDate,endDate);
-        lists = sortExcelPrintResultModel(lists);
+        
         
         Double tempSum = 0.0;
         
@@ -75,6 +107,9 @@ public class ResponseServlet extends HttpServlet {
         	label2 = new Label(2,i+1,lists.get(i).getUploadOrder().getSaleTime());
         	label3 = new Label(3,i+1,String.valueOf(lists.get(i).getUploadOrder().getSalePrice()));
         	label4 = new Label(4,i+1,String.valueOf(lists.get(i).getSalary()));
+        	if(lists.get(i).getSalary() == 0.0){
+        		label4.setCellFormat(wcf);
+        	}
         	tempSum += lists.get(i).getSalary();
         	
         	sheet.addCell(label0);

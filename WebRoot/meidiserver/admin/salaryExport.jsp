@@ -1,4 +1,6 @@
-<%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@page import="wilson.salaryCalc.SalaryCalcManager"%>
+<%@page import="wilson.salaryCalc.SalaryResult"%>
+<%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,wilson.salaryCalc.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%
 	request.setCharacterEncoding("utf-8");
@@ -6,6 +8,17 @@
 	String startDate = request.getParameter("startDate");
 	String endDate = request.getParameter("endDate");
 	System.out.println(startDate + "|" + endDate);
+	
+	//取出所有salaryResult
+	List<SalaryResult> salaryResult = SalaryCalcManager.getSalaryResult();
+	//取出对应的uploadOrder
+	List<UploadOrder> showOrders = SalaryCalcManager.getUploadOrderFromSalaryResult(salaryResult);
+	//取出对应的名字
+	List<String> orderNames = UploadManager.getAllUploadOrderNames(showOrders);
+	
+	//下面用到的temp变量
+	String tempName = "";
+	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -78,11 +91,30 @@ body {
   <jsp:include flush="true" page="head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>     
+<p>按时间导出</p>
+<form action="/meidi/meidiserver/SalaryExport" method="post">
+<input type="hidden" name="type" value="bydate"/>
+开始: <input name="startDate" type="text" id="datepicker1"/>----------结束: <input name="endDate" type="text" id="datepicker2"/>
+<input type="submit" value="确认"/>
+</form>
+
+<hr style="border : 1px dashed blue;" />
+
+<p>按文件名导出</p>
 
 <form action="/meidi/meidiserver/SalaryExport" method="post">
-<p>开始: <input name="startDate" type="text" id="datepicker1"></p>
-----------
-<p>结束: <input name="endDate" type="text" id="datepicker2"></p>
+<input type="hidden" name="type" value="byname"/>
+<select name="name">
+	<option value="" selected="selected"></option>
+	<%
+	for(int i = 0 ; i < orderNames.size() ; i ++){
+		tempName = orderNames.get(i);
+	%>
+	<option value="<%=tempName %>" ><%=tempName %></option>
+	<%
+	} 
+	%>
+</select>
 <input type="submit" value="确认"/>
 </form>
 </body>

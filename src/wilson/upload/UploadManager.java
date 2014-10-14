@@ -431,7 +431,7 @@ public class UploadManager {
 	
 	public static List<UploadSalaryModel> getAllSalaryModel(){
 		List<UploadSalaryModel> result = new ArrayList<UploadSalaryModel>();
-		String sql = "select * from uploadsalarymodel";
+		String sql = "select * from uploadsalarymodel where status != -1";
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -466,8 +466,13 @@ public class UploadManager {
 	//传入salaryModels的list对象，取出名称返回
 	public static List<String> getAllSalaryModelNames(List<UploadSalaryModel> salaryModels){
 		List<String> result = new ArrayList<String>();
-
+		if(salaryModels == null || salaryModels.size() == 0){
+			return result;
+		}
 		for(int i = 0 ; i < salaryModels.size() ; i ++){
+			if(salaryModels.get(i) == null){
+				continue;
+			}
 			if(!result.contains(salaryModels.get(i).getName())){
 				result.add(salaryModels.get(i).getName());
 			}
@@ -478,8 +483,13 @@ public class UploadManager {
 	//传入uploadorders的list对象，取出名称返回
 	public static List<String> getAllUploadOrderNames(List<UploadOrder> uploadorders){
 		List<String> result = new ArrayList<String>();
-
+		if(uploadorders == null || uploadorders.size() == 0){
+			return result;
+		}
 		for(int i = 0 ; i < uploadorders.size() ; i ++){
+			if(uploadorders.get(i) == null){
+				continue;
+			}
 			if(!result.contains(uploadorders.get(i).getName())){
 				result.add(uploadorders.get(i).getName());
 			}
@@ -532,7 +542,7 @@ public class UploadManager {
 		List <UploadSalaryModel> result = new ArrayList<UploadSalaryModel>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadsalarymodel where name = '" + name + "'";
+		String sql = "select * from uploadsalarymodel where name = '" + name + "' and status != -1";
 
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -561,6 +571,103 @@ public class UploadManager {
 			DB.close(conn);
 		}	
 		return result;
+	}
+	
+	public static List<UploadOrder> getAllUploadOrders(){
+		List<UploadOrder> result = new ArrayList<UploadOrder>();
+
+		Connection conn = DB.getConn(); 
+		String sql = "select * from uploadorder where checked != -1";
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadOrder uo = new UploadOrder();
+		try {     
+			while (rs.next()) {
+				uo.setId(rs.getInt("id"));
+				uo.setName(rs.getString("name"));
+				uo.setSaleManName(rs.getString("salesman"));
+				uo.setShop(rs.getString("shop"));
+				uo.setPosNo(rs.getString("posno"));
+				if(uo.getPosNo()==null||uo.getPosNo().equals("")){
+					uo.setPosNo("");
+				}
+				uo.setSaleTime(rs.getString("saletime"));
+				uo.setDealTime(rs.getString("dealtime"));
+				uo.setType(rs.getString("type"));
+				uo.setNum(rs.getInt("num"));
+				uo.setSalePrice(rs.getDouble("saleprice"));
+				uo.setBackPoint(rs.getDouble("backpoint"));
+				uo.setFileName(rs.getString("filename"));
+				uo.setChecked(rs.getInt("checked"));
+				uo.setCheckedTime(rs.getString("checkedtime"));
+				result.add(uo);
+				uo = new UploadOrder();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
+	}
+	
+	public static boolean deprecatedUploadOrderByName(String name){
+		boolean flag = false;
+		Connection conn = DB.getConn();
+		String sql = "update uploadorder set checked = -1 where name = '" + name + "'";
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		Statement stmt = DB.getStatement(conn);
+		try {
+			stmt.execute(sql);
+			flag = true ;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return flag ;  
+	}
+	
+	public static boolean deprecatedSalaryModelByName(String name){
+		boolean flag = false;
+		Connection conn = DB.getConn();
+		String sql = "update uploadsalarymodel set status = -1 where name = '" + name + "'";
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		Statement stmt = DB.getStatement(conn);
+		try {
+			stmt.execute(sql);
+			flag = true ;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return flag ;  
+	}
+	
+	public static boolean deleteDeprecatedItems(){
+		boolean flag = false;
+		Connection conn = DB.getConn();
+		String sql = "delete from uploadsalarymodel where status = -1 ";
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		Statement stmt = DB.getStatement(conn);
+		try {
+			stmt.execute(sql);
+			sql = "delete from uploadorder where checked = -1 ";
+			stmt.execute(sql);
+			flag = true ;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return flag ; 
 	}
 	
 }
