@@ -83,34 +83,32 @@ public class SalaryResult {
 		if(this.uploadOrder == null || this.salaryModel == null){
 			return false;
 		}
-		if(this.uploadOrder.getType().trim().equals(this.salaryModel.getType().trim())){
-			String content = this.salaryModel.getContent().replace("{","").replace("}", "");
-			try{
-				for(int i = 0 ; i < content.split(",").length ; i ++){
-					Double startPrice = Double.parseDouble(content.split(",")[i].split(":")[0].replace("\"", "").split("-")[0]);
-					if(content.split(",")[i].split(":")[0].replace("\"", "").split("-")[1].equals("/")){
-						if(this.uploadOrder.getSalePrice() >= startPrice){
-							this.setSalary(Double.parseDouble(content.split(",")[i].split(":")[1].replace("\"", "")));
-							break;
-						}else{
-							return false;
-						}
-					}
-					Double endPrice = Double.parseDouble(content.split(",")[i].split(":")[0].replace("\"", "").split("-")[1]);
-					if(this.uploadOrder.getSalePrice() >= startPrice && this.uploadOrder.getSalePrice() < endPrice){
+		
+		String content = this.salaryModel.getContent().replace("{","").replace("}", "");
+		try{
+			for(int i = 0 ; i < content.split(",").length ; i ++){
+				Double startPrice = Double.parseDouble(content.split(",")[i].split(":")[0].replace("\"", "").split("-")[0]);
+				if(content.split(",")[i].split(":")[0].replace("\"", "").split("-")[1].equals("/")){
+					if(this.uploadOrder.getSalePrice() >= startPrice){
 						this.setSalary(Double.parseDouble(content.split(",")[i].split(":")[1].replace("\"", "")));
 						break;
+					}else{
+						return false;
 					}
 				}
-				this.setSalary(this.getSalary() * this.getUploadOrder().getNum());
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-				this.setCalcTime(sdf.format(new Date()));
-				return true;
-			}catch(Exception e){
-				return false;
+				Double endPrice = Double.parseDouble(content.split(",")[i].split(":")[0].replace("\"", "").split("-")[1]);
+				if(this.uploadOrder.getSalePrice() >= startPrice && this.uploadOrder.getSalePrice() < endPrice){
+					this.setSalary(Double.parseDouble(content.split(",")[i].split(":")[1].replace("\"", "")));
+					break;
+				}
 			}
-		}else{
+			this.setSalary(this.getSalary() * this.getUploadOrder().getNum());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			this.setCalcTime(sdf.format(new Date()));
+			return true;
+		}catch(Exception e){
 			return false;
 		}
+		
 	}
 }

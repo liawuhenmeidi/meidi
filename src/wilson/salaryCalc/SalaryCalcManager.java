@@ -52,6 +52,7 @@ public class SalaryCalcManager {
 			
 			
 			tempOrder = uploadOrders.get(i);
+			tempOrder.setType(tempOrder.getType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")","").replace("）", "").replace("（", ""));
 			//如果type是空，直接放到人工归类列表里面
 			if(tempOrder.getType()==""||tempOrder.getType()==null||tempOrder.getType().equals("")){
 				unCalcUploadOrders.add(tempOrder);
@@ -61,12 +62,16 @@ public class SalaryCalcManager {
 			//在salaryModels中，寻找对应的model
 			for(int j = 0 ; j < salaryModels.size() ; j ++){
 				tempSalaryModel = salaryModels.get(j);
+				tempSalaryModel.setType(tempSalaryModel.getType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")","").replace("）", "").replace("（", ""));
 				//如果为空，直接跳过
 				if(tempSalaryModel.getType()==""||tempSalaryModel.getType()==null||tempSalaryModel.getType().equals("")){
 					continue;
 				}
 				
 				//如果相等，则添加到匹配列表中
+				
+				//System.out.println("tempOrder =" + tempOrder.getType().trim() + " = tempSalaryModel " + tempSalaryModel.getType() + " ?  " + tempOrder.getType().trim().contains(tempSalaryModel.getType().trim()));
+				
 				if(tempOrder.getType().trim().equals(tempSalaryModel.getType().trim())){
 					matched = true;
 					matchedSalaryModels.add(tempSalaryModel);

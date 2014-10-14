@@ -7,7 +7,7 @@
 	
 	String fileName = request.getParameter("fileName");
 	String confirm = request.getParameter("confirm");
-	String filePath = new ExcelUpload().getSalesFilePath();
+	String filePath = ExcelUpload.getSalesFilePath();
 	List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
 	//UploadOrderManager uom = new UploadOrderManager();
 

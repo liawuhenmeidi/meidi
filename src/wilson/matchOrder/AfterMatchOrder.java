@@ -317,7 +317,7 @@ public class AfterMatchOrder {
 		//对比型号
 		tempDB = this.getDBOrder().getSendType().trim();
 		tempUpLoad = this.getUploadOrder().getType().trim();
-		key = tempUpLoad.replaceAll("(\\s[\u4E00-\u9FA5]+)|([\u4E00-\u9FA5]+\\s)", "");
+		key = tempUpLoad.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
 		if(tempDB.contains(key)){
 			//精准对比
 			if(tempDB.equals(tempUpLoad)){
