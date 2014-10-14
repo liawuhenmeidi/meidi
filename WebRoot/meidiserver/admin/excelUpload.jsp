@@ -85,7 +85,7 @@ td {
       
     <div > 
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-  <a href="../../data/model/suningmuban.xls"><font style="color:red;font-size:20px;" >苏宁excel模板</font> </a><br />
+  <a href="../../data/model/suningmuban.xls"><font style="color:red;font-size:20px;" >系统比对模板</font> </a><br />
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
   <a href="../../data/model/tichengmuban.xls"><font style="color:red;font-size:20px;" >提成标准模板</font> </a><br />
  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -97,7 +97,7 @@ td {
       <font style="color:red;font-size:20px;" >导入数据 : </font>
       <input id="File1" runat="server" name="UpLoadFile" type="file" /> 
       类型：<select name="uploadType">
-      <option value="1">苏宁excel上传</option>   
+      <option value="1">系统比对单上传</option>   
         <option value="2">提成标准上传</option>   
         <option value="3">销售单上传</option>   
       </select>
