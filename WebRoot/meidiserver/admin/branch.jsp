@@ -135,10 +135,20 @@ if(list != null){
 	  BranchType category = list.get(i) ;
 %>   
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)"> 
-		  <td align="left"><input type="checkbox" value="1" name="<%=category.getId() %>"></input></td> 
+        
+	    <td align="left">
+	    	<% if(category.getId() != 1){%>
+	    <input type="checkbox" value="1" name="<%=category.getId() %>"></input>
+	    <% }%>
+	    </td> 
 		<td align="left"><%=i+1 %></td>
 		<td align="left"><%=category.getName() %></td> 
-		<td align="left"><a href="branchupdate.jsp?id=<%=category.getId() %>">[修改]</a></td>
+		
+		<td align="left">
+		<% if(category.getId() != 1){%>
+		<a href="branchupdate.jsp?id=<%=category.getId() %>">[修改]</a>
+		<% }%>
+		</td>
 		<td align="left">
 			<a href="branch1.jsp?id=<%=category.getId() %>">[查看]</a>
 		</td>

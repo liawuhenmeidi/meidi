@@ -16,7 +16,13 @@
 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
-List<Group> listg = GroupManager.getGroup();
+
+
+Map<String,List<Group>> map = GroupService.getPidMap();
+
+List<Group>  listg = null ;
+
+
 String ptype = request.getParameter("ptype"); 
 String id = request.getParameter("id");
 System.out.println("id"+id);
@@ -28,14 +34,10 @@ if(!StringUtill.isNull(id)){
 	HashMap<Integer,Group> map =GroupManager.getGroupMap();
 	Group groups = map.get(Integer.valueOf(id));
 	name = groups.getName();
-	System.out.println(name); 
 	detail = groups.getDetail().trim();
 	pid = groups.getPid();
-	System.out.println(detail);
-	System.out.println(pid);
 }
 
-System.out.println(action);
 if("add".equals(action)){
 	String ids = request.getParameter("id");
 	String named = request.getParameter("name");
@@ -48,6 +50,7 @@ if("add".equals(action)){
     group.setPid(Integer.valueOf(ppid));
     GroupManager.updateName(user, group); 
     response.sendRedirect("juese.jsp?ptype="+ptype);
+    return ;
 }
 
 %>

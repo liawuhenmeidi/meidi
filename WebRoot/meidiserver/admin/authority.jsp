@@ -18,14 +18,19 @@ User user = (User)session.getAttribute("user");
 
 String action = request.getParameter("action");
 String ptype = request.getParameter("ptype"); 
+String typeStr = request.getParameter("type"); 
+int type = Integer.valueOf(typeStr);
+
 List<Category> list =CategoryManager.getCategory(Category.sale) ;
 HashMap<Integer,Group> map =GroupManager.getGroupMap() ;
+Map<String,List<Group>> maplist = GroupService.getPidMap();
 Group groups = null;
 String id = request.getParameter("id");
 System.out.println(id);
 String statuesInit =  "";
-String productsInit = "";
+String productsInit = ""; 
 String permissions = "";
+List<Group>  listg = null ;
 
 if(!StringUtill.isNull(id)){
 	groups = map.get(Integer.valueOf(id));
@@ -148,8 +153,51 @@ if("permission".equals(action)){
      
      <div class="juese_head">功能权限</div>
      <ul class="juese_add">
-     <li><input type="checkbox" value="0" name = "permission" id="p0" />&nbsp;系统最高权限</li>
-        <li><input type="checkbox" value="1" name = "permission" id="p1" />&nbsp;提交报装单</li>
+       <%  
+       
+        
+         if(type == Group.Manger){
+        	 listg = maplist.get(1+"");
+        	%>  
+        	 <li><input type="checkbox" value="0" name = "permission" id="p0" onClick="return false" checked="checked" />&nbsp;系统最高权限</li>
+        	<%
+         }else if(type == Group.dealSend){
+        	 listg = maplist.get(1+"");
+        	 %>
+	        <li><input type="checkbox" value="4" name = "permission" id="p4" />&nbsp;管理产品权限</li>
+	        <li><input type="checkbox" value="3" name = "permission" id="p3" />&nbsp;管理用户权限</li>
+	        <li><input type="checkbox" value="5" name = "permission" id="p5" checked="checked" onClick="return false" />&nbsp;总配单权限</li> 
+	        <li><input type="checkbox" value="6" name = "permission" id="p6" />&nbsp;管理职位权限</li>
+	        <li><input type="checkbox" value="7" name = "permission" id="p7" />&nbsp;查询门店权限</li>
+	        <li><input type="checkbox" value="9" name = "permission" id="p9" />&nbsp;管理门店权限</li> 
+	        <li><input type="checkbox" value="10" name = "permission" id="p10" />&nbsp;地区权限</li> 
+	        <li><input type="checkbox" value="11" name = "permission" id="p11" />&nbsp;打印权限</li> 
+	       <li><input type="checkbox" value="12" name = "permission" id="p11" />&nbsp;提交调货单权限</li>  
+	        <li><input type="checkbox" value="13" name = "permission" id="p11" />&nbsp;确认调货单权限</li> 
+        	 <%
+         }else if(type == Group.sencondDealsend){ 
+        	listg = maplist.get(2+"");
+       %>
+        <li><input type="checkbox" value="3" name = "permission" id="p3" checked="checked" onClick="return false" />&nbsp;管理用户权限</li>
+        <li><input type="checkbox" value="8" name = "permission" id="p8"  checked="checked" onClick="return false" />&nbsp;二次配单权限</li>  
+        <li><input type="checkbox" value="11" name = "permission" id="p11" checked="checked" onClick="return false"  />&nbsp;打印权限</li> 
+        <li><input type="checkbox" value="13" name = "permission" id="p11" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
+      <%        	  
+         }else if(type == Group.sale){
+        	 listg = maplist.get(2+"");
+        	%>
+        <li><input type="checkbox" value="1" name = "permission" id="p1" checked="checked" onClick="return false" />&nbsp;提交报装单</li>
+        <li><input type="checkbox" value="13" name = "permission" id="p11" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
+        <%
+         }else if(type == Group.send) {
+        	 listg = maplist.get(3+"");
+        	 %>
+       
+        <li><input type="checkbox" value="2" name = "permission" id="p2" checked="checked" onClick="return false"  />&nbsp;送货权限</li>
+      <%
+         }else { %>
+         
+         <li><input type="checkbox" value="1" name = "permission" id="p1" />&nbsp;提交报装单</li>
         <li><input type="checkbox" value="4" name = "permission" id="p4" />&nbsp;管理产品权限</li>
         <li><input type="checkbox" value="3" name = "permission" id="p3" />&nbsp;管理用户权限</li>
         <li><input type="checkbox" value="2" name = "permission" id="p2" />&nbsp;送货权限</li>
@@ -160,9 +208,12 @@ if("permission".equals(action)){
         <li><input type="checkbox" value="9" name = "permission" id="p9" />&nbsp;管理门店权限</li> 
         <li><input type="checkbox" value="10" name = "permission" id="p10" />&nbsp;地区权限</li> 
         <li><input type="checkbox" value="11" name = "permission" id="p11" />&nbsp;打印权限</li> 
-        <li><input type="checkbox" value="12" name = "permission" id="p12" />&nbsp;提交调货单权限</li> 
-        <li><input type="checkbox" value="13" name = "permission" id="p13" />&nbsp;确认调货单权限</li> 
-   </ul> 
+       <li><input type="checkbox" value="12" name = "permission" id="p11" />&nbsp;提交调货单权限</li>  
+        <li><input type="checkbox" value="13" name = "permission" id="p11" />&nbsp;确认调货单权限</li>	 	 
+ 
+         
+     <% }%> 
+     </ul>  
      <div class="main_r_tianjia" /> 
  
    <ul>

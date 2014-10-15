@@ -494,7 +494,11 @@ function getmap(){
   
   </tr> 
       
-  <tr></tr>
+   <tr >
+    <td class="s_list_m">备注</td>
+    <td align="left" class="s_list_m"><%=or.getRemark() %></td>
+    
+  </tr> 
   
   
   <tr></tr>

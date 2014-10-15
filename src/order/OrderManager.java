@@ -1241,6 +1241,8 @@ logger.info(sql);
 					   sql = "select count(*) from mdorder where   ( mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and   id in (select orderid from mdorderupdateprint where   pGroupId= "+user.getUsertype()+"  and statues = 0  and mdtype = 0  ) )  "+search ; 
 				   }else if(Order.returns == statues){    
 					   sql = "select count(*) from mdorder where   ( mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and   id in (select orderid from mdorderupdateprint where   pGroupId= "+user.getUsertype()+"  and statues = 0  and mdtype = 1 ) )  "+search ; 
+				   }else if(Order.huanhuo == statues){    
+					   sql = "select count(*) from mdorder where   ( mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and   id in (select orderid from mdorderupdateprint where   pGroupId= "+user.getUsertype()+"  and statues = 0  and mdtype = 10 ) )  "+search ; 
 				   }else if(Order.release == statues){     
 					   sql = "select count(*) from mdorder where   ( mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and   id in (select orderid from mdorderupdateprint where   pGroupId= "+user.getUsertype()+"  and statues = 0  and mdtype = 2  ) )   "+search; 
 				   }else if(Order.callback == statues){ 

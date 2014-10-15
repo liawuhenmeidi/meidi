@@ -69,6 +69,7 @@ function clear(){
 function resetPassword(){
 	//alert(1);
 	$("#repassword").css("display","block");
+	$("#readme").css("display","none");
 	// $("#dingma_c").css("display","block");
   }
   
@@ -113,17 +114,9 @@ function checkedd(){
     
   <ul class="door">
    <li><%=user.getUsername()%>您已经登陆 </li>
-   
+    <li> </li>
    <%  
      } 
-
-    %>
-    </ul> 
-    </div>
-    <div class="weizhi_head"></div>
-    <div class="s_main_box">
-    <ul class="door"> 
-    <%
      if(UserManager.checkPermissions(user,Group.Manger)){
     	 
      %> 
@@ -132,10 +125,10 @@ function checkedd(){
      }
     %>
     <li><a href="javascript:clear()">退出</a></li>
-
-  
     </ul> 
     </div>
+    <div class="weizhi_head"></div>
+
     <%
     if(message != null && message != "" ){
      %>
@@ -149,6 +142,41 @@ function checkedd(){
      <%
      }
      %>
+      
+     
+ <div id="readme">
+ 
+
+   <table width="100%" class="s_main_table">
+  
+  <tr>
+   <td width="10%"></td>
+    <td width="10%">使用说明</td>
+    <td width="70%"></td>
+  </tr>
+  <tr>
+    <td></td> 
+    <td>1</td>
+    <td>产品管理注册产品</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>2</td> 
+    <td>职位管理注册职位</td>
+  </tr>
+  <tr>
+   <td></td>
+     <td>3</td>
+    <td>手机端员工注册</td>
+    
+    <td> </td>
+  </tr>
+  </table>
+	 <br/>
+
+    </div>
+     
+      
        
     <div id="repassword" style= "display:none;">
 

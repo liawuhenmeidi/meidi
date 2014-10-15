@@ -16,6 +16,7 @@ import category.CategoryManager;
 
 import user.User;
 import user.UserManager;
+import utill.DBUtill;
 import database.DB;
 
 public class GroupManager {
@@ -72,24 +73,25 @@ public class GroupManager {
     }
 	
 		public static boolean save(User user,Group group) throws Exception {
+			
 			if(CategoryManager.getName(group.getName())){
 				return false;
-			} 
-			boolean flag = false ;
-			String[] per = UserManager.getPermission(user);
-			for(int i=0;i<per.length;i++){
-	           if("0".equals(per[i])){
-	        	  flag = true;
-	           }
-			}
+			}  
+			
+			boolean flag = UserManager.checkPermissions(user, Group.Manger);
+			
 			if(flag){
 				Connection conn = DB.getConn();
-				//INSERT INTO mdgroup(id, groupname, detail, statues,permissions,products) VALUES (null,'管理员组','系统最高权限组',1,0,null);
-				String sql = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,pid,ptype) VALUES (null,?,?,?,?,?,?,?)";
+				
+				//List<PreparedStatement> listsql = new ArrayList<PreparedStatement>();
+				
+				String sql1 = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,pid,ptype) VALUES (null,?,?,?,?,?,?,?)";
 
-logger.info(group.getName()+group.getPermissions()+group.getDetail()+group.getStatues()+group.getProducts());
-				PreparedStatement pstmt = DB.prepare(conn, sql);
-				try {
+                logger.info(group.getName()+group.getPermissions()+group.getDetail()+group.getStatues()+group.getProducts());
+				
+                PreparedStatement pstmt = DB.prepare(conn, sql1);
+                
+				try { 
 					pstmt.setString(1, group.getName());
 					pstmt.setString(2, group.getDetail());
 					pstmt.setInt(3, group.getStatues());
@@ -97,8 +99,34 @@ logger.info(group.getName()+group.getPermissions()+group.getDetail()+group.getSt
 					pstmt.setString(5, group.getProducts());
 					pstmt.setInt(6, group.getPid()); 
 					pstmt.setInt(7, group.getPtype());  
-logger.info(pstmt);  
-					pstmt.executeUpdate();
+
+                 // listsql.add(pstmt); 	
+					
+                  if(group.getPtype() == 3){
+                  	String sql2 = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,pid,ptype) VALUES (null,?,?,?,?,?,?,?)";
+                  	PreparedStatement pstmt1 = DB.prepare(conn, sql2); 
+                  	String permissons = "2_";
+                  	int type = 4; 
+                  	pstmt1.setString(1, group.getName());
+					pstmt1.setString(2, group.getDetail());
+					pstmt1.setInt(3, group.getStatues());
+					pstmt1.setString(4, permissons);
+					pstmt1.setString(5, group.getProducts());
+					pstmt1.setInt(7,type);   
+
+					String sql3 = "insert into mdbranch(id,bname,pid,bmessage,relatebranch) values (null, ?,?,?,'')";
+					PreparedStatement pstmt3 = DB.prepare(conn, sql3); 
+					pstmt3.setString(1,group.getName() );
+					pstmt3.setInt(2,1); 
+					pstmt3.setString(3, group.getName());
+ 
+                    DBUtill.PreparedStatement(conn, pstmt, pstmt1, pstmt3);
+                   
+                    
+                  }	else {
+                	  pstmt.executeUpdate();
+                  }
+					
 				GroupManager.getInstance().init();
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -112,6 +140,37 @@ logger.info(pstmt);
         // 获取所有用户组
 		
 		public static Map<String,List<Group>> getLocateMap() {
+			Map<String,List<Group>> map = null;
+			Connection conn = DB.getConn();
+			String sql = "select * from mdgroup ";
+			Statement stmt = DB.getStatement(conn); 
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {   
+				while (rs.next()) { 
+					if(map == null){ 
+						map = new HashMap<String,List<Group>>();
+					}
+					Group g = GroupManager.getGroupFromRs(rs);
+					int id = g.getPtype(); 
+					List<Group> list = map.get(id+""); 
+					if(list == null){   
+						list = new ArrayList<Group>();
+						map.put(id+"", list);
+					}   
+					list.add(g);
+				}    
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			} 
+			return map;
+		}
+		
+		
+		public static Map<String,List<Group>> gettypeMap() {
 			Map<String,List<Group>> map = new HashMap<String,List<Group>>();
 			Connection conn = DB.getConn();
 			String sql = "select * from mdgroup ";
@@ -139,6 +198,7 @@ logger.info(pstmt);
 			} 
 			return map;
 		}
+		
 		
 		public static List<Group> getGroup() {
 			List<Group> users = new ArrayList<Group>();

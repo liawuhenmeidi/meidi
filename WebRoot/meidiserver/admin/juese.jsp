@@ -4,10 +4,20 @@
 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
-String ptype = request.getParameter("ptype"); 
-List<Group> list = GroupManager.getGroup(user,Integer.valueOf(ptype));
+String ptype = request.getParameter("ptype");
 
+String type = request.getParameter("type"); 
+
+String statues = request.getParameter("statues");
+
+
+List<Group> list = GroupManager.getGroup(user,Integer.valueOf(ptype));  
 List<Group> listg = GroupManager.getGroupdown(user, Integer.valueOf(ptype),1);
+ 
+if(list != null && listg != null){
+	 list.addAll(listg); 
+ }
+
 %>   
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -85,20 +95,24 @@ List<Group> listg = GroupManager.getGroupdown(user, Integer.valueOf(ptype),1);
 <div class="main">
 
     <div class="weizhi_head">现在位置:职位管理</div>     
-   <div class="main_r_tianjia">  
-   <ul>  
-     <li><a href="juese_add.jsp?ptype=<%=ptype%>">添加职位</a></li>
-     </ul>
-       
+   <div class="main_r_tianjia">
+     <ul>  
+   <% if(!(type.equals(0+""))) {    
+   %>  
+     <li><a href="Juese_addServlet?ptype=<%=ptype%>&type=<%=type%>">添加职位</a></li>
+     <%
+       }
+     %> 
+      <li><a href="juesetype.jsp">返回</a></li>
+       </ul> 
    </div>
-      
+       
    <div class="table-list">
 <table width="100%" cellspacing="1" id="table">
 	<thead>
 		<tr>  
 			<th align="left" width="20"></th>
-		<!-- <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> -->	
-			<th align="left"></th>
+		<!-- <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> -->
 			<th align="left">角色名称</th>
 			<th align="left">角色描述</th>
 			<th align="left">状态</th>
@@ -112,7 +126,6 @@ List<Group> listg = GroupManager.getGroupdown(user, Integer.valueOf(ptype),1);
     %> 
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
 		<th align="left" width="20"><input type="checkbox" value="" id="check_box" name = "<%=g.getId() %>"></input></th>
-	   <th align="left"></th>
 		<td align="left"><%=g.getName() %></td>
 		<td align="left"><%=g.getDetail() %></td>
 		<%
@@ -128,46 +141,19 @@ List<Group> listg = GroupManager.getGroupdown(user, Integer.valueOf(ptype),1);
 		}
 		%>
 		<td align="left">
-        <a href="authority.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">权限设置</a> | <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">修改</a> 
-        
+		<% if(g.getPtype() == 1) {
+			%>
+	 <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">修改</a>  
+			<%
+		}else {
+		%>
+        <a href="authority.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>&type=<%=type%>">权限设置</a> | <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">修改</a>   
+        <%
+		}
+        %>
         </td>	
-        
     </tr>
     <% }
-    %>
-    
-       <% if(listg != null ){
-     for(int i=0;i<listg.size();i++){
-	   Group g = listg.get(i);
-    %>
-    <tr>
-		<th align="left" width="20"><input type="checkbox" value="" id="check_box" name = "<%=g.getId() %>"></input></th>
-			<th align="left"></th>
-		<td align="left"><%=g.getName() %></td>
-		<td align="left"><%=g.getDetail() %></td>
-		<%
-		if(g.getStatues() == 1){
-	
-		%>
-		<td align="left" class="red">√</td>
-		<%
-		
-		}else {
-			%>
-			
-		<td align="left" class="red">X</td>
-			<% 	
-		}
-		%>
-		<td align="left">
-        <a href="authority.jsp?id=<%=g.getId()%>" target="contentpage">权限设置</a> | <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=g.getId()%>" target="contentpage">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>" target="contentpage">修改</a> 
-        
-        </td>	
-        <td>
-        </td>
-    </tr>
-    <% } 
-       } 
     %>
 </tbody>
 </table>

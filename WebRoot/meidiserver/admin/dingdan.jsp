@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="searchdynamic.jsp"%>      
-<%         
-  
+<%          
+   
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
 
 session.setAttribute("exportList", list);
@@ -347,9 +347,9 @@ function adddetail(src){
 			<td align="center">导购修改申请</td> 
 			<td align="center">导购退货申请</td> 
             <td align="center">导购换货申请</td> 
-		</tr>
+		</tr> 
 	
-  <% 
+  <%  
    if(null != list){
 		for(int i = 0;i<list.size();i++){
 		    	Order o = list.get(i);

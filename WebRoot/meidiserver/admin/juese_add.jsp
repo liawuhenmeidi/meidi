@@ -1,14 +1,22 @@
-<%@ page language="java" import="java.util.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,category.*,order.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <% 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
- 
+String path = request.getContextPath();
+String realPath = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();    
+
 String action = request.getParameter("action");
-String ptype = request.getParameter("ptype"); 
-//System.out.println("ptype"+ptype);
+String ptype = request.getParameter("ptype");   
+String typeStr = request.getParameter("type"); 
+int type = Integer.valueOf(typeStr);
+
+GroupService.flag = true ;
+Map<String,List<Group>> map = GroupService.getPidMap();
 List<Category> list =CategoryManager.getCategory(Category.sale) ;
-List<Group> listg = GroupManager.getGroup();
-System.out.println("jeuse"+action);
+
+List<Group>  listg = null ;
+
+
 if("add".equals(action)){ 
 	String name = request.getParameter("name");
 	String detail = request.getParameter("detail");
@@ -25,6 +33,7 @@ if("add".equals(action)){
     for(int i=0;i<permission.length;i++){
     	permiss += permission[i] + "_";
      }
+   
     productes = productes.substring(0, productes.length()-1);
   
     Group group = new Group();
@@ -37,6 +46,7 @@ if("add".equals(action)){
     group.setPtype(Integer.valueOf(ptype)); 
     GroupManager.save(user, group);  
     response.sendRedirect("juese.jsp?ptype="+ptype);
+    return ;
 }
 
 %>
@@ -124,7 +134,7 @@ $(function () {
  <form action="juese_add.jsp"  method = "post"  onsubmit="return check()">
  <input type="hidden" name="action" value="add"/> 
  <input type="hidden" name="ptype" value="<%=ptype%>"/> 
- 
+  <input type="hidden" name="type" value="<%=type%>"/> 
      <div class="juese_head">角色名称：
             <input type="text"  id="name" name="name" />    
         </div> 
@@ -144,22 +154,65 @@ $(function () {
 <div class="juese_head"></div>
      <div class="juese_head">产品权限</div>
      
-     <ul class="juese_add">
-       <%
-         for(int i=0;i<list.size();i++){
-        	%>
-        
-        <li><input type="checkbox" name = "product"  value="<%=list.get(i).getId() %>"  id="<%=list.get(i).getId() %>" />&nbsp;<%=list.get(i).getName() %></li>
-        	
-       <%  	
-        }
+     <ul class="juese_add"> 
+       <% if(list != null){
+	         for(int i=0;i<list.size();i++){
+	        	%>
+	        <li><input type="checkbox" name = "product"  value="<%=list.get(i).getId() %>"  id="<%=list.get(i).getId() %>" />&nbsp;<%=list.get(i).getName() %></li>
+	      
+	       <%  	
+	        }
+       }
        %>
      </ul>  
      
      <div class="juese_head">功能权限</div>
      <ul class="juese_add">
-        <li><input type="checkbox" value="0" name = "permission" id="p0" />&nbsp;系统最高权限</li>
-        <li><input type="checkbox" value="1" name = "permission" id="p1" />&nbsp;提交报装单</li>
+       <%  
+       
+       
+         if(type == Group.Manger && null != map){
+        	 listg = map.get(1+"");
+        	%>  
+        	 <li><input type="checkbox" value="0" name = "permission" id="p0" onClick="return false" checked="checked" />&nbsp;系统最高权限</li>
+        	<%
+         }else if(type == Group.dealSend && null != map){
+        	 listg = map.get(1+"");
+        	 %>
+	        <li><input type="checkbox" value="4" name = "permission" id="p4" />&nbsp;管理产品权限</li>
+	        <li><input type="checkbox" value="3" name = "permission" id="p3" />&nbsp;管理用户权限</li>
+	        <li><input type="checkbox" value="5" name = "permission" id="p5" checked="checked" onClick="return false" />&nbsp;总配单权限</li> 
+	        <li><input type="checkbox" value="6" name = "permission" id="p6" />&nbsp;管理职位权限</li>
+	        <li><input type="checkbox" value="7" name = "permission" id="p7" />&nbsp;查询门店权限</li>
+	        <li><input type="checkbox" value="9" name = "permission" id="p9" />&nbsp;管理门店权限</li> 
+	        <li><input type="checkbox" value="10" name = "permission" id="p10" />&nbsp;地区权限</li> 
+	        <li><input type="checkbox" value="11" name = "permission" id="p11" />&nbsp;打印权限</li> 
+	       <li><input type="checkbox" value="12" name = "permission" id="p11" />&nbsp;提交调货单权限</li>  
+	        <li><input type="checkbox" value="13" name = "permission" id="p11" />&nbsp;确认调货单权限</li> 
+        	 <%
+         }else if(type == Group.sencondDealsend && null != map){ 
+        	listg = map.get(2+"");
+       %>
+        <li><input type="checkbox" value="3" name = "permission" id="p3" checked="checked" onClick="return false" />&nbsp;管理用户权限</li>
+        <li><input type="checkbox" value="8" name = "permission" id="p8"  checked="checked" onClick="return false" />&nbsp;二次配单权限</li>  
+        <li><input type="checkbox" value="11" name = "permission" id="p11" checked="checked" onClick="return false"  />&nbsp;打印权限</li> 
+        <li><input type="checkbox" value="13" name = "permission" id="p11" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
+      <%        	  
+         }else if(type == Group.sale && null != map){
+        	 listg = map.get(2+"");
+        	%>
+        <li><input type="checkbox" value="1" name = "permission" id="p1" checked="checked" onClick="return false" />&nbsp;提交报装单</li>
+        <li><input type="checkbox" value="13" name = "permission" id="p11" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
+        <%
+         }else if(type == Group.send && null != map) {
+        	 listg = map.get(3+"");
+        	 %>
+       
+        <li><input type="checkbox" value="2" name = "permission" id="p2" checked="checked" onClick="return false"  />&nbsp;送货权限</li>
+      <%
+         }else { %>
+         
+         <li><input type="checkbox" value="1" name = "permission" id="p1" />&nbsp;提交报装单</li>
         <li><input type="checkbox" value="4" name = "permission" id="p4" />&nbsp;管理产品权限</li>
         <li><input type="checkbox" value="3" name = "permission" id="p3" />&nbsp;管理用户权限</li>
         <li><input type="checkbox" value="2" name = "permission" id="p2" />&nbsp;送货权限</li>
@@ -171,7 +224,10 @@ $(function () {
         <li><input type="checkbox" value="10" name = "permission" id="p10" />&nbsp;地区权限</li> 
         <li><input type="checkbox" value="11" name = "permission" id="p11" />&nbsp;打印权限</li> 
        <li><input type="checkbox" value="12" name = "permission" id="p11" />&nbsp;提交调货单权限</li>  
-        <li><input type="checkbox" value="13" name = "permission" id="p11" />&nbsp;确认调货单权限</li>
+        <li><input type="checkbox" value="13" name = "permission" id="p11" />&nbsp;确认调货单权限</li>	 	 
+ 
+         
+     <% }%>
      </ul>  
     
      <div class="juese_head">添加上级管理组
@@ -179,12 +235,16 @@ $(function () {
      
       <ul class="juese_add">
        <%
-        for(int i=0;i<listg.size();i++){
-        	%>
-        
-        <li><input type="radio"  name = "pid"  value="<%=listg.get(i).getId() %>"  id="<%=listg.get(i).getId() %>" />&nbsp;<%=listg.get(i).getName() %></li>
-        	
-       <%  	
+        if(listg != null){
+	        for(int i=0;i<listg.size();i++){
+	        	String str = "";
+	        	if(listg.size() == 1){
+	        		str = "checked=\"checked\"";
+	        	}
+	        	%>
+	        <li><input type="radio"  name = "pid"  value="<%=listg.get(i).getId() %>"  id="<%=listg.get(i).getId() %>" <%=str %>/>&nbsp;<%=listg.get(i).getName() %></li>  	
+	       <%  	
+	        }
         }
        %>
      </ul>  
@@ -192,7 +252,7 @@ $(function () {
     
     
     
-   <ul>
+     <ul class="juese_add" >
      <li><input type="submit" value="提  交" /></li>
      </ul>
  </form>  

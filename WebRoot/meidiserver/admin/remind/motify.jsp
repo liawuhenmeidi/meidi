@@ -1,95 +1,6 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-
+<%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ include file="../searchdynamic.jsp"%> 
 <%    
-request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
-int count = 0 ; 
- 
-String pageNum = request.getParameter("page");
-String numb = request.getParameter("numb");  
-String sort = request.getParameter("sort");
-
-//String sear = (String)session.getAttribute("sear");
-//if(StringUtill.isNull(sear)){ 
-//	sear = ""; 
-//}  
-String sear = "";
-if(!StringUtill.isNull(sort)){
-	session.setAttribute("sort", sort);
-}else {
-	sort = "id desc"; 
-} 
-
-if(!StringUtill.isNull(numb)){
-	session.setAttribute("numb", numb);
-}else {
-	numb = "100";
-}
-
-
-if(StringUtill.isNull(pageNum)){
-	pageNum = "1"; 
-} 
-
-
-int Page = Integer.valueOf(pageNum);
-
-int num = Integer.valueOf(numb);
-
-if(Page <=0){
-	Page =1 ;
-}
-
-String searched = request.getParameter("searched");
-if("searched".equals(searched)){
-	
-	String[] search = request.getParameterValues("search");
-	if(search != null){ 
-		for(int i = 0 ;i<search.length;i++){
-			String str = search[i];
-			
-			boolean fflag = false ;  
-			if("saledate".equals(str) || "andate".equals(str)){
-				String start = request.getParameter(str+"start");
-				String end = request.getParameter(str+"end");
-				boolean flag = false ; 
-				if(start != null && start != "" && start != "null"){
-					sear += " and " + str + "  BETWEEN '" + start + "'  and  ";
-				    flag = true ;
-				}   
-				if(end != null && end != "" && end != "null"){
-					sear += " '" + end + "'";
-				}else if(flag){ 
-					sear += "now()";
-				}      
-			}else if("categoryname".equals(str) || "sendtype".equals(str) || "saletype".equals(str)){
-				String strr = request.getParameter(str); 
-				if(strr != "" && strr != null){   
-					sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')"; 
-				}  // giftName
-			}else if("giftName".equals(str) || "statues".equals(str)){ 
-				String strr = request.getParameter(str);  
-				if(strr != "" && strr != null){    
-					sear += " and id in (select orderid  from mdordergift where " + str + " like '%" + strr +"%')"; 
-				}  // giftName
-			}else if("dealSendid".equals(str) || "saleID".equals(str) || "sendId".equals(str)){
-				String strr = request.getParameter(str);
-				if(strr != "" && strr != null){ 
-				  sear += " and " + str + " in (select id from mduser  where username like '%" + strr +"%')"; 
-				}
-			}else {     
-				String strr = request.getParameter(str);
-				if(strr != "" && strr != null){
-				  sear += " and " + str + " like '%" + strr +"%'"; 
-				}  
-			}
-		} 	
-	}else { 
-		sear = "";
-	} 
-	
-	//session.setAttribute("sear", sear); 
-}    
 
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.motify ,0,0,"id",sear); 
 count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.motify ,0,0,"id",sear);  
@@ -101,9 +12,6 @@ List<User> listS = UserManager.getUsers(user ,Group.sencondDealsend);
   
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
  
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
-int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
 
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 //修改申请
@@ -390,167 +298,84 @@ function changes(str1,str2,str3,str4,str5,str6,type){
 		%>
 		
 		</td>
-		     <% 
-		    // String pcategory = "";
-		     String scategory = "";
-		    // String ptype = "";
-		     String stype = "";
-		     //String pcountt = "";
-		     String scountt = "";
-		     List<OrderProduct> lists = OrPMap.get(o.getId());
-		     if(lists != null ){
-			     for(int g = 0 ;g<lists.size();g++){
-			    	 OrderProduct op = lists.get(g);
-			    	 if(op.getStatues() == 1 ){
-			    		// pcategory =  categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-				         //pcountt += op.getCount() +"</p>";
-				         //ptype += op.getSaleType()==null ||op.getSaleType() == "null" ? "":op.getSaleType() +"</p>";
-			    	 }else {
-			    		 scategory += categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-				         scountt += op.getCount() +"</p>";
-				         stype += op.getSendType()==null ||op.getSendType() == "null" ? "":op.getSendType() +"</p>"; 
-			    	 }  
-			     }
-		     }
-		     %> 
-		 
-		 
-		  <td align="center"><%=scategory%></td> 
-		  <td align="center"><%=stype%></td>  
-		  <td align="center"><%=scountt%></td> 
-		<% 
-		     String gstatues = "";
-		     String gtype = "";
-		     String gcountt = ""; 
-		     
-		     List<Gift> glists = gMap.get(o.getId());
-		     
-		     if(null != glists){
+		     <td align="center"><%= o.getCategory(0,"</p>")%></td>  
+		 <td align="center" ><%=o.getSendType(0,"</p>")%></td>     
+		 <td align="center" ><%= o.getSendCount(0,"</p>")%></td>
 		
-		     for(int g = 0 ;g<glists.size();g++){
-		    	 
-		    	 Gift op = glists.get(g);
-		    	 if(null !=op ){
-		    		 gtype += op.getName()+"</p>";
-			         gcountt += op.getCount()+"</p>";
-			         String statues = "";
-			         if(0==op.getStatues()){
-			        	 statues = "需配送";
-			         }else {
-			        	 statues = "已自提";
-			         }
-			         gstatues += statues +"</p>";
-		    	 }
-		     }
-		     }
-		     %> 
-		 <td align="center"><%=gtype%></td>
-		 <td align="center"><%=gcountt%></td>
-		 <td align="center"><%=gstatues%></td> 
+		<td align="center" ><%= o.getGifttype("</p>")%></td>  
+		<td align="center" ><%= o.getGifcount("</p>")%></td>  
+		<td align="center" ><%= o.getGifStatues("</p>")%></td>
+		  
+		
 		<td align="center"><%=o.getSaleTime() %></td>
 		<td align="center"><%=o.getOdate() %></td>
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>
 		<td align="center">
-		<%
-		// 0 表示未送货  1 表示正在送  2 送货成功
-		 if(0 == o.getDeliveryStatues()){
-		%>
-		 未发货
-		<%
-          }else if(1 == o.getDeliveryStatues()){
-
-		%>
-		已送货
-		<%
-          }else if(2 == o.getDeliveryStatues()){
-		%>
-	      已安装
-		<%
-          }else if(3 == o.getDeliveryStatues()){
-		%>
-		
-		 已退货
-		<%
-          }
-		%>
+				<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
 		</td>
-		
-		
-		
-		
+
         <td align="center"> 
 		    <%=o.getRemark() %>
 		</td>
-
+         
+         <%
+         OrderPrintln op = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.modify, o.getId()) ;
+         int totalshifang = -1 ; 
+	     OrderPrintln orp = null ; 
+         int modify = OrderPrintlnManager.getstatues(opmap, OrderPrintln.modify, o.getId()) ;
+         int releasemodfy	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasemodfy, o.getId());
+         int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId());
+		    int salereleasesonghuo = OrderPrintlnManager.getstatues(opmap, OrderPrintln.salereleasesonghuo, o.getId());
+		    int release	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.release, o.getId());
+		    int salereleaseanzhuang	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.salereleaseanzhuang, o.getId());
+         
+         if(release != -1){    
+		    	totalshifang = release ;
+		    	orp = opmap.get(OrderPrintln.release).get(o.getId()); 
+		    } 
+		    if(salereleasesonghuo != -1){
+		    	totalshifang = salereleasesonghuo ;
+		    	orp = opmap.get(OrderPrintln.salereleasesonghuo).get(o.getId()); 
+		    }
+		    if(salereleaseanzhuang != -1){
+		    	totalshifang = salereleaseanzhuang ;
+		    	orp = opmap.get(OrderPrintln.salereleaseanzhuang).get(o.getId()); 
+		    }
+         
+         %>
 			<td align="center"> 
-		<%
-		
-		int shifangstatues = -1 ;
-		if(opmap.get(OrderPrintln.release) != null){
-		OrderPrintln orp = opmap.get(OrderPrintln.release).get(o.getId()); 
-		
-		 if(orp != null){
-			 shifangstatues = orp.getStatues();
-		 } 
-		}
-		
-		
-		
-		 if(opmap.get(OrderPrintln.modify) != null){
-		OrderPrintln op = opmap.get(OrderPrintln.modify).get(o.getId());
-		
-		 if(op != null){  
-			
-			 if(op.getStatues() == 2){ 
-			     	
-		    	 %> 
-		    	
-		    	   <p>导购修改中</p>  
-		    	   
-		    	 <%
-		    	 
-		    	  }else if(op.getStatues() == 4){  
-				     	
+				<%
+					 if(modify == 2){ 
 				    	 %> 
-				    	 
-				    	   <p>修改申请已拒绝</p>
+				    	   <p>导购修改中</p>  
 				    	   
 				    	 <%
-				    	 
-				    	  }else {
-				    		  int statues = -1 ; 		  
-							    if(opmap.get(OrderPrintln.releasemodfy) != null){
-									OrderPrintln oppp = opmap.get(OrderPrintln.releasemodfy).get(o.getId());
-									if(oppp != null ){
-										statues = oppp.getStatues() ;
-									} 
-							    }
-			 %>
-		  
-		 <%=op.getMessage() %>  
-		 <% if(statues == 0 || shifangstatues == 0){
-			 
-		  %> 
-		   安装公司处理中 
-		 <%}else if(statues == 2 || shifangstatues == 2){  
-		 %>
-		 <input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=statues %>','','<%=OrderPrintln.releasemodfy %>')"  value="同意"/>
-	     
-		<%}else if(statues == -1){ %> 
-		<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=statues %>','','<%=OrderPrintln.releasemodfy %>')"  value="同意"/>
-		<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=statues %>','','<%=OrderPrintln.releasemodfy %>')"  value="不同意"/>
-		<% }%>
-		 
-		</td>
-		<%
-		     
-				    	  
-				    	} 
-		 } 
-		 }
-		%>
-		
+				    	  }else if(modify == 4){ 
+						    	 %> 
+						    	   <p>修改申请已拒绝</p>
+						    	 <% 	 
+						  }else if(modify != -1){	  
+					 %>
+				   
+				 <%=op == null ? "":op.getMessage() %>  
+				 <% if(releasemodfy == 0 || totalshifang== 0 || totalshifang == 4){
+					 
+				  %> 
+				   安装公司处理中 
+				 <%}else if(releasemodfy == 2 || totalshifang == 2){  
+				 %>
+				 <input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.modify %>')"  value="同意"/>
+			      
+				<%}else if(releasemodfy == -1){ %> 
+				<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.releasemodfy %>')"  value="同意"/>
+				<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.releasemodfy %>')"  value="不同意"/>
+				<% }%>
+				 
+				</td>
+				<%
+				 } 
+				%>
     </tr>
 
     <% 

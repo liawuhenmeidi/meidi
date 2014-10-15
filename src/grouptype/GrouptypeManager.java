@@ -15,8 +15,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import branchtype.BranchType;
-
 import user.User;
 import user.UserManager;
 import database.DB;
@@ -79,10 +77,11 @@ public class GrouptypeManager {
 	
 	public static boolean  save(String  c){
 		Connection conn = DB.getConn();
-		String sql = "insert into mdgrouptype(id,gname) values (null, ?)";
+		String sql = "insert into mdgrouptype(id,gname,statues) values (null, ?,?)";
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		try { 
 			pstmt.setString(1, c);
+			pstmt.setInt(2, 0);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -163,10 +162,11 @@ logger.info(sql);
 	
 	private static Grouptype getGroupFromRs(ResultSet rs){
 		Grouptype g = new Grouptype();
-		try {    
+		try {     
 			g.setId(rs.getInt("id")); 
 			g.setName(rs.getString("gname"));
-			 
+			g.setStatues(rs.getInt("statues"));
+			g.setType(rs.getInt("type"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	 

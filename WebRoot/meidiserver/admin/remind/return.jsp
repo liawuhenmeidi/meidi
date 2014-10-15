@@ -1,95 +1,7 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-
+<%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ include file="../searchdynamic.jsp"%> 
 <%    
-request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
-int count = 0 ; 
- 
-String pageNum = request.getParameter("page");
-String numb = request.getParameter("numb");  
-String sort = request.getParameter("sort");
 
-//String sear = (String)session.getAttribute("sear");
-//if(StringUtill.isNull(sear)){ 
-//	sear = ""; 
-//}  
-String sear = "";
-if(!StringUtill.isNull(sort)){
-	session.setAttribute("sort", sort);
-}else {
-	sort = "id desc"; 
-} 
-
-if(!StringUtill.isNull(numb)){
-	session.setAttribute("numb", numb);
-}else {
-	numb = "100";
-}
-
-
-if(StringUtill.isNull(pageNum)){
-	pageNum = "1"; 
-} 
-
-
-int Page = Integer.valueOf(pageNum);
-
-int num = Integer.valueOf(numb);
-
-if(Page <=0){
-	Page =1 ;
-}
-
-String searched = request.getParameter("searched");
-if("searched".equals(searched)){
-	
-	String[] search = request.getParameterValues("search");
-	if(search != null){ 
-		for(int i = 0 ;i<search.length;i++){
-			String str = search[i];
-			
-			boolean fflag = false ;  
-			if("saledate".equals(str) || "andate".equals(str)){
-				String start = request.getParameter(str+"start");
-				String end = request.getParameter(str+"end");
-				boolean flag = false ; 
-				if(start != null && start != "" && start != "null"){
-					sear += " and " + str + "  BETWEEN '" + start + "'  and  ";
-				    flag = true ;
-				}   
-				if(end != null && end != "" && end != "null"){
-					sear += " '" + end + "'";
-				}else if(flag){ 
-					sear += "now()";
-				}      
-			}else if("categoryname".equals(str) || "sendtype".equals(str) || "saletype".equals(str)){
-				String strr = request.getParameter(str); 
-				if(strr != "" && strr != null){   
-					sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')"; 
-				}  // giftName
-			}else if("giftName".equals(str) || "statues".equals(str)){ 
-				String strr = request.getParameter(str);  
-				if(strr != "" && strr != null){    
-					sear += " and id in (select orderid  from mdordergift where " + str + " like '%" + strr +"%')"; 
-				}  // giftName
-			}else if("dealSendid".equals(str) || "saleID".equals(str) || "sendId".equals(str)){
-				String strr = request.getParameter(str);
-				if(strr != "" && strr != null){ 
-				  sear += " and " + str + " in (select id from mduser  where username like '%" + strr +"%')"; 
-				}
-			}else {     
-				String strr = request.getParameter(str);
-				if(strr != "" && strr != null){
-				  sear += " and " + str + " like '%" + strr +"%'"; 
-				}  
-			}
-		} 	
-	}else { 
-		sear = "";
-	} 
-	
-	//session.setAttribute("sear", sear); 
-}    
 
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.returns ,0,0,"id",sear); 
 count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.returns,0,0,"id",sear);      
@@ -103,15 +15,10 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
  
 Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
-int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
+
 
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
-//修改申请
-//Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,OrderPrintln.modify);
-// 退货申请
-//Map<Integer,OrderPrintln> opMap1 = OrderPrintlnManager.getOrderStatues(user,OrderPrintln.returns); 
-  
-//Map<Integer,OrderPrintln> opMap2 = OrderPrintlnManager.getOrderStatues(user,OrderPrintln.release);
+
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -389,63 +296,14 @@ function changes(str1,str2,str3,str4,str5,str6,type){
 		%>
 		
 		</td>   
-		     <% 
-		    // String pcategory = "";
-		     String scategory = "";
-		    // String ptype = "";
-		     String stype = "";
-		     //String pcountt = "";
-		     String scountt = "";
-		     List<OrderProduct> lists = OrPMap.get(o.getId());
-		     if(lists != null ){
-			     for(int g = 0 ;g<lists.size();g++){
-			    	 OrderProduct op = lists.get(g);
-			    	 if(op.getStatues() == 1 ){
-			    		// pcategory =  categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-				         //pcountt += op.getCount() +"</p>";
-				         //ptype += op.getSaleType()==null ||op.getSaleType() == "null" ? "":op.getSaleType() +"</p>";
-			    	 }else {
-			    		 scategory += categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"</p>";
-				         scountt += op.getCount() +"</p>";
-				         stype += op.getSendType()==null ||op.getSendType() == "null" ? "":op.getSendType() +"</p>"; 
-			    	 }  
-			     }
-		     }
-		     %> 
-		 
-		 
-		  <td align="center"><%=scategory%></td> 
-		  <td align="center"><%=stype%></td>  
-		  <td align="center"><%=scountt%></td> 
-		<% 
-		     String gstatues = "";
-		     String gtype = "";
-		     String gcountt = ""; 
-		     
-		     List<Gift> glists = gMap.get(o.getId());
-		     
-		     if(null != glists){
+		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
+		 <td align="center" ><%=o.getSendType(0,"</p>")%></td>     
+		 <td align="center" ><%= o.getSendCount(0,"</p>")%></td>
 		
-		     for(int g = 0 ;g<glists.size();g++){
-		    	 
-		    	 Gift op = glists.get(g);
-		    	 if(null !=op ){
-		    		 gtype += op.getName()+"</p>";
-			         gcountt += op.getCount()+"</p>";
-			         String statues = "";
-			         if(0==op.getStatues()){
-			        	 statues = "需配送";
-			         }else {
-			        	 statues = "已自提";
-			         }
-			         gstatues += statues +"</p>";
-		    	 }
-		     }
-		     }
-		     %> 
-		 <td align="center"><%=gtype%></td>
-		 <td align="center"><%=gcountt%></td>
-		 <td align="center"><%=gstatues%></td> 
+		<td align="center" ><%= o.getGifttype("</p>")%></td>  
+		<td align="center" ><%= o.getGifcount("</p>")%></td>  
+		<td align="center" ><%= o.getGifStatues("</p>")%></td> 
+		   
 		<td align="center"><%=o.getSaleTime() %></td>
 		<td align="center"><%=o.getOdate() %></td>
 		<td align="center"><%=o.getLocate()%></td>

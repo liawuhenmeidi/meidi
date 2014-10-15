@@ -41,7 +41,7 @@ function changes(id,statues){
   </jsp:include>
  <div class="main_r_tianjia">  
    <ul>   
-     <li><a href="juese.jsp?ptype=<%=ptype%>">返回上级</a></li>
+     <li> <a href="javascript:history.go(-1);">返回</a></li>
      </ul>
    </div> 
 <!--   头部结束   -->
@@ -81,15 +81,13 @@ function changes(id,statues){
 		<td align="left"><%=i+1 %></td>
 		<td align="left"><%=u.getUsername() %></td>
 		<td align="left"><%=map.get(u.getUsertype()).getName() %></td>
-	<!--	<td align="left"><%=u.getPositions() %></td>   -->
 		<td align="left"><%=BranchService.getMap().get(Integer.valueOf(u.getBranch())).getLocateName() %></td>
 		<td align="left"><%=u.getEntryTime() %></td>       
-		<!--  <td align="left">
-			<a href="huiyuanUpdate.jsp?id=<%=u.getId() %>">[修改]</a>
-		</td>
-		--> 
 		<td align="left">
 		 <%
+		   if(!UserManager.checkPermissions(user, Group.Manger)){
+			   
+		 
 		   if(0 == u.getStatues()){
 		 %>
 		 否
@@ -102,7 +100,8 @@ function changes(id,statues){
 		 <input type="button" onclick="changes('<%=u.getId()%>',0)"  value="关闭"/>
 		  <input type="button" onclick="changes('<%=u.getId()%>',2)"  value="删除"/>
 		 <%
-	   }
+	      }  
+		}
 		 %>
 		 
 		 </td> 

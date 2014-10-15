@@ -33,7 +33,8 @@ $(document).ready(function () {
     	           $("#motyfy").html(json.mcount); 
     	           $("#release").html(json.rcount); 
     	           $("#neworder").html(json.ncount);
-    	           $("#returns").html(json.recount);  
+    	           $("#returns").html(json.recount); 
+    	           $("#huanhuo").html(json.hcount); 
     	           },  
     	         error: function (XMLHttpRequest, textStatus, errorThrown) {
     	            } 
@@ -89,6 +90,11 @@ $(document).ready(function () {
   <a href="javascript:void(0);" onclick="serach('returns')" style="font-size:15px;">导购退货申请</a> 
   &nbsp;&nbsp;&nbsp;&nbsp;   
   <span style="color:red;font-size:20px;" id="returns"></span>
+   </td>
+    <td>
+  <a href="javascript:void(0);" onclick="serach('huanhuo')" style="font-size:15px;">导购换货申请</a> 
+  &nbsp;&nbsp;&nbsp;&nbsp;   
+  <span style="color:red;font-size:20px;" id="huanhuo"></span>
    </td>
   </tr>
   </table> 

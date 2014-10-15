@@ -3,7 +3,6 @@
 <% 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
- 
 List<Grouptype> list = GrouptypeManager.getGroup(user);
 
 %>  
@@ -94,7 +93,6 @@ List<Grouptype> list = GrouptypeManager.getGroup(user);
 		<!-- <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> -->	
 			<th align="left">编号</th>
 			<th align="left">角色类别</th>
-			
 			<th align="left">成员管理</th>
 			<th align="left">修改</th>
 			<th align="left">删除</th>
@@ -105,23 +103,23 @@ List<Grouptype> list = GrouptypeManager.getGroup(user);
    <% if(list != null){
       for(int i=0;i<list.size();i++){
 	   Grouptype g = list.get(i); 
+
     %>  
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)"> 
-	   <td align="left"><%=i+1 %></td>
-		<td align="left"><%=g.getName() %></td>
-		<% if(g.getId() == 1) {%>
-		  <td align="left"></td>
-		  <td align="left"></td>
+	      <td align="left"><%=i+1 %></td>
+		  <td align="left"><%=g.getName() %></td> 
+		   <td align="left"><a href="juese.jsp?ptype=<%=g.getId()%>&type=<%=g.getType()%>&statues=<%=g.getStatues()%>">成员管理</a></td>
+		<% if(g.getStatues() == 1) {%>
+		   <td align="left"></td>
 		  	<td align="left"></td>
         <% }else {
-        	
          %>
        
-        <td align="left"><a href="juese.jsp?ptype=<%=g.getId()%>">成员管理</a></td>
-		<td align="left"><a href="grouptypeupdate.jsp?id=<%=g.getId()%>">[修改]</a></td>
-		<td align="left">  
-         <a href="javascript:void(0);" onclick="winconfirm('<%=g.getId()%>')">[删除]</a>   
-        </td>
+          
+		   <td align="left"><a href="grouptypeupdate.jsp?id=<%=g.getId()%>">[修改]</a></td>
+		   <td align="left">  
+           <a href="javascript:void(0);" onclick="winconfirm('<%=g.getId()%>')">[删除]</a>   
+           </td> 
         <% }%>	
         
     </tr>  

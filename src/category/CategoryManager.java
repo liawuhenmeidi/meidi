@@ -123,13 +123,16 @@ logger.info(category.getName());
 		}
 		// 获取在售的产品
 		public static List<Category> getCategory(int statues) {
-			List<Category> categorys = new ArrayList<Category>();
+			List<Category> categorys = null;
 			Connection conn = DB.getConn(); 
 			String sql = "select * from mdcategory where cstatues = "+ statues;
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {
 				while (rs.next()) {
+					if(categorys == null){
+						categorys = new ArrayList<Category>();
+					}
 					Category u = CategoryManager.getCategoryFromRs(rs);
 					categorys.add(u);
 				}
@@ -140,7 +143,6 @@ logger.info(category.getName());
 				DB.close(stmt);
 				DB.close(conn);
 			}
-			logger.info(categorys.size());
 			return categorys;
 		}
 		

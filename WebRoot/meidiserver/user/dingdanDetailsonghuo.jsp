@@ -411,11 +411,12 @@ function change(str1,str2,type){
      
     </td>
  
-  <tr></tr>
-  <tr></tr>
-  <tr>
-
-  </tr>
+   <tr >
+    <td class="s_list_m">备注</td>
+    <td align="left" class="s_list_m"><%=or.getRemark() %></td>
+    
+  </tr> 
+  
 </table>
 
   <br>

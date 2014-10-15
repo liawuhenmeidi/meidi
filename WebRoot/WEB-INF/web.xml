@@ -63,6 +63,18 @@
  </servlet>
  
   <servlet>  
+	        <servlet-name>Juese_addServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.Juese_addServlet  
+	        </servlet-class>  
+   </servlet>  
+	    <servlet-mapping>   
+	        <servlet-name>Juese_addServlet</servlet-name>  
+	        <url-pattern>/meidiserver/admin/Juese_addServlet</url-pattern>  
+	    </servlet-mapping> 
+	     
+	    
+	    <servlet>  
 	        <servlet-name>OrderServlet</servlet-name>  
 	        <servlet-class>  
 	            servlet.OrderServlet  
@@ -71,7 +83,8 @@
 	    <servlet-mapping>   
 	        <servlet-name>OrderServlet</servlet-name>  
 	        <url-pattern>/meidiserver/user/OrderServlet</url-pattern>  
-	    </servlet-mapping> 
+	    </servlet-mapping>
+	    
 	    
 	<servlet>  
 	        <servlet-name>InventoryServlet</servlet-name>  

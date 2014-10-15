@@ -8,9 +8,9 @@ public class DB {
 			Class.forName("com.mysql.jdbc.Driver");            
 			//conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/meidi?user=root&password=liaowuhen&characterEncoding=utf-8");
 			//conn = DriverManager.getConnection("jdbc:mysql://voip022.gotoftp3.com/voip022?user=voip022&password=808080&characterEncoding=utf-8");
-		    conn = DriverManager.getConnection("jdbc:mysql://liaowuhentest.gotoftp5.com/liaowuhentest?user=liaowuhentest&password=liaowuhen&characterEncoding=utf-8");
+		   conn = DriverManager.getConnection("jdbc:mysql://liaowuhentest.gotoftp5.com/liaowuhentest?user=liaowuhentest&password=liaowuhen&characterEncoding=utf-8");
 			//conn = DriverManager.getConnection("jdbc:mysql://liaowuhendg.gotoftp1.com/liaowuhendg?user=liaowuhendg&password=eWp2046Mdaq76&characterEncoding=utf-8");
-		    //conn = DriverManager.getConnection("jdbc:mysql://liaowuhen.gotoftp3.com/liaowuhen?user=liaowuhen&password=liaowuhen&characterEncoding=utf-8");   //   聚美
+		   // conn = DriverManager.getConnection("jdbc:mysql://liaowuhen.gotoftp3.com/liaowuhen?user=liaowuhen&password=liaowuhen&characterEncoding=utf-8");   //   聚美
 		} catch (ClassNotFoundException e) {   
 			e.printStackTrace();          
 		} catch (SQLException e) {       
@@ -24,7 +24,7 @@ public class DB {
 		PreparedStatement pstmt = null; 
 		try {
 			if(conn != null) {
-				pstmt = conn.prepareStatement(sql);
+				pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
