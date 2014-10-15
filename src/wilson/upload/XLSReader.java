@@ -22,13 +22,16 @@ public class XLSReader {
 		String filepath = path.replace("\\", "/");
 		List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
 		UploadOrder uo = new UploadOrder();
+		int i = 0;
 		try{
 			File srcFile = new File(filepath,fileName); 
 			Workbook wb = Workbook.getWorkbook(srcFile);
 			Sheet sheet0 = wb.getSheet(0);
 			
 			String name = sheet0.getCell(1,0).getContents();
-			for(int i = 2 ; i < sheet0.getRows(); i ++){
+			
+			
+			for(i = 2 ; i < sheet0.getRows(); i ++){
 				if(sheet0.getCell(0,i).getContents().equals("")){
 					continue;
 				}
@@ -38,9 +41,9 @@ public class XLSReader {
 				uo.setSaleTime(sheet0.getCell(2,i).getContents());
 				uo.setDealTime(sheet0.getCell(3,i).getContents());
 				uo.setType(sheet0.getCell(4,i).getContents());
-				uo.setNum(Integer.parseInt(sheet0.getCell(5,i).getContents()));
-				uo.setSalePrice(Double.parseDouble(sheet0.getCell(6,i).getContents()));
-				uo.setBackPoint(Double.parseDouble(sheet0.getCell(7,i).getContents()));
+				uo.setNum(Integer.parseInt(sheet0.getCell(5,i).getContents().replace(",", "")));
+				uo.setSalePrice(Double.parseDouble(sheet0.getCell(6,i).getContents().replace(",", "")));
+				uo.setBackPoint(Double.parseDouble(sheet0.getCell(7,i).getContents().replace(",", "")));
 				uo.setFileName(srcFile.getName());
 				UploadOrders.add(uo);
 				uo = new UploadOrder();
@@ -48,7 +51,12 @@ public class XLSReader {
 	        wb.close();
 		}catch (Exception e){
 			e.printStackTrace();
-			return null;
+			UploadOrders = new ArrayList<UploadOrder>();
+			uo = new UploadOrder();
+			uo.setId(-1);
+			uo.setName("第"+ (i+1) + "行附近有问题，请检查");
+			UploadOrders.add(uo);
+			return UploadOrders;
 		}
 		return UploadOrders;
 	}

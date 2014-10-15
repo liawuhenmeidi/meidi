@@ -7,7 +7,7 @@
 	
 	String fileName = request.getParameter("fileName");
 	String confirm = request.getParameter("confirm");
-	String filePath = new ExcelUpload().getSalaryFilePath();
+	String filePath = ExcelUpload.getSalaryFilePath();
 	List <UploadSalaryModel> salaryModelList = new ArrayList<UploadSalaryModel>();
 
 	
@@ -135,7 +135,7 @@ td {
 			
 		%>
 		<tr>
-			<td colspan="5" style="color:red"><h3><%=salaryModelList.get(0).getContent() %></h3></td>
+			<td colspan="4" style="color:red"><h3><%=salaryModelList.get(0).getContent() %></h3></td>
 		</tr>
 		<%
 		return;

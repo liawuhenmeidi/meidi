@@ -188,69 +188,7 @@ public class SalaryCalcManager {
 		return flag ;  
 	}
 
-	public static List<SalaryResult> getSalaryResultByDate(Date startDate,
-			Date endDate) {
-		List<SalaryResult> result = new ArrayList<SalaryResult>();
-		Map<Integer,UploadOrder> orderMap = new HashMap<Integer,UploadOrder>();
-		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		
-		String sql = "select * from uploadorder where checked = 2";
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStatement(conn); 
-		ResultSet rs = DB.getResultSet(stmt, sql);
-		UploadOrder tempOrder = new UploadOrder();
-		SalaryResult tempResult = new SalaryResult();
-		try {
-			while(rs.next()){
-				tempOrder.setId(rs.getInt("id"));
-				tempOrder.setName(rs.getString("name"));
-				tempOrder.setSaleManName(rs.getString("salesman"));
-				tempOrder.setShop(rs.getString("shop"));
-				tempOrder.setPosNo(rs.getString("posno"));
-				tempOrder.setSaleTime(rs.getString("saletime"));
-				tempOrder.setDealTime(rs.getString("dealtime"));
-				tempOrder.setType(rs.getString("type"));
-				tempOrder.setNum(rs.getInt("num"));
-				tempOrder.setSalePrice(rs.getDouble("saleprice"));
-				tempOrder.setBackPoint(rs.getDouble("backpoint"));
-				tempOrder.setFileName(rs.getString("filename"));
-				tempOrder.setChecked(rs.getInt("checked"));
-				tempOrder.setCheckedTime(rs.getString("checkedtime"));
-				tempOrder.setCheckOrderId(rs.getInt("checkorderid"));
-				orderMap.put(tempOrder.getId(), tempOrder);
-				tempOrder = new UploadOrder();
-			}
-			
-			sql = "select * from salaryresult where calctime >= '" + fmt.format(startDate)  + "' and calctime <= '" + fmt.format(endDate) + "' and status = 0";
-			logger.info(sql);
-			stmt = DB.getStatement(conn); 
-			rs = DB.getResultSet(stmt, sql);
-			while(rs.next()){
-				tempResult.setId(rs.getInt("id"));
-				tempResult.setUploadOrderId(rs.getInt("uploadorderid"));
-				tempResult.setUploadSalaryModelid(rs.getInt("uploadsalarymodelid"));
-				tempResult.setCalcTime(rs.getString("calctime"));
-				tempResult.setSalary(rs.getDouble("salary"));
-				tempResult.setStatus(rs.getInt("status"));
-				if(orderMap.containsKey(tempResult.getUploadOrderId())){
-					tempResult.setUploadOrder(orderMap.get(tempResult.getUploadOrderId()));
-					result.add(tempResult);
-				}else{
-					
-				}
-				
-				tempResult = new SalaryResult();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return result;
-	}
+	
 	
 	public static List<SalaryResult> getSalaryResult() {
 		List<SalaryResult> result = new ArrayList<SalaryResult>();
@@ -373,11 +311,75 @@ public class SalaryCalcManager {
 					tempResult = tempSalaryResultMap.get(tempOrder.getId());
 					
 				}else{
-					tempResult.setSalary(0.0);
+					tempResult.setSalary(null);
 				}
 				tempResult.setUploadOrder(tempOrder);
 				result.add(tempResult);
 
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return result;
+	}
+	
+	public static List<SalaryResult> getSalaryResultByDate(Date startDate,
+			Date endDate) {
+		List<SalaryResult> result = new ArrayList<SalaryResult>();
+		Map<Integer,UploadOrder> orderMap = new HashMap<Integer,UploadOrder>();
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		String sql = "select * from uploadorder where checked = 2 or checked = -1";
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadOrder tempOrder = new UploadOrder();
+		SalaryResult tempResult = new SalaryResult();
+		try {
+			while(rs.next()){
+				tempOrder.setId(rs.getInt("id"));
+				tempOrder.setName(rs.getString("name"));
+				tempOrder.setSaleManName(rs.getString("salesman"));
+				tempOrder.setShop(rs.getString("shop"));
+				tempOrder.setPosNo(rs.getString("posno"));
+				tempOrder.setSaleTime(rs.getString("saletime"));
+				tempOrder.setDealTime(rs.getString("dealtime"));
+				tempOrder.setType(rs.getString("type"));
+				tempOrder.setNum(rs.getInt("num"));
+				tempOrder.setSalePrice(rs.getDouble("saleprice"));
+				tempOrder.setBackPoint(rs.getDouble("backpoint"));
+				tempOrder.setFileName(rs.getString("filename"));
+				tempOrder.setChecked(rs.getInt("checked"));
+				tempOrder.setCheckedTime(rs.getString("checkedtime"));
+				tempOrder.setCheckOrderId(rs.getInt("checkorderid"));
+				orderMap.put(tempOrder.getId(), tempOrder);
+				tempOrder = new UploadOrder();
+			}
+			
+			sql = "select * from salaryresult where calctime >= '" + fmt.format(startDate)  + "' and calctime <= '" + fmt.format(endDate) + "' and status = 0";
+			logger.info(sql);
+			stmt = DB.getStatement(conn); 
+			rs = DB.getResultSet(stmt, sql);
+			while(rs.next()){
+				tempResult.setId(rs.getInt("id"));
+				tempResult.setUploadOrderId(rs.getInt("uploadorderid"));
+				tempResult.setUploadSalaryModelid(rs.getInt("uploadsalarymodelid"));
+				tempResult.setCalcTime(rs.getString("calctime"));
+				tempResult.setSalary(rs.getDouble("salary"));
+				tempResult.setStatus(rs.getInt("status"));
+				if(orderMap.containsKey(tempResult.getUploadOrderId())){
+					tempResult.setUploadOrder(orderMap.get(tempResult.getUploadOrderId()));
+					result.add(tempResult);
+				}else{
+					
+				}
+				
+				tempResult = new SalaryResult();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

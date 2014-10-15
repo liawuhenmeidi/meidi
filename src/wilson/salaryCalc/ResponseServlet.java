@@ -84,13 +84,14 @@ public class ResponseServlet extends HttpServlet {
         WritableCellFormat wcf = new WritableCellFormat();
         wcf.setBackground(red);
         
-        Label label0  =   new  Label( 0 ,  0 ,  " 门店 " );
-        Label label1  =   new  Label( 1 ,  0 ,  " 导购员姓名 " );
-        Label label2  =   new  Label( 2 ,  0 ,  " 销售日期 " );
-        Label label3  =   new  Label( 3 ,  0 ,  " 销售型号  " );
-        Label label4  =   new  Label( 4 ,  0 ,  " 数量  " );
-        Label label5  =   new  Label( 5 ,  0 ,  " 单价 " );
-        Label label6  =   new  Label( 6 ,  0 ,  " 提成 " );
+        Label label0  =   new  Label( 0 ,  0 ,  " 名称 " );
+        Label label1  =   new  Label( 1 ,  0 ,  " 门店 " );
+        Label label2  =   new  Label( 2 ,  0 ,  " 导购员姓名 " );
+        Label label3  =   new  Label( 3 ,  0 ,  " 销售日期 " );
+        Label label4  =   new  Label( 4 ,  0 ,  " 销售型号  " );
+        Label label5  =   new  Label( 5 ,  0 ,  " 数量  " );
+        Label label6  =   new  Label( 6 ,  0 ,  " 单价 " );
+        Label label7  =   new  Label( 7 ,  0 ,  " 提成 " );
 
         //  将定义好的单元格添加到工作表中 
         sheet.addCell(label0);
@@ -100,23 +101,28 @@ public class ResponseServlet extends HttpServlet {
         sheet.addCell(label4);
         sheet.addCell(label5);
         sheet.addCell(label6);
+        sheet.addCell(label7);
 		
         
         
         Double tempSum = 0.0;
         
         for(int i = 0 ; i < lists.size() ; i ++ ){
-        	label0 = new Label(0,i+1,lists.get(i).getUploadOrder().getShop());
-        	label1 = new Label(1,i+1,lists.get(i).getUploadOrder().getSaleManName());
-        	label2 = new Label(2,i+1,lists.get(i).getUploadOrder().getSaleTime());
-        	label3 = new Label(3,i+1,lists.get(i).getUploadOrder().getType());
-        	label4 = new Label(4,i+1,String.valueOf(lists.get(i).getUploadOrder().getNum()));
-        	label5 = new Label(5,i+1,String.valueOf(lists.get(i).getUploadOrder().getSalePrice()));
-        	label6 = new Label(6,i+1,String.valueOf(lists.get(i).getSalary()));
-        	if(lists.get(i).getSalary() == 0.0){
-        		label6.setCellFormat(wcf);
+        	label0 = new Label(0,i+1,lists.get(i).getUploadOrder().getName());
+        	label1 = new Label(1,i+1,lists.get(i).getUploadOrder().getShop());
+        	label2 = new Label(2,i+1,lists.get(i).getUploadOrder().getSaleManName());
+        	label3 = new Label(3,i+1,lists.get(i).getUploadOrder().getSaleTime());
+        	label4 = new Label(4,i+1,lists.get(i).getUploadOrder().getType());
+        	label5 = new Label(5,i+1,String.valueOf(lists.get(i).getUploadOrder().getNum()));
+        	label6 = new Label(6,i+1,String.valueOf(lists.get(i).getUploadOrder().getSalePrice()));
+        	label7 = new Label(7,i+1,String.valueOf(lists.get(i).getSalary()));
+        	if(lists.get(i).getSalary() == null){
+        		label7 = new Label(7,i+1,"");
+        	}else{
+        		tempSum += lists.get(i).getSalary();
         	}
-        	tempSum += lists.get(i).getSalary();
+        	
+        	
         	
         	sheet.addCell(label0);
             sheet.addCell(label1);
@@ -125,16 +131,17 @@ public class ResponseServlet extends HttpServlet {
             sheet.addCell(label4);	
             sheet.addCell(label5);	
             sheet.addCell(label6);	
+            sheet.addCell(label7);	
             
             if((i+1) < lists.size() && !lists.get(i+1).getUploadOrder().getShop().equals(lists.get(i).getUploadOrder().getShop())){
-        		label0 = new Label(7,i+1,"总计");
-        		label1 = new Label(8,i+1,String.valueOf(tempSum));
+        		label0 = new Label(8,i+1,"总计");
+        		label1 = new Label(9,i+1,String.valueOf(tempSum));
         		sheet.addCell(label0);
                 sheet.addCell(label1);
                 tempSum = 0.0;
         	}else if((i+1) == lists.size()){
-        		label0 = new Label(7,i+1,"总计");
-        		label1 = new Label(8,i+1,String.valueOf(tempSum));
+        		label0 = new Label(8,i+1,"总计");
+        		label1 = new Label(9,i+1,String.valueOf(tempSum));
         		sheet.addCell(label0);
                 sheet.addCell(label1);
                 tempSum = 0.0;

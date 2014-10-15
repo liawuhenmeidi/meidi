@@ -73,7 +73,7 @@
 
 <table>
 <tr>
-<td align="left">
+<td align="left" valign="top">
 	<table  cellspacing="1" border="2px" >
 			<tr>
 				<form method="post" action="">
@@ -125,7 +125,7 @@
 	</table>
 </td>
 <td width="100px"></td>
-<td align="right">
+<td valign="top">
 	<table cellspacing="1" border="2px">
 			<tr>
 				

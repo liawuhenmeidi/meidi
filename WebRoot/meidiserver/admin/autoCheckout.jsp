@@ -13,15 +13,29 @@
 	}
 	
 	MatchOrder mo = new MatchOrder();
-	if(!mo.startMatch()){
-		return;
+	List<AfterMatchOrder> afterMatchOrders = new ArrayList<AfterMatchOrder>();
+	List <Order> unCheckedDBOrders = new ArrayList<Order>();
+	List <UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
+	
+	boolean showContent = false;
+	String startButton = request.getParameter("start");
+	
+	List<UploadOrder> uploadOrders = UploadManager.getUnCheckedUploadOrders();
+	List<String> orderNames = UploadManager.getAllUploadOrderNames(uploadOrders);
+	
+	if(startButton != null && startButton.equals("对比")){
+		showContent = true;
+		if(!mo.startMatch()){
+			return;
+		}
+		//去自动匹配好的Order
+		afterMatchOrders = mo.getMatchedOrders();
+		//从数据库中取到需要匹配的Order
+		unCheckedDBOrders = mo.getUnMatchedDBOrders();
+		//从上传列表取得需要匹配的Order
+		unCheckedUploadOrders = mo.getUnMatchedUploadOrders();
 	}
-	//去自动匹配好的Order
-	List<AfterMatchOrder> afterMatchOrders = mo.getMatchedOrders();
-	//从数据库中取到需要匹配的Order
-	List <Order> unCheckedDBOrders = mo.getUnMatchedDBOrders();
-	//从上传列表取得需要匹配的Order
-	List <UploadOrder> unCheckedUploadOrders = mo.getUnMatchedUploadOrders();
+	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -50,13 +64,29 @@
 <jsp:param name="dmsn" value="" />
 </jsp:include>
 
-
+<form action="" method="post">
 <table  cellspacing="1" border="2px">
-		<form action="" method="post">
+		
+
 		<tr>
 			<td colspan="6" align="center"><h3>本地记录的订单</h3></td>
-			<td align="center"></td> 
-			<td colspan="6" align="center"><h3>苏宁返回的订单</h3></td>
+			<td align="center"><h3><input type="submit" name="start" value="对比" /></h3></td> 
+			<td colspan="6" align="center">
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<h3>上传的订单</h3>
+			<select name="uploadorder">
+				<option value="all" selected="selected">全部</option>
+				<%
+				for(int i = 0 ; i < orderNames.size() ; i ++){
+				%>
+				<option value="<%=orderNames.get(i) %>" ><%=orderNames.get(i) %></option>
+				<%
+				}
+				%>
+			</select>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="submit" value="显示"/>
+			</td>
 		</tr>
 
 		<tr>  
@@ -105,7 +135,7 @@
 			if(afterMatchOrders.get(i).getCompareLevel() < 5.0){
 		%>
 		<tr>
-			<td align="center"><input name="auto"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>,<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
+			<td align="center"><input name="auto"  checked="checked" type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>,<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
 			<td align="center"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
 			<td align="center"><%= afterMatchOrders.get(i).getDBSidePosNo() %></td>
 			<td align="center"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
@@ -178,12 +208,19 @@
 				}
 			}
 		%>
+		<%
+		if(showContent){
+		%>
+		
 		<tr>
 			<td colspan="12" align="center"><input type="submit" value="提交"/></td>
 		</tr>
-		</form>
+		<%
+		}
+		%>
+		
 </table> 
-
+</form>
 
 </body>
 </html>

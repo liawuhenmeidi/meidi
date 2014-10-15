@@ -131,34 +131,54 @@ public class UploadManager {
 	}
 	
 	public static boolean checkOrder(String[] idString){
+		//接受{"1,2","2,3"}类型的ID输入,前一个是DB的Order，后一个是upload的Order哦~
+		if(idString == null || idString.length <1){
+			return false;
+		}
+		
 		int DBOrderID = 0;
 		int UploadOrderID = 0;
 		boolean flag = false;
 		Connection conn = DB.getConn();
+		
+		List<String> uploadIds = new ArrayList<String>();
+		List<String> dbIds = new ArrayList<String>();
+		
+		String dbIdString = "";
+		
+		for(int i = 0 ; i < idString.length ; i++){
+			dbIds.add(idString[i].split(",")[0]);
+			uploadIds.add(idString[i].split(",")[1]);
+			dbIdString+=idString[i].split(",")[0] + ",";
+		}
+		dbIdString = dbIdString.substring(0,dbIdString.length()-1);
+		
+		
 		String sql = "update uploadorder set checked = ? ,checkedtime = ?,checkorderid=? where id = ?";
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		try {
+			
+			logger.info("自动匹配开始");
 			boolean autocommit = conn.getAutoCommit();
 			conn.setAutoCommit(false);  // 事务开始  
 			for(int i = 0 ; i < idString.length ; i ++){
-				DBOrderID = Integer.parseInt(idString[i].split(",")[0]);
-				UploadOrderID = Integer.parseInt(idString[i].split(",")[1]);
+				DBOrderID = Integer.parseInt(dbIds.get(i));
+				UploadOrderID = Integer.parseInt(uploadIds.get(i));
 				pstmt.setInt(1,0);
 				pstmt.setString(2, fmt.format(new Date()));
 				pstmt.setInt(3,DBOrderID);
 				pstmt.setInt(4, UploadOrderID);
 				pstmt.executeUpdate();
-				System.out.println(sql);
-				if(OrderManager.updateStatues("orderCharge",Order.query, String.valueOf(DBOrderID)) != 1){
-					throw new SQLException();
-				}
+			}
+			if(OrderManager.updateStatues("orderCharge",Order.query, dbIdString) != 1){
+				throw new SQLException();
 			}
 			conn.commit();
 			conn.setAutoCommit(autocommit);
 			flag = true ;
-			
+			logger.info("自动匹配结束");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			try {

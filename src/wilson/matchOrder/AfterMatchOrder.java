@@ -229,35 +229,37 @@ public class AfterMatchOrder {
 			this.setUploadSidePosNo(HighLighter(tempUpLoad));
 		}else{
 		//模糊对比posNo
-			int start = 0;
-			int end = 0 ;
-			String startPoint = "";
-			String endPoint = "";
-			boolean combo = false;
-			for(int i = 0 ; i < tempUpLoad.length(); i ++ ){
-				if(tempDB.charAt(i) == tempUpLoad.charAt(i)){
-					if(combo == false){
-						start = i;
-					}
-					combo=true;
-				}else{
-					if(combo == true){
-						end = i;
-						startPoint += "," + start;
-						endPoint += "," + end;
-					}
-					combo=false;
-				}
-				if(i == tempUpLoad.length()-1){
-					if(combo == true){
-						end = tempUpLoad.length();
-						startPoint += "," + start;
-						endPoint += "," + end ;	
-					}
-				}
-			}
-			this.setDBSidePosNo(HighLighter(tempDB,startPoint,endPoint));
-			this.setUploadSidePosNo(HighLighter(tempUpLoad,startPoint,endPoint));
+			
+//			int start = 0;
+//			int end = 0 ;
+//			String startPoint = "";
+//			String endPoint = "";
+//			boolean combo = false;
+//			for(int i = 0 ; i < tempUpLoad.length(); i ++ ){
+//				if(tempDB.charAt(i) == tempUpLoad.charAt(i)){
+//					if(combo == false){
+//						start = i;
+//					}
+//					combo=true;
+//				}else{
+//					if(combo == true){
+//						end = i;
+//						startPoint += "," + start;
+//						endPoint += "," + end;
+//					}
+//					combo=false;
+//				}
+//				if(i == tempUpLoad.length()-1){
+//					if(combo == true){
+//						end = tempUpLoad.length();
+//						startPoint += "," + start;
+//						endPoint += "," + end ;	
+//					}
+//				}
+//			}
+//		
+//			this.setDBSidePosNo(HighLighter(tempDB,startPoint,endPoint));
+//			this.setUploadSidePosNo(HighLighter(tempUpLoad,startPoint,endPoint));
 			
 		}
 		
@@ -288,7 +290,7 @@ public class AfterMatchOrder {
 		//对比票面数量
 		tempDB = String.valueOf(this.getUploadOrder().getNum());
 		tempUpLoad = String.valueOf(this.getDBOrder().getSendCount());
-		if(tempDB.equals(tempUpLoad)){
+		if(tempDB.replace("|", "").equals(tempUpLoad.replace("|", ""))){
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setDBSideCount(HighLighter(tempDB));
 			this.setUploadSideCount(HighLighter(tempUpLoad));

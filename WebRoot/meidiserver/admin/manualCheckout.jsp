@@ -64,7 +64,7 @@
 		<tr>
 			<td colspan="6" align="center"><h3>本地记录的订单</h3></td>
 			<td align="center"></td> 
-			<td colspan="6" align="center"><h3>苏宁返回的订单</h3></td>
+			<td colspan="6" align="center"><h3>上传的订单</h3></td>
 		</tr>
 
 		<tr>  

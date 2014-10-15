@@ -7,7 +7,7 @@
 	
 	String fileName = request.getParameter("fileName");
 	String confirm = request.getParameter("confirm");
-	String filePath = new ExcelUpload().getSuningFilePath();
+	String filePath = ExcelUpload.getSuningFilePath();
 	List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
 	
 	boolean showContent =false;
@@ -123,6 +123,7 @@ td {
 		<tr>  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			
+			<td align="center">序号</td>
 			<td align="center">销售门店</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
@@ -133,6 +134,21 @@ td {
 			<td align="center">扣点</td> 
 		
 		</tr> 
+		
+		<%
+		if(UploadOrders.size() == 1 && UploadOrders.get(0).getId() == -1){
+			
+		%>
+		<tr>
+			<td colspan="8" style="color:red"><h3><%=UploadOrders.get(0).getName() %></h3></td>
+		</tr>
+		<%
+		return;
+		}
+		%>
+		
+		
+		
 		<%
 		if(showContent){
 			for(int i = 0 ; i< UploadOrders.size();i++){
@@ -141,6 +157,7 @@ td {
 		<tr>  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			
+			<td align="center"><%= i+1 %></td>
 			<td align="center"><%= UploadOrders.get(i).getShop() %></td>
 			<td align="center"><%= UploadOrders.get(i).getPosNo() %></td>
 			<td align="center"><%= UploadOrders.get(i).getSaleTime() %></td>
@@ -158,7 +175,7 @@ td {
 		<input type="hidden" name="fileName" value="<%=fileName %>"/>
 		<input type="hidden" name="confirm" value="confirm"/>
 		<tr>
-			<td colspan="8" align="center" ><input name="submit" type="submit" value="确认"/></td>
+			<td colspan="9" align="center" ><input name="submit" type="submit" value="确认"/></td>
 		</tr>
 		</form>
 		<%
