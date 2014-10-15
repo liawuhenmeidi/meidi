@@ -1,6 +1,8 @@
 package utill;
 
 import javax.servlet.http.HttpServletRequest;
+
+import branch.BranchManager;
  
 public class HttpRequestUtill {
 	// 获取搜索条件查询
@@ -45,7 +47,10 @@ public class HttpRequestUtill {
     				if(strr != "" && strr != null){ 
     				  sear += " and " + str + " in (select id from mduser  where username like '%" + strr +"%')"; 
     				}
-    			}else {     
+    			}else if("orderbranch".equals(str)){
+    				String strr = request.getParameter(str);
+    				sear += " and " + str + " in (select id from mdbranch where bname like '%" + strr +"%')";  
+    			}else{      
     				String strr = request.getParameter(str);
     				if(strr != "" && strr != null){
     				  sear += " and " + str + " like '%" + strr +"%'"; 

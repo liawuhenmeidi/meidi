@@ -70,14 +70,17 @@ function add(){
 	         data:"method=inventoryall&branch="+branch,
 	         dataType: "",   
 	         success: function (data) { 
-	        	 var addstr = '<tr class="asc" > '+
-	        	     
-	        	     ' <td>产品类别</td>'+
-	        	     ' <td>产品型号</td> '+
-	        	     ' <td>账面库存数量</td>'+
-	        	     ' <td>实际库存数量</td> ' +
-	        	     ' <td>盘点</td> ' + 
-	        	    ' </tr>';
+	        	 var addstr = "" ; 
+	     addstr +=   "<thead>"+
+	     		"<tr>"+
+		     		"<th align=\"left\">产品类别</th>"+
+		     		"<th align=\"left\">产品型号</th>"+
+		     		"<th align=\"left\">账面库存数量</th>"+
+		     		"<th align=\"left\">实际库存数量</th>"+
+		     		"<th align=\"left\">盘点</th>"+ 
+	     		"</tr>"+
+	     "</thead> "; 
+
 	        	 var json =  $.parseJSON(data);
 	        	
 	        	 for(var i=0;i<json.length;i++){
@@ -111,7 +114,7 @@ function add(){
 
 <div class="s_main">
 
-    
+     
  <!--       -->   
    <div class="weizhi_head">现在位置：单据管理
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -151,15 +154,11 @@ function add(){
     %>
    </div>  
    <div class="table-list">
-
 <div class="btn">
 <table width="100%"  cellspacing="1" id="table">
 
 </table>
-
-
 </div>
-
 
 </div>
 </div>

@@ -11,7 +11,7 @@ public class DB {
 		   conn = DriverManager.getConnection("jdbc:mysql://liaowuhentest.gotoftp5.com/liaowuhentest?user=liaowuhentest&password=liaowuhen&characterEncoding=utf-8");
 			//conn = DriverManager.getConnection("jdbc:mysql://liaowuhendg.gotoftp1.com/liaowuhendg?user=liaowuhendg&password=eWp2046Mdaq76&characterEncoding=utf-8");
 		   // conn = DriverManager.getConnection("jdbc:mysql://liaowuhen.gotoftp3.com/liaowuhen?user=liaowuhen&password=liaowuhen&characterEncoding=utf-8");   //   聚美
-		} catch (ClassNotFoundException e) {   
+		} catch (ClassNotFoundException e) {    
 			e.printStackTrace();          
 		} catch (SQLException e) {       
 			e.printStackTrace();    

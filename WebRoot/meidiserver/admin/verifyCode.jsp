@@ -27,10 +27,7 @@
 	if(confirm){
 		userName = request.getParameter("userName");
 		password = request.getParameter("password");
-		//userName = "1005949101"; 
-		//password = "26556199sn"; 
-		userName = "1007944401"; 
-		password = "060541"; 
+
 		saleOrderNo = request.getParameter("saleOrderNo");	
 		msg = "正在尝试中，请15分钟后在苏宁系统中刷新";
 
@@ -63,8 +60,10 @@
 		}
 		
 		
-		userName = "1007944401"; 
-		password = "060541"; 
+		userName = "1005949101"; 
+		password = "26556199sn"; 
+		//userName = "1007944401"; 
+		//password = "060541"; 
 		
 		saleOrderNo = request.getParameter("saleOrderNo");	
 		

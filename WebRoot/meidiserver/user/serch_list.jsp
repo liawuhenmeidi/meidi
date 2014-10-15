@@ -45,10 +45,26 @@ function search(type){
 <jsp:include flush="true" page="../head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>
+ <table> 
+     <tr> 
+          <td><span class="qiangdan"><a href="chaxun_sale.jsp">我要查询</a></span></td>
+          <td><span class="qiangdan"><a href="order.jsp">我要报装</a></span></td>
+          <td><span class="qiangdan"><a href="welcom.jsp">返回</a></span></td>
+          <td><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span></td>
+     </tr>
+    
+  </table>  
+  <table style="color:;font-size:12px;">
+     <tr> 
+          <td><span  id="<%=Order.serach%>" onclick="search('<%=Order.serach%>')">待派送安装</span>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+          <td><span  id="<%=Order.orderDispatching%>" onclick="search('<%=Order.orderDispatching%>')">已派送</span>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+          <td><span  id="<%=Order.over%>" onclick="search('<%=Order.over%>')">已安装</span>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+          <td><span  id="<%=Order.returns%>" onclick="search('<%=Order.returns%>')">退货</span></td>
+     </tr>
   
+  
+  </table>
 <!--  头 单种类  -->
-<div class="s_main_tit"><span class="qiangdan"><a href="chaxun_sale.jsp">我要查询</a></span><span class="qiangdan"><a href="order.jsp">我要报装</a></span><span class="qiangdan"><a href="welcom.jsp">返回</a></span><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span></div>
-<div class="s_main_tit"><span style="cursor:hand" id="<%=Order.serach%>" onclick="search('<%=Order.serach%>')">待派送安装</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.orderDispatching%>" onclick="search('<%=Order.orderDispatching%>')">已派送</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.over%>" onclick="search('<%=Order.over%>')">已安装</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.returns%>" onclick="search('<%=Order.returns%>')">退货</span></div>
  
 <!--  订单详情  -->
 <div class="s_main_box">
