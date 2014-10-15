@@ -213,6 +213,27 @@
 	  	<servlet-name>ExcelUpload</servlet-name>
 	  	<url-pattern>/meidiserver/ExcelUpload</url-pattern>
 	  </servlet-mapping>
+	  
+	  <servlet>
+	  	<servlet-name>DownloadServlet</servlet-name>
+	  	<servlet-class>wilson.download.DownloadServlet</servlet-class>
+	  	<init-param>
+	  		<param-name>suningmubanPath</param-name>
+	  		<param-value>data/model/suningmuban.xls</param-value>
+	  	</init-param>
+	  	<init-param>
+	  		<param-name>tichengmubanPath</param-name>
+	  		<param-value>data/model/tichengmuban.xls</param-value>
+	  	</init-param>
+	  	<init-param>
+	  		<param-name>xiaoshoudanmubanPath</param-name>
+	  		<param-value>data/model/xiaoshoudanmuban.xls</param-value>
+	  	</init-param>
+	  </servlet>
+	  <servlet-mapping>
+	  	<servlet-name>DownloadServlet</servlet-name>
+	  	<url-pattern>/meidiserver/modelDownload</url-pattern>
+	  </servlet-mapping>
 	          
 	      <servlet>  
 	        <servlet-name>ModelServlet</servlet-name>  

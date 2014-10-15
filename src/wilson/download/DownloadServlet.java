@@ -3,7 +3,9 @@ package wilson.download;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,34 +21,47 @@ public class DownloadServlet extends HttpServlet{
 	private static String tichengmubanPath = "";
 	private static String xiaoshoudanmubanPath = "";
 	
+	private ServletConfig config = null;
+	private ServletContext sc;
 
+	
+
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		this.config = config;
+		sc = config.getServletContext();
+		suningmubanPath = config.getInitParameter("suningmubanPath");
+		tichengmubanPath = config.getInitParameter("tichengmubanPath");
+		xiaoshoudanmubanPath = config.getInitParameter("xiaoshoudanmubanPath");
+	}
+	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
         // TODO Auto-generated method stub
 		 
-		String type = request.getParameter("type");
+		String name = request.getParameter("name");
 		
 		String filename = "";
 		String filePath = "";
-		if(type != null && !type.equals("")){
-			if(type.equals("suningmuban")){
-				filename = "";
-				filePath = "";
-			}else if(type.equals("tichengmuban")){
-				filename = "";
-				filePath = "";
-			}else if (type.equals("xiaoshoudanmuban")){
-				filename = "";
-				filePath = "";
+		if(name != null && !name.equals("")){
+			if(name.equals("suningmuban")){
+				filename = "系统对比模板.xls";
+				filePath = suningmubanPath;
+			}else if(name.equals("tichengmuban")){
+				filename = "提成标准模板.xls";
+				filePath = tichengmubanPath;
+			}else if (name.equals("xiaoshoudanmuban")){
+				filename = "销售单模板.xls";
+				filePath = xiaoshoudanmubanPath;
 			}
 		}else{
 			return;
 		}
 		
+		filename = URLEncoder.encode(filename,"UTF-8");
 		response.setHeader("content-type", "application/xls");
-		response.addHeader("content-disposition", "attachment;filename=" + filename);
-		ServletContext ctx = this.getServletContext();
-		InputStream is = ctx.getResourceAsStream(filePath);
+		response.addHeader("content-disposition", "attachment;filename="+filename);
+		InputStream is = sc.getResourceAsStream(filePath);
 		   
 	    int read = 0;
 	    byte[] bytes = new byte[1024];
