@@ -340,8 +340,8 @@ function orderPrint(id,statues,type,deliveryStatues){
 			 
 			 <td align="center">安装人员</td>
 			 <td align="center">安装时间</td>
-			<td align="center">安装单位</td>
-			<td align="center">送货是否已结款</td>
+			<td align="center">安装网点</td>
+			<td align="center">安装网点结款</td>
 			<td align="center">厂送票是否已回</td>
 			
 			<td align="center">厂送票是否已消</td>
@@ -350,7 +350,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 			
 			<td align="center">打印</td> 
 			<td align="center">调账打印</td> 
-			<td align="center">安装单位驳回</td> 
+			<td align="center">安装网点驳回</td> 
 			<td align="center">导购修改申请</td> 
 			<td align="center">导购退货申请</td>   
 		</tr>

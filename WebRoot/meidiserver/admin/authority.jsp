@@ -179,7 +179,7 @@ if("permission".equals(action)){
         	listg = maplist.get(2+"");
        %>
         <li><input type="checkbox" value="3" name = "permission" id="p3" checked="checked" onClick="return false" />&nbsp;管理用户权限</li>
-        <li><input type="checkbox" value="8" name = "permission" id="p8"  checked="checked" onClick="return false" />&nbsp;二次配单权限</li>  
+        <li><input type="checkbox" value="8" name = "permission" id="p8"  checked="checked" onClick="return false" />&nbsp;网点派单权限</li>  
         <li><input type="checkbox" value="11" name = "permission" id="p11" checked="checked" onClick="return false"  />&nbsp;打印权限</li> 
         <li><input type="checkbox" value="13" name = "permission" id="p11" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
       <%        	  
@@ -204,7 +204,7 @@ if("permission".equals(action)){
         <li><input type="checkbox" value="5" name = "permission" id="p5" />&nbsp;总配单权限</li> 
         <li><input type="checkbox" value="6" name = "permission" id="p6" />&nbsp;管理职位权限</li>
         <li><input type="checkbox" value="7" name = "permission" id="p7" />&nbsp;查询门店权限</li>
-        <li><input type="checkbox" value="8" name = "permission" id="p8" />&nbsp;二次配单权限</li> 
+        <li><input type="checkbox" value="8" name = "permission" id="p8" />&nbsp;网点派单权限</li> 
         <li><input type="checkbox" value="9" name = "permission" id="p9" />&nbsp;管理门店权限</li> 
         <li><input type="checkbox" value="10" name = "permission" id="p10" />&nbsp;地区权限</li> 
         <li><input type="checkbox" value="11" name = "permission" id="p11" />&nbsp;打印权限</li> 

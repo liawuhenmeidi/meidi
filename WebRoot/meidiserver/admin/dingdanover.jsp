@@ -228,7 +228,7 @@ function adddetail(src){
             
 			
 			
-			<td align="center">安装单位</td>
+			<td align="center">安装网点</td>
 			<td align="center">送货人员</td>
 			<td align="center">送货时间</td>
 			<td align="center">备注</td>

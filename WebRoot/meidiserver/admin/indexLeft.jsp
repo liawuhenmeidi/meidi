@@ -52,7 +52,7 @@ User user = (User)session.getAttribute("user");
               <p ><a href="dingdan.jsp" target="contentpage">文员派工页</a></p> 
             <!--    <p ><a href="dingdanpeidan.jsp" target="contentpage">文员打印页</a></p> -->  
               <p ><a href="dingdanprintln.jsp" target="contentpage">查看订单页</a></p>
-               <p ><a href="dingdanover.jsp" target="contentpage">安装单位结款页</a></p>  
+               <p ><a href="dingdanover.jsp" target="contentpage">安装网点结款页</a></p>  
                <p ><a href="dingdancallback.jsp"  target="contentpage">客服未回访页</a></p>
               <p ><a href="dingdanTuihuo.jsp" target="contentpage">退货订单</a></p>               
              <!-- <p ><a href="./verifyCode.jsp" target="contentpage">强制消单页</a></p>  --> 
@@ -62,9 +62,9 @@ User user = (User)session.getAttribute("user");
           <li >
             <h4 >厂送单管理</h4>
             <div class="list-item none">
-               <p ><a href="dingdanCome.jsp" target="contentpage">确认厂送票已回</a></p>
-               <p ><a href="dingdango.jsp" target="contentpage">确认厂送票已消</a></p>
-               <p ><a href="dingdanCharge.jsp" target="contentpage">确认厂送票已结款</a></p>
+               <p ><a href="dingdanCome.jsp" target="contentpage">厂送票未回</a></p>
+               <p ><a href="dingdango.jsp" target="contentpage">厂送票未消</a></p>
+               <p ><a href="dingdanCharge.jsp" target="contentpage">厂送票未结款</a></p>
                <p ><a href="excelUpload.jsp" target="contentpage">Excel上传页</a></p>
                <p ><a href="dataDelete.jsp" target="contentpage">上传文件删除页</a></p>
               <p ><a href="autoCheckout.jsp" target="contentpage">自动结款页</a></p>

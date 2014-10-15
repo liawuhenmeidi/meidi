@@ -6,6 +6,8 @@ User user = (User)session.getAttribute("user");
 String pid = request.getParameter("pid");
 String id = request.getParameter("id"); 
  
+HashMap<String,List<User>> map = UserService.getMapBranchid();
+
 Branch branchold = null;
 String branchoidname = "";
 String message = null;
@@ -21,6 +23,8 @@ if(!StringUtill.isNull(id)){
 	//	permission = message.split("_");
 	//}
 } 
+
+
 
 //String json = StringUtill.GetJson(permission);
 
@@ -148,7 +152,25 @@ function changes(){
    </div>
         
      <div> 
+      <table width="100%"  cellspacing="1" id="table" >
+      <%  if(null != map){
+    	      List<User> list = map.get(id);
+    	      if(null != list){
+    	    	  for(int i=0;i<list.size();i++){
+    	    		  User u = list.get(i);
+    	    		  %>
+    	    		  <tr class="asc">
+    	    		      <td><%=u.getUsername() %></td>
+    	    		      <td><%=u.getPhone() %></td>
+    	    		  </tr>
+    	    		  <%
+    	    	  }
+    	      }
+    	   
+      } %>
       
+      
+      </table>
      <form action="branch1add.jsp"  method = "post"  onsubmit="return checkedd()">
       <input type="hidden" name="action" value="add"/>
       <input type="hidden" name="pid" value="<%=pid%>"/> 

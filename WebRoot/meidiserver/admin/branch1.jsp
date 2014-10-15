@@ -9,7 +9,7 @@ BranchType branch = BranchTypeManager.getLocate(Integer.valueOf(id));
 
 List<Branch> list =BranchManager.getLocate(id) ;
 
-HashMap<String,List<User>> map = UserManager.getMapBranch(); 
+HashMap<String,List<User>> map = UserService.getMapBranchid(); 
 // System.out.println("list.size()"+list.size());
 %>
   
@@ -51,6 +51,10 @@ function winconfirm(){
 	            } 
 	           });
 	 }
+}
+
+function update(id){
+	 window.location.href="branch1add.jsp?pid=<%=id%>&id="+id;
 }
 
 function changes(bid,statues){
@@ -126,12 +130,14 @@ if(list != null){
   for(int i =0 ;i<list.size();i++){
 	  Branch category = list.get(i) ;
 	  //category.getId()
-%>    
-    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">  
+	
+	  int count =map.get(category.getId()+"")==null?0:map.get(category.getId()+"").size();
+%>     
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)" ondblclick="update('<%= category.getId()%>')" >  
 		<td align="left"><input type="checkbox" value="1" name="<%=category.getId() %>"></input></td> 
 		<td align="left"><%=i+1 %></td>   
  		<td align="left"><%=category.getLocateName() %></td> 
- 		<td align="left"><%=map.get(category.getId()+"")==null?0:map.get(category.getId()+"").size()%></td>
+ 		<td align="left"><%=count%></td>
 		<td align="left">  
 		        <%  
 		           String message = category.getMessage(); 

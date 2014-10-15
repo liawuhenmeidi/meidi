@@ -343,7 +343,7 @@ function adddetail(src){
 			 
 			<td align="center">配单</td>
 			<td align="center">查看位置</td> 
-			<td align="center">安装单位驳回</td> 
+			<td align="center">安装网点驳回</td> 
 			<td align="center">导购修改申请</td> 
 			<td align="center">导购退货申请</td> 
             <td align="center">导购换货申请</td> 

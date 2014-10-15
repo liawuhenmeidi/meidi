@@ -5,7 +5,7 @@ User user = (User)session.getAttribute("user");
     
 List<BranchType> list =BranchTypeManager.getLocate() ;
 
-System.out.println("list.size()"+list.size());
+//System.out.println("list.size()"+list.size());
 %>
   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -52,7 +52,13 @@ function winconfirm(){
 	 }
 }
 
-function update(bid,statues){
+
+function branch(id){ 
+	 window.location.href="branch1.jsp?id="+id;
+}
+
+
+function update(bid,statues){  
 	$.ajax({ 
         type: "post", 
          url: "server.jsp",
@@ -134,7 +140,7 @@ if(list != null){
   for(int i =0 ;i<list.size();i++){
 	  BranchType category = list.get(i) ;
 %>   
-    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)"> 
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)" ondblclick="branch('<%= category.getId()%>')"> 
         
 	    <td align="left">
 	    	<% if(category.getId() != 1){%>
