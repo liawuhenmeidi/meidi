@@ -5,14 +5,13 @@
 	User user = (User)session.getAttribute("user");
 	
 	String fileName = request.getParameter("fileName");
-	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>苏宁消单明细上传页面</title>
-  
+
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <style type="text/css">
 .fixedHead { 
