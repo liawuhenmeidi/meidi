@@ -46,6 +46,26 @@ import user.User;
 			return categorys;
 		}
 		
+		 public static List<String> getProduct(int id) {
+				List<String> categorys = new ArrayList<String>();
+				Connection conn = DB.getConn();
+				String sql = "select * from mdproduct where categoryID = "+ id + " and pstatues = 0";
+				Statement stmt = DB.getStatement(conn);
+				ResultSet rs = DB.getResultSet(stmt, sql);
+				try {
+					while (rs.next()) {
+						categorys.add(rs.getString("ptype"));
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally {
+					DB.close(rs);
+					DB.close(stmt);
+					DB.close(conn);
+				}
+				return categorys;
+			}
+		 
 		 public static Product getProductbyname(String name) {
 			    Product p = new Product();
 				Connection conn = DB.getConn();
@@ -197,6 +217,7 @@ logger.info(sql);
 			} 
 			return list; 
 		}
+		
 		
 		
 		

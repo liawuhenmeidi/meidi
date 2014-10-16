@@ -213,14 +213,33 @@ if("peidan".equals(method)){
 	String category = request.getParameter("category"); 
 	String product = request.getParameter("product");
 	//System.out.println(product);
+
 	List<InventoryBranch> list = null ;
-    if(StringUtill.isNull(product)){ 
+    if(StringUtill.isNull(product)){
+    	if(!StringUtill.isNull(branch)){
+    		if(!NumbleUtill.isNumeric(branch)){
+    			Branch b = BranchManager.getLocatebyname(branch);
+    			branch = b.getId()+"";
+    		} 
+    	}
+    	
     	list = InventoryBranchManager.getCategoryid(branch, category);  
     }else {
+    	if(!NumbleUtill.isNumeric(product)){
+			Product p = ProductService.gettypemap().get(product);
+			product = p.getId()+"";
+		} 
+    	
+    	
+    	
     	if(!StringUtill.isNull(branch)){
     		System.out.println(branch);
-    		Branch b = BranchManager.getLocatebyid(branch);
-    		list = InventoryBranchManager.getCategory(b.getLocateName(), product);  
+    		if(NumbleUtill.isNumeric(branch)){
+    			Branch b = BranchManager.getLocatebyid(branch);
+    			branch = b.getLocateName();
+    		} 
+    		 
+    		list = InventoryBranchManager.getCategory(branch, product);  
     	}else {
     		list = InventoryBranchManager.getCategory(branch, product);
     	}

@@ -8,8 +8,11 @@ String branchid = request.getParameter("branchid");
 
 Category c = CategoryManager.getCategory(category);
 
-List<Product> listp = ProductManager.getProduct(category);
+List<String> listp = ProductService.getlist(Integer.valueOf(category));
+String allp = StringUtill.GetJson(listp); 
 
+List<String> listbranchp = BranchManager.getLocateAll();  
+String listall = StringUtill.GetJson(listbranchp); 
  
 List<Branch> listbranch = BranchManager.getLocate(); 
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
@@ -118,11 +121,13 @@ td {
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
- 
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/> 
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript">
 var disable = '<%=isdisabel %>';
-
- var jsonmap = '<%=mapjosn%>'; 
+var jsonall = <%=listall%>;
+var allp = <%=allp%>;
+ var jsonmap = '<%=mapjosn%>';  
 
  var jsons =  <%=plist%>;
 
@@ -137,7 +142,17 @@ var disable = '<%=isdisabel %>';
  var jsoninvent =  $.parseJSON(inventoyr);
   var typeid = ""; 
   var branch = "<%=branchid%>"; 
- $(function () {  
+  
+ $(function () { 
+	 $("#branch").autocomplete({ 
+		 source: jsonall
+	    });
+	 $("#product").autocomplete({ 
+		 source: allp
+	    });
+	 
+	 
+	 //allp
 	 add();
      
  }); 
@@ -199,22 +214,24 @@ function serchclick(category,type,branchid,obj){
 	 if(branch == null || branch == ""){
 		 branch = b ; 
 	 }   
-	 $("#branch option[value='"+branch+"']").attr("selected","selected"); 
+	 $("#branch").val(branch);
+	 //$("#branch option[value='"+branch+"']").attr("selected","selected"); 
 	 //alert(branch);
 	 $.ajax({   
 	        type: "post", 
 	         url: "../server.jsp",    
 	         data:"method=inventoryall&branch="+branch+"&category="+category+"&product="+product,
 	         dataType: "",   
-	         success: function (data) { 
-	        	 var addstr = '<tr class="asc"> '+
-	        	    
-	        	     ' <td>产品类别</td>'+
-	        	     ' <td>产品型号</td> '+
-	        	     ' <td>账面库存数量</td>'+
-	        	     ' <td>实际库存数量</td> ' +
-	        	     ' <td>盘点</td> ' + 
-	        	    ' </tr>';
+	         success: function (data) {  
+	        	 var addstr =  '<thead>'+ 
+	     		  '<tr>'+
+	        		'<th align="left">产品类别</th>'+
+	     			'<th align="left">产品型号</th>'+
+	     			'<th align="left">账面库存数量</th>'+
+	     			'<th align="left">实际库存数量</th>'+
+	     			'<th align="left">盘点</th>'+ 
+	     		  '</tr>'+
+	     			'</thead> ';
 	        	 var json =  $.parseJSON(data);
 	        	
 	        	 for(var i=0;i<json.length;i++){
@@ -265,56 +282,34 @@ function serchclick(category,type,branchid,obj){
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
     <a href="javascript:distri();"> 查看分布</a>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-         选择仓库:     
-	  <select id="branch">  
-	  <option value=""></option>
-	   <% if(listbranch != null){
-		   for(int i=0;i<listbranch.size();i++){
-			   Branch b = listbranch.get(i);
-	    %>   
-	    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
-	   <% 
-		   }   
-	   }
-	   %>
-	  </select>
-	  
-	    选择产品类别:     
-	  <select id="product">  
-	  <option value=""></option>
-	   <% if(listp != null){
-		   for(int i=0;i<listp.size();i++){
-			   Product b = listp.get(i);
-			   
-	    %>    
-	    <option value="<%=b.getId()%>"><%= b.getType()%></option>
-	   <% 
-		   }    
-	   }
-	   %>
-	  </select>
-	  
-	   <input type="button" name="" value="查询" onclick="add()"/>   
+        仓库:   
+    <input type="text" name="branch" id="branch" value=""   />  
+    产品类别:     
+    
+    <input type="text" name="product" id="product" value=""   /> 
+
+    <input type="button" name="" value="查询" onclick="add()"/>   
 			   <%
-		   }  
+	}  
    %>
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>       
    </div>  
        
  </div>        
-     <div style="background-color:;width:100%" >
-     <br/> 
+     <div class="table-list" >
         
-   <table width="100%" border="1" id="table" cellpadding="0" cellspacing="0" >
-     <tr class="asc"> 
-      
-      <td>产品类别</td>
-      <td>产品型号</td> 
-      <td>账面库存数量</td>
-      <td>实际库存数量</td>  
-      <td>盘点</td>   
-     </tr>
+  <table width="100%"  cellspacing="1" id="table" >
+     
+     <thead>
+		<tr>
+			<th align="left">产品类别</th>
+			<th align="left">产品型号</th>
+			<th align="left">账面库存数量</th>
+			<th align="left">实际库存数量</th>
+			<th align="left">盘点</th> 
+		</tr>
+	</thead>
  
    </table>
   

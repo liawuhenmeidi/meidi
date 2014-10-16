@@ -3,6 +3,9 @@
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 
+List<String> listbranchp = BranchManager.getLocateAll();  
+String listall = StringUtill.GetJson(listbranchp); 
+
 
 String branchid = "";
 Branch branch = null;   
@@ -38,20 +41,20 @@ td {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
 
-
-
-
-
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/> 
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript">
-  
+ var jsonall = <%=listall%>;
  var row = 1; 
  var rows = new Array();
  var categoryid = "";
- $(function () {  
+ $(function () { 
+	 $("#branch").autocomplete({ 
+		 source: jsonall
+	    }); 
 	 add();
  }); 
    
@@ -92,14 +95,16 @@ td {
 	         data:"method=inventoryall&branch="+branch,
 	         dataType: "",   
 	         success: function (data) { 
-	        	 var addstr = '<tr class="asc" > '+
-	        	     
-	        	     ' <td>产品类别</td>'+
-	        	     ' <td>产品型号</td> '+
-	        	     ' <td>账面库存数量</td>'+
-	        	     ' <td>实际库存数量</td> ' +
-	        	     ' <td>盘点</td> ' + 
-	        	    ' </tr>';
+	        	 var addstr =  '<thead>'+
+	     		  '<tr>'+
+	        		'<th align="left">产品类别</th>'+
+	     			'<th align="left">产品型号</th>'+
+	     			'<th align="left">账面库存数量</th>'+
+	     			'<th align="left">实际库存数量</th>'+
+	     			'<th align="left">盘点</th>'+ 
+	     		  '</tr>'+
+	     			'</thead> ';
+	        		
 	        	 var json =  $.parseJSON(data);
 	        	
 	        	 for(var i=0;i<json.length;i++){
@@ -148,65 +153,27 @@ td {
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
     <a href="javascript:distri();"> 查看分布</a>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-         选择仓库:     
-	  <select id="branch">  
-	  <option value=""></option>
-	   <% if(listbranch != null){
-		   for(int i=0;i<listbranch.size();i++){
-			   Branch b = listbranch.get(i);
-	    %>   
-	    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
-	   <% 
-		   }   
-	   }
-	   %>
-	  </select>
+       仓库:   
+       <input type="text" name="branch" id="branch" class="cba"  />  
+	
 	   <input type="button" name="" value="查询" onclick="add()"/>   
 			   <%
-		   }else if(UserManager.checkPermissions(user, Group.sale)){ 
-			   String branchids = branch.getBranchids();
-			   if(branchids != null){
-   %>
-   
-      选择仓库:     
-	  <select id="branch">  
-	  <option value=""></option>
-	   <%  
-	       
-	
-	       String branchs[] = branchids.split("_"); 
-		   for(int i=0;i<listbranch.size();i++){
-			   Branch b = listbranch.get(i); 
-			   for(int j=0;j<branchs.length;j++){ 
-				   if(branchs[j].equals(b.getId()+"")){
-					   %>   
-					    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
-					   <%    
-				   } 
-			   }
-		   }  
-	  
-	   %>
-	  </select>
-	   <input type="button" name="" value="查询" onclick="add()"/>  
-   <%
-		   }  
-	}
+	} 
    %>
                     
  </div>        
      <div class="table-list" >
      <br/>        
    <table width="100%"  cellspacing="1" id="table" >
-    <thead>
-     <tr >  
-      <td>产品类别</td>
-      <td>产品型号</td> 
-      <td>账面库存数量</td>
-      <td>实际库存数量</td>  
-      <td>盘点</td>   
-     </tr>
- </thead>
+   <thead>
+		<tr>
+			<th align="left">产品类别</th>
+			<th align="left">产品型号</th>
+			<th align="left">账面库存数量</th>
+			<th align="left">实际库存数量</th>
+			<th align="left">盘点</th> 
+		</tr>
+	</thead>
    </table>
  
   </div>

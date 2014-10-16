@@ -53,10 +53,6 @@ class MyRequest extends HttpServletRequestWrapper {
 				return "";
 			}else {
 				
-				
-				
-				
-				
 				val = new String(val.getBytes("ISO-8859-1"),
 						super.getCharacterEncoding());
 			}
