@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.jms.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +58,12 @@ public class ResponseServlet extends HttpServlet {
 			}else if(type.equals("byname")){
 				
 				if(name != null && !name.equals("")){
-					lists = SalaryCalcManager.getSalaryResultByName(name);
+					if(!name.equals("all")){
+						lists = SalaryCalcManager.getSalaryResultByName(name);
+					}else{
+						lists = (List<SalaryResult>)request.getSession().getAttribute("allOrders");
+					}
+					
 				}else{
 					return;
 				}

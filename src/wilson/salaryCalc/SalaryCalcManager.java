@@ -252,6 +252,7 @@ public class SalaryCalcManager {
 		return result;
 	}
 	
+	
 	//取出salaryResult中的uploadorder，并返回
 	public static List<UploadOrder> getUploadOrderFromSalaryResult(List<SalaryResult> salaryResult){
 		List<UploadOrder> result = new ArrayList<UploadOrder>();
@@ -334,7 +335,8 @@ public class SalaryCalcManager {
 		Map<Integer,UploadOrder> orderMap = new HashMap<Integer,UploadOrder>();
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
-		String sql = "select * from uploadorder where checked = 2 or checked = -1";
+		String sql = "select * from uploadorder where uploadtime >= '" + fmt.format(startDate) + "' and uploadtime <= '" + fmt.format(endDate) + "'";
+		logger.info(sql);
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -361,7 +363,7 @@ public class SalaryCalcManager {
 				tempOrder = new UploadOrder();
 			}
 			
-			sql = "select * from salaryresult where calctime >= '" + fmt.format(startDate)  + "' and calctime <= '" + fmt.format(endDate) + "' and status = 0";
+			sql = "select * from salaryresult where status = 0";
 			logger.info(sql);
 			stmt = DB.getStatement(conn); 
 			rs = DB.getResultSet(stmt, sql);
