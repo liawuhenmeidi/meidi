@@ -44,9 +44,9 @@ if(!StringUtill.isNull(id)){
 }
  
 
-
+ 
 String  branchmessage = branch.getMessage();
-
+System.out.println(branchmessage);
 
 if(StringUtill.isNull( branchmessage)){ 
 	 branchmessage = "";
@@ -159,7 +159,7 @@ String[] branlist =  branchmessage.split("_");
 			   var listo = listop[i];
 			   if(1 == listo.statues){			   
 				   $("#dingma").css("display","block");
-				   $("#dingmatype").val(listo.saleType);
+				   $("#dingmatype").val(listo.typeName);
 				  // alert($("#ordercategory0").get(0));
 				 // alert(listo.categoryId);
 				 //  alert($("#ordercategory0 #"+listo.categoryId));
@@ -180,7 +180,7 @@ String[] branlist =  branchmessage.split("_");
 				  var listo = listop[i];
 				  if(0 == listo.statues){
 					   if(flag){   
-						$("#ordertype0").val(listo.sendType);
+						$("#ordertype0").val(listo.typeName);
 						$("#orderproductNum0").val(listo.count);
 						//alert(listo.categoryId);
 						//alert($("#ordercategory0 #33").attr("selected"));  
@@ -438,11 +438,11 @@ String[] branlist =  branchmessage.split("_");
     		yellow = "#fff"; 
     	}
     	 
-    	var type = listo.sendType == null || listo.sendType == undefined ? "":listo.sendType;
+    	var type = listo.typeName == null || listo.typeName == undefined ? "":listo.typeName;
     	var count = listo.count == null || listo.count == undefined ? 1:listo.count;
     	var statues = listo.salestatues == null || listo.salestatues == undefined ? 1:listo.salestatues;
     
-    	 
+    	  
     	var str = "";
     	    str += '<div id="produc'+row+'" name="produc">'+
     	           '<input type="hidden" name="product" value="'+row+'"/>'+
@@ -1071,7 +1071,7 @@ String[] branlist =  branchmessage.split("_");
    </tr> 
    
     <tr> 
-    <td width="25%" class="center">所在区域<span style="color:red">*</span></td>
+    <td width="25%" class="center">送货区域<span style="color:red">*</span></td>
 
     <td width="25%" class="">
     <select class = "quyu" name="diqu" id="quyu">

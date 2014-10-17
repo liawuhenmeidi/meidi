@@ -4,15 +4,14 @@
 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
-String ptype = request.getParameter("ptype");
-
+String pid = request.getParameter("ptype");
 String type = request.getParameter("type"); 
 
 String statues = request.getParameter("statues");
 
 
-List<Group> list = GroupManager.getGroup(user,Integer.valueOf(ptype));  
-List<Group> listg = GroupManager.getGroupdown(user, Integer.valueOf(ptype),1);
+List<Group> list = GroupManager.getGroup(user,Integer.valueOf(pid));  
+List<Group> listg = GroupManager.getGroupdown(user, Integer.valueOf(pid),1);
  
 if(list != null && listg != null){
 	 list.addAll(listg); 
@@ -60,7 +59,7 @@ if(list != null && listg != null){
 		        		 return ;
 		        	 }else if (data > 0){
 		        		  alert("删除成功"); 
-		        		  window.location.href="juese.jsp?ptype=<%=ptype%>";
+		        		  window.location.href="juese.jsp?ptype=<%=pid%>";
 		        	 };	  
 		           }, 
 		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -99,7 +98,7 @@ if(list != null && listg != null){
      <ul>  
    <% if(!(type.equals(0+""))) {    
    %>  
-     <li><a href="Juese_addServlet?ptype=<%=ptype%>&type=<%=type%>">添加职位</a></li>
+     <li><a href="Juese_addServlet?ptype=<%=pid%>&type=<%=type%>">添加职位</a></li>
      <%
        }
      %> 
@@ -121,8 +120,10 @@ if(list != null && listg != null){
 		</tr>
 	</thead>
 <tbody>
-   <% for(int i=0;i<list.size();i++){
-	   Group g = list.get(i);
+
+   <% Group g = null;
+      for(int i=0;i<list.size();i++){
+	   g = list.get(i);
     %> 
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
 		<th align="left" width="20"><input type="checkbox" value="" id="check_box" name = "<%=g.getId() %>"></input></th>
@@ -143,11 +144,11 @@ if(list != null && listg != null){
 		<td align="left">
 		<% if(g.getPtype() == 1) {
 			%>
-	 <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">修改</a>  
+	    <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">修改</a>  
 			<%
-		}else {
+		}else { 
 		%>
-        <a href="authority.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>&type=<%=type%>">权限设置</a> | <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>&ptype=<%=ptype%>">修改</a>   
+        <a href="authority.jsp?id=<%=g.getId()%>&ptype=<%=pid%>&type=<%=type%>">权限设置</a> | <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">修改</a>   
         <%
 		}
         %>
@@ -159,8 +160,13 @@ if(list != null && listg != null){
 </table>
 
 <div class="btn">
+<% if(null!= g && g.getPtype() != 1){ 
+	
+ %>
  <input type="submit" class="button" name="dosubmit" value="删除" onclick="winconfirm()"></input>  
- 
+ <%
+}
+ %>
 </div>
      </div>
 </div>

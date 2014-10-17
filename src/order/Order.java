@@ -707,7 +707,7 @@ public String getCategory(){
 			}
 		return category;  
 	}
- 
+   
 public String getCategory(int statues,String decollator){   
 	String category = "";  
 	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){

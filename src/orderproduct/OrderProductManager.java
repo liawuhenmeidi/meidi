@@ -16,9 +16,12 @@ import order.Order;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import product.ProductService;
+
 
 import servlet.OrderServlet;
 import user.User;
+import utill.StringUtill;
 import utill.TimeUtill;
 import database.DB;
   
@@ -193,10 +196,17 @@ public class OrderProductManager {
 		   OrderProduct p = null;
 			try {
 				p = new OrderProduct();
+				String saletype = rs.getString("saletype");
+				String sendtype = rs.getString("sendtype");
 				p.setCategoryId(rs.getInt("categoryID"));
 				p.setCount(rs.getInt("count"));
-				p.setSaleType(rs.getString("saletype"));
-				p.setSendType(rs.getString("sendtype"));
+				p.setSaleType(saletype);
+				p.setSendType(sendtype);
+				if(!StringUtill.isNull(saletype)){
+					p.setTypeName(ProductService.getIDmap().get(Integer.valueOf(saletype)).getType());
+				}else if(!StringUtill.isNull(sendtype)){    
+					p.setTypeName(ProductService.getIDmap().get(Integer.valueOf(sendtype)).getType());
+				}
 				p.setOrderid(Integer.valueOf(rs.getString("orderid")));
 				p.setStatues(rs.getInt("statues"));  
 				p.setCategoryName(rs.getString("categoryname"));

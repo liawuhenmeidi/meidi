@@ -1106,7 +1106,7 @@ logger.info(Orders.size());
 					}   // dispatch 
 			   }else if(Group.sencondDealsend == type){   
 				   if(Order.orderDispatching == statues){  
-					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and  ( printSatues = 1 and printSatuesp = 0  and sendId = 0  and  deliveryStatues in (0,9) and mdorder.id not in (select orderid from mdorderupdateprint where statues = 2 and mdtype = 6 )  or (mdorder.id in (select orderid from mdorderupdateprint where mdtype in (3,6,7)  and statues = 0 )) or mdorder.id in (select orderid from mdhuanhuo where statues = 0 and uid = "+user.getId()+") )  "+search+" order by "+sort+str; 
+					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and  ( printSatues = 1 and printSatuesp = 0  and sendId = 0  and  deliveryStatues in (0,9) and mdorder.id not in (select orderid from mdorderupdateprint where statues = 2 and mdtype = 6 )  or (mdorder.id in (select orderid from mdorderupdateprint where mdtype in (3,6,7)  and statues = 0 )) )  "+search+" order by "+sort+str; 
 				   }else if(Order.release == statues){   
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and  mdorder.id in (select orderid from mdorderupdateprint where mdtype in (3,4,5) and pGroupId = "+ user.getUsertype()+ " )  "+search+" order by "+sort+  str; 
 				   }else if(Order.dispatch == statues){ 

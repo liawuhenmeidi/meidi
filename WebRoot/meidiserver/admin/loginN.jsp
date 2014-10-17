@@ -167,6 +167,13 @@ function checkedd(){
   <tr>
    <td></td>
      <td>3</td>
+    <td>门店管理增加门店</td>
+    
+    <td> </td>
+  </tr>
+  <tr>
+   <td></td>
+     <td>4</td>
     <td>手机端员工注册</td>
     
     <td> </td>

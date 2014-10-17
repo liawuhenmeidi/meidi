@@ -152,7 +152,7 @@ function changes(){
    </div>
         
      <div> 
-      <table width="100%"  cellspacing="1" id="table" >
+      <table width="60%"  cellspacing="1" id="table" >
       <%  if(null != map){
     	      List<User> list = map.get(id);
     	      if(null != list){
@@ -169,8 +169,8 @@ function changes(){
     	   
       } %>
       
-      
       </table>
+      <br/>
      <form action="branch1add.jsp"  method = "post"  onsubmit="return checkedd()">
       <input type="hidden" name="action" value="add"/>
       <input type="hidden" name="pid" value="<%=pid%>"/> 
@@ -183,8 +183,8 @@ function changes(){
         <li><input type="checkbox" value="sailId" name = "permission" id="sailId" />&nbsp;OMS订单号</li>
         <li><input type="checkbox" value="checked" name = "permission" id="checked" />&nbsp;验证码(联保单)</li>
      </ul> 
-     </p> 
-     关联安装公司：
+     </p>  
+     允许门店可查看库存：
  <ul class="juese_add">  
         <% List<Branch> list = BranchManager.getLocate(1);
         for(int i =0 ;i<list.size();i++){

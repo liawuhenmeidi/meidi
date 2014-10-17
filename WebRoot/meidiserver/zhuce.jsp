@@ -293,9 +293,11 @@ $(function () {
 		<%
 		 for(int i=0;i<listb.size();i++){
 			 BranchType lo = listb.get(i); 
+			 if(lo.getId() != 2){ 
 		%>	    
 		 <option value="<%=lo.getId()%>"><%=lo.getName()%></option>
 		<%
+			 }
 		 }
 		%>
 	</select>

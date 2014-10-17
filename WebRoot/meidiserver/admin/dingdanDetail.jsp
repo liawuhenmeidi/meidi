@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,message.*,utill.*,category.*,product.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,message.*,locate.*,utill.*,category.*,product.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%      
 
@@ -8,7 +8,9 @@ User user = (User)session.getAttribute("user");
 String id = request.getParameter("id");
 
 Order o = OrderManager.getOrderID(user,Integer.valueOf(id));
-   
+
+List<Locate> listl = LocateManager.getLocate();
+
 HashMap<Integer,User> usermap = UserManager.getMap();
 
 List<OrderProduct> list = o.getOrderproduct();         
@@ -446,7 +448,28 @@ function checkedd(){
             </tr>
 		<tr  class="asc">
 		    <td align="center">送货地区</td>
-            <td align="center"><%=o.getLocate()%></td>
+            <td align="center">
+            <% if(UserManager.checkPermissions(user, Group.dealSend)){
+	        	  %>
+	        	 <select class = "quyu" name="diqu" id="quyu">
+			        <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+					<%
+					 for(int i=0;i<listl.size();i++){
+						 Locate lo = listl.get(i);
+					%>	
+					 <option value="<%=lo.getLocateName()%>"><%=lo.getLocateName()%></option>
+		<%
+		 } 
+		%>
+	</select>
+			   
+			   <% }else {     
+			   %>   
+			     <%=o.getLocate()%>
+			   <%
+			   } 
+			   %>
+            </td>
             <td align="center">送货地址</td>
             <td align="center">
             

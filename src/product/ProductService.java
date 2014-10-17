@@ -8,6 +8,7 @@ public class ProductService {
    public static Map<String,Product> typemap ;  // 
    public static Map<Integer,Product> idmap ; 
    public static List<String> list ;
+   
   public static Map<String, Product> gettypemap() {
 	 if(typemap == null || flag){
 		typemap = ProductManager.getProductType();

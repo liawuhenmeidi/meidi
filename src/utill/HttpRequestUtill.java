@@ -50,6 +50,12 @@ public class HttpRequestUtill {
     			}else if("orderbranch".equals(str)){
     				String strr = request.getParameter(str);
     				sear += " and " + str + " in (select id from mdbranch where bname like '%" + strr +"%')";  
+    			}else if("deliveryStatues".equals(str)){
+    				String strr = request.getParameter(str);
+    				if(strr.equals(-1+"")){
+    					strr = "3,4,5,11,12,13";
+    				}
+    				sear += " and " + str +" in (" + strr +")";
     			}else{      
     				String strr = request.getParameter(str);
     				if(strr != "" && strr != null){

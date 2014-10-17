@@ -38,18 +38,8 @@
 <script type="text/javascript">
 
 $(function () { 
-	if("updated" == type){
-		
-		checkedd();
-	}
 	
 });
-function checkedd(){
-	//parent.location.reload(); 
-	//window.returnValue='refresh'; 
-	window.close();
-	//window.oper.reload();
-}
 
 </script>
 

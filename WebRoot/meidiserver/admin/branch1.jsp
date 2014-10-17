@@ -9,7 +9,7 @@ BranchType branch = BranchTypeManager.getLocate(Integer.valueOf(id));
 
 List<Branch> list =BranchManager.getLocate(id) ;
 
-HashMap<String,List<User>> map = UserService.getMapBranchid(); 
+HashMap<String,List<User>> map = UserManager.getMapBranch(); 
 // System.out.println("list.size()"+list.size());
 %>
   
@@ -53,8 +53,11 @@ function winconfirm(){
 	 }
 }
 
-function update(id){
-	 window.location.href="branch1add.jsp?pid=<%=id%>&id="+id;
+function update(id,statues){
+	if(statues != 1){
+		 window.location.href="branch1add.jsp?pid=<%=id%>&id="+id;
+	}
+	
 }
 
 function changes(bid,statues){
@@ -101,10 +104,12 @@ function seletall(all){
     <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>       
    </div>     
      <div class="main_r_tianjia">
+      <%if(Integer.valueOf(id) != 2){  
+                %>
    <ul>                                                                                                     
      <li><a href="branch1add.jsp?pid=<%=id%>">添加门店</a></li>
      </ul>
-    
+    <%} %>
    </div>
      
      
@@ -120,7 +125,7 @@ function seletall(all){
 			<th align="left">门店</th>
 			<th align="left">导购人数</th>
 			<th align="left">门店报装单所需信息</th>
-			<th align="left">是否做为总库</th>
+			<!-- <th align="left">是否做为总库</th> -->
 			<th align="left">修改</th>
 		</tr>
 	</thead>
@@ -133,7 +138,7 @@ if(list != null){
 	
 	  int count =map.get(category.getId()+"")==null?0:map.get(category.getId()+"").size();
 %>     
-    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)" ondblclick="update('<%= category.getId()%>')" >  
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)" ondblclick="update('<%= category.getId()%>','<%=category.getId()%>')" >  
 		<td align="left"><input type="checkbox" value="1" name="<%=category.getId() %>"></input></td> 
 		<td align="left"><%=i+1 %></td>   
  		<td align="left"><%=category.getLocateName() %></td> 
@@ -153,6 +158,7 @@ if(list != null){
 		  
                <%=message%>    
          </td>
+         <!--  
          <td align="left">  
             <% if(category.getStatues() ==0){
              %>
@@ -166,9 +172,13 @@ if(list != null){
                                              是<input type="button" onclick="changes('<%=category.getId()%>','0')"  value="关闭"/> 
             <% }%>
              
-         </td>   
-         <td align="left">  
+         </td>  
+          --> 
+         <td align="left"> 
+               <%if(category.getStatues() != 1){  
+                %>
                <a href="branch1add.jsp?pid=<%=id%>&id=<%=category.getId()%>">[修改]</a>
+               <% }%>
          </td> 
     </tr>  
     <% } 

@@ -107,7 +107,7 @@ public class GroupManager {
                   	PreparedStatement pstmt1 = DB.prepare(conn, sql2); 
                   	String permissons = "2_";
                   	int type = 4; 
-                  	pstmt1.setString(1, group.getName());
+                  	pstmt1.setString(1, group.getName()+"员工");
 					pstmt1.setString(2, group.getDetail());
 					pstmt1.setInt(3, group.getStatues());
 					pstmt1.setString(4, permissons);
@@ -121,10 +121,11 @@ public class GroupManager {
 					pstmt3.setString(3, group.getName());
  
                     DBUtill.PreparedStatement(conn, pstmt, pstmt1, pstmt3);
-                   
+                    GroupService.flag = true ;
                     
                   }	else {
                 	  pstmt.executeUpdate();
+                	  GroupService.flag = true ;
                   }
 					
 				GroupManager.getInstance().init();
@@ -414,6 +415,7 @@ logger.info(sql);
 
 			try {
 				count = DB.executeUpdate(stmt, sql);
+				GroupService.flag = true ;
 			} finally {
 				DB.close(stmt);
 				DB.close(conn);
@@ -462,9 +464,23 @@ logger.info(sql);
 				pstmt.setString(2, group.getProducts());
 				pstmt.setString(3, group.getPermissions());
 				pstmt.setInt(4, group.getId());
+				if(group.getPtype() == 3){
+					String sql1 = "update mdgroup set statues = ?, products = ? where pid = ?";
+					PreparedStatement pstmt1 = DB.prepare(conn, sql1);
+					pstmt1.setInt(1,group.getStatues());
+					pstmt1.setString(2, group.getProducts());
+					pstmt1.setInt(3, group.getId());
+					pstmt.executeUpdate(); 
+					pstmt1.executeUpdate();
+					GroupService.flag = true ;
+					GroupManager.getInstance().init();
+				}else {
+					pstmt.executeUpdate();
+					GroupService.flag = true ;
+					GroupManager.getInstance().init();
+				}
 logger.info(pstmt);				
-				pstmt.executeUpdate();
-				GroupManager.getInstance().init();
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -484,7 +500,18 @@ logger.info(pstmt);
 				pstmt.setString(2, group.getDetail());
 				pstmt.setInt(3, group.getPid());
 				pstmt.setInt(4, group.getId());
-				pstmt.executeUpdate();
+				if(group.getPtype() == 3){
+					String sql1 = "update mdgroup set groupname = ?, detail = ?  where pid = ?";
+					PreparedStatement pstmt1 = DB.prepare(conn, sql1);
+					pstmt1.setString(1,group.getName());
+					pstmt1.setString(2, group.getDetail());
+					pstmt1.setInt(3, group.getId());
+					pstmt.executeUpdate(); 
+					pstmt1.executeUpdate();
+				}else {
+					 pstmt.executeUpdate();
+               	     GroupService.flag = true ;
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -492,7 +519,7 @@ logger.info(pstmt);
 				DB.close(conn);
 			}
 		}
-		
+		 
 		private static Group getGroupFromRs(ResultSet rs){
 			Group g = new Group();
 			try {  

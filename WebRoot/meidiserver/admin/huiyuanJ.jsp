@@ -81,7 +81,7 @@ function changes(id,statues){
 		<td align="left"><%=i+1 %></td>
 		<td align="left"><%=u.getUsername() %></td>
 		<td align="left"><%=map.get(u.getUsertype()).getName() %></td>
-		<td align="left"><%=BranchService.getMap().get(Integer.valueOf(u.getBranch())).getLocateName() %></td>
+		<td align="left"><%=BranchService.getMap().get(Integer.valueOf(u.getBranch())) == null ?"":BranchService.getMap().get(Integer.valueOf(u.getBranch())).getLocateName() %></td>
 		<td align="left"><%=u.getEntryTime() %></td>       
 		<td align="left">
 		 <%

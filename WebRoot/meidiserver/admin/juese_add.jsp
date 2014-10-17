@@ -182,13 +182,10 @@ $(function () {
 	        <li><input type="checkbox" value="4" name = "permission" id="p4" />&nbsp;管理产品权限</li>
 	        <li><input type="checkbox" value="3" name = "permission" id="p3" />&nbsp;管理用户权限</li>
 	        <li><input type="checkbox" value="5" name = "permission" id="p5" checked="checked" onClick="return false" />&nbsp;总配单权限</li> 
-	        <li><input type="checkbox" value="6" name = "permission" id="p6" />&nbsp;管理职位权限</li>
-	        <li><input type="checkbox" value="7" name = "permission" id="p7" />&nbsp;查询门店权限</li>
 	        <li><input type="checkbox" value="9" name = "permission" id="p9" />&nbsp;管理门店权限</li> 
 	        <li><input type="checkbox" value="10" name = "permission" id="p10" />&nbsp;地区权限</li> 
-	        <li><input type="checkbox" value="11" name = "permission" id="p11" />&nbsp;打印权限</li> 
-	       <li><input type="checkbox" value="12" name = "permission" id="p11" />&nbsp;提交调货单权限</li>  
-	        <li><input type="checkbox" value="13" name = "permission" id="p11" />&nbsp;确认调货单权限</li> 
+	       <li><input type="checkbox" value="12" name = "permission" id="p12" />&nbsp;提交调货单权限</li>  
+	        <li><input type="checkbox" value="13" name = "permission" id="p13" />&nbsp;确认调货单权限</li> 
         	 <%
          }else if(type == Group.sencondDealsend && null != map){ 
         	listg = map.get(2+"");
@@ -196,13 +193,13 @@ $(function () {
         <li><input type="checkbox" value="3" name = "permission" id="p3" checked="checked" onClick="return false" />&nbsp;管理用户权限</li>
         <li><input type="checkbox" value="8" name = "permission" id="p8"  checked="checked" onClick="return false" />&nbsp;网点派单权限</li>  
         <li><input type="checkbox" value="11" name = "permission" id="p11" checked="checked" onClick="return false"  />&nbsp;打印权限</li> 
-        <li><input type="checkbox" value="13" name = "permission" id="p11" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
+        <li><input type="checkbox" value="13" name = "permission" id="p13" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
       <%        	  
          }else if(type == Group.sale && null != map){
         	 listg = map.get(2+"");
         	%>
         <li><input type="checkbox" value="1" name = "permission" id="p1" checked="checked" onClick="return false" />&nbsp;提交报装单</li>
-        <li><input type="checkbox" value="13" name = "permission" id="p11" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
+        <li><input type="checkbox" value="13" name = "permission" id="p13" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
         <%
          }else if(type == Group.send && null != map) {
         	 listg = map.get(3+"");
@@ -223,8 +220,8 @@ $(function () {
         <li><input type="checkbox" value="9" name = "permission" id="p9" />&nbsp;管理门店权限</li> 
         <li><input type="checkbox" value="10" name = "permission" id="p10" />&nbsp;地区权限</li> 
         <li><input type="checkbox" value="11" name = "permission" id="p11" />&nbsp;打印权限</li> 
-       <li><input type="checkbox" value="12" name = "permission" id="p11" />&nbsp;提交调货单权限</li>  
-        <li><input type="checkbox" value="13" name = "permission" id="p11" />&nbsp;确认调货单权限</li>	 	 
+       <li><input type="checkbox" value="12" name = "permission" id="p12" />&nbsp;提交调货单权限</li>  
+        <li><input type="checkbox" value="13" name = "permission" id="p13" />&nbsp;确认调货单权限</li>	 	 
  
          
      <% }%>

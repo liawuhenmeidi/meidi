@@ -20,20 +20,19 @@ User user = (User)session.getAttribute("user");
 
 Map<String,List<Group>> map = GroupService.getPidMap();
 
-List<Group>  listg = null ;
-
+List<Group>  listg = GroupManager.getGroup() ;
 
 String ptype = request.getParameter("ptype"); 
 String id = request.getParameter("id");
-System.out.println("id"+id);
 String action = request.getParameter("action");
+Group groups = null;
 String name = "";
 String detail = "";
 int pid = -1;
 if(!StringUtill.isNull(id)){
-	HashMap<Integer,Group> map =GroupManager.getGroupMap();
-	Group groups = map.get(Integer.valueOf(id));
-	name = groups.getName();
+	HashMap<Integer,Group> maps =GroupManager.getGroupMap();
+	groups = maps.get(Integer.valueOf(id));
+	name = groups.getName(); 
 	detail = groups.getDetail().trim();
 	pid = groups.getPid();
 }
@@ -46,7 +45,8 @@ if("add".equals(action)){
     Group group = new Group();
     group.setId(Integer.valueOf(ids));
     group.setDetail(detaild);
-    group.setName(named);
+    group.setName(named); 
+    group.setPtype(groups.getPtype());
     group.setPid(Integer.valueOf(ppid));
     GroupManager.updateName(user, group); 
     response.sendRedirect("juese.jsp?ptype="+ptype);
@@ -103,7 +103,7 @@ $(function(){
         </div>
        <div class="juese_head">  详细信息:
        <textarea name="detail" id="detail" rows="4" cols="20" > 
-       </textarea> 
+       </textarea>  
        </div> 
        <div class="juese_head"></div>
        <br/>
@@ -113,13 +113,15 @@ $(function(){
      
       <ul class="juese_add">
        <%
-        for(int i=0;i<listg.size();i++){
-        	%>
-        
-        <li><input type="radio"  name = "pid"  value="<%=listg.get(i).getId() %>"  id="<%=listg.get(i).getId() %>" />&nbsp;<%=listg.get(i).getName() %></li>
-        	
-       <%  	
-        }
+       if(null != listg){ 
+	        for(int i=0;i<listg.size();i++){
+	        	%> 
+	        
+	        <li><input type="radio"  name = "pid"  value="<%=listg.get(i).getId() %>"  id="<%=listg.get(i).getId() %>" />&nbsp;<%=listg.get(i).getName() %></li>
+	        	
+	       <%  	
+	        }
+       }
        %>
      </ul>  
  

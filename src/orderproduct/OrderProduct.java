@@ -16,7 +16,17 @@ public class OrderProduct {
     
     private String subtime;   
     
-    public String getSalestatues(int i){
+    private String typeName ;
+    
+    public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public String getSalestatues(int i){
     	String str = "";
     	if(i == 1){
     		str = "需配送";

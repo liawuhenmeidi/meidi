@@ -9,7 +9,7 @@
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 </head>
 
-<body>
+<body> 
 
 <% 
 
@@ -19,6 +19,10 @@ User user = (User)session.getAttribute("user");
 String action = request.getParameter("action");
 String ptype = request.getParameter("ptype"); 
 String typeStr = request.getParameter("type"); 
+
+
+
+
 int type = Integer.valueOf(typeStr);
 
 List<Category> list =CategoryManager.getCategory(Category.sale) ;
@@ -26,7 +30,7 @@ HashMap<Integer,Group> map =GroupManager.getGroupMap() ;
 Map<String,List<Group>> maplist = GroupService.getPidMap();
 Group groups = null;
 String id = request.getParameter("id");
-System.out.println(id);
+//System.out.println(id);
 String statuesInit =  "";
 String productsInit = ""; 
 String permissions = "";
@@ -37,9 +41,8 @@ if(!StringUtill.isNull(id)){
 	statuesInit = groups.getStatues()+"";
 	productsInit = groups.getProducts();
 	permissions = groups.getPermissions();
+	System.out.println(permissions);
 }
-
-System.out.println(action);
 
 if("permission".equals(action)){
 
@@ -65,13 +68,14 @@ if("permission".equals(action)){
     String ids = request.getParameter("id");
     Group group = new Group();
     group.setId(Integer.valueOf(ids));
-    System.out.println(id);
+    //System.out.println(id);
     group.setStatues(statues);
     group.setProducts(productes);
     group.setPermissions(permiss);
-  
+    group.setPtype(groups.getPtype());
     GroupManager.updatePermisson(user, group);
-    response.sendRedirect("juese.jsp?ptype="+ptype);
+    response.sendRedirect("juese.jsp?ptype="+ptype+"&type="+typeStr);
+    return ;
 }
 
 %>
@@ -126,7 +130,8 @@ if("permission".equals(action)){
   
    <input type="hidden" name="action" value="permission"/>
    <input type="hidden" name="id" value="<%=id%>"/> 
-   <input type="hidden" name="ptype" value="<%=ptype%>"/>  
+   <input type="hidden" name="ptype" value="<%=ptype%>"/>
+   <input type="hidden" name="type" value="<%=typeStr%>"/>   
    <div class="juese_head">   
 		   启用：
 		<input type="radio" checked="checked"  name="Statues" value="1" />
@@ -167,13 +172,11 @@ if("permission".equals(action)){
 	        <li><input type="checkbox" value="4" name = "permission" id="p4" />&nbsp;管理产品权限</li>
 	        <li><input type="checkbox" value="3" name = "permission" id="p3" />&nbsp;管理用户权限</li>
 	        <li><input type="checkbox" value="5" name = "permission" id="p5" checked="checked" onClick="return false" />&nbsp;总配单权限</li> 
-	        <li><input type="checkbox" value="6" name = "permission" id="p6" />&nbsp;管理职位权限</li>
 	        <li><input type="checkbox" value="7" name = "permission" id="p7" />&nbsp;查询门店权限</li>
 	        <li><input type="checkbox" value="9" name = "permission" id="p9" />&nbsp;管理门店权限</li> 
 	        <li><input type="checkbox" value="10" name = "permission" id="p10" />&nbsp;地区权限</li> 
-	        <li><input type="checkbox" value="11" name = "permission" id="p11" />&nbsp;打印权限</li> 
-	       <li><input type="checkbox" value="12" name = "permission" id="p11" />&nbsp;提交调货单权限</li>  
-	        <li><input type="checkbox" value="13" name = "permission" id="p11" />&nbsp;确认调货单权限</li> 
+	       <li><input type="checkbox" value="12" name = "permission" id="p12" />&nbsp;提交调货单权限</li>  
+	        <li><input type="checkbox" value="13" name = "permission" id="p13" />&nbsp;确认调货单权限</li> 
         	 <%
          }else if(type == Group.sencondDealsend){ 
         	listg = maplist.get(2+"");
@@ -181,13 +184,13 @@ if("permission".equals(action)){
         <li><input type="checkbox" value="3" name = "permission" id="p3" checked="checked" onClick="return false" />&nbsp;管理用户权限</li>
         <li><input type="checkbox" value="8" name = "permission" id="p8"  checked="checked" onClick="return false" />&nbsp;网点派单权限</li>  
         <li><input type="checkbox" value="11" name = "permission" id="p11" checked="checked" onClick="return false"  />&nbsp;打印权限</li> 
-        <li><input type="checkbox" value="13" name = "permission" id="p11" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
+        <li><input type="checkbox" value="13" name = "permission" id="p13" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
       <%        	  
          }else if(type == Group.sale){
         	 listg = maplist.get(2+"");
         	%>
         <li><input type="checkbox" value="1" name = "permission" id="p1" checked="checked" onClick="return false" />&nbsp;提交报装单</li>
-        <li><input type="checkbox" value="13" name = "permission" id="p11" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
+        <li><input type="checkbox" value="13" name = "permission" id="p13" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
         <%
          }else if(type == Group.send) {
         	 listg = maplist.get(3+"");
@@ -208,8 +211,8 @@ if("permission".equals(action)){
         <li><input type="checkbox" value="9" name = "permission" id="p9" />&nbsp;管理门店权限</li> 
         <li><input type="checkbox" value="10" name = "permission" id="p10" />&nbsp;地区权限</li> 
         <li><input type="checkbox" value="11" name = "permission" id="p11" />&nbsp;打印权限</li> 
-       <li><input type="checkbox" value="12" name = "permission" id="p11" />&nbsp;提交调货单权限</li>  
-        <li><input type="checkbox" value="13" name = "permission" id="p11" />&nbsp;确认调货单权限</li>	 	 
+       <li><input type="checkbox" value="12" name = "permission" id="p12" />&nbsp;提交调货单权限</li>  
+        <li><input type="checkbox" value="13" name = "permission" id="p13" />&nbsp;确认调货单权限</li>	 	 
  
          
      <% }%> 

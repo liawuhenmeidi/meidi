@@ -114,8 +114,6 @@ List<Grouptype> list = GrouptypeManager.getGroup(user);
 		  	<td align="left"></td>
         <% }else {
          %>
-       
-          
 		   <td align="left"><a href="grouptypeupdate.jsp?id=<%=g.getId()%>">[修改]</a></td>
 		   <td align="left">  
            <a href="javascript:void(0);" onclick="winconfirm('<%=g.getId()%>')">[删除]</a>   

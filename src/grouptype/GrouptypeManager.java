@@ -29,9 +29,6 @@ public class GrouptypeManager {
 		String sql = "";  
 		if(UserManager.checkPermissions(user, Group.Manger)){
 			sql = "select * from mdgrouptype " ;  
-		}else { 
-			sql = "select * from mdgrouptype " ;  
-			//sql = "select * from mdgrouptype where pid = " + user.getUsertype();
 		}
 		    
 		Statement stmt = DB.getStatement(conn);
