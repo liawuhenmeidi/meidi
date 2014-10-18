@@ -271,11 +271,12 @@ logger.info(message);
 					String locations = request.getParameter("locations");
 					
 					String remark = request.getParameter("remark");
-					
+					 
 					order.setId(Integer.valueOf(id));
 					order.setSaleTime(saledate);
 			        order.setOdate(andate);
 			        order.setPos(POS);
+		logger.info(user.getId());
 			        order.setSaleID(user.getId()); 
 			        order.setBranch(Integer.valueOf(user.getBranch())); 
 			        order.setSailId(sailId);
