@@ -108,7 +108,7 @@
 		
 		<%
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
-			if(afterMatchOrders.get(i).getCompareLevel() >= 5.0){
+			if(afterMatchOrders.get(i).getCompareLevel() >= 3.0){
 		%>
 		<tr>
 			<td align="center"><input name="auto"  checked="checked" type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>,<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
@@ -132,10 +132,10 @@
 		
 		<%
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
-			if(afterMatchOrders.get(i).getCompareLevel() < 5.0){
+			if(afterMatchOrders.get(i).getCompareLevel() < 3.0){
 		%>
 		<tr>
-			<td align="center"><input name="auto"  checked="checked" type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>,<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
+			<td align="center"><input name="auto"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>,<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
 			<td align="center"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
 			<td align="center"><%= afterMatchOrders.get(i).getDBSidePosNo() %></td>
 			<td align="center"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>

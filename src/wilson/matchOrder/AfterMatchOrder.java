@@ -251,7 +251,8 @@ public class AfterMatchOrder {
 		tempUpLoad = this.getUploadOrder().getSaleTime();
 		tempDB = tempDB.length() > 10 ? tempDB.substring(0,10):tempDB;
 		if(tempDB.replace("-", "").equals(tempUpLoad)){
-			this.setCompareLevel(this.getCompareLevel() + 1.0);
+			//先不在这里增加对比等级了
+			//this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setDBSideSaleTime(HighLighter(tempDB));
 			this.setUploadSideSaleTime(HighLighter(tempUpLoad));
 		}else{
