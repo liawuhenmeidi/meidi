@@ -9,8 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -285,7 +287,8 @@ public class SalaryCalcManager {
 				tempSalaryResultMap.put(tempResult.getUploadOrderId(), tempResult);
 			}
 			
-			sql = "select * from uploadorder where name = '" + name + "' and checked != -1";
+			sql = "select * from uploadorder where name = '" + name + "'";
+			//sql += " and checked != -1";
 			logger.info(sql);
 			stmt = DB.getStatement(conn); 
 			rs = DB.getResultSet(stmt, sql);
@@ -377,12 +380,25 @@ public class SalaryCalcManager {
 				if(orderMap.containsKey(tempResult.getUploadOrderId())){
 					tempResult.setUploadOrder(orderMap.get(tempResult.getUploadOrderId()));
 					result.add(tempResult);
-				}else{
-					
+					orderMap.remove(tempResult.getUploadOrderId());
 				}
-				
 				tempResult = new SalaryResult();
 			}
+			
+			
+
+	        
+			
+			Set<Integer> keys = orderMap.keySet();
+			for (Iterator<Integer> it = keys.iterator(); it.hasNext();) {
+	            Integer key = (Integer) it.next();
+	            tempResult = new SalaryResult();
+				tempResult.setSalary(null);
+				tempResult.setUploadOrder(orderMap.get(key));
+				result.add(tempResult);
+	        }
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
