@@ -683,8 +683,8 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				", locateDetail, saleID , printSatues ,oderStatus,sailId,checked,phone1,phone2,remark,"+
 	    		"deliveryStatues,orderbranch,sendId,statues1,statues2,statues3,dealSendid,submittime,printlnid,dayremark,dayID,phoneRemark,sailIdremark,checkedremark,posRemark) values "+  
 				"( "+maxid+", '"+order.getOdate()+"', '"+order.getSaleTime()+"', '"+order.getPos()+"', '"+order.getUsername()+"', '" 
-	    		+order.getLocate()+"', '"+order.getLocateDetail()+"',"+order.getOderStatus()+", "+order.getPrintSatues()    
-	    		+", "+order.getSaleID()+", '"+order.getSailId()+"', '"+order.getCheck()+"', '"+order.getPhone1()+"','"+order.getPhone2()+"','"+order.getRemark()+"',"+order.getDeliveryStatues()+",'"+order.getBranch()+"',0,0,0,0,"+order.getDealsendId()+",'"+order.getSubmitTime()+"','"+order.getPrintlnid()+"-"+daymarkk+"',"+daymark+","+dayID+","+order.getPhoneRemark()+","+order.getSailidrecked()+","+order.getReckedremark()+","+order.getPosremark()+")";   
+	    		+order.getLocate()+"', '"+order.getLocateDetail()+"',"+order.getSaleID()+", "+order.getPrintSatues()    
+	    		+", "+order.getOderStatus()+", '"+order.getSailId()+"', '"+order.getCheck()+"', '"+order.getPhone1()+"','"+order.getPhone2()+"','"+order.getRemark()+"',"+order.getDeliveryStatues()+",'"+order.getBranch()+"',0,0,0,0,"+order.getDealsendId()+",'"+order.getSubmitTime()+"','"+order.getPrintlnid()+"-"+daymarkk+"',"+daymark+","+dayID+","+order.getPhoneRemark()+","+order.getSailidrecked()+","+order.getReckedremark()+","+order.getPosremark()+")";   
 	    sqls.add(sql);
 	    logger.info(sql);       
 	    Connection conn = DB.getConn();   
@@ -1918,7 +1918,6 @@ logger.info(sql);
 			p.setPhone2(rs.getString("phone2")); 
 			p.setUsername(rs.getString("username"));
 			p.setPrintSatues(rs.getInt("printSatues"));
-			p.setSaleID(rs.getInt("saleID"));
 			p.setDeliveryStatues(rs.getInt("deliveryStatues"));
 			p.setPos(rs.getString("pos"));
 			p.setSailId(rs.getString("sailId"));
