@@ -127,11 +127,9 @@ td {
 			<td align="center">销售门店</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
-			<td align="center">交货日期</td> 
 			<td align="center">票面型号</td> 
 			<td align="center">票面数量</td> 
 			<td align="center">供价</td> 
-			<td align="center">扣点</td> 
 		
 		</tr> 
 		
@@ -161,11 +159,9 @@ td {
 			<td align="center"><%= UploadOrders.get(i).getShop() %></td>
 			<td align="center"><%= UploadOrders.get(i).getPosNo() %></td>
 			<td align="center"><%= UploadOrders.get(i).getSaleTime() %></td>
-			<td align="center"><%= UploadOrders.get(i).getDealTime() %></td> 
 			<td align="center"><%= UploadOrders.get(i).getType() %></td> 
 			<td align="center"><%= UploadOrders.get(i).getNum() %></td> 
 			<td align="center"><%= UploadOrders.get(i).getSalePrice() %></td> 
-			<td align="center"><%= UploadOrders.get(i).getBackPoint() %></td> 
 		
 		</tr> 
 		<%

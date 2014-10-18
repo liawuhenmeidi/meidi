@@ -8,7 +8,6 @@ public class AfterMatchOrder {
 	private String DBSideShop = "";
 	private String DBSidePosNo = "";
 	private String DBSideSaleTime = "";
-	private String DBSideDealTime = "";
 	private String DBSideType = "";
 	private String DBSideCount = "";
 	private int DBSideOrderId = 0;
@@ -17,7 +16,6 @@ public class AfterMatchOrder {
 	private String UploadSideShop = "";
 	private String UploadSidePosNo = "";
 	private String UploadSideSaleTime = "";
-	private String UploadSideDealTime = "";
 	private String UploadSideType = "";
 	private String UploadSideCount = "";
 	private int UploadSideOrderId = 0;
@@ -29,7 +27,6 @@ public class AfterMatchOrder {
 		DBSideShop = dbOrder.getbranchName(dbOrder.getBranch()); 
 		DBSidePosNo = dbOrder.getPos();
 		DBSideSaleTime = dbOrder.getSaleTime();
-		DBSideDealTime = dbOrder.getOdate();
 		DBSideType = dbOrder.getSendType();
 		DBSideCount = String.valueOf(dbOrder.getSendCount());
 		DBSideOrderId = dbOrder.getId();
@@ -40,7 +37,6 @@ public class AfterMatchOrder {
 		UploadSideShop = uploadOrder.getShop();
 		UploadSidePosNo = uploadOrder.getPosNo();
 		UploadSideSaleTime = uploadOrder.getSaleTime();
-		UploadSideDealTime = uploadOrder.getDealTime();
 		UploadSideType = uploadOrder.getType();
 		UploadSideCount = String.valueOf(uploadOrder.getNum());
 		UploadSideOrderId = uploadOrder.getId();
@@ -56,7 +52,6 @@ public class AfterMatchOrder {
 		DBSideShop = dbOrder.getbranchName(dbOrder.getBranch());
 		DBSidePosNo = dbOrder.getPos();
 		DBSideSaleTime = dbOrder.getSaleTime();
-		DBSideDealTime = dbOrder.getOdate();
 		DBSideType = dbOrder.getSendType();
 		DBSideCount = String.valueOf(dbOrder.getSendCount());
 		DBSideOrderId = dbOrder.getId();
@@ -64,14 +59,13 @@ public class AfterMatchOrder {
 		UploadSideShop = uploadOrder.getShop();
 		UploadSidePosNo = uploadOrder.getPosNo();
 		UploadSideSaleTime = uploadOrder.getSaleTime();
-		UploadSideDealTime = uploadOrder.getDealTime();
 		UploadSideType = uploadOrder.getType();
 		UploadSideCount = String.valueOf(uploadOrder.getNum());
 		UploadSideOrderId = uploadOrder.getId();
 	}
 	
 	Double compareLevel = 0.0; //对比等级，每个对比项，完全相同，等级+1，部分相同，等级+0.5
-	Double maxCompareLevel = 6.0; //最大等级，目前对比项有6个，默认最大等级为6
+	Double maxCompareLevel = 5.0; //最大等级，目前对比项有5个，默认最大等级为5
 	
 	public String getDBSideShop() {
 		return DBSideShop;
@@ -90,12 +84,6 @@ public class AfterMatchOrder {
 	}
 	public void setDBSideSaleTime(String dBSideSaleTime) {
 		DBSideSaleTime = dBSideSaleTime;
-	}
-	public String getDBSideDealTime() {
-		return DBSideDealTime;
-	}
-	public void setDBSideDealTime(String dBSideDealTime) {
-		DBSideDealTime = dBSideDealTime;
 	}
 	public String getDBSideType() {
 		return DBSideType;
@@ -133,12 +121,7 @@ public class AfterMatchOrder {
 	public void setUploadSideSaleTime(String uploadSideSaleTime) {
 		UploadSideSaleTime = uploadSideSaleTime;
 	}
-	public String getUploadSideDealTime() {
-		return UploadSideDealTime;
-	}
-	public void setUploadSideDealTime(String uploadSideDealTime) {
-		UploadSideDealTime = uploadSideDealTime;
-	}
+
 	public String getUploadSideType() {
 		return UploadSideType;
 	}
@@ -271,18 +254,6 @@ public class AfterMatchOrder {
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setDBSideSaleTime(HighLighter(tempDB));
 			this.setUploadSideSaleTime(HighLighter(tempUpLoad));
-		}else{
-		//无模糊对比
-		}
-		
-		//对比DealTime
-		tempDB = this.getDBOrder().getOdate();
-		tempUpLoad = this.getUploadOrder().getDealTime();
-		tempDB = tempDB.length() > 10 ? tempDB.substring(0,10):tempDB;
-		if(tempDB.replace("-", "").equals(tempUpLoad)){
-			this.setCompareLevel(this.getCompareLevel() + 1.0);
-			this.setDBSideDealTime(HighLighter(tempDB));
-			this.setUploadSideDealTime(HighLighter(tempUpLoad));
 		}else{
 		//无模糊对比
 		}

@@ -210,11 +210,9 @@ public class SalaryCalcManager {
 				tempOrder.setShop(rs.getString("shop"));
 				tempOrder.setPosNo(rs.getString("posno"));
 				tempOrder.setSaleTime(rs.getString("saletime"));
-				tempOrder.setDealTime(rs.getString("dealtime"));
 				tempOrder.setType(rs.getString("type"));
 				tempOrder.setNum(rs.getInt("num"));
 				tempOrder.setSalePrice(rs.getDouble("saleprice"));
-				tempOrder.setBackPoint(rs.getDouble("backpoint"));
 				tempOrder.setFileName(rs.getString("filename"));
 				tempOrder.setChecked(rs.getInt("checked"));
 				tempOrder.setCheckedTime(rs.getString("checkedtime"));
@@ -300,11 +298,9 @@ public class SalaryCalcManager {
 				tempOrder.setShop(rs.getString("shop"));
 				tempOrder.setPosNo(rs.getString("posno"));
 				tempOrder.setSaleTime(rs.getString("saletime"));
-				tempOrder.setDealTime(rs.getString("dealtime"));
 				tempOrder.setType(rs.getString("type"));
 				tempOrder.setNum(rs.getInt("num"));
 				tempOrder.setSalePrice(rs.getDouble("saleprice"));
-				tempOrder.setBackPoint(rs.getDouble("backpoint"));
 				tempOrder.setFileName(rs.getString("filename"));
 				tempOrder.setChecked(rs.getInt("checked"));
 				tempOrder.setCheckedTime(rs.getString("checkedtime"));
@@ -353,11 +349,9 @@ public class SalaryCalcManager {
 				tempOrder.setShop(rs.getString("shop"));
 				tempOrder.setPosNo(rs.getString("posno"));
 				tempOrder.setSaleTime(rs.getString("saletime"));
-				tempOrder.setDealTime(rs.getString("dealtime"));
 				tempOrder.setType(rs.getString("type"));
 				tempOrder.setNum(rs.getInt("num"));
 				tempOrder.setSalePrice(rs.getDouble("saleprice"));
-				tempOrder.setBackPoint(rs.getDouble("backpoint"));
 				tempOrder.setFileName(rs.getString("filename"));
 				tempOrder.setChecked(rs.getInt("checked"));
 				tempOrder.setCheckedTime(rs.getString("checkedtime"));

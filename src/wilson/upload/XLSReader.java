@@ -39,11 +39,9 @@ public class XLSReader {
 				uo.setShop(sheet0.getCell(0,i).getContents());
 				uo.setPosNo(sheet0.getCell(1,i).getContents());
 				uo.setSaleTime(sheet0.getCell(2,i).getContents());
-				uo.setDealTime(sheet0.getCell(3,i).getContents());
-				uo.setType(sheet0.getCell(4,i).getContents());
-				uo.setNum(Integer.parseInt(sheet0.getCell(5,i).getContents().replace(",", "")));
-				uo.setSalePrice(Double.parseDouble(sheet0.getCell(6,i).getContents().replace(",", "")));
-				uo.setBackPoint(Double.parseDouble(sheet0.getCell(7,i).getContents().replace(",", "")));
+				uo.setType(sheet0.getCell(3,i).getContents());
+				uo.setNum(Integer.parseInt(sheet0.getCell(4,i).getContents().replace(",", "")));
+				uo.setSalePrice(Double.parseDouble(sheet0.getCell(5,i).getContents().replace(",", "")));
 				uo.setFileName(srcFile.getName());
 				UploadOrders.add(uo);
 				uo = new UploadOrder();
@@ -163,6 +161,7 @@ public class XLSReader {
 			return uploadSalaryModelList;
 		}
 		
+		//读销售单
 		//读取指定位置的xls内容，并解析成UploadOrder对象进行返回(已经checked的uploadOrder对象)
 		public List<UploadOrder> readSalesXLS(String path,String fileName){
 			if(fileName == null || path == null){

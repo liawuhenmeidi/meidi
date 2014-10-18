@@ -197,7 +197,7 @@ public class UploadManager {
 	
 	public static boolean saveOrderList(List <UploadOrder> UploadOrders){
 		String sql = ""; 
-		sql = "insert ignore into uploadorder (id,name,salesman,shop,posno,saletime,dealtime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
+		sql = "insert ignore into uploadorder (id,name,salesman,shop,posno,saletime,type,num,saleprice,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
 		Connection conn = DB.getConn();
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -213,16 +213,14 @@ public class UploadManager {
 				pstmt.setString(3, uo.getShop());
 				pstmt.setString(4, uo.getPosNo());
 				pstmt.setString(5, uo.getSaleTime());
-				pstmt.setString(6, uo.getDealTime());
-				pstmt.setString(7, uo.getType());
-				pstmt.setInt(8, uo.getNum());
-				pstmt.setDouble(9, uo.getSalePrice());
-				pstmt.setDouble(10, uo.getBackPoint());
-				pstmt.setString(11, uo.getFileName());
-				pstmt.setString(12, fmt.format(new Date()));
-				pstmt.setInt(13, uo.getChecked());
-				pstmt.setString(14, uo.getCheckedTime());
-				pstmt.setInt(15, uo.getCheckOrderId());
+				pstmt.setString(6, uo.getType());
+				pstmt.setInt(7, uo.getNum());
+				pstmt.setDouble(8, uo.getSalePrice());
+				pstmt.setString(9, uo.getFileName());
+				pstmt.setString(10, fmt.format(new Date()));
+				pstmt.setInt(11, uo.getChecked());
+				pstmt.setString(12, uo.getCheckedTime());
+				pstmt.setInt(13, uo.getCheckOrderId());
 				pstmt.executeUpdate();
 				uo = new UploadOrder();
 			}		
@@ -291,11 +289,9 @@ public class UploadManager {
 				uo.setShop(rs.getString("shop"));
 				uo.setPosNo(rs.getString("posno"));
 				uo.setSaleTime(rs.getString("saletime"));
-				uo.setDealTime(rs.getString("dealtime"));
 				uo.setType(rs.getString("type"));
 				uo.setNum(rs.getInt("num"));
 				uo.setSalePrice(rs.getDouble("saleprice"));
-				uo.setBackPoint(rs.getDouble("backpoint"));
 				uo.setFileName(rs.getString("filename"));
 				uo.setChecked(rs.getInt("checked"));
 				uo.setCheckedTime(rs.getString("checkedtime"));
@@ -332,11 +328,9 @@ public class UploadManager {
 					uo.setPosNo("");
 				}
 				uo.setSaleTime(rs.getString("saletime"));
-				uo.setDealTime(rs.getString("dealtime"));
 				uo.setType(rs.getString("type"));
 				uo.setNum(rs.getInt("num"));
 				uo.setSalePrice(rs.getDouble("saleprice"));
-				uo.setBackPoint(rs.getDouble("backpoint"));
 				uo.setFileName(rs.getString("filename"));
 				uo.setChecked(rs.getInt("checked"));
 				uo.setCheckedTime(rs.getString("checkedtime"));
@@ -372,11 +366,9 @@ public class UploadManager {
 				uo.setShop(rs.getString("shop"));
 				uo.setPosNo(rs.getString("posno"));
 				uo.setSaleTime(rs.getString("saletime"));
-				uo.setDealTime(rs.getString("dealtime"));
 				uo.setType(rs.getString("type"));
 				uo.setNum(rs.getInt("num"));
 				uo.setSalePrice(rs.getDouble("saleprice"));
-				uo.setBackPoint(rs.getDouble("backpoint"));
 				uo.setFileName(rs.getString("filename"));
 				uo.setChecked(rs.getInt("checked"));
 				uo.setCheckedTime(rs.getString("checkedtime"));
@@ -537,11 +529,9 @@ public class UploadManager {
 					uo.setPosNo("");
 				}
 				uo.setSaleTime(rs.getString("saletime"));
-				uo.setDealTime(rs.getString("dealtime"));
 				uo.setType(rs.getString("type"));
 				uo.setNum(rs.getInt("num"));
 				uo.setSalePrice(rs.getDouble("saleprice"));
-				uo.setBackPoint(rs.getDouble("backpoint"));
 				uo.setFileName(rs.getString("filename"));
 				uo.setChecked(rs.getInt("checked"));
 				uo.setCheckedTime(rs.getString("checkedtime"));
@@ -613,11 +603,9 @@ public class UploadManager {
 					uo.setPosNo("");
 				}
 				uo.setSaleTime(rs.getString("saletime"));
-				uo.setDealTime(rs.getString("dealtime"));
 				uo.setType(rs.getString("type"));
 				uo.setNum(rs.getInt("num"));
 				uo.setSalePrice(rs.getDouble("saleprice"));
-				uo.setBackPoint(rs.getDouble("backpoint"));
 				uo.setFileName(rs.getString("filename"));
 				uo.setChecked(rs.getInt("checked"));
 				uo.setCheckedTime(rs.getString("checkedtime"));

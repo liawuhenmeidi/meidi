@@ -14,15 +14,11 @@ public class UploadOrder {
 	
 	private String saleTime = ""; //销售日期
 
-	private String dealTime = ""; //交货日期
-
 	private String type = ""; //票面型号
 
 	private int num = 0; //票面数量
 	
 	private Double salePrice = 0.0; //供价
-	
-	private Double backPoint = 0.0; //扣点
 	
 	private String fileName = ""; //来自的文件名
 	
@@ -54,14 +50,6 @@ public class UploadOrder {
 
 	public void setSaleTime(String saleTime) {
 		this.saleTime = saleTime;
-	}
-
-	public String getDealTime() {
-		return dealTime;
-	}
-
-	public void setDealTime(String dealTime) {
-		this.dealTime = dealTime;
 	}
 
 	public String getType() {
@@ -114,20 +102,11 @@ public class UploadOrder {
 		this.salePrice = salePrice;
 	}
 
-	public Double getBackPoint() {
-		return backPoint;
-	}
-
-	public void setBackPoint(Double backPoint) {
-		this.backPoint = backPoint;
-	}
-
 	@Override
 	public String toString() {
 		return "UploadOrder [shop=" + shop + ", posNo="
-				+ posNo + ", saleTime=" + saleTime + ", dealTime=" + dealTime
-				+ ", type=" + type + ", num=" + num + ", salePrice="
-				+ salePrice + ", backPoint=" + backPoint + ", fileName="
+				+ posNo + ", saleTime=" + saleTime + ", type=" + type + ", num=" + num + ", salePrice="
+				+ salePrice  + ", fileName="
 				+ fileName + ", checked=" + checked + ", checkedTime="
 				+ checkedTime + "]";
 	}
