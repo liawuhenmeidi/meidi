@@ -101,7 +101,7 @@ public class InventoryManager {
 	public static boolean save(User user,Inventory order) {
 	     boolean flag  = false ; 
 	     
-	     Map<Integer,Branch> branchmap = BranchManager.getNameMap();
+	     Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 	     List<String> sqls = new ArrayList<String>(); 
          int instatues = 0 ; 
          int outstatues = 0 ; 
