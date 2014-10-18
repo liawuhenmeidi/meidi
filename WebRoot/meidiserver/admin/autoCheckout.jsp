@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,order.*,orderproduct.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,order.*,orderproduct.*,branchtype.*,branch.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%
 	request.setCharacterEncoding("utf-8");
@@ -7,25 +7,49 @@
 	String[] auto = request.getParameterValues("auto");
 	String[] manual = request.getParameterValues("manual");
 	
+	//接受提交的单据，并check
 	if(auto != null && auto.length > 0 ){
 		MatchOrderManager.checkOrder(auto);
 		//MatchOrderManager.checkOrder(Integer.parseInt(dbSide), Integer.parseInt(uploadSide));
 	}
 	
+	//初始化要对比的orders
 	MatchOrder mo = new MatchOrder();
 	List<AfterMatchOrder> afterMatchOrders = new ArrayList<AfterMatchOrder>();
 	List <Order> unCheckedDBOrders = new ArrayList<Order>();
 	List <UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
 	
+	//显示内容的开关
 	boolean showContent = false;
 	String startButton = request.getParameter("start");
 	
+	//左侧select里面的内容
+	List<BranchType> listb = BranchTypeManager.getLocate();
+	Map<String,List<Branch>> map = BranchManager.getLocateMapBranch(); 
+	String mapjosn = StringUtill.GetJson(map);
+	
+	//右侧select里面的内容
 	List<UploadOrder> uploadOrders = UploadManager.getUnCheckedUploadOrders();
 	List<String> orderNames = UploadManager.getAllUploadOrderNames(uploadOrders);
 	
+	
+	//接受查询条件的提交
+	String branchType = request.getParameter("branchtype");
+	String branch = request.getParameter("branch");
+	String uploadOrderName = request.getParameter("uploadorder");
+	
+	if(uploadOrderName != null && !uploadOrderName.equals("")){
+		if(uploadOrderName.equals("all")){
+			unCheckedUploadOrders = uploadOrders;
+		}else{
+			unCheckedUploadOrders = UploadManager.getOrdersByName(uploadOrderName);
+		}
+	}
+	
 	if(startButton != null && startButton.equals("对比")){
 		showContent = true;
-		if(!mo.startMatch()){
+		if(false){
+		//if(!mo.startMatch()){
 			return;
 		}
 		//去自动匹配好的Order
@@ -56,6 +80,29 @@
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 
+var jsonmap = '<%=mapjosn%>';   
+ 
+$(function () {
+    var opt = { }; 
+    opt.date = {preset : 'date'};	  
+		  $("#branchtype").change(function(){
+			  $("#branch").html(""); 
+			  var num = ($("#branchtype").children('option:selected').val());
+			  var jsons =  $.parseJSON(jsonmap);
+		
+			  var json = jsons[num];
+			  //alert(json);
+	          var options = '<option value="all">全部</option>'; 
+	          for(var i=0; i<json.length; i++) 
+	        	 {
+	        	 options +=  "<option value='"+json[i].id+"'>"+json[i].locateName+"</option>";
+	        	 }
+	        	 $("#branch").html(options);    	  
+		  }); 
+		  
+		  
+		  
+ });
 
 </script>
 
@@ -64,13 +111,38 @@
 <jsp:param name="dmsn" value="" />
 </jsp:include>
 
-<form action="" method="post">
+
 <table  cellspacing="1" border="2px">
 		
-
+		<form action="" method="post">
 		<tr>
-			<td colspan="6" align="center"><h3>本地记录的订单</h3></td>
+			<td colspan="6" align="center">
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<h3>本地记录的订单</h3>
+			<select name="branchtype" id="branchtype" >
+          	<option value="all">全部</option> 
+          	<%
+			 for(int i=0;i<listb.size();i++){
+				 BranchType lo = listb.get(i); 
+				 if(lo.getId() != 2){ 
+			%>	    
+			<option value="<%=lo.getId()%>"><%=lo.getName()%></option>
+			<%
+				 }
+			 }
+			%>
+			</select>
+			
+			<select id="branch" name="branch">
+          	<option value="all">全部</option> 
+      		</select>
+			</td>
+			
+			
+			
 			<td align="center"><h3><input type="submit" name="start" value="对比" /></h3></td> 
+			
+			
 			<td colspan="6" align="center">
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<h3>上传的订单</h3>
@@ -87,8 +159,12 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="submit" value="显示"/>
 			</td>
+			
+			
 		</tr>
-
+		<form/>
+		
+		<form action="" method="post">
 		<tr>  
 
 			<td align="center">选中</td>
@@ -218,9 +294,9 @@
 		<%
 		}
 		%>
-		
+		</form>
 </table> 
-</form>
+
 
 </body>
 </html>

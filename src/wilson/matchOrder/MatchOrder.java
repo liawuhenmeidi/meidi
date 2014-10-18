@@ -16,13 +16,13 @@ public class MatchOrder {
 	List<AfterMatchOrder> matchedOrders = new ArrayList<AfterMatchOrder>();
 	
 	
-	public boolean startMatch(){
+	public boolean startMatch(List<UploadOrder> uploadOrders,List<Order> dbOrders){
 		boolean flag = false;
 		try{
 			//从上传列表取得需要匹配的Order
-			unMatchedUploadOrders = getUnCheckedUploadOrders();
+			unMatchedUploadOrders = uploadOrders;
 			//从数据库中取到需要匹配的Order
-			unMatchedDBOrders = getUnCheckedDBOrders();		
+			unMatchedDBOrders = dbOrders;		
 			matchOrder(unMatchedUploadOrders,unMatchedDBOrders);
 			flag = true;
 		}catch(Exception e){
