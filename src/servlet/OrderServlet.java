@@ -276,8 +276,10 @@ logger.info(message);
 					order.setSaleTime(saledate);
 			        order.setOdate(andate);
 			        order.setPos(POS);
+			        order.setSaleID(user.getId()); 
+			        order.setBranch(Integer.valueOf(user.getBranch())); 
 			        order.setSailId(sailId);
-			        order.setCheck(check);
+			        order.setCheck(check); 
 			     	order.setUsername(username);
 			     	order.setPhone1(phone1);
 			     	order.setPhone2(phone2);
@@ -296,7 +298,8 @@ logger.info(message);
 					Order oldorder = OrderManager.getOrderID(user,order.getId());
 					   
 					if(oldorder == null){ 
-			           order.setDeliveryStatues(devedity);  
+			           order.setDeliveryStatues(devedity); 
+			           order.setOderStatus(devedity+"");
 					}
 					
 		            if(bflag && bbflag && StringUtill.isNull(id)){

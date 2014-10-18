@@ -81,14 +81,16 @@ import database.DB;
 				 List<String> sqls = new ArrayList<String>();
 				 
 				 List<Gift> orders = orderr.getOrdergift();
-				 
-				for(int i=0;i<orders.size();i++){
-					Gift order = orders.get(i);
-					String sql = "insert into  mdordergift(id, orderid ,giftName,count,statues)" +
-		                         "  values ( null, "+id+", '"+order.getName()+"', "+order.getCount()+","+order.getStatues()+")";
-                    sqls.add(sql);
-					
-			   }
+				 if(null != orders){
+					 
+					for(int i=0;i<orders.size();i++){
+						Gift order = orders.get(i);
+						String sql = "insert into  mdordergift(id, orderid ,giftName,count,statues)" +
+			                         "  values ( null, "+id+", '"+order.getName()+"', "+order.getCount()+","+order.getStatues()+")";
+	                    sqls.add(sql);
+						
+				   } 
+				 }
 				return sqls ;
 		   }
 			 

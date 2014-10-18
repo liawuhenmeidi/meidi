@@ -208,7 +208,7 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type)
 			return ;
 			} 
 		}
-	
+
 		if(<%=OrderPrintln.salereleaseanzhuang%> == type || <%=OrderPrintln.salereleasesonghuo%> == type
 			|| <%=OrderPrintln.release%> == type || <%=OrderPrintln.releasedispatch%> == type && 2 == Returnstatuse || 0 == type)
 		   {
@@ -585,9 +585,9 @@ function adddetail(src){
                                                           安装公司处理中
               <%
                 }else if(huanhuo == 0){
-              %>
-              <input type="button" onclick="changes('<%=huanhuoObject.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=huanhuo%>','','')"  value="打印"/>
-			  <input type="button" onclick="changes('<%=huanhuoObject.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=huanhuo %>','','')"  value="确定"/>  
+              %> 
+              <input type="button" onclick="changes('<%=huanhuoObject.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=huanhuo%>','-1','-1')"  value="同意"/>
+			  <input type="button" onclick="changes('<%=huanhuoObject.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=huanhuo %>','-1','-1')"  value="不同意"/>  
 						
               <%
                }

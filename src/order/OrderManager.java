@@ -679,15 +679,14 @@ public static void updateSendstat(int statues,int sid, int oid) {
 	     sqls.addAll(sqlp);
 	     sqls.addAll(sqlg);
 	     
-	    order.setSaleID(user.getId());
 	    String sql = "insert into  mdorder ( id ,andate , saledate ,pos, username, locates" +
 				", locateDetail, saleID , printSatues ,oderStatus,sailId,checked,phone1,phone2,remark,"+
 	    		"deliveryStatues,orderbranch,sendId,statues1,statues2,statues3,dealSendid,submittime,printlnid,dayremark,dayID,phoneRemark,sailIdremark,checkedremark,posRemark) values "+  
 				"( "+maxid+", '"+order.getOdate()+"', '"+order.getSaleTime()+"', '"+order.getPos()+"', '"+order.getUsername()+"', '" 
-	    		+order.getLocate()+"', '"+order.getLocateDetail()+"',"+order.getSaleID()+", "+order.getPrintSatues()    
-	    		+", "+user.getId()+", '"+order.getSailId()+"', '"+order.getCheck()+"', '"+order.getPhone1()+"','"+order.getPhone2()+"','"+order.getRemark()+"',"+order.getDeliveryStatues()+",'"+user.getBranch()+"',0,0,0,0,"+order.getDealsendId()+",'"+order.getSubmitTime()+"','"+order.getPrintlnid()+"-"+daymarkk+"',"+daymark+","+dayID+","+order.getPhoneRemark()+","+order.getSailidrecked()+","+order.getReckedremark()+","+order.getPosremark()+")";   
+	    		+order.getLocate()+"', '"+order.getLocateDetail()+"',"+order.getOderStatus()+", "+order.getPrintSatues()    
+	    		+", "+order.getSaleID()+", '"+order.getSailId()+"', '"+order.getCheck()+"', '"+order.getPhone1()+"','"+order.getPhone2()+"','"+order.getRemark()+"',"+order.getDeliveryStatues()+",'"+order.getBranch()+"',0,0,0,0,"+order.getDealsendId()+",'"+order.getSubmitTime()+"','"+order.getPrintlnid()+"-"+daymarkk+"',"+daymark+","+dayID+","+order.getPhoneRemark()+","+order.getSailidrecked()+","+order.getReckedremark()+","+order.getPosremark()+")";   
 	    sqls.add(sql);
-	          
+	    logger.info(sql);       
 	    Connection conn = DB.getConn();   
 		  
 	    Statement sm = null;  
@@ -1949,6 +1948,7 @@ logger.info(sql);
 		    p.setReckedremark(rs.getInt("checkedremark")); 
 		    p.setStatuesinstall(rs.getInt("statuesinstall"));
 		    p.setReturnid(rs.getInt("returnid")); 
+		    p.setSubmitTime(rs.getString("submitTime"));
 		    p.setReturnstatuse(rs.getInt("returnstatues"));
 		    p.setReturntime(rs.getString("returntime"));  
 		    p.setReturnprintstatues(rs.getInt("returnprintstatues")); 
@@ -1956,6 +1956,7 @@ logger.info(sql);
 		    p.setPrintdingma(rs.getInt("printdingma"));  
 		    p.setDealSendTime(rs.getString("dealsendTime"));
 		    p.setWenyuancallback(rs.getInt("wenyuancallback"));
+		    p.setOderStatus(rs.getString("oderStatus"));
 		   // p.setImagerUrl(rs.getString("imagerUrl")); 
 		} catch (SQLException e) {  
 			e.printStackTrace();

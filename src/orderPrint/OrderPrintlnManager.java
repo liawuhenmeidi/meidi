@@ -83,33 +83,35 @@ logger.info(pstmt);
 						Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 						
 					    List<OrderProduct> listp = OrPMap.get(oid);
-					    List<Gift> listg = gMap.get(Integer.valueOf(id));
+					    List<Gift> listg = gMap.get(Integer.valueOf(oid)); 
 						Order order = new Order();
 						order.setId(0);
-						order.setSaleTime(order.getSaleTime());
-				        order.setOdate(order.getOdate());
-				        order.setPos(order.getPos());
-				        order.setSailId(order.getSailId());
-				        order.setCheck(order.getCheck());
-				     	order.setUsername(order.getUsername());
-				     	order.setPhone1(order.getPhone1());
-				     	order.setLocate(order.getLocate());
-				        order.setLocateDetail(order.getLocateDetail()); 
-				        order.setRemark(order.getRemark());
-				        
+						order.setSaleTime(oldOrder.getSaleTime());
+				        order.setOdate(oldOrder.getOdate());
+				        order.setPos(oldOrder.getPos());
+				        logger.info(oldOrder.getSaleID());
+				        order.setSaleID(oldOrder.getSaleID()); 
+				        order.setBranch(oldOrder.getBranch());
+				        order.setSailId(oldOrder.getSailId());
+				        order.setCheck(oldOrder.getCheck());
+				     	order.setUsername(oldOrder.getUsername());
+				     	order.setPhone1(oldOrder.getPhone1());
+				     	order.setLocate(oldOrder.getLocate());
+				        order.setLocateDetail(oldOrder.getLocateDetail()); 
+				        order.setRemark(oldOrder.getRemark());
+				        order.setOderStatus(oldOrder.getOderStatus());
 						order.setOrderproduct(listp);
 						order.setOrdergift(listg); 
-						order.setSubmitTime(order.getSubmitTime());
+						order.setSubmitTime(oldOrder.getSubmitTime());
+
 						order.setPrintlnid(TimeUtill.getdatesimple());  
-						order.setDeliveryStatues(order.getDeliveryStatues());
-						order.setPhoneRemark(order.getPhoneRemark()); 
-						order.setPosremark(order.getPosremark());
-						order.setReckedremark(order.getReckedremark());
-						order.setSailidrecked(order.getSailidrecked());
+						order.setDeliveryStatues(oldOrder.getDeliveryStatues());
+						order.setPhoneRemark(oldOrder.getPhoneRemark()); 
+						order.setPosremark(oldOrder.getPosremark());
+						order.setReckedremark(oldOrder.getReckedremark());
+						order.setSailidrecked(oldOrder.getSailidrecked());
 						OrderManager.save(user, order);  
-						
-						
-						
+
 					}  
 					return true ;
 				} catch (SQLException e) {

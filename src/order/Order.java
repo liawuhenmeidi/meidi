@@ -163,9 +163,17 @@ public class Order {
   
   private String imagerUrl ; 
   
-
+  private String oderStatus ;//  初始送货状态
   
-  public String getImagerUrl() {
+  public String getOderStatus() {
+	return oderStatus;
+}
+
+public void setOderStatus(String oderStatus) {
+	this.oderStatus = oderStatus;
+}
+
+public String getImagerUrl() {
 	return imagerUrl;
 }
 
