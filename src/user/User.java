@@ -9,6 +9,7 @@ public class User {
 
    private String entryTime;
    private String branch ; //  所属部门
+   private String branchName;
    private String positions ; //  职位
    private int usertype; //   所属的组   组的编号    // 系统默认2  为主管组
    private String products;
@@ -19,7 +20,13 @@ public class User {
    
    private String location ; 
    
-    public String getLocation() {
+    public String getBranchName() {
+	return branchName;
+}
+public void setBranchName(String branchName) {
+	this.branchName = branchName;
+}
+	public String getLocation() {
 	return location;
 }
 public void setLocation(String location) {

@@ -166,7 +166,7 @@ function change(str1,oid,type,statues,types){
 		alert("请选择送货员");
 		return ;
 	}
-	alert(statues == 0);
+	
 	if(0 == statues){   
 		alert("您已提交驳回申请，不能派工");
 	}else {  

@@ -35,13 +35,13 @@ width:50px
     padding:0;
 }
 #table{  
-    width:2300px;
+    width:2400px;
      table-layout:fixed ;
 }
 #th{
     background-color:white;
     position:absolute;
-    width:2300px; 
+    width:2400px; 
     height:30px;
     top:0;
     left:0; 
@@ -272,6 +272,7 @@ function orderPrint(id,statues){
 			<td align="center">打印</td> 
 			
 			<td align="center">备注</td>
+			<td align="center">是否收到公司送货安装结款</td>
 			<td align="center">送货人员</td>
 			<td align="center">送货时间</td>
 			<td align="center">送货是否已结款</td>
@@ -364,7 +365,11 @@ function orderPrint(id,statues){
         <td align="center">   
 		    <%=o.getRemark() %>
 		</td>
- 
+        <td align="center"> 
+		<%=o.getStatues4() == 1 ?"是":"否"
+		 %>
+		
+		</td>
 		<td align="center"> 
 		<% if(o.getSendId() != 0){
 			if(usermap.get(Integer.valueOf(o.getSendId())) != null){

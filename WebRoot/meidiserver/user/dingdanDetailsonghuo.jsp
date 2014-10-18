@@ -117,11 +117,10 @@ function winconfirm(str){
 
 function change(str1,str2,type){
 		var uid = $("#"+str1).val(); 
-		//alert(uid);
 		$.ajax({  
 	        type: "post",   
 	         url: "server.jsp", 
-	         data:"method=songhuo&id="+str2+"&uid="+uid+"&type="+type,
+	         data:"method=songhuo&id="+str2+"&statues="+uid+"&type="+type,
 	         dataType: "",  
 	         success: function (date) {
 	        	

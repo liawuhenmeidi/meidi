@@ -53,7 +53,7 @@ function changes(id,name,statues){
 
 <div class="table-list">
 
-<table width="100%" cellspacing="0">
+<table width="100%" cellspacing="0" id="table">
 	<thead>
 		<tr>
 
@@ -74,13 +74,13 @@ function changes(id,name,statues){
 	
 	 
 %>
-    <tr>
+    <tr class="asc">
 
 		<td align="left"><%=u.getUsername() %></td>
 		<td align="left"><%= u.getPhone()%></td>
 		<td align="left"><%=map.get(u.getUsertype()).getName() %></td>
 		<td align="left"><%=u.getCharge()==null?"暂无主管":u.getCharge()%></td>
-		<td align="left"><%=u.getBranch() %></td>
+		<td align="left"><%=u.getBranchName() %></td>
 		<td align="left">
 		 <%
 		   if(0 == u.getStatues()){
@@ -102,6 +102,8 @@ function changes(id,name,statues){
 
     </tr>
     <% } %>
+    </tbody>
+    </table>
 </div>  
      
      

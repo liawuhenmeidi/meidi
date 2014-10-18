@@ -54,10 +54,12 @@ function search(type){
      </tr>
     
   </table>  
-  <table style="color:;font-size:12px;">
+  <br>
+  <table width="100%" style="color:;font-size:15px;">
      <tr> 
-          <td><span  id="<%=Order.serach%>" onclick="search('<%=Order.serach%>')">待派送安装</span>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
-          <td><span  id="<%=Order.orderDispatching%>" onclick="search('<%=Order.orderDispatching%>')">已派送</span>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+          <td><span  id="<%=Order.serach%>" onclick="search('<%=Order.serach%>')">未完成</span>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+          <td><span  id="<%=Order.come%>" onclick="search('<%=Order.come%>')">顾客自提</span>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
+          <td><span  id="<%=Order.orderDispatching%>" onclick="search('<%=Order.orderDispatching%>')">已送货</span>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
           <td><span  id="<%=Order.over%>" onclick="search('<%=Order.over%>')">已安装</span>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
           <td><span  id="<%=Order.returns%>" onclick="search('<%=Order.returns%>')">退货</span></td>
      </tr>
@@ -93,7 +95,7 @@ function search(type){
 			     for(int g = 0 ;g<lists.size();g++){
 			    	 OrderProduct op = lists.get(g);
 	                 if(op.getStatues() != 1 ){
-	                    
+	                 
 			    	 %> 
 			    	 <tr>
 			    	 <td ><%=categorymap.get(Integer.valueOf(op.getCategoryId())).getName()%> </td>

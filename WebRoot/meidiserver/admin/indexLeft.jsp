@@ -180,7 +180,6 @@ User user = (User)session.getAttribute("user");
               <p ><a href="dispatch/dingdan_chargep.jsp"  target="contentpage">送货结款</a></p> 
               <p ><a href="dispatch/dingdan_charge.jsp"  target="contentpage">安装结款</a></p> 
                <p ><a href="dispatch/dingdan_chargeall.jsp"  target="contentpage">送货安装结款</a></p>  
-              <p ><a href="dispatch/dingdanpeidan2s.jsp"  target="contentpage">安装网点查询</a></p>
             </div>        
           </li> 
 

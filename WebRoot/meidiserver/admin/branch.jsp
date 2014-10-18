@@ -143,7 +143,7 @@ if(list != null){
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)" ondblclick="branch('<%= category.getId()%>')"> 
         
 	    <td align="left">
-	    	<% if(category.getId() != 1){%>
+	    	<% if(category.getId() != 1 && category.getId() != 2){%>
 	    <input type="checkbox" value="1" name="<%=category.getId() %>"></input>
 	    <% }%>
 	    </td> 

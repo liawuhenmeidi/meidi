@@ -208,10 +208,13 @@ function searchlocate(id){
 }
 
 function checkedd(){
+	// window.opener.document.getElementById("refresh").value ="refresh";
 	//parent.location.reload(); 
-	window.returnValue='refresh'; 
+	//window.returnValue='refresh'; 
 	//window.close();
 	//window.oper.reload();
+	 window.opener.location.reload();
+	
 }
 
 </script>
@@ -334,10 +337,6 @@ function checkedd(){
 			   <%
 			   } 
 			   %>
-			
-			
-			
-  
 			</td>
 		
 		    <td align="center">票面型号</td> 
@@ -456,8 +455,12 @@ function checkedd(){
 					<%
 					 for(int i=0;i<listl.size();i++){
 						 Locate lo = listl.get(i);
+						 String str = "";
+						 if(o.getLocate() == lo.getLocateName()){
+							 str = "selected=\"selected\"";
+						 }
 					%>	
-					 <option value="<%=lo.getLocateName()%>"><%=lo.getLocateName()%></option>
+					 <option value="<%=lo.getLocateName()%>" <%=str %>><%=lo.getLocateName()%></option>
 		<%
 		 } 
 		%>

@@ -179,6 +179,7 @@ function addImage(src){
 
 function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type){
 	//alert(dealsendid); 
+	
 	if( 2 == conmited ){         
 		if(type == '<%=OrderPrintln.releasemodfy %>' || type == '<%=OrderPrintln.releasedispatch %>'){
 			if(Returnstatuse != 2 ){         
@@ -209,7 +210,7 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type)
 		}
 	
 		if(<%=OrderPrintln.salereleaseanzhuang%> == type || <%=OrderPrintln.salereleasesonghuo%> == type
-			|| <%=OrderPrintln.release%> == type || <%=OrderPrintln.releasedispatch%> == type && 2 == Returnstatuse)
+			|| <%=OrderPrintln.release%> == type || <%=OrderPrintln.releasedispatch%> == type && 2 == Returnstatuse || 0 == type)
 		   {
 		    question = confirm("请先打印");
 		
@@ -278,9 +279,6 @@ function adddetail(src){
 	//window.location.href=src ;
 	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
-	if(winPar == "refresh"){
-	       window.location.reload();
-    }
 
 }
 
@@ -415,10 +413,11 @@ function adddetail(src){
 			    int release	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.release, o.getId());
 			    int salereleaseanzhuang	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.salereleaseanzhuang, o.getId());
 			    int releasemodfy	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasemodfy, o.getId());
-			    
+			    int type = -1 ;
 			    if(release != -1){  
 			    	totalshifang = release ;
 			    	orp = opmap.get(OrderPrintln.release).get(o.getId()); 
+			    	
 			    } 
 			    if(salereleasesonghuo != -1){
 			    	totalshifang = salereleasesonghuo ;
@@ -485,7 +484,7 @@ function adddetail(src){
 				
 				<td align="center"> 
 				<%    
-				    if(modify == -1 && returns == -1 ){
+				    if(modify == -1 && returns == -1 || modify == 0){
 						 if(totalshifang == 2){ 
 					    	 %> 
 					    	  <%=orp== null ?"":orp.getMessage()  %>
@@ -497,6 +496,7 @@ function adddetail(src){
 							 <p>驳回申请已拒绝</p> 
 						    <%
 							}else if(totalshifang != -1){
+								
 						 %> 
 					  
 					 <%=orp== null ?"":orp.getMessage() %> 
@@ -529,7 +529,7 @@ function adddetail(src){
 				   安装公司处理中 
 				 <%}else if(releasemodfy == 2 || totalshifang == 2){  
 				 %>
-				 <input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.modify %>')"  value="同意"/>
+				 <input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','-1')"  value="同意"/>
 			      
 				<%}else if(releasemodfy == -1){ %> 
 				<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.releasemodfy %>')"  value="同意"/>

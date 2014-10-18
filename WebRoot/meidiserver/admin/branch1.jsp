@@ -139,7 +139,10 @@ if(list != null){
 	  int count =map.get(category.getId()+"")==null?0:map.get(category.getId()+"").size();
 %>     
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)" ondblclick="update('<%= category.getId()%>','<%=category.getId()%>')" >  
-		<td align="left"><input type="checkbox" value="1" name="<%=category.getId() %>"></input></td> 
+		<td align="left">
+		<% if(category.getPid() != 2){ %>
+		<input type="checkbox" value="1" name="<%=category.getId() %>"></input>
+		<% }%></td> 
 		<td align="left"><%=i+1 %></td>   
  		<td align="left"><%=category.getLocateName() %></td> 
  		<td align="left"><%=count%></td>

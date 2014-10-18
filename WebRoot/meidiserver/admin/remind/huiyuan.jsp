@@ -44,16 +44,13 @@ function changes(id,name,statues){
 <body>
 <!--   头部开始   -->
 
-
-<!--   头部结束   -->
-
 <div class="main">
 
 <div class="">
 
 <div class="table-list">
 
-<table width="100%" cellspacing="0">
+<table width="100%" cellspacing="0" id="table"> 
 	<thead>
 		<tr>
 
@@ -67,20 +64,19 @@ function changes(id,name,statues){
 			<!--  <th align="left">修改</th> -->
 		</tr>
 	</thead>
-<tbody>
 <% 
   for(int i =0 ;i<ulist.size();i++){
 	 User u = ulist.get(i) ;
 	
 	 
 %>
-    <tr>
+    <tr class="asc">
 
 		<td align="left"><%=u.getUsername() %></td>
 		<td align="left"><%= u.getPhone()%></td>
 		<td align="left"><%=map.get(u.getUsertype()).getName() %></td>
 		<td align="left"><%=u.getCharge()==null?"暂无主管":u.getCharge()%></td>
-		<td align="left"><%=u.getBranch() %></td>
+		<td align="left"><%=u.getBranchName() %></td>
 		<td align="left">
 		 <%
 		   if(0 == u.getStatues()){
@@ -102,10 +98,11 @@ function changes(id,name,statues){
 
     </tr>
     <% } %>
+    </table>
 </div>  
      
      
-     </div>
+ </div>
 
 
 </div>

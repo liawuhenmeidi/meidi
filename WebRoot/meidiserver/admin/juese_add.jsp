@@ -45,7 +45,7 @@ if("add".equals(action)){
     group.setPid(Integer.valueOf(pid)); 
     group.setPtype(Integer.valueOf(ptype)); 
     GroupManager.save(user, group);  
-    response.sendRedirect("juese.jsp?ptype="+ptype);
+    response.sendRedirect("juese.jsp?ptype="+ptype+"&type="+type);
     return ;
 }
 
@@ -207,8 +207,11 @@ $(function () {
        
         <li><input type="checkbox" value="2" name = "permission" id="p2" checked="checked" onClick="return false"  />&nbsp;送货权限</li>
       <%
-         }else { %>
+         }else { 
+             listg = GroupService.getList();
          
+         %>
+       
          <li><input type="checkbox" value="1" name = "permission" id="p1" />&nbsp;提交报装单</li>
         <li><input type="checkbox" value="4" name = "permission" id="p4" />&nbsp;管理产品权限</li>
         <li><input type="checkbox" value="3" name = "permission" id="p3" />&nbsp;管理用户权限</li>

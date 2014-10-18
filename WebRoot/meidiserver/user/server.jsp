@@ -34,7 +34,7 @@ if("songhuo".equals(method)){
 	String id = request.getParameter("oid");
 	String pGroupId = request.getParameter("pGroupId");
 	String opstatues = request.getParameter("opstatues");
-	System.out.println("*************"+id+"****"+opstatues); 
+	System.out.println("*************"+id+"****"+opstatues);  
 	//OrderManager.updateSendstad(user, id);  
 	OrderPrintln  or = new OrderPrintln(); 
 	or.setOrderid(Integer.valueOf(id));

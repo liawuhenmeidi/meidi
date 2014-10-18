@@ -29,7 +29,7 @@ var delivery = "<%=delivery%>";
 var imageflag = 1 ;
 function updateOeder(){ 
 	if(1 == canupdate){
-	   if(delivery == 0 ){
+	   if(delivery == 0){
 	   $.ajax({   
 	        type:"post",  
 	         url:"server.jsp",

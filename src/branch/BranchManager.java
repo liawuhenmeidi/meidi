@@ -251,7 +251,7 @@ public class BranchManager {
 			return map;
 		}
 		
-		public static Map<Integer,Branch> getNameMap() {
+		public static Map<Integer,Branch> getIdMap() {
 			Map<Integer,Branch> map = new HashMap<Integer,Branch>();
 			Connection conn = DB.getConn(); 
 			String sql = "select * from mdbranch ";
@@ -261,6 +261,27 @@ public class BranchManager {
 				while (rs.next()) { 
 					Branch branch = getBranchFromRs(rs); 
 					map.put(branch.getId(),branch);   
+				}   
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			} 
+			return map;
+		}
+		
+		public static Map<String,Branch> getNameMap() {
+			Map<String,Branch> map = new HashMap<String,Branch>();
+			Connection conn = DB.getConn(); 
+			String sql = "select * from mdbranch ";
+			Statement stmt = DB.getStatement(conn); 
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {  
+				while (rs.next()) { 
+					Branch branch = getBranchFromRs(rs); 
+					map.put(branch.getLocateName(),branch);   
 				}   
 			} catch (SQLException e) {
 				e.printStackTrace();

@@ -118,14 +118,16 @@ function add(){
 	         data:"method=inventoryall&branch="+branch+"&category="+category+"&product="+product,
 	         dataType: "",   
 	         success: function (data) { 
-	        	 var addstr = '<tr class="asc"> '+
-	        	    
-	        	     ' <td>产品类别</td>'+
-	        	     ' <td>产品型号</td> '+
-	        	     ' <td>账面库存数量</td>'+
-	        	     ' <td>实际库存数量</td> ' +
-	        	     ' <td>盘点</td> ' + 
-	        	    ' </tr>';
+	        	 var addstr =  '<thead>'+ 
+	     		  '<tr>'+
+	        		'<th align="left">产品类别</th>'+
+	     			'<th align="left">产品型号</th>'+
+	     			'<th align="left">账面库存数量</th>'+
+	     			'<th align="left">实际库存数量</th>'+
+	     			'<th align="left">盘点</th>'+ 
+	     		  '</tr>'+
+	     			'</thead> ';
+	        	
 	        	 var json =  $.parseJSON(data);
 	        	
 	        	 for(var i=0;i<json.length;i++){
@@ -209,8 +211,9 @@ function add(){
 	   }
 	   %>
 	  </select>
-	  
+	  <br/>
 	   <input type="button" name="" value="查询" onclick="add()"/>   
+	   <br/>
 <%
 	   }  
        }

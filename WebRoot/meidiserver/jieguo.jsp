@@ -6,7 +6,6 @@
  
  String type = request.getParameter("type");
   
- 
 %>
 
 

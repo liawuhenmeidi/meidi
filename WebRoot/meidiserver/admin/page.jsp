@@ -37,15 +37,15 @@ if(Order.orderDispatching == type){
 }else if(Order.serach == type){
 	message = "查看订单页";  
 }else if( Order.porderDispatching== type){ 
-	message = "工长派工"; 
+	message = "网店派工"; 
 }else if( Order.pinstall== type){ 
 	message = "安装派工"; 
 }else if( Order.pinstallprintln== type){ 
 	message = "安装打印"; 
 }else if(Order.pserach == type){
-	message = "工长查询"; 
+	message = "网店查询"; 
 }else if(Order.porderPrint == type){
-	message = "工长打印";  
+	message = "网店打印";  
 }else if(Order.callback == type){
 	message = "客户回访";  
 }else if(Order.pcharge == type){

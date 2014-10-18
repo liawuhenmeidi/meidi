@@ -18,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 
 import utill.StringUtill;
 import branch.Branch;
+import branch.BranchService;
 import database.DB;
     
 public class UserManager {   
@@ -852,14 +853,18 @@ logger.info(username);
 	private static User getUserFromRs(ResultSet rs){
 		User u = new User();
 		try {
+			String branch = rs.getString("branch");
 			u.setId(rs.getInt("id"));
 			u.setUsername(rs.getString("username"));
 			u.setNickusername((rs.getString("nickusername")));
 			u.setUserpassword(rs.getString("userpassword"));
 			u.setUsertype((rs.getInt("Usertype")));
 			u.setProducts(rs.getString("products"));
-			u.setEntryTime(rs.getString("entryTime"));
-			u.setBranch(rs.getString("branch"));
+			u.setEntryTime(rs.getString("entryTime")); 
+			u.setBranch(branch);
+			if( null != BranchService.getMap() && null != BranchService.getMap().get(Integer.valueOf(branch))){
+				u.setBranchName(BranchService.getMap().get(Integer.valueOf(branch)).getLocateName());
+			}
 			u.setPositions(rs.getString("Positions"));
 			u.setPhone(rs.getString("phone"));
 			u.setStatues(rs.getInt("statues"));

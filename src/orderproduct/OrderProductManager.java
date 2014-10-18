@@ -21,6 +21,7 @@ import product.ProductService;
 
 import servlet.OrderServlet;
 import user.User;
+import utill.NumbleUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
 import database.DB;
@@ -51,9 +52,12 @@ public class OrderProductManager {
 	protected static Log logger = LogFactory.getLog(OrderProductManager.class);
 	 
 	   public static int updateOrderStatues(User user, String categoryid ,String type ,String count ,String oid){
-		   int statues = -1 ;
+		   int statues = -1 ; 
 		   if(user.getUsertype() == 2  || user.getUsertype() == 1){
 			   Connection conn = DB.getConn();  
+			   if(!NumbleUtill.isNumeric(type)){
+				   type = ProductService.gettypemap().get(type).getId()+"";
+			   }
 				String sql = "update mdorderproduct set saletype = '"+ type + "' , categoryID = "+categoryid+"  , count = "+count + " where orderid = " + oid + " and statues = 1 ";
 				logger.info(sql);     
 				PreparedStatement pstmt = DB.prepare(conn, sql);
