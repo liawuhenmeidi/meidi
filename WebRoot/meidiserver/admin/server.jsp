@@ -42,7 +42,7 @@ if("peidan".equals(method)){
 	response.getWriter().write(""+flag); 
 	response.getWriter().flush(); 
 	response.getWriter().close(); 
-}else if("dealshifang".equals(method)){  
+}else if("dealshifang".equals(method)){   
 	String statues = request.getParameter("statues"); 
 	String oid = request.getParameter("oid"); 
 	String uid = request.getParameter("uid"); 
@@ -256,9 +256,9 @@ if("peidan".equals(method)){
 	    		listp = new InventoryAll();
 	    		Category c = CategoryManager.getCategory(categoryid+"");
 	    		listp.setCategoryid(c.getId());  
-	    		listp.setCateoryName(c.getName());
+	    		listp.setCateoryName(c.getName());  
 	    		listp.setTypeid(inb.getTypeid());
-	    		listp.setPapercount(inb.getPapercount()); 
+	    		listp.setPapercount(inb.getPapercount());   
 	    		listp.setRealcount(inb.getRealcount());  
 	    		//System.out.println(inb.getPapercount()+"***"+inb.getRealcount());
 	    		map.put(categoryid, listp); 

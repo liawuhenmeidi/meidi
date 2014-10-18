@@ -2,11 +2,11 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
- 
+  
 String category = request.getParameter("category");
    
-Category c = CategoryManager.getCategory(category);     
-Map<Integer,Branch> branchmap = BranchManager.getNameMap();
+Category c = CategoryManager.getCategory(category);      
+Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 Map<String,Branch> newbranchmap = new HashMap<String,Branch>();
 if(branchmap != null){
 	Set<Integer> key = branchmap.keySet();

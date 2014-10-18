@@ -2,7 +2,7 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
-
+ 
 String category = request.getParameter("category"); 
 String branchid = request.getParameter("branchid");
 
@@ -16,11 +16,11 @@ Category c = CategoryManager.getCategory(category);
 
 List<Product> listp = ProductManager.getProduct(category);
 
-  
+   
 List<Branch> listbranch = BranchManager.getLocate(); 
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
   
-
+ 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
 
@@ -209,7 +209,7 @@ function add(){
 	   <% 
 		   }    
 	   }
-	   %>
+	   %> 
 	  </select>
 	  <br/>
 	   <input type="button" name="" value="查询" onclick="add()"/>   
