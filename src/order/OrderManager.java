@@ -14,7 +14,9 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -162,6 +164,22 @@ logger.info(pstmt);
 		
 		
 		return str ;
+		
+		
+	}
+	
+	
+	public static Map<String,String> getDeliveryStatuesMap(){
+		Map<String,String> map = new HashMap<String,String>();
+		map.put(0+"", "未发货");
+		map.put(1+"", "已送货");
+		map.put(8+"", "已自提 ");
+		map.put(9+"", "只安装(门店提货)");
+		map.put(10+"", "只安装(顾客已提) ");
+	
+		
+		
+		return map ;
 		
 		
 	}

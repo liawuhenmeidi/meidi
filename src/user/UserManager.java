@@ -693,6 +693,28 @@ logger.info(sql);
 			return users;
 	   }
 	   
+	   public static HashMap<String,User> getMap(String str){
+		   HashMap<String,User> users = new HashMap<String,User>();
+			Connection conn = DB.getConn();  
+			String sql = "select * from  mduser";
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) { 
+					User u = UserManager.getUserFromRs(rs);
+					users.put(u.getId()+"", u);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return users;
+	   }
+	   
+	   
 	   /**
 	    * by wilsonlee
 	    * get static user map

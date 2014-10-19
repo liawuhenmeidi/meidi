@@ -2,7 +2,7 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");  
-String ctype = request.getParameter("ctype");
+String ctype = request.getParameter("ctype"); 
 String branchid = request.getParameter("branchid");
 String endtime = request.getParameter("endtime");
 endtime = TimeUtill.dataAdd(endtime,1); 
@@ -15,7 +15,7 @@ if(!StringUtill.isNull(branchid)){
 }
 
 String strbranch = b.getLocateName();
-Map<Integer,Branch> branchmap = BranchManager.getNameMap();
+Map<Integer,Branch> branchmap = BranchManager.getIdMap(); 
 Map<String,Branch> newbranchmap = new HashMap<String,Branch>();
 if(branchmap != null){
 	Set<Integer> key = branchmap.keySet();

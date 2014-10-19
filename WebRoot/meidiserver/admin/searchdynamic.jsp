@@ -9,13 +9,13 @@ String numb = request.getParameter("numb");
 String sort = request.getParameter("sort");   
 String searched = request.getParameter("searched");
 String sear = (String)session.getAttribute("sear"); 
- 
+  
 if(StringUtill.isNull(sear)){
 	sear = "";   
 }
 
 if(StringUtill.isNull(sort)){
-	sort = "id desc";   
+	sort = "submittime desc";   
 }
 
 if(StringUtill.isNull(numb)){

@@ -71,7 +71,7 @@ body{BACKGROUND-IMAGE: white;background-repeat:no-repeat";  }
 <br/>  
  <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>   
 <div id="wrap">
-
+ 
 <form  action="server.jsp"  method ="post"  id="form"   onsubmit="return checkedd()"  >
 <table  cellspacing="1"  id="table" style="background-color:black" > 
        <%  

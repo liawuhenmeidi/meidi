@@ -77,6 +77,14 @@ logger.info(pstmt);
 						or.setpGroupId(o.getpGroupId());  
 						OrderPrintlnManager.save(or); 
 						
+						OrderPrintln  or1 = new OrderPrintln(); 
+						or1.setOrderid(Integer.valueOf(oid));
+					    or1.setMessage(o.getMessage());  
+						or1.setStatues(0); 
+						or1.setType(OrderPrintln.returns);     
+						or1.setpGroupId(o.getpGroupId());  
+						OrderPrintlnManager.save(or1); 
+						
 						Order oldOrder = OrderManager.getOrderID(user, oid);
 						 
 						Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
@@ -105,7 +113,7 @@ logger.info(pstmt);
 						order.setSubmitTime(oldOrder.getSubmitTime());
 
 						order.setPrintlnid(TimeUtill.getdatesimple());  
-						order.setDeliveryStatues(oldOrder.getDeliveryStatues());
+						order.setDeliveryStatues(Integer.valueOf(oldOrder.getOderStatus())); 
 						order.setPhoneRemark(oldOrder.getPhoneRemark()); 
 						order.setPosremark(oldOrder.getPosremark());
 						order.setReckedremark(oldOrder.getReckedremark());

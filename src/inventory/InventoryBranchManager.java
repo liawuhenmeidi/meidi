@@ -183,13 +183,12 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		List<OrderProduct> listp = OrderProductManager.getOrderStatues(user, Integer.valueOf(oid)); 
 		logger.info("uid****"+uid);
 	    String time = TimeUtill.gettime();
+	    Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 	    for(int i=0;i<listp.size();i++){      
 	    	OrderProduct or = listp.get(i);
 	    	if(or.getStatues() == 0){     
 		    	if(or.getSalestatues() == 2 || or.getSalestatues() == 3 || or.getSalestatues() == 0 ){     
-		    		Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 		    		uid = order.getSaleID(); 
-		    		logger.info("uid****"+uid);
 		    	} 
 		    	User u = UserManager.getUesrByID(uid+"");
 		    	//Branch branch = BranchManager.getLocatebyname(u.getBranch());
@@ -197,45 +196,42 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		    	String sqlnew = "";  
 	    		String sql = "";        
 		    		if("peidan".equals(method)){
-		    			if(or.getSalestatues() == 3 || or.getSalestatues() == 0 ){     
-				    		Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
-				    		uid = order.getSaleID(); 
-				    		logger.info("uid****"+uid);
+		    			if(or.getSalestatues() == 3 || or.getSalestatues() == 0 ){      
 				    	    if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"','-"+or.getCount()+"', '-"+or.getCount()+"',"+branch.getId()+")"; 
-			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +   
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+Order.orderDispatching+",'-"+or.getCount()+"', '-"+or.getCount()+"')";
+			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" +   
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','-"+or.getCount()+"','-"+or.getCount()+"',"+Order.orderDispatching+",'-"+or.getCount()+"', '-"+or.getCount()+"',"+user.getId()+","+uid+","+order.getOderStatus()+")";
 			    			 }else {  
 			    				sqlnew = "update mdinventorybranch set papercount =  (mdinventorybranch.papercount - "+or.getCount()+")*1 , realcount =  (mdinventorybranch.realcount - "+or.getCount()+")*1  where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'";  
 			    			                 
-			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+Order.orderDispatching+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
-			    			 } 
+			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" + 
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','-"+or.getCount()+"','-"+or.getCount()+"',"+Order.orderDispatching+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 ,"+user.getId()+","+uid+","+order.getOderStatus()+")";    
+			    			 }  
 				    	}else if(or.getSalestatues() == 2){     
 
 				    	    if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" +  
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"',0, '-"+or.getCount()+"',"+branch.getId()+")"; 
-			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +   
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+Order.orderDispatching+",0, '-"+or.getCount()+"')";
+			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" +   
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','',"+or.getCount()+","+Order.orderDispatching+",0, '-"+or.getCount()+"',"+user.getId()+","+uid+","+order.getOderStatus()+")";
 			    			 }else {     
 			    				sqlnew = "update mdinventorybranch set papercount =  (mdinventorybranch.papercount - "+or.getCount()+")*1  where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'";  
 			    			                     
-			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+Order.orderDispatching+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
+			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" + 
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','',"+or.getCount()+","+Order.orderDispatching+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 ,"+user.getId()+","+uid+","+order.getOderStatus()+")";    
 			    			 } 
 				    	}else {
 			    			 if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"',0, '-"+or.getCount()+"',"+branch.getId()+")"; 
-			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +   
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+Order.orderDispatching+",0, '-"+or.getCount()+"')";
+			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" +   
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','',"+or.getCount()+","+Order.orderDispatching+",0, '-"+or.getCount()+"',"+user.getId()+","+uid+","+order.getOderStatus()+")";
 			    			 }else {  
 			    				sqlnew = "update mdinventorybranch set papercount =  (mdinventorybranch.papercount - "+or.getCount()+")*1 where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'";  
 			    			 
-			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+Order.orderDispatching+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
+			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" + 
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','',"+or.getCount()+","+Order.orderDispatching+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 ,"+user.getId()+","+uid+","+order.getOderStatus()+")";    
 			    			 } 
 				    	} 
 		    		}else if((Order.orderpeisong+"").equals(method) || (Order.ordersong+"").equals(method)){     
@@ -246,25 +242,25 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 				    		if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" +  
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"','-"+or.getCount()+"', 0,"+branch.getId()+")"; 
-			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+Order.porderDispatching+",'-"+or.getCount()+"', 0)";
+			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" + 
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','-"+or.getCount()+"','',"+Order.porderDispatching+",'-"+or.getCount()+"', 0,"+user.getId()+","+uid+","+order.getOderStatus()+")";
 			    			 }else {  
 			    				 sqlnew = "update mdinventorybranch set realcount =  (mdinventorybranch.realcount - "+or.getCount()+")*1 where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'"; 
 			    			 
-			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +   
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+Order.porderDispatching+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
+			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" +   
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','-"+or.getCount()+"','',"+Order.porderDispatching+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,"+user.getId()+","+uid+","+order.getOderStatus()+" )";    
 			    			 }   
 		    			}else {  
 			    			if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" +  
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"','-"+or.getCount()+"', 0,"+branch.getId()+")"; 
-			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+Order.porderDispatching+",'-"+or.getCount()+"', 0)";
+			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" + 
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','-"+or.getCount()+"','',"+Order.porderDispatching+",'-"+or.getCount()+"', 0,"+user.getId()+","+uid+","+order.getOderStatus()+")";
 			    			 }else {  
 			    				 sqlnew = "update mdinventorybranch set realcount =  (mdinventorybranch.realcount - "+or.getCount()+")*1 where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'"; 
 			    			 
-			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +   
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+Order.porderDispatching+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
+			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" +   
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','-"+or.getCount()+"','',"+Order.porderDispatching+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,"+user.getId()+","+uid+","+order.getOderStatus()+" )";    
 			    			 }      
 		    			} 
 		    		}else if("shifang".equals(method)){
@@ -284,13 +280,13 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    			if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"',0, '"+or.getCount()+"',"+branch.getId()+")"; 
-			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+Order.release+",0, '-"+or.getCount()+"')";
+			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" + 
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+",'',"+Order.release+",0, '"+or.getCount()+"',"+user.getId()+","+uid+","+order.getOderStatus()+")";
 			    			 }else {  
 			    				 sqlnew = "update mdinventorybranch set papercount =  (mdinventorybranch.papercount + "+or.getCount()+")*1 where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'"; 
 			    			 
-			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +  
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+Order.release+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
+			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" +  
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+",'',"+Order.release+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,"+user.getId()+","+uid+","+order.getOderStatus()+")";    
 			    			 }   
 		    			}
 		    		}else if("salereleasesonghuo".equals(method)){ 
@@ -310,31 +306,28 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    			if(getInventoryID(user,branch.getId(),or.getSendType()) == null){  
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"','"+or.getCount()+"', 0,"+branch.getId()+")"; 
-			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+6+",'"+or.getCount()+"', 0)"; 
+			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" + 
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+",'',"+6+",'"+or.getCount()+"', 0,"+user.getId()+","+uid+","+order.getOderStatus()+")"; 
 			    			 }else {  
 			    				 sqlnew = "update mdinventorybranch set realcount =  (mdinventorybranch.realcount + "+or.getCount()+")*1 where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'"; 
 			    			 
-			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +  
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+6+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
+			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" +  
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+",'',"+6+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,"+user.getId()+","+uid+","+order.getOderStatus()+")";    
 			    			 }   
 		    			}
 				           
 		    		}else if("returns".equals(method)){
-		    			logger.info("uid****"+uid); 
 		    			if(or.getSalestatues() == 3 || or.getSalestatues() == 0 || or.getSalestatues() == 2){     
-				    		Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
-				    		uid = order.getSaleID(); 
 				    	    if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"','"+or.getCount()+"', '"+or.getCount()+"',"+branch.getId()+")"; 
-			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +   
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+8+",'"+or.getCount()+"', '"+or.getCount()+"')";
+			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" +   
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+or.getCount()+","+8+",'"+or.getCount()+"', '"+or.getCount()+"',"+user.getId()+","+uid+","+order.getOderStatus()+")";
 			    			 }else {  
 			    				sqlnew = "update mdinventorybranch set papercount =  (mdinventorybranch.papercount + "+or.getCount()+")*1 , realcount =  (mdinventorybranch.realcount + "+or.getCount()+")*1  where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'";  
 			    			                 
-			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+8+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
+			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,countallotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" + 
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+or.getCount()+","+8+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,"+user.getId()+","+uid+","+order.getOderStatus()+" )";    
 			    			 }  
 				    	}else if(or.getSalestatues() == 2){     
 				    		/*Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
@@ -356,13 +349,13 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    			 if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"',0, '"+or.getCount()+"',"+branch.getId()+")"; 
-			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +   
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+8+",0, '"+or.getCount()+"')";
+			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" +   
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','',"+or.getCount()+","+8+",0, '"+or.getCount()+"',"+user.getId()+","+uid+","+order.getOderStatus()+")";
 			    			 }else {   
 			    				sqlnew = "update mdinventorybranch set papercount =  (mdinventorybranch.papercount + "+or.getCount()+")*1 where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'";  
 			    			 
-			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+8+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
+			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,allotRealcount,allotPapercountoperatortype,realcount,papercount,sendUser,receiveuser,devidety)" + 
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','',"+or.getCount()+","+8+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 ,"+user.getId()+","+uid+","+order.getOderStatus()+")";    
 			    			 }    
 				    	}    
 				            
@@ -391,32 +384,31 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"',"+or.getCount()+", 0,"+branch.getId()+")"; 
 			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +   
 			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+7+",'"+or.getCount()+"', 0)";
-			    			 }else {    
+			    			 }else {     
 			    				sqlnew = "update mdinventorybranch set realcount =  (mdinventorybranch.realcount + "+or.getCount()+")*1 where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'";  
 			    			  
 			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
 			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+7+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
-			    			 }*/
+			    			 }*/  
 				    	}else{
-				    		Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 				    		uid = order.getDealsendId();  
 				    		branch = BranchService.getMap().get(Integer.valueOf(u.getBranch())); 
 			    			 if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" +   
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"',"+or.getCount()+", 0,"+branch.getId()+")"; 
-			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" +   
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+7+",'"+or.getCount()+"', 0)";
-			    			 }else {    
+			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" +   
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+",'',"+7+",'"+or.getCount()+"', 0,sendUser,receiveuser,devidety)";
+			    			 }else {     
 			    				sqlnew = "update mdinventorybranch set realcount =  (mdinventorybranch.realcount + "+or.getCount()+")*1 where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'";  
 			    			  
-			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
-			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+7+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
+			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety)" + 
+			 	                        "  values ( null, '"+branch.getId()+"', '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+",'',"+7+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,sendUser,receiveuser,devidety )";    
 			    			 }
 				    	} 
 				          
 		    		}     
-		    		 logger.info(sql); 
-		    		 logger.info(sqlnew);
+		    		 logger.info(sql);  
+		    		 logger.info(sqlnew); 
 			          listsql.add(sqlnew);
 			          listsql.add(sql); 
 		    	} 

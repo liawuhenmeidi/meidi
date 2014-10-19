@@ -418,7 +418,8 @@ function adddetail(src){
 		int release = OrderPrintlnManager.getstatues(opmap, OrderPrintln.release, o.getId()) ;
 	    int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId()) ;
 	    int salerelease = OrderPrintlnManager.getstatues(opmap, OrderPrintln.salerelease, o.getId()) ;
-	    
+	    int modify = OrderPrintlnManager.getstatues(opmap, OrderPrintln.modify, o.getId()) ;
+	    int returns = OrderPrintlnManager.getstatues(opmap, OrderPrintln.returns, o.getId());
 	    
 	    int statuesnew = Order.orderpeisong; 
 	    
@@ -467,8 +468,8 @@ function adddetail(src){
 		</td>
 		
 		<td align="center"> 
-		 <% 
-		   if(release != 0 && releasedispatch != 0 && salerelease != 0 ){       
+		 <%  
+		   if(release != 0 && releasedispatch != 0 && salerelease != 0 && modify == -1 && returns == -1  ){       
 				 if(releasemodfy == 0 ){ 
 					 OrderPrintln or = opmap.get(OrderPrintln.releasemodfy) == null?null:opmap.get(OrderPrintln.releasemodfy).get(o.getId()); 
 				    %> 
@@ -541,7 +542,8 @@ function adddetail(src){
 		
 				%> 
 				<%=oppp.getMessage() %>
-		    <input type="button" onclick="changes('<%=o.getId()%>','<%=oppp.getId() %>','<%=OrderPrintln.comited%>','<%=statues %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="同意"/> 
+		    <input type="button" onclick="changes('<%=o.getId()%>','<%=oppp.getId() %>','<%=OrderPrintln.comited%>','<%=statues %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="同意"/>
+		     <input type="button" onclick="changes('<%=o.getId()%>','<%=oppp.getId() %>','<%=OrderPrintln.uncomited%>','<%=statues %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="不同意"/>  
 				<%
 			
 			}

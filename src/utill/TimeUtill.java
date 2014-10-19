@@ -59,8 +59,14 @@ public class TimeUtill {
     public static String  dataAdd(String data,int count){    
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String putdate =  ""; 
-        try {   
-            Date date = sdf.parse(data);   
+        try {    
+        	Date date = null ;
+        	if(StringUtill.isNull(data)){
+        		date = new Date();
+        	}else { 
+        		date = sdf.parse(data);   
+        	}
+           
             Calendar   calendar   =   new   GregorianCalendar();   
             calendar.setTime(date);   
             calendar.add(calendar.DATE,count);//把日期往后增加一天.整数往后推,负数往前移动   

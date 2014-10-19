@@ -1,11 +1,11 @@
-<%@ page language="java" import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,product.*,order.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");  
 String ctype = request.getParameter("ctype");
 String branchid = request.getParameter("branchid");
 String endtime = request.getParameter("endtime");
-  
+   
 endtime = TimeUtill.dataAdd(endtime,1); 
 String starttime = request.getParameter("starttime"); 
 
@@ -15,7 +15,7 @@ if(!StringUtill.isNull(branchid)){
 }
 
 String strbranch = b.getLocateName();
-Map<Integer,Branch> branchmap = BranchManager.getNameMap();
+Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 Map<String,Branch> newbranchmap = new HashMap<String,Branch>();
 if(branchmap != null){
 	Set<Integer> key = branchmap.keySet();
@@ -27,6 +27,13 @@ if(branchmap != null){
 }
 
 String branchstr = StringUtill.GetJson(newbranchmap);
+   
+Map<String,User> usermap = UserService.getuserIdStr();
+
+String usermapstr = StringUtill.GetJson(usermap);
+
+Map<String,String> mapdevity = OrderManager.getDeliveryStatuesMap();
+String mapdevitystr = StringUtill.GetJson(mapdevity);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -49,6 +56,8 @@ var row = 1;
 var branchstr = <%=branchstr%>; 
 var starttime = '<%=starttime%>'; 
 var endtime = '<%=endtime%>';
+var usermapstr = <%=usermapstr%>;
+var mapdevity = <%=mapdevitystr%>;
 //alert(ctype);
  $(function () {  
 	 //initproduct();
@@ -89,17 +98,21 @@ var endtime = '<%=endtime%>';
 	         success: function (data) {
 	        	//alert(data);
 	        	
-	        	 var addstr = '<table id ="serach" width="100%" border="1" cellpadding="0" cellspacing="0" > '+
-	        		     '<tr class="asc"> '+
-	        		     ' <td>单号</td>'+ 
-	        		     ' <td>日期</td> '+
-	        		     ' <td>型号</td>'+
-	        		     ' <td>操作类型</td> ' +
-	        		     ' <td>调拨数量</td> ' +
-	        		     ' <td>账面库存数量</td>' + 
-	        		     ' <td>实际库存数量</td> ' + 
-	        		    ' </tr>';
-	        		     
+	        	 var addstr = '<div class="table-list" >'+
+	        		  '<table width="100%"  cellspacing="1" id="table" > '+
+	        		  '<thead>'+ 
+	  	     		  '<tr>'+
+	  	        		'<th align="left">单号</th>'+
+	  	     			'<th align="left">日期</th>'+
+	  	     			'<th align="left">型号</th>'+
+	  	     			'<th align="left">上报状态</th>'+ 
+	  	     			'<th align="left">操作类型</th>'+
+	  	     			'<th align="left">票面调拨数量</th>'+
+	  	     			'<th align="left">实际调拨数量</th>'+
+	  	     			'<th align="left">账面库存数量</th>'+ 
+	  	     			'<th align="left">实际库存数量</th>'+ 
+	  	     		  '</tr>'+
+	  	     			'</thead> ';
 	        		 
 	        	 var json =  $.parseJSON(data);
 		        	
@@ -109,37 +122,37 @@ var endtime = '<%=endtime%>';
 	        		 var type = str.operatortype;
 	        		 var branch = branchstr[str.branchid].locateName;
 	        		 
-	        		 //alert(type); 
 	        		 if(type == 0 ){ 
 	        			 strtype = branch+"出库";
 	        		 }else if(type == 1){ 
 	        			 strtype = branch+"入库";
 	        		 }else if(type == 2){
-	        			 strtype = "文员派工给"+branch;
+	        			 strtype = usermapstr[str.sendUser].branchName+"派工给"+branch;
 	        		 }else if(type == 20){
 	        			 strtype = branch+"释放"; 
 	        		 }else if(type == 11){
-	        			 strtype = branch+"派工给送货员";
+	        			 strtype = branch+"派工给"+usermapstr[str.receiveuser].branchName;
 	        		 }else if(type == 6){   
-	        			 strtype = "送货员释放给"+branch;
+	        			 strtype = usermapstr[str.receiveuser].branchName+"释放给"+branch;
 	        		 }else if(type == 7){   
-	        			 strtype = "送货员拉回给"+branch;
+	        			 strtype = usermapstr[str.receiveuser].branchName+"拉回给"+branch;
 	        		 } else if(type == 8){    
-	        			 strtype = "文员同意"+branch+"退货";
-	        		 }  
+	        			 strtype = usermapstr[str.sendUser].branchName+"同意"+branch+"退货";
+	        		 }   
 	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="inventory('+str.inventoryid+','+type+')">' +  
 	        		     ' <td>'+str.inventoryid+'</td> ' +
-	        		     ' <td>'+str.time+'</td> ' +  
-	        		     ' <td>'+str.type+'</td> ' + 
-	        		     ' <td>'+strtype+'</td> ' + 
-	        		     ' <td>'+str.count+'</td> ' +
-	        		     
+	        		     ' <td>'+str.time+'</td> ' +   
+	        		     ' <td>'+str.type+'</td> ' +  
+	        		     ' <td>'+mapdevity[str.devidety]+'</td> ' + 
+	        		     ' <td>'+strtype+'</td> ' +  
+	        		     ' <td>'+str.allotPapercount+'</td> ' +
+	        		     ' <td>'+str.allotRealcount+'</td> ' +
 	        		     ' <td>'+str.papercount+'</td> ' +  
 	        		     ' <td>'+str.realcount+'</td>' + 
 	        		     ' </tr>'; 
 	        	 }
 	        		     
-	        	 addstr += '</table>' ;     
+	        	 addstr += '</table> </div>' ;     
 	        		     
 	        			 $("#serach").append(addstr);  
 	           },  

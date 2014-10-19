@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
  
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
-  
+   
 List<BranchType> listb = BranchTypeManager.getLocate();
   
 List<String> listbranch = BranchManager.getLocateAll(); 
@@ -36,10 +36,10 @@ String plist = StringUtill.GetJson(listt);
 List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
    
-Map<Integer,Branch> branchmap = BranchManager.getNameMap();
+Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 Map<String,Branch> newbranchmap = new HashMap<String,Branch>();
 if(branchmap != null){
-	Set<Integer> key = branchmap.keySet();
+	Set<Integer> key = branchmap.keySet(); 
     for (Iterator<Integer> it = key.iterator(); it.hasNext();) {
         int s =  it.next();
         newbranchmap.put(s+"", branchmap.get(s));
@@ -306,7 +306,7 @@ var disable = '<%=isdisabel %>';
      <form action="InventoryServlet"  method = "post"  onsubmit="return check()">
       <input type="hidden" name="method" value="add"/>  
                      
-  <div style="background-color:;width:80%" > 
+  <div style="background-color:;width:80%" >  
                  仓库：  
          <% if(UserManager.checkPermissions(user, Group.dealSend)){
          %> 

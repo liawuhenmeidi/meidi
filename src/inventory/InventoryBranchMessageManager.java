@@ -103,7 +103,8 @@ public static List<InventoryBranchMessage> getCategory(String type,String branch
 		try {    
 			c.setId(rs.getInt("id"));  
 			c.setBranchid(rs.getInt("branchid"));
-			c.setCount(rs.getInt("count"));  
+			c.setAllotPapercount(rs.getInt("allotPapercount")); 
+			c.setAllotRealcount(rs.getInt("allotRealcount"));
 			c.setInventoryid(rs.getInt("inventoryid"));
 			c.setTypeid(rs.getString("type")); 
 			c.setType(ProductService.getIDmap().get(Integer.valueOf(c.getTypeid())).getType());
@@ -111,6 +112,9 @@ public static List<InventoryBranchMessage> getCategory(String type,String branch
 			c.setOperatortype(rs.getInt("operatortype"));
 			c.setRealcount(rs.getInt("realcount"));
 			c.setPapercount(rs.getInt("papercount"));
+			c.setDevidety(rs.getInt("devidety"));
+			c.setSendUser(rs.getInt("sendUser"));
+			c.setReceiveuser(rs.getInt("receiveuser"));
 		} catch (SQLException e) { 
 			e.printStackTrace();
 		}	

@@ -10,7 +10,9 @@ public class InventoryBranchMessage {
 
   private String type ;   
     
-  private int count ;  
+  private int allotRealcount ; 
+  
+  private int allotPapercount ; 
   
   private int operatortype ;  //  0 表示出货  1  表示入库   2 文员派单  4 安装公司释放
         // 11 安装公司派送货员   6  送货员释放             7    退货员拉回    8 文员同意退货
@@ -21,6 +23,38 @@ public class InventoryBranchMessage {
   
    private String typeid ;
    
+   private int sendUser;
+   
+   private int receiveuser;
+    
+   private int devidety;
+   
+ 
+
+
+public int getSendUser() {
+	return sendUser;
+}
+
+public void setSendUser(int sendUser) {
+	this.sendUser = sendUser;
+}
+
+public int getReceiveuser() {
+	return receiveuser;
+}
+
+public void setReceiveuser(int receiveuser) {
+	this.receiveuser = receiveuser;
+}
+
+public int getDevidety() {
+	return devidety;
+}
+
+public void setDevidety(int devidety) {
+	this.devidety = devidety;
+}
 
 public String getTypeid() {
 	return typeid;
@@ -88,12 +122,23 @@ public String getType() {
 public void setType(String type) {
 	this.type = type;
 }
-public int getCount() {
-	return count;
+
+public int getAllotRealcount() {
+	return allotRealcount;
 }
-public void setCount(int count) {
-	this.count = count;
+
+public void setAllotRealcount(int allotRealcount) {
+	this.allotRealcount = allotRealcount;
 }
+
+public int getAllotPapercount() {
+	return allotPapercount;
+}
+
+public void setAllotPapercount(int allotPapercount) {
+	this.allotPapercount = allotPapercount;
+}
+
       
  
 }

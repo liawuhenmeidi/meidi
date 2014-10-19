@@ -40,7 +40,7 @@ Map<String,List<Branch>> map = BranchManager.getLocateMapBranch();
 String mapjosn = StringUtill.GetJson(map);
  
 HashMap<String,ArrayList<String>> listt = ProductManager.getProductName();
-
+ 
 String plist = StringUtill.GetJson(listt);
  
 List<String> listallp = ProductManager.getProductlist();
@@ -210,10 +210,18 @@ function serchclick(category,type,branchid,obj){
 	 var category = "<%=category%>"; 
 	 var b = $("#branch").val();  
 	 var product = $("#product").val(); 
-
-	 if(branch == null || branch == ""){
+//alert(branch);
+//alert(b);
+//alert(b!= null);
+	 if((branch == null || branch == "") && b!= null&&b!=""){
 		 branch = b ; 
-	 }   
+	 }
+     
+	 if(b!= null&&b!=""){
+		 branch = b ;
+	 }
+	 //alert(branch);
+	// alert(b);
 	 $("#branch").val(branch);
 	 //$("#branch option[value='"+branch+"']").attr("selected","selected"); 
 	 //alert(branch);

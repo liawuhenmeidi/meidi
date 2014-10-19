@@ -2,7 +2,7 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
- 
+  
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
   
 List<BranchType> listb = BranchTypeManager.getLocate();
@@ -21,7 +21,7 @@ String plist = StringUtill.GetJson(listt);
 List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
    
-Map<Integer,Branch> branchmap = BranchManager.getNameMap();
+Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 
 String inventoryid = request.getParameter("id");
 Inventory inventory = null ;

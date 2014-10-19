@@ -246,7 +246,7 @@ var disable = '<%=isdisabel %>';
       
      </ul>   
    </div>      
-     <div>     
+     <div>      
      <form action="InventoryServlet"  method = "post"  onsubmit="return check()">
       <input type="hidden" name="method" value="add"/>  
       <input type="hidden" name="id" value="<%=inventoryid %>"/>

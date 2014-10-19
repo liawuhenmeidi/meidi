@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
  
 String category = request.getParameter("category");
-    
+     
 Category c = CategoryManager.getCategory(category);     
 Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 Map<String,Branch> newbranchmap = new HashMap<String,Branch>();
@@ -82,20 +82,23 @@ td {
 	         data:"method=inventorydis&category="+category,
 	         dataType: "",   
 	         success: function (data) { 
-	        	 var addstr = '<tr class="asc"> '+
-	        	     ' <td>门店</td>'+
-	        	     ' <td>产品类别</td>'+
-	        	     ' <td>产品型号</td> '+
-	        	     ' <td>账面库存数量</td>'+
-	        	     ' <td>实际库存数量</td> ' +
-	        	     ' <td>盘点</td> ' + 
-	        	    ' </tr>';
+	        	 var addstr =  '<thead>'+ 
+	     		  '<tr>'+
+	        		'<th align="left">门店</th>'+
+	     			'<th align="left">产品类别</th>'+
+	     			'<th align="left">产品型号</th>'+
+	     			'<th align="left">账面库存数量</th>'+
+	     			'<th align="left">实际库存数量</th>'+
+	     			'<th align="left">盘点</th>'+ 
+	     		  '</tr>'+
+	     			'</thead> ';
+	 
 	        	 var json =  $.parseJSON(data);
 	        	
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
 	        		 
-	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="search(\''+str.categoryid+'\',\''+str.branchid+'\')">' +  
+	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="search(\''+str.categoryid+'\',\''+branchstr[str.branchid].locateName+'\')">' +  
 	        		  
 	        		     ' <td>'+branchstr[str.branchid].locateName+'</td> ' + 
 	        		     ' <td>'+str.cateoryName+'</td> ' +   
@@ -134,18 +137,10 @@ td {
  
   
  </div>        
-     <div style="background-color:;width:80%" >
-     <br/>        
-   <table width="100%" border="1" id="table" cellpadding="0" cellspacing="0" >
-     <tr class="asc"> 
-      
-      <td>产品类别</td>
-      <td>产品型号</td> 
-      <td>账面库存数量</td>
-      <td>实际库存数量</td>  
-      <td>盘点</td>   
-     </tr>
- 
+     <div class="table-list" >
+        
+  <table width="100%"  cellspacing="1" id="table" >
+     
    </table>
  
   </div>

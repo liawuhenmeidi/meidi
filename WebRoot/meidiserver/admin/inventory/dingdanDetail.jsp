@@ -66,7 +66,7 @@ td {
  <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>   
 <div id="wrap">  
 <form  action="server.jsp"  method ="post"  id="form"   onsubmit="return checkedd()"  >
-
+ 
 <input type="hidden" name="method" value="updateorder"/>
 <input type="hidden" name="oid" value="<%=id%>"/>  
 <table  cellspacing="1"  id="table"> 

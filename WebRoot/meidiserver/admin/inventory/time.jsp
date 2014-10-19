@@ -19,7 +19,7 @@ User user = (User)session.getAttribute("user");
 	 
 	 var starttime = $("#starttime").val(); 
 	 var endtime = $("#endtime").val(); 
-
+  
 	 window.opener.document.getElementById("starttime").value =starttime;
 	 window.opener.document.getElementById("endtime").value =endtime;
 	 window.opener.document.getElementById("time").value ="fresh";
