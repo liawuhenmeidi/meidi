@@ -5,16 +5,19 @@ User user = (User)session.getAttribute("user");
 String ctype = request.getParameter("ctype");
 String branchid = request.getParameter("branchid");
 String endtime = request.getParameter("endtime");
-   
+ 
 endtime = TimeUtill.dataAdd(endtime,1); 
 String starttime = request.getParameter("starttime"); 
 
 Branch b = new Branch();
 if(!StringUtill.isNull(branchid)){
-	b = BranchManager.getLocatebyid(branchid);
+	//b = BranchManager.getLocatebyid(branchid);
+	b = BranchService.gerBranchByname(branchid);
+	branchid = b.getId()+""; 
 }
 
 String strbranch = b.getLocateName();
+
 Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 Map<String,Branch> newbranchmap = new HashMap<String,Branch>();
 if(branchmap != null){
@@ -92,11 +95,13 @@ var mapdevity = <%=mapdevitystr%>;
  
  function search(ctype,branchid,time){
 	 $("#serach table").remove();
-	 var map = new Map();
-	 var array = new Array();
-	 var totalpapercount = 0 ;
-	 var totalrealcount = 0 ;
-	 $.ajax({ 
+	 //var map = new Map();
+	 var arrays = new Array();
+	 //var totalpapercount = 0 ;
+	 //var totalrealcount = 0 ;
+	 var papercount = 0 ;
+	 var realcount = 0 ;  
+	 $.ajax({  
 	        type: "post", 
 	         url: "../server.jsp",
 	         data:"method=inventorydetail&ctype="+ctype+"&branchid="+branchid+"&time="+time,
@@ -113,40 +118,72 @@ var mapdevity = <%=mapdevitystr%>;
 	  	     			'<th align="left">型号</th>'+
 	  	     			'<th align="left">上报状态</th>'+ 
 	  	     			'<th align="left">操作类型</th>'+
-	  	     			'<th align="left">票面调拨数量</th>'+
-	  	     			'<th align="left">实际调拨数量</th>'+
+	  	     			'<th align="left">账面调拨数量</th>'+
 	  	     			'<th align="left">账面库存数量</th>'+ 
+	  	     			'<th align="left">实际调拨数量</th>'+
+	  	     			
 	  	     			'<th align="left">实际库存数量</th>'+ 
-	  	     		  '</tr>'+
+	  	     		  '</tr>'+ 
 	  	     			'</thead> ';
 	        		 
 	        	 var json =  $.parseJSON(data);
 		        	
 	        	 for(var i=0;i<json.length;i++){
-	        		 if(branchid == ""|| branchid == null){
-	        			 if($.inArray(branchid,array) <0){
-		        				map.put(branchid, str);
-			        			array.push(branchid);
+	        		 var str = json[i]; 
+	        		 var bid = str.branchid;
+	        		 arrays.push(bid);
+	        		 if( "" == branchid ||  null == branchid){ 
+	        			 if($.inArray(bid,arrays) <0){
+	        				  //  totalpapercount += str.oldpapercount;
+	        				  //  totalrealcount += str.oldrealcount; 
+	        				    papercount += str.oldpapercount;
+	        				    realcount += str.oldrealcount; 
+	        				    arrays.push(bid);
+		        				//map.put(bid, str);
 		        			}
 	        		 } 
 	        	 }
-	        	 
+	        	// var arrayin = new Array();
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i];
 	        		 var strtype = "";
 	        		 var type = str.operatortype;
 	        		 var branch = branchstr[str.branchid].locateName;
 	        		 if(branchid != "" && branchid != null){
-	        			 totalpapercount =str.papercount;
-		        		 totalrealcount  =str.realcount;
+	        			 papercount =str.papercount;
+		        		 realcount  =str.realcount;
 	        		 }else {
-	        			 var array = map.keySet();
-	        			 for(var j in array) { 
-	        				 totalpapercount += map.get(array[j]).oldpapercount;
-	        				 totalrealcount += map.get(array[j]).oldrealcount; 
-	        				 //document.write("key:(" + array[j] +") <br>value: ("+map.get(array[j])+") <br>");
-	        				}
-	        		 }
+	        			  
+	        			 
+	        			papercount +=str.allotPapercount;
+	        			realcount += str.allotRealcount; 
+	        				 //  arrayin.push(str.branchid);
+	        				 //  map.put(str.branchid, str);
+	        			  // }else {
+	        				 //  if($.inArray(str.branchid,arrayin) <0){
+	        				//	   alert(2);
+	        				//	   var arraymap = map.keySet();
+	       	        		//	   for(var j in arraymap) {  
+	       	        		//		totalpapercount map.get(arraymap[j]);
+	       	        				
+	       	        		//	  }
+	        					   
+		        				   // var s = totalpapercount +str.papercount;
+		        				//   totalpapercount = papercount +str.papercount;
+		        			//	   papercount = totalpapercount;
+		        			//	   totalrealcount = realcount + str.realcount;
+		        			//	   realcount =  totalrealcount;
+		        			//	   arrayin.push(str.branchid);
+		        			 //  }else {
+		        			//	   alert(3);
+		        			//	   papercount =totalpapercount + str.papercount;
+		        			//	   realcount = totalrealcount + str.realcount;
+		        			//	   map.put(str.branchid, str);
+		        			//   } 
+	        			  // }
+	        			   
+	        		}
+	        		// alert(0);
 	        		 if(type == 0 ){ 
 	        			 strtype = branch+"出库";
 	        		 }else if(type == 1){ 
@@ -171,9 +208,10 @@ var mapdevity = <%=mapdevitystr%>;
 	        		     ' <td>'+mapdevity[str.devidety]+'</td> ' + 
 	        		     ' <td>'+strtype+'</td> ' +  
 	        		     ' <td>'+str.allotPapercount+'</td> ' +
+	        		     ' <td>'+papercount+'</td> ' +   
 	        		     ' <td>'+str.allotRealcount+'</td> ' +
-	        		     ' <td>'+totalpapercount+'</td> ' +   
-	        		     ' <td>'+totalrealcount+'</td>' + 
+	        		    
+	        		     ' <td>'+realcount+'</td>' + 
 	        		     ' </tr>'; 
 	        	 }
 	        		     
