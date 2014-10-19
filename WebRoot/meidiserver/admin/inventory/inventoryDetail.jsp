@@ -93,6 +93,7 @@ var mapdevity = <%=mapdevitystr%>;
  function search(ctype,branchid,time){
 	 $("#serach table").remove();
 	 var map = new Map();
+	 var array = new Array();
 	 var totalpapercount = 0 ;
 	 var totalrealcount = 0 ;
 	 $.ajax({ 
@@ -122,6 +123,15 @@ var mapdevity = <%=mapdevitystr%>;
 	        	 var json =  $.parseJSON(data);
 		        	
 	        	 for(var i=0;i<json.length;i++){
+	        		 if(branchid == ""|| branchid == null){
+	        			 if($.inArray(branchid,array) <0){
+		        				map.put(branchid, str);
+			        			array.push(branchid);
+		        			}
+	        		 } 
+	        	 }
+	        	 
+	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i];
 	        		 var strtype = "";
 	        		 var type = str.operatortype;
@@ -130,11 +140,10 @@ var mapdevity = <%=mapdevitystr%>;
 	        			 totalpapercount =str.papercount;
 		        		 totalrealcount  =str.realcount;
 	        		 }else {
-	        			 map.put(branchid, str);
 	        			 var array = map.keySet();
 	        			 for(var j in array) { 
-	        				 totalpapercount += map.get(array[j]).papercount;
-	        				 totalrealcount += map.get(array[j]).realcount; 
+	        				 totalpapercount += map.get(array[j]).oldpapercount;
+	        				 totalrealcount += map.get(array[j]).oldrealcount; 
 	        				 //document.write("key:(" + array[j] +") <br>value: ("+map.get(array[j])+") <br>");
 	        				}
 	        		 }

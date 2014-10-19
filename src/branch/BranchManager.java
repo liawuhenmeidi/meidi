@@ -41,7 +41,13 @@ public class BranchManager {
 		}
 	   return true;
 	}
-	
+	 
+	 public static String save(){
+		 String sql = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,pid,ptype) VALUES (null,?,?,?,?,?,?,?)";
+		 return sql ;
+	 }
+	 
+	 
 		public static List<Branch> getLocate(String id ) {
 			List<Branch> users = new ArrayList<Branch>();
 			Connection conn = DB.getConn();

@@ -114,8 +114,10 @@ public static List<InventoryBranchMessage> getCategory(String type,String branch
 			c.setRealcount(rs.getInt("realcount"));
 			c.setPapercount(rs.getInt("papercount"));
 			c.setDevidety(rs.getInt("devidety"));
-			c.setSendUser(rs.getInt("sendUser"));
-			c.setReceiveuser(rs.getInt("receiveuser"));
+			c.setSendUser(rs.getInt("sendUser"));  
+			c.setReceiveuser(rs.getInt("receiveuser")); 
+			c.setOldpapercount(rs.getInt("oldpapercount"));
+			c.setOldrealcount(rs.getInt("oldrealcount"));
 		} catch (SQLException e) { 
 			e.printStackTrace();
 		}	

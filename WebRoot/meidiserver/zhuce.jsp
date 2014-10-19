@@ -2,7 +2,7 @@
 <% 
  
 request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
+User user = (User)session.getAttribute("user"); 
 TokenGen.getInstance().saveToken(request); 
 String s = (String)session.getAttribute("token");
   
@@ -231,7 +231,7 @@ $(function () {
 <!--  订单详情  -->
 <div class="s_main_box">      
 <form action="RegistServlet"   method = "post"  onsubmit="return check()">
- <input type="hidden" name="method" value="zhuce"/>   
+ <input type="hidden" name="method" value="zhuce"/>     
  <input type="hidden" name="token" value="<%=s%>"/> 
  <table width="100%" class="s_main_table">
     

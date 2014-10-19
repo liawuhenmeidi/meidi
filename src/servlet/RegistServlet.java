@@ -18,7 +18,7 @@ import utill.TokenGen;
 
  
 /**
- * 核心请求处理类
+ * 核心请求处理类 
  * 
  * @author liufeng
  * @date 2013-05-18

@@ -128,17 +128,17 @@ function startRequest(uid){
 <% 
   for(int i =0 ;i<list.size();i++){
 	 User u = list.get(i) ;
-	  
+	 
 %> 
     <tr  id="<%=u.getId() %>" class="asc"  onclick="updateClass(this)" ondblclick="update('<%=u.getId()%>','<%=u.getPhone() %>')">    
 
 		<!-- <td align="left"><%=u.getId() %></td>   -->
 		<td   ><%=i+1 %></td>
 		<td align="left"><%=u.getUsername() %></td>
-		<td align="left"><%=u.getPhone() %></td>
+		<td align="left"><%=u.getPhone() %></td> 
 		<td align="left"><%=map.get(u.getUsertype()).getName() %></td>
 		<td align="left"><%=u.getCharge()==null?"暂无主管":u.getCharge()%></td>
-		<td align="left"><%=BranchService.getMap().get(Integer.valueOf(u.getBranch())) == null ? "":BranchService.getMap().get(Integer.valueOf(u.getBranch())).getLocateName() %></td>
+		<td align="left"><%= u.getBranchName() %></td>
 		<td align="left"><%=u.getEntryTime() %></td> 
 		<td align="left">
 		 <% 

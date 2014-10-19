@@ -368,8 +368,9 @@ function orderPrint(id,statues){
 
      <%
      int statues = OrderManager.getShifangStatues(o);
+     int shifang = -1 ;  
 	if(statues != -1){
-		int shifang = -1 ;  
+		
 		if(opmap.get(statues) != null){
 			OrderPrintln orp = opmap.get(statues).get(o.getId());    
 			if(orp != null){ 
@@ -377,27 +378,28 @@ function orderPrint(id,statues){
 				if(shifang == 4 ){
 				%>
 				   您的申请被拒绝
+				 <input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>	
 				<%
 				}else if(shifang == 0){
 				%> 
 				您已提交
 				<%
 				}
-			}
+			} 
+		}else {
+			%>
+			
+		<input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>	
+			<%
 		}
-     %> 
-    <input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>
-     <%
-         
-
 	}
      %> 
    </td> 
 		 
 		<td align="center">
     <%
- int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId()) ; 
-    if(o.getReturnid() == 0 && releasedispatch != 0 ){ 
+   int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId()) ; 
+    if(o.getReturnid() == 0 && releasedispatch != 0  && shifang != 0){ 
         if(o.getDeliveryStatues() == 0 || 9 == o.getDeliveryStatues()){
  
     %>

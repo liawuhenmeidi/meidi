@@ -31,7 +31,28 @@ public class InventoryBranchMessage {
     
    private String inventoryString;
    
-   public String getInventoryString() {
+   
+   private int oldrealcount;
+   private int oldpapercount ;
+   
+   
+   public int getOldrealcount() {
+	return oldrealcount;
+}
+
+public void setOldrealcount(int oldrealcount) {
+	this.oldrealcount = oldrealcount;
+}
+
+public int getOldpapercount() {
+	return oldpapercount;
+}
+
+public void setOldpapercount(int oldpapercount) {
+	this.oldpapercount = oldpapercount;
+}
+
+public String getInventoryString() {
 	return inventoryString;
 }
 

@@ -12,6 +12,8 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import branch.BranchManager;
+
 import category.CategoryManager;
 
 import user.User;
@@ -103,7 +105,8 @@ public class GroupManager {
                  // listsql.add(pstmt); 	
 					
                   if(group.getPtype() == 3){
-                  	String sql2 = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,pid,ptype) VALUES (null,?,?,?,?,?,?,?)";
+                	   
+                  	String sql2 = BranchManager.save();
                   	PreparedStatement pstmt1 = DB.prepare(conn, sql2); 
                   	String permissons = "2_";
                   	int type = 4; 
