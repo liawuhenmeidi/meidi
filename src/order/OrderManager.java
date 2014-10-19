@@ -176,7 +176,7 @@ logger.info(pstmt);
 		map.put(8+"", "已自提 ");
 		map.put(9+"", "只安装(门店提货)");
 		map.put(10+"", "只安装(顾客已提) ");
-	
+		map.put(-1+"", "调拨单"); 
 		
 		
 		return map ;
@@ -1011,7 +1011,7 @@ logger.info(Orders.size());
 		   }else if(Group.dealSend == type){ 
 			  if(Order.orderDispatching == statues){    
 				 // sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5)  and  ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search+"  order by  "+sort+"  limit " + ((page-1)*num)+","+ page*num ;  
-				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5) or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4,10) ))  "+search+"  order by  "+sort+str ;  
+				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13) or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4,10) ))  "+search+"  order by  "+sort+str ;  
 			  }else if(Order.neworder == statues){
 				  sql = "select * from  mdorder  where  dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues != 3  and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))   "+search+"  order by "+sort+" ";   
 			  }else if(Order.motify == statues){

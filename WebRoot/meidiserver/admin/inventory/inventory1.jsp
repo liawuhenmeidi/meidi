@@ -178,7 +178,7 @@ var allp = <%=allp%>;
 	 $("#starttime").val(""); 
 	 $("#endtime").val(""); 
 	 winPar = window.open("time.jsp","time","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
-	 //alert(ctype);
+	
 	 setInterval("startRequest('"+ctype+"','"+branchid+"')",500);  
  } 
    

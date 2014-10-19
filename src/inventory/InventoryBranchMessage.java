@@ -28,8 +28,18 @@ public class InventoryBranchMessage {
    private int receiveuser;
     
    private int devidety;
+    
+   private String inventoryString;
    
- 
+   public String getInventoryString() {
+	return inventoryString;
+}
+
+public void setInventoryString(String inventoryString) {
+	this.inventoryString = inventoryString;
+}
+
+
 
 
 public int getSendUser() {

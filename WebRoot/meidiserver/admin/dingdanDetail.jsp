@@ -456,7 +456,7 @@ function checkedd(){
 					 for(int i=0;i<listl.size();i++){
 						 Locate lo = listl.get(i);
 						 String str = "";
-						 if(o.getLocate() == lo.getLocateName()){
+						 if(o.getLocate().equals(lo.getLocateName())){
 							 str = "selected=\"selected\"";
 						 }
 					%>	

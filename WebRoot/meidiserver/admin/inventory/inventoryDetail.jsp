@@ -44,6 +44,7 @@ String mapdevitystr = StringUtill.GetJson(mapdevity);
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../js/map.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -88,14 +89,18 @@ var mapdevity = <%=mapdevitystr%>;
 	 }
  } 
  
+ 
  function search(ctype,branchid,time){
 	 $("#serach table").remove();
+	 var map = new Map();
+	 var totalpapercount = 0 ;
+	 var totalrealcount = 0 ;
 	 $.ajax({ 
 	        type: "post", 
 	         url: "../server.jsp",
 	         data:"method=inventorydetail&ctype="+ctype+"&branchid="+branchid+"&time="+time,
 	         dataType: "", 
-	         success: function (data) {
+	         success: function (data) { 
 	        	//alert(data);
 	        	
 	        	 var addstr = '<div class="table-list" >'+
@@ -121,7 +126,18 @@ var mapdevity = <%=mapdevitystr%>;
 	        		 var strtype = "";
 	        		 var type = str.operatortype;
 	        		 var branch = branchstr[str.branchid].locateName;
-	        		 
+	        		 if(branchid != "" && branchid != null){
+	        			 totalpapercount =str.papercount;
+		        		 totalrealcount  =str.realcount;
+	        		 }else {
+	        			 map.put(branchid, str);
+	        			 var array = map.keySet();
+	        			 for(var j in array) { 
+	        				 totalpapercount += map.get(array[j]).papercount;
+	        				 totalrealcount += map.get(array[j]).realcount; 
+	        				 //document.write("key:(" + array[j] +") <br>value: ("+map.get(array[j])+") <br>");
+	        				}
+	        		 }
 	        		 if(type == 0 ){ 
 	        			 strtype = branch+"出库";
 	        		 }else if(type == 1){ 
@@ -131,24 +147,24 @@ var mapdevity = <%=mapdevitystr%>;
 	        		 }else if(type == 20){
 	        			 strtype = branch+"释放"; 
 	        		 }else if(type == 11){
-	        			 strtype = branch+"派工给"+usermapstr[str.receiveuser].branchName;
+	        			 strtype = branch+"派工给"+usermapstr[str.receiveuser].username;
 	        		 }else if(type == 6){   
-	        			 strtype = usermapstr[str.receiveuser].branchName+"释放给"+branch;
-	        		 }else if(type == 7){   
-	        			 strtype = usermapstr[str.receiveuser].branchName+"拉回给"+branch;
+	        			 strtype = usermapstr[str.receiveuser].username+"释放给"+branch;
+	        		 }else if(type == 7){    
+	        			 strtype = usermapstr[str.receiveuser].username+"拉回给"+branch;
 	        		 } else if(type == 8){    
 	        			 strtype = usermapstr[str.sendUser].branchName+"同意"+branch+"退货";
 	        		 }   
 	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="inventory('+str.inventoryid+','+type+')">' +  
-	        		     ' <td>'+str.inventoryid+'</td> ' +
+	        		     ' <td>'+str.inventoryString+'</td> ' +
 	        		     ' <td>'+str.time+'</td> ' +   
 	        		     ' <td>'+str.type+'</td> ' +  
 	        		     ' <td>'+mapdevity[str.devidety]+'</td> ' + 
 	        		     ' <td>'+strtype+'</td> ' +  
 	        		     ' <td>'+str.allotPapercount+'</td> ' +
 	        		     ' <td>'+str.allotRealcount+'</td> ' +
-	        		     ' <td>'+str.papercount+'</td> ' +  
-	        		     ' <td>'+str.realcount+'</td>' + 
+	        		     ' <td>'+totalpapercount+'</td> ' +   
+	        		     ' <td>'+totalrealcount+'</td>' + 
 	        		     ' </tr>'; 
 	        	 }
 	        		     
