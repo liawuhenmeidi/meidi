@@ -69,7 +69,7 @@ function detail(id){
        for(int i=0;i<invetorylist.size();i++){ 
     	   Inventory invetory = invetorylist.get(i);
     	   %>
-    	   <tr id="<%=i%>" class="asc"  onclick="detail('<%=invetory.getId()%>')">
+    	   <tr id="<%=i%>" class="asc"  ondblclick="detail('<%=invetory.getId()%>')" onclick="updateClass(this)">
 			<td align="left"><%=invetory.getId() %></td>
 			<td align="left"><%=invetory.getIntime() %></td>
 			<td align="left">

@@ -72,6 +72,8 @@ public class InventoryServlet extends HttpServlet {
 		User user  = (User)request.getSession().getAttribute("user");
 		String method = request.getParameter("method");
 		String id = request.getParameter("id");
+		String type = request.getParameter("type");
+System.out.println(type+"type"); 
 		String sql = ""; 
 		boolean flag =  InventoryManager.check(method,id); 
 		if(method.equals("outbranch")){
@@ -127,11 +129,14 @@ public class InventoryServlet extends HttpServlet {
 				e.printStackTrace();
 			}  
        }  
-		 
-		
-
 		try {
-			response.sendRedirect("receipts.jsp");
+			
+			if("phone".equals(type)){
+				response.sendRedirect("../../user/inventory/receipts.jsp");
+			}else {
+				response.sendRedirect("receipts.jsp");
+			}
+			
 		} catch (IOException e) {
 		
 			e.printStackTrace();

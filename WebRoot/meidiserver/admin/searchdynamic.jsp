@@ -39,21 +39,24 @@ if("searched".equals(searched)){
 	session.setAttribute("sear", sear); 
 }
   
+// 用户id
 int id = user.getId();   
 
-int pgroup = GroupService.getidMap().get(user.getUsertype()).getPid();    //  上级管理组ID
+//  上级管理组ID
+int pgroup = GroupService.getidMap().get(user.getUsertype()).getPid();   
 
+// 所有用户
 HashMap<Integer,User> usermap = UserService.getMapId();
-  
+ 
+// 安装网点
 List<User> listS =   UserService.getsencondDealsend(user);
  
+//提示信息
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
 int count = 0 ; 
 
-//int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
 int opstatues = OrderPrintln.releasedispatch;  
-  
-  
+
 
 %>

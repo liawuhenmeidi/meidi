@@ -55,7 +55,7 @@ public class Order {
  public static int orderinstall = 2; 
  public static int orderreturn = 3;   
  public static int ordersong = 4; 
- public static int orderinsta = 4;
+ public static int orderinsta = 5;
   
   private int id ;
   

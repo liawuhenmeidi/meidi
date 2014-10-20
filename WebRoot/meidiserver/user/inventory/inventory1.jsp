@@ -5,11 +5,15 @@ User user = (User)session.getAttribute("user");
  
 String category = request.getParameter("category"); 
 String branchid = request.getParameter("branchid");
-
+ 
 Branch branch = null;   
-if(UserManager.checkPermissions(user, Group.sale)){
-	branchid = user.getBranch()+""; 
-	branch = BranchManager.getLocatebyid(branchid);
+if(UserManager.checkPermissions(user, Group.Manger)){
+	branchid = request.getParameter("branchid");
+}else if(UserManager.checkPermissions(user, Group.sale) ){
+	branch = BranchManager.getLocatebyid(user.getBranch());
+	if(StringUtill.isNull(branchid)){
+		branchid = user.getBranch()+"";   
+	}
 } 
   
 Category c = CategoryManager.getCategory(category);
@@ -106,10 +110,14 @@ function add(){
 	 
 	 var product = $("#product").val(); 
 	  
-	 if(branch == null || branch == ""){
+	 if((branch == null || branch == "") && b!= null&&b!=""){
 		 branch = b ; 
-	 }   
-	 
+	 }
+     
+	 if(b!= null&&b!=""){
+		 branch = b ;
+	 } 
+	 //alert(branch);
 	 $("#branch option[value='"+branch+"']").attr("selected","selected"); 
 	 //alert(branch);
 	 $.ajax({   
@@ -187,8 +195,9 @@ function add(){
 		   Branch b = listbranch.get(i); 
 		   for(int j=0;j<branchs.length;j++){ 
 			   if(branchs[j].equals(b.getId()+"")){
-				   %>   
-				    <option value="<%=b.getId()%>"><%=b.getLocateName()%></option>
+				  
+				   %>    
+				    <option value="<%= b.getId()%>"><%=b.getLocateName()%></option>
 				   <%    
 			   } 
 		   }

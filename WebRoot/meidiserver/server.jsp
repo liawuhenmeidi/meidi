@@ -4,7 +4,7 @@
 request.setCharacterEncoding("utf-8");
 
 User user = (User)session.getAttribute("user");
-// peidan
+// peidan 
 String method = request.getParameter("method");
    
 System.out.println("*************method"+method);

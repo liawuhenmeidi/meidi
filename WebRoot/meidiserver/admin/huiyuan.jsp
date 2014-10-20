@@ -46,7 +46,10 @@ function changes(id,name,statues){
 
 function update(uid,phone){
 	$("#fresh").val("");
+	
 	$("#phone").val("");
+	
+
 	 winPar = window.open("updateUserPhone.jsp?oldphone="+phone,"phone","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
 	 timer1 = setInterval("startRequest('"+uid+"')",500);
 }

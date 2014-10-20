@@ -332,7 +332,7 @@ function adddetail(src){
             <td align="center">送货地址</td>
            <td align="center">送货状态</td>
 			<td align="center">备注</td>
-			 
+			  
 			<td align="center">配单</td>
 			<td align="center">查看位置</td> 
 			<td align="center">安装网点驳回</td> 
@@ -345,14 +345,9 @@ function adddetail(src){
    if(null != list){
 		for(int i = 0;i<list.size();i++){
 		    	Order o = list.get(i);
-		    	String col = "";
-		    	if(i%2 == 0){
-		    		col = "style='background-color:yellow'";
-		    	}
 		  %>  
 		     
 		    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)">   
-				<!--  <td align="center"><input type="checkbox" value="1" name="userid[]"/></td> -->
 				<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
 				<td align="center"><%=o.getbranchName(o.getBranch())%></td>  
 				<td align="center"> 	                		  
@@ -408,6 +403,7 @@ function adddetail(src){
 			    int salereleaseanzhuang	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.salereleaseanzhuang, o.getId());
 			    int releasemodfy	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasemodfy, o.getId());
 			    int type = -1 ;
+			    
 			    if(release != -1){   
 			    	totalshifang = release ;
 			    	orp = opmap.get(OrderPrintln.release).get(o.getId()); 

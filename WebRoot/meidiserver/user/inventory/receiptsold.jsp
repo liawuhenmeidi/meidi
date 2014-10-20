@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
   
 List<Inventory> invetorylist = InventoryManager.getCategory(user,"confirmed");  
-Map<Integer,Branch> branchmap = BranchManager.getNameMap();   
+Map<Integer,Branch> branchmap = BranchService.getMap();   
 %>
   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

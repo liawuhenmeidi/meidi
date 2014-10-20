@@ -36,8 +36,14 @@ if(or.getDeliveryStatues() == 0 || or.getDeliveryStatues() == 9 ){
 	if(uid == or.getInstallid()){  
 		opstatues = OrderPrintln.salereleaseanzhuang;
 	}  
-}else if(or.getDeliveryStatues() == 2){ 
-	flag = false ; 
+}else if(or.getDeliveryStatues() == 2 ){  
+	if(or.getReturnid() == user.getId()){ 
+		flag = true; 
+		opstatues = OrderPrintln.salereleasereturn ;
+	}else {
+		flag = false ; 
+	}
+	
 } 
 
 

@@ -44,6 +44,10 @@ logger.info(pstmt);
 						OrderPrintlnManager.delete(id);   
 						OrderManager.updateShifang(user,oid,uid,OrderPrintln.salerelease); 
 						return true ; 
+					}if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.salereleasereturn){
+						OrderPrintlnManager.delete(id);   
+						OrderManager.updateShifang(user,oid,uid,OrderPrintln.salereleasereturn); 
+						return true ; 
 					}else if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.salereleasesonghuo){
 						OrderPrintlnManager.delete(id);
 						OrderManager.updateShifang(user,oid,uid,OrderPrintln.salereleasesonghuo); 

@@ -480,16 +480,23 @@ function adddetail(src){
 		 
 		<td align="center">     
 		    <%
-		      OrderPrintln opp = opmap.get(OrderPrintln.salerelease) == null?null:opmap.get(OrderPrintln.salerelease).get(o.getId()); 
-		      if(opp!= null){
-		    	  if(opp.getStatues() == 0 ){
-		    %>
-		    <%=opp.getMessage() %>
-		    <input type="button" onclick="changes('<%=o.getId()%>','<%=opp.getId() %>','<%=OrderPrintln.comited%>','','','<%=OrderPrintln.salerelease%>')"  value="同意"/> 
-		    <input type="button" onclick="changes('<%=o.getId()%>','<%=opp.getId() %>','<%=OrderPrintln.uncomited%>','','','<%=OrderPrintln.salerelease%>')"  value="不同意"/>
-		<%
-		}
-     }
+		      OrderPrintln salereleaseo = opmap.get(OrderPrintln.salerelease) == null?null:opmap.get(OrderPrintln.salerelease).get(o.getId()); 
+		      OrderPrintln salereleasereturno = opmap.get(OrderPrintln.salereleasereturn) == null?null:opmap.get(OrderPrintln.salereleasereturn).get(o.getId()); 
+
+		      if(salereleasereturno != null){
+		    	  salereleaseo = salereleasereturno ;
+		      }
+		      
+		      
+		      if(salereleaseo != null){
+		    	  if(salereleaseo .getStatues() == 0 ){
+		    %> 
+		    <%=salereleaseo .getMessage() %>  
+		    <input type="button" onclick="changes('<%=o.getId()%>','<%=salereleaseo .getId() %>','<%=OrderPrintln.comited%>','','','<%=OrderPrintln.salerelease%>')"  value="同意"/> 
+		    <input type="button" onclick="changes('<%=o.getId()%>','<%=salereleaseo .getId() %>','<%=OrderPrintln.uncomited%>','','','<%=OrderPrintln.salerelease%>')"  value="不同意"/>
+		   <%
+		   }
+        }
 		%>
 		</td>
 		<td align="center">   

@@ -5,11 +5,12 @@ User user = (User)session.getAttribute("user");
 
 String branchid = "";
 Branch branch = null;   
-if(UserManager.checkPermissions(user, Group.sale)){
-	branchid = user.getBranch()+""; 
+if(UserManager.checkPermissions(user, Group.Manger)){
+	branchid = request.getParameter("branchid");
+}else if(UserManager.checkPermissions(user, Group.sale)){
+	branchid = user.getBranch()+"";   
 	branch = BranchManager.getLocatebyid(branchid);
 } 
-  
 List<Branch> listbranch = BranchService.getList(); 
 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
@@ -63,7 +64,7 @@ function add(){
 	if(b != null && b != ""){
 		branch = b ;
 	} 
-	// alert(branch);
+	 
 	 $.ajax({ 
 	        type: "post", 
 	         url: "../../admin/server.jsp",    
@@ -132,7 +133,7 @@ function add(){
   选择仓库:     
   <select id="branch">  
   <option value=""></option>
-   <%  
+   <%   
        String branchs[] = branchids.split("_"); 
 	   for(int i=0;i<listbranch.size();i++){
 		   Branch b = listbranch.get(i); 

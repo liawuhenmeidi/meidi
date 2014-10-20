@@ -18,7 +18,16 @@ String oldphone = request.getParameter("oldphone");
  function gettime(){
 	 
 	 var newphone = $("#newphone").val(); 
-
+     
+	 var filter = /^1[3|4|5|8][0-9]\d{8}$/;  
+	    var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+	    
+		 if(!filter.test(newphone) && !isPhone.test(newphone)){
+			 alert("请填写正确的手机号码或电话");     
+			 return false;  
+		 }
+		
+		 
 	 window.opener.document.getElementById("fresh").value ="fresh";
 	 window.opener.document.getElementById("phone").value =newphone;
 	

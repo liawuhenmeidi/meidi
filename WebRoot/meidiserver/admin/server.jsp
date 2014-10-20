@@ -35,7 +35,7 @@ if("peidan".equals(method)){
 	String statues = request.getParameter("statues");
 	String uid = request.getParameter("uid");
 	if(StringUtill.isNull(uid)){
-		uid = "-1"; 
+		uid = "-1";    
 	}     
 	System.out.println("uid"+uid); 
 	boolean flag= OrderPrintlnManager.updateOrderStatues(user,Integer.valueOf(id),Integer.valueOf(oid),Integer.valueOf(uid),Integer.valueOf(statues)); 

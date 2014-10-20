@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
        
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
-
+ 
 List<Branch> listbranch = BranchManager.getLocate(); 
 
 List<String> listbranchp = BranchManager.getLocateAll();  
@@ -202,18 +202,18 @@ var disable = '<%=isdisabel %>';
       //System.out.println("aa"+user.getBranch()+inventory.getOutstatues()+UserManager.checkPermissions(user, Group.inventoryquery));
       if((outbranch.getId()+"").equals(user.getBranch()) && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) ){ 
       %>  
-      <li><a href="../../admin/inventory/InventoryServlet?method=outbranch&id=<%=inventory.getId() %>">出库方确认</a></li>
+      <li><a href="../../admin/inventory/InventoryServlet?method=outbranch&type=phone&id=<%=inventory.getId() %>">出库方确认</a></li>
       <%
       }  
       %>
      <% if((inbranch.getId()+"").equals(user.getBranch()) && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) ){ 
       %>  
-      <li><a href="../../admin/inventory/InventoryServlet?method=inbranch&id=<%=inventory.getId() %>">入库方确认</a></li>
+      <li><a href="../../admin/inventory/InventoryServlet?method=inbranch&type=phone&id=<%=inventory.getId() %>">入库方确认</a></li>
       <% 
       } 
      
       if(inventory.getInstatues() == 1 && inventory.getOutstatues() == 1){
-      %> 
+      %>  
       <li><a href="print.jsp?id=<%=inventoryid%>">打印</a></li> 
       <% 
       }
@@ -231,8 +231,8 @@ var disable = '<%=isdisabel %>';
    <br/>
         <font style="color:red;font-size:20px;" > 单号：<%=inventoryid %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><br/>
      <font style="color:red;font-size:20px;" > 日期：<%=inventory.getIntime()==null?"":inventory.getIntime() %></font> <br/>
-                 出库单位：  
-         输入<input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch.getLocateName() %>"  <%=isdisabel %>/>                    
+                 出库单位：   
+       <input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch.getLocateName() %>"  <%=isdisabel %>/>                    
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <!-- 
     选择 <select id="outbranchs" <%=isdisabel %>>  
@@ -248,9 +248,10 @@ var disable = '<%=isdisabel %>';
 	   %>
 	  </select>   
 	   -->
-	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
+	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+	  <br/>         
                  入库单位： 
-             输入<input type="text" name="inbranch" id="inbranch" value="<%=inbranch.getLocateName() %>" class="cba"  <%=isdisabel %>/>
+          <input type="text" name="inbranch" id="inbranch" value="<%=inbranch.getLocateName() %>" class="cba"  <%=isdisabel %>/>
      <!--  选择 <select id="inbranchs" <%=isdisabel %>>  
 	  <option value=""></option>
 	   <% if(listbranch != null){
