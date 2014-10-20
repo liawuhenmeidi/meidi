@@ -4,13 +4,21 @@
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
 	
+	//接受id
 	String[] auto = request.getParameterValues("auto");
 	String[] manual = request.getParameterValues("manual");
 	
+	//显示内容的开关
+	boolean showContent = false;
+	String startButton = request.getParameter("startbutton");
+	
+	
 	//接受提交的单据，并check
-	if(auto != null && auto.length > 0 ){
-		MatchOrderManager.checkOrder(auto);
-		//MatchOrderManager.checkOrder(Integer.parseInt(dbSide), Integer.parseInt(uploadSide));
+	if(startButton != null && !startButton.equals("正在对比")){
+		if(auto != null && auto.length > 0 ){
+			MatchOrderManager.checkOrder(auto);
+			//MatchOrderManager.checkOrder(Integer.parseInt(dbSide), Integer.parseInt(uploadSide));
+		}
 	}
 	
 	//初始化要对比的orders
@@ -19,9 +27,6 @@
 	List <Order> unCheckedDBOrders = new ArrayList<Order>();
 	List <UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
 	
-	//显示内容的开关
-	boolean showContent = false;
-	String startButton = request.getParameter("start");
 	
 	//左侧select里面的内容
 	List<BranchType> listb = BranchTypeManager.getLocate();
@@ -34,22 +39,43 @@
 	
 	
 	//接受查询条件的提交
-	String branchType = request.getParameter("branchtype");
-	String branch = request.getParameter("branch");
-	String uploadOrderName = request.getParameter("uploadorder");
+	String selectBranchType = request.getParameter("branchtype");
+	String selectBranch = request.getParameter("branch");
+	String selectOrderName = request.getParameter("uploadorder");
 	
-	if(uploadOrderName != null && !uploadOrderName.equals("")){
-		if(uploadOrderName.equals("all")){
-			unCheckedUploadOrders = uploadOrders;
+	//查询条件提交后，左侧侧显示内容
+	if(selectBranchType != null && !selectBranchType.equals("") ){
+		//第一级选择的是否是all
+		if(selectBranchType.equals("all")){
+			unCheckedDBOrders = MatchOrderManager.getUnCheckedDBOrders();
 		}else{
-			unCheckedUploadOrders = UploadManager.getOrdersByName(uploadOrderName);
+			
+			if(selectBranch != null && !selectBranch.equals("")){
+				//第二级选择的是否是all
+				if(selectBranch.equals("all")){
+					unCheckedDBOrders = OrderManager.getCheckedDBOrdersbyBranchType(selectBranchType);
+				}else{
+					unCheckedDBOrders = OrderManager.getCheckedDBOrdersbyBranch(selectBranch);
+				}
+			}
+			
 		}
 	}
 	
-	if(startButton != null && startButton.equals("对比")){
+	
+	//查询条件提交后，右侧显示内容
+	if(selectOrderName != null && !selectOrderName.equals("")){
+		if(selectOrderName.equals("all")){
+			unCheckedUploadOrders = uploadOrders;
+		}else{
+			unCheckedUploadOrders = UploadManager.getOrdersByName(selectOrderName);
+		}
+	}
+	
+	
+	if(startButton != null && startButton.equals("正在对比")){
 		showContent = true;
-		if(false){
-		//if(!mo.startMatch()){
+		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders)){
 			return;
 		}
 		//去自动匹配好的Order
@@ -58,6 +84,7 @@
 		unCheckedDBOrders = mo.getUnMatchedDBOrders();
 		//从上传列表取得需要匹配的Order
 		unCheckedUploadOrders = mo.getUnMatchedUploadOrders();
+		
 	}
 	
 %>
@@ -89,21 +116,54 @@ $(function () {
 			  $("#branch").html(""); 
 			  var num = ($("#branchtype").children('option:selected').val());
 			  var jsons =  $.parseJSON(jsonmap);
-		
-			  var json = jsons[num];
-			  //alert(json);
+			
 	          var options = '<option value="all">全部</option>'; 
-	          for(var i=0; i<json.length; i++) 
-	        	 {
-	        	 options +=  "<option value='"+json[i].id+"'>"+json[i].locateName+"</option>";
-	        	 }
+			  if(num != "all"){
+				  var json = jsons[num];
+				  //alert(json);
+
+		          for(var i=0; i<json.length; i++) 
+		        	 {
+		        	 options +=  "<option value='"+json[i].id+"'>"+json[i].locateName+"</option>";
+		        	 }
+			  }else{
+				  options = '<option value="all" selected="selected">全部</option>'; 
+			  }
+			  
 	        	 $("#branch").html(options);    	  
 		  }); 
 		  
 		  
 		  
  });
-
+ 
+<%
+if(selectBranchType != null && !selectBranchType.equals("") && !selectBranchType.equals("all")){
+%>
+$(function (){
+	$("#branch").html(""); 
+	
+	  var num = <%=selectBranchType%>;
+	  var jsons =  $.parseJSON(jsonmap);
+	  var json = jsons[num];
+	  var options = '<option value="all">全部</option>';
+	  if(<%=selectBranch != null && selectBranch.equals("all")%>){
+		  options = '<option value="all" selected="selected">全部</option>';
+	  }
+    for(var i=0; i<json.length; i++) 
+  	 {
+    	if(json[i].id != "<%=selectBranch%>"){
+    		options +=  "<option value='"+json[i].id+"'>"+json[i].locateName+"</option>";
+    	}else{
+    		options +=  "<option value='"+json[i].id+"' selected='selected'>"+json[i].locateName+"</option>";
+    	}
+  	 
+  	 }
+  	 $("#branch").html(options);    
+});
+<%
+}
+%>
 </script>
 
   
@@ -113,7 +173,6 @@ $(function () {
 
 
 <table  cellspacing="1" border="2px">
-		
 		<form action="" method="post">
 		<tr>
 			<td colspan="6" align="center">
@@ -126,7 +185,7 @@ $(function () {
 				 BranchType lo = listb.get(i); 
 				 if(lo.getId() != 2){ 
 			%>	    
-			<option value="<%=lo.getId()%>"><%=lo.getName()%></option>
+			<option value="<%=lo.getId()%>" <%if(String.valueOf(lo.getId()).equals(selectBranchType)){ %>selected="selected" <%} %>><%=lo.getName()%></option>
 			<%
 				 }
 			 }
@@ -140,7 +199,7 @@ $(function () {
 			
 			
 			
-			<td align="center"><h3><input type="submit" name="start" value="对比" /></h3></td> 
+			<td align="center"><h3><input type="submit" id="startbutton" name="startbutton" value="对比" onclick="$('#startbutton').val('正在对比')" /></h3></td> 
 			
 			
 			<td colspan="6" align="center">
@@ -151,7 +210,7 @@ $(function () {
 				<%
 				for(int i = 0 ; i < orderNames.size() ; i ++){
 				%>
-				<option value="<%=orderNames.get(i) %>" ><%=orderNames.get(i) %></option>
+				<option value="<%=orderNames.get(i) %>" <%if(orderNames.get(i).equals(selectOrderName)){ %>selected="selected" <%} %>><%=orderNames.get(i) %></option>
 				<%
 				}
 				%>
@@ -184,7 +243,7 @@ $(function () {
 		
 		<%
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
-			if(afterMatchOrders.get(i).getCompareLevel() >= 3.0){
+			if(afterMatchOrders.get(i).getCompareLevel() >= 4.0){
 		%>
 		<tr>
 			<td align="center"><input name="auto"  checked="checked" type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>,<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
@@ -208,7 +267,7 @@ $(function () {
 		
 		<%
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
-			if(afterMatchOrders.get(i).getCompareLevel() < 3.0){
+			if(afterMatchOrders.get(i).getCompareLevel() < 4.0){
 		%>
 		<tr>
 			<td align="center"><input name="auto"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>,<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
@@ -233,13 +292,11 @@ $(function () {
 		
 		<%
 			for(int i = 0 ;;){
-				if(unCheckedDBOrders != null && unCheckedDBOrders.size() > 0 && i< unCheckedDBOrders.size()){
-					
+				if(unCheckedDBOrders != null && unCheckedDBOrders.size() > 0 && i< unCheckedDBOrders.size()){					
 		%>	
-					<tr>  
-					
+					<tr>  	
 					<td align="center"><input name="manual" disabled="disabled" type="checkbox" value=""  /></td> 
-					<td align="center"><%= unCheckedDBOrders.get(i).getBranch() %></td>
+					<td align="center"><%= unCheckedDBOrders.get(i).getbranchName(unCheckedDBOrders.get(i).getBranch()) %></td>
 					<td align="center"><%= unCheckedDBOrders.get(i).getPos() %></td>
 					<td align="center"><%= unCheckedDBOrders.get(i).getSaleTime() %></td>
 					<td align="center"><%= unCheckedDBOrders.get(i).getSendType() %></td> 
@@ -248,6 +305,7 @@ $(function () {
 				}else{
 		%>
 					<tr>
+					<td align="center"><input name="manual" disabled="disabled" type="checkbox" value=""  /></td> 
 					<td align="center"></td>
 					<td align="center"></td>
 					<td align="center"></td> 

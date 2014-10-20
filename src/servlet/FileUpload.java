@@ -132,7 +132,7 @@ public class FileUpload extends HttpServlet {
 						 
 						Sample.putObjectByFile(baiduBCS, file,printlnid+".jpg"); 
 					
-						OrderManager.updateimagerUrl(printlnid, "http://bcs.duapp.com/liaowuhen/image%2F"+printlnid+".jpg"); 
+						//OrderManager.updateimagerUrl(printlnid, "http://bcs.duapp.com/liaowuhen/image%2F"+printlnid+".jpg"); 
 						
 						file.delete();       
 						

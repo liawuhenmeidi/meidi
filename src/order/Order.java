@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import branch.BranchManager;
+import branch.BranchService;
 
 import category.Category;
 import category.CategoryManager;
@@ -452,7 +453,7 @@ public void setCategoryID(String categoryID) {
 }
 private String categoryID; // 对应的产品类别
   
-  public int getBranch() {
+public int getBranch() {
 	return branch;
 }
 
