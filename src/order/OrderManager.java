@@ -329,27 +329,7 @@ logger.info(pstmt);
 		}
 		return count ;
 	}
-	
-	
-	public static int updateimagerUrl(String pritnlnd, String url) {
-		int count = 0 ;
-		Connection conn = DB.getConn();
-		//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
-		String sql = "update mdorder set imagerUrl = ?  where printlnid = '" + pritnlnd +"'";
-		
-		PreparedStatement pstmt = DB.prepare(conn, sql);    
-		try {  
-			pstmt.setString(1,url);           
-			count = pstmt.executeUpdate(); 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(pstmt);
-			DB.close(conn);
-		}
-		return count ;
-	}
-	
+
 	// 第二次配单 
 		public static int updatePeisong(User user,int uid,int id,int type) {
 			List<OrderPrintln> list = OrderPrintlnManager.getOrderPrintlnbyOrderid(id);
@@ -685,31 +665,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 
 	}
     
-   public static int getCount(String str){
-	   
-	    Connection conn = DB.getConn();
-		Statement stmt = DB.getStatement(conn);
-		
-		String sql = "select count(*) as cc from  mdorder ";
-		
-		ResultSet rs = DB.getResultSet(stmt, sql);
-
-		int count = 0;
-		
-		try { 
-			while (rs.next()) {
-				count = rs.getInt("cc");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(stmt);
-			DB.close(rs);
-			DB.close(conn);
-		 }
-		return count;
-   }
- 
+  
     public static List<Order> getOrderlist(User user ,int type,int statues ,int num,int page,String sort,String search){
 	   
 	  boolean f = UserManager.checkPermissions(user, Group.Manger);  
@@ -1124,102 +1080,68 @@ logger.info(sql);
  				DB.close(conn);
  			}   
     	}
-    	return Orders; 
+    	return Orders;  
+    }
+   
+  //wrote by wilsonlee
+    //已经结款的Order
+    public static List<Order> getCheckedDBOrdersbyBranch(String branchName){
+    	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
+    	//flag = true;
+    	List<Order> Orders = new ArrayList<Order>();
+   
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and orderbranch in (select id from mdbranch where bname = "+branchName+")";                  
     	   
+    	if(true){
+    		Connection conn = DB.getConn();
+            Statement stmt = DB.getStatement(conn);
+            ResultSet rs = DB.getResultSet(stmt, sql);
+
+ 			try { 
+ 				while (rs.next()) {
+ 					Order p = gerOrderFromRs(rs);
+  					Orders.add(p);
+ 				}
+ 			} catch (SQLException e) {
+ 				e.printStackTrace();
+ 			} finally {
+ 				DB.close(stmt);
+ 				DB.close(rs);
+ 				DB.close(conn);
+ 			}   
+    	}
+    	return Orders;  
+    }
+    
+    public static List<Order> getCheckedDBOrdersbyBranchType(String branchName){
+    	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
+    	//flag = true;
+    	List<Order> Orders = new ArrayList<Order>();
+   
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and orderbranch in (select id from mdbranch where pid in (select id from mdbranchtype where bname = "+branchName+"))";                  
+    	   
+    	if(true){
+    		Connection conn = DB.getConn();
+            Statement stmt = DB.getStatement(conn);
+            ResultSet rs = DB.getResultSet(stmt, sql);
+
+ 			try { 
+ 				while (rs.next()) {
+ 					Order p = gerOrderFromRs(rs);
+  					Orders.add(p);
+ 				}
+ 			} catch (SQLException e) {
+ 				e.printStackTrace();
+ 			} finally {
+ 				DB.close(stmt);
+ 				DB.close(rs);
+ 				DB.close(conn);
+ 			}   
+    	}
+    	return Orders;  
     }
     
     
-    
-   public static List<Order> getOrderlistPrintln(User user ,int type,int num,int page,String sort){
-	    boolean f = UserManager.checkPermissions(user, Group.Manger); 
-		  
-        boolean flag = UserManager.checkPermissions(user, type);
-			   
-		List<Order> Orders = new ArrayList<Order>();
-		String sql = "";  
-		if(f){
-			  sql = "select * from  mdorder  where dealSendid != 0  and sendId = 0 and printSatues = 0  and deliveryStatues != 3  order by "+sort+"  desc limit " + ((page-1)*num)+","+ page*num ;
-		  }else {
-			  if(user.getUsertype() == 1   && Group.send != type){
-				   sql = "select * from  mdorder  where sendId != 0  and printSatues = 1  and deliveryStatues != 3  order by id  desc limit " + ((page-1)*num)+","+ page*num ;
-			   }else if(flag && Group.send == type){  
-				   sql = "select * from  mdorder where sendId = "+user.getId();
-			   }else if(flag && Group.sale == type){
-				   sql = "select * from  mdorder where  orderbranch = '"+ user.getBranch() +"' and  deliveryStatues= 0 order by saledate";
-			   }
-			   else if(flag && Group.dealSend == type){ 
-				   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and  dealSendid != 0  and printSatues = 0  and sendId = 0  and deliveryStatues != 3  order by "+sort+"  desc limit " + ((page-1)*num)+","+ page*num ;  
-			   }
-		  }
-	   
-	   if("".equals(sql)){
-		   return null;
-	   }
-logger.info(sql);
-		Connection conn = DB.getConn();
-      Statement stmt = DB.getStatement(conn);
-	   ResultSet rs = DB.getResultSet(stmt, sql);
-			try { 
-				while (rs.next()) {
-					Order p = gerOrderFromRs(rs);
-					Orders.add(p);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				DB.close(stmt);
-				DB.close(rs);
-				DB.close(conn);
-			 }
-			return Orders;
-	 }
-   
-   public static List<Order> getOrderlistCome(User user ,int type,int num,int page,String sort){
-	    boolean f = UserManager.checkPermissions(user, Group.Manger); 
-		  
-       boolean flag = UserManager.checkPermissions(user, type);
-			   
-		List<Order> Orders = new ArrayList<Order>();
-		String sql = "";  
-		if(f){  
-			  sql = "select * from  mdorder  where  statues1 = 0  order by "+sort+"  desc limit " + ((page-1)*num)+","+ page*num ;
-		  }else {
-			  if(user.getUsertype() == 1   && Group.send != type){
-				   sql = "select * from  mdorder  where sendId != 0  and printSatues = 1  and deliveryStatues != 3  order by id  desc limit " + ((page-1)*num)+","+ page*num ;
-			   }else if(flag && Group.send == type){  
-				   sql = "select * from  mdorder where sendId = "+user.getId();
-			   }else if(flag && Group.sale == type){
-				   sql = "select * from  mdorder where  orderbranch = '"+ user.getBranch() +"' and  deliveryStatues= 0 order by saledate";
-			   }
-			   else if(flag && Group.dealSend == type){ 
-				   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))    and statues1 = 0 order by "+sort+"  desc limit " + ((page-1)*num)+","+ page*num ;  
-			   }
-		  }
-	   
-	   if("".equals(sql)){
-		   return null;
-	   }
-logger.info(sql);
-		Connection conn = DB.getConn();
-     Statement stmt = DB.getStatement(conn);
-	   ResultSet rs = DB.getResultSet(stmt, sql);
-			try { 
-				while (rs.next()) {
-					Order p = gerOrderFromRs(rs);
-					Orders.add(p);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				DB.close(stmt);
-				DB.close(rs);
-				DB.close(conn);
-			 }
-			return Orders;
-	 }
-   
-   
-  
    public static Order getOrderID(User user ,int id){
 	   
 	   Order orders = null; 
