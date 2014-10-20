@@ -2,20 +2,12 @@
  
 <%@ include file="../searchdynamic.jsp"%>
     
-<%  
-
-request.setCharacterEncoding("utf-8");
+<%    
 
 //list = OrderManager.getOrderlistPrintlnSend(user,Group.sencondDealsend,Integer.valueOf(num),Page,sort);  
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderPrint,num,Page,sort,"");  
 session.setAttribute("exportList", list); 
 count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.orderPrint,num,Page,sort,"");  
-
-HashMap<Integer,User> usermap = UserManager.getMap(); 
-//获取送货员    
-List<User> listS = UserManager.getUsers(user,Group.send);
-   
-Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,3);
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -319,7 +311,7 @@ function adddetail(src){
 		
 		<!--  
 		<%
-		OrderPrintln opp = opMap.get(o.getId());
+		OrderPrintln opp = opmap.get(3).get(o.getId());
 		if(opp!= null){
 
 		%>

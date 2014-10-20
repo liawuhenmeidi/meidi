@@ -190,21 +190,20 @@ function change(str1,str2,type){
 	          }  
       %> 
      <%=sm %>
+      <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=opstatues%>')"></input>
      <%
           }else {
  
      %>
               无
+              <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=opstatues%>')"></input>
      <%
 	   }
 	if(flag){
 		int shifang = -1 ;
 		if(orp != null){
-			shifang = orp.getStatues();
+			shifang = orp.getStatues(); 
 		}
-     %> 
-    <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=shifang%>')"></input>
-     <%
      } 
      %> 
    </td> 

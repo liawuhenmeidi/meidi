@@ -2,18 +2,11 @@
  
 <%@ include file="searchdynamic.jsp"%>
  <%  
-  
-request.setCharacterEncoding("utf-8");
-
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.go,num,Page,sort,sear);
 session.setAttribute("exportList", list); 
 count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.go,num,Page,sort,sear);    
-   
-HashMap<Integer,User> usermap = UserManager.getMap();
-  
-//获取二次配单元（工队）
-List<User> listS = UserManager.getUsers(user,Group.sencondDealsend);   
 
+ 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

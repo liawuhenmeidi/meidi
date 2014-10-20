@@ -3,8 +3,6 @@ package orderPrint;
 
 import gift.Gift;
 import gift.GiftManager;
-import huanhuo.HuanHuo;
-import huanhuo.HuanhuoManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

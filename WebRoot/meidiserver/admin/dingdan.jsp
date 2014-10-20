@@ -7,13 +7,6 @@ List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDisp
 session.setAttribute("exportList", list);
 
 count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);    
-   
-HashMap<Integer,User> usermap = UserManager.getMap();
-        
-//获取二次配单元（工队）
-List<User> listS = UserManager.getUsers(user ,Group.sencondDealsend);   
- 
-Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -57,7 +50,7 @@ position:fixed;
 </head>
 
 <body style="scoll:no">
- 
+  
 <!--   头部开始   --> 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
@@ -65,7 +58,7 @@ position:fixed;
 var id = "";
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>"; 
-var inventory = "";
+var inventory = "";  
 $(function () { 
 	$("#wrap").bind("scroll", function(){ 
 
@@ -101,9 +94,11 @@ function getinventory(uid,types){
            });  
 }     
       
-function changepeidan(str1,oid,deliveryStatues,types){
+function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	var uid = $("#"+str1).val();
-
+   if(deliveryStatues == 9 || deliveryStatues == 10){
+	   uid = saleId;
+   }
 	if(deliveryStatues != 8 ){ 
 		if(uid == null || uid == ""){
 			alert("请选择安装公司");
@@ -450,7 +445,7 @@ function adddetail(src){
 						     }
 					            %>
 				         </select> 
-				         <input type="button" onclick="changepeidan('songh<%=o.getId()%>','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="确定"/> 
+				         <input type="button" onclick="changepeidan('songh<%=o.getId()%>','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="确定"/> 
 				         
 					<% 	
 				     }
@@ -458,14 +453,14 @@ function adddetail(src){
 				
 					   if(OrderManager.Check(o.getId())){ 
 						  %>   
-						   <input type="button" onclick="changepeidan('2','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="打印"/>
+						   <input type="button" onclick="changepeidan('2','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="打印"/>
 					         &nbsp;&nbsp;&nbsp;
 						  <%
 					   }else {
 						   %>
-						   <input type="button" onclick="changepeidan('1','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="打印"/>
+						   <input type="button" onclick="changepeidan('1','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="打印"/>
 					         &nbsp;&nbsp;&nbsp;
-						   <input type="button" onclick="changepeidan('0','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>')"  value="确定"/>  
+						   <input type="button" onclick="changepeidan('0','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="确定"/>  
 						   				   
 						   <%
 					   }

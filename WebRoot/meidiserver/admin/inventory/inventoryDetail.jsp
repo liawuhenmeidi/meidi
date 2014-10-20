@@ -11,8 +11,12 @@ String starttime = request.getParameter("starttime");
 
 Branch b = new Branch();
 if(!StringUtill.isNull(branchid)){
-	//b = BranchManager.getLocatebyid(branchid);
-	b = BranchService.gerBranchByname(branchid);
+	if(NumbleUtill.isNumeric(branchid)){
+		b = BranchManager.getLocatebyid(branchid);
+	}else {
+		b = BranchService.gerBranchByname(branchid);
+	}
+	
 	branchid = b.getId()+""; 
 }
 

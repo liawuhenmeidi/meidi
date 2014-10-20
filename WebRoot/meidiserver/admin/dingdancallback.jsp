@@ -1,21 +1,10 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
 <%@ include file="searchdynamic.jsp"%>
- 
 <%  
-
-request.setCharacterEncoding("utf-8");
-  
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.callback,num,Page,sort,sear);  
 session.setAttribute("exportList", list); 
 count =  OrderManager.getOrderlistcount(user,Group.dealSend,Order.callback,num,Page,sort,sear);  
-     
-HashMap<Integer,User> usermap = UserManager.getMap(); 
-//获取送货员    
-
-List<User> listS = UserManager.getUsers(user,Group.send);
-
-//Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,3);
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

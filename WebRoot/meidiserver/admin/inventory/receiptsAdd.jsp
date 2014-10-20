@@ -257,11 +257,11 @@ var disable = '<%=isdisabel %>';
      <font style="color:red;font-size:20px;" > 单号：<%=inventoryid %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><br/>
      <font style="color:red;font-size:20px;" > 日期：<%=inventory.getIntime()==null?"":inventory.getIntime() %></font> <br/>
                  出库单位：  
-         输入<input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch.getLocateName()==null?"":outbranch.getLocateName() %>"  <%=isdisabel %>/>                    
+    <input type="text" name="outbranch" id="outbranch" class="cba" value="<%=outbranch.getLocateName()==null?"":outbranch.getLocateName() %>"  <%=isdisabel %>/>                    
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          
                  入库单位： 
-             输入<input type="text" name="inbranch" id="inbranch" value="<%=inbranch.getLocateName()==null?"":inbranch.getLocateName() %>" class="cba"  <%=isdisabel %>/>
+     <input type="text" name="inbranch" id="inbranch" value="<%=inbranch.getLocateName()==null?"":inbranch.getLocateName() %>" class="cba"  <%=isdisabel %>/>
  
   <br/>
    

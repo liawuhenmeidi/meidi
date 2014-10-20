@@ -681,7 +681,7 @@ logger.info(sql);
 			try {
 				while (rs.next()) {
 					User u = UserManager.getUserFromRs(rs);
-					users.put(rs.getInt("id"), u);
+					users.put(u.getId(), u);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

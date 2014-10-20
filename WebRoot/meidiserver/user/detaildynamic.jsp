@@ -29,7 +29,7 @@ int opstatues = -1;
   
 if(or.getDeliveryStatues() == 0 || or.getDeliveryStatues() == 9 ){ 
 	opstatues = OrderPrintln.salerelease;     
-}else if (or.getDeliveryStatues() == 1){
+}else if (or.getDeliveryStatues() == 1 || or.getDeliveryStatues() == 10){
 	if(or.getInstallid() == 0){   
 		flag = false ; 
 	}  

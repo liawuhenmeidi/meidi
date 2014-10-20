@@ -3,17 +3,9 @@
 <%@ include file="searchdynamic.jsp"%>
  
 <%   
-request.setCharacterEncoding("utf-8");
-
-HashMap<Integer,User> usermap = UserManager.getMap();
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.serach,num,Page,sort,sear); 
 session.setAttribute("exportList", list); 
 count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.serach,num,Page,sort,sear);   
-//获取二次配单元（工队） 
-
-List<User> listS = UserManager.getUsers(user,Group.sencondDealsend);   
-
-Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
 %>
   

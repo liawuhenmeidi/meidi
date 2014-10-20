@@ -1,7 +1,6 @@
 <%@ page language="java" import="java.util.*,message.*,utill.*,category.*,product.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%      
-
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 
@@ -13,13 +12,13 @@ HashMap<Integer,User> usermap = UserManager.getMap();
 
 List<OrderProduct> list = o.getOrderproduct();         
 //获取二次配单元（工队）
-List<User> listS = UserManager.getUsers(user ,Group.sencondDealsend);   
+List<User> listS = UserService.getsencondDealsend(user); 
   
 List<Category> listc = CategoryManager.getCategory(user,Category.sale); 
 
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 HashMap<String,ArrayList<String>> listt = ProductManager.getProductName(); 
-
+ 
 String plist = StringUtill.GetJson(listt);
 Message message = MessageManager.getMessagebyoid(id); 
 %>
@@ -66,7 +65,7 @@ td {
  <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>   
 <div id="wrap">  
 <form  action="server.jsp"  method ="post"  id="form"   onsubmit="return checkedd()"  >
- 
+  
 <input type="hidden" name="method" value="updateorder"/>
 <input type="hidden" name="oid" value="<%=id%>"/>  
 <table  cellspacing="1"  id="table"> 

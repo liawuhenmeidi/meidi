@@ -33,17 +33,27 @@ int num = Integer.valueOf(numb);
 if(Page <=0){
 	Page =1 ;
 }
-
+ 
 if("searched".equals(searched)){
 	sear = HttpRequestUtill.getSearch(request);
-	session.setAttribute("sear", sear);
+	session.setAttribute("sear", sear); 
 }
- 
+  
+int id = user.getId();   
 
-int id = user.getId(); 
-int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
-int opstatues = OrderPrintln.releasedispatch; 
-int count = 0 ;   
+int pgroup = GroupService.getidMap().get(user.getUsertype()).getPid();    //  上级管理组ID
+
+HashMap<Integer,User> usermap = UserService.getMapId();
+  
+List<User> listS =   UserService.getsencondDealsend(user);
+ 
+Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
+
+int count = 0 ; 
+
+//int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
+int opstatues = OrderPrintln.releasedispatch;  
+  
   
 
 %>

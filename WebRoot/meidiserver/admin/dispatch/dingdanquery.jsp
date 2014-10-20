@@ -9,12 +9,7 @@ request.setCharacterEncoding("utf-8");
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
 session.setAttribute("exportList", list); 
 count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
-   
-HashMap<Integer,User> usermap = UserManager.getMap(); 
-//获取送货员    
-List<User> listS = UserManager.getUsers(user,Group.send);
 
-Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -492,7 +487,7 @@ function orderPrint(id,statues){
 		<td align="center"><%=o.getLocateDetail() %></td>
 		
 		<td align="center">
-		 
+		  
 		<%
 		//打印状态     0  未打印   1 打印
 		if(0 == o.getPrintSatuesP()){

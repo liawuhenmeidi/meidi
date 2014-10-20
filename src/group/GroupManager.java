@@ -361,8 +361,7 @@ logger.info(sql);
 			try {
 				while (rs.next()) {
 					Group g = GroupManager.getGroupFromRs(rs);
-					int ids = rs.getInt("id");
-					users.put(ids, g);
+					users.put(g.getId(), g);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
