@@ -408,7 +408,13 @@ function adddetail(src){
 		<td align="center">
 		<%    
 
-		
+		  OrderPrintln salereleaseo = opmap.get(OrderPrintln.salerelease) == null?null:opmap.get(OrderPrintln.salerelease).get(o.getId()); 
+	      OrderPrintln salereleasereturno = opmap.get(OrderPrintln.salereleasereturn) == null?null:opmap.get(OrderPrintln.salereleasereturn).get(o.getId()); 
+
+	      if(salereleasereturno != null){
+	    	  salereleaseo = salereleasereturno ;
+	      }
+	      
 		int releasemodfy = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasemodfy, o.getId()) ;	
 		int release = OrderPrintlnManager.getstatues(opmap, OrderPrintln.release, o.getId()) ;
 	    int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId()) ;
@@ -480,14 +486,6 @@ function adddetail(src){
 		 
 		<td align="center">     
 		    <%
-		      OrderPrintln salereleaseo = opmap.get(OrderPrintln.salerelease) == null?null:opmap.get(OrderPrintln.salerelease).get(o.getId()); 
-		      OrderPrintln salereleasereturno = opmap.get(OrderPrintln.salereleasereturn) == null?null:opmap.get(OrderPrintln.salereleasereturn).get(o.getId()); 
-
-		      if(salereleasereturno != null){
-		    	  salereleaseo = salereleasereturno ;
-		      }
-		      
-		      
 		      if(salereleaseo != null){
 		    	  if(salereleaseo .getStatues() == 0 ){
 		    %> 
