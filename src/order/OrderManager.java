@@ -1021,7 +1021,7 @@ logger.info(sql);
     
     
     //wrote by wilsonlee
-    //已经结款的Order
+    //未结款的Order
     public static List<Order> getUnCheckedDBOrders(){
     	  
     	
@@ -1083,9 +1083,9 @@ logger.info(sql);
     	return Orders;  
     }
     
-  //wrote by wilsonlee
-    //已经结款的Order
-    public static List<Order> getCheckedDBOrdersbyBranch(int branchid){
+  //wrote by 
+    //根据门店获取Order
+    public static List<Order> getCheckedDBOrdersbyBranch(String branchid){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
@@ -1113,6 +1113,8 @@ logger.info(sql);
     	return Orders;  
     }
     
+  //wrote by 
+    //根据门店类别获取Order
     public static List<Order> getCheckedDBOrdersbyBranchType(String branchid){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;

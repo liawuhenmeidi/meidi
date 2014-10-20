@@ -550,7 +550,7 @@ function adddetail(src){
 	    }
 		%>
 		</td>
-		
+		  
 		<td align="center">
 		<%  if( o.getDeliverytype() != 0){
 		   if(o.getReturnid() == 0){    
