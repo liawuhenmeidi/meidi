@@ -21,6 +21,7 @@ public class OrderPrintln {
   
   
   public static int releasedispatch = 6 ;  // 文员向安装公司提交退货申请     
+  
   public static int releasemodfy = 7 ;  // 文员向安装公司提交修改申请     
   
   private int pGroupId; 

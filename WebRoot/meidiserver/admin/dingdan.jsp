@@ -332,7 +332,7 @@ function adddetail(src){
             <td align="center">送货地址</td>
            <td align="center">送货状态</td>
 			<td align="center">备注</td>
-			  
+			 
 			<td align="center">配单</td>
 			<td align="center">查看位置</td> 
 			<td align="center">安装网点驳回</td> 
@@ -348,6 +348,7 @@ function adddetail(src){
 		  %>  
 		     
 		    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)">   
+
 				<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
 				<td align="center"><%=o.getbranchName(o.getBranch())%></td>  
 				<td align="center"> 	                		  
@@ -403,7 +404,6 @@ function adddetail(src){
 			    int salereleaseanzhuang	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.salereleaseanzhuang, o.getId());
 			    int releasemodfy	= OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasemodfy, o.getId());
 			    int type = -1 ;
-			    
 			    if(release != -1){   
 			    	totalshifang = release ;
 			    	orp = opmap.get(OrderPrintln.release).get(o.getId()); 
@@ -474,7 +474,6 @@ function adddetail(src){
 				
 				<td align="center"> 
 				<%    
-				    if(modify == -1 && returns == -1 || modify == 0){
 						 if(totalshifang == 2){ 
 					    	 %> 
 					    	  <%=orp== null ?"":orp.getMessage()  %>
@@ -495,7 +494,7 @@ function adddetail(src){
 					 <input type="button" onclick="changes('<%=orp.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','','','<%=totalshifang%>',this)"  value="不同意"/>
 					<%
 					   }  
-				   }
+				
 				%>
 				</td> 
 				<td align="center"> 
@@ -513,18 +512,26 @@ function adddetail(src){
 					 %>
 				   
 				 <%=op == null ? "":op.getMessage() %>  
-				 <% if(releasemodfy == 0 || totalshifang== 0 || totalshifang == 4){
+				 <% if(releasemodfy == 0 ){
 					 
 				  %> 
 				   安装公司处理中 
-				 <%}else if(releasemodfy == 2 || totalshifang == 2){  
+				 <%}else if(releasemodfy == 2){  
 				 %>
 				 <input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','-1',this)"  value="同意"/>
 			      
-				<%}else if(releasemodfy == -1){ %> 
+				<%}else if(releasemodfy == -1){ 
+				    if(totalshifang == 0){
+				    %>
+				            请先处理驳回信息
+				    <%
+				    }else {
+				  %>
+				 
 				<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.releasemodfy %>',this)"  value="同意"/>
 				<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=releasemodfy %>','','<%=OrderPrintln.releasemodfy %>',this)"  value="不同意"/>
-				<% }%>
+				<% }
+				}%>
 				 
 				</td>
 				<%
@@ -560,12 +567,17 @@ function adddetail(src){
 						
 										  <%
 									  }else {
+										  if(totalshifang == 0){
+											    %>
+											            请先处理驳回信息
+											    <%
+											    }else {
 									  %>	         
 								    <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>',this)"  value="同意"/>
-								    <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>',this)"  value="不同意"/> 
-								 
-								  <% }
-						  }
+								    <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>',this)"  value="不同意"/>   
+								  <% } 
+								 }
+						      }
 				         }%>
 				</td>
              

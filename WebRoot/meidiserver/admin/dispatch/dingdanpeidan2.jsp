@@ -418,14 +418,14 @@ function adddetail(src){
 	    
 	    int statuesnew = Order.orderpeisong; 
 	    
-			if(o.getSendId() == 0 && release != 0 && releasedispatch != 0 ){
+	    
+	    
+	     if(o.getSendId() == 0 && release != 0 && releasedispatch != 0 && releasemodfy != 0){
 				   if(o.getDeliveryStatues() == 9){
 					   statuesnew = Order.ordersong;
 				   }else if(o.getDeliveryStatues() == 10){
 					   statuesnew = Order.orderinsta; 
 				   }
-				   
-				   if(releasemodfy == 4 || releasemodfy == -1){
 				    	  
 			%> 
 			<select class = "category" name="category"  id="songh<%=o.getId() %>" >
@@ -447,7 +447,7 @@ function adddetail(src){
 	         </select>   
 	           
 	         <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','<%=statuesnew %>',<%=release %>,'<%=o.getSendType(0,"</p>")%>')"  value="确定"/>
-			<% } 
+			<%
 			} else {
 				
 			    if(usermap.get(Integer.valueOf(o.getSendId())) != null){

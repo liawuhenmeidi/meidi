@@ -1082,15 +1082,15 @@ logger.info(sql);
     	}
     	return Orders;  
     }
-   
+    
   //wrote by wilsonlee
     //已经结款的Order
-    public static List<Order> getCheckedDBOrdersbyBranch(String branchName){
+    public static List<Order> getCheckedDBOrdersbyBranch(int branchid){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and orderbranch in (select id from mdbranch where bname = "+branchName+")";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and orderbranch in ("+branchid+")";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();
@@ -1113,12 +1113,12 @@ logger.info(sql);
     	return Orders;  
     }
     
-    public static List<Order> getCheckedDBOrdersbyBranchType(String branchName){
+    public static List<Order> getCheckedDBOrdersbyBranchType(String branchid){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and orderbranch in (select id from mdbranch where pid in (select id from mdbranchtype where bname = "+branchName+"))";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and orderbranch in (select id from mdbranch where pid in ( "+branchid+"))";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();

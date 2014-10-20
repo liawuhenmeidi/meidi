@@ -54,8 +54,8 @@ public class Order {
  public static int orderpeisong= 1;  
  public static int orderinstall = 2; 
  public static int orderreturn = 3;   
- public static int ordersong = 4; 
- public static int orderinsta = 5;
+ public static int ordersong = 4;   // 只安装门店提货
+ public static int orderinsta = 5;   // 只安装顾客已提
   
   private int id ;
   
