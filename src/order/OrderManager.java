@@ -1090,7 +1090,7 @@ logger.info(sql);
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and orderbranch in ("+branchid+")";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0 and orderbranch in ("+branchid+")";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();
@@ -1120,7 +1120,7 @@ logger.info(sql);
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and orderbranch in (select id from mdbranch where pid in ( "+branchid+"))";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0 and orderbranch in (select id from mdbranch where pid in ( "+branchid+"))";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();
