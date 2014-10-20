@@ -1,21 +1,28 @@
-<%@ page language="java" import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,product.*,order.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");  
-String ctype = request.getParameter("ctype"); 
+String ctype = request.getParameter("ctype");
 String branchid = request.getParameter("branchid");
 String endtime = request.getParameter("endtime");
+ 
 endtime = TimeUtill.dataAdd(endtime,1); 
-
 String starttime = request.getParameter("starttime"); 
 
 Branch b = new Branch();
 if(!StringUtill.isNull(branchid)){
-	b = BranchManager.getLocatebyid(branchid);
+	if(NumbleUtill.isNumeric(branchid)){
+		b = BranchManager.getLocatebyid(branchid);
+	}else {
+		b = BranchService.gerBranchByname(branchid);
+	}
+	
+	branchid = b.getId()+""; 
 }
 
 String strbranch = b.getLocateName();
-Map<Integer,Branch> branchmap = BranchManager.getIdMap(); 
+
+Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 Map<String,Branch> newbranchmap = new HashMap<String,Branch>();
 if(branchmap != null){
 	Set<Integer> key = branchmap.keySet();
@@ -27,6 +34,13 @@ if(branchmap != null){
 }
 
 String branchstr = StringUtill.GetJson(newbranchmap);
+   
+Map<String,User> usermap = UserService.getuserIdStr();
+
+String usermapstr = StringUtill.GetJson(usermap);
+
+Map<String,String> mapdevity = OrderManager.getDeliveryStatuesMap();
+String mapdevitystr = StringUtill.GetJson(mapdevity);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -34,10 +48,11 @@ String branchstr = StringUtill.GetJson(newbranchmap);
 <style type="text/css">
 
 </style>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../js/map.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -50,6 +65,8 @@ var row = 1;
 var branchstr = <%=branchstr%>; 
 var starttime = '<%=starttime%>'; 
 var endtime = '<%=endtime%>';
+var usermapstr = <%=usermapstr%>;
+var mapdevity = <%=mapdevitystr%>;
 //alert(ctype);
  $(function () {  
 	 //initproduct();
@@ -80,68 +97,130 @@ var endtime = '<%=endtime%>';
 	 }
  } 
  
+ 
  function search(ctype,branchid,time){
 	 $("#serach table").remove();
-	 $.ajax({ 
+	 //var map = new Map();
+	 var arrays = new Array();
+	 //var totalpapercount = 0 ;
+	 //var totalrealcount = 0 ;
+	 var papercount = 0 ;
+	 var realcount = 0 ;  
+	 $.ajax({  
 	        type: "post", 
 	         url: "../../admin/server.jsp",
 	         data:"method=inventorydetail&ctype="+ctype+"&branchid="+branchid+"&time="+time,
 	         dataType: "", 
-	         success: function (data) {
+	         success: function (data) { 
 	        	//alert(data);
 	        	
-	        	 var addstr = '<table id ="serach" width="100%" border="1" cellpadding="0" cellspacing="0" > '+
-	        		     '<tr class="asc"> '+
-	        		     ' <td>单号</td>'+ 
-	        		     ' <td>日期</td> '+
-	        		     ' <td>型号</td>'+
-	        		     ' <td>操作类型</td> ' +
-	        		     ' <td>调拨数量</td> ' +
-	        		     
-	        		     ' <td>账面库存数量</td>' + 
-	        		     ' <td>实际库存数量</td> ' + 
-	        		    ' </tr>';
-	        		     
+	        	 var addstr = '<div class="table-list" >'+
+	        		  '<table width="100%"  cellspacing="1" id="table" > '+
+	        		  '<thead>'+ 
+	  	     		  '<tr>'+
+	  	        		'<th align="left">单号</th>'+
+	  	     			'<th align="left">日期</th>'+
+	  	     			'<th align="left">型号</th>'+
+	  	     			'<th align="left">上报状态</th>'+ 
+	  	     			'<th align="left">操作类型</th>'+
+	  	     			'<th align="left">账面调拨数量</th>'+
+	  	     			'<th align="left">账面库存数量</th>'+ 
+	  	     			'<th align="left">实际调拨数量</th>'+
+	  	     			
+	  	     			'<th align="left">实际库存数量</th>'+ 
+	  	     		  '</tr>'+ 
+	  	     			'</thead> ';
 	        		 
 	        	 var json =  $.parseJSON(data);
 		        	
+	        	 for(var i=0;i<json.length;i++){
+	        		 var str = json[i]; 
+	        		 var bid = str.branchid;
+	        		 arrays.push(bid);
+	        		 if( "" == branchid ||  null == branchid){ 
+	        			 if($.inArray(bid,arrays) <0){
+	        				  //  totalpapercount += str.oldpapercount;
+	        				  //  totalrealcount += str.oldrealcount; 
+	        				    papercount += str.oldpapercount;
+	        				    realcount += str.oldrealcount; 
+	        				    arrays.push(bid);
+		        				//map.put(bid, str);
+		        			}
+	        		 } 
+	        	 }
+	        	// var arrayin = new Array();
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i];
 	        		 var strtype = "";
 	        		 var type = str.operatortype;
 	        		 var branch = branchstr[str.branchid].locateName;
-	        		 
-	        		 //alert(type); 
+	        		 if(branchid != "" && branchid != null){
+	        			 papercount =str.papercount;
+		        		 realcount  =str.realcount;
+	        		 }else {
+	        			  
+	        			 
+	        			papercount +=str.allotPapercount;
+	        			realcount += str.allotRealcount; 
+	        				 //  arrayin.push(str.branchid);
+	        				 //  map.put(str.branchid, str);
+	        			  // }else {
+	        				 //  if($.inArray(str.branchid,arrayin) <0){
+	        				//	   alert(2);
+	        				//	   var arraymap = map.keySet();
+	       	        		//	   for(var j in arraymap) {  
+	       	        		//		totalpapercount map.get(arraymap[j]);
+	       	        				
+	       	        		//	  }
+	        					   
+		        				   // var s = totalpapercount +str.papercount;
+		        				//   totalpapercount = papercount +str.papercount;
+		        			//	   papercount = totalpapercount;
+		        			//	   totalrealcount = realcount + str.realcount;
+		        			//	   realcount =  totalrealcount;
+		        			//	   arrayin.push(str.branchid);
+		        			 //  }else {
+		        			//	   alert(3);
+		        			//	   papercount =totalpapercount + str.papercount;
+		        			//	   realcount = totalrealcount + str.realcount;
+		        			//	   map.put(str.branchid, str);
+		        			//   } 
+	        			  // }
+	        			   
+	        		}
+	        		// alert(0);
 	        		 if(type == 0 ){ 
 	        			 strtype = branch+"出库";
 	        		 }else if(type == 1){ 
 	        			 strtype = branch+"入库";
 	        		 }else if(type == 2){
-	        			 strtype = "文员派工给"+branch;
+	        			 strtype = usermapstr[str.sendUser].branchName+"派工给"+branch;
 	        		 }else if(type == 20){
 	        			 strtype = branch+"释放"; 
 	        		 }else if(type == 11){
-	        			 strtype = branch+"派工给送货员";
+	        			 strtype = branch+"派工给"+usermapstr[str.receiveuser].username;
 	        		 }else if(type == 6){   
-	        			 strtype = "送货员释放给"+branch;
-	        		 }else if(type == 7){   
-	        			 strtype = "送货员拉回给"+branch;
+	        			 strtype = usermapstr[str.receiveuser].username+"释放给"+branch;
+	        		 }else if(type == 7){    
+	        			 strtype = usermapstr[str.receiveuser].username+"拉回给"+branch;
 	        		 } else if(type == 8){    
-	        			 strtype = "文员同意"+branch+"退货";
-	        		 }  
-	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="inventory('+str.inventoryid+','+type+')">' +  
-	        		     ' <td>'+str.inventoryid+'</td> ' +
-	        		     ' <td>'+str.time+'</td> ' +  
-	        		     ' <td>'+str.type+'</td> ' + 
-	        		     ' <td>'+strtype+'</td> ' + 
-	        		     ' <td>'+str.count+'</td> ' +
-	        		     
-	        		     ' <td>'+str.papercount+'</td> ' +  
-	        		     ' <td>'+str.realcount+'</td>' + 
+	        			 strtype = usermapstr[str.sendUser].branchName+"同意"+branch+"退货";
+	        		 }   
+	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="inventory('+str.inventoryid+','+type+')">' +  
+	        		     ' <td>'+str.inventoryString+'</td> ' +
+	        		     ' <td>'+str.time+'</td> ' +   
+	        		     ' <td>'+str.type+'</td> ' +  
+	        		     ' <td>'+mapdevity[str.devidety]+'</td> ' + 
+	        		     ' <td>'+strtype+'</td> ' +  
+	        		     ' <td>'+str.allotPapercount+'</td> ' +
+	        		     ' <td>'+papercount+'</td> ' +   
+	        		     ' <td>'+str.allotRealcount+'</td> ' +
+	        		    
+	        		     ' <td>'+realcount+'</td>' + 
 	        		     ' </tr>'; 
 	        	 }
 	        		     
-	        	 addstr += '</table>' ;     
+	        	 addstr += '</table> </div>' ;     
 	        		     
 	        			 $("#serach").append(addstr);  
 	           },  
@@ -159,6 +238,10 @@ var endtime = '<%=endtime%>';
 
 <body>
 <!--   头部开始   -->
+ <jsp:include flush="true" page="../../head.jsp">
+  <jsp:param name="dmsn" value="" />
+  </jsp:include>
+
 <!--   头部结束   -->
 
 <div class="main">  

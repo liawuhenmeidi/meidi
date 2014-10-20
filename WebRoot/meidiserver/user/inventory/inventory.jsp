@@ -117,7 +117,7 @@ function add(){
 
      
  <!--       -->   
-   <div class="weizhi_head">现在位置：单据管理
+   <div class="weizhi_head">现在位置：库存查询
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
    <a href="../welcom.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
    </div>    

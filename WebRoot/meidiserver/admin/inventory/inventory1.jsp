@@ -163,6 +163,8 @@ var allp = <%=allp%>;
 		 var starttime = $("#starttime").val(); 
 		 var endtime = $("#endtime").val(); 
 		 window.location.href='inventoryDetail.jsp?ctype='+ctype+'&branchid='+branchid+'&starttime='+starttime+'&endtime='+endtime; 
+		 $("#time").val("");
+		 return ;
 	 }
 	
  }

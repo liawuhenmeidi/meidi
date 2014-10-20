@@ -10,8 +10,8 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
 String inventoryid = request.getParameter("id");
 Inventory inventory = InventoryManager.getInventoryID(user, Integer.valueOf(inventoryid));
-Map<Integer,Branch> branchmap = BranchManager.getNameMap();
-
+Map<Integer,Branch> branchmap = BranchManager.getIdMap();
+ 
 List<InventoryMessage> list = inventory.getInventory(); 
 
 %> 

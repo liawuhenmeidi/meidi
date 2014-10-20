@@ -55,17 +55,17 @@ $(function () {
     
 }); 
  
-function startRequest(ctype,branchid){ 
-	 var time = $("#time").val();
-	 
+//function startRequest(ctype,branchid){ 
+//	 var time = $("#time").val();
+	// if("fresh" == time){
+	//	 var starttime = $("#starttime").val(); 
+	//	 var endtime = $("#endtime").val(); 
+	//	 window.location.href='inventoryDetail.jsp?ctype='+ctype+'&branchid='+branchid+'&starttime='+starttime+'&endtime='+endtime; 
+	//	 $("#time").val("");
+	//	 return ;
+	// }
 	
-	 if("fresh" == time){
-		 var starttime = $("#starttime").val(); 
-		 var endtime = $("#endtime").val(); 
-		 window.location.href='inventoryDetail.jsp?ctype='+ctype+'&branchid='+branchid+'&starttime='+starttime+'&endtime='+endtime; 
-	 }
-	
-}
+//}
 
 
 function inventory(inventory){
@@ -77,11 +77,12 @@ function search(ctype,branchid){
 		 if('<%=user.getBranch()%>' != branchid ){ 
 			 alert("对不起，您不能查看");
 		 }else {
-			 $("#time").val("");
-			 $("#starttime").val(""); 
-			 $("#endtime").val(""); 
-			 winPar = window.open("time.jsp","time","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
-			 setInterval("startRequest('"+ctype+"','"+branchid+"')",500);  
+			 window.location.href="time.jsp?ctype="+ctype+"&branchid="+branchid;
+			// $("#time").val("");
+			// $("#starttime").val(""); 
+			// $("#endtime").val(""); 
+			// winPar = window.open("time.jsp","time","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
+			// setInterval("startRequest('"+ctype+"','"+branchid+"')",500);  
 	 
 		 }
    } 
@@ -174,7 +175,7 @@ function add(){
   <input type="hidden" id="endtime"  value=""/>
     
  <!--       -->   
-   <div class="weizhi_head">现在位置：单据管理
+   <div class="weizhi_head">现在位置：库存查询
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
    <a href="inventory.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
    </div>    
