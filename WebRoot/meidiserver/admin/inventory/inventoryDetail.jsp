@@ -195,7 +195,7 @@ var mapdevity = <%=mapdevitystr%>;
 	        		 }else if(type == 2){
 	        			 strtype = usermapstr[str.sendUser].branchName+"派工给"+usermapstr[str.receiveuser].branchName;
 	        		 }else if(type == 20){
-	        			 strtype = branch+"释放"; 
+	        			 strtype = usermapstr[str.receiveuser].branchName+"释放"; 
 	        		 }else if(type == 11){
 	        			 strtype =usermapstr[str.sendUser].username+"派工给"+usermapstr[str.receiveuser].username;
 	        		 }else if(type == 6){   

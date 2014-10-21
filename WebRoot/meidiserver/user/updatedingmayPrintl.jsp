@@ -62,7 +62,7 @@ function checkedd(){
 <input type="hidden" name="id" value="<%=id%>"/>
 <input type="hidden" name="mm" value="<%=method%>"/>
 <input type="hidden" name="method" value="println"/>
-<div class="s_main_tit">门店:<span class="qian"><%=user.getBranch() %></span></div>
+<div class="s_main_tit">门店:<span class="qian"><%=user.getBranchName() %></span></div>
 <div class="s_main_tit"><%=message %><span class="qiangdan"></span></div>
 
  

@@ -196,7 +196,7 @@ var mapdevity = <%=mapdevitystr%>;
 	        		 }else if(type == 2){
 	        			 strtype = usermapstr[str.sendUser].branchName+"派工给"+usermapstr[str.receiveuser].branchName;
 	        		 }else if(type == 20){
-	        			 strtype = branch+"释放"; 
+	        			 strtype = usermapstr[str.receiveuser].branchName+"释放"; 
 	        		 }else if(type == 11){
 	        			 strtype =usermapstr[str.sendUser].username+"派工给"+usermapstr[str.receiveuser].username;
 	        		 }else if(type == 6){   
@@ -205,7 +205,7 @@ var mapdevity = <%=mapdevitystr%>;
 	        			 strtype = usermapstr[str.receiveuser].username+"拉回给"+usermapstr[str.sendUser].username;
 	        		 } else if(type == 8){    
 	        			 strtype = usermapstr[str.sendUser].branchName+"同意"+branch+"退货";
-	        		 }   
+	        		 }     
 	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="inventory('+str.inventoryid+','+type+')">' +  
 	        		     ' <td>'+str.inventoryString+'</td> ' +
 	        		     ' <td>'+str.time+'</td> ' +   
