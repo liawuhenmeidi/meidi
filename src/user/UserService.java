@@ -13,6 +13,8 @@ public class UserService {
    
  //获取二次配单元（工队）
    public static List<User>  list ;  
+   // 送货员
+   public static List<User>  listsend ;  
    
    public static HashMap<Integer,User> getMapId(){
 	   
@@ -31,6 +33,15 @@ public static  List<User> getsencondDealsend(User user){
 	    
 	   return list;
    }
+
+public static  List<User> getsend(User user){
+	   
+	   if(listsend == null || flag == true){ 
+		   listsend =UserManager.getUsers(user,Group.send);
+	   }
+	    
+	   return listsend;
+}
 
   public static HashMap<String,User> getuserIdStr(){
 	   

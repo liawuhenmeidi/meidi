@@ -39,8 +39,8 @@ if(sendId != null && sendId != "" && sendId != "null"){
 	 str += " and sendId = '"+sendId+"'";
 } 
 
-System.out.println("str"+str); 
-list = OrderManager.getOrderlist(user,Group.sencondDealsend,str,"id");  
+System.out.println("str"+str);  
+list = OrderManager.getOrderlist(user,Group.sencondDealsend,str,"id");   
 
    
 HashMap<Integer,User> usermap = UserManager.getMap(); 

@@ -98,7 +98,7 @@ td {
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
 	        		 
-	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="search(\''+str.categoryid+'\',\''+branchstr[str.branchid].locateName+'\')">' +  
+	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branchstr[str.branchid].locateName+'\')">' +  
 	        		  
 	        		     ' <td>'+branchstr[str.branchid].locateName+'</td> ' + 
 	        		     ' <td>'+str.cateoryName+'</td> ' +   

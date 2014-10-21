@@ -49,8 +49,9 @@ int pgroup = GroupService.getidMap().get(user.getUsertype()).getPid();
 HashMap<Integer,User> usermap = UserService.getMapId();
  
 // 安装网点
-List<User> listS =   UserService.getsencondDealsend(user);
- 
+List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend); //UserService.getsencondDealsend(user);
+
+List<User> listSend = UserManager.getUsers(user,Group.send); //UserService.getsend(user);
 //提示信息
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 

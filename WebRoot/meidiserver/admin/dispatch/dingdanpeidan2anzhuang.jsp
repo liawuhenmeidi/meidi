@@ -7,7 +7,7 @@
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.porderDispatching,num,Page,sort,sear);  
 session.setAttribute("exportList", list); 
 count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.porderDispatching,num,Page,sort,sear);  
-
+ 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -420,8 +420,8 @@ function adddetail(src){
 		<select class = "category" name="category"  id="songh<%=o.getId() %>" >
 		 <option value=""></option>
 		<%    
-               for(int j=0;j< listS.size();j++){
-            	   User u = listS.get(j);
+               for(int j=0;j< listSend.size();j++){
+            	   User u = listSend.get(j);
             	   String str1 = "";
             	   if(u.getId() == o.getInstallid()){
             		   str1 = "selected=selected" ;

@@ -275,7 +275,7 @@ function orderPrint(id,statues){
 			<td align="center">送货状态</td> 
 			
 			<td align="center">门店</td>
-			<td align="center">验证码</td>
+			<td align="center">验证码(联保单)</td>
 			<td align="center">销售员</td>
 			<td align="center">顾客信息</td>
 			

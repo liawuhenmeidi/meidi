@@ -6,7 +6,7 @@ String inventoryid = request.getParameter("id");
 
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
 List<Branch> listbranch = BranchService.getList();
- 
+  
 List<String> listbranchp = BranchManager.getLocateAll();  
 String listall = StringUtill.GetJson(listbranchp); 
   

@@ -241,7 +241,7 @@ function orderPrint(id,statues){
 			<td align="center"><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>-->
 			<td align="center">单号</td>
 			<td align="center">门店</td>
-			<td align="center">验证码</td>
+			<td align="center">验证码(联保单)</td>
 			<td align="center">销售员</td>
 			<td align="center">顾客信息</td>
 			
@@ -290,7 +290,7 @@ function orderPrint(id,statues){
 		
 		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>-->
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('../dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getBranch()%></td>
+		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
 
 		<td align="center" ><%=o.getCheck() %></td>
 		<td align="center"> 		  

@@ -153,10 +153,14 @@ function changes(oid,id,statues,flag,returnstatues,type){
 	
 }
  
-function change(str1,oid,type,statues,types){
+function change(str1,oid,type,statues,types,saleId){
 	
 	var uid = $("#"+str1).val();
-	
+	var saleid = uuid;
+	   if(type == 4 || type == 5){
+		   saleid = saleId;
+	   }
+	   
 	if(uid == null || uid == ""){
 		alert("请选择送货员");
 		return ;
@@ -168,7 +172,7 @@ function change(str1,oid,type,statues,types){
 		$.ajax({ 
 	        type: "post",  
 	         url: "../server.jsp",    
-	         data:"method=getinventory&types="+types+"&uid="+uuid,
+	         data:"method=getinventory&types="+types+"&uid="+saleid,
 	         dataType: "",  
 	         success: function (data) {  
 	        	    inventory = data;
@@ -437,8 +441,8 @@ function adddetail(src){
 			<select class = "category" name="category"  id="songh<%=o.getId() %>" >
 			 <option value=""></option>
 			<%     
-	               for(int j=0;j< listS.size();j++){
-	            	   User u = listS.get(j);
+	               for(int j=0;j< listSend.size();j++){
+	            	   User u = listSend.get(j);
 	            	   String str1 = "";
 	            	   if(u.getId() == o.getSendId()){
 	            		   str1 = "selected=selected" ;
@@ -452,7 +456,7 @@ function adddetail(src){
 		                	%>
 	         </select>   
 	           
-	         <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','<%=statuesnew %>',<%=release %>,'<%=o.getSendType(0,"</p>")%>')"  value="确定"/>
+	         <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','<%=statuesnew %>',<%=release %>,'<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="确定"/>
 			<%
 			} else {
 				
@@ -558,8 +562,8 @@ function adddetail(src){
 		<select class = "category" name="category"  id="return<%=o.getId() %>" >
 		 <option value="0"></option>
 		<%    
-               for(int j=0;j< listS.size();j++){
-            	   User u = listS.get(j);
+               for(int j=0;j< listSend.size();j++){
+            	   User u = listSend.get(j);
             	   String str1 = "";
             	   if(u.getId() == o.getReturnid()){
             		   str1 = "selected=selected" ;

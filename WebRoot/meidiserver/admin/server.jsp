@@ -383,7 +383,7 @@ if("peidan".equals(method)){
 	response.getWriter().close(); //inventory
 }else if("getinventory".equals(method)){ 
 	String types = request.getParameter("types"); 
-	String uid = request.getParameter("uid"); 
+	String uid = request.getParameter("uid");  
 	Map<String,String> map = new HashMap<String,String>(); 
 	if(!StringUtill.isNull(types) && !StringUtill.isNull(uid)){
 		User u = UserManager.getUesrByID(uid); 
@@ -391,14 +391,13 @@ if("peidan".equals(method)){
 		String[] type = types.split("</p>");
 		for(int i = 0 ; i<type.length;i++){
 			if(!StringUtill.isNull(type[i])){ 
-				map.put(type[i], "实际库存："+0+"  账面库存:"+0);
+				map.put(type[i], "账面库存："+0+"实际库存:"+0);
 				for(int j=0;j<list.size();j++){
 					InventoryBranch inb = list.get(j); 
-					
-                 
+
 //System.out.println(type[i]+"***"+inb.getType());
 					if(inb.getType().equals(type[i])){ 
-						map.put(type[i], "实际库存："+inb.getRealcount()+"  账面库存:"+inb.getPapercount());
+						map.put(type[i], "账面库存："+inb.getPapercount()+"   实际库存:"+inb.getRealcount());
 					} 
 				}
 			}

@@ -96,8 +96,9 @@ function getinventory(uid,types){
       
 function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	var uid = $("#"+str1).val();
+	var saleid = $("#"+str1).val();
    if(deliveryStatues == 9 || deliveryStatues == 10){
-	   uid = saleId;
+	   saleid = saleId;
    }
 	if(deliveryStatues != 8 ){ 
 		if(uid == null || uid == ""){
@@ -108,7 +109,7 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 		$.ajax({ 
 	        type: "post",  
 	         url: "server.jsp",   
-	         data:"method=getinventory&types="+types+"&uid="+uid,
+	         data:"method=getinventory&types="+types+"&uid="+saleid,
 	         dataType: "",  
 	         success: function (data) {  
 	        	    inventory = data;

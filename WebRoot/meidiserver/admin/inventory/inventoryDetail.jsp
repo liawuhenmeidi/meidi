@@ -193,15 +193,15 @@ var mapdevity = <%=mapdevitystr%>;
 	        		 }else if(type == 1){ 
 	        			 strtype = branch+"入库";
 	        		 }else if(type == 2){
-	        			 strtype = usermapstr[str.sendUser].branchName+"派工给"+branch;
+	        			 strtype = usermapstr[str.sendUser].branchName+"派工给"+usermapstr[str.receiveuser].branchName;
 	        		 }else if(type == 20){
 	        			 strtype = branch+"释放"; 
 	        		 }else if(type == 11){
-	        			 strtype = branch+"派工给"+usermapstr[str.receiveuser].username;
+	        			 strtype =usermapstr[str.sendUser].username+"派工给"+usermapstr[str.receiveuser].username;
 	        		 }else if(type == 6){   
-	        			 strtype = usermapstr[str.receiveuser].username+"释放给"+branch;
+	        			 strtype = usermapstr[str.receiveuser].username+"释放给"+usermapstr[str.sendUser].username;
 	        		 }else if(type == 7){    
-	        			 strtype = usermapstr[str.receiveuser].username+"拉回给"+branch;
+	        			 strtype = usermapstr[str.receiveuser].username+"拉回给"+usermapstr[str.sendUser].username;
 	        		 } else if(type == 8){    
 	        			 strtype = usermapstr[str.sendUser].branchName+"同意"+branch+"退货";
 	        		 }   

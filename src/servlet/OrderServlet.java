@@ -290,7 +290,7 @@ logger.info(message);
 					order.setOrderproduct(listp);
 					order.setOrdergift(listg); 
 					order.setSubmitTime(submitTime);
-					order.setPrintlnid(pid);  
+					order.setPrintlnid(pid);   
 					order.setPhoneRemark(Integer.valueOf(phoneRemark)); 
 					order.setPosremark(Integer.valueOf(posRemark));
 					order.setReckedremark(Integer.valueOf(chekedRemark));
