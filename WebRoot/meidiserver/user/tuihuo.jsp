@@ -1,36 +1,9 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%  
-request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
-  
-int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
-String saledateStart = request.getParameter("saledateStart");
-String saledateEnd = request.getParameter("saledateEnd");
-String deliveryStatues  = request.getParameter("deliveryStatues"); 
-String printlnid = request.getParameter("printlnid");
-
-String str = ""; 
-// pos == "" || pos == null || pos == "null"
-if(saledateStart != null && saledateStart != "" && saledateStart != "null"){
-	 str += " and saledate like '%"+saledateStart+"%'";
-} 
-if(saledateEnd != null && saledateEnd != "" && saledateEnd != "null"){
-	 str += " and saledate like '%25"+saledateEnd+"%'";
-}
-if(deliveryStatues != null && deliveryStatues != "" && deliveryStatues != "null"){
-	 str += " and deliveryStatues like '%"+deliveryStatues+"%'";
-}
-if(!StringUtill.isNull(printlnid)){
-	str += "and printlnid like '%" + printlnid +"%'";
-}
-  
-List<Order> list = null ;
-if(StringUtill.isNull(str)){  
-	//System.out.println(Group.tuihuo);
-   list = OrderManager.getOrderlist(user,Group.tuihuo);
-}else {   
-   list = OrderManager.getOrderlist(user,Group.tuihuo,str,"id");
-} 
+<%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ include file="searchdynamic.jsp"%> 
+<%   
+   
+type = Order.tuihuo+"";
+List<Order> list = OrderManager.getOrderlist(user,Group.tuihuo,Integer.valueOf(type),-1,0,sort,sear);
 Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 //System.out.println(user);
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
@@ -50,7 +23,19 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
  
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
+var type = "<%=type%>";
 
+$(function () { 
+	$("#"+type).css("color","red");
+});
+
+function detail(src){
+	window.location.href=src;
+}
+ 
+function search(type){
+	window.location.href="songhuo.jsp?type="+type;
+}
 </script>
 </head>
 
@@ -62,19 +47,18 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
 <!--  头 单种类  -->
 <div class="s_main_tit"><span class="qiangdan"><a href="chaxun_songhuo.jsp">我要查询</a></span><span class="qiangdan"><a href="welcom.jsp">返回</a></span><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span></div>
-<div class="s_main_tit">退货查询页面</div>
- 
+  
 <!--  订单详情  -->
 <div class="s_main_box">
 <table width="100%" class="s_main_table">
-  <tr>
-    <td width="15%" class="s_list_m">产品名称</td>
-    <td width="15%" class="s_list_m">产品型号</td>
-    <td width="25%" class="s_list_m">安装日期</td>
-    <td width="25%" class="s_list_m">送货地点</td>
-    <td width="15%" class="s_list_m">详情</td>
+  <tr > 
+    <td width="20%" class="s_list_m">产品名称</td>
+    <td width="30%" class="s_list_m">产品型号</td>
+    <td width="20%" class="s_list_m">安装日期</td>
+    <td width="30%" class="s_list_m">送货地点</td>
   </tr>
    <% 
+   if(list != null){
     for(int i = 0;i<list.size();i++){
     	Order o = list.get(i);
     	String col = "";
@@ -82,7 +66,7 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
     		col = "style='background-color:yellow'";
     	}
   %>
- <tr <%=col %>>  
+ <tr <%=col %> onclick="detail('dingdanDetailsonghuo.jsp?id=<%=o.getId()%>')">  
  
      <td align="left"> 
   <table> 
@@ -120,7 +104,7 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
 		    	 %> 
 		    	 <tr>
-		    	 <td ><%=op.getSendType()%></td>
+		    	 <td ><%=ProductService.getIDmap().get(Integer.valueOf(op.getSendType())).getType()%></td>
 		    	 </tr>
 		    	 <% 
 		        }
@@ -133,10 +117,10 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 		     
     <td><%=o.getOdate() %></td>
     <td><%=o.getLocateDetail()%></td> 
-    <td> <a href="dingdanDetailsonghuo.jsp?id=<%=o.getId()%>">[详情]</a></td>
   </tr>
-  
-     <%} %>
+   
+     <%}
+    }%>
 </table>
 <br/>
 

@@ -1,6 +1,8 @@
 package orderproduct;
 
 
+import group.Group;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +23,7 @@ import product.ProductService;
 
 import servlet.OrderServlet;
 import user.User;
+import user.UserManager;
 import utill.NumbleUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
@@ -53,7 +56,7 @@ public class OrderProductManager {
 	 
 	   public static int updateOrderStatues(User user, String categoryid ,String type ,String count ,String oid){
 		   int statues = -1 ; 
-		   if(user.getUsertype() == 2  || user.getUsertype() == 1){
+		   if(UserManager.checkPermissions(user, Group.dealSend)){
 			   Connection conn = DB.getConn();  
 			   if(!NumbleUtill.isNumeric(type)){
 				   type = ProductService.gettypemap().get(type).getId()+"";

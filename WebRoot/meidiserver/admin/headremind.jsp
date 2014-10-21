@@ -35,6 +35,7 @@ $(document).ready(function () {
     	           $("#neworder").html(json.ncount);
     	           $("#returns").html(json.recount); 
     	           $("#huanhuo").html(json.hcount); 
+    	           $("#inventory").html(json.inventory); 
     	           },  
     	         error: function (XMLHttpRequest, textStatus, errorThrown) {
     	            } 
@@ -54,6 +55,8 @@ $(document).ready(function () {
 		  window.open('remind/release.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }else if("returns" == str){ 
 		  window.open('remind/return.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	  }else if("inventory" == str){ 
+		  window.open('inventory/receipts.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }
 	
   }
@@ -95,6 +98,11 @@ $(document).ready(function () {
   <a href="javascript:void(0);" onclick="serach('huanhuo')" style="font-size:15px;">导购换货申请</a> 
   &nbsp;&nbsp;&nbsp;&nbsp;   
   <span style="color:red;font-size:20px;" id="huanhuo"></span>
+   </td>
+    <td>
+  <a href="javascript:void(0);" onclick="serach('inventory')" style="font-size:15px;">调拨单待确认</a> 
+   &nbsp;&nbsp;&nbsp;&nbsp;   
+  <span style="color:red;font-size:20px;" id="inventory"></span>
    </td>
   </tr>
   </table> 

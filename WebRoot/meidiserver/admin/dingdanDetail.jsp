@@ -31,14 +31,8 @@ Message message = MessageManager.getMessagebyoid(id);
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>文员派工页</title>
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
- <script src="../js/mobiscroll.core-2.6.2.js" type="text/javascript"></script>
-<script src="../js/mobiscroll.core-2.6.2-zh.js" type="text/javascript"></script>
-<link href="../css/mobiscroll.core-2.6.2.css" rel="stylesheet" type="text/css" />
-<script src="../js/mobiscroll.datetime-2.6.2.js" type="text/javascript"></script>
-<script src="../js/mobiscroll.android-ics-2.6.2.js" type="text/javascript"></script>
- <link href="../css/mobiscroll.android-ics-2.6.2.css" rel="stylesheet" type="text/css" /> 
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
-
+<script type="text/javascript" src="../js/calendar.js"></script> 
 <script type="text/javascript" src="../js/common.js"></script>
 
   
@@ -223,12 +217,6 @@ function checkedd(){
   <jsp:include flush="true" page="head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>
-      
-
-
-
-
-
 
 </div >
 
@@ -419,8 +407,7 @@ function checkedd(){
             <td align="center">
             <% if(UserManager.checkPermissions(user, Group.dealSend) ){
 	        	  %> 
-	        	 <input class="date2" type="text" name="saledate" id ="serviceDate2"  value="<%=o.getSaleTime() %>"   style="width:90% "></input>
-			   
+			     <input class="date" type="text" name="saledate"   id = "serviceDate2" value="<%=o.getSaleTime() %>"   onclick="new Calendar().show(this);" readonly="readonly" style="width:90% "></input> 
 			   <% }else {      
 			   %>    
 			     <%=o.getSaleTime() %>
@@ -433,8 +420,8 @@ function checkedd(){
             <td align="center">
              <% if(UserManager.checkPermissions(user, Group.dealSend) || UserManager.checkPermissions(user, Group.sencondDealsend) ||  UserManager.checkPermissions(user, Group.sencondDealsend)){
 	        	  %> 
-	        	 <input class="date2" type="text" name="andate" id ="serviceDate"  value="<%=o.getOdate() %>"   style="width:90% "></input>
-			   
+	        	 <!--<input class="date2" type="text" name="andate" id ="serviceDate"  value="<%=o.getOdate() %>"   style="width:90% "></input>  -->
+			     <input class="date" type="text" name="andate"  id = "serviceDate" onclick="new Calendar().show(this);" value="<%=o.getOdate() %>"  readonly="readonly" style="width:90% "></input> 
 			   <% }else {     
 			   %>    
 			     <%=o.getOdate() %>
@@ -811,8 +798,7 @@ function checkedd(){
     <tr id="th">   
     <td align="center">留言</td>
     
-       <td align="center">
-                <div>  
+       <td align="center"> 
                 <% 
                   if(message != null){
                 %>  
@@ -820,9 +806,8 @@ function checkedd(){
                 <br/>
                 
                 <%} %> 
- <input  type="text" name="message"   style="width:90% "></input>
+           <input  type="text" name="message"   style="width:90% "></input>
   <br/>
-</div>
        
        </td>
           <td></td>

@@ -8,13 +8,18 @@ boolean flagdiagma = false ;
 String id = request.getParameter("id");
 String type = request.getParameter("type");
 String dingma = request.getParameter("dingma");
+String uid = request.getParameter("uid");
+Order order = OrderManager.getOrderID(user, Integer.valueOf(id));
+HashMap<Integer,User> usermap = UserManager.getMap();
 
+String dealsendName = order.getDealsendId()==0?"":usermap.get(order.getDealsendId()).getUsername();
 if((Order.deliveryStatuesTuihuo+"").equals(type)){
 	message = "退货单"; 
+	dealsendName = usermap.get(Integer.valueOf(uid)).getUsername();
 }else if((Order.dingma+"").equals(type)){
 	message = "调账单";  
 	flagdiagma = true ; 
-}
+} 
 
 String deliveryStatues = request.getParameter("deliveryStatues");
 if((9+"").equals(deliveryStatues)){
@@ -32,9 +37,9 @@ if((9+"").equals(deliveryStatues)){
    
 int iddd = 0;
 
-Order order = OrderManager.getOrderID(user, Integer.valueOf(id));
 
-HashMap<Integer,User> usermap = UserManager.getMap();
+
+
  
 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
@@ -144,7 +149,7 @@ Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(us
   <td width="1%" height="30" align="center" valign="middle" bgcolor="#FFFFFF" id="e"></td> 
   <td width="47%" height="30" align="left" valign="middle" bgcolor="#FFFFFF" id="d">&nbsp;<%=order.getLocate()+order.getLocateDetail() %></td>
   <td width="13%" height="30" align="center" valign="middle" bgcolor="#FFFFFF" id="d">安装单位</td>
-  <td width="26%" height="30" bgcolor="#FFFFFF" id="e">&nbsp;<%=order.getDealsendId()==0?"":usermap.get(order.getDealsendId()).getUsername() %></td>
+  <td width="26%" height="30" bgcolor="#FFFFFF" id="e">&nbsp;<%=dealsendName %></td>
 </tr> 
 <tr> 
   <td height="30" colspan="5" align="center" valign="middle" bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">

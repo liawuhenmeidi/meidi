@@ -266,7 +266,7 @@ function orderPrint(id,statues){
 			<td align="center">是否收到公司送货安装结款</td>
 			<td align="center">送货人员</td>
 			<td align="center">送货时间</td>
-			<td align="center">送货是否已结款</td>
+			<td align="center">送货员结款</td>
 			<td align="center">安装人员</td>
 			<td align="center">安装时间</td> 
 			<td align="center">先送货后安装</td>

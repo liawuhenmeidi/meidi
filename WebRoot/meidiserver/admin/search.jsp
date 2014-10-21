@@ -50,7 +50,8 @@ function add(){
 		    	           "<option value=\"9\">只安装(门店提货)</option>"+
 		    	           "<option value=\"10\">只安装(顾客已提)</option>"+
 		    	           "<option value=\"-1\">已退货</option>"+
-		    	         "</select>";
+		    	         "</select>" + 
+		    	         " <input type=\"hidden\"  name=\"search\" value=\""+name+"\"></input>";
 		    	$("#search").append(str);
 		    }else if("saledate" == name || "andate" == name || "dealsendTime" == name ){ 
 		    	$("#search").append(value+":开始时间<input type=\"text\"  id=\""+name+"start\"  name=\""+name+"start\"  placeholder=\"yyyy-mm-dd\"></input> 结束时间<input type=\"text\"  id=\""+name+"end\"  name=\""+name+"end\" placeholder=\"yyyy-mm-dd\"></input><input type=\"hidden\"  name=\"search\" value=\""+name+"\"></input>");  

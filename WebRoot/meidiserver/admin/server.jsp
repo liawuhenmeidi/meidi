@@ -158,6 +158,7 @@ if("peidan".equals(method)){
 	int ncount = OrderManager.getOrderlistcount(user,Group.dealSend,Order.neworder,0,0,"id",""); 
 	int recount = OrderManager.getOrderlistcount(user,Group.dealSend,Order.returns,0,0,"id",""); 
 	int hcount = OrderManager.getOrderlistcount(user,Group.dealSend,Order.huanhuo,0,0,"id",""); 
+	int inventory = InventoryManager.getCategory(user,"unconfirmed").size(); 
 	
 	map.put("ucount", ucount);
 	map.put("mcount", mcount);
@@ -165,6 +166,7 @@ if("peidan".equals(method)){
 	map.put("ncount",ncount);    
 	map.put("recount",recount); 
 	map.put("hcount",hcount); 
+	map.put("inventory",inventory);
 	String strmap = StringUtill.GetJson(map);
 	response.getWriter().write(strmap);  
 	response.getWriter().flush(); 
@@ -179,13 +181,15 @@ if("peidan".equals(method)){
 	if(ulist != null){   
 		hcount = UserManager.getUserszhuce(user).size(); 
 	} 
-	
+	int inventory = InventoryManager.getCategory(user,"unconfirmed").size(); 
 	
 	int rcount = OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.release,0,0,"id",""); 
 	map.put("dcount", dcount);
 	map.put("icount", icount);  
 	map.put("hcount",hcount);    
-	map.put("rcount",rcount);    
+	map.put("rcount",rcount); 
+	map.put("inventory",inventory);
+	
 	String strmap = StringUtill.GetJson(map);
 	response.getWriter().write(strmap);  
 	response.getWriter().flush(); 
@@ -418,7 +422,7 @@ if("peidan".equals(method)){
 	String oid = request.getParameter("oid"); 
 	String phone1 = request.getParameter("phone1");
 	String andate = request.getParameter("andate");
-	
+	String diqu = request.getParameter("diqu");
 	String locations = request.getParameter("locations");
 	String message = request.getParameter("message");
 	String remark = request.getParameter("remark")==null?"":request.getParameter("remark");
@@ -427,10 +431,10 @@ if("peidan".equals(method)){
 		String sailId = request.getParameter("sailid"); 
 		String check = request.getParameter("check");
 		String saledate = request.getParameter("saledate");
-		String saleType = request.getParameter("dingmatype");
+		String saleType = request.getParameter("dingmatype"); 
 		String categoryId = request.getParameter("dingmaordercategory");
 		String count = request.getParameter("dingmaproductNum");
-		statues = OrderManager.updateMessage(phone1,andate,locations,POS,sailId,check,oid,remark,saledate) ; 
+		statues = OrderManager.updateMessage(phone1,andate,locations,POS,sailId,check,oid,remark,saledate,diqu) ; 
 	    if(!StringUtill.isNull(saleType) && !StringUtill.isNull(categoryId)){
 	    	pstatues = OrderProductManager.updateOrderStatues(user,categoryId,saleType,count,oid);
 	    	OrderProductManager.resetOrPMap();   

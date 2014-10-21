@@ -23,11 +23,11 @@ int num = Integer.valueOf(numb);
 if(Order.orderDispatching == type){
 	message = "文员派工页";
 }else if(Order.charge == type){
-	message = "确认厂送票已结款";
+	message = "厂送票未结款";
 }else if(Order.come == type){
-	message = "确认厂送票已回";
+	message = "厂送票未回";
 }else if(Order.go == type){
-	message = "确认厂送票已消";
+	message = "厂送票未消";
 }else if(Order.dingma == type){ 
 	message = "调账确认页";
 }else if(Order.over == type){
@@ -37,15 +37,15 @@ if(Order.orderDispatching == type){
 }else if(Order.serach == type){
 	message = "查看订单页";  
 }else if( Order.porderDispatching== type){ 
-	message = "网店派工"; 
+	message = "网点派工"; 
 }else if( Order.pinstall== type){ 
 	message = "安装派工"; 
 }else if( Order.pinstallprintln== type){ 
 	message = "安装打印"; 
 }else if(Order.pserach == type){
-	message = "网店查询"; 
+	message = "网点查询"; 
 }else if(Order.porderPrint == type){
-	message = "网店打印";  
+	message = "网点打印";  
 }else if(Order.callback == type){
 	message = "客户回访";  
 }else if(Order.pcharge == type){
@@ -56,6 +56,8 @@ if(Order.orderDispatching == type){
 	message = "退货订单页"; 
 }else if(Order.chargeall == type){
 	message = "送货安装结款"; 
+}else if(Order.orderquery == type){
+	message = "送货确认页"; 
 }
 
 

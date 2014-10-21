@@ -50,7 +50,7 @@ public class Order {
  public static int chargeall = 24 ; 
  public static int orderquery = 25 ;
  public static int huanhuo = 26 ;
- 
+ public static int tuihuo = 27 ;
  
  public static int orderpeisong= 1;  
  public static int orderinstall = 2; 

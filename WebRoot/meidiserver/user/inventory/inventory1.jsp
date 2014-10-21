@@ -176,8 +176,8 @@ function add(){
     
  <!--       -->   
    <div class="weizhi_head">现在位置：库存查询
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-   <a href="inventory.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+   <a href="inventory.jsp?branchid=<%=branchid%>"><font style="color:blue;font-size:20px;" >返回</font></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="button" name="" value="查询" onclick="add()"/>        
    </div>    
    
   <div class="main_r_tianjia">
@@ -222,7 +222,7 @@ function add(){
 	   %> 
 	  </select>
 	  <br/>
-	   <input type="button" name="" value="查询" onclick="add()"/>   
+	  
 	   <br/>
 <%
 	   }  

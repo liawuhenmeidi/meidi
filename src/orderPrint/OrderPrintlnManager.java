@@ -37,7 +37,7 @@ public class OrderPrintlnManager {
 					pstmt.setInt(1, statues);
 logger.info(pstmt);  
 					pstmt.executeUpdate();
-					 
+					
 					OrderPrintln o = OrderPrintlnManager.getOrderStatues(id); 
 					  
 					if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.salerelease){

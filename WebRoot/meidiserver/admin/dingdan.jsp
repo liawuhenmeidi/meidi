@@ -219,7 +219,7 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 			         success: function (data) {
 			        	 
 			        	 if(data == true || data == "true"){ 
-			        		 window.location.href="print.jsp?id="+oid+"&type="+type ;
+			        		 window.location.href="print.jsp?id="+oid+"&type="+type+"&uid="+dealsendid ;
 			        	 }
 			           },  
 			         error: function (XMLHttpRequest, textStatus, errorThrown) { 

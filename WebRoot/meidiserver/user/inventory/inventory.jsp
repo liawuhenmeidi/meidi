@@ -1,16 +1,16 @@
-<%@ page language="java" import="java.util.*,inventory.*,branch.*,category.*,branchtype.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,inventory.*,branch.*,category.*,branchtype.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
+String branchid = request.getParameter("branchid");
 
-String branchid = "";
 Branch branch = null;   
-if(UserManager.checkPermissions(user, Group.Manger)){
-	branchid = request.getParameter("branchid");
-}else if(UserManager.checkPermissions(user, Group.sale)){
-	branchid = user.getBranch()+"";   
-	branch = BranchManager.getLocatebyid(branchid);
+if(UserManager.checkPermissions(user, Group.sale)){
+	if(StringUtill.isNull(branchid)){
+		branchid = user.getBranch()+"";   
+	}
 } 
+branch = BranchManager.getLocatebyid(user.getBranch()+"");
 List<Branch> listbranch = BranchService.getList(); 
 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
@@ -64,6 +64,9 @@ function add(){
 	if(b != null && b != ""){
 		branch = b ;
 	} 
+	 
+	
+	 $("#branch option[value='"+branch+"']").attr("selected","selected");
 	 
 	 $.ajax({ 
 	        type: "post", 
@@ -119,7 +122,7 @@ function add(){
  <!--       -->   
    <div class="weizhi_head">现在位置：库存查询
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-   <a href="../welcom.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
+   <a href="../welcom.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>  &nbsp;&nbsp;&nbsp;&nbsp; <input type="button" name="" value="查询" onclick="add()"/>       
    </div>    
    
   <div class="main_r_tianjia">
@@ -148,7 +151,7 @@ function add(){
   
    %>
   </select>
-   <input type="button" name="" value="查询" onclick="add()"/>  
+  
 <%
 	   }  
        }

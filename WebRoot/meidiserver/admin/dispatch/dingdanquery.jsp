@@ -5,7 +5,7 @@
 <%  
 
 request.setCharacterEncoding("utf-8");
-   
+
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
 session.setAttribute("exportList", list); 
 count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
@@ -238,7 +238,7 @@ function orderPrint(id,statues){
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  
 	<jsp:param name="count" value="<%=count %>"/> 
-    <jsp:param name="type" value="<%=Order.pserach%>"/> 
+    <jsp:param name="type" value="<%=Order.orderquery%>"/> 
 </jsp:include> 
 
 <div id="headremind">

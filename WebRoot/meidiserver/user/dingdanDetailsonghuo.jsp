@@ -117,6 +117,9 @@ function winconfirm(str){
 
 function change(str1,str2,type){
 		var uid = $("#"+str1).val(); 
+		if(uid == -1){
+			return false;
+		}
 		$.ajax({  
 	        type: "post",   
 	         url: "server.jsp", 
@@ -343,7 +346,7 @@ function change(str1,str2,type){
   </tr>
   
     <tr >
-    <td class="s_list_m">送货时间</td>
+    <td class="s_list_m">预约日期</td>
     <td><%=or.getOdate() %></td>
     
   </tr>
@@ -374,8 +377,10 @@ function change(str1,str2,type){
      <%
        
      %>
-     <option value="1" >只送货 </option>
+      <option value="-1" >&nbsp;&nbsp;&nbsp;&nbsp;</option> 
      <option value="2" >送货+安装 </option>  
+     <option value="1" >只送货 </option>
+     
       </select>  
      <input type="button" onclick="change('songh<%=or.getId()%>','<%=or.getId()%>','')"  value="确定"/>
 
@@ -385,6 +390,7 @@ function change(str1,str2,type){
            if(or.getInstallid() == user.getId()) {
         	   %>
     		   <select class = "category" name="category"  id="songh<%=or.getId() %>" >
+    		        <option value="-1" >&nbsp;&nbsp;&nbsp;&nbsp;</option> 
                     <option value="4" >只安装 </option>  
                </select>  
               <input type="button" onclick="change('songh<%=or.getId()%>','<%=or.getId()%>','')"  value="确定"/>

@@ -30,6 +30,7 @@ $(document).ready(function () {
     	           $("#installonly").html(json.icount); 
     	           $("#release").html(json.rcount);
     	           $("#huiyuan").html(json.hcount);
+    	           $("#inventory").html(json.inventory);
     	           // huiyuan
     	         //  $("#neworder").html(json.ncount);
     	         //  $("#returns").html(json.recount);  
@@ -51,6 +52,8 @@ $(document).ready(function () {
 		  window.open('remind/return.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }else if("huiyuan" == str){ 
 		  window.open('remind/huiyuan.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	  }else if("inventory" == str){ 
+		  window.open('../inventory/receipts.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }
   }
  
@@ -84,6 +87,11 @@ $(document).ready(function () {
  </td>
  <td>
  <span style="color:red;font-size:20px;" id="huiyuan"></span> <br/>
+   </td>
+    <td>
+  <a href="javascript:void(0);" onclick="serach('inventory')" style="font-size:15px;">调拨单待确认</a> 
+   &nbsp;&nbsp;&nbsp;&nbsp;   
+  <span style="color:red;font-size:20px;" id="inventory"></span>
    </td>
   </tr >
   

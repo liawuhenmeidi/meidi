@@ -248,7 +248,7 @@ var mapdevity = <%=mapdevitystr%>;
    <div class="weizhi_head">现在位置：库存查询
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
    开始时间:<%=starttime%>---结束时间:<%=endtime %>
-   <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>
+   <a href="javascript:history.go(-2);"><font style="color:blue;font-size:20px;" >返回</font></a>
    </div>       
 <br/>
 

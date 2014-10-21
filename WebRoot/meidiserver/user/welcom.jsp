@@ -1,8 +1,9 @@
-<%@ page language="java" import="java.util.*,category.*,user.*,group.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,category.*,inventory.*,user.*,group.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <% 
 request.setCharacterEncoding("utf-8");
 boolean flag = true ;
 User user = (User)session.getAttribute("user");
+List<Inventory> invetorylist = InventoryManager.getCategory(user,"unconfirmed");  
 String path = request.getContextPath();
 String realPath = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+request.getServletPath().substring(0,request.getServletPath().lastIndexOf("/")+1);    
 %>
@@ -43,7 +44,7 @@ function clear(){
    %>      
    <li><a href="order.jsp">报装 </a></li>   
    <li><a href="serch_list.jsp">查看报装单</a></li>
-   <li><a href="inventory/receipts.jsp">单据确认</a></li>
+   <li><a href="inventory/receipts.jsp">调拨单</a><FONT color=#000000 >&nbsp;<%=invetorylist.size() %></FONT></li>
    <li><a href="inventory/inventory.jsp">库存查询</a></li>
    <%    
      }  else 

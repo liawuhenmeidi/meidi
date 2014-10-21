@@ -106,7 +106,7 @@ function funcc(str,str2){
            });
 }
  
-function changes(oid,id,statues,flag,returnstatues,type){
+function changes(oid,id,statues,flag,returnstatues,type,printid){
 	if(statues == 2){ 
 		if(flag == 2){
 			alert("请联系送货员驳回");
@@ -134,7 +134,7 @@ function changes(oid,id,statues,flag,returnstatues,type){
 	        		 if(<%=OrderPrintln.releasedispatch %> != type){
 
 	        				
-	        			window.location.href="../print.jsp?id="+oid+"&type="+<%=Order.deliveryStatuesTuihuo%>;
+	        			window.location.href="../printPaigong.jsp?id="+oid+"&type=<%=Order.deliveryStatuesTuihuo%>&uid="+printid;
 	        				
 	        		}else {
 	        			window.location.href="dingdanpeidan2.jsp";
@@ -413,10 +413,12 @@ function adddetail(src){
 		<%    
 
 		  OrderPrintln salereleaseo = opmap.get(OrderPrintln.salerelease) == null?null:opmap.get(OrderPrintln.salerelease).get(o.getId()); 
+		  int printid = o.getSendId();
 	      OrderPrintln salereleasereturno = opmap.get(OrderPrintln.salereleasereturn) == null?null:opmap.get(OrderPrintln.salereleasereturn).get(o.getId()); 
 
 	      if(salereleasereturno != null){
 	    	  salereleaseo = salereleasereturno ;
+	    	  printid = o.getReturnid();
 	      }
 	      
 		int releasemodfy = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasemodfy, o.getId()) ;	
@@ -494,8 +496,8 @@ function adddetail(src){
 		    	  if(salereleaseo .getStatues() == 0 ){
 		    %> 
 		    <%=salereleaseo .getMessage() %>  
-		    <input type="button" onclick="changes('<%=o.getId()%>','<%=salereleaseo .getId() %>','<%=OrderPrintln.comited%>','','','<%=OrderPrintln.salerelease%>')"  value="同意"/> 
-		    <input type="button" onclick="changes('<%=o.getId()%>','<%=salereleaseo .getId() %>','<%=OrderPrintln.uncomited%>','','','<%=OrderPrintln.salerelease%>')"  value="不同意"/>
+		    <input type="button" onclick="changes('<%=o.getId()%>','<%=salereleaseo .getId() %>','<%=OrderPrintln.comited%>','','','<%=OrderPrintln.salerelease%>','<%=printid %>')"  value="同意"/> 
+		    <input type="button" onclick="changes('<%=o.getId()%>','<%=salereleaseo .getId() %>','<%=OrderPrintln.uncomited%>','','','<%=OrderPrintln.salerelease%>','<%=printid %>')"  value="不同意"/>
 		   <%
 		   }
         }
@@ -546,10 +548,13 @@ function adddetail(src){
 		
 				%> 
 				<%=oppp.getMessage() %>
-		    <input type="button" onclick="changes('<%=o.getId()%>','<%=oppp.getId() %>','<%=OrderPrintln.comited%>','<%=statues %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="同意"/>
-		     <input type="button" onclick="changes('<%=o.getId()%>','<%=oppp.getId() %>','<%=OrderPrintln.uncomited%>','<%=statues %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="不同意"/>  
+		    <input type="button" onclick="changes('<%=o.getId()%>','<%=oppp.getId() %>','<%=OrderPrintln.comited%>','<%=statues %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>','<%=o.getSendId() %>')"  value="同意"/>
+		    <% 
+		    if(o.getReturnid() == 0){
+		    %>
+		     <input type="button" onclick="changes('<%=o.getId()%>','<%=oppp.getId() %>','<%=OrderPrintln.uncomited%>','<%=statues %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>','<%=o.getSendId() %>')"  value="不同意"/>  
 				<%
-			
+		      }
 			}
 	    }
 		%>

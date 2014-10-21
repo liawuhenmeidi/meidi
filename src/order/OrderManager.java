@@ -59,11 +59,11 @@ public class OrderManager {
 		return flag ;
 	}  
 	
-	public static int updateMessage(String phone1,String andate,String locations,String POS,String sailId,String check,String oid,String remark,String saledate) {
+	public static int updateMessage(String phone1,String andate,String locations,String POS,String sailId,String check,String oid,String remark,String saledate,String diqu) {
 		int flag = -1 ;  
 		Connection conn = DB.getConn(); 
 		//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
-		String sql = "update mdorder set phone1= ? , andate = ? , locateDetail = ?, pos = ?, sailId = ? ,checked =? , remark = ? ,saledate = ? where id = " + oid;
+		String sql = "update mdorder set phone1= ? , andate = ? , locateDetail = ?, pos = ?, sailId = ? ,checked =? , remark = ? ,saledate = ? ,locates = ? where id = " + oid;
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		try {   
 			pstmt.setString(1,phone1);   
@@ -74,6 +74,7 @@ public class OrderManager {
 			pstmt.setString(6,check);   
 			pstmt.setString(7,remark);
 			pstmt.setString(8,saledate);
+			pstmt.setString(9,diqu);
 logger.info(pstmt);    
 			flag = pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -89,13 +90,12 @@ logger.info(pstmt);
 		int flag = -1 ; 
 		Connection conn = DB.getConn(); 
 		//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
-		String sql = "update mdorder set phone1= ? , andate = ? , locateDetail = ? , remark = ? where id = " + oid;
+		String sql = "update mdorder set phone1= ? , andate = ?, remark = ? where id = " + oid;
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		try {   
 			pstmt.setString(1,phone1);    
 			pstmt.setString(2,andate);   
-			pstmt.setString(3,locations);
-			pstmt.setString(4,remark);  
+			pstmt.setString(3,remark);  
 			
 			logger.info(pstmt);    
 			flag = pstmt.executeUpdate();
@@ -568,11 +568,12 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				 if(oor != null && oor.getStatues() != 2){
 					 return false ;
 				 } 
-			 } 
+			 }  
 			
+	   order.setOderStatus(oldorder.getOderStatus());		 
 	   List<String> listd =  OrderManager.update(maxid); 
 			  
-	   sqls.addAll(listd);	 
+	   sqls.addAll(listd);
 			 
 		 }else {  
 			 oldorder = OrderManager.getMaxOrder();
@@ -613,6 +614,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 		List<String> sqlp = OrderProductManager.save(maxid, order);
 	    List<String> sqlg = GiftManager.save(maxid, order);
 		 
+	     
 	     sqls.addAll(sqlp);
 	     sqls.addAll(sqlg);
 	     
@@ -759,9 +761,9 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   }else if(Order.orderDispatching == statues){   // 待安装
 					   sql = "select * from  mdorder where  installid = "+user.getId() + " and deliveryStatues in (1,10)  order by id  desc"; 
 				   }else if(Order.over == statues){  // 已送货
-					   sql = "select * from  mdorder where  ( sendId = "+user.getId() + " )  and deliveryStatues in (1)  order by id  desc";
+					   sql = "select * from  mdorder where  ( sendId = "+user.getId() + " )  and deliveryStatues in (1,4)  order by id  desc";
 				   }else if(Order.returns == statues){ // 已安装
-					   sql = "select * from  mdorder where  sendId = "+user.getId() + " and deliveryStatues in (2)   and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (2)  and printSatuesp = 1   order by id  desc";
+					   sql = "select * from  mdorder where  sendId = "+user.getId() + " and deliveryStatues in (2,5)   and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (2)  and printSatuesp = 1   order by id  desc";
 				   }
 			   }else if(flag && Group.sale == type){
 				   if(Order.serach == statues){
@@ -774,6 +776,10 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (3,4,5,11,12,13)  "+ str + " order by id desc ";
 				   }else if(Order.come == statues){
 					   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (8)  "+ str + " order by id desc "; 
+				   } 
+			   }else if(flag && Group.tuihuo == type){
+				   if(Order.tuihuo == statues){  // 
+					   sql = "select * from  mdorder where  (returnid = "+user.getId() + " )   order by id  desc";
 				   }
 			   }else if(flag && Group.dealSend == type){
 				   if(Order.orderDispatching == statues){     

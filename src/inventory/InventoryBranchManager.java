@@ -442,7 +442,8 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, time,type,count,operatortype,realcount,papercount)" + 
 			 	                        "  values ( null, '"+branch.getId()+"', '"+oid+"','"+time+"','"+or.getSendType()+"',"+or.getCount()+","+7+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 )";    
 			    			 }*/  
-				    	//}else
+				    	//} 
+		    			else
 				    	{
 				    		uid = order.getDealsendId();  
 				    		branch = BranchService.getMap().get(Integer.valueOf(u.getBranch())); 

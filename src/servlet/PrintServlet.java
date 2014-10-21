@@ -239,63 +239,7 @@ public class PrintServlet extends HttpServlet {
 				for (int i = 0; i < list.size(); i++){
 					row = sheet.createRow((int) i + 1);
 					Order order = list.get(i);
-					
 
-				     String pcategory = "";
-				     String scategory = "";
-				     String ptype = "";
-				     String stype = "";
-				     String pcountt = "";
-				     String scountt = "";
-				     List<OrderProduct> lists = OrPMap.get(order.getId());
-				     
-				     if(lists != null ){
-					     for(int g = 0 ;g<lists.size();g++){
-					    	 OrderProduct op = lists.get(g);
-					    	 if(op.getStatues() == 1 ){
-					    		 pcategory +=  categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"    ";
-						         pcountt += op.getCount() +"    ";
-						         ptype += op.getSaleType()==null ||op.getSaleType() == "null" ? "":op.getSaleType() +"    ";
-					    	 }else {
-					    		 scategory += categorymap.get(Integer.valueOf(op.getCategoryId())).getName()+"    ";
-						         scountt += op.getCount() +"    ";
-						         stype += op.getSendType()==null ||op.getSendType() == "null" ? "":op.getSendType() +"    "; 
-					    	 }  
-					     }
-				     }
-				     
-			
-				     
-				     String gstatues = ""; ;
-				     String gtype = "";
-				     String gcountt = ""; 
-				     
-				     List<Gift> glists = gMap.get(order.getId());
-				       
-				     if(null != glists){
-				
-				     for(int g = 0 ;g<glists.size();g++){
-				    	 
-				    	 Gift op = glists.get(g); 
-				    	 if(null !=op ){ 
-				    		 gtype += op.getName()+"   ";
-					         gcountt += op.getCount()+"   ";
-					         String statues = "";    
-					      // logger.info("op.getStatues()"+op.getStatues());
-					         if(0==op.getStatues()){      
-					        	 statues = "需配送";
-					         }else if(1 == op.getStatues()) {
-					        	 statues = "已自提";
-					         }else if(9 == op.getStatues()) { 
-					        	 statues = "只安装(门店提货)";
-					         }else if(10 == op.getStatues()) {
-					        	 statues = "只安装(顾客已提)";
-					         } 
-					         gstatues += statues +"   ";
-				    	 }
-				     }
-				     }
-				     
 				     String str = "";
 				     if(2 == order.getDeliveryStatues()) {
 						
@@ -305,7 +249,6 @@ public class PrintServlet extends HttpServlet {
 			          		   str = u.getUsername() ;
 			          	   } 
 						 }
-			         
 					
 			         }else {
                          str = "暂无送货员";
@@ -314,22 +257,23 @@ public class PrintServlet extends HttpServlet {
 					int y = 0 ;   
 					// 第四步，创建单元格，并设置值
 					row.createCell((short) y++).setCellValue(order.getPrintlnid() == null?"":order.getPrintlnid());
-					row.createCell((short) y++).setCellValue(order.getBranch());
+					row.createCell((short) y++).setCellValue(order.getbranchName(order.getBranch()));
 					row.createCell((short) y++).setCellValue(usermap.get(order.getSaleID()).getUsername()+"    "+usermap.get(order.getSaleID()).getPhone());
 					row.createCell((short) y++).setCellValue(order.getPos()); 
 					row.createCell((short) y++).setCellValue(order.getSailId());
 					row.createCell((short) y++).setCellValue(order.getCheck()); 
 					row.createCell((short) y++).setCellValue(order.getUsername()+"    "+order.getPhone1()); 
 	  
-					row.createCell((short) y++).setCellValue(pcategory);
-					row.createCell((short) y++).setCellValue(ptype);
-					row.createCell((short) y++).setCellValue(pcountt);
-					row.createCell((short) y++).setCellValue(scategory);
-					row.createCell((short) y++).setCellValue(stype);
-					row.createCell((short) y++).setCellValue(scountt); 
-					row.createCell((short) y++).setCellValue(gtype);
-					row.createCell((short) y++).setCellValue( gcountt);
-					row.createCell((short) y++).setCellValue(gstatues);
+					
+					row.createCell((short) y++).setCellValue(order.getCategory(1,"      "));
+					row.createCell((short) y++).setCellValue(order.getSendType(1,"      "));
+					row.createCell((short) y++).setCellValue(order.getSendCount(1,"      "));
+					row.createCell((short) y++).setCellValue(order.getCategory(0,"      "));
+					row.createCell((short) y++).setCellValue(order.getSendType(0,"      "));
+					row.createCell((short) y++).setCellValue(order.getSendCount(0,"      ")); 
+					row.createCell((short) y++).setCellValue(order.getGifttype("      "));
+					row.createCell((short) y++).setCellValue(order.getGifcount("      "));
+					row.createCell((short) y++).setCellValue(order.getGifStatues("      "));
 					row.createCell((short) y++).setCellValue(order.getSaleTime());
 					row.createCell((short) y++).setCellValue(order.getOdate()); 
 					row.createCell((short) y++).setCellValue(order.getDealSendTime());

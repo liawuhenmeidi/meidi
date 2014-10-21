@@ -5,6 +5,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 String id = request.getParameter("id");
 String type = request.getParameter("type");
+String uid = request.getParameter("uid");
 String message = "";
 String username = "";
 String htmlname = "";
@@ -32,6 +33,12 @@ if((Order.orderinstall+"").equals(type)){
 	message = "只安装(顾客已提)";     
 	htmlname = "送货员";
 	username = usermap.get(order.getSendId()).getUsername();
+	//Order.deliveryStatuesTuihuo
+}else if((Order.deliveryStatuesTuihuo+"").equals(type)){
+	message = "退货单"; 
+	htmlname = "退货员";  
+	username = usermap.get(Integer.valueOf(uid)).getUsername();
+	//Order.deliveryStatuesTuihuo
 }
 
 
