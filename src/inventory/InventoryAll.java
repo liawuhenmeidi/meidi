@@ -6,7 +6,15 @@ public class InventoryAll {
    public String cateoryName ;
    private String type ;
    private String typeid ;
-   public String getTypeid() {
+   private Boolean isquery ;   // 是否已盘点
+   
+   public Boolean getIsquery() {
+	return isquery;
+}
+public void setIsquery(Boolean isquery) {
+	this.isquery = isquery;
+}
+public String getTypeid() {
 	return typeid;
 }
 public void setTypeid(String typeid) {

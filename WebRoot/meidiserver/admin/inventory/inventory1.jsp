@@ -246,7 +246,8 @@ function serchclick(category,type,branchid,obj){
 	        	
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
-	       
+	                 var pandian = "否";
+	                 
 	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.typeid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+str.typeid+'\',\''+branch+'\',this)">' +  
 	        		    
 	        		     ' <td>'+str.cateoryName+'</td> ' +   

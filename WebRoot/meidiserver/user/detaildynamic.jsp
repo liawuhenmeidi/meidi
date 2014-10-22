@@ -24,27 +24,27 @@ int modify = OrderPrintlnManager.getstatues(opmap, OrderPrintln.modify, or.getId
 int returns = OrderPrintlnManager.getstatues(opmap, OrderPrintln.returns, or.getId());
 int huanhuo = OrderPrintlnManager.getstatues(opmap, OrderPrintln.huanhuo, or.getId());
  
-boolean flag = true ; 
+boolean flag = false ; 
 int opstatues = -1;   
   
 if(or.getDeliveryStatues() == 0 || or.getDeliveryStatues() == 9 ){ 
-	opstatues = OrderPrintln.salerelease;     
+	opstatues = OrderPrintln.salerelease;
+	if(uid == or.getSendId()){
+		flag = true ;
+	}
 }else if (or.getDeliveryStatues() == 1 || or.getDeliveryStatues() == 10){
-	if(or.getInstallid() == 0){   
-		flag = false ; 
-	}  
 	if(uid == or.getInstallid()){  
+		flag = true ;
 		opstatues = OrderPrintln.salereleaseanzhuang;
 	}  
 }else if(or.getDeliveryStatues() == 2 ){  
-	if(or.getReturnid() == user.getId()){ 
-		flag = true; 
+	if(or.getReturnid() == user.getId() && or.getReturnstatuse() == 0){ 
 		opstatues = OrderPrintln.salereleasereturn ;
-	}else {
-		flag = false ; 
 	}
 	
-} 
+} else {
+	
+}
 
 
 

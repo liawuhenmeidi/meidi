@@ -56,6 +56,10 @@ public class TimeUtill {
     	return date.getDate() ;   
     } 
        
+    public static int getMonth(){
+    	Date date = new Date();  
+    	return date.getMonth() ; 
+    }
     public static String  dataAdd(String data,int count){    
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String putdate =  ""; 

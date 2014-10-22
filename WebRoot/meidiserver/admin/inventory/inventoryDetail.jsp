@@ -203,7 +203,7 @@ var mapdevity = <%=mapdevitystr%>;
 	        		 }else if(type == 7){    
 	        			 strtype = usermapstr[str.receiveuser].username+"拉回给"+usermapstr[str.sendUser].username;
 	        		 } else if(type == 8){    
-	        			 strtype = usermapstr[str.sendUser].branchName+"同意"+branch+"退货";
+	        			 strtype = usermapstr[str.sendUser].branchName+"同意"+usermapstr[str.receiveuser].username+"退货";
 	        		 }   
 	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="inventory('+str.inventoryid+','+type+')">' +  
 	        		     ' <td>'+str.inventoryString+'</td> ' +

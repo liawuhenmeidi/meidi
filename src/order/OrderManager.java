@@ -761,9 +761,9 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   }else if(Order.orderDispatching == statues){   // 待安装
 					   sql = "select * from  mdorder where  installid = "+user.getId() + " and deliveryStatues in (1,10)  order by id  desc"; 
 				   }else if(Order.over == statues){  // 已送货
-					   sql = "select * from  mdorder where  ( sendId = "+user.getId() + " )  and deliveryStatues in (1,4)  order by id  desc";
+					   sql = "select * from  mdorder where  ( sendId = "+user.getId() + " )  order by id  desc";
 				   }else if(Order.returns == statues){ // 已安装
-					   sql = "select * from  mdorder where  sendId = "+user.getId() + " and deliveryStatues in (2,5)   and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (2)  and printSatuesp = 1   order by id  desc";
+					   sql = "select * from  mdorder where  (sendId = "+user.getId() + " and installid = 0  or  installid = "+user.getId() + " )  and deliveryStatues in (2,5)    order by id  desc";
 				   }
 			   }else if(flag && Group.sale == type){
 				   if(Order.serach == statues){
@@ -1291,15 +1291,21 @@ logger.info(sql);
 	}
    
    public static int getShifangStatues(Order or){
-	   int opstatues = -1 ; 
+	   
+	   int opstatues = -1;  
+	   
 	   if(or.getDeliveryStatues() == 0 || or.getDeliveryStatues() == 9 ){ 
 			opstatues = OrderPrintln.salerelease;     
-		}else if (or.getDeliveryStatues() == 1 ||or.getDeliveryStatues() == 10){
-			if(0 != or.getInstallid()){   
+		}else if (or.getDeliveryStatues() == 1 || or.getDeliveryStatues() == 10){
+			if(or.getInstallid() != 0){  
 				opstatues = OrderPrintln.salereleaseanzhuang;
 			}  
-		}
-	   
+		}else if(or.getDeliveryStatues() == 2 ){  
+			if(or.getReturnid() != 0){ 
+				opstatues = OrderPrintln.salereleasereturn ;
+			}
+		} 
+
 	   return opstatues;
    } 
    

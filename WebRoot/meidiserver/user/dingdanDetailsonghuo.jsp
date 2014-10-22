@@ -178,36 +178,31 @@ function change(str1,str2,type){
     
     <td class="s_list_m">
     <%    OrderPrintln orp = OrderPrintlnManager.getOrderStatues(user, or.getId(),opstatues); 
-			 
-			 if(orp != null){
-			  int sta = orp.getStatues();
-	          String sm = "";
-	          if(0 == sta){ 
-	        	  sm = "待确认";
-	          }else if(1== sta){
-	        	  sm = "确认中";
-	          }else if(2== sta){
-	        	  sm = "您的申请被同意";
-	          }else if(4== sta){
-	        	  sm = "您的申请被拒绝";
-	          }  
-      %> 
-     <%=sm %>
-      <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=opstatues%>')"></input>
-     <%
-          }else {
- 
-     %>
-              无
-              <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=opstatues%>')"></input>
-     <%
-	   }
-	if(flag){
-		int shifang = -1 ;
-		if(orp != null){
-			shifang = orp.getStatues(); 
+			 if(flag){
+				 if(orp != null ){
+					  int sta = orp.getStatues();
+			          String sm = "";
+			          if(0 == sta){ 
+			        	  sm = "待确认";
+			          }else if(1== sta){
+			        	  sm = "确认中";
+			          }else if(2== sta){
+			        	  sm = "您的申请被同意";
+			          }else if(4== sta){
+			        	  sm = "您的申请被拒绝";
+			          }  
+	      %> 
+	     <%=sm %>
+	      <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=opstatues%>')"></input>
+	     <%
+	          }else {
+	 
+	     %>
+	              无
+	              <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=opstatues%>')"></input>
+	     <%
+		   }
 		}
-     } 
      %> 
    </td> 
 

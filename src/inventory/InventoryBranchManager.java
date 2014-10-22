@@ -444,16 +444,14 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    			 }*/  
 				    	//} 
 		    			else
-				    	{
-				    		uid = order.getDealsendId();  
-				    		branch = BranchService.getMap().get(Integer.valueOf(u.getBranch())); 
+				    	{ 
 			    			 if(getInventoryID(user,branch.getId(),or.getSendType()) == null){ 
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" +   
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"','-"+or.getCount()+"', 0,"+branch.getId()+")"; 
 			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)" +   
 			 	                        "  values ( null, '"+branch.getId()+"', "+order.getId()+",'"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','-"+or.getCount()+"',0,"+7+",'-"+or.getCount()+"', 0,"+user.getId()+","+uid+","+order.getOderStatus()+",0,0)";
 			    			 }else {      
-			    				sqlnew = "update mdinventorybranch set realcount =  (mdinventorybranch.realcount + "+or.getCount()+")*1 where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'";  
+			    				sqlnew = "update mdinventorybranch set realcount =  (mdinventorybranch.realcount - "+or.getCount()+")*1 where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'";  
 			    			  
 			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)" + 
 			 	                        "  values ( null, '"+branch.getId()+"',"+order.getId()+", '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"','-"+or.getCount()+"',0,"+7+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,"+user.getId()+","+uid+","+order.getOderStatus()+" ,(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 + "+or.getCount()+",(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1)";    
@@ -530,6 +528,8 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			c.setInventoryid(rs.getInt("inventoryid"));
 			c.setTypeid(rs.getString("type"));    
 			c.setType(ProductService.getIDmap().get(Integer.valueOf(c.getTypeid())).getType());    
+		    c.setIsquery(rs.getInt("isquery"));
+		    c.setQuerymonth(rs.getInt("querymonth"));
 		} catch (SQLException e) { 
 			e.printStackTrace();
 		}	

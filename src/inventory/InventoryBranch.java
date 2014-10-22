@@ -1,5 +1,7 @@
 package inventory;
 
+import utill.TimeUtill;
+
 public class InventoryBranch {  
   private int id ;     
   private int inventoryid;  // 所包含的产品类别id
@@ -12,6 +14,36 @@ public class InventoryBranch {
   private int realcount ;  
   
   private int papercount;
+  
+  private int isquery;   // 1 为已盘点
+   
+  private int querymonth;
+  
+  public boolean isquery(){
+	  boolean flag = false ;
+	  int month = TimeUtill.getMonth();
+	  if(month == querymonth && isquery == 1){
+		  flag = true ;
+	  }
+	  return flag ;
+  }
+  
+ public int getIsquery() {
+	return isquery;
+}
+
+public void setIsquery(int isquery) {
+	this.isquery = isquery;
+}
+
+public int getQuerymonth() {
+	return querymonth;
+}
+
+public void setQuerymonth(int querymonth) {
+	this.querymonth = querymonth;
+}
+
 	public int getId() {
 		return id;
 	}

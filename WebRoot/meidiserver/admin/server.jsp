@@ -241,7 +241,7 @@ if("peidan".equals(method)){
     		if(NumbleUtill.isNumeric(branch)){
     			Branch b = BranchManager.getLocatebyid(branch);
     			branch = b.getLocateName();
-    		} 
+    		}  
     		 
     		list = InventoryBranchManager.getCategory(branch, product);  
     	}else {
@@ -263,15 +263,16 @@ if("peidan".equals(method)){
 	    		listp.setCateoryName(c.getName());  
 	    		listp.setTypeid(inb.getTypeid());
 	    		listp.setPapercount(inb.getPapercount());   
-	    		listp.setRealcount(inb.getRealcount());  
+	    		listp.setRealcount(inb.getRealcount()); 
+	    		listp.setIsquery(inb.isquery()); 
 	    		//System.out.println(inb.getPapercount()+"***"+inb.getRealcount());
 	    		map.put(categoryid, listp); 
-	    	}else { 
+	    	}else {  
 	    		//System.out.println(inb.getPapercount()+"***"+inb.getRealcount());
 	    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
 	    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
+	    		listp.setIsquery(listp.getIsquery()&&inb.isquery());
 	    	}
-	
 	    }
 		 
 		Collection<InventoryAll> c = map.values();
@@ -292,11 +293,13 @@ if("peidan".equals(method)){
 	    	    listp.setTypeid(inb.getTypeid());
 	    		listp.setCateoryName(c.getName());  
 	    		listp.setPapercount(inb.getPapercount()); 
-	    		listp.setRealcount(inb.getRealcount()); 
+	    		listp.setRealcount(inb.getRealcount());
+	    		listp.setIsquery(inb.isquery());
 	    		map.put(type, listp);
-	    	}else {
+	    	}else { 
 	    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
 	    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
+	    		listp.setIsquery(listp.getIsquery()&&inb.isquery());
 	    	}
 	    }
 	    Collection<InventoryAll> c = map.values();
