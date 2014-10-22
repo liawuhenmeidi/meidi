@@ -472,9 +472,9 @@ if("peidan".equals(method)){
 	return ;   
 }else if("pandian".equals(method)){
 	//data:"method=pandian&branchid="+branchid+"&type="+type,
-	String branchid = request.getParameter("branchid");
-    String  type = request.getParameter("type");
-	
+	String branchid = request.getParameter("branchid"); 
+    String  type = request.getParameter("type"); 
+	InventoryBranchManager.update(user, branchid, type);
 }
 
 %>

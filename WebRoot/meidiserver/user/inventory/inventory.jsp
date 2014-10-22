@@ -89,7 +89,10 @@ function add(){
 	        	
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
-	        		 
+	        		 var pandian ="否";
+	        		 if(str.isquery == true){
+	        			 pandian = "是";
+	        		 }
 	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+branch+'\',this)" >' +  
 	        		     
 	        		     ' <td>'+str.cateoryName+'</td> ' +  
@@ -98,7 +101,7 @@ function add(){
 	        		     // inventoryid
 	        		     ' <td>'+str.realcount+'</td> ' + 
 	        		      
-	        		     ' <td></td> ' +  
+	        		     ' <td>'+pandian+'</td> ' +  
 	        		     ' </tr>'; 
 	        		     row ++;
 	        	 }

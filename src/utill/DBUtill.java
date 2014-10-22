@@ -25,11 +25,12 @@ public class DBUtill {
           conn.setAutoCommit(false);   // 设置连接不自动提交，即用该连接进行的操作都不更新到数据库  
           sm = conn.createStatement(); // 创建Statement对象  
            Object[] strsqls = sqls.toArray();
-           logger.info(strsqls.toString());
+           
           //依次执行传入的SQL语句      
           for (int i = 0; i < strsqls.length; i++) {
         	  String sql = (String)strsqls[i];
         	  if(!StringUtill.isNull(sql)){   
+        		  logger.info(sql);
         		  sm.execute(sql);// 执行添加事物的语句  
         	  } 
              

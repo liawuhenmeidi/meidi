@@ -5,7 +5,7 @@ User user = (User)session.getAttribute("user");
  
 String category = request.getParameter("category"); 
 String branchid = request.getParameter("branchid");
- 
+String userbranch = user.getBranch();
 Branch branch = null;   
 if(UserManager.checkPermissions(user, Group.Manger)){
 	branchid = request.getParameter("branchid");
@@ -48,7 +48,7 @@ var typeid = "";
 var branch = "<%=branchid%>";
 
 var category = "<%=category%>"; 
-
+var userbranch = "<%=userbranch%>";
 
 $(function () {  
 	 add();
@@ -118,6 +118,11 @@ function add(){
 	 if(b!= null&&b!=""){
 		 branch = b ;
 	 } 
+	 
+	 if(userbranch == branch){
+		 canpandian = true ;
+	 }
+	 
 	 //alert(branch);
 	 $("#branch option[value='"+branch+"']").attr("selected","selected"); 
 	 //alert(branch);
@@ -141,7 +146,15 @@ function add(){
 	        	
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
-	        		  
+	                 var pandian = "是";
+	                 
+	                 if(str.isquery == false|| str.isquery == "false"){
+	                	 if(canpandian){
+	                		 pandian = '<input type="button" name="" value="盘点确认" onclick="pandian(\''+str.typeid+'\',\''+userbranch+'\')"/>'; 
+	                	 }else {
+	                		 pandian = "否";
+	                	 }
+	                 }
 	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="search(\''+str.typeid+'\',\''+branch+'\')">' +  
 	        		    
 	        		     ' <td>'+str.cateoryName+'</td> ' +   
@@ -150,7 +163,7 @@ function add(){
 	        		     // inventoryid
 	        		     ' <td>'+str.realcount+'</td> ' + 
 	        		      
-	        		     ' <td></td> ' +  
+	        		     ' <td>'+pandian+'</td> ' +  
 	        		     ' </tr>'; 
 	        		     row++;
 	        	 }

@@ -232,7 +232,7 @@ function pandian(type,branchid){
 	 if((branch == null || branch == "") && b!= null&&b!=""){
 		 branch = b ; 
 	 }
-     
+      
 	 if(b!= null&&b!=""){
 		 branch = b ;
 	 }
@@ -268,7 +268,7 @@ function pandian(type,branchid){
 	                 
 	                 if(str.isquery == false|| str.isquery == "false"){
 	                	 if(canpandian){
-	                		 pandian = '<input type="button" name="" value="盘点确认" onclick="pandian('+str.type+','+userbranch+')"/>';
+	                		 pandian = '<input type="button" name="" value="盘点确认" onclick="pandian(\''+str.typeid+'\',\''+userbranch+'\')"/>'; 
 	                	 }else {
 	                		 pandian = "否";
 	                	 }
