@@ -60,7 +60,9 @@ function initTime(){
 
 <body>
 <div class="s_main">
-<div class="s_main_logo"><img src="../image/logo.png"></div>
+ <jsp:include flush="true" page="../head.jsp">
+  <jsp:param name="dmsn" value="" />
+  </jsp:include>
 
 <!--  头 单种类  --> 
 <div class="s_main_tit"><span class="qiangdan"><a href="songhuo.jsp">返回</a></span><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span></div>

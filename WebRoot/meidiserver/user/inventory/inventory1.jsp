@@ -103,6 +103,27 @@ function serchclick(category,type,branchid,obj){
 	 updateClass(obj);  
 } 
 
+
+function pandian(type,branchid){
+	
+	$.ajax({   
+         type: "post", 
+         url: "../../admin/server.jsp",    
+         data:"method=pandian&branchid="+branchid+"&type="+type,
+         dataType: "",   
+         success: function (data) { 
+        	 add();
+
+            },  
+         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+            } 
+           });
+	
+	event.cancelBubble =true;
+}
+ 
+ 
+ 
 function add(){   
 	 
 	 $("#table tr").remove();    
@@ -134,11 +155,11 @@ function add(){
 	         success: function (data) { 
 	        	 var addstr =  '<thead>'+ 
 	     		  '<tr>'+
-	        		'<th align="left">产品类别</th>'+
-	     			'<th align="left">产品型号</th>'+
-	     			'<th align="left">账面库存数量</th>'+
-	     			'<th align="left">实际库存数量</th>'+
-	     			'<th align="left">盘点</th>'+ 
+		        		'<th align="left">产品类别</th>'+
+		     			'<th align="left">产品型号</th>'+
+		     			'<th align="left">账面库存数量</th>'+
+		     			'<th align="left">实际库存数量</th>'+
+		     			'<th align="left">盘点</th>'+ 
 	     		  '</tr>'+
 	     			'</thead> ';
 	        	
@@ -150,9 +171,13 @@ function add(){
 	                 
 	                 if(str.isquery == false|| str.isquery == "false"){
 	                	 if(canpandian){
-	                		 pandian = '<input type="button" name="" value="盘点确认" onclick="pandian(\''+str.typeid+'\',\''+userbranch+'\')"/>'; 
+	                		 pandian = '<span style="cursor:hand,color:red" onclick="pandian(\''+str.typeid+'\',\''+userbranch+'\')">盘点确认</span>'; 
 	                	 }else {
 	                		 pandian = "否";
+	                	 }
+	                 }else{
+	                	 if(canpandian){
+	                		 pandian = str.time; 
 	                	 }
 	                 }
 	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="search(\''+str.typeid+'\',\''+branch+'\')">' +  

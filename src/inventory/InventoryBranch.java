@@ -1,5 +1,7 @@
 package inventory;
 
+import java.util.Date;
+
 import utill.TimeUtill;
 
 public class InventoryBranch {  
@@ -17,12 +19,14 @@ public class InventoryBranch {
   
   private int isquery;   // 1 为已盘点
    
-  private int querymonth;
+  private String querymonth;
   
   public boolean isquery(){
 	  boolean flag = false ;
 	  int month = TimeUtill.getMonth();
-	  if(month == querymonth && isquery == 1){
+	  String format = "yyyy-MM-dd"; 
+	  Date date = TimeUtill.StringToDate(querymonth,format);
+	  if(month == date.getMonth() && isquery == 1){
 		  flag = true ;
 	  }
 	  return flag ;
@@ -36,11 +40,13 @@ public void setIsquery(int isquery) {
 	this.isquery = isquery;
 }
 
-public int getQuerymonth() {
+
+
+	public String getQuerymonth() {
 	return querymonth;
 }
 
-public void setQuerymonth(int querymonth) {
+public void setQuerymonth(String querymonth) {
 	this.querymonth = querymonth;
 }
 

@@ -295,6 +295,10 @@ if("peidan".equals(method)){
 	    		listp.setPapercount(inb.getPapercount()); 
 	    		listp.setRealcount(inb.getRealcount());
 	    		listp.setIsquery(inb.isquery());
+	    		if(!StringUtill.isNull(branch)){
+		    		listp.setTime(inb.getQuerymonth());
+		    	}
+	    		
 	    		map.put(type, listp);
 	    	}else { 
 	    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
@@ -357,12 +361,13 @@ if("peidan".equals(method)){
  		    		Category c = CategoryManager.getCategory(categoryid+"");
  		    		listp.setCategoryid(c.getId()); 
  		    		listp.setCateoryName(c.getName());
- 		    		listp.setType(inb.getType());
+ 		    		listp.setType(inb.getType()); 
  		    		listp.setTypeid(inb.getTypeid());
  		    		listp.setBranchid(branchid);    
  		    		listp.setPapercount(inb.getPapercount()); 
  		    		listp.setRealcount(inb.getRealcount()); 
  		    		listp.setIsquery(inb.isquery());
+ 			    	listp.setTime(inb.getQuerymonth());
  		    		map.put(branchid+"", listp);  
  		    	}else {        
  		    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());

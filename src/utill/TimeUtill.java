@@ -34,6 +34,17 @@ public class TimeUtill {
 		return submitTime;
 	}
 	
+	public static Date StringToDate(String dateStr,String formatStr){
+		DateFormat sdf=new SimpleDateFormat(formatStr);
+		Date date=null;
+		try {
+			date = sdf.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
+	
 	public static String getdatesimple(){ 
 		SimpleDateFormat df2 = new SimpleDateFormat("yyMMdd");
         Date date1 = new Date();   

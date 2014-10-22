@@ -38,7 +38,8 @@ if(or.getDeliveryStatues() == 0 || or.getDeliveryStatues() == 9 ){
 		opstatues = OrderPrintln.salereleaseanzhuang;
 	}  
 }else if(or.getDeliveryStatues() == 2 ){  
-	if(or.getReturnid() == user.getId() && or.getReturnstatuse() == 0){ 
+	if(or.getReturnid() == user.getId() && or.getReturnstatuse() == 0){
+		flag = true ;
 		opstatues = OrderPrintln.salereleasereturn ;
 	}
 	

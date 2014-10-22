@@ -7,8 +7,15 @@ public class InventoryAll {
    private String type ;
    private String typeid ;
    private Boolean isquery ;   // 是否已盘点
+   private String time ;
    
-   public Boolean getIsquery() {
+   public String getTime() {
+	return time;
+}
+public void setTime(String time) {
+	this.time = time;
+}
+public Boolean getIsquery() {
 	return isquery;
 }
 public void setIsquery(Boolean isquery) {

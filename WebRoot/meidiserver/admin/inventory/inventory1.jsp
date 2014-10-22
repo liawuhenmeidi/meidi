@@ -272,6 +272,10 @@ function pandian(type,branchid){
 	                	 }else {
 	                		 pandian = "否";
 	                	 }
+	                 }else{
+	                	 if(canpandian){
+	                		 pandian = str.time; 
+	                	 }
 	                 }
 	                
 	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.typeid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+str.typeid+'\',\''+branch+'\',this)">' +  

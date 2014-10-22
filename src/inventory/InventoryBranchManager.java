@@ -355,14 +355,14 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			    				 sqlnew = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)" + 
 				                         "  values ( null,"+or.getCategoryId()+", '"+or.getSendType()+"',0, '"+or.getCount()+"',"+branch.getId()+")"; 
 			    				 sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)" +   
-			 	                        "  values ( null, '"+branch.getId()+"', "+order.getId()+",'"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"',0,"+or.getCount()+","+8+",0, '"+or.getCount()+"',"+user.getId()+","+uid+","+order.getOderStatus()+",0,0)";
+			 	                        "  values ( null, '"+branch.getId()+"', "+order.getId()+",'"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"',0,"+or.getCount()+","+8+",0, '"+or.getCount()+"',"+user.getId()+","+order.getDealsendId()+","+order.getOderStatus()+",0,0)";
 			    			 }else {   
 			    				sqlnew = "update mdinventorybranch set papercount =  (mdinventorybranch.papercount + "+or.getCount()+")*1 where branchid = " + branch.getId() + " and type = '" + or.getSendType()+"'";  
 			    			 
-			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString, time,type,allotRealcount,allotPapercountoperatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)" + 
-			 	                        "  values ( null, '"+branch.getId()+"',"+order.getId()+", '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"',0,"+or.getCount()+","+8+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 ,"+user.getId()+","+uid+","+order.getOderStatus()+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1- "+or.getCount()+" )";    
+			    				sql = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)" + 
+			 	                        "  values ( null, '"+branch.getId()+"',"+order.getId()+", '"+order.getPrintlnid()+"','"+time+"','"+or.getSendType()+"',0,"+or.getCount()+","+8+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1 ,"+user.getId()+","+order.getDealsendId()+","+order.getOderStatus()+",(select realcount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1,(select papercount from mdinventorybranch where branchid = " +branch.getId() + " and  type = '"+or.getSendType()+"')*1- "+or.getCount()+" )";    
 			    			 }    
-				    	}    
+				    	}     
 				            
 		    		}else if((Order.orderreturn+"").equals(method)){      // 送货员拉回货物   
 		    			if(or.getSalestatues() == 3 || or.getSalestatues() == 0 ){     
@@ -520,7 +520,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 	public static int update(User user ,String branchid,String type){
 		   int count = -1 ; 
 		   List<String> listsql = new ArrayList<String>();
-		   String sql = "update mdinventorybranch  set  isquery = 1 , querymonth = "+TimeUtill.getMonth()+" where branchid = "+ branchid + " and type = '" + type+"'"; 
+		   String sql = "update mdinventorybranch  set  isquery = 1 , querymonth = "+TimeUtill.getdateString()+" where branchid = "+ branchid + " and type = '" + type+"'"; 
 	       String sql1 = "insert into mdpandian (id,mdinventorybranchid,mdtime,userid,mdmonth) values (null,(select id from mdinventorybranch  where branchid = "+ branchid + " and type = '" + type+"'),'"+TimeUtill.gettime()+"',"+user.getId()+",'"+TimeUtill.getMonth()+"')";
 	       listsql.add(sql);
 	       listsql.add(sql1); 
@@ -539,7 +539,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			c.setTypeid(rs.getString("type"));    
 			c.setType(ProductService.getIDmap().get(Integer.valueOf(c.getTypeid())).getType());    
 		    c.setIsquery(rs.getInt("isquery"));
-		    c.setQuerymonth(rs.getInt("querymonth"));
+		    c.setQuerymonth(rs.getString("querymonth"));
 		} catch (SQLException e) { 
 			e.printStackTrace();
 		}	

@@ -102,7 +102,7 @@ td {
 	        		 var str = json[i]; 
 	        		 var pandian ="否";
 	        		 if(str.isquery == true){
-	        			 pandian = "是";
+	        			 pandian = str.time;
 	        		 }
 	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branchstr[str.branchid].locateName+'\')">' +  
 	        		  
