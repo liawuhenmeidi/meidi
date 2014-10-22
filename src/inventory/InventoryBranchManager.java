@@ -27,6 +27,7 @@ import product.ProductService;
 
 import user.User;
 import user.UserManager;
+import utill.DBUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
 
@@ -517,6 +518,17 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 				 }
 				return orders;
 		 }
+	
+	public static int update(User user ,String branchid,String type){
+		   int count = -1 ; 
+		   List<String> listsql = new ArrayList<String>();
+		   String sql = "update mdinventorybranch  set  isquery = 1 , querymonth = "+TimeUtill.getMonth()+" where branchid = "+ branchid + " and type = '" + type+"'"; 
+	       String sql1 = "insert into mdpandian (id,mdinventorybranchid,mdtime,userid,mdmonth) values (null,(select id from mdinventorybranch  where branchid = "+ branchid + " and type = '" + type+"'),"+TimeUtill.gettime()+","+user.getId()+","+TimeUtill.getMonth()+")";
+	       listsql.add(sql);
+	       listsql.add(sql1); 
+	       DBUtill.sava(listsql);
+		   return count ;
+	}
 	
 	private static InventoryBranch getCategoryFromRs(ResultSet rs){
 		InventoryBranch c = new InventoryBranch(); 

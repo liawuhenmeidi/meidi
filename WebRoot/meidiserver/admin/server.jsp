@@ -332,10 +332,12 @@ if("peidan".equals(method)){
 		    		listp.setTypeid(inb.getTypeid());
 		    		listp.setPapercount(inb.getPapercount()); 
 		    		listp.setRealcount(inb.getRealcount()); 
+		    		listp.setIsquery(inb.isquery());
 		    		map.put(branchid+"", listp);
 		    	}else {       
 		    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
 		    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
+		    		listp.setIsquery(listp.getIsquery()&&inb.isquery());
 		    	}
 		  
 		    Collection<InventoryAll> c = map.values();
@@ -353,17 +355,19 @@ if("peidan".equals(method)){
  		    	if(listp == null){ 
  		    		listp = new InventoryAll();   
  		    		Category c = CategoryManager.getCategory(categoryid+"");
- 		    		listp.setCategoryid(c.getId());
+ 		    		listp.setCategoryid(c.getId()); 
  		    		listp.setCateoryName(c.getName());
  		    		listp.setType(inb.getType());
  		    		listp.setTypeid(inb.getTypeid());
  		    		listp.setBranchid(branchid);    
  		    		listp.setPapercount(inb.getPapercount()); 
  		    		listp.setRealcount(inb.getRealcount()); 
+ 		    		listp.setIsquery(inb.isquery());
  		    		map.put(branchid+"", listp);  
  		    	}else {        
  		    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
  		    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
+ 		    		listp.setIsquery(listp.getIsquery()&&inb.isquery());
  		    	}
  		  
  		    Collection<InventoryAll> c = map.values();
@@ -461,12 +465,16 @@ if("peidan".equals(method)){
 		session.setAttribute("message", "修改失败");
 		 
 	}else {
-		
 		response.sendRedirect("../jieguo.jsp?type=updated");
 		//System.out.println(123);   
 		session.setAttribute("message", "修改成功");
 	}
 	return ;   
+}else if("pandian".equals(method)){
+	//data:"method=pandian&branchid="+branchid+"&type="+type,
+	String branchid = request.getParameter("branchid");
+    String  type = request.getParameter("type");
+	
 }
 
 %>

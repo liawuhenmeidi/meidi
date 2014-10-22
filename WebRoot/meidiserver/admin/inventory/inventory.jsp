@@ -111,7 +111,7 @@ td {
 	        		 var str = json[i]; 
 	        		 var pandian ="否";
 	        		 if(str.isquery == true){
-	        			 pandian = "是"
+	        			 pandian = "是";
 	        		 }
 	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+branch+'\',this)" >' +  
 	        		     

@@ -2,7 +2,7 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
-
+String userbranch = user.getBranch();
 String category = request.getParameter("category");
 String branchid = request.getParameter("branchid");
 
@@ -142,7 +142,7 @@ var allp = <%=allp%>;
  var jsoninvent =  $.parseJSON(inventoyr);
   var typeid = ""; 
   var branch = "<%=branchid%>"; 
-  
+  var userbranch = "<%=userbranch%>";
  $(function () { 
 	 $("#branch").autocomplete({ 
 		 source: jsonall
@@ -201,12 +201,26 @@ function serchclick(category,type,branchid,obj){
 	 updateClass(obj);  
  } 
  
+function pandian(type,branchid){
+	$.ajax({   
+         type: "post", 
+         url: "../server.jsp",    
+         data:"method=pandian&branchid="+branchid+"&type="+type,
+         dataType: "",   
+         success: function (data) { 
+        	 add();
 
+            },  
+         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+            } 
+           });
+}
  
  
  
  function add(){   
-	
+	 var canpandian = false ;
+	 
 	 $("#table tr").remove();    
 	 
 	 var category = "<%=category%>"; 
@@ -227,6 +241,10 @@ function serchclick(category,type,branchid,obj){
 	 $("#branch").val(branch);
 	 //$("#branch option[value='"+branch+"']").attr("selected","selected"); 
 	 //alert(branch);
+	 if(userbranch == branch){
+		 canpandian = true ;
+	 }
+	 
 	 $.ajax({   
 	        type: "post", 
 	         url: "../server.jsp",    
@@ -246,8 +264,16 @@ function serchclick(category,type,branchid,obj){
 	        	
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
-	                 var pandian = "否";
+	                 var pandian = "是";
 	                 
+	                 if(str.isquery == false|| str.isquery == "false"){
+	                	 if(canpandian){
+	                		 pandian = '<input type="button" name="" value="盘点确认" onclick="pandian('+str.type+','+userbranch+')"/>';
+	                	 }else {
+	                		 pandian = "否";
+	                	 }
+	                 }
+	                
 	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.typeid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+str.typeid+'\',\''+branch+'\',this)">' +  
 	        		    
 	        		     ' <td>'+str.cateoryName+'</td> ' +   
@@ -256,7 +282,7 @@ function serchclick(category,type,branchid,obj){
 	        		     // inventoryid
 	        		     ' <td>'+str.realcount+'</td> ' + 
 	        		      
-	        		     ' <td></td> ' +  
+	        		     ' <td>'+pandian+'</td> ' +  
 	        		     ' </tr>'; 
 	        		     row++;
 	        	 }

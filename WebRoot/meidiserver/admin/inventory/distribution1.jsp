@@ -100,7 +100,10 @@ td {
 	        	
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
-	        		 
+	        		 var pandian ="否";
+	        		 if(str.isquery == true){
+	        			 pandian = "是";
+	        		 }
 	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branchstr[str.branchid].locateName+'\')">' +  
 	        		  
 	        		     ' <td>'+branchstr[str.branchid].locateName+'</td> ' + 
@@ -109,7 +112,7 @@ td {
 	        		     ' <td>'+str.papercount+'</td> ' +  
 	        		     // inventoryid
 	        		     ' <td>'+str.realcount+'</td> ' + 
-	        		     ' <td></td> ' +  
+	        		     ' <td>'+pandian+'</td> ' +  
 	        		     ' </tr>'; 
 	        	 }
 	        	 
