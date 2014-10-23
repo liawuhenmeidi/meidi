@@ -35,10 +35,13 @@ public class LoginServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		response.setCharacterEncoding("UTF-8");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
-		response.setCharacterEncoding("UTF-8");
+		System.out.println("username = " + username);
+		System.out.println("password = " + password);
 		PrintWriter writer = response.getWriter();
 		
 		writer.write(DataManager.login(username, password));
