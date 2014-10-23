@@ -38,20 +38,17 @@ public class LoginServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
-		User u = UserManager.check(username, password);
-		
-		response.setCharacterEncoding("UTF_8");
+		response.setCharacterEncoding("UTF-8");
 		PrintWriter writer = response.getWriter();
-		if(u != null){
-			writer.write("success");
-		}else{
-			writer.write("failed");
-		}
+		
+		writer.write(DataManager.login(username, password));
+		writer.close();
+
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+			doGet(request, response);
 	}
 
 }
