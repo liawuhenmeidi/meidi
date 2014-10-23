@@ -33,6 +33,7 @@ import database.DB;
 import user.User;
 import user.UserManager;
 import utill.DBUtill;
+import utill.NumbleUtill;
 import utill.TimeUtill;
 
 public class OrderManager {
@@ -109,13 +110,18 @@ logger.info(pstmt);
 	}  
 	
 	
-	public static String getDeliveryStatues(int statues){
+	public static String getDeliveryStatues(Order o){
+		int statues = o.getDeliveryStatues();
 		String str = "";
 	
 		// 0 表示未送货  1 表示正在送  2 送货成功
 		 if(0 == statues){
-		
-			 str = "未发货";
+		   if(o.getOderStatus().equals(20+"")){
+			   str = "换货单";
+		   }else {
+			   str = "未发货";
+		   }
+			
 		
           }else if(1 == statues){
 
@@ -160,7 +166,7 @@ logger.info(pstmt);
 		map.put(9+"", "只安装(门店提货)");
 		map.put(10+"", "只安装(顾客已提) ");
 		map.put(-1+"", "调拨单"); 
-		
+		map.put(20+"", "换货单"); 
 		
 		return map ;
 		
@@ -217,6 +223,13 @@ logger.info(pstmt);
 			} else if("orderover".equals(method)){ 
 				sql = "update mdorder set statues4 = "+statues+" where id in " + ids;
 			} else if("songhuo".equals(method)){
+				boolean flags = false ;
+				if(NumbleUtill.isNumeric(id)){
+					Order order = OrderManager.getOrderID(user, Integer.valueOf(id));
+				    if((2 == statues || 1 == statues ) && order.getOderStatus().equals(20+"")){
+				    	flags = true ;
+				    }
+				}
 				
 				if(2 == statues){
 					sql = "update mdorder set deliveryStatues = "+statues+" , deliverytype = 1 , sendTime = '"+time+"' , installTime = '"+time+"' , installid = mdorder.sendId   where id in " + ids;
@@ -225,15 +238,20 @@ logger.info(pstmt);
 				}else if( 4 == statues ||  9 == statues || 10 == statues){
 					statues = 2 ;    
 					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+time+"'  where id in " + ids;
-				}  
+				} 
+				
+				if(flags){
+					 List<String> lists = InventoryBranchManager.chage(user, method, statues, id);
+				     listsql.addAll(lists); 
+				}
 			} else if("peidan".equals(method)){     
 			    sql = "update mdorder set dealSendid = "+statues+" , printSatues = 1 , dealsendTime = '"+TimeUtill.gettime()+"'  where id in " + ids;
 			    List<String> lists = InventoryBranchManager.chage(user, method, statues, id);
 			    listsql.addAll(lists);   
 			}else if("tuihuo".equals(method)){     
 			    sql = "update mdorder set returnstatues = "+statues+" , returntime = '"+time+"'  where id in " + ids;
-			    List<String> lists = InventoryBranchManager.chage(user, method, statues, id);
-			    listsql.addAll(lists);   
+			   // List<String> lists = InventoryBranchManager.chage(user, method, statues, id);
+			    //listsql.addAll(lists);   
 
 			} else if("print".equals(method)){ //  
 				sql = "update mdorder set printSatues = "+statues+" where id in " + ids;

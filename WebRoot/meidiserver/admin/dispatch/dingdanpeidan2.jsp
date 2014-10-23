@@ -170,7 +170,7 @@ function change(str1,oid,type,statues,types,saleId){
 		alert("您已提交驳回申请，不能派工");
 	}else {  
 		$.ajax({ 
-	        type: "post",  
+	        type: "post",   
 	         url: "../server.jsp",    
 	         data:"method=getinventory&types="+types+"&uid="+saleid,
 	         dataType: "",  
@@ -178,8 +178,13 @@ function change(str1,oid,type,statues,types,saleId){
 	        	    inventory = data;
 	        	    data = data.replace(/{/g, "");
 	        	    data = data.replace(/}/g, "");
-	        	    data = data.replace(/,/g, "\n"); 
-				     question = confirm("您确定要配单并打印吗？\n"+data);
+	        	    data = data.replace(/,/g, "\n");
+	        	    if(type == 3){
+	        	    	question = confirm("您确定要配单并打印吗？\n");
+	        	    }else {
+	        	    	question = confirm("您确定要配单并打印吗？\n"+data);
+	        	    }
+				     
 				     if (question != "0"){
 								$.ajax({   
 							        type: "post",     
@@ -381,7 +386,7 @@ function adddetail(src){
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>
 		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
+		<%=OrderManager.getDeliveryStatues(o) %>
 		</td>
 		<td align="center">
 		

@@ -18,8 +18,14 @@ if((Order.orderinstall+"").equals(type)){
 	htmlname = "安装员";
 	username = usermap.get(order.getInstallid()).getUsername();
 }else if((Order.orderpeisong+"").equals(type)){
-	message = "送货安装单"; 
-	htmlname = "送货员";
+	if(order.getOderStatus().equals(20+"")){
+		message = "换货单"; 
+		htmlname = "换货员";
+	}else {
+		message = "送货安装单"; 
+		htmlname = "送货员";
+	}
+	
 	username = usermap.get(order.getSendId()).getUsername();
 }else if((Order.returns+"").equals(type)  || (Order.orderreturn+"").equals(type)){
 	message = "退货单"; 

@@ -440,7 +440,7 @@ String[] branlist =  branchmessage.split("_");
     	 
     	var type = listo.typeName == null || listo.typeName == undefined ? "":listo.typeName;
     	var count = listo.count == null || listo.count == undefined ? 1:listo.count;
-    	var statues = listo.salestatues == null || listo.salestatues == undefined ? 1:listo.salestatues;
+    	var statues = listo.salestatues == null || listo.salestatues == undefined ? -1:listo.salestatues;
     
     	  
     	var str = "";
@@ -485,7 +485,7 @@ String[] branlist =  branchmessage.split("_");
               	  '  <td width="50%" class="">'+
                 '  <select  name="productsta'+row+'" id="productsta'+row+'" style="width:90%; " '+disable+'>'+
                    
-               '  <option value="" id=""></option>    '+ 
+               '  <option value="" id="-1"></option>    '+ 
                 ' <option value="1" id="1">需配送安装</option>'+
                 ' <option value="0" id="0">已自提</option>'+
                 ' <option value="2" id="2">只安装(师傅门店提货)</option> '+  
@@ -624,7 +624,7 @@ String[] branlist =  branchmessage.split("_");
 			//alert(str);
 			// alert(statues == str); 
 			 if(!(statues == str)){
-				 alert("已自提和需派送需安装不能一起提交");
+				 alert("送货状态不一致，不能提交");
 				 return false; 
 			 }
 		 }

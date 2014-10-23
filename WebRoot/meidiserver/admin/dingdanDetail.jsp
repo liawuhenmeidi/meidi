@@ -55,15 +55,6 @@ var id = "";
 var jsons = <%=plist%> ; 
 
 $(function () {
-	var opt = { };
-    opt.date = {preset : 'date'};
-	$('#serviceDate').scroller('destroy').scroller($.extend(opt['date'], 
-	{ theme: 'android-ics light', mode: 'scroller', display: 'modal',lang: 'zh' ,startYear:'1980',endYear:'2020'}));
-	var opt2 = { };   
-    opt2.date = {preset : 'date'};
-	$('#serviceDate2').scroller('destroy').scroller($.extend(opt2['date'], 
-	{ theme: 'android-ics light', mode: 'scroller', display: 'modal',lang: 'zh' ,startYear:'1980',endYear:'2020'}));
-   
 	initproductSerch("#dingmaordercategory","#dingmatype");
 	
 }); 
@@ -331,7 +322,7 @@ function checkedd(){
 			<td align="center">
 			<% if(UserManager.checkPermissions(user, Group.dealSend) ){
 	        	  %> 
-	        	 <input type="text" name="dingmatype" id ="dingmatype"  value="<%=o.getSendType(1,"")%>"  onclick="serch(type1)" style="width:90% "></input>
+	        	 <input type="text" name="dingmatype" id ="dingmatype"  value="<%=o.getSendType(1,"")%>" style="width:90% "></input>
 			   <% }else {      
 			   %>    
 			     <%=o.getSendType(1,"")%>
@@ -476,7 +467,7 @@ function checkedd(){
             </td>
            <td align="center">送货状态</td>
           <td align="center">
-		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
+		<%=OrderManager.getDeliveryStatues(o) %>
 		</td>
            </tr> 
 		  <tr class="asc"> 

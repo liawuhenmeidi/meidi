@@ -185,7 +185,7 @@ function orderPrint(id,statues){
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>
 		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
+		<%=OrderManager.getDeliveryStatues(o) %>
 		</td>
 		<td align="center">
 		

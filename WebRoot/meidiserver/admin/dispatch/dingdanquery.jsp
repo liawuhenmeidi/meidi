@@ -4,8 +4,6 @@
   
 <%  
 
-request.setCharacterEncoding("utf-8");
-
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
 session.setAttribute("exportList", list); 
 count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
@@ -452,7 +450,7 @@ function orderPrint(id,statues){
    }
    %>
 		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
+		<%=OrderManager.getDeliveryStatues(o) %>
 		</td>
 		
 		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
@@ -543,7 +541,7 @@ function orderPrint(id,statues){
 		    	message = "是";
 		    }else if(o.getStatuesinstall()==2){
 		    	message = "已忽略";
-		    }
+		    } 
 		       
 		    %>  
 		    <%=message %>  

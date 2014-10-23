@@ -57,6 +57,7 @@ position:fixed;
 <script type="text/javascript">
 var id = "";
 var pgroup = "<%=pgroup%>";
+var usermapstr = <%=usermapstr%>;
 var opstatues = "<%=opstatues%>"; 
 var inventory = "";  
 $(function () { 
@@ -100,6 +101,9 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
    if(deliveryStatues == 9 || deliveryStatues == 10){
 	   saleid = saleId;
    }
+   
+   var branch = usermapstr[saleid].branchName;
+   
 	if(deliveryStatues != 8 ){ 
 		if(uid == null || uid == ""){
 			alert("请选择安装公司");
@@ -117,7 +121,7 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	        	    data = data.replace(/}/g, "");
 	        	    data = data.replace(/,/g, "\n"); 
 	               // alert(str);  
-	                question = confirm("您确定要配单并打印吗？\n"+data);
+	                question = confirm("您确定要配单并打印吗？\n"+branch+":\n"+data);
 	        		if (question != "0"){  
 	        			//alert(deliveryStatues);
 	        			$.ajax({ 
@@ -383,7 +387,7 @@ function adddetail(src){
 				<td align="center"><%=o.getLocate()%></td>
 				<td align="center"><%=o.getLocateDetail() %></td>
 				<td align="center">
-				<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
+				<%=OrderManager.getDeliveryStatues(o) %> 
 				</td>
 		        <td align="center"> 
 				    <%=o.getRemark() %>
@@ -394,6 +398,7 @@ function adddetail(src){
 		        OrderPrintln orp = null ; 
 		        OrderPrintln op = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.modify, o.getId()) ;
 		        OrderPrintln op1 = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.returns, o.getId()) ;
+		        OrderPrintln huanhuoo = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.huanhuo, o.getId()) ;
 		        OrderPrintln huanhuoObject = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.huanhuo, o.getId()) ;
 		        
 		        int modify = OrderPrintlnManager.getstatues(opmap, OrderPrintln.modify, o.getId()) ;
@@ -589,6 +594,7 @@ function adddetail(src){
               <%
                 }else if(huanhuo == 0){
               %> 
+              <%=huanhuoo.getMessage() %>
               <input type="button" onclick="changes('<%=huanhuoObject.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=huanhuo%>','-1','-1',this)"  value="同意"/>
 			  <input type="button" onclick="changes('<%=huanhuoObject.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=huanhuo %>','-1','-1',this)"  value="不同意"/>  
 						

@@ -310,7 +310,7 @@ function seletall(all){
 		</td>  
 		
 		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
+		<%=OrderManager.getDeliveryStatues(o) %>
 		</td> 
 		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
 		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>     

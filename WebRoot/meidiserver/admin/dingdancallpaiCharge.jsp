@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="searchdynamic.jsp"%>
-<%  
+<%   
  
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.callback,num,Page,sort,"");  
 count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.callback,num,Page,sort,"");  

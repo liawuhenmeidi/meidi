@@ -105,7 +105,7 @@ logger.info(pstmt);
 						order.setOrdergift(listg);  
 						order.setSubmitTime(oldOrder.getSubmitTime());
 						order.setPrintlnid(TimeUtill.getdatesimple());  
-						order.setDeliveryStatues(1);  
+						order.setDeliveryStatues(0);  
 						order.setPhoneRemark(oldOrder.getPhoneRemark()); 
 						order.setPosremark(oldOrder.getPosremark());
 						order.setReckedremark(oldOrder.getReckedremark());

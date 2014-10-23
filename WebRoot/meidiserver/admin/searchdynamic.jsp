@@ -48,6 +48,10 @@ int pgroup = GroupService.getidMap().get(user.getUsertype()).getPid();
 // 所有用户
 HashMap<Integer,User> usermap = UserService.getMapId();
  
+Map<String,User> usermaps = UserService.getuserIdStr();
+
+String usermapstr = StringUtill.GetJson(usermaps);
+
 // 安装网点
 List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend); //UserService.getsencondDealsend(user);
 
