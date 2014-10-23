@@ -235,17 +235,28 @@
 	  	<url-pattern>/meidiserver/modelDownload</url-pattern>
 	  </servlet-mapping>
 	          
-	      <servlet>  
-	        <servlet-name>ModelServlet</servlet-name>  
-	        <servlet-class>  
-	            servlet.ModelServlet  
-	        </servlet-class>  
-   </servlet>  
-        
-	    <servlet-mapping>   
-	        <servlet-name>ModelServlet</servlet-name>  
- 	        <url-pattern>/meidiserver/Model</url-pattern>   
-	    </servlet-mapping> 
+    <servlet>  
+      <servlet-name>ModelServlet</servlet-name>  
+      <servlet-class>  
+          servlet.ModelServlet  
+      </servlet-class>  
+   </servlet>   
+    <servlet-mapping>   
+        <servlet-name>ModelServlet</servlet-name>  
+	        <url-pattern>/meidiserver/Model</url-pattern>   
+    </servlet-mapping>
+    
+    <!-- android支持 -->
+	 <servlet>
+	    <description>支持android的登录</description>
+	    <display-name>android_login</display-name>
+	    <servlet-name>LoginServlet</servlet-name>
+	    <servlet-class>wilson.android.support.LoginServlet</servlet-class>
+ 	 </servlet>
+	 <servlet-mapping>
+	   <servlet-name>LoginServlet</servlet-name>
+	   <url-pattern>/servlet/LoginServlet</url-pattern>
+	 </servlet-mapping> 
 	      
 	       
 	    <filter>

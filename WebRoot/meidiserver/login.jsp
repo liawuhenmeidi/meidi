@@ -43,7 +43,7 @@ if(action != null && action.equals("login")) {
 		if(u != null ){
 			String userNamecook = URLEncoder.encode(username, "utf-8");
 			String passwordcook = URLEncoder.encode(password, "utf-8");
-
+			
 			//URLDecoder.decode(cookies[i].getName(),"utf-8");
 			Cookie cookie=new Cookie("username",userNamecook);
 			Cookie cookiep=new Cookie("password",passwordcook);
