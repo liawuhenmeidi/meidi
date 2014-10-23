@@ -2,7 +2,7 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");  
- 
+  
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
    
 List<BranchType> listb = BranchTypeManager.getLocate();

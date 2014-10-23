@@ -279,7 +279,7 @@ public class PrintServlet extends HttpServlet {
 					row.createCell((short) y++).setCellValue(order.getDealSendTime());
 					row.createCell((short) y++).setCellValue(order.getLocate()); 
 					row.createCell((short) y++).setCellValue(order.getLocateDetail()); 
-					String songhuo = OrderManager.getDeliveryStatues(order.getDeliveryStatues());
+					String songhuo = OrderManager.getDeliveryStatues(order);
 					  
 					row.createCell((short) y++).setCellValue(songhuo); 
 					String senduser = "";
