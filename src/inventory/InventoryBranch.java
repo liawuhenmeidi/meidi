@@ -2,6 +2,7 @@ package inventory;
 
 import java.util.Date;
 
+import utill.StringUtill;
 import utill.TimeUtill;
 
 public class InventoryBranch {  
@@ -24,11 +25,14 @@ public class InventoryBranch {
   public boolean isquery(){
 	  boolean flag = false ;
 	  int month = TimeUtill.getMonth();
-	  String format = "yyyy-MM-dd"; 
-	  Date date = TimeUtill.StringToDate(querymonth,format);
-	  if(month == date.getMonth() && isquery == 1){
-		  flag = true ;
+	  String format = "yyyy-MM-dd";  
+	  if(!StringUtill.isNull(querymonth)){
+		  Date date = TimeUtill.StringToDate(querymonth,format);
+		  if(month == date.getMonth() && isquery == 1){
+			  flag = true ;
+		  }
 	  }
+		  
 	  return flag ;
   }
   

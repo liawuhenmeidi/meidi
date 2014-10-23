@@ -15,7 +15,7 @@ public class InventoryBranchMessage {
   private int allotPapercount ; 
   
   private int operatortype ;  //  0 表示出货  1  表示入库   2 文员派单  4 安装公司释放
-        // 11 安装公司派送货员   6  送货员释放             7    退货员拉回    8 文员同意退货   9  退货员释放
+        // 11 安装公司派送货员   6  送货员释放             7    退货员拉回    8 文员同意退货   9  退货员释放     10 盘点记录    12 换货员确认换货
    
   private int realcount ;  //  实际库存  
   

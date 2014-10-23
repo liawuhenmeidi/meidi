@@ -17,7 +17,8 @@ public class TimeUtill {
 	
 	
 	public static void main(String args[]){
-		//isWee_hours();
+		//
+		System.out.println(getdateString());
 	}
 	
 	public static String gettime(){ 
@@ -33,7 +34,7 @@ public class TimeUtill {
 		String submitTime= df2.format(date1);
 		return submitTime;
 	}
-	
+
 	public static Date StringToDate(String dateStr,String formatStr){
 		DateFormat sdf=new SimpleDateFormat(formatStr);
 		Date date=null;

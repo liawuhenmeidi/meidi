@@ -43,7 +43,7 @@ public class Order {
  public static int pchargepaisong = 17 ; 
  public static int neworder = 18 ;
  public static int motify = 19 ;
- public static int release = 20 ; 
+ public static int release = 20 ;      
  public static int returns = 21 ;   // 送货员退货
  public static int dispatch = 22 ;
  public static int installonly = 23 ;
@@ -91,7 +91,7 @@ public class Order {
   private int deliveryStatues;    //送货状态  0 表示未送货   1 表示已送货   2 送货成功（送货安装） 
                                    // 3  表示退货  (无安装和派送)  4  表示退货（送回） 5 表示退货  （安装）
                                    //   7 安装同意释放了     // 8 已自提      9  只安装(门店提货)  10 只安装(顾客已提)
-     
+                                    // 20   换货
   private int deliverytype ;      //   1 表示是一个人既送货又安装   2  表示送货安装不是一个人
   
   private int sendId;          // 送货员  

@@ -405,7 +405,7 @@ function orderPrint(id,statues){
      %>
      <option value="" ></option> 
      
-     <option value="2" >送货+安装 </option>  
+     <option value="2" >送货+安装 </option>   
      <option value="1" >只送货 </option>
      
       </select>  

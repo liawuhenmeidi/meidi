@@ -18,7 +18,7 @@ public class StringUtill {
 	protected static Log logger = LogFactory.getLog(StringUtill.class);
     public static boolean isNull(String str){
     	boolean flag = false ;
-    	if("".equals(str) || "null".equals(str) || null == str || "undefined".equals(str)){
+    	if("".equals(str) || "null".equals(str) || null == str || "undefined".equals(str) || "NULL".equals(str)){
     		flag = true ;
     	}
     	return flag ;

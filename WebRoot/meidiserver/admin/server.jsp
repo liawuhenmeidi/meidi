@@ -34,7 +34,7 @@ if("peidan".equals(method)){
 	String oid = request.getParameter("oid");
 	String statues = request.getParameter("statues");
 	String uid = request.getParameter("uid");
-	if(StringUtill.isNull(uid)){
+	if(StringUtill.isNull(uid)){ 
 		uid = "-1";    
 	}     
 	System.out.println("uid"+uid); 

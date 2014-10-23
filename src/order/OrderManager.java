@@ -232,8 +232,8 @@ logger.info(pstmt);
 			    listsql.addAll(lists);   
 			}else if("tuihuo".equals(method)){     
 			    sql = "update mdorder set returnstatues = "+statues+" , returntime = '"+time+"'  where id in " + ids;
-			   // List<String> lists = InventoryBranchManager.chage(user, method, statues, id);
-			    //listsql.addAll(lists);   
+			    List<String> lists = InventoryBranchManager.chage(user, method, statues, id);
+			    listsql.addAll(lists);   
 
 			} else if("print".equals(method)){ //  
 				sql = "update mdorder set printSatues = "+statues+" where id in " + ids;
@@ -778,8 +778,10 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (8)  "+ str + " order by id desc "; 
 				   } 
 			   }else if(flag && Group.tuihuo == type){
-				   if(Order.tuihuo == statues){  // 
-					   sql = "select * from  mdorder where  (returnid = "+user.getId() + " )   order by id  desc";
+				   if(Order.unquery == statues){  // 
+					   sql = "select * from  mdorder where  (returnid = "+user.getId() + " ) and returnstatues = 0    order by id  desc";
+				   }else {
+					   sql = "select * from  mdorder where  (returnid = "+user.getId() + " ) and returnstatues = 2    order by id  desc";
 				   }
 			   }else if(flag && Group.dealSend == type){
 				   if(Order.orderDispatching == statues){     

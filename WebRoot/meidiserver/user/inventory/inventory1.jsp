@@ -125,6 +125,7 @@ function pandian(type,branchid){
  
  
 function add(){   
+	 var canpandian = false ;
 	 
 	 $("#table tr").remove();    
 

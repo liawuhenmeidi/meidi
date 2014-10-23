@@ -197,27 +197,47 @@ var mapdevity = <%=mapdevitystr%>;
 	        			 strtype = usermapstr[str.sendUser].branchName+"派工给"+usermapstr[str.receiveuser].branchName;
 	        		 }else if(type == 20){
 	        			 strtype = usermapstr[str.receiveuser].branchName+"释放"; 
-	        		 }else if(type == 11){
+	        		 }else if(type == 11){ 
 	        			 strtype =usermapstr[str.sendUser].username+"派工给"+usermapstr[str.receiveuser].username;
 	        		 }else if(type == 6){   
-	        			 strtype = usermapstr[str.receiveuser].username+"释放给"+usermapstr[str.sendUser].username;
+	        			 strtype = usermapstr[str.receiveuser].username+"释放给"+usermapstr[str.sendUser].branchName;
 	        		 }else if(type == 7){    
-	        			 strtype = usermapstr[str.receiveuser].username+"拉回给"+usermapstr[str.sendUser].username;
+	        			 strtype = "退货员"+usermapstr[str.receiveuser].username+"拉回给"+usermapstr[str.sendUser].branchName;
 	        		 } else if(type == 8){    
-	        			 strtype = usermapstr[str.sendUser].branchName+"同意"+branch+"退货";
-	        		 }     
-	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="inventory('+str.inventoryid+','+type+')">' +  
-	        		     ' <td>'+str.inventoryString+'</td> ' +
-	        		     ' <td>'+str.time+'</td> ' +   
-	        		     ' <td>'+str.type+'</td> ' +  
-	        		     ' <td>'+mapdevity[str.devidety]+'</td> ' + 
-	        		     ' <td>'+strtype+'</td> ' +  
-	        		     ' <td>'+str.allotPapercount+'</td> ' +
-	        		     ' <td>'+papercount+'</td> ' +   
-	        		     ' <td>'+str.allotRealcount+'</td> ' +
-	        		    
-	        		     ' <td>'+realcount+'</td>' + 
-	        		     ' </tr>'; 
+	        			 strtype = usermapstr[str.sendUser].branchName+"同意"+usermapstr[str.receiveuser].branchName+"退货";
+	        		 } else if(type == 9 ) {
+	        			 strtype = "退货员"+usermapstr[str.receiveuser].username+"释放给"+usermapstr[str.sendUser].branchName;
+	        		 }else if(type == 12){
+	        			 strtype = "退货员"+usermapstr[str.receiveuser].username+"拉回次品给"+usermapstr[str.sendUser].branchName;
+	        		 } 
+	        		 
+	        		 if(type == 10){
+	        			 addstr += '<tr class="asc"> '+
+	        			 ' <td>'+usermapstr[str.sendUser].branchName+'已盘点 </td> ' + 
+	        			 ' <td>'+str.time+'</td> ' +
+	        			 ' <td>'+str.type+'</td> ' +  
+	        			 ' <td> </td> ' + 
+	        			 ' <td> </td> ' + 
+	        			 ' <td> </td> ' + 
+	        			 ' <td>'+papercount+'</td> ' +   
+	        			 ' <td> </td> ' + 
+	        			 ' <td>'+realcount+'</td>' + 
+	        			 ' </tr>'; 
+	        			 
+	        		 }else {
+		        		 addstr += '<tr id="record'+row+'" class="asc" onclick="inventory('+str.inventoryid+','+type+')">' +  
+		        		     ' <td>'+str.inventoryString+'</td> ' +
+		        		     ' <td>'+str.time+'</td> ' +   
+		        		     ' <td>'+str.type+'</td> ' +  
+		        		     ' <td>'+mapdevity[str.devidety]+'</td> ' + 
+		        		     ' <td>'+strtype+'</td> ' +  
+		        		     ' <td>'+str.allotPapercount+'</td> ' +
+		        		     ' <td>'+papercount+'</td> ' +   
+		        		     ' <td>'+str.allotRealcount+'</td> ' +
+		        		    
+		        		     ' <td>'+realcount+'</td>' + 
+		        		     ' </tr>'; 
+	        		 }
 	        	 }
 	        		     
 	        	 addstr += '</table> </div>' ;     

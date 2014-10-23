@@ -15,7 +15,10 @@ HashMap<Integer,User> usermap = UserManager.getMap();
 String dealsendName = order.getDealsendId()==0?"":usermap.get(order.getDealsendId()).getUsername();
 if((Order.deliveryStatuesTuihuo+"").equals(type)){
 	message = "退货单"; 
-	dealsendName = usermap.get(Integer.valueOf(uid)).getUsername();
+	if(usermap.get(Integer.valueOf(uid)) != null){
+		dealsendName = usermap.get(Integer.valueOf(uid)).getUsername();
+	}
+	
 }else if((Order.dingma+"").equals(type)){
 	message = "调账单";  
 	flagdiagma = true ; 
@@ -33,6 +36,10 @@ if((9+"").equals(deliveryStatues)){
 		message = "普通销售单";
 	}
 	  
+}else {
+	if(order.getOderStatus().equals(20+"")){
+		message = "换货单";
+	}
 }
    
 int iddd = 0;

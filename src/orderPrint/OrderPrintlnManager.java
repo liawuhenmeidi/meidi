@@ -71,35 +71,26 @@ logger.info(pstmt);
 						OrderPrintlnManager.delete(oid, statues);       
 						//OrderManager.updateShifang(oid,uid,OrderPrintln.releasedispatch); 
 					}else  if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.huanhuo){
-						OrderPrintln  or = new OrderPrintln(); 
-						or.setOrderid(Integer.valueOf(oid));
-					    or.setMessage("文员申请退货");  
-						or.setStatues(OrderPrintln.comit);
-						or.setType(OrderPrintln.releasedispatch);     
-						or.setpGroupId(o.getpGroupId());  
-						OrderPrintlnManager.save(or); 
-						
-						OrderPrintln  or1 = new OrderPrintln(); 
-						or1.setOrderid(Integer.valueOf(oid));
-					    or1.setMessage(o.getMessage());  
-						or1.setStatues(0); 
-						or1.setType(OrderPrintln.returns);     
-						or1.setpGroupId(o.getpGroupId());  
-						OrderPrintlnManager.save(or1); 
-						
+
 						Order oldOrder = OrderManager.getOrderID(user, oid);
 						 
 						Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
 						Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
-						
 					    List<OrderProduct> listp = OrPMap.get(oid);
+					    for(int i=0;i<listp.size();i++){
+					    	OrderProduct or = listp.get(i);
+					    	if(or.getStatues() == 0){
+					    		or.setSalestatues(1); 
+					    	}
+					    }
+					    
 					    List<Gift> listg = gMap.get(Integer.valueOf(oid)); 
 						Order order = new Order();
 						order.setId(0);
 						order.setSaleTime(oldOrder.getSaleTime());
 				        order.setOdate(oldOrder.getOdate());
 				        order.setPos(oldOrder.getPos());
-				        logger.info(oldOrder.getSaleID());
+				     
 				        order.setSaleID(oldOrder.getSaleID()); 
 				        order.setBranch(oldOrder.getBranch());
 				        order.setSailId(oldOrder.getSailId());
@@ -108,14 +99,13 @@ logger.info(pstmt);
 				     	order.setPhone1(oldOrder.getPhone1());
 				     	order.setLocate(oldOrder.getLocate());
 				        order.setLocateDetail(oldOrder.getLocateDetail()); 
-				        order.setRemark(oldOrder.getRemark());
-				        order.setOderStatus(oldOrder.getOderStatus());
+				        order.setRemark(oldOrder.getRemark()+"换货单，务必拉回残机");
+				        order.setOderStatus(20+"");
 						order.setOrderproduct(listp);
-						order.setOrdergift(listg); 
+						order.setOrdergift(listg);  
 						order.setSubmitTime(oldOrder.getSubmitTime());
-
 						order.setPrintlnid(TimeUtill.getdatesimple());  
-						order.setDeliveryStatues(Integer.valueOf(oldOrder.getOderStatus())); 
+						order.setDeliveryStatues(1);  
 						order.setPhoneRemark(oldOrder.getPhoneRemark()); 
 						order.setPosremark(oldOrder.getPosremark());
 						order.setReckedremark(oldOrder.getReckedremark());
