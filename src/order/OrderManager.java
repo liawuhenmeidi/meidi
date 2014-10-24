@@ -21,12 +21,8 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import branch.Branch;
-import branch.BranchManager;
-
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
-import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
  
 import database.DB;
@@ -122,7 +118,7 @@ logger.info(pstmt);
 		   if(o.getOderStatus().equals(20+"")){
 			   str = "换货单";
 		   }else {
-			   str = "未发货";
+			   str = "需派送";
 		   }
           }else if(1 == statues){
         	  str = "已送货"+remark;
@@ -250,6 +246,8 @@ logger.info(pstmt);
 					Order order = OrderManager.getOrderID(user, Integer.valueOf(id));
 				    if((2 == statues || 1 == statues ) && order.getOderStatus().equals(20+"")){
 				    	flags = true ;
+				    	String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl();
+				    	listsql.add(sql1);
 				    }
 				}
 				
@@ -656,50 +654,27 @@ public static void updateSendstat(int statues,int sid, int oid) {
 	     sqls.addAll(sqlp);
 	     sqls.addAll(sqlg);
 	     
+	     String printlnid = "";
+	     if(order.getOderStatus().equals(20+"")){ 
+	    	 String sql1 = "insert into  mdorderupdateprint (id, message ,statues , orderid,mdtype ,pGroupId)" +
+                     "  values ( null, '换货申请', 0,"+order.getImagerUrl()+","+OrderPrintln.huanhuo+","+user.getUsertype()+")";
+	    	 
+	    	 sqls.add(sql1);
+	    	 
+	    	 printlnid = "H"+order.getPrintlnid();
+	     }else {
+	    	 printlnid = order.getPrintlnid()+"-"+daymarkk;
+	     }
 	    String sql = "insert into  mdorder ( id ,andate , saledate ,pos, username, locates" +
 				", locateDetail, saleID , printSatues ,oderStatus,sailId,checked,phone1,phone2,remark,"+
-	    		"deliveryStatues,orderbranch,sendId,statues1,statues2,statues3,dealSendid,submittime,printlnid,dayremark,dayID,phoneRemark,sailIdremark,checkedremark,posRemark) values "+  
+	    		"deliveryStatues,orderbranch,sendId,statues1,statues2,statues3,dealSendid,submittime,printlnid,dayremark,dayID,phoneRemark,sailIdremark,checkedremark,posRemark,imagerUrl) values "+  
 				"( "+maxid+", '"+order.getOdate()+"', '"+order.getSaleTime()+"', '"+order.getPos()+"', '"+order.getUsername()+"', '" 
 	    		+order.getLocate()+"', '"+order.getLocateDetail()+"',"+order.getSaleID()+", "+order.getPrintSatues()    
-	    		+", "+order.getOderStatus()+", '"+order.getSailId()+"', '"+order.getCheck()+"', '"+order.getPhone1()+"','"+order.getPhone2()+"','"+order.getRemark()+"',"+order.getDeliveryStatues()+",'"+order.getBranch()+"',0,0,0,0,"+order.getDealsendId()+",'"+order.getSubmitTime()+"','"+order.getPrintlnid()+"-"+daymarkk+"',"+daymark+","+dayID+","+order.getPhoneRemark()+","+order.getSailidrecked()+","+order.getReckedremark()+","+order.getPosremark()+")";   
+	    		+", "+order.getOderStatus()+", '"+order.getSailId()+"', '"+order.getCheck()+"', '"+order.getPhone1()+"','"+order.getPhone2()+"','"+order.getRemark()+"',"+order.getDeliveryStatues()+",'"+order.getBranch()+"',0,0,0,0,"+order.getDealsendId()+",'"+order.getSubmitTime()+"','"+printlnid+"',"+daymark+","+dayID+","+order.getPhoneRemark()+","+order.getSailidrecked()+","+order.getReckedremark()+","+order.getPosremark()+","+order.getImagerUrl()+")";   
 	    sqls.add(sql);
 	    logger.info(sql);       
-	    Connection conn = DB.getConn();   
-		  
-	    Statement sm = null;  
-        try {    
-            // 事务开始  
-            logger.info("事物处理开始") ;
-            conn.setAutoCommit(false);   // 设置连接不自动提交，即用该连接进行的操作都不更新到数据库  
-            sm = conn.createStatement(); // 创建Statement对象  
-             Object[] strsqls = sqls.toArray();
-             logger.info(strsqls.toString());
-            //依次执行传入的SQL语句      
-            for (int i = 0; i < strsqls.length; i++) {  
-                sm.execute((String)strsqls[i]);// 执行添加事物的语句  
-            }  
-            logger.info("提交事务处理！");  
-               
-            conn.commit();   // 提交给数据库处理   
-               
-            logger.info("事务处理结束！");  
-            // 事务结束   
-             flag = true ;   
-        //捕获执行SQL语句组中的异常      
-        } catch (SQLException e) {  
-            try {   
-                logger.info("事务执行失败，进行回滚！\n",e);  
-                conn.rollback(); // 若前面某条语句出现异常时，进行回滚，取消前面执行的所有操作  
-            } catch (SQLException e1) {  
-                logger.info(e);
-            }  
-        } finally {   
-            try { 
-				sm.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}  
-        }  
+	  
+	    flag  = DBUtill.sava(sqls);
         
 		return flag ; 
 
@@ -1243,60 +1218,32 @@ logger.info(sql);
     
    
    
-   public static boolean delete(int id) {
+   public static boolean delete(User user ,int oid) {
 	   
 	    boolean flag = false;
+	     
+	    Order order = OrderManager.getOrderID(user, oid);
 	    List<String> listsqls = new ArrayList<String>();
-		
-		Connection conn = DB.getConn();
  
-		String sqlp = OrderProductManager.delete(id);
-        String sqlg = GiftManager.delete(id) ;  
-        String sqlop =  OrderPrintlnManager.deleteByoid(id);
+		String sqlp = OrderProductManager.delete(order.getId());
+        String sqlg = GiftManager.delete(order.getId()) ;  
+        String sqlop =  OrderPrintlnManager.deleteByoid(order.getId());
          
-        String sql = "delete from mdorder where id = " + id;
+        String sql = "delete from mdorder where id = " + order.getId();
         listsqls.add(sqlp); 
         listsqls.add(sqlg); 
         listsqls.add(sqlop);
         listsqls.add(sql); 
 		 
+        if(order.getOderStatus().equals(20+"")){
+        	String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl();
+            listsqls.add(sql1);
+        }
 		if (listsqls.size() == 0) {  
             return false;   
-        }      
-        Statement sm = null;  
-        try {  
-            // 事务开始  
-           logger.info("事物处理开始") ;
-            conn.setAutoCommit(false);   // 设置连接不自动提交，即用该连接进行的操作都不更新到数据库  
-            sm = conn.createStatement(); // 创建Statement对象  
-            
-             Object[] sqls = listsqls.toArray() ;
-            //依次执行传入的SQL语句  
-            for (int i = 0; i < sqls.length; i++) {  
-                sm.execute((String)sqls[i]);// 执行添加事物的语句  
-            }   
-            logger.info("提交事务处理！");  
-               
-            conn.commit();   // 提交给数据库处理  
-               
-            logger.info("事务处理结束！");  
-            // 事务结束  
-             flag = true ;   
-        //捕获执行SQL语句组中的异常      
-        } catch (SQLException e) {  
-            try {   
-                logger.info("事务执行失败，进行回滚！\n");  
-                conn.rollback(); // 若前面某条语句出现异常时，进行回滚，取消前面执行的所有操作  
-            } catch (SQLException e1) {  
-                e1.printStackTrace();  
-            }  
-        } finally {  
-            try {
-				sm.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}  
-        }  
+        }        
+       
+        flag = DBUtill.sava(listsqls);
 		return flag ;
 	}
      
@@ -1402,7 +1349,7 @@ logger.info(sql);
 		    p.setDealSendTime(rs.getString("dealsendTime"));
 		    p.setWenyuancallback(rs.getInt("wenyuancallback"));
 		    p.setOderStatus(rs.getString("oderStatus"));
-		   // p.setImagerUrl(rs.getString("imagerUrl")); 
+		    p.setImagerUrl(rs.getString("imagerUrl")); 
 		} catch (SQLException e) {  
 			e.printStackTrace();
 		} 

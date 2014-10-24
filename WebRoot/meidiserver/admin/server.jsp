@@ -21,11 +21,11 @@ if("peidan".equals(method)){
 	String[] list = id.split(",");
 	int count = 0 ; 
 	for(int i=0;i<list.length;i++){ 
-		boolean flag = OrderManager.delete(Integer.valueOf(list[i]));
+		boolean flag = OrderManager.delete(user,Integer.valueOf(list[i]));
 	    if(flag){
 	    	count ++ ;
 	    }
-	}
+	} 
 	response.getWriter().write(""+count);  
 	response.getWriter().flush();   
 	response.getWriter().close();    

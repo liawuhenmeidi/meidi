@@ -64,7 +64,7 @@ if(!StringUtill.isNull(id)){
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-  
+   
 <script type="text/javascript">
 
    var messageflag = false;  // 是否需要填写顾客信息
@@ -201,7 +201,7 @@ if(!StringUtill.isNull(id)){
     	if(row%2 == 0){
     		yellow = "#fff"; 
     	}
-    	 
+    	 rows.push(row);
     	var type = listo.typeName == null || listo.typeName == undefined ? "":listo.typeName;
     	var count = listo.count == null || listo.count == undefined ? 1:listo.count;
     	var statues = listo.salestatues == null || listo.salestatues == undefined ? -1:listo.salestatues;
@@ -255,10 +255,10 @@ if(!StringUtill.isNull(id)){
                     
             $("#productDIV").append(str);
           //  $("productsta"+row).attr();
-           $("select[id='productsta'"+row+"] option[id='"+statues+"']").attr("selected","selected");
+            $("select[id='productsta'"+row+"] option[id='"+statues+"']").attr("selected","selected");
             var cid = $("#ordercategory"+row).val();
             initAndate("#andate"+row,cid);
-            row++; 
+            row++;
             } 
   
   function add(str){
@@ -356,6 +356,12 @@ if(!StringUtill.isNull(id)){
 			 return false;
 		 }
 	 }
+	 
+	 if(rows.length < 1){
+		 alert("没有产品需要换货");
+		 return false ;
+	 }
+	 
 	 $('input[name="permission"]:checked').each(function(){ 
 		    alert($(this).val());  
 	 });

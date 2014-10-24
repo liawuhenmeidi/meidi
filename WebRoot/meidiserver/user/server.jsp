@@ -76,17 +76,17 @@ if("songhuo".equals(method)){
 	boolean b = OrderManager.getName(method,name,branch);     
 	response.getWriter().write(""+b);
 	response.getWriter().flush(); 
-	response.getWriter().close();
+	response.getWriter().close(); 
 }else if("tuihuo".equals(method)){   
 	String oid = request.getParameter("oid"); 
-	OrderManager.delete(Integer.valueOf(oid));
+	OrderManager.delete(user,Integer.valueOf(oid));
 	response.sendRedirect("serch_list.jsp");  
-}else if("tuihuoed".equals(method)){   
+}else if("tuihuoed".equals(method)){    
 	String oid = request.getParameter("oid"); 
 	OrderManager.deleteed(Integer.valueOf(oid));  
 	response.sendRedirect("serch_list.jsp");  
 }else if("quit".equals(method)){   
-	session.invalidate(); 
+	session.invalidate();  
 	response.sendRedirect("dengluN.jsp");
 	return ;
 }

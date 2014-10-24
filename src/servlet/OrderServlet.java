@@ -412,12 +412,14 @@ logger.info(message);
 
 					order.setRemark(remark+"换货单，务必拉回残机。");
 				    order.setOderStatus(20+"");
-					order.setOrderproduct(list);
+					order.setOrderproduct(listp);
 					
 					order.setSubmitTime(oldOrder.getSubmitTime());
-					order.setPrintlnid(TimeUtill.getdatesimple());  
+					order.setPrintlnid(oldOrder.getPrintlnid());  
 					order.setDeliveryStatues(0);  
-	
+	                
+					order.setImagerUrl(oldOrder.getId()+"");
+					
 					boolean flag = OrderManager.save(user, order);  
 					tokenGen.resetToken(request);  
 					if(flag){     

@@ -889,7 +889,7 @@ String[] branlist =  branchmessage.split("_");
 <table style="width:100% "> 
  
   <tr>    
-    <td width="25%" class="center">发票日期<span style="color:red">*</span></td>
+    <td width="25%" class="center">开票日期<span style="color:red">*</span></td>
     <td width="50%" class=""><input class="date" type="text" name="saledate" placeholder="必填"  id = "serviceDate" onclick="new Calendar().show(this);" readonly="readonly" style="width:90% "></input>   </td>
     <td width="25%" class="center"></td>
   </tr>

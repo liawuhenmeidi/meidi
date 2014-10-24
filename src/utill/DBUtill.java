@@ -65,6 +65,54 @@ public class DBUtill {
       return flag ;
   }
   
+  
+  public static int savaReturnInt(List<String> sqls){ 
+	  int count = 0 ; 
+	    Connection conn = DB.getConn();    
+	    Statement sm = null;  
+      try {     
+          // 事务开始   
+          logger.info("事物处理开始") ;
+          conn.setAutoCommit(false);   // 设置连接不自动提交，即用该连接进行的操作都不更新到数据库  
+          sm = conn.createStatement(); // 创建Statement对象  
+           Object[] strsqls = sqls.toArray();
+           
+          //依次执行传入的SQL语句      
+          for (int i = 0; i < strsqls.length; i++) {
+        	  String sql = (String)strsqls[i];
+        	  if(!StringUtill.isNull(sql)){   
+        		  logger.info(sql);
+        		  sm.execute(sql);// 执行添加事物的语句  
+        		  count ++ ;
+        	  } 
+             
+          }  
+          logger.info("提交事务处理！");  
+             
+          conn.commit();   // 提交给数据库处理   
+             
+          logger.info("事务处理结束！");  
+          // 事务结束     
+      //捕获执行SQL语句组中的异常      
+      } catch (SQLException e) {  
+          try {   
+              logger.info("事务执行失败，进行回滚！\n",e);  
+              conn.rollback(); // 若前面某条语句出现异常时，进行回滚，取消前面执行的所有操作  
+          } catch (SQLException e1) {  
+              logger.info(e);
+          }  
+      } finally {   
+          try { 
+				sm.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}  
+      }  
+      
+      return count ;
+  }
+  
+  
   public static boolean sava(String sql){ 
 	   Connection conn = DB.getConn();  
 	   
