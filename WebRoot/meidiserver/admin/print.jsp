@@ -145,7 +145,7 @@ Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(us
       <td width="9%" align="center" valign="middle" id="d">电话</td>
       <td width="13%" align="center" valign="middle" id="d">&nbsp;<%=order.getPhone1() %></td> 
       <td width="9%" align="center" valign="middle" id="d">电话2</td>
-      <td width="13%" align="center" valign="middle" id="d">&nbsp;<%=(order.getPhone2() == null || order.getPhone2() == "")?"":order.getPhone2()  %></td>
+      <td width="13%" align="center" valign="middle" id="d">&nbsp;<%=(order.getPhone2() == null || order.getPhone2() == "" || order.getPhone2() == "null" )?"":order.getPhone2()  %></td>
       <td width="13%" align="center" valign="middle" id="d">预约日期</td>
       <td width="15%" align="center" valign="middle" id="d"><span style="font-size:20px;">&nbsp;<%=order.getOdate() %></span></td>
     </tr>

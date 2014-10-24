@@ -449,7 +449,8 @@ if("peidan".equals(method)){
 		statues = OrderManager.updateMessage(phone1,andate,locations,POS,sailId,check,oid,remark,saledate,diqu) ; 
 	    if(!StringUtill.isNull(saleType) && !StringUtill.isNull(categoryId)){
 	    	pstatues = OrderProductManager.updateOrderStatues(user,categoryId,saleType,count,oid);
-	    	OrderProductManager.resetOrPMap();   
+	    	System.out.println(123);
+	    	OrderProductManager.resetOrPMap(); 
 	    } 
 	}else {    
 		statues = OrderManager.updateMessage(phone1,andate,locations,oid,remark);  

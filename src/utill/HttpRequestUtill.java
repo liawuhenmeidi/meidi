@@ -25,11 +25,17 @@ public class HttpRequestUtill {
     				}else if(flag){ 
     					sear += "now()";
     				}      
-    			}else if("sendtype".equals(str) || "saletype".equals(str)){
+    			}else if("sendtype".equals(str)){
     				String strr = request.getParameter(str); 
     				if(strr != "" && strr != null){   
     					//sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-    					sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
+    					sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%' and statues = 0)";
+    				}  // giftName
+    			}else if("saletype".equals(str)){
+    				String strr = request.getParameter(str);  
+    				if(strr != "" && strr != null){   
+    					//sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
+    					sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%' and statues = 1)";
     				}  // giftName
     			}else if("categoryname".equals(str)){
     				String strr = request.getParameter(str); 
@@ -50,7 +56,7 @@ public class HttpRequestUtill {
     			}else if("orderbranch".equals(str)){
     				String strr = request.getParameter(str);
     				sear += " and " + str + " in (select id from mdbranch where bname like '%" + strr +"%')";  
-    			}else if("deliveryStatues".equals(str)){
+    			}else if("deliveryStatues".equals(str) || "oderStatus".equals(str)){
     				String strr = request.getParameter(str);
     				if(strr.equals(-1+"")){
     					strr = "3,4,5,11,12,13";

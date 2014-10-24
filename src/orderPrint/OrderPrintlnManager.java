@@ -99,7 +99,7 @@ logger.info(pstmt);
 				     	order.setPhone1(oldOrder.getPhone1());
 				     	order.setLocate(oldOrder.getLocate());
 				        order.setLocateDetail(oldOrder.getLocateDetail()); 
-				        order.setRemark(oldOrder.getRemark()+"换货单，务必拉回残机");
+				        order.setRemark(oldOrder.getRemark()+"换货单，务必拉回残机。");
 				        order.setOderStatus(20+"");
 						order.setOrderproduct(listp);
 						order.setOrdergift(listg);  

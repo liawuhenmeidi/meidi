@@ -1,6 +1,9 @@
 <%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="searchdynamic.jsp"%> 
 <%   
+if(type.equals(Order.serach+"")){
+	type = Order.unquery+"";
+}
 
 List<Order> list = OrderManager.getOrderlist(user,Group.tuihuo,Integer.valueOf(type),-1,0,sort,sear);
 Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
@@ -34,7 +37,7 @@ function detail(src){
 }
  
 function search(type){
-	window.location.href="songhuo.jsp?type="+type;
+	window.location.href="tuihuo.jsp?type="+type;
 }
 </script>
 </head>
@@ -47,7 +50,7 @@ function search(type){
 
 <!--  头 单种类  -->
 <div class="s_main_tit"><span class="qiangdan"><a href="chaxun_songhuo.jsp">我要查询</a></span><span class="qiangdan"><a href="welcom.jsp">返回</a></span><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span></div>
- <div class="s_main_tit"><span style="cursor:hand" id="<%=Order.unquery%>" onclick="search('<%=Order.unquery%>')">待处理</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.unquery%>" onclick="search('<%=Order.query%>')">已处理</span>&nbsp;&nbsp; 
+ <div class="s_main_tit"><span style="cursor:hand" id="<%=Order.unquery%>" onclick="search('<%=Order.unquery%>')">待处理</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.query%>" onclick="search('<%=Order.query%>')">已处理</span>&nbsp;&nbsp;</div> 
 <!--  订单详情  -->
 <div class="s_main_box">
 <table width="100%" class="s_main_table">

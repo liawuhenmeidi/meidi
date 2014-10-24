@@ -113,7 +113,10 @@ logger.info(pstmt);
 	public static String getDeliveryStatues(Order o){
 		int statues = o.getDeliveryStatues();
 		String str = "";
-	
+		String remark = "";
+		if(o.getOderStatus().equals(20+"")){
+			remark = "换货单";
+		   }
 		// 0 表示未送货  1 表示正在送  2 送货成功
 		 if(0 == statues){
 		   if(o.getOderStatus().equals(20+"")){
@@ -121,16 +124,12 @@ logger.info(pstmt);
 		   }else {
 			   str = "未发货";
 		   }
-			
-		
           }else if(1 == statues){
-
-		
-        	  str = "已送货";
+        	  str = "已送货"+remark;
 		
           }else if(2 == statues){
-		
-        	  str = "已安装";
+		      
+        	  str = "已安装"+remark;
 		
           }else if(3 == statues || 4 == statues || 5 == statues || 11 == statues || 13 == statues || 12 == statues){
         	  str = "已退货";
@@ -149,6 +148,29 @@ logger.info(pstmt);
         		str = "只安装(顾客已提) ";
         		 
             }
+        		
+		
+		
+		return str ;
+		
+		
+	}
+	
+	public static String getOrderStatues(Order o){
+		int statues = Integer.valueOf(o.getOderStatus());
+		String str = "";
+		// 0 表示未送货  1 表示正在送  2 送货成功
+		 if(0 == statues){
+		    str = "需派送";
+          }else if( 8 == statues){ 
+        	  str = "已自提 ";
+          }else if(9 == statues){
+        	  str = "只安装(门店提货)";
+          }else if(10 == statues){
+        		str = "只安装(顾客已提) ";
+          }else if(20 == statues){
+        	   str = "换货单";
+          }
         		
 		
 		

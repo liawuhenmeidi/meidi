@@ -178,6 +178,7 @@ function change(str1,str2,type){
     
     <td class="s_list_m">
     <%    OrderPrintln orp = OrderPrintlnManager.getOrderStatues(user, or.getId(),opstatues); 
+          boolean query = false ;
 			 if(flag){
 				 if(orp != null ){
 					  int sta = orp.getStatues();
@@ -190,13 +191,17 @@ function change(str1,str2,type){
 			        	  sm = "您的申请被同意";
 			          }else if(4== sta){
 			        	  sm = "您的申请被拒绝";
+			        	  query = true ;
+			        	  %>
+			        	  <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=opstatues%>')"></input>
+			        	  <%
 			          }  
 	      %> 
 	     <%=sm %>
-	      <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=opstatues%>')"></input>
+	     
 	     <%
 	          }else {
-	 
+	        	  query = true ;
 	     %>
 	              无
 	              <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=opstatues%>')"></input>
@@ -212,7 +217,7 @@ function change(str1,str2,type){
    
     <% 
    
-    if(or.getReturnstatuse() == 0 && or.getReturnid() == user.getId()){
+    if(or.getReturnstatuse() == 0 && or.getReturnid() == user.getId() && query){
 
     %>
     <tr>

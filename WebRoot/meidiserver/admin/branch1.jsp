@@ -101,7 +101,7 @@ function seletall(all){
  
    <div class="weizhi_head">现在位置：<%=branch.getName()%>
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>       
+    <a href="branch.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
    </div>     
      <div class="main_r_tianjia">
       <%if(Integer.valueOf(id) != 2){  

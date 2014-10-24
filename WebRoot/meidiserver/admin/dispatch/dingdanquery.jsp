@@ -362,6 +362,7 @@ function orderPrint(id,statues){
      <%
      int statues = OrderManager.getShifangStatues(o);
      int shifang = -1 ;  
+     boolean query = false ;
 	if(statues != -1){
 		
 		if(opmap.get(statues) != null){
@@ -369,6 +370,7 @@ function orderPrint(id,statues){
 			if(orp != null){ 
 				shifang = orp.getStatues();
 				if(shifang == 4 ){
+					query = true ;
 				%>
 				   您的申请被拒绝
 				 <input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>	
@@ -380,10 +382,11 @@ function orderPrint(id,statues){
 				}
 			} 
 		}else {
+		     	query = true ;
 			%>
 			
 		<input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>	
-			<%
+			 <%
 		}
 	}
      %> 
@@ -425,7 +428,7 @@ function orderPrint(id,statues){
     </td>
 		 <% 
    
-    if(o.getReturnstatuse() == 0 && o.getReturnid() != 0 ){
+    if(o.getReturnstatuse() == 0 && o.getReturnid() != 0 && query){
 
     %>
     <td class="s_list_m"> 

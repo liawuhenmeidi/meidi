@@ -298,8 +298,8 @@ logger.info(message);
 					
 					Order oldorder = OrderManager.getOrderID(user,order.getId());
 					   
-					if(oldorder == null){ 
-			           order.setDeliveryStatues(devedity); 
+					if(oldorder == null){  
+			           order.setDeliveryStatues(0); 
 			           order.setOderStatus(devedity+"");
 					}
 					

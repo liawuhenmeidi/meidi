@@ -143,13 +143,7 @@ function changes(){
    
  <!--       -->     
  
-   <div class="weizhi_head">现在位置：<%=branch.getName()%></div>     
-     <div class="main_r_tianjia">
-   <ul>                                                                                                     
-     <li><a href="branch1.jsp?id=<%=pid %>">返回</a></li>
-     </ul>
-     
-   </div>
+   <div class="weizhi_head">现在位置：<%=branch.getName()%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="branch1.jsp?id=<%=pid %>"><font style="color:blue;font-size:20px;" >返回</font></a></div>     
         
      <div> 
       <table width="60%"  cellspacing="1" id="table" >

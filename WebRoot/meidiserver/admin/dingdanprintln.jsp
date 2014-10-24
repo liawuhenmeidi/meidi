@@ -325,6 +325,7 @@ function orderPrint(id,statues,type,deliveryStatues){
             <td align="center">送货地区</td>
             
             <td align="center">送货地址</td>
+             <td align="center">上报状态</td>
             <td align="center">送货状态</td>
 			<td align="center">打印状态</td>
 			<td align="center">送货人员</td>
@@ -404,6 +405,9 @@ function orderPrint(id,statues,type,deliveryStatues){
 		<td align="center"><%=o.getDealSendTime() %></td>
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>
+		<td align="center">
+		<%=OrderManager.getOrderStatues(o) %>
+		</td> 
 		<td align="center">
 		<%=OrderManager.getDeliveryStatues(o) %>
 		</td> 

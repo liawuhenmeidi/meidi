@@ -44,12 +44,20 @@ function add(){
 		    	var str = "";
 		    	str +=  "<select name=\""+name+"\">"+
 		    	           "<option value=\"1\">已送货</option>"+
-		    	           "<option value=\2\">已安装</option>"+
+		    	           "<option value=\"2\">已安装</option>"+
 		    	           "<option value=\"0\">未送货</option>"+
+		    	           "<option value=\"-1\">已退货</option>"+
+		    	         "</select>" + 
+		    	         " <input type=\"hidden\"  name=\"search\" value=\""+name+"\"></input>";
+		    	$("#search").append(str);
+		    }else if("oderStatus" == name){
+		    	var str = "";
+		    	str +=  "<select name=\""+name+"\">"+
+		    	           "<option value=\"0\">需派送</option>"+
 		    	           "<option value=\"8\">已自提</option>"+
 		    	           "<option value=\"9\">只安装(门店提货)</option>"+
 		    	           "<option value=\"10\">只安装(顾客已提)</option>"+
-		    	           "<option value=\"-1\">已退货</option>"+
+		    	           "<option value=\"20\">换货单</option>"+
 		    	         "</select>" + 
 		    	         " <input type=\"hidden\"  name=\"search\" value=\""+name+"\"></input>";
 		    	$("#search").append(str);
@@ -89,7 +97,8 @@ function add(){
     <option value="sailId">OMS订单号</option> 
     <option value="checked">验证码(联保单)</option> 
     <option value="username">顾客姓名</option>  
-    <option value="phone1">顾客电话</option> 
+    <option value="phone1">顾客电话</option>
+    <option value="oderStatus">上报状态</option>  
     <option value="deliveryStatues">送货状态</option> 
     <option value="dealSendid">安装单位</option>
     <option value="sendId">送货人员</option> 
