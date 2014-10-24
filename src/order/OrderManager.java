@@ -535,7 +535,6 @@ public static void updateSendstat(int statues,int sid, int oid) {
    }
    
    public static Order getMaxOrder(){
-	    int id = 1 ;
 	    Order order = null;
 	    Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn);
@@ -546,7 +545,6 @@ public static void updateSendstat(int statues,int sid, int oid) {
 		try { 
 			while (rs.next()) {
 				order = OrderManager.gerOrderFromRs(rs);
-				logger.info(id);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

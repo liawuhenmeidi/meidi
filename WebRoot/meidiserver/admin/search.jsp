@@ -105,7 +105,7 @@ function add(){
     <option value="installid">安装人员</option> 
     <option value="locates">送货地区</option> 
     <option value="saledate">开票日期</option> 
-    <option value="andate">安装日期</option> 
+    <option value="andate">预约日期</option> 
     <option value="dealsendTime">文员配单日期</option>  
     <option value="saleID">销售员</option> 
     <option value="sendtype">送货型号</option>    
@@ -114,7 +114,6 @@ function add(){
     <option value="statues1">厂送票是否已回</option> 
     <option value="statues2">厂送票是否已消</option> 
     <option value="statues3">厂送票是否结款</option> 
-    <option value="statuesdingma">是否已调账</option>  
     <option value="deliverytype">先送货后安装</option>
     <option value="categoryname">送货名称</option>   
    

@@ -174,7 +174,7 @@ function inventory(inventory,type){
 		        		 }else if(type == 20){
 		        			 strtype = usermap.get(in.getReceiveuser()).getBranchName()+"释放"; 
 		        		 }else if(type == 11){ 
-		        			 strtype =usermap.get(in.getSendUser()).getUsername()+"派工给"+usermap.get(in.getReceiveuser()).getBranchName();
+		        			 strtype =usermap.get(in.getSendUser()).getUsername()+"派工给"+usermap.get(in.getReceiveuser()).getUsername();
 		        		 }else if(type == 6){   
 		        			 strtype = usermap.get(in.getReceiveuser()).getBranchName()+"释放给"+usermap.get(in.getSendUser()).getBranchName();
 		        		 }else if(type == 7){    

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,6 +29,7 @@ import order.OrderManager;
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
+import orderproduct.OrderProductManager;
 import product.Product;
 import product.ProductService;
 
@@ -58,13 +60,18 @@ public class OrderServlet extends HttpServlet {
 		Object object = new Object();
 		  
 		String method = request.getParameter("method");
-		System.out.println("method"+method); 
+	
 		synchronized(object){
 			if("println".equals(method)){
 				savePrintln(request,response);
 				return ; 
-			}else { 
-			  save(request,response);
+			}else if("huanhuo".equals(method)){ 
+				HuanHuo(request,response);
+			}else if("savehuanhuo".equals(method)){ 
+				saveHuanhuo(request,response);
+				// 
+			}else {
+				save(request,response);
 			}
 		}
 	}
@@ -74,7 +81,7 @@ public class OrderServlet extends HttpServlet {
 		String mm = request.getParameter("mm");
 		User user  = (User)request.getSession().getAttribute("user");
 logger.info(id); 
-        Object object = new Object(); 
+       
 		String message = request.getParameter("message");
         if(""==id || null == id){
         	id = "0";
@@ -98,7 +105,7 @@ logger.info(message);
 	  try {
 		response.sendRedirect("serch_list.jsp");
 	} catch (IOException e) {
-		// TODO Auto-generated catch block
+
 		e.printStackTrace();
 	}
 	}  
@@ -325,6 +332,119 @@ logger.info(message);
     		logger.info(e);
     	}
     }
+    
+    
+    private void saveHuanhuo(HttpServletRequest request, HttpServletResponse response){
+    	try{
+    		 
+    		TokenGen tokenGen=TokenGen.getInstance();
+    	    if (!tokenGen.isTokenValid(request)){
+    	       logger.info("这是重复提交的单据"); 
+    	    }else{ 
+	    	      //处理请求，并执行resetToken方法，将session中的token去除
+	    	      User user  = (User)request.getSession().getAttribute("user");
+	    	      
+	    	     if(UserManager.checkPermissions(user, Group.sale) ){
+			    	
+			    	
+			        String oid = request.getParameter("orderid");
+			        
+			    	Order oldOrder = OrderManager.getOrderID(user, Integer.valueOf(oid));
+			    	
+			    	Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
+			    	
+			    	List<OrderProduct> listp = new ArrayList<OrderProduct>();
+			        
+			    	
+			    	List<OrderProduct> list = OrPMap.get(Integer.valueOf(oid));
+				  
+			    	
+					String[] producs = request.getParameterValues("product");
+					
+					    // 送货状态   
+					for(int i=0;i<producs.length;i++){	
+						int opid = Integer.valueOf(producs[i]);
+						logger.info(opid);
+					    for(int j=0;j<list.size();j++){
+					    	OrderProduct or = list.get(j);
+					    	logger.info(or.getId());
+					    	if(or.getStatues() == 0 && opid == or.getId()){
+					    		or.setSalestatues(1); 
+					    		listp.add(or);
+					    	}
+					    }						
+					}
+					
+					Order order= new Order(); 
+					
+					
+					String andate = request.getParameter("andate"); //安装日期
+					
+					String username = request.getParameter("username");
+					
+					String diqu = request.getParameter("diqu");
+				
+					String phone1 = request.getParameter("phone1");
+					
+					String phone2 = request.getParameter("phone2");
+					
+					String locations = request.getParameter("locations");
+					
+					String remark = request.getParameter("remark");
+					 
+					order.setId(0);
+					
+					order.setSaleTime(oldOrder.getSaleTime());
+			        order.setOdate(andate);
+
+			        order.setPos(oldOrder.getPos());
+				     
+			        order.setSaleID(oldOrder.getSaleID()); 
+			        order.setBranch(oldOrder.getBranch());
+			        order.setSailId(oldOrder.getSailId());
+			        order.setCheck(oldOrder.getCheck());
+			        
+			     	order.setUsername(username);
+			     	order.setPhone1(phone1);
+			     	order.setPhone2(phone2);
+			     	order.setLocate(diqu);
+			        order.setLocateDetail(locations);
+
+					order.setRemark(remark+"换货单，务必拉回残机。");
+				    order.setOderStatus(20+"");
+					order.setOrderproduct(list);
+					
+					order.setSubmitTime(oldOrder.getSubmitTime());
+					order.setPrintlnid(TimeUtill.getdatesimple());  
+					order.setDeliveryStatues(0);  
+	
+					boolean flag = OrderManager.save(user, order);  
+					tokenGen.resetToken(request);  
+					if(flag){     
+						request.getSession().setAttribute("message","您的订单提交成功"); 
+					}else { 
+						request.getSession().setAttribute("message","对不起，您的订单提交失败，请您重新提交");  
+					}   
+					response.sendRedirect("../jieguo.jsp?type=order");
+		    	} 
+	       }
+    	}catch(Exception e){  
+    		e.printStackTrace();
+    		logger.info(e);
+    	}
+    }
+    
+    
+    
+    private void HuanHuo(HttpServletRequest request, HttpServletResponse response){
+    	String id = request.getParameter("id");
+    	try {
+			response.sendRedirect("huanhuo.jsp?id="+id);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+    }
+    
     
     
 	/**

@@ -3,9 +3,9 @@
 <%@ include file="searchdynamic.jsp"%>
  <%  
  
-List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.deliveryStatuesTuihuo,num,Page,sort,""); 
+List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.deliveryStatuesTuihuo,num,Page,sort,sear); 
 session.setAttribute("exportList", list); 
-count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.deliveryStatuesTuihuo,num,Page,sort,""); 
+count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.deliveryStatuesTuihuo,num,Page,sort,sear); 
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

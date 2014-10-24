@@ -153,7 +153,7 @@ $(function () {
    按 
        <select class ="" name=""  id="sort" >  
        <option value="andate asc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
-     	 <option value="andate asc">安装日期</option> 
+     	 <option value="andate asc">预约日期</option> 
      	 <option value="saledate asc">开票日期 </option>  
      	</select>
         排序 

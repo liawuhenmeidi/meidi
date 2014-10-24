@@ -451,33 +451,34 @@ if("peidan".equals(method)){
 	    	Order order = new Order();
 	    	order.setId(Integer.valueOf(oid));
 	    	String type = order.getSendType(1, "");
-	    	
-	    	if(StringUtill.isNull(type)){
-	    		
-	    		OrderProduct o = new OrderProduct();
-	    		 if(!NumbleUtill.isNumeric(saleType)){
-					   type = ProductService.gettypemap().get(saleType).getId()+"";
-				   }
-	    
-	    		    o.setCategoryId(Integer.valueOf(categoryId));
-					o.setCount(Integer.valueOf(count));
-					o.setSaleType(type);	
-					o.setStatues(1); 
-					
-					List<OrderProduct>  listop = new ArrayList<OrderProduct>();
-					listop.add(o);
-					order.setOrderproduct(listop);
-					
-					List<String> sqls = OrderProductManager.save(Integer.valueOf(oid), order);
-					DBUtill.sava(sqls);
- 
-	    	}else {
-	    		
-	    		pstatues = OrderProductManager.updateOrderStatues(user,categoryId,saleType,count,oid);
-	    	}
-	    	
-	    	OrderProductManager.resetOrPMap(); 
-	    } 
+
+		    	if(StringUtill.isNull(type)){
+		    		
+		    		OrderProduct o = new OrderProduct();
+		    		 if(!NumbleUtill.isNumeric(saleType)){
+						   type = ProductService.gettypemap().get(saleType).getId()+"";
+					   }
+		    
+		    		    o.setCategoryId(Integer.valueOf(categoryId));
+						o.setCount(Integer.valueOf(count));
+						o.setSaleType(type);	
+						o.setStatues(1); 
+						
+						List<OrderProduct>  listop = new ArrayList<OrderProduct>();
+						listop.add(o);
+						order.setOrderproduct(listop);
+						
+						List<String> sqls = OrderProductManager.save(Integer.valueOf(oid), order);
+						DBUtill.sava(sqls);
+		    	}else {
+		    		
+		    		pstatues = OrderProductManager.updateOrderStatues(user,categoryId,saleType,count,oid);
+		    	}
+	    }else {
+    		String sql = OrderProductManager.delete(Integer.valueOf(oid),1);
+    		DBUtill.sava(sql); 
+    	} 
+	    OrderProductManager.resetOrPMap(); 
 	}else {    
 		statues = OrderManager.updateMessage(phone1,andate,locations,oid,remark);  
 	} 

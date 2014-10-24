@@ -81,7 +81,13 @@ public class OrderProductManager {
 		OrderProductManager.resetOrPMap(); 
         return sql ;
 	}
-	  
+	 
+	public static String delete(int id,int statues) {
+		String sql = "delete from mdorderproduct where orderid = " + id + " and statues = 1";
+		OrderProductManager.resetOrPMap(); 
+        return sql ;
+	}
+	
 	   public static List<String> save(int id, Order orderr) { 
                
 		   List<OrderProduct> orders = orderr.getOrderproduct();
@@ -205,6 +211,7 @@ public class OrderProductManager {
 				p = new OrderProduct();
 				String saletype = rs.getString("saletype");
 				String sendtype = rs.getString("sendtype");
+				p.setId(rs.getInt("id"));
 				p.setCategoryId(rs.getInt("categoryID"));
 				p.setCount(rs.getInt("count"));
 				p.setSaleType(saletype);

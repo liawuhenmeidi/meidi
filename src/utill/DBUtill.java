@@ -7,8 +7,12 @@ import java.sql.Statement;
 import java.util.List;
 import java.sql.PreparedStatement;
  
+import orderproduct.OrderProductManager;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import product.ProductService;
  
 import database.DB;
 
@@ -60,6 +64,25 @@ public class DBUtill {
       
       return flag ;
   }
+  
+  public static boolean sava(String sql){ 
+	   Connection conn = DB.getConn();  
+	   
+		    
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		try { 
+			logger.info(sql);
+			pstmt.executeUpdate();
+			OrderProductManager.resetOrPMap(); 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return true ;
+  }
+  
   
   public static boolean savaPreparedStatement(Connection conn,List<PreparedStatement> sqls){ 
 	   boolean flag = false ; 

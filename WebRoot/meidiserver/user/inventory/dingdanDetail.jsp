@@ -229,7 +229,7 @@ body{BACKGROUND-IMAGE: white;background-repeat:no-repeat";  }
             </td>
            <td align="center">送货状态</td>
           <td align="center">
-		<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
+		<%=OrderManager.getDeliveryStatues(o) %>
 		</td>
            </tr> 
 		  <tr class="asc"> 

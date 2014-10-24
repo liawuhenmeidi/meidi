@@ -98,7 +98,12 @@ function updateOeders(type){
 			      				//window.location.href="server.jsp?method=tuihuoed&oid="+id;
 			      				return ;   
 			      			}else if(orpstatues == -1 || huanhuo == -1){
-			      				 window.location.href="updatedingmayPrintl.jsp?id="+id+"&method="+type;
+			      				if(type == "huanhuo"){
+			      					window.location.href="OrderServlet?id="+id+"&method="+type;
+			      				}else {
+			      					 window.location.href="updatedingmayPrintl.jsp?id="+id+"&method="+type;
+			      				}
+			      				
 			      			    return ;  
 			      			}if(orpstatues == 4 || huanhuo == 4){
 			      				var question = confirm("您的申请被拒绝，确定要重新提交申请吗？");
