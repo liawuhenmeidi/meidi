@@ -46,7 +46,34 @@ String mapdevitystr = StringUtill.GetJson(mapdevity);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <style type="text/css">
+.fixedHead { 
+position:fixed;
+}  
+ 
+*{
+    margin:0;
+    padding:0;
+}
+#table{  
+    width:900px;
+    table-layout:fixed ;
+}
 
+#th{  
+    background-color:white;
+    position:absolute; 
+    width:900px; 
+    height:30px;
+    top:0;
+    left:0;
+}
+#wrap{
+    clear:both;
+    position:relative;
+    padding-top:30px;
+    overflow:auto;
+    height:50px;
+}
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -78,7 +105,9 @@ var mapdevity = <%=mapdevitystr%>;
 	 } 
 	 
 	 if(endtime != null && endtime != "" && endtime != "null"){
-		 str += " ' " + endtime + "'";
+		 if(flag){
+			 str += " ' " + endtime + "'";
+		 }
 	 }else if(flag){
 		 str += "now()";
 	 } 
@@ -99,7 +128,7 @@ var mapdevity = <%=mapdevitystr%>;
  
  
  function search(ctype,branchid,time){
-	 $("#serach table").remove();
+	 $("#wap table").remove();
 	 //var map = new Map();
 	 var arrays = new Array();
 	 //var totalpapercount = 0 ;
@@ -242,7 +271,7 @@ var mapdevity = <%=mapdevitystr%>;
 	        		     
 	        	 addstr += '</table> </div>' ;     
 	        		     
-	        			 $("#serach").append(addstr);  
+	        			 $("#wap").append(addstr);  
 	           },  
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 	            } 
@@ -258,30 +287,22 @@ var mapdevity = <%=mapdevitystr%>;
 
 <body>
 <!--   头部开始   -->
- <jsp:include flush="true" page="../../head.jsp">
+ <jsp:include flush="true" page="../../admin/head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>
-
 <!--   头部结束   -->
-
-<div class="main">  
    <div class="weizhi_head">现在位置：库存查询
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
    开始时间:<%=starttime%>---结束时间:<%=endtime %>
    <a href="javascript:history.go(-2);"><font style="color:blue;font-size:20px;" >返回</font></a>
    </div>       
-<br/>
+<br/> 
 
-<div id="serach"> 
-
-
-</div>
-
-
-
+<div id="wap"> 
 
 
 </div>
+
 
 
 </body>
