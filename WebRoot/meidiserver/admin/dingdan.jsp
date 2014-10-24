@@ -307,7 +307,7 @@ function adddetail(src){
 	<jsp:param name="count" value="<%=count %>"/> 
 </jsp:include> 
 </div > 
-<div style=" height:170px;">
+<div style="height:170px;">
 </div>
 <br/>  
 

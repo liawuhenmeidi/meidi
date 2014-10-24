@@ -72,7 +72,39 @@ public static List<InventoryBranchMessage> getCategory(String type,String branch
 		return categorys;
 	}	
 	
-	   
+public static List<InventoryBranchMessage> getCategory(String type,String branchid,String starttime,String endtime) { 
+	String time = TimeUtill.getsearchtime(starttime,endtime);
+  
+	List<InventoryBranchMessage> categorys = new ArrayList<InventoryBranchMessage>();
+	Connection conn = DB.getConn();  
+	String sql = ""; 
+	if(!StringUtill.isNull(branchid)){
+	    sql = "select * from mdinventorybranchmessage where type = '"+ type +"' and branchid not in (select id from mdbranch where statues = 1 ) and branchid = "+ branchid +time;
+	}else { 
+		 sql = "select * from mdinventorybranchmessage where type = '"+ type +"' and branchid not in (select id from mdbranch where statues = 1 ) "+time;
+	}
+	
+
+logger.info(sql);	  
+	Statement stmt = DB.getStatement(conn); 
+	ResultSet rs = DB.getResultSet(stmt, sql);
+	try {   
+		while (rs.next()) {
+			InventoryBranchMessage u = getCategoryFromRs(rs);
+			categorys.add(u);
+		}
+	} catch (SQLException e) {
+		logger.error(e);
+	} finally {
+		DB.close(rs);
+		DB.close(stmt);
+		DB.close(conn);
+	} 
+	logger.info(categorys.size());
+	return categorys;
+}	
+
+
 public static List<InventoryBranchMessage> getCategory(String type,String branchid) { 
 		
 		List<InventoryBranchMessage> categorys = new ArrayList<InventoryBranchMessage>();

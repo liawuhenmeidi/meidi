@@ -448,8 +448,34 @@ if("peidan".equals(method)){
 		String count = request.getParameter("dingmaproductNum");
 		statues = OrderManager.updateMessage(phone1,andate,locations,POS,sailId,check,oid,remark,saledate,diqu) ; 
 	    if(!StringUtill.isNull(saleType) && !StringUtill.isNull(categoryId)){
-	    	pstatues = OrderProductManager.updateOrderStatues(user,categoryId,saleType,count,oid);
-	    	System.out.println(123);
+	    	Order order = new Order();
+	    	order.setId(Integer.valueOf(oid));
+	    	String type = order.getSendType(1, "");
+	    	
+	    	if(StringUtill.isNull(type)){
+	    		
+	    		OrderProduct o = new OrderProduct();
+	    		 if(!NumbleUtill.isNumeric(saleType)){
+					   type = ProductService.gettypemap().get(saleType).getId()+"";
+				   }
+	    
+	    		    o.setCategoryId(Integer.valueOf(categoryId));
+					o.setCount(Integer.valueOf(count));
+					o.setSaleType(type);	
+					o.setStatues(1); 
+					
+					List<OrderProduct>  listop = new ArrayList<OrderProduct>();
+					listop.add(o);
+					order.setOrderproduct(listop);
+					
+					List<String> sqls = OrderProductManager.save(Integer.valueOf(oid), order);
+					DBUtill.sava(sqls);
+ 
+	    	}else {
+	    		
+	    		pstatues = OrderProductManager.updateOrderStatues(user,categoryId,saleType,count,oid);
+	    	}
+	    	
 	    	OrderProductManager.resetOrPMap(); 
 	    } 
 	}else {    

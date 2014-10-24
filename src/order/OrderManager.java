@@ -182,7 +182,7 @@ logger.info(pstmt);
 	
 	public static Map<String,String> getDeliveryStatuesMap(){
 		Map<String,String> map = new HashMap<String,String>();
-		map.put(0+"", "未发货");
+		map.put(0+"", "需派送安装");
 		map.put(1+"", "已送货");
 		map.put(8+"", "已自提 ");
 		map.put(9+"", "只安装(门店提货)");

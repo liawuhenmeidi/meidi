@@ -87,12 +87,34 @@ public class TimeUtill {
             calendar.setTime(date);   
             calendar.add(calendar.DATE,count);//把日期往后增加一天.整数往后推,负数往前移动   
             date=calendar.getTime();   //这个时间就是日期往后推一天的结果   
-            String putDate = sdf.format(date); //增加一天后的日期    
+            putdate = sdf.format(date); //增加一天后的日期    
         } catch (ParseException e) {  
             e.printStackTrace();   
         } 
         return putdate; 
     }
+    
+    public static String getsearchtime(String starttime,String endtime){
+    	boolean flag = false ;
+    	String str = "";
+    	logger.info(starttime+endtime);
+    	if(starttime != null && starttime != "" && starttime != "null"){
+   		   str += " and time  BETWEEN  '" + starttime + "'  and  ";
+   	       flag = true ;
+   	    } 
+   	 
+   	 if(endtime != null && endtime != "" && endtime != "null"){
+   		 if(flag){
+   			str += " ' " + endtime + "'";
+   		 }
+   	 }else if(flag){
+   		 str += "now()";
+   	 } 
+   	 
+   	 return str ;
+    }
+    
+    
     
     public static boolean getLongtime(String time){
     	long days = 100; 

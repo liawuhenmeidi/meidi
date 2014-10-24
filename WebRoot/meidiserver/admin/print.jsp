@@ -125,7 +125,7 @@ Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(us
     </tr>
   
     
-  </table></td>
+  </table></td> 
 </tr>
 
   <%	  
