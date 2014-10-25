@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -79,7 +83,8 @@ public static List<InventoryBranchMessage> getCategory(String type,String branch
 	Connection conn = DB.getConn();  
 	String sql = ""; 
 	if(!StringUtill.isNull(branchid)){
-	    sql = "select * from mdinventorybranchmessage where type = '"+ type +"' and branchid not in (select id from mdbranch where statues = 1 ) and branchid = "+ branchid +time;
+		branchid  = "(" + branchid + ")";
+	     sql = "select * from mdinventorybranchmessage where type = '"+ type +"' and branchid not in (select id from mdbranch where statues = 1 ) and branchid in "+ branchid +time;
 	}else { 
 		 sql = "select * from mdinventorybranchmessage where type = '"+ type +"' and branchid not in (select id from mdbranch where statues = 1 ) "+time;
 	}
@@ -92,6 +97,77 @@ logger.info(sql);
 		while (rs.next()) {
 			InventoryBranchMessage u = getCategoryFromRs(rs);
 			categorys.add(u);
+		}
+	} catch (SQLException e) {
+		logger.error(e);
+	} finally {
+		DB.close(rs);
+		DB.close(stmt);
+		DB.close(conn);
+	} 
+	logger.info(categorys.size());
+	return categorys;
+}	
+
+
+
+public static Map<String,Integer> getMapAnalyze(String branchid,String starttime,String endtime){
+	Map<String,Integer> mapAnalyze= new HashMap<String,Integer>();
+	Map<String,List<InventoryBranchMessage>> map = getMap(branchid,starttime,endtime);
+	
+	Set<Map.Entry<String,List<InventoryBranchMessage>>> set  = map.entrySet();
+	
+	Iterator<Map.Entry<String,List<InventoryBranchMessage>>> it = set.iterator();
+	
+	while(it.hasNext()){
+		Map.Entry<String,List<InventoryBranchMessage>> maps = it.next();
+		String type = maps.getKey();
+		List<InventoryBranchMessage> list = maps.getValue();
+		Iterator<InventoryBranchMessage> itL = list.iterator();
+		int count = 0;
+		while(itL.hasNext()){
+			InventoryBranchMessage  message = itL.next();
+			if(message.getOperatortype() != 1 && message.getOperatortype() != 2 ){
+				count += message.getAllotRealcount();
+			}
+			
+		}
+		
+		mapAnalyze.put(type, count);
+		
+		
+	}
+	
+	
+	return mapAnalyze;
+}
+
+public static Map<String,List<InventoryBranchMessage>> getMap(String branchid,String starttime,String endtime) { 
+	String time = TimeUtill.getsearchtime(starttime,endtime);
+  
+	Map<String,List<InventoryBranchMessage>> categorys = new HashMap<String,List<InventoryBranchMessage>>();
+	Connection conn = DB.getConn();  
+	String sql = ""; 
+	if(!StringUtill.isNull(branchid)){
+		branchid  = "(" + branchid + ")";
+	     sql = "select * from mdinventorybranchmessage where branchid not in (select id from mdbranch where statues = 1 ) and branchid in "+ branchid +time;
+	}else { 
+		 sql = "select * from mdinventorybranchmessage where  branchid not in (select id from mdbranch where statues = 1 ) "+time;
+	}
+	
+
+logger.info(sql);	  
+	Statement stmt = DB.getStatement(conn); 
+	ResultSet rs = DB.getResultSet(stmt, sql);
+	try {   
+		while (rs.next()) {
+			InventoryBranchMessage u = getCategoryFromRs(rs);
+			List<InventoryBranchMessage> list = categorys.get(u.getType());
+			if(null == list){
+				list = new ArrayList<InventoryBranchMessage>();
+				categorys.put(u.getType(), list);
+			}
+			list.add(u);
 		}
 	} catch (SQLException e) {
 		logger.error(e);

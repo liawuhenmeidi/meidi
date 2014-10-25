@@ -374,8 +374,8 @@ function adddetail(src){
 				<td align="center"><%=o.getLocate()%></td>
 				<td align="center"><%=o.getLocateDetail() %></td>
 				<td align="center">
-				<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
-				</td>
+				<%=OrderManager.getDeliveryStatues(o) %>
+				</td> 
 		        <td align="center"> 
 				    <%=o.getRemark() %>
 				</td>

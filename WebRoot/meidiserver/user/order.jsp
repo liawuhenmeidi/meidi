@@ -51,7 +51,7 @@ System.out.println(branchmessage);
 if(StringUtill.isNull( branchmessage)){ 
 	 branchmessage = "";
 }   
-String[] branlist =  branchmessage.split("_");
+String[] branlist =  branchmessage.split(",");
 
 %> 
    

@@ -247,6 +247,20 @@ function adddetail(src){
     }
 
 }
+
+function seletall(all){
+	if($(all).attr("checked")){
+		$("input[type='checkbox']").each(function(){
+			$(this).attr("checked",true);
+
+	     });
+	}else if(!$(all).attr("checked")){
+		$("input[type='checkbox']").each(function(){
+			$(this).attr("checked",false);
+	     });
+	};
+} 
+
 </script>
 
 <div style="position:fixed;width:100%;height:20%;">

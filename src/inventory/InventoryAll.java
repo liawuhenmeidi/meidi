@@ -8,6 +8,10 @@ public class InventoryAll {
    private String typeid ;
    private Boolean isquery ;   // 是否已盘点
    private String time ;
+   private int papercount;
+   private int realcount;
+   private int branchid ;
+   
    
    public String getTime() {
 	return time;
@@ -27,16 +31,14 @@ public String getTypeid() {
 public void setTypeid(String typeid) {
 	this.typeid = typeid;
 }
-private int branchid ;
+
    public int getBranchid() {
 	return branchid;
 }
 public void setBranchid(int branchid) {
 	this.branchid = branchid;
 }
-public int papercount;
-   public int realcount;
-   
+
    public String getType() {
 		return type;
 	}

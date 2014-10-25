@@ -308,6 +308,7 @@ logger.info(pstmt);
 			
 	public static void updateShifang(User user,int id,int uid,int type) {
 		List<String> listsql = new ArrayList<String>();
+		Order or = OrderManager.getOrderID(user, id);
 		String sql = "";
 		if(type == OrderPrintln.release){               
 			sql = "update mdorder set dealSendid = 0  , printSatues = 0  where id = " + id;
@@ -333,6 +334,11 @@ logger.info(pstmt);
 			return ;     
 		}else if(type == OrderPrintln.returns){  // releasedispatch    
 			sql = "update mdorder set deliveryStatues  = (mdorder.deliveryStatues + 3)  where id = " + id;
+			if(or.getOderStatus().equals(20+"")){
+				String sql1 = " delete from mdorderupdateprint where orderid = "+ or.getImagerUrl()+ " and statues = 10 ";
+	            listsql.add(sql1);
+			}
+            
 			List<String> lists = InventoryBranchManager.chage(user,"returns", uid, id+"");     
 		    listsql.addAll(lists); 
 			

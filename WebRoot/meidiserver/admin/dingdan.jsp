@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="searchdynamic.jsp"%>      
 <%          
-   
+    
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
 
 session.setAttribute("exportList", list);
@@ -98,10 +98,9 @@ function getinventory(uid,types){
 function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	var uid = $("#"+str1).val();
 	var saleid = $("#"+str1).val();
-   if(deliveryStatues == 9 || deliveryStatues == 10){
+   if(deliveryStatues == 9 || deliveryStatues == 10 || deliveryStatues == 8){
 	   saleid = saleId;
    }
-   
    var branch = usermapstr[saleid].branchName;
    
 	if(deliveryStatues != 8 ){ 
@@ -428,7 +427,7 @@ function adddetail(src){
 				<td align="center"> 
 				
 				 <%    	  
-				   if(o.getDealsendId() == 0 && o.getDeliveryStatues() != 8 && o.getPrintSatues() == 0){
+				   if(o.getDealsendId() == 0 && Integer.valueOf(o.getOderStatus()) != 8 && o.getPrintSatues() == 0){
 					   if(modify != 2 && modify != 0 && returns != 2 && returns != 0){
 					   %>
 						<select class = "category" name="category"  id="songh<%=o.getId() %>" >
@@ -447,22 +446,22 @@ function adddetail(src){
 						     }
 					            %>
 				         </select> 
-				         <input type="button" onclick="changepeidan('songh<%=o.getId()%>','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="确定"/> 
+				         <input type="button" onclick="changepeidan('songh<%=o.getId()%>','<%=o.getId()%>','<%=Integer.valueOf(o.getOderStatus()) %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="确定"/> 
 				         
 					<% 	
 				     }
-				   }else if(o.getDealsendId() == 0 && o.getDeliveryStatues() == 8 && o.getPrintSatues() == 0){
+				   }else if(o.getDealsendId() == 0 && Integer.valueOf(o.getOderStatus()) == 8 && o.getPrintSatues() == 0){
 				
 					   if(OrderManager.Check(o.getId())){ 
 						  %>   
-						   <input type="button" onclick="changepeidan('2','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="打印"/>
+						   <input type="button" onclick="changepeidan('2','<%=o.getId()%>','<%=Integer.valueOf(o.getOderStatus()) %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="打印"/>
 					         &nbsp;&nbsp;&nbsp;
 						  <%
 					   }else {
 						   %>
-						   <input type="button" onclick="changepeidan('1','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="打印"/>
+						   <input type="button" onclick="changepeidan('1','<%=o.getId()%>','<%=Integer.valueOf(o.getOderStatus()) %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="打印"/>
 					         &nbsp;&nbsp;&nbsp;
-						   <input type="button" onclick="changepeidan('0','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="确定"/>  
+						   <input type="button" onclick="changepeidan('0','<%=o.getId()%>','<%=Integer.valueOf(o.getOderStatus()) %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="确定"/>  
 						   				   
 						   <%
 					   }
@@ -566,7 +565,7 @@ function adddetail(src){
 								  <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>',this)"  value="同意退货"/>
 								   
 								  <%}else {
-									  if(o.getDeliveryStatues() == 8){
+									  if(Integer.valueOf(o.getOderStatus()) == 8){
 										  %>
 								     <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.release %>',this)"  value="打印"/>
 								     <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','',this)"  value="确定"/>  

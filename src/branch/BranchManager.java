@@ -13,6 +13,9 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import utill.DBUtill;
+import utill.StringUtill;
+
 import database.DB;
   
 public class BranchManager {
@@ -20,25 +23,32 @@ public class BranchManager {
 	 protected static Log logger = LogFactory.getLog(BranchManager.class);
 	
 	 public static boolean  save(Branch branch ){
-		  
-		Connection conn = DB.getConn(); 
+        List<String> listsql = new ArrayList<String>();
 		String sql = "";  
 		if(branch.getId() == 0){   
 			sql = "insert into mdbranch(id,bname,pid,bmessage,relatebranch) values (null, '"+branch.getLocateName()+"','"+branch.getPid()+"','"+branch.getMessage()+"','"+branch.getBranchids()+"')";
 		}else{     
 			sql = "update mdbranch set bname = '"+branch.getLocateName()+"' , bmessage = '"+branch.getMessage()+"' , relatebranch = '"+branch.getBranchids()+"' where id = "+ branch.getId();
 		}
-		       
-		PreparedStatement pstmt = DB.prepare(conn, sql);
-		try {   	
-			pstmt.executeUpdate();
-			BranchService.flag = true ;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DB.close(pstmt);
-			DB.close(conn);
+		
+		String sqlall = "delete from relatebranch where branchid = " + branch.getId();
+		
+		listsql.add(sqlall);
+		
+		if(!StringUtill.isNull(branch.getBranchids())){
+			String[] strlist = branch.getBranchids().split(",");
+			for(int i=0;i<strlist.length;i++){
+				String id = strlist[i];
+				String sql1 = "insert into relatebranch (id,branchid,relatebranchid) values (null,"+branch.getId()+","+id+") ";
+			    listsql.add(sql1);
+			}
 		}
+		
+	    listsql.add(sql);
+	    
+	    DBUtill.sava(listsql);
+		BranchService.flag = true ;
+		
 	   return true;
 	}
 	 

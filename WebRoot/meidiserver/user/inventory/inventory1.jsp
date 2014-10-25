@@ -230,7 +230,7 @@ function add(){
   <select id="branch">  
   <option value=""></option>
    <%  
-       String branchs[] = branchids.split("_"); 
+       String branchs[] = branchids.split(","); 
 	   for(int i=0;i<listbranch.size();i++){
 		   Branch b = listbranch.get(i); 
 		   for(int j=0;j<branchs.length;j++){ 

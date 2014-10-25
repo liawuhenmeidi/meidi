@@ -39,16 +39,17 @@ if("add".equals(action)){
     if(permission != null ){  
 		for(int i = 0;i<permission.length;i++){
 			if(!StringUtill.isNull(permission[i])){
-				messagenew += permission[i]+"_";
+				messagenew += permission[i]+",";
 			}
 		} 
+		messagenew = messagenew.substring(0, messagenew.length() -1);
     }
     if(branchid != null ){  
   		for(int i = 0;i<branchid.length;i++){
   			if(!StringUtill.isNull(branchid[i])){
-  				branchidsnew += branchid[i]+"_";
-  			}
-  		} 
+  				branchidsnew += branchid[i]+",";
+  			} 
+  		}  
       }
 	Branch branch = new Branch(); 
 	if(!StringUtill.isNull(id)){
@@ -83,11 +84,11 @@ var jsons = "<%=branchids%>";
 var products = new Array();
 var branchid = new Array();
 $(document).ready(function(){
-	products = json.split("_"); 
+	products = json.split(","); 
 	 for(var i=0;i<products.length;i++){
 		 $("#"+products[i]).attr("checked","checked");
 	 }
-	branchid = jsons.split("_"); 
+	branchid = jsons.split(","); 
 	for(var i=0;i<branchid.length;i++){
 		 $("#"+branchid[i]).attr("checked","checked");
 	 }

@@ -4,19 +4,11 @@
 
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.release,0,0,"id",""); 
 count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.release,0,0,"id","");
-    
-HashMap<Integer,User> usermap = UserManager.getMap();
-        
-//获取二次配单元（工队）
-List<User> listS = UserManager.getUsers(user ,Group.sencondDealsend);   
-  
+ 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
  
 Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
-
-
-Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
 %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -305,7 +297,7 @@ function changes(str1,str2,str3,str4,str5,str6,type){
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>
 		<td align="center">
-				<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
+				<%=OrderManager.getDeliveryStatues(o) %>
 		</td>
 
         <td align="center"> 

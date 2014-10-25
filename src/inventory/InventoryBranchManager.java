@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -101,7 +102,6 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			DB.close(stmt);
 			DB.close(conn);
 		} 
-		logger.info(categorys.size());
 		return categorys;
 	}
 	
@@ -535,6 +535,32 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 				 }
 				return orders;
 		 }
+	
+	public static Map<String,String> getBranchType(User user ,String branchid){
+		  //String branchid
+		   Map<String,String> list = new HashMap<String,String>();
+		   
+		   String sql = "";    
+			   sql = "select * from   mdinventorybranch  where branchid in (select relatebranchid from relatebranch where branchid =  " + branchid +")"; 
+	logger.info(sql); 
+			    Connection conn = DB.getConn();
+				Statement stmt = DB.getStatement(conn);
+				ResultSet rs = DB.getResultSet(stmt, sql); 
+				try {  
+					while (rs.next()) {  
+						InventoryBranch orders = getCategoryFromRs(rs); 
+						list.put(orders.getType(),orders.getType());
+					} 
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally {
+					DB.close(stmt);
+					DB.close(rs);
+					DB.close(conn);
+				 }
+				return list;
+		 }
+	
 	
 	public static int update(User user ,String branchid,String type){
 		   int count = -1 ; 

@@ -201,7 +201,7 @@ if(!StringUtill.isNull(id)){
     	if(row%2 == 0){
     		yellow = "#fff"; 
     	}
-    	 rows.push(row);
+    	rows.push(row);
     	var type = listo.typeName == null || listo.typeName == undefined ? "":listo.typeName;
     	var count = listo.count == null || listo.count == undefined ? 1:listo.count;
     	var statues = listo.salestatues == null || listo.salestatues == undefined ? -1:listo.salestatues;
@@ -235,7 +235,7 @@ if(!StringUtill.isNull(id)){
                    ' <td width="25%" class="center">送货型号<span style="color:red">*</span></td> '+
                    ' <td width="35%" class=""><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="'+type+'" style="width:90% " '+disable+'/><div id="aotu'+row+'"></div></td> ' +
                    ' <td width="10%" class="center">送货数量</td> '+ 
-                   ' <td width="10%" class=""><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'" value="'+count+'" style="width:50%" '+disable+'/></td> '+
+                   ' <td width="10%" class=""><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+listo.id+'" value="'+count+'" style="width:50%" '+disable+'/></td> '+
                    ' <td width="20%" class="center"><input type="button"  style="background-color:orange" name="" value="-" onclick="subtraction(orderproductNum'+row+') " /></td> '+ 
                    ' </tr>'+ 
                    '<tr></tr>'+

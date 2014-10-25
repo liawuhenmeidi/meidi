@@ -345,30 +345,23 @@ logger.info(message);
 	    	      User user  = (User)request.getSession().getAttribute("user");
 	    	      
 	    	     if(UserManager.checkPermissions(user, Group.sale) ){
-			    	
-			    	
 			        String oid = request.getParameter("orderid");
 			        
 			    	Order oldOrder = OrderManager.getOrderID(user, Integer.valueOf(oid));
-			    	
 			    	Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
-			    	
-			    	List<OrderProduct> listp = new ArrayList<OrderProduct>();
-			        
-			    	
+			    	List<OrderProduct> listp = new ArrayList<OrderProduct>();  	
 			    	List<OrderProduct> list = OrPMap.get(Integer.valueOf(oid));
 				  
-			    	
 					String[] producs = request.getParameterValues("product");
-					
 					    // 送货状态   
 					for(int i=0;i<producs.length;i++){	
 						int opid = Integer.valueOf(producs[i]);
 						logger.info(opid);
 					    for(int j=0;j<list.size();j++){
 					    	OrderProduct or = list.get(j);
-					    	logger.info(or.getId());
 					    	if(or.getStatues() == 0 && opid == or.getId()){
+					    		int count = Integer.valueOf(request.getParameter("orderproductNum"+opid));
+					    		or.setCount(count);
 					    		or.setSalestatues(1); 
 					    		listp.add(or);
 					    	}
@@ -376,7 +369,6 @@ logger.info(message);
 					}
 					
 					Order order= new Order(); 
-					
 					
 					String andate = request.getParameter("andate"); //安装日期
 					
@@ -410,7 +402,7 @@ logger.info(message);
 			     	order.setLocate(diqu);
 			        order.setLocateDetail(locations);
 
-					order.setRemark(remark+"换货单，务必拉回残机。");
+					order.setRemark(remark+".换货单，务必拉回残机。");
 				    order.setOderStatus(20+"");
 					order.setOrderproduct(listp);
 					

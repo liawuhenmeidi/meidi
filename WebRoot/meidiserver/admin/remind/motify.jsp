@@ -1,20 +1,12 @@
 <%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="../searchdynamic.jsp"%> 
 <%    
-
+ 
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.motify ,0,0,"id",sear); 
 count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.motify ,0,0,"id",sear);  
-   
-HashMap<Integer,User> usermap = UserManager.getMap();
-        
-//获取二次配单元（工队）
-List<User> listS = UserManager.getUsers(user ,Group.sencondDealsend);   
-  
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
- 
 
-Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
-//修改申请
+HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
+
 //Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,OrderPrintln.modify);
 // 退货申请
 //Map<Integer,OrderPrintln> opMap1 = OrderPrintlnManager.getOrderStatues(user,OrderPrintln.returns); 
@@ -312,8 +304,8 @@ function changes(str1,str2,str3,str4,str5,str6,type){
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>
 		<td align="center">
-				<%=OrderManager.getDeliveryStatues(o.getDeliveryStatues()) %>
-		</td>
+				<%=OrderManager.getDeliveryStatues(o) %>
+		</td> 
 
         <td align="center"> 
 		    <%=o.getRemark() %>
