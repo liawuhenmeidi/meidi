@@ -54,13 +54,15 @@ public class InventoryServlet extends HttpServlet {
 		Object object = new Object();
 		   
 		String method = request.getParameter("method");
-		//System.out.println("method"+method);  
+		System.out.println("method"+method);  
 		synchronized(object){
 			if("add".equals(method)){ 
 				saveBranch(request,response);
 				return ;  
 			}else if("addsubscribe".equals(method)){
 				savesubscribeBranch(request,response);
+			}else if("updatesubscribe".equals(method)){
+				updatesubscribeBranch(request,response);
 			}else if("outbranch".equals(method) || "inbranch".equals(method)){ 
 				saveInventory(request,response);
 				return ; 
@@ -219,12 +221,39 @@ System.out.println(type+"type");
  		
  		try {
  			response.sendRedirect("analyzrecepts.jsp");
+ 			return ;
  		} catch (IOException e) {
  		
  			e.printStackTrace();
  		}
  	}  
     
+     private void updatesubscribeBranch(HttpServletRequest request, HttpServletResponse response){
+  		
+  		String[] producs = request.getParameterValues("product"); 
+  		
+  		List<String> sqls = new ArrayList<String>();
+  		
+  		for(int i=0;i<producs.length;i++){      
+  			String type =producs[i];
+  			String count = request.getParameter(producs[i]);
+  					
+  			String sql = "update inventorymessage set anlycount = " + count + " where id = " + type ;
+  		   sqls.add(sql);
+  		
+  		}
+  		
+  	   DBUtill.sava(sqls);
+  		
+  		try {
+  			response.sendRedirect("analyzrecepts.jsp");
+  			return ;
+  		} catch (IOException e) {
+  		
+  			e.printStackTrace();
+  		}
+  	}  
+     
 	/**
 	 * 处理微信服务器发来的消息
 	 */
@@ -233,7 +262,6 @@ System.out.println(type+"type");
 		// 将请求、响应的编码均设置为UTF-8（防止中文乱码）
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
- 
 		// 调用核心业务类接收消息、处理消息
 		doGet(request,response);
  

@@ -12,7 +12,7 @@ String listall = StringUtill.GetJson(listbranchp);
   
 List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
-   
+    
 //Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 Map<Integer,Branch> branchmap = BranchService.getMap();
 

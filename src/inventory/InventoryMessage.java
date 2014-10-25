@@ -5,10 +5,25 @@ import product.ProductService;
 public class InventoryMessage {
   private int id ; 
   private int categoryId; 
+  private String categoryName;
   private String  productId ; 
   
   private String  productname;
+  private int anlycount;
   
+  
+public String getCategoryName() {
+	return categoryName;
+}
+public void setCategoryName(String categoryName) {
+	this.categoryName = categoryName;
+}
+public int getAnlycount() {
+	return anlycount;
+}
+public void setAnlycount(int anlycount) {
+	this.anlycount = anlycount;
+}
 public String getProductname() {
 	return productname;
 }

@@ -103,7 +103,6 @@ public class InventoryManager {
 			DB.close(stmt);
 			DB.close(conn);
 		} 
-		logger.info(categorys.size());
 		return categorys;
 	}
 	

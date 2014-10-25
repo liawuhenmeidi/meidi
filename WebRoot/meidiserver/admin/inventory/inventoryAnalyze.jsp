@@ -171,7 +171,7 @@ function check(){
 <br/>  
 
 <div id="wrap">
-<form action="InventoryServlet" onsubmit="return check()">
+<form action="InventoryServlet" method="post" onsubmit="return check()">
 <input type="hidden" name="method" value="addsubscribe"/>
 <input type="hidden" name="inbranch" value="<%=branchid%>"/>
 
@@ -200,8 +200,7 @@ function check(){
             	  %>
             	  	
             	   <tr id=""  class="asc"  onclick="updateClass(this)">   
-			         		 
-			        			 
+			 
         			  <td align="center"><%=mapc.get(in.getInventoryid()).getName() %></td>    
         			  <td align="center"><%=in.getType() %> </td>   
         			  <td align="center"><%=in.getPapercount() %> </td>   

@@ -65,10 +65,6 @@ public class InventoryMessageManager {
         return sql ;
 	}
 	
-	
-	
-	
-	
 	private static InventoryMessage getCategoryFromRs(ResultSet rs){
 		InventoryMessage c = new InventoryMessage();
 		try {    
@@ -76,8 +72,10 @@ public class InventoryMessageManager {
 			c.setCount(rs.getInt("count"));  
 			c.setInventoryId(rs.getInt("inventoryId"));
 			c.setProductId(rs.getString("productId")); 
-			c.setCategoryId(rs.getInt("categoryId"));     
+			c.setCategoryId(rs.getInt("categoryId")); 
+			
 			c.setProductname(ProductService.getIDmap().get(Integer.valueOf(c.getProductId())).getType()); 
+		    c.setAnlycount(rs.getInt("anlycount"));
 		} catch (SQLException e) { 
 			e.printStackTrace();
 		}	
