@@ -3,6 +3,7 @@ package inventory;
 import java.util.List;
  
 public class Inventory {  
+	
   private int id ;    
   private List<InventoryMessage> inventory;  // 所包含的产品入库信息
   private String intime ;   // 入库申请发起时间
@@ -14,8 +15,15 @@ public class Inventory {
   private int outstatues ;   // 出库放确认状态   
   private int instatues ;    // 入库方确认状态    
   private String remark ;     
-      
-  public int getOutstatues() {
+  private int intype ;  //   1 表示调货单   2 预约调货单
+  
+  public int getIntype() {
+	return intype;
+}
+public void setIntype(int intype) {
+	this.intype = intype;
+}
+public int getOutstatues() {
 	return outstatues;
 }
 public void setOutstatues(int outstatues) {

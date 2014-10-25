@@ -14,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import branch.Branch;
-import branch.BranchManager;
 import branch.BranchService;
 
 
@@ -541,7 +540,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		   Map<String,String> list = new HashMap<String,String>();
 		   
 		   String sql = "";    
-			   sql = "select * from   mdinventorybranch  where branchid in (select relatebranchid from relatebranch where branchid =  " + branchid +")"; 
+			   sql = "select * from   mdinventorybranch  where branchid in (select branchid from relatebranch where relatebranchid =  " + branchid +")"; 
 	logger.info(sql); 
 			    Connection conn = DB.getConn();
 				Statement stmt = DB.getStatement(conn);

@@ -328,6 +328,7 @@ function adddetail(src){
             <td align="center">文员配单日期</td> 
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
+           
             <td align="center">送货状态</td>
 			<td align="center">打印状态</td>
 			
@@ -386,7 +387,7 @@ function adddetail(src){
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>
 		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o) %>
+		<%=OrderManager.getOrderStatues(o)+OrderManager.getDeliveryStatues(o) %>
 		</td>
 		<td align="center">
 		

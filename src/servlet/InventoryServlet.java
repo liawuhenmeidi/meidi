@@ -29,6 +29,7 @@ import product.ProductManager;
 import product.ProductService;
 
 import user.User;
+import utill.DBUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
 
@@ -58,6 +59,8 @@ public class InventoryServlet extends HttpServlet {
 			if("add".equals(method)){ 
 				saveBranch(request,response);
 				return ;  
+			}else if("addsubscribe".equals(method)){
+				savesubscribeBranch(request,response);
 			}else if("outbranch".equals(method) || "inbranch".equals(method)){ 
 				saveInventory(request,response);
 				return ; 
@@ -93,42 +96,8 @@ System.out.println(type+"type");
 			sqls.addAll(sqlp);
 		}
 		  
+		DBUtill.sava(sqls);
 		
-		Connection conn = DB.getConn();   
-		   
-	    Statement sm = null;  
-       try {   
-           // 事务开始  
-          logger.info("事物处理开始") ;
-           conn.setAutoCommit(false);   // 设置连接不自动提交，即用该连接进行的操作都不更新到数据库  
-            sm = conn.createStatement(); // 创建Statement对象  
-            Object[] strsqls = sqls.toArray();
-      logger.info(strsqls.toString());
-           //依次执行传入的SQL语句      
-           for (int i = 0; i < strsqls.length; i++) {  
-               sm.execute((String)strsqls[i]);// 执行添加事物的语句  
-           }  
-           logger.info("提交事务处理！");  
-              
-           conn.commit();   // 提交给数据库处理  
-              
-           logger.info("事务处理结束！");  
-           // 事务结束      
-       //捕获执行SQL语句组中的异常      
-       } catch (SQLException e) {  
-           try {   
-               logger.info("事务执行失败，进行回滚！\n",e);  
-               conn.rollback(); // 若前面某条语句出现异常时，进行回滚，取消前面执行的所有操作  
-           } catch (SQLException e1) {  
-               logger.info(e);
-           }  
-       } finally {   
-           try {
-				sm.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}  
-       }  
 		try {
 			
 			if("phone".equals(type)){
@@ -187,7 +156,7 @@ System.out.println(type+"type");
 		inventory.setUid(uid);  
 		inventory.setRemark(remark);
 		inventory.setInventory(inventoryMessage); 
-		 
+		inventory.setIntype(1); 
 		InventoryManager.save(user, inventory); 
 		
 		
@@ -199,7 +168,62 @@ System.out.println(type+"type");
 		}
 	}  
 
-    
+     private void savesubscribeBranch(HttpServletRequest request, HttpServletResponse response){
+ 		
+ 		User user  = (User)request.getSession().getAttribute("user");
+ 		 
+ 		Inventory inventory = new Inventory();
+ 		String time = TimeUtill.gettime();
+ 		int uid = user.getId();
+ 		
+         String id = request.getParameter("id"); 
+         if(StringUtill.isNull(id)){
+         	id = -1+"" ;  
+         }
+         
+ 		//String outbranch = request.getParameter("outbranch");
+ 		String inbranch = request.getParameter("inbranch");
+ 		 
+ 		//int outbranchid = BranchManager.getBranchID(outbranch);
+ 		//int inbranchid = BranchManager.getBranchID(inbranch); 
+ 		
+ 		//String remark = request.getParameter("remark");   
+ 		  
+ 		List<InventoryMessage> inventoryMessage = new ArrayList<InventoryMessage>();
+ 		  
+ 		String[] producs = request.getParameterValues("product"); 
+ 		
+ 		
+ 		for(int i=0;i<producs.length;i++){      
+ 			InventoryMessage inven = new InventoryMessage();  
+ 			String type =producs[i];
+ 			Product p = ProductService.getIDmap().get(Integer.valueOf(type));
+ 			int categoryId = p.getCategoryID();
+ 			type = p.getId()+""; 
+ 			String count = request.getParameter(producs[i]);
+ 			inven.setProductId(type);   
+ 			inven.setCategoryId(categoryId);  
+ 			inven.setCount(Integer.valueOf(count));   
+ 			inventoryMessage.add(inven); 			
+ 		}
+ 		
+ 		inventory.setId(Integer.valueOf(id)); 
+ 		inventory.setInbranchid(Integer.valueOf(inbranch));
+ 		//inventory.setOutbranchid(outbranchid);
+ 		inventory.setIntime(time);  
+ 		inventory.setUid(uid);  
+ 		//inventory.setRemark(remark);
+ 		inventory.setInventory(inventoryMessage); 
+ 		inventory.setIntype(2);  
+ 		InventoryManager.save(user, inventory); 
+ 		
+ 		try {
+ 			response.sendRedirect("analyzrecepts.jsp");
+ 		} catch (IOException e) {
+ 		
+ 			e.printStackTrace();
+ 		}
+ 	}  
     
 	/**
 	 * 处理微信服务器发来的消息

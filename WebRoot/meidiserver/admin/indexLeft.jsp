@@ -97,6 +97,7 @@ User user = (User)session.getAttribute("user");
             <div class="list-item none"> 
               <p ><a href="inventory/receipts.jsp" target="contentpage">单据管理</a></p>
               <p ><a href="inventory/inventory.jsp" target="contentpage">库存查询</a></p>
+              <p ><a href="inventory/analyzrecepts.jsp" target="contentpage">预约调账</a></p>
             </div>
           </li>  
          <% 

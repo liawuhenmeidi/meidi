@@ -4,19 +4,21 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");  
 String ctype = request.getParameter("ctype");
 
-String branchid = request.getParameter("branch");
-
+String branchName = request.getParameter("branch");
+if(StringUtill.isNull(branchName)){
+	branchName = "";
+}
 String starttime = request.getParameter("starttime");
 
-String endtime = request.getParameter("endtime");
-endtime = TimeUtill.dataAdd(endtime,1); 
-
+String endtimeH = request.getParameter("endtime");
+String endtime = TimeUtill.dataAdd(endtimeH,1); 
+String branchid = "";
 Branch b = null;
-if(!StringUtill.isNull(branchid)){
-	if(NumbleUtill.isNumeric(branchid)){
-		b = BranchManager.getLocatebyid(branchid);
+if(!StringUtill.isNull(branchName)){
+	if(NumbleUtill.isNumeric(branchName)){
+		b = BranchManager.getLocatebyid(branchName);
 	}else {
-		b = BranchService.gerBranchByname(branchid);
+		b = BranchService.gerBranchByname(branchName);
 	}
 	branchid = b.getId()+""; 
 } 
@@ -58,18 +60,27 @@ position:fixed;
     padding:0;
 }
 #table{  
-    width:900px;
+    width:1200px;
     table-layout:fixed ;
 }
 
 #th{  
     background-color:white;
     position:absolute; 
-    width:900px; 
+    width:1200px; 
     height:30px;
     top:0;
     left:0;
 }
+
+td{
+ width:200px; 
+}
+
+#th td{
+width:200px; 
+}
+
 #wrap{
     clear:both;
     position:relative;
@@ -127,21 +138,25 @@ function inventory(inventory,type){
 } 
 
 function check(){
-	
+	if(!isNaN(val)){
+		   alert("是数字");
+		}else{
+		   alert("不是数字");
+		}
 }
 </script>
 <div style="position:fixed;width:100%;height:20%;">
 <div >
   <jsp:include flush="true" page="../head.jsp">
   <jsp:param name="" value="" />
-  </jsp:include>   
-</div >
-<form action="" onsubmit="return check()">
- 选择安装网点：<input type="text" name="branch" id="branch" value=""   /> 
+  </jsp:include>     
+</div > 
+<form action="" >
+ 选择安装网点：<input type="text" name="branch" id="branch" value="<%=branchName %>"   /> 
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
 选择出库时间:<input name="starttime" type="text" id="starttime" size="10"
-                        maxlength="10" onclick="new Calendar().show(this);"  readonly="readonly" />
-至:<input name="endtime" type="text" id="endtime" size="10"
+                        maxlength="10" value="<%=starttime %>" onclick="new Calendar().show(this);"  readonly="readonly" />
+至:<input name="endtime" type="text" id="endtime" size="10" value="<%=endtimeH %>"
                         maxlength="10" onclick="new Calendar().show(this);"  readonly="readonly" />
    
    &nbsp;&nbsp;&nbsp;&nbsp;
@@ -156,14 +171,20 @@ function check(){
 <br/>  
 
 <div id="wrap">
+<form action="InventoryServlet" onsubmit="return check()">
+<input type="hidden" name="method" value="addsubscribe"/>
+<input type="hidden" name="inbranch" value="<%=branchid%>"/>
+
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
-     			<td align="left">名称</td>
-     			<td align="left">型号</td> 
-     			<td align="left">账面库存</td>
-     			<td align="left">实际库存</td> 
-     			<td align="left">出库数量</td> 
-     			<td align="left">关联门店出样型号</td> 
+     			<td align="center">名称</td>
+     			<td align="center">型号</td> 
+     			<td align="center">账面库存</td>
+     			<td align="center">实际库存</td> 
+     			<td align="center">出库数量</td> 
+     			<td align="center">关联门店出样型号</td> 
+     			<td align="center">需调货数量</td>
+     			
 		</tr>      
 		    
               <% 
@@ -177,26 +198,39 @@ function check(){
             		  maptype.remove(in.getType());
             	  }
             	  %>
-            	  <tr id=""  class="asc"  onclick="updateClass(this)">   
-			        			 
+            	  	
+            	   <tr id=""  class="asc"  onclick="updateClass(this)">   
+			         		 
 			        			 
         			  <td align="center"><%=mapc.get(in.getInventoryid()).getName() %></td>    
         			  <td align="center"><%=in.getType() %> </td>   
         			  <td align="center"><%=in.getPapercount() %> </td>   
         			  <td align="center"><%=in.getRealcount() %> </td>   
-        			   <td align="center"><%=list.get(in.getType()) %> </td> 
-        			    <td align="center"><%=branchtype %> </td>   
+        			  <td align="center"><%=list.get(in.getType()) %> </td> 
+        			  <td align="center"><%=branchtype %> </td>  
+        			  <td align="center"> 
+        			  <input type="hidden" name="product" value="<%=in.getTypeid() %>"/>
+        			  <input type="text" name="<%=in.getTypeid() %>" id="<%=in.getTypeid() %>" value=""  /> 
+        			
+        			  </td>
+        			 
                        </tr>
             	  
             	  
             	  <%
                 }
+            	  System.out.println(maptype.size());
               } %>
-		        			
+		       
+		       <tr class="asc" >
+		      
+		       <td align="center"  colspan=7> <input type="submit"  style="background-color:;font-size:20px;" value="调货申请" /></td>
+		       </tr> 			
 		        			 
 
     
 </table> 
+</form>
      </div>
 
 </body>
