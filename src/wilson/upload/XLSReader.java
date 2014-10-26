@@ -199,6 +199,7 @@ public class XLSReader {
 				SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				SimpleDateFormat s1 = new SimpleDateFormat("yy-MM-dd");
 				SimpleDateFormat s2 = new SimpleDateFormat("yyyyMMdd");
+				System.out.println(sheet0.getCell(6,2).getContents());
 				String name = sheet0.getCell(1,0).getContents();
 				for(int i = 2 ; i < sheet0.getRows(); i ++){
 					if(sheet0.getCell(0,i).getContents().equals("")){
