@@ -143,7 +143,7 @@ function checkedd(){
      }
      %>
       
-     
+ <% if(UserManager.checkPermissions(user, Group.Manger)){ %>    
  <div id="readme">
  
 
@@ -183,7 +183,7 @@ function checkedd(){
 
     </div>
      
-      
+  <%} %>    
        
     <div id="repassword" style= "display:none;">
 

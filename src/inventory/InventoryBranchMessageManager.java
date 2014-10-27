@@ -127,7 +127,7 @@ public static Map<String,Integer> getMapAnalyze(String branchid,String starttime
 		int count = 0;
 		while(itL.hasNext()){
 			InventoryBranchMessage  message = itL.next();
-			if(message.getOperatortype() != 1 && message.getOperatortype() != 2 ){
+			if(message.getOperatortype() != 1 && message.getOperatortype() != 2 && message.getOperatortype() != 0){
 				count += message.getAllotRealcount();
 			}
 			

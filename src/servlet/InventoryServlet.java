@@ -210,9 +210,9 @@ System.out.println(type+"type");
  		}
  		
  		inventory.setId(Integer.valueOf(id)); 
- 		inventory.setInbranchid(Integer.valueOf(inbranch));
- 		//inventory.setOutbranchid(outbranchid);
- 		inventory.setIntime(time);  
+ 		inventory.setInbranchid(Integer.valueOf(inbranch)); 
+ 		inventory.setOutbranchid(Integer.valueOf(user.getBranch()));
+ 		inventory.setIntime(time);   
  		inventory.setUid(uid);  
  		//inventory.setRemark(remark);
  		inventory.setInventory(inventoryMessage); 
@@ -238,9 +238,12 @@ System.out.println(type+"type");
   			String type =producs[i];
   			String count = request.getParameter(producs[i]);
   					
-  			String sql = "update inventorymessage set anlycount = " + count + " where id = " + type ;
-  		   sqls.add(sql);
-  		
+  			String sql = "update inventorymessage set anlycount = " + count + "   where id = " + type ;
+  		   
+  			String sql1 = "update inventory set instatues = 1 where id in (select inventoryId from inventorymessage where id = "+type+")";
+  			 sqls.add(sql);
+  			 sqls.add(sql1);
+  		 
   		}
   		
   	   DBUtill.sava(sqls);

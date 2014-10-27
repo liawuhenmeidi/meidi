@@ -2,6 +2,7 @@
 <%@ include file="searchdynamic.jsp"%>      
 <%          
     
+sort= "andate asc";
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
 
 session.setAttribute("exportList", list);

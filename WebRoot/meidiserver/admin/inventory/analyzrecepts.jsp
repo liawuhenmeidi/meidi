@@ -52,8 +52,9 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
 		<tr>
 			
 			<th align="left">出库单位</th>
-			<th align="left">日期</th>
 			<th align="left">状态</th> 
+			<th align="left">日期</th>
+			
 			<th align="left">打印</th>
 		</tr>
 	</thead>
@@ -78,27 +79,29 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
 			   
 			 %>
 			</td>
-			<td align="left"><%=invetory.getIntime() %></td>
 			<td align="left">
-			<% if(invetory.getInstatues() == 1 && invetory.getOutstatues() == 1){
+			<% if(invetory.getInstatues() == 1){
 				%>
-				双方已确认
+				已确认
 				<%
-			}else if(invetory.getInstatues() == 1 && invetory.getOutstatues() == 0){
+			}else if(invetory.getInstatues() == 0){
 			%>
-			    出库方待确认
-			<% }else if(invetory.getInstatues() == 0 && invetory.getOutstatues() == 1){
-			%>
-			 入库方待确认
-			<%
-			}else { 
-			%>
-			双方待确认
-			<%
-			}
+			    未确认
+			<% }
 			%>
 			</td>
-			<td></td>
+			<td align="left"><%=invetory.getIntime() %></td>
+			
+			<td>
+			 <% 
+			 if(invetory.getOutstatues() == 0){
+				%> 
+				未打印
+				<%
+			 }
+			 %>
+			
+			</td>
 		</tr>
 
     	   <%

@@ -1,14 +1,16 @@
 <%@ page language="java" import="java.util.*,inventory.*,product.*,branch.*,utill.*,java.text.SimpleDateFormat,category.*,orderPrint.*,gift.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
- 
+  
 <%   
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user");
  
-
-
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
 String inventoryid = request.getParameter("id");
+String type = request.getParameter("type");
+if((2+"").equals(type)){
+	InventoryManager.updatePrintln(inventoryid);
+}
 Inventory inventory = InventoryManager.getInventoryID(user, Integer.valueOf(inventoryid));
 Map<Integer,Branch> branchmap = BranchManager.getIdMap();
  

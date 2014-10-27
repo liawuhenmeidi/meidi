@@ -105,8 +105,14 @@ function inventory(inventory,type){
 	 }
 } 
 
+function println(){
+	 
+	 window.print();
+
+}
+
 </script>
-<div style="position:fixed;width:100%;height:20%;">
+<div style="position:fixed;width:100%;height:70px;">
 <div >
   <jsp:include flush="true" page="../head.jsp">
   <jsp:param name="" value="" />
@@ -114,13 +120,19 @@ function inventory(inventory,type){
 </div > 
    </div>  
 
-<div style="height:70px;">
+<div style="height:70px;"> 
 </div>
-<br/>  
+<div class="weizhi_head">现在位置：调拨单   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="print.jsp?id=<%=inventoryid%>&type=<%=inventory.getIntype() %>"><font style="color:blue;font-size:20px;">打印</font></a> 
+<a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>  
+</div>  
+
 
 <div id="wrap"> 
+    
 <form action="InventoryServlet" method="post" >
-
+<input type="hidden" name="method" value="updatesubscribe"/>
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
      			<td align="center">名称</td>
@@ -134,7 +146,8 @@ function inventory(inventory,type){
              Iterator<InventoryMessage> it = list.iterator();
              while(it.hasNext()){
             	 InventoryMessage in = it.next();
-            	 
+            	// int  Anlycount = (null == in.getAnlycount())?"":in.getAnlycount();
+            	 System.out.println(in.getAnlycount());
              %>
             	   <tr id="<%=in.getId() %>" class="asc">   
 		 
@@ -142,8 +155,8 @@ function inventory(inventory,type){
         			   <td align="center"><%=in.getProductname() %> </td>
         			   <td align="center"><%=in.getCount() %> </td>
         			   <td align="center"> 
-        			  <input type="hidden" name="product" value="k" />
-        			  <input type="text" name="k" id="k"  value="k" /> 
+        			  <input type="hidden" name="product" value="<%=in.getId() %>" />
+        			  <input type="text" name="<%=in.getId() %>"  id="<%=in.getId() %>"  value="<%=in.getAnlycount()==0?"":in.getAnlycount() %>" /> 
         			
         			  </td>
                        </tr>

@@ -205,7 +205,7 @@ function check(){
         			  <td align="center"><%=in.getType() %> </td>   
         			  <td align="center"><%=in.getPapercount() %> </td>   
         			  <td align="center"><%=in.getRealcount() %> </td>   
-        			  <td align="center"><%=list.get(in.getType()) %> </td> 
+        			  <td align="center"><%=list.get(in.getType())*(-1) %> </td> 
         			  <td align="center"><%=branchtype %> </td>  
         			  <td align="center"> 
         			  <input type="hidden" name="product" value="<%=in.getTypeid() %>"/>
@@ -219,14 +219,17 @@ function check(){
             	  <%
                 }
             	  System.out.println(maptype.size());
-              } %>
+               %>
+		       
 		       
 		       <tr class="asc" >
 		      
 		       <td align="center"  colspan=7> <input type="submit"  style="background-color:;font-size:20px;" value="调货申请" /></td>
 		       </tr> 			
 		        			 
-
+             <% 
+              }
+             %>
     
 </table> 
 </form>
