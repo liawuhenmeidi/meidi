@@ -5,12 +5,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import jxl.Sheet;
 import jxl.Workbook;
 
 
 public class XLSReader {
+	
+	 Properties props=System.getProperties();
+     String osName = props.getProperty("os.name");
+
 	
 	//读取指定位置的xls内容，并解析成UploadOrder对象进行返回
 	public List<UploadOrder> readSuningXLS(String path,String fileName){
@@ -197,9 +202,13 @@ public class XLSReader {
 				Workbook wb = Workbook.getWorkbook(srcFile);
 				Sheet sheet0 = wb.getSheet(0);
 				SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				
 				SimpleDateFormat s1 = new SimpleDateFormat("yy-MM-dd");
+				if(osName.contains("Linux")){
+					s1 = new SimpleDateFormat("MM/dd/yy");
+				}
 				SimpleDateFormat s2 = new SimpleDateFormat("yyyyMMdd");
-				System.out.println(sheet0.getCell(6,2).getContents());
+				
 				String name = sheet0.getCell(1,0).getContents();
 				for(int i = 2 ; i < sheet0.getRows(); i ++){
 					if(sheet0.getCell(0,i).getContents().equals("")){

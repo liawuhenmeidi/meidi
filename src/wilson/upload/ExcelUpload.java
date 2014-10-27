@@ -2,6 +2,7 @@ package wilson.upload;
 
 
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -67,7 +68,8 @@ public class ExcelUpload extends HttpServlet {
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException { 
-		String tempPath = req.getSession().getServletContext().getRealPath("/") + "data\\" + "/tempFile";      
+		String tempPath = req.getSession().getServletContext().getRealPath("/") + "data" + File.separator + "tempFile"; 
+		System.out.println("tempFilePath=" + tempPath);
 		
 		tempFile = new File(tempPath); 
 		if(!tempFile.exists()){
