@@ -188,7 +188,7 @@ public class AfterMatchOrder {
 		if(start<0||start>end||end>inputString.length()){
 			return inputString;
 		}
-		System.out.println("inputString = " + inputString + "start = " + start + "end = " + end);
+		//System.out.println("inputString = " + inputString + "start = " + start + "end = " + end);
 		return inputString.substring(0,start) + "<redTag class=\"style\">" + inputString.substring(start,end) + "</redTag>" + inputString.substring(end);
 	}
 	
@@ -275,14 +275,13 @@ public class AfterMatchOrder {
 		tempUpLoad = this.getUploadOrder().getShop().trim();
 		key = tempDB.replace("苏宁", "").replace("店", "");
 		if(tempUpLoad.contains(key)){
+			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			//精准对比
 			if(tempUpLoad.equals(tempDB)){
-				this.setCompareLevel(this.getCompareLevel() + 1.0);
 				this.setDBSideShop(HighLighter(tempDB));
 				this.setUploadSideShop(HighLighter(tempUpLoad));
 			}else{
 			//模糊对比
-				this.setCompareLevel(this.getCompareLevel() + 0.5);
 				this.setDBSideShop(HighLighter(tempDB,tempDB.indexOf(key),tempDB.indexOf(key) + key.length()));
 				this.setUploadSideShop(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()));
 			}
@@ -293,13 +292,12 @@ public class AfterMatchOrder {
 		tempUpLoad = this.getUploadOrder().getType().trim();
 		key = tempUpLoad.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")", "").replace("（", "").replace("）", "");
 		if(tempDB.contains(key)){
+			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			//精准对比
-			if(tempDB.equals(tempUpLoad)){
-				this.setCompareLevel(this.getCompareLevel() + 1.0);
+			if(tempDB.equals(tempUpLoad)){			
 				this.setDBSideType(HighLighter(tempDB));
 				this.setUploadSideType(HighLighter(tempUpLoad));
 			}else{
-				this.setCompareLevel(this.getCompareLevel() + 0.5);
 				this.setDBSideType(HighLighter(tempDB,tempDB.indexOf(key),tempDB.indexOf(key) + key.length()));
 				this.setUploadSideType(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()));
 			}

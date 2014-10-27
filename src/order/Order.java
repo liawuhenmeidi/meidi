@@ -740,10 +740,7 @@ public String getSendType(){
 	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
 		OrderProductManager.resetOrPMap();
 	}
-System.out.println(this.getId());
-if(this.getId() == 26){
-	System.out.println(this.getId());
-}
+
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	if(null != lists){	
 		for(int g = 0 ;g<lists.size();g++){

@@ -828,10 +828,10 @@ logger.info(sql);
 			throws UserNotFoundException, PasswordNotCorrectException, UnsupportedEncodingException {
 		User u = null;
 		Connection conn = DB.getConn();
-logger.info(username);
+
 		 
 		String sql = "select * from mduser where username = '" + username + "' and statues = 1;";
-		System.out.print(sql); 
+		logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		try {
