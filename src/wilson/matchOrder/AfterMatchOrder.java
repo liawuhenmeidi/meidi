@@ -204,12 +204,13 @@ public class AfterMatchOrder {
 		
 		String key = "";
 		//对比posNo
-		String tempDB = this.getDBOrder().getPos().trim();
-		String tempUpLoad = this.getUploadOrder().getPosNo().trim();
+		String tempDB = this.getDBOrder().getPos().toUpperCase().trim();
+		String tempUpLoad = this.getUploadOrder().getPosNo().toUpperCase().trim();
 		if(tempDB.equals(tempUpLoad)){
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setDBSidePosNo(HighLighter(tempDB));
 			this.setUploadSidePosNo(HighLighter(tempUpLoad));
+			
 		}else{
 		//模糊对比posNo
 			
@@ -251,8 +252,8 @@ public class AfterMatchOrder {
 		tempUpLoad = this.getUploadOrder().getSaleTime();
 		tempDB = tempDB.length() > 10 ? tempDB.substring(0,10):tempDB;
 		if(tempDB.replace("-", "").equals(tempUpLoad)){
-			//先不在这里增加对比等级了
-			//this.setCompareLevel(this.getCompareLevel() + 1.0);
+			
+			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setDBSideSaleTime(HighLighter(tempDB));
 			this.setUploadSideSaleTime(HighLighter(tempUpLoad));
 		}else{
@@ -288,9 +289,9 @@ public class AfterMatchOrder {
 		}
 		
 		//对比型号
-		tempDB = this.getDBOrder().getSendType().trim();
-		tempUpLoad = this.getUploadOrder().getType().trim();
-		key = tempUpLoad.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")", "").replace("（", "").replace("）", "");
+		tempDB = this.getDBOrder().getSendType().trim().replace("(", "").replace(")", "").replace("（", "").replace("）", "");
+		tempUpLoad = this.getUploadOrder().getType().trim().replace("(", "").replace(")", "").replace("（", "").replace("）", "");
+		key = tempUpLoad.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
 		if(tempDB.contains(key)){
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			//精准对比
@@ -299,7 +300,7 @@ public class AfterMatchOrder {
 				this.setUploadSideType(HighLighter(tempUpLoad));
 			}else{
 				this.setDBSideType(HighLighter(tempDB,tempDB.indexOf(key),tempDB.indexOf(key) + key.length()));
-				this.setUploadSideType(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()));
+				this.setUploadSideType(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()));	
 			}
 		}		
 					

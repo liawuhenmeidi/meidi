@@ -43,7 +43,7 @@ public class MatchOrder {
 			for(int j = 0 ; j < unCheckedDBOrders.size() ; j ++){	
 				Order tempDBO = unCheckedDBOrders.get(j);
 				
-				if(tempUo.getPosNo().equals(tempDBO.getPos())){
+				if(tempUo.getPosNo().toUpperCase().equals(tempDBO.getPos().toUpperCase())){
 					amo = new AfterMatchOrder(tempUo,tempDBO);
 					amo.calcLevel();
 					matchedOrders.add(amo);
@@ -79,10 +79,9 @@ public class MatchOrder {
 	//模糊对比，如果认为对比成功则返回true，否则返回false
 	private boolean fuzzyCompare(UploadOrder tempUo, Order tempDBO) {
 		boolean flag = false;
-		AfterMatchOrder amo ;
 		String key = "";
 		
-		int level = 0 ; //相似等级 3项相同，就给弄一起吧
+		int level = 0 ; //相似等级 2项相同，就给弄一起吧
 		//如果销售时间相同
 		if(tempDBO.getSaleTime().replace("-", "").equals(tempUo.getSaleTime())){
 			level += 1;
@@ -107,7 +106,7 @@ public class MatchOrder {
 			level += 1;
 		}
 		
-		if(level >= 3){
+		if(level >= 2){
 			flag = true;
 		}			
 			
