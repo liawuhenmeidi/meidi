@@ -80,11 +80,6 @@ public class MatchOrder {
 	private boolean fuzzyCompare(UploadOrder tempUo, Order tempDBO) {
 		boolean flag = false;
 		String key = "";
-		
-		if(tempDBO.getPos().equals("D01949302")  && tempUo.getPosNo().equals("D01851930")){
-			System.out.println("a");
-		}
-			
 			
 		int level = 0 ; //相似等级 2项相同，就给弄一起吧
 		//如果销售时间相同
