@@ -81,6 +81,11 @@ public class MatchOrder {
 		boolean flag = false;
 		String key = "";
 		
+		if(tempDBO.getPos().equals("D01949302")  && tempUo.getPosNo().equals("D01851930")){
+			System.out.println("a");
+		}
+			
+			
 		int level = 0 ; //相似等级 2项相同，就给弄一起吧
 		//如果销售时间相同
 		if(tempDBO.getSaleTime().replace("-", "").equals(tempUo.getSaleTime())){
@@ -89,7 +94,7 @@ public class MatchOrder {
 		}
 		
 		//而且票面数量一样
-		if(String.valueOf(tempUo.getNum()).equals(tempDBO.getSendCount())){
+		if(String.valueOf(tempUo.getNum()).replace("|", "").equals(tempDBO.getSendCount().replace("|", ""))){
 			level += 1;
 		}
 		
