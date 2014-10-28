@@ -29,7 +29,7 @@ if((Order.orderinstall+"").equals(type)){
 	username = usermap.get(order.getSendId()).getUsername();
 }else if((Order.returns+"").equals(type)  || (Order.orderreturn+"").equals(type)){
 	message = "退货单"; 
-	htmlname = "退货员";  
+	htmlname = "退货员";   
 	username = usermap.get(order.getReturnid()).getUsername();
 }else if((Order.ordersong+"").equals(type)){
 	message = "只安装(门店提货)"; 
@@ -44,10 +44,7 @@ if((Order.orderinstall+"").equals(type)){
 	message = "退货单"; 
 	htmlname = "退货员";  
 	username = usermap.get(Integer.valueOf(uid)).getUsername();
-	//Order.deliveryStatuesTuihuo
 }
-
-
 
 int iddd = 0;
 
@@ -55,8 +52,8 @@ int iddd = 0;
 User send = usermap.get(order.getDealsendId());  
 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
-
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
+ 
+Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();  
 Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 
 SimpleDateFormat df2 = new SimpleDateFormat("yyyy年MM月dd日");

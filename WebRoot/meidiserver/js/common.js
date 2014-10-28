@@ -1,5 +1,25 @@
 var index = "";//当前焦点的ID//行点击事件，参数
  
+$(function () { 
+	$("#wrap").bind("scroll", function(){ 
+
+		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
+	        //滚动了竖直滚动条
+	        pre_scrollTop=($("#wrap").scrollTop() || document.body.scrollTop);
+	       
+	        if(obj_th){
+	            obj_th.style.top=($("#wrap").scrollTop() || document.body.scrollTop)+"px";
+	        }
+	    }
+	    else if(pre_scrollLeft != (document.documentElement.scrollLeft || document.body.scrollLeft)){
+	        //滚动了水平滚动条
+	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
+	    }
+		}); 
+
+}); 
+
+
 function updateClass(obj) { 
 	
 	 if (obj.id != index) { //点击了非当前焦点的行

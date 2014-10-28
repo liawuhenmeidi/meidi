@@ -21,7 +21,7 @@ if(!StringUtill.isNull(branchName)){
 		b = BranchService.gerBranchByname(branchName);
 	}
 	branchid = b.getId()+""; 
-} 
+}  
 
 List<InventoryBranch>  listInventory = null ;
 Map<String,Integer> list = null ;
@@ -174,6 +174,9 @@ function check(){
 <form action="InventoryServlet" method="post" onsubmit="return check()">
 <input type="hidden" name="method" value="addsubscribe"/>
 <input type="hidden" name="inbranch" value="<%=branchid%>"/>
+ 
+<input type="hidden" name="starttime" value="<%=starttime %>"/>
+<input type="hidden" name="endtime"  value="<%=endtimeH %>"/>
 
 <table  cellspacing="1" id="table" >
 		<tr id="th">  

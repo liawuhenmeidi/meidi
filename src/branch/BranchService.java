@@ -2,7 +2,7 @@ package branch;
 
 import java.util.List;
 import java.util.Map;
-
+ 
 public class BranchService {
 	public static boolean flag = false ;
     public static Map<Integer,Branch>  map = null;
@@ -10,16 +10,18 @@ public class BranchService {
     public static Map<String,Branch> nameMap = null ;
    
 	public static Map<Integer, Branch> getMap() {
-		if(map == null || flag ){
+		if(map == null){
 			map = BranchManager.getIdMap();
 		}
+		init();
 		return map ;
 	}
     
 	public static Map<String, Branch> getNameMap() {
-		if(nameMap == null || flag ){
+		if(nameMap == null){
 			nameMap = BranchManager.getNameMap();
 		}
+		init();
 		return nameMap ;
 	}
 	
@@ -28,17 +30,20 @@ public class BranchService {
 	} 
 	
 	public static List<Branch> getList() {
-		if(list == null || flag ){ 
+		if(list == null){ 
 			list = BranchManager.getLocate(); 
 		}
+		init();
 		return list ;
 	}
  
-   public static void restartMap() {
-	  map = BranchManager.getIdMap();
-   }	
    
-   public static void restartList() {
-	   list = BranchManager.getLocate(); 
-	}
+   public static void init(){
+	   if(flag){
+		   map = BranchManager.getIdMap(); 
+		   list = BranchManager.getLocate();
+		   nameMap = BranchManager.getNameMap();
+	   }
+	   flag = false ;
+   }
 }

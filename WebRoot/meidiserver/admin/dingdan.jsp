@@ -3,11 +3,8 @@
 <%          
     
 sort= "andate asc";
-
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
-
 session.setAttribute("exportList", list);
-
 count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);    
 
 %>
@@ -62,41 +59,7 @@ var pgroup = "<%=pgroup%>";
 var usermapstr = <%=usermapstr%>;
 var opstatues = "<%=opstatues%>"; 
 var inventory = "";  
-$(function () { 
-	$("#wrap").bind("scroll", function(){ 
 
-		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
-	        //滚动了竖直滚动条
-	        pre_scrollTop=($("#wrap").scrollTop() || document.body.scrollTop);
-	       
-	        if(obj_th){
-	            obj_th.style.top=($("#wrap").scrollTop() || document.body.scrollTop)+"px";
-	        }
-	    }
-	    else if(pre_scrollLeft != (document.documentElement.scrollLeft || document.body.scrollLeft)){
-	        //滚动了水平滚动条
-	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
-	    }
-		}); 
-
-}); 
-     
-     
-function getinventory(uid,types){
-	$.ajax({ 
-        type: "post",  
-         url: "server.jsp",   
-         data:"method=getinventory&types="+types+"&uid="+uid,
-         dataType: "",  
-         success: function (data) { 
-        	 inventory = data; 
-           alert(data);
-           },  
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-            } 
-           });  
-}     
-      
 function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	var uid = $("#"+str1).val();
 	var saleid = $("#"+str1).val();
@@ -276,7 +239,6 @@ function searchlocate(id){
 
  
 function adddetail(src){ 
-	//window.location.href=src ;
 	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 
@@ -302,7 +264,7 @@ function adddetail(src){
 </div>
 
 <jsp:include page="search.jsp">
- <jsp:param name="page" value="<%=pageNum %>" />
+    <jsp:param name="page" value="<%=pageNum %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  
 	<jsp:param name="count" value="<%=count %>"/> 

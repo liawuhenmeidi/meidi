@@ -1,9 +1,12 @@
-<%@ page language="java" import="java.util.*,inventory.*,branch.*,category.*,branchtype.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,inventory.*,branch.*,category.*,branchtype.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user");
-  
-List<Inventory> invetorylist = InventoryManager.getCategoryAnalyze(user,"unconfirmed"); 
+String type = request.getParameter("type");
+if(StringUtill.isNull(type)){
+	type = "unconfirmed";
+}
+List<Inventory> invetorylist = InventoryManager.getCategoryAnalyze(user,type); 
 
 Map<Integer,Branch> branchmap = BranchService.getMap();
 %>
@@ -42,9 +45,13 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
      
      <div class="">
    <div class="weizhi_head">现在位置：单据管理
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     
+<a href="analyzrecepts.jsp?type=confirmed">查看已确认单据</a>
+
+
    </div>    
-       
+     
+ 
    <div class="table-list">
 <div class="btn">
 <table width="100%"  cellspacing="1" id="table">

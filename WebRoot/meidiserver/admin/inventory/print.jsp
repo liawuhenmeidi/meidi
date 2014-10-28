@@ -81,7 +81,7 @@ List<InventoryMessage> list = inventory.getInventory();
 	  InventoryMessage in = list.get(i); 
   %> 			
     <tr>
-      <td width="4%" height="30" align="center" valign="middle" id="d"></td>
+      <td width="4%" height="30" align="center" valign="middle" id="d"><%=i+1 %></td>
       <td width="9%" height="30" align="center" valign="middle" id="d">品类</td> 
       <td width="17%" height="30" align="center"  id="d">&nbsp;<%=categorymap.get(in.getCategoryId()).getName() %></td>
       <td width="11%" height="30" align="center" valign="middle" id="d">型号</td> 

@@ -26,16 +26,17 @@ public class HttpRequestUtill {
     					sear += "now()";
     				}      
     			}else if("sendtype".equals(str)){
-    				String strr = request.getParameter(str); 
+    				String strr = request.getParameter(str);
+    				
     				if(strr != "" && strr != null){   
     					//sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-    					sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%' and statues = 0)";
+    					sear += " and id in (select orderid  from mdorderproduct where " + str + " in ( select id from mdproduct where ptype like '%" + strr +"%' )  and statues = 0)";
     				}  // giftName
     			}else if("saletype".equals(str)){
     				String strr = request.getParameter(str);  
     				if(strr != "" && strr != null){   
     					//sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%')";
-    					sear += " and id in (select orderid  from mdorderproduct where " + str + " like '%" + strr +"%' and statues = 1)";
+    					sear += " and id in (select orderid  from mdorderproduct where " + str + " in ( select id from mdproduct where ptype like '%" + strr +"%' )  and statues = 1)";
     				}  // giftName
     			}else if("categoryname".equals(str)){
     				String strr = request.getParameter(str); 

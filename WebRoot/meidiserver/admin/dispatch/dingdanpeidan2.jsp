@@ -601,10 +601,12 @@ function adddetail(src){
 		
 		<%
           }
+		if( null != usermap.get(Integer.valueOf(o.getReturnid()))){
 		%>
 		 
 		 <%=usermap.get(Integer.valueOf(o.getReturnid())).getUsername() %>
 		<%  
+		}
 		}
 		%>
 		</td> 

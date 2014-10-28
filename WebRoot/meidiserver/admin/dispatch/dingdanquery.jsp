@@ -362,12 +362,13 @@ function orderPrint(id,statues){
      <%
      int statues = OrderManager.getShifangStatues(o);
      int shifang = -1 ;  
-     boolean query = false ;
+     boolean query = true;
 	if(statues != -1){
 		
 		if(opmap.get(statues) != null){
 			OrderPrintln orp = opmap.get(statues).get(o.getId());    
-			if(orp != null){ 
+			if(orp != null){
+				query = false ;
 				shifang = orp.getStatues();
 				if(shifang == 4 ){
 					query = true ;

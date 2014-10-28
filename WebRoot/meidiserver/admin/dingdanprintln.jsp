@@ -2,7 +2,7 @@
  
 <%@ include file="searchdynamic.jsp"%>
  
-<% 
+<%  
 long start = System.currentTimeMillis();
 
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.serach,num,Page,sort,sear); 
@@ -374,13 +374,22 @@ function orderPrint(id,statues,type,deliveryStatues){
 		<% if(flag){ %>
 		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>
 		<%} %> 
+
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
+				  <% 
+ long end20 = System.currentTimeMillis();
+ System.out.println("endAa"+(end20-end0)); 
+ %>			
 		<td align="center"><%=o.getbranchName(o.getBranch())%></td> 
 
-		
+  <% 
+ long end2 = System.currentTimeMillis();
+ System.out.println("endaa"+(end2-end20)); 
+ %>
 		<td align="center"> 		  
 		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
-		</td> 
+		</td>
+				 
 		<% 
 		String tdcol = " bgcolor=\"red\"" ;
 		
@@ -397,10 +406,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 		%>
 		
 		</td>  
-  <% 
- long end2 = System.currentTimeMillis();
- System.out.println("endaa"+(end2-end0)); 
- %>			
+		
 	    
 		  <td align="center"><%= o.getCategory(1,"</p>")%></td>    
 		  <td align="center" ><%=o.getSendType(1,"</p>")%></td>    

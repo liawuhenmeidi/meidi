@@ -695,7 +695,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 		  
 	  String str = "";
 	  if(num != -1){
-		 str = "  limit " + ((page-1)*num)+","+ page*num ; 
+		 str = "  limit " + ((page-1)*num)+","+num ; 
 	  }
 	  
 	  List<Order> Orders = new ArrayList<Order>();

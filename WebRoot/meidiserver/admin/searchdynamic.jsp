@@ -38,7 +38,12 @@ if("searched".equals(searched)){
 	sear = HttpRequestUtill.getSearch(request);
 	session.setAttribute("sear", sear); 
 }
-  
+ 
+//if("searched".equals(searched)){
+//	sear = HttpRequestUtill.getSearch(request);
+//	session.setAttribute("sear", sear); 
+//}
+
 // 用户id
 int id = user.getId();   
 

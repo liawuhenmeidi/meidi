@@ -36,10 +36,10 @@ public class BranchManager {
 		listsql.add(sqlall);
 		
 		if(!StringUtill.isNull(branch.getBranchids())){
-			String[] strlist = branch.getBranchids().split(",");
+			String[] strlist = branch.getBranchids().split("_");
 			for(int i=0;i<strlist.length;i++){
 				String id = strlist[i];
-				String sql1 = "insert into relatebranch (id,branchid,relatebranchid) values (null,"+branch.getId()+","+id+") ";
+				String sql1 = "insert into relatebranch (id,branchid,relatebranchid) values (null,"+branch.getId()+",'"+id+"') ";
 			    listsql.add(sql1);
 			}
 		}
@@ -271,6 +271,7 @@ public class BranchManager {
 			Map<Integer,Branch> map = new HashMap<Integer,Branch>();
 			Connection conn = DB.getConn(); 
 			String sql = "select * from mdbranch ";
+logger.info(sql);			
 			Statement stmt = DB.getStatement(conn); 
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {  

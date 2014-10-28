@@ -1,14 +1,12 @@
 package servlet;
 
 import inventory.Inventory;
+import inventory.InventoryAnalyze;
 import inventory.InventoryBranchManager;
 import inventory.InventoryManager;
 import inventory.InventoryMessage;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList; 
 import java.util.List;
 
@@ -22,10 +20,7 @@ import org.apache.commons.logging.LogFactory;
 
 import branch.BranchManager;
 
-import database.DB;
-
 import product.Product;
-import product.ProductManager;
 import product.ProductService;
 
 import user.User;
@@ -185,11 +180,25 @@ System.out.println(type+"type");
          
  		//String outbranch = request.getParameter("outbranch");
  		String inbranch = request.getParameter("inbranch");
- 		 
+ 		
+ 		String starttime = request.getParameter("starttime");
+ 		
+ 		String endtime = request.getParameter("endtime");
+ 		
+ 		InventoryAnalyze in = new InventoryAnalyze();
+ 		
+ 		in.setStarttime(starttime);
+ 		
+ 		in.setEndtime(endtime);
+ 		
+ 		String remark = StringUtill.GetJson(in);
+ 
+ 		System.out.println(remark );
  		//int outbranchid = BranchManager.getBranchID(outbranch);
  		//int inbranchid = BranchManager.getBranchID(inbranch); 
  		
- 		//String remark = request.getParameter("remark");   
+ 		//String remark = request.getParameter("remark");  
+ 		
  		  
  		List<InventoryMessage> inventoryMessage = new ArrayList<InventoryMessage>();
  		  
@@ -214,7 +223,7 @@ System.out.println(type+"type");
  		inventory.setOutbranchid(Integer.valueOf(user.getBranch()));
  		inventory.setIntime(time);   
  		inventory.setUid(uid);  
- 		//inventory.setRemark(remark);
+ 		inventory.setRemark(remark);
  		inventory.setInventory(inventoryMessage); 
  		inventory.setIntype(2);  
  		InventoryManager.save(user, inventory); 
@@ -232,18 +241,24 @@ System.out.println(type+"type");
   		
   		String[] producs = request.getParameterValues("product"); 
   		
+  		String add = request.getParameter("add");
   		List<String> sqls = new ArrayList<String>();
   		
   		for(int i=0;i<producs.length;i++){      
   			String type =producs[i];
-  			String count = request.getParameter(producs[i]);
-  					
-  			String sql = "update inventorymessage set anlycount = " + count + "   where id = " + type ;
-  		   
-  			String sql1 = "update inventory set instatues = 1 where id in (select inventoryId from inventorymessage where id = "+type+")";
-  			 sqls.add(sql);
-  			 sqls.add(sql1);
-  		 
+  			if("inbranch".equals(add)){
+	  			String count = request.getParameter(producs[i]);	
+	  			String sql = "update inventorymessage set anlycount = " + count + "   where id = " + type ;
+	  		   
+	  			String sql1 = "update inventory set instatues = 1 where id in (select inventoryId from inventorymessage where id = "+type+")"; 
+	  			 sqls.add(sql);
+	  			 sqls.add(sql1);
+  			
+  			}else if("outbranch".equals(add)){
+  				String count = request.getParameter("real"+producs[i]);	
+	  			String sql = "update inventorymessage set count = " + count + "   where id = " + type ;
+	  			 sqls.add(sql); 			
+  			} 
   		}
   		
   	   DBUtill.sava(sqls);

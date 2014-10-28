@@ -3,7 +3,7 @@
 <%   
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user");
-String message = "送货安装单"; 
+String message = ""; 
 boolean flagdiagma = false ;
 String id = request.getParameter("id");
 String type = request.getParameter("type");
@@ -18,22 +18,24 @@ if((Order.deliveryStatuesTuihuo+"").equals(type)){
 	if(usermap.get(Integer.valueOf(uid)) != null){
 		dealsendName = usermap.get(Integer.valueOf(uid)).getUsername();
 	}
-	
 }else if((Order.dingma+"").equals(type)){
 	message = "调账单";  
 	flagdiagma = true ; 
 } 
-
+  
 String deliveryStatues = request.getParameter("deliveryStatues");
-if((9+"").equals(deliveryStatues)){
-	message = "只安装(门店提货)"; 
+
+if((0+"").equals(deliveryStatues)){
+	message = "需派送单"; 
+}else if((9+"").equals(deliveryStatues)){
+	message = "只安装(门店提货)单"; 
 }else if((10+"").equals(deliveryStatues)){
-	message = "只安装(顾客已提)"; 
+	message = "只安装(顾客已提)单"; 
 }else if((8+"").equals(deliveryStatues)){
 	if((2+"").equals(dingma)){
-		message = "顶码销售单";  
+		message = "已自提单";  
 	}else { 
-		message = "普通销售单";
+		message = "已自提单";
 	}
 	  
 }else {
@@ -44,14 +46,9 @@ if((9+"").equals(deliveryStatues)){
    
 int iddd = 0;
 
-
-
-
- 
-
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
+Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(); 
 Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 
 %> 
