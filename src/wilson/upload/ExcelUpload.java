@@ -107,18 +107,18 @@ public class ExcelUpload extends HttpServlet {
 						type = item.getString("UTF-8");
 						if(type.equals("1")){
 							//苏宁excel
-							directUrl = "/meidi/meidiserver/admin/suningExcelUpload.jsp?fileName=";
+							directUrl = "./admin/suningExcelUpload.jsp?fileName=";
 							filePath = suningFilePath;
 						}else if(type.equals("2")){
 							//提成标准
-							directUrl = "/meidi/meidiserver/admin/salaryModelUpload.jsp?fileName=";
+							directUrl = "./admin/salaryModelUpload.jsp?fileName=";
 							filePath = salaryFilePath;
 						}else if(type.equals("3")){
 							//销售单上传
-							directUrl = "/meidi/meidiserver/admin/salesUpload.jsp?fileName=";
+							directUrl = "./admin/salesUpload.jsp?fileName=";
 							filePath = salesFilePath;
 						}else{
-							directUrl = "/meidi/meidiserver/admin/excelUpload.jsp?fileName=";
+							directUrl = "./admin/excelUpload.jsp?fileName=";
 							res.sendRedirect(directUrl+fileName);
 							return;
 						}

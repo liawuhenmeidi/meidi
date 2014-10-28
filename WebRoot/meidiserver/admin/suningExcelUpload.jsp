@@ -16,7 +16,7 @@
 	
 	if(confirm != null && confirm != "" && confirm.equals("confirm")){
 		confirmResult = UploadManager.saveSuningFileToDB(filePath,fileName);
-		response.sendRedirect("/meidi/meidiserver/admin/excelUpload.jsp");
+		response.sendRedirect("./excelUpload.jsp");
 		return;
 	}else{
 		if(fileName != null && fileName != "" && !fileName.equals("")){			

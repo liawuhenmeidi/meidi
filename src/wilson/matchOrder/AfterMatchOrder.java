@@ -20,6 +20,8 @@ public class AfterMatchOrder {
 	private String UploadSideCount = "";
 	private int UploadSideOrderId = 0;
 	
+	private Order duplicateDBOrder = null;
+
 	
 	public void initDBSideOrder(Order dbOrder){
 		setDBOrder(dbOrder);
@@ -305,6 +307,14 @@ public class AfterMatchOrder {
 		}		
 					
 			
+	}
+
+	public Order getDuplicateDBOrder() {
+		return duplicateDBOrder;
+	}
+
+	public void setDuplicateDBOrder(Order duplicateDBOrder) {
+		this.duplicateDBOrder = duplicateDBOrder;
 	}
 	
 	

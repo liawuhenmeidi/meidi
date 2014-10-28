@@ -1,21 +1,27 @@
 package wilson.upload;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import jxl.Sheet;
 import jxl.Workbook;
+import jxl.read.biff.BiffException;
 
 
 public class XLSReader {
 	
 	 Properties props=System.getProperties();
      String osName = props.getProperty("os.name");
-
+     protected static Log logger = LogFactory.getLog(XLSReader.class);
 	
 	//读取指定位置的xls内容，并解析成UploadOrder对象进行返回
 	public List<UploadOrder> readSuningXLS(String path,String fileName){
@@ -194,45 +200,58 @@ public class XLSReader {
 				return null;
 			}
 			
+			logger.info("系统是" + osName);
+			
 			String filepath = path.replace("\\", "/");
 			List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
 			UploadOrder uo = new UploadOrder();
-			try{
-				File srcFile = new File(filepath,fileName); 
-				Workbook wb = Workbook.getWorkbook(srcFile);
-				Sheet sheet0 = wb.getSheet(0);
-				SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				
-				SimpleDateFormat s1 = new SimpleDateFormat("yy-MM-dd");
-				if(osName.contains("Linux")){
-					s1 = new SimpleDateFormat("MM/dd/yy");
-				}
-				SimpleDateFormat s2 = new SimpleDateFormat("yyyyMMdd");
-				
-				String name = sheet0.getCell(1,0).getContents();
-				for(int i = 2 ; i < sheet0.getRows(); i ++){
-					if(sheet0.getCell(0,i).getContents().equals("")){
-						continue;
-					}
-					uo.setName(name);
-					uo.setShop(sheet0.getCell(1,i).getContents());
-					uo.setType(sheet0.getCell(2,i).getContents());
-					uo.setSaleManName(sheet0.getCell(3,i).getContents());
-					uo.setSalePrice(Double.parseDouble(sheet0.getCell(4,i).getContents()));
-					uo.setNum(Integer.parseInt(sheet0.getCell(5,i).getContents()));
-					uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents())));
-					uo.setFileName(srcFile.getName());
-					uo.setChecked(0);
-					uo.setCheckedTime(fmt.format(new Date()));
-					uo.setCheckOrderId(-1);
-					UploadOrders.add(uo);
-					uo = new UploadOrder();
-				}
-		        wb.close();
-			}catch (Exception e){
+			
+			File srcFile = new File(filepath,fileName); 
+			Workbook wb = null;
+			try {
+				wb = Workbook.getWorkbook(srcFile);
+			} catch (BiffException e) {
 				e.printStackTrace();
-				return null;
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+			Sheet sheet0 = wb.getSheet(0);
+			SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			SimpleDateFormat s1 = new SimpleDateFormat("yy-MM-dd");
+			SimpleDateFormat s2 = new SimpleDateFormat("yyyyMMdd");
+			
+			String name = sheet0.getCell(1,0).getContents();
+			for(int i = 2 ; i < sheet0.getRows(); i ++){
+				if(sheet0.getCell(0,i).getContents().equals("")){
+					continue;
+				}
+				uo.setName(name);
+				uo.setShop(sheet0.getCell(1,i).getContents());
+				uo.setType(sheet0.getCell(2,i).getContents());
+				uo.setSaleManName(sheet0.getCell(3,i).getContents());
+				uo.setSalePrice(Double.parseDouble(sheet0.getCell(4,i).getContents()));
+				uo.setNum(Integer.parseInt(sheet0.getCell(5,i).getContents()));
+				try {
+					uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents())));
+				} catch (ParseException e) {
+					s1 = new SimpleDateFormat("MM/dd/yy");
+					try {
+						uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents())));
+					} catch (ParseException e1) {
+						e.printStackTrace();
+						return UploadOrders;
+					}
+				}
+				uo.setFileName(srcFile.getName());
+				uo.setChecked(0);
+				uo.setCheckedTime(fmt.format(new Date()));
+				uo.setCheckOrderId(-1);
+				UploadOrders.add(uo);
+				uo = new UploadOrder();
+			}
+	        wb.close();
+			
 			return UploadOrders;
 		}
 }

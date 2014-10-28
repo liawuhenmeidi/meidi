@@ -91,7 +91,7 @@ td {
   <a href="../modelDownload?name=xiaoshoudanmuban"><font style="color:red;font-size:20px;" >销售单模板</font> </a>
   
 
-  <form action="/meidi/meidiserver/ExcelUpload" method="post" enctype ="multipart/form-data" runat="server"> 
+  <form action="../ExcelUpload" method="post" enctype ="multipart/form-data" runat="server"> 
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
       <font style="color:red;font-size:20px;" >导入数据 : </font>
       <input id="File1" runat="server" name="UpLoadFile" type="file" /> 
