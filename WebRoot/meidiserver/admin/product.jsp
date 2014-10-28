@@ -95,7 +95,7 @@ if(!StringUtill.isNull(categoryID)){
    <div class="main_r_tianjia">
    
    <ul>                                                                                                 
-     <li><a href="productAdd.jsp?categoryID=<%=categoryID%>">添加产品</a></li>
+     <li><a href="productAdd.jsp?categoryID=<%=categoryID%>&method=add">添加产品</a></li>
       <li><a href="category.jsp">返回</a></li>
      </ul>
    </div> 
@@ -109,6 +109,7 @@ if(!StringUtill.isNull(categoryID)){
 		<!--	<th align="left">产品类别ID</th>  -->
 			<th align="left">产品序号</th>
 			<th align="left">产品型号</th>
+			<th align="left">修改</th>
 		</tr>
 	</thead>
 <tbody>
@@ -124,6 +125,7 @@ if(!StringUtill.isNull(categoryID)){
 	<!-- 	<td align="left"><%=product.getId() %></td> -->
 		<td align="left"><%=i+1 %></td> 
 		<td align="left"><%=product.getType() %></td> 
+		<td align="left"><a href="productAdd.jsp?productid=<%=product.getId() %>&method=update&categoryID=<%=categoryID%>">[修改]</a></td> 
     </tr>
     <% } %>
 </tbody>

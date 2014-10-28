@@ -74,7 +74,7 @@ logger.info(pstmt);
 
 						Order oldOrder = OrderManager.getOrderID(user, oid);
 						 
-						Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
+						Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(); 
 						Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 					    List<OrderProduct> listp = OrPMap.get(oid);
 					    for(int i=0;i<listp.size();i++){

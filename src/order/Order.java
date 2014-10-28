@@ -13,6 +13,7 @@ import branch.BranchService;
 
 import category.Category;
 import category.CategoryManager;
+import category.CategoryService;
 
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
@@ -652,7 +653,7 @@ public String getCategory(){
 		OrderProductManager.resetOrPMap();
 	}
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
-	HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
+	HashMap<Integer,Category> categorymap = CategoryService.getmap();
 	 if(null != lists){
 		for(int g = 0 ;g<lists.size();g++){   
 			String tempType = categorymap.get(Integer.valueOf(lists.get(g).getCategoryId())).getName();
@@ -664,7 +665,7 @@ public String getCategory(){
 // 赠品
  public String getGifttype(String decollator){    
 	String category = "";   
-	Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(new User());
+	Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
 	 List<Gift> lists = gMap.get(this.getId());  
 	 if(null != lists){
 		     for(int g = 0 ;g<lists.size();g++){
@@ -679,7 +680,7 @@ public String getCategory(){
 
  public String getGifcount(String decollator){   
 		String category = "";   
-		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(new User());
+		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
 		 List<Gift> lists = gMap.get(this.getId()); 
 		 if(null != lists){ 
 			     for(int g = 0 ;g<lists.size();g++){
@@ -689,12 +690,12 @@ public String getCategory(){
 			     }
 			}
 		 } 
-		return category;  
+		return category;   
 	}
   
  public String getGifStatues(String decollator){   
 		String category = "";   
-		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(new User());
+		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
 		 List<Gift> lists = gMap.get(this.getId()); 
 		 if(null != lists){ 
 			     for(int g = 0 ;g<lists.size();g++){
@@ -723,7 +724,7 @@ public String getCategory(int statues,String decollator){
 		OrderProductManager.resetOrPMap();
 	}
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
-	HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
+	HashMap<Integer,Category> categorymap = CategoryService.getmap();
 	if(lists != null){
 		for(int g = 0 ;g<lists.size();g++){     
 			String tempType = categorymap.get(Integer.valueOf(lists.get(g).getCategoryId())).getName();

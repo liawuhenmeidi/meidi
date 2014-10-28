@@ -4,15 +4,26 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 
 String categoryID = request.getParameter("categoryID");
-System.out.println(categoryID);
+String method = request.getParameter("method");
 String action = request.getParameter("action");
+String productID = request.getParameter("productid");
+String name = "";
+if("update".equals(method)){
+	Product p = ProductService.getIDmap().get(Integer.valueOf(productID));
+	name = p.getType(); 
+}
+
 if("add".equals(action)){
-	System.out.println(categoryID);
 	String productName = request.getParameter("name");
-	System.out.println(productName);
 	if(!StringUtill.isNull(productName)){
-		System.out.println(categoryID);
 		ProductManager.save(productName,categoryID);
+		response.sendRedirect("product.jsp?categoryID="+categoryID);
+	}
+}else if("update".equals(action)){
+	String productName = request.getParameter("name");
+	
+	if(!StringUtill.isNull(productName)){
+		ProductManager.update(productName,productID);
 		response.sendRedirect("product.jsp?categoryID="+categoryID);
 	}
 }
@@ -55,13 +66,14 @@ if("add".equals(action)){
      <div class="">    
    <div class="weizhi_head">现在位置：类别:</div>     
    <div class="main_r_tianjia">
-   </div>
-     <div >
+   </div> 
+     <div > 
      <form action="productAdd.jsp"  method = "post"  onsubmit="return check()">
-      <input type="hidden" name="action" value="add"/>
+      <input type="hidden" name="action" value="<%=method%>"/>
       <input type="hidden" name="categoryID" value="<%=categoryID%>"/>
-     <div class="juese_head">产品型号：
-        <input type="text"  id="name" name="name" />      
+      <input type="hidden" name="productid" value="<%=productID%>"/>
+     <div class="juese_head">产品型号：  
+        <input type="text"  id="name" name="name"  value="<%=name%>"/>      
        
     <input type="submit" value="提  交" />
      

@@ -2,8 +2,11 @@
  
 <%@ include file="searchdynamic.jsp"%>
  
-<%   
+<% 
+long start = System.currentTimeMillis();
+
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.serach,num,Page,sort,sear); 
+
 session.setAttribute("exportList", list); 
 count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.serach,num,Page,sort,sear);   
 
@@ -291,8 +294,6 @@ function orderPrint(id,statues,type,deliveryStatues){
 <div style=" height:170px;">
 </div>
 <br/>  
-
- 
 <div id="wrap">
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
@@ -351,6 +352,10 @@ function orderPrint(id,statues,type,deliveryStatues){
 
  <% 
    if(null != list){
+	boolean flag = false ;
+	if(UserManager.checkPermissions(user, Group.Manger)){
+		flag = true ;
+	}
     for(int i = 0;i<list.size();i++){
     	Order o = list.get(i);
     	
@@ -359,15 +364,19 @@ function orderPrint(id,statues,type,deliveryStatues){
     		col = "style='background-color:yellow'";
     	}
   %>
-   
+ <% 
+ long end0 = System.currentTimeMillis();
+ 
+ %>  
+  
   <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
 		<!--  <td align="center"><input type="checkbox" value="1" name="userid[]"/></td> -->
-		<% if(UserManager.checkPermissions(user, Group.Manger)){ %>
+		<% if(flag){ %>
 		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>
 		<%} %> 
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
 		<td align="center"><%=o.getbranchName(o.getBranch())%></td> 
-		
+
 		
 		<td align="center"> 		  
 		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
@@ -387,21 +396,35 @@ function orderPrint(id,statues,type,deliveryStatues){
 		                      o.getPhone1()
 		%>
 		
-		</td> 
+		</td>  
+  <% 
+ long end2 = System.currentTimeMillis();
+ System.out.println("endaa"+(end2-end0)); 
+ %>			
 	    
-		   
 		  <td align="center"><%= o.getCategory(1,"</p>")%></td>    
 		  <td align="center" ><%=o.getSendType(1,"</p>")%></td>    
-		  <td align="center" ><%= o.getSendCount(1,"</p>")%></td>    
-		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
+		  <td align="center" ><%= o.getSendCount(1,"</p>")%></td> 
+		  		   <%  
+ long end1 = System.currentTimeMillis();
+	   System.out.println("enda"+(end1-end2));
+ %>    
+		  <td align="center"><%= o.getCategory(0,"</p>")%></td>
+ 
 		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>  
-		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>   
+		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td> 
+   <% 
+ long end3 = System.currentTimeMillis();
+ System.out.println("endA"+(end3-end1)); 
+ %>	
 		<td align="center" ><%= o.getGifttype("</p>")%></td>  
 		<td align="center" ><%= o.getGifcount("</p>")%></td>  
 		<td align="center" ><%= o.getGifStatues("</p>")%></td>
-		
+
 		<td align="center"><%=o.getSaleTime() %></td>
 		<td align="center"><%=o.getOdate() %></td>
+		
+		
 		<td align="center"><%=o.getDealSendTime() %></td>
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>
@@ -427,7 +450,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 		
 		
 		</td>
-		
+
 		
 		<td align="center" style="white-space:nowrap;">  
 		  <% if(o.getSendId() != 0){
@@ -467,7 +490,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 		 <%
 		  }
 		 %>
-		 
+		
 		</td>
 		<td align="center"> 
 		    <%=o.getStatues4()==0?"否":"是" %> 
@@ -540,6 +563,8 @@ function orderPrint(id,statues,type,deliveryStatues){
 		 }
 		}
 		%>
+		
+			
 		<td align="center"> 
 		<%
 		if(opmap.get(OrderPrintln.modify) != null){
@@ -607,9 +632,17 @@ function orderPrint(id,statues,type,deliveryStatues){
 			
        
     </tr>
-    <%}
+    <%   
+       
+    }
     
-    }%>
+    }
+
+ 
+ long end = System.currentTimeMillis();
+ System.out.println("endD"+(end-start));
+    %>
+ 
  
 </table>
      </div>

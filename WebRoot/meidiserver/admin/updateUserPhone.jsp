@@ -10,7 +10,7 @@ String oldphone = request.getParameter("oldphone");
 <head>
  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>时间</title>
+<title>电话修改</title>
  
 <script type="text/javascript" src="../js/calendar.js"></script> 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>

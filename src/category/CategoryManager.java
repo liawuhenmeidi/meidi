@@ -24,10 +24,10 @@ public class CategoryManager {
 			boolean flag = false ;
 			String[] per = UserManager.getPermission(user);
 			for(int i=0;i<per.length;i++){
-	           if("0".equals(per[i])){
+	           if("0".equals(per[i])){ 
 	        	  flag = true;
 	           }
-			}
+			} 
 			if(flag){
 				Connection conn = DB.getConn();
 				String sql = "insert into mdcategory values (null, ?,null)";
@@ -214,7 +214,7 @@ logger.info(e);
 			try {
 				while (rs.next()) {
 					Category c = CategoryManager.getCategoryFromRs(rs);
-					categorys.put(rs.getInt("id"), c);
+					categorys.put(c.getId(), c);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

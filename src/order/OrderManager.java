@@ -889,7 +889,7 @@ logger.info(sql);
     
      
     public static int getOrderlistcount(User user ,int type,int statues ,int num,int page,String sort,String search){
-  	  
+    	
   	  boolean f = UserManager.checkPermissions(user, Group.Manger);  
   	   
   	  boolean flag = UserManager.checkPermissions(user, type);
@@ -1028,7 +1028,8 @@ logger.info(sql);
   		   count =  0; 
   		   return count ;
   	   }  
-logger.info(sql);   
+logger.info(sql); 
+
   	   Connection conn = DB.getConn();
          Statement stmt = DB.getStatement(conn);
   	     ResultSet rs = DB.getResultSet(stmt, sql);

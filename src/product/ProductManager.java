@@ -311,6 +311,23 @@ logger.info(sql);
 		 
 		}
 		
+		public static void update(String type,String id ){
+			Connection conn = DB.getConn();
+			String sql = "update mdproduct set ptype = ? where id = ?";
+			PreparedStatement pstmt = DB.prepare(conn, sql);
+			try {
+				pstmt.setString(1, type);
+				pstmt.setString(2, id);
+				pstmt.executeUpdate();
+				ProductService.flag = true ;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(pstmt);
+				DB.close(conn);
+			}
+		 
+		}
 		
 		 public static Product getOrderStatuesFromRs(ResultSet rs){
 			 Product p = new Product();  

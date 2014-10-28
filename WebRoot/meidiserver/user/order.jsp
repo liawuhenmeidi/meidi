@@ -46,12 +46,10 @@ if(!StringUtill.isNull(id)){
 
  
 String  branchmessage = branch.getMessage();
-System.out.println(branchmessage);
-
 if(StringUtill.isNull( branchmessage)){ 
 	 branchmessage = "";
 }   
-String[] branlist =  branchmessage.split(",");
+String[] branlist =  branchmessage.split("_");
 
 %> 
    

@@ -19,14 +19,14 @@ if(!StringUtill.isNull(id)){
 	branchoidname = branchold.getLocateName();
 	message = branchold.getMessage();
 	branchids = branchold.getBranchids();
-	//if(!StringUtill.isNull(message)){
-	//	permission = message.split("_");
-	//}
+	if(!StringUtill.isNull(message)){
+		permission = message.split("_");
+	}
 } 
+ 
 
 
-
-//String json = StringUtill.GetJson(permission);
+String json = StringUtill.GetJson(permission);
 
 String action = request.getParameter("action");
 if("add".equals(action)){
@@ -39,7 +39,7 @@ if("add".equals(action)){
     if(permission != null ){  
 		for(int i = 0;i<permission.length;i++){
 			if(!StringUtill.isNull(permission[i])){
-				messagenew += permission[i]+",";
+				messagenew += permission[i]+"_";
 			}
 		} 
 		messagenew = messagenew.substring(0, messagenew.length() -1);
@@ -47,7 +47,7 @@ if("add".equals(action)){
     if(branchid != null ){  
   		for(int i = 0;i<branchid.length;i++){
   			if(!StringUtill.isNull(branchid[i])){
-  				branchidsnew += branchid[i]+",";
+  				branchidsnew += branchid[i]+"_";
   			} 
   		}  
       }
@@ -84,11 +84,11 @@ var jsons = "<%=branchids%>";
 var products = new Array();
 var branchid = new Array();
 $(document).ready(function(){
-	products = json.split(","); 
+	products = json.split("_"); 
 	 for(var i=0;i<products.length;i++){
 		 $("#"+products[i]).attr("checked","checked");
 	 }
-	branchid = jsons.split(","); 
+	branchid = jsons.split("_"); 
 	for(var i=0;i<branchid.length;i++){
 		 $("#"+branchid[i]).attr("checked","checked");
 	 }

@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import order.Order;
+import orderproduct.OrderProduct;
+import orderproduct.OrderProductManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,14 +22,17 @@ import database.DB;
 	    
 	public class GiftManager {  
 		 protected static Log logger = LogFactory.getLog(GiftManager.class);
-		
 		 
-		 public static Map<Integer,List<Gift>> getOrderStatuesM(User user){
+		 public static Map<Integer,List<Gift>> OrPMap; 
+		 
+		 
+		 public static Map<Integer,List<Gift>> getOrderStatues(User user){
 			   
     	    Map<Integer,List<Gift>> Orders = new HashMap<Integer,List<Gift>>();
 		    Connection conn = DB.getConn();
 			Statement stmt = DB.getStatement(conn);
-			String sql = "select * from  mdordergift ";  
+			String sql = "select * from  mdordergift "; 
+			logger.info(sql); 
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try { 
 				while (rs.next()) {
@@ -38,7 +43,8 @@ import database.DB;
 						Orders.put(Order.getOrderId(),list);
 					}  
 					list.add(Order);
-				}
+				} 
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -49,6 +55,19 @@ import database.DB;
 			return Orders;
 	 }
 		
+		 public static Map<Integer,List<Gift>> getOrderStatuesM(){
+					if(OrPMap == null){
+						OrPMap = GiftManager.getOrderStatues(new User());
+					}
+					return OrPMap;
+		 }
+		 
+		 
+		 public static Map<Integer,List<Gift>> resetOrPMap(){
+			 OrPMap = GiftManager.getOrderStatues(new User()); 
+			 return OrPMap;
+		}
+		 
 			public static void save(User user,Gift Gift) {
 				boolean flag = false ;
 				String[] per = UserManager.getPermission(user);

@@ -47,6 +47,10 @@ List<Category> list =CategoryManager.getCategory(user,Category.sale) ;
 		 }
 	}
 	
+	function detatil(id){
+		window.location.href="product.jsp?categoryID="+id;
+	}
+	
 	function seletall(all){
 		if($(all).attr("checked")){
 			$("input[type='checkbox']").each(function(){
@@ -116,7 +120,6 @@ List<Category> list =CategoryManager.getCategory(user,Category.sale) ;
 			<th align="left">预约安装截止日期</th>
 			<th align="left">是否已断货</th> 
 			<th align="left">修改</th> 
-			<th align="left">查看产品型号</th>
 		</tr>
 	</thead>
 <tbody>
@@ -124,7 +127,7 @@ List<Category> list =CategoryManager.getCategory(user,Category.sale) ;
   for(int i =0 ;i<list.size();i++){
 	  Category category = list.get(i) ;
 %>
-    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)"  ondblclick="detatil('<%=category.getId() %>')">
 		<!--  <td align="left"><input type="checkbox" value="1" name="<%=category.getId() %>"></input></td> -->
 		<td align="left"><%=category.getName() %></td> 
 		<td align="left"><%=category.getTime() %></td>
@@ -144,9 +147,6 @@ List<Category> list =CategoryManager.getCategory(user,Category.sale) ;
 		 %>
 		 </td>
 		<td align="left"><a href="categoryUpdate.jsp?id=<%=category.getId() %>">[修改]</a></td>
-		<td align="left">
-			<a href="product.jsp?categoryID=<%=category.getId() %>">[查看]</a>
-		</td>
     </tr>
     <% } %>
 </tbody>

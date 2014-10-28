@@ -105,7 +105,7 @@ public class PrintServlet extends HttpServlet {
 		HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
 		Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
-		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user);
+		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
 		//System.out.println("%%%%%"+gMap);  
 		//修改申请   
 		//Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,0);

@@ -149,7 +149,7 @@ if("peidan".equals(method)){
 }else if("headremind".equals(method)){
 	HashMap<String,Integer> map = new HashMap<String,Integer>(); 
 	List<User> ulist = UserManager.getUserszhuce(user);
-	int ucount = 0 ;     
+	int ucount = 0 ;      
 	if(ulist != null){  
 		ucount = UserManager.getUserszhuce(user).size(); 
 	} 
@@ -171,6 +171,7 @@ if("peidan".equals(method)){
 	response.getWriter().write(strmap);  
 	response.getWriter().flush(); 
 	response.getWriter().close();
+	
 }else if("disatchpHeadremind".equals(method)){  
 	HashMap<String,Integer> map = new HashMap<String,Integer>(); 
 	int dcount = OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.dispatch,0,0,"id","");  
