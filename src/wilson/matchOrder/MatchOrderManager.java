@@ -73,5 +73,23 @@ public class MatchOrderManager {
 
 		return false;
 	}
+	
+	public static boolean checkDBOrder(String dbOrderIdStrList){
+		
+		if(UploadManager.checkDBOrderStrList(dbOrderIdStrList)){
+			return true;
+		}
+
+		return false;
+	}
+	
+	public static boolean checkUploadOrder(String uploadOrderIdStrList){
+
+		if(UploadManager.checkUploadOrderStrList(uploadOrderIdStrList)){
+			return true;
+		}
+
+		return false;
+	}
 
 }

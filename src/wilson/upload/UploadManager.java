@@ -93,6 +93,42 @@ public class UploadManager {
 		
 	}
 	
+	//undone
+	public static boolean checkDBOrderStrList(String dbOrderIdStrList){
+		
+		if(OrderManager.updateStatues("orderCharge",Order.query, String.valueOf(1)) != 1){
+				return true;
+		} else{
+			return false;
+		}
+	}
+	
+	//undone
+	public static boolean checkUploadOrderStrList(String uploadOrderIdStrList){
+		boolean flag = false;
+		Connection conn = DB.getConn();
+		String sql = "update uploadorder set checked = ? ,checkedtime = ? ,checkorderid= ? where id = " + "1";
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+
+			pstmt.setInt(1,0);
+			pstmt.setString(2, fmt.format(new Date()));
+			pstmt.setInt(3, -1);
+			pstmt.executeUpdate();
+			
+			flag = true ;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return flag ;  
+		
+	}
+	
 	public static boolean checkOrder(int uploadOrderId,int dbOrderId){
 		boolean flag = false;
 		Connection conn = DB.getConn();

@@ -5,21 +5,19 @@
 	User user = (User)session.getAttribute("user");
 	
 	//接受两边的id
-	String dbSide = request.getParameter("dbside");
-	String uploadSide = request.getParameter("uploadside");
-	
+	String[] dbSide = request.getParameterValues("dbside");
+	String[] uploadSide = request.getParameterValues("uploadside");
+	System.out.println("dbside = " + dbSide);
+	System.out.println("uploadSide = " + uploadSide);
 	//显示内容的开关
 	boolean showContent = false;
 	String startButton = request.getParameter("startbutton");
 	
 	if(startButton == null){
-		if(dbSide != null && !dbSide.equals("") && uploadSide != null && !uploadSide.equals("")){
-			MatchOrderManager.checkOrder(Integer.parseInt(dbSide), Integer.parseInt(uploadSide));
-			
-		}else if(dbSide != null && !dbSide.equals("")){
-			MatchOrderManager.checkDBOrder(Integer.parseInt(dbSide));
-		}else if(uploadSide != null && !uploadSide.equals("")){
-			MatchOrderManager.checkUploadOrder(Integer.parseInt(uploadSide));
+		if(dbSide != null && dbSide.length >0){
+			//MatchOrderManager.checkDBOrder(Integer.parseInt(dbSide));
+		}else if(uploadSide != null && uploadSide.length > 0){
+			//MatchOrderManager.checkUploadOrder(Integer.parseInt(uploadSide));
 		}
 	}
 	
@@ -89,6 +87,12 @@
 		unCheckedUploadOrders = mo.getUnMatchedUploadOrders();
 		
 	}
+	
+	int inter = 1;
+	
+	session.setAttribute("afterMatchOrders", afterMatchOrders);
+	session.setAttribute("unCheckedDBOrders", unCheckedDBOrders);
+	session.setAttribute("unCheckedUploadOrders", unCheckedUploadOrders);	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -100,6 +104,10 @@
 	<style>
      redTag{color:red}
 	</style>
+	<style type="text/css"> 
+table {table-layout:fixed;} 
+tr strong,tr td {white-space:nowrap;overflow:hidden;} 
+</style>
 </head>
 
 <body>
@@ -172,11 +180,13 @@ $(function (){
 <jsp:include flush="true" page="head.jsp">
 <jsp:param name="dmsn" value="" />
 </jsp:include>
-
-<form name="baseform" id="baseform" action="" method="post">
-<table  cellspacing="1" border="2px">
-		
-		<tr>
+    
+    
+<form name="baseform" id="baseform" method="post">
+<table width="100%" height="100%" align="center" border=0>
+       <tr>
+       <table  width="100%"  border=1>
+       <tr>
 			<td colspan="6" align="center">
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<h3>本地记录的订单</h3>
@@ -201,12 +211,24 @@ $(function (){
 			
 			
 			
-			<td align="center"><h3><input type="submit" id="startbutton" name="startbutton" value="对比" onmousedown="$('#startbutton').val('正在对比');$('#startbuttonhidden').val('正在对比');"/></h3>
+			<td align="center">
+
+			<input type="submit" id="startbutton" name="startbutton" value="对比" onmousedown="$('#baseform').attr('action','');$('#startbutton').val('正在对比');$('#startbuttonhidden').val('正在对比')"/>
+			<br/>
+			<input type="button" value="导出" onclick="$('#baseform').attr('action','../MatchOrderExport');$('#baseform').submit()"/>
+			<br/>
+			
+			<%
+			if(showContent){
+			%>
+			<input type="submit" value="提交"/>
+			<%
+			}
+			%>
 			</td>
 			
 			
-			
-			<td colspan="6" align="center">
+			<td colspan="7" align="center">
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<h3>上传的订单</h3>
 			<select name="uploadorder">
@@ -234,6 +256,8 @@ $(function (){
 			<td align="center">票面型号</td> 
 			<td align="center">票面数量</td> 
 			<td align="center"></td> 
+			<td align="center">序号</td> 
+			<td align="center">选中</td>
 			<td align="center">销售门店</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
@@ -241,24 +265,35 @@ $(function (){
 			<td align="center">票面数量</td> 
 	
 		</tr> 
+       </table>
+       </tr>
+   <tr>
+   <td align="center" width="100%">
+    <div style="overflow-y:auto; width:100%;height:650px">
+
+<table  align="center" width="100%" cellspacing="1" border="2px" >
+		
+		
+		
 		<%
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
 			if(afterMatchOrders.get(i).getCompareLevel() >= 5.0){
 		%>
 		<tr>
-			<td align="center"><input name="dbside"  type="radio" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center"></td>
-			<td align="center"><input name="uploadside"  type="radio" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center"><input name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center" id=""></td>
+			<td align="center" id=""><%=inter++ %></td> 
+			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
 		<%
@@ -271,19 +306,20 @@ $(function (){
 			if(afterMatchOrders.get(i).getCompareLevel() >= 4.0 && afterMatchOrders.get(i).getCompareLevel()< 5.0){
 		%>
 		<tr>
-			<td align="center"><input name="dbside"  type="radio" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center"></td>
-			<td align="center"><input name="uploadside"  type="radio" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center"><input name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center" id=""></td>
+			<td align="center" id=""><%=inter++ %></td> 
+			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
 		<%
@@ -296,19 +332,20 @@ $(function (){
 			if(afterMatchOrders.get(i).getCompareLevel() >= 3.0 && afterMatchOrders.get(i).getCompareLevel() < 4.0){
 		%>
 		<tr>
-			<td align="center"><input name="dbside"  type="radio" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center"></td>
-			<td align="center"><input name="uploadside"  type="radio" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center"><input name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center" id=""></td>
+			<td align="center" id=""><%=inter++ %></td> 
+			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
 		<%
@@ -321,19 +358,20 @@ $(function (){
 			if(afterMatchOrders.get(i).getCompareLevel() >= 2.0 && afterMatchOrders.get(i).getCompareLevel() <3.0){
 		%>
 		<tr>
-			<td align="center"><input name="dbside"  type="radio" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center"></td>
-			<td align="center"><input name="uploadside"  type="radio" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center"><input name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center" id=""></td>
+			<td align="center" id=""><%=inter++ %></td> 
+			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
 		<%
@@ -347,19 +385,20 @@ $(function (){
 			if(afterMatchOrders.get(i).getCompareLevel() >= 1.0 && afterMatchOrders.get(i).getCompareLevel()< 2.0){
 		%>
 		<tr>
-			<td align="center"><input name="dbside"  type="radio" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center"></td>
-			<td align="center"><input name="uploadside"  type="radio" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center"><input name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center" id=""></td>
+			<td align="center" id=""><%=inter++ %></td> 
+			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
 		<%
@@ -372,19 +411,20 @@ $(function (){
 			if(afterMatchOrders.get(i).getCompareLevel() >= 0.0 && afterMatchOrders.get(i).getCompareLevel()< 1.0){
 		%>
 		<tr>
-			<td align="center"><input name="dbside"  type="radio" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center"></td>
-			<td align="center"><input name="uploadside"  type="radio" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center"><input name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center" id=""></td>
+			<td align="center" id=""><%=inter++ %></td> 
+			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
 		<%
@@ -395,20 +435,20 @@ $(function (){
 		
 		<%
 			for(int i = 0 ;;){
-				if(unCheckedDBOrders != null && unCheckedDBOrders.size() > 0 && i< unCheckedDBOrders.size()){
+				if(unCheckedDBOrders != null && unCheckedDBOrders.size() > 0 && i< unCheckedDBOrders.size()){					
 		%>	
-					<tr>  
-					<td align="center"><input name="dbside" type="radio" value="<%=unCheckedDBOrders.get(i).getId() %>"/></td>
+					<tr>  	
+					<td align="center"><input name="dbside" type="checkbox" value="<%=unCheckedDBOrders.get(i).getId() %>"/></td>
 					<td align="center" id="<%=unCheckedDBOrders.get(i).getId() %>dbshop"><%= unCheckedDBOrders.get(i).getbranchName(unCheckedDBOrders.get(i).getBranch()) %></td>
 					<td align="center" id="<%=unCheckedDBOrders.get(i).getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=unCheckedDBOrders.get(i).getId() %>" target="_BLANK"><%= unCheckedDBOrders.get(i).getPos() %></a></td>
 					<td align="center" id="<%=unCheckedDBOrders.get(i).getId() %>dbsaletime"><%= unCheckedDBOrders.get(i).getSaleTime() %></td>
-					<td align="center" id="<%=unCheckedDBOrders.get(i).getId() %>dbtype"><%= unCheckedDBOrders.get(i).getSendType() %></td> 
+					<td align="center" style="overflow:hidden" id="<%=unCheckedDBOrders.get(i).getId() %>dbtype"><%= unCheckedDBOrders.get(i).getSendType() %></td> 
 					<td align="center" id="<%=unCheckedDBOrders.get(i).getId() %>dbcount"><%= unCheckedDBOrders.get(i).getSendCount() %></td> 
 		<%
 				}else{
 		%>
 					<tr>
-					<td align="center"><input name="dbside" type="radio" value="" disabled="disabled"/></td>
+					<td align="center"><input name="dbside" type="checkbox" value="" disabled="disabled"/></td>
 					<td align="center"></td>
 					<td align="center"></td>
 					<td align="center"></td> 
@@ -420,7 +460,8 @@ $(function (){
 				if(unCheckedUploadOrders != null && unCheckedUploadOrders.size() > 0 && i< unCheckedUploadOrders.size()){
 		%>
 							<td align="center"></td>
-							<td align="center"><input name="uploadside" type="radio" value="<%=unCheckedUploadOrders.get(i).getId() %>"/></td>
+							<td align="center" id=""><%=inter++ %></td>
+							<td align="center"><input name="uploadside" type="checkbox" value="<%=unCheckedUploadOrders.get(i).getId() %>"/></td> 
 							<td align="center"><%= unCheckedUploadOrders.get(i).getShop() %></td>
 							<td align="center"><%= unCheckedUploadOrders.get(i).getPosNo() %></td>
 							<td align="center"><%= unCheckedUploadOrders.get(i).getSaleTime() %></td>
@@ -431,12 +472,13 @@ $(function (){
 				}else{
 		%>
 							<td align="center"></td>
-							<td align="center"><input name="uploadside" type="radio" value="" disabled="disabled"/></td>
+							<td align="center"></td>
+							<td align="center"><input name="uploadside" type="checkbox" value="" disabled="disabled"/></td>
 							<td align="center"></td>
 							<td align="center"></td>
 							<td align="center"></td>
 							<td align="center"></td> 
-							<td align="center"></td> 
+							<td align="center"></td>
 							</tr>
 		<%
 				}
@@ -446,19 +488,15 @@ $(function (){
 				}
 			}
 		%>
-		<%
-		if(showContent){
-		%>
 		
-		<tr>
-			<td colspan="14" align="center"><input type="submit" value="提交"/></td>
-		</tr>
-		<%
-		}
-		%>
-		</form>
+		
 </table> 
+</form>
 
 
+</div>
+   </td>
+   </tr>
+ </table>
 </body>
 </html>
