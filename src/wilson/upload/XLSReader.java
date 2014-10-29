@@ -187,7 +187,7 @@ public class XLSReader {
 				uploadSalaryModelList = new ArrayList<UploadSalaryModel>();
 				usm = new UploadSalaryModel();
 				usm.setId(-1);
-				usm.setContent("第"+ (i+1) + "行第"+ (j+1) + "列附近有问题，请检查");
+				usm.setName("第"+ (i+1) + "行第"+ (j+1) + "列附近有问题，请检查");
 				uploadSalaryModelList.add(usm);
 			}
 			return uploadSalaryModelList;

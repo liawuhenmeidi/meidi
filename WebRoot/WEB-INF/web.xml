@@ -246,6 +246,20 @@
 	        <url-pattern>/meidiserver/Model</url-pattern>   
     </servlet-mapping>
     
+    
+    
+    
+    <servlet>
+    <servlet-name>MatchOrderExportServlet</servlet-name>  
+    <servlet-class>  
+          wilson.matchOrder.MatchOrderExportServlet
+      </servlet-class>  
+   </servlet>   
+    <servlet-mapping>   
+        <servlet-name>MatchOrderExportServlet</servlet-name>  
+	        <url-pattern>/meidiserver/MatchOrderExport</url-pattern>   
+    </servlet-mapping>
+    
     <!-- android支持 -->
 	 <servlet>
 	    <description>支持android的登录</description>

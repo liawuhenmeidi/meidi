@@ -120,6 +120,17 @@ td {
 <br/>  
 <div >
 <table  cellspacing="1" border="2px"  id="table">
+		
+		<tr>
+			<td colspan="4" style="color:red"><h3><%=salaryModelList.get(0).getName()() %></h3></td>
+		</tr>
+		<%
+		if(salaryModelList.size() == 1 && salaryModelList.get(0).getId() == -1){
+			return;
+		}
+		%>
+		
+		
 		<tr>  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			
@@ -130,17 +141,8 @@ td {
 		
 		</tr> 
 		
-		<%
-		if(salaryModelList.size() == 1 && salaryModelList.get(0).getId() == -1){
-			
-		%>
-		<tr>
-			<td colspan="4" style="color:red"><h3><%=salaryModelList.get(0).getContent() %></h3></td>
-		</tr>
-		<%
-		return;
-		}
-		%>
+		
+		
 		
 		<%
 		if(showContent){
