@@ -93,21 +93,19 @@ public class UploadManager {
 		
 	}
 	
-	//undone
 	public static boolean checkDBOrderStrList(String dbOrderIdStrList){
 		
-		if(OrderManager.updateStatues("orderCharge",Order.query, String.valueOf(1)) != 1){
+		if(OrderManager.updateStatues("orderCharge",Order.query, dbOrderIdStrList) == 1){
 				return true;
 		} else{
 			return false;
 		}
 	}
 	
-	//undone
 	public static boolean checkUploadOrderStrList(String uploadOrderIdStrList){
 		boolean flag = false;
 		Connection conn = DB.getConn();
-		String sql = "update uploadorder set checked = ? ,checkedtime = ? ,checkorderid= ? where id = " + "1";
+		String sql = "update uploadorder set checked = ? ,checkedtime = ? ,checkorderid= ? where id in (" + uploadOrderIdStrList + ")" ;
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {

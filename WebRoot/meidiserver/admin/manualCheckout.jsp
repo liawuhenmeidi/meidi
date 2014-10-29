@@ -7,17 +7,17 @@
 	//接受两边的id
 	String[] dbSide = request.getParameterValues("dbside");
 	String[] uploadSide = request.getParameterValues("uploadside");
-	System.out.println("dbside = " + dbSide);
-	System.out.println("uploadSide = " + uploadSide);
+
 	//显示内容的开关
 	boolean showContent = false;
 	String startButton = request.getParameter("startbutton");
 	
 	if(startButton == null){
 		if(dbSide != null && dbSide.length >0){
-			//MatchOrderManager.checkDBOrder(Integer.parseInt(dbSide));
-		}else if(uploadSide != null && uploadSide.length > 0){
-			//MatchOrderManager.checkUploadOrder(Integer.parseInt(uploadSide));
+			MatchOrderManager.checkDBOrderList(dbSide);
+		}
+		if(uploadSide != null && uploadSide.length > 0){
+			MatchOrderManager.checkUploadOrderList(uploadSide);
 		}
 	}
 	

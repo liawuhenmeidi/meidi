@@ -74,18 +74,27 @@ public class MatchOrderManager {
 		return false;
 	}
 	
-	public static boolean checkDBOrder(String dbOrderIdStrList){
+	public static boolean checkDBOrderList(String[] dbOrderIdStrList){
+		String idList = "";
+		for(int i = 0 ; i < dbOrderIdStrList.length ; i ++ ){
+			idList += dbOrderIdStrList[i] + ",";
+		}
+		idList = idList.substring(0,idList.length()-1);
 		
-		if(UploadManager.checkDBOrderStrList(dbOrderIdStrList)){
+		if(UploadManager.checkDBOrderStrList(idList)){
 			return true;
 		}
 
 		return false;
 	}
 	
-	public static boolean checkUploadOrder(String uploadOrderIdStrList){
-
-		if(UploadManager.checkUploadOrderStrList(uploadOrderIdStrList)){
+	public static boolean checkUploadOrderList(String[] uploadOrderIdStrList){
+		String idList = "";
+		for(int i = 0 ; i < uploadOrderIdStrList.length ; i ++ ){
+			idList += uploadOrderIdStrList[i] + ",";
+		}
+		idList = idList.substring(0,idList.length()-1);
+		if(UploadManager.checkUploadOrderStrList(idList)){
 			return true;
 		}
 

@@ -145,5 +145,21 @@ public class UploadOrder {
 		this.name = name;
 	}
 
+	public void clear() {
+		this.id = -1; //id
+		this.name = ""; 
+		this.shop = ""; //销售门店
+		this.posNo = ""; //pos(厂送)单号
+		this.saleManName = "";//销售员姓名
+		this.saleTime = ""; //销售日
+		this.type = ""; //票面型
+		this.num = 0; //票面数量	
+		this.salePrice = 0.0; //供价	
+		this.fileName = ""; //来自的文件名	
+		this.checked = 1; //1为没有 check 0 为已经check 2为已经与提成标准匹配好  默认为1	
+		this.checkedTime = ""; //check的时间，默认为null	
+		this.checkOrderId = 0; //check后对应的orderID
+	}
+
 	
 }

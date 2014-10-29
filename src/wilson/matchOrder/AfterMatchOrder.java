@@ -50,20 +50,47 @@ public class AfterMatchOrder {
 	public AfterMatchOrder(UploadOrder uploadOrder, Order dbOrder) {
 		setUploadOrder(uploadOrder);
 		setDBOrder(dbOrder);
-		this.dbOrder = dbOrder;
-		DBSideShop = dbOrder.getbranchName(dbOrder.getBranch());
-		DBSidePosNo = dbOrder.getPos();
-		DBSideSaleTime = dbOrder.getSaleTime();
-		DBSideType = dbOrder.getSendType();
-		DBSideCount = String.valueOf(dbOrder.getSendCount());
-		DBSideOrderId = dbOrder.getId();
-		this.uploadOrder = uploadOrder;
-		UploadSideShop = uploadOrder.getShop();
-		UploadSidePosNo = uploadOrder.getPosNo();
-		UploadSideSaleTime = uploadOrder.getSaleTime();
-		UploadSideType = uploadOrder.getType();
-		UploadSideCount = String.valueOf(uploadOrder.getNum());
-		UploadSideOrderId = uploadOrder.getId();
+		if(uploadOrder.getId() != -1){
+			this.uploadOrder = uploadOrder;
+			UploadSideShop = uploadOrder.getShop();
+			UploadSidePosNo = uploadOrder.getPosNo();
+			UploadSideSaleTime = uploadOrder.getSaleTime();
+			UploadSideType = uploadOrder.getType();
+			UploadSideCount = String.valueOf(uploadOrder.getNum());
+			UploadSideOrderId = uploadOrder.getId();
+		}else{
+			this.uploadOrder = uploadOrder;
+			UploadSideShop = "";
+			UploadSidePosNo = "";
+			UploadSideSaleTime = "";
+			UploadSideType = "";
+			UploadSideCount = "";
+			UploadSideOrderId = uploadOrder.getId();
+			
+			this.uploadOrder.clear();
+		}
+		
+		if(dbOrder.getId() != -1){
+			this.dbOrder = dbOrder;
+			DBSideShop = dbOrder.getbranchName(dbOrder.getBranch());
+			DBSidePosNo = dbOrder.getPos();
+			DBSideSaleTime = dbOrder.getSaleTime();
+			DBSideType = dbOrder.getSendType();
+			DBSideCount = String.valueOf(dbOrder.getSendCount());
+			DBSideOrderId = dbOrder.getId();
+		}else{
+			this.dbOrder = dbOrder;
+			DBSideShop = "";
+			DBSidePosNo = "";
+			DBSideSaleTime = "";
+			DBSideType = "";
+			DBSideCount = "";
+			DBSideOrderId = dbOrder.getId();
+			
+			this.dbOrder.clear();
+		}
+		
+		
 	}
 	
 	Double compareLevel = 0.0; //对比等级，每个对比项，完全相同，等级+1，部分相同，等级+0.5
@@ -202,7 +229,7 @@ public class AfterMatchOrder {
 	
 	
 	//计算相似度
-	public void calcLevel(){
+	public Double calcLevel(){
 		
 		String key = "";
 		//对比posNo
@@ -306,7 +333,7 @@ public class AfterMatchOrder {
 			}
 		}		
 					
-			
+		return this.getCompareLevel();	
 	}
 
 	public Order getDuplicateDBOrder() {

@@ -829,5 +829,12 @@ public String getSendCount(int statues,String decollator){
 	 }
 	return sendCount;
 }
+
+public void clear() {
+	this.branch = -1;
+	this.id = -1;
+	this.pos = "";
+	this.saleTime = "";
+}
   
 }
