@@ -1,7 +1,7 @@
 <%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="detaildynamic.jsp"%> 
 <%  
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user); 
+Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(); 
 %>
 <!DOCTYPE html>
 <html>

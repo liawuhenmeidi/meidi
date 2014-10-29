@@ -155,6 +155,7 @@ $(function () {
        <option value="andate asc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
      	 <option value="andate asc">预约日期</option> 
      	 <option value="saledate asc">开票日期 </option>  
+     	 <option value="submittime desc">上报时间 </option>   
      	</select>
         排序 
    

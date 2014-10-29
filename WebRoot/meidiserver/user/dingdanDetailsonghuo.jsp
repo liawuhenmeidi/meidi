@@ -2,7 +2,7 @@
 <%@ include file="detaildynamic.jsp"%> 
 <% 
 int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(user); 
+Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();  
  
 request.setAttribute("order", or);
 

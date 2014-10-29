@@ -10,44 +10,35 @@ String message = "";
 String username = "";
 String htmlname = "";
 Order order = OrderManager.getOrderID(user, Integer.valueOf(id));
-
 HashMap<Integer,User> usermap = UserManager.getMap();
 
-if((Order.orderinstall+"").equals(type)){
-	message = "安装单 "; 
+String deliveryStatues = order.getOderStatus();
+
+if((0+"").equals(deliveryStatues)){
+	htmlname = "送货员";
+	message = "需派送单"; 
+	username = usermap.get(order.getSendId()).getUsername();
+}else if((9+"").equals(deliveryStatues)){
+	message = "只安装(门店提货)单"; 
+}else if((10+"").equals(deliveryStatues)){
+	message = "只安装(顾客已提)单"; 
 	htmlname = "安装员";
 	username = usermap.get(order.getInstallid()).getUsername();
-}else if((Order.orderpeisong+"").equals(type)){
+}else {
 	if(order.getOderStatus().equals(20+"")){
-		message = "换货单"; 
+		message = "换货单";
 		htmlname = "换货员";
-	}else {
-		message = "送货安装单"; 
-		htmlname = "送货员";
+		username = usermap.get(order.getSendId()).getUsername();
 	}
-	
-	username = usermap.get(order.getSendId()).getUsername();
-}else if((Order.returns+"").equals(type)  || (Order.orderreturn+"").equals(type)){
-	message = "退货单"; 
+}
+
+if((Order.returns+"").equals(type)  || (Order.orderreturn+"").equals(type)){
+	message += "退货单"; 
 	htmlname = "退货员";   
 	username = usermap.get(order.getReturnid()).getUsername();
-}else if((Order.ordersong+"").equals(type)){
-	message = "只安装(门店提货)"; 
-	htmlname = "送货员";
-	username = usermap.get(order.getSendId()).getUsername();
-}else if((Order.ordersong+"").equals(type)){
-	message = "只安装(顾客已提)";     
-	htmlname = "送货员";
-	username = usermap.get(order.getSendId()).getUsername();
-	//Order.deliveryStatuesTuihuo
-}else if((Order.deliveryStatuesTuihuo+"").equals(type)){
-	message = "退货单"; 
-	htmlname = "退货员";  
-	username = usermap.get(Integer.valueOf(uid)).getUsername();
 }
 
 int iddd = 0;
-
 
 User send = usermap.get(order.getDealsendId());  
 
@@ -56,12 +47,8 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();  
 Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 
-SimpleDateFormat df2 = new SimpleDateFormat("yyyy年MM月dd日");
-SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-Date date = new Date();
-String time = df2.format(date);
-String pid = df.format(date);
-System.out.println(pid);
+String time = TimeUtill.getPrintlnTime();
+
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

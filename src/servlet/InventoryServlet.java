@@ -229,7 +229,7 @@ System.out.println(type+"type");
  		InventoryManager.save(user, inventory); 
  		
  		try {
- 			response.sendRedirect("analyzrecepts.jsp");
+ 			response.sendRedirect("inventoryAnalyze.jsp");
  			return ;
  		} catch (IOException e) {
  		

@@ -114,7 +114,12 @@ public class TimeUtill {
    	 return str ;
     }
     
-    
+    public static String getPrintlnTime(){
+    	SimpleDateFormat df2 = new SimpleDateFormat("yyyy年MM月dd日");
+    	Date date = new Date(); 
+    	String time = df2.format(date);
+    	return time ;
+    }
     
     public static boolean getLongtime(String time){
     	long days = 100; 

@@ -1,9 +1,10 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
 <%@ include file="../searchdynamic.jsp"%>
-  
 <%  
-sort= "andate asc";
+if(searchflag){ 
+	sort= "andate asc";
+}
 //list = OrderManager.getOrderlist(user,Group.sencondDealsend,str,sort);      
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.porderDispatching,num,Page,sort,sear);  
 session.setAttribute("exportList", list); 

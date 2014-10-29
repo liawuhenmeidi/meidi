@@ -3,7 +3,7 @@
 <%      
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
-
+boolean searchflag = false ;
 String pageNum = request.getParameter("page");
 String numb = request.getParameter("numb");  
 String sort = request.getParameter("sort");   
@@ -15,7 +15,8 @@ if(StringUtill.isNull(sear)){
 }
 
 if(StringUtill.isNull(sort)){
-	sort = "submittime desc";   
+	sort = "submittime desc"; 
+	searchflag = true ;
 }
 
 if(StringUtill.isNull(numb)){

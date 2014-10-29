@@ -1,8 +1,9 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="searchdynamic.jsp"%>      
-<%          
-    
-sort= "andate asc";
+<%         
+if(searchflag){
+	sort= "andate asc";
+}
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);
 session.setAttribute("exportList", list);
 count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.orderDispatching,num,Page,sort,sear);    
@@ -142,7 +143,7 @@ function addImage(src){
 } 
 
 function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,object){
-	$(object).css("display","none"); 
+	//$(object).css("display","none"); 
 	if( 2 == conmited ){         
 		if(type == '<%=OrderPrintln.releasemodfy %>' || type == '<%=OrderPrintln.releasedispatch %>'){
 			if(Returnstatuse != 2 ){         
