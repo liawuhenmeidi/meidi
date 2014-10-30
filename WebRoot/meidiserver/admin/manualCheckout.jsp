@@ -106,7 +106,7 @@
 	</style>
 	<style type="text/css"> 
 table {table-layout:fixed;} 
-tr strong,tr td {white-space:nowrap;overflow:hidden;} 
+tr strong,tr td {white-space:normal} 
 </style>
 </head>
 
