@@ -62,7 +62,7 @@ body {
   <jsp:param name="dmsn" value="" />
   </jsp:include> 
       
-
+<!--  
 <p>苏宁/销售单 隐藏</p>
 <form action="" method="post">
 <input type="hidden" name="type" value="uploadorder"/>
@@ -79,7 +79,7 @@ body {
 </select>
 <input type="submit" value="确认"/>
 </form>
-
+-->
 
 
 

@@ -215,12 +215,13 @@ $(function (){
 
 			<input type="submit" id="startbutton" name="startbutton" value="对比" onmousedown="$('#baseform').attr('action','');$('#startbutton').val('正在对比');$('#startbuttonhidden').val('正在对比')"/>
 			<br/>
-			<input type="button" value="导出" onclick="$('#baseform').attr('action','../MatchOrderExport');$('#baseform').submit()"/>
-			<br/>
+			
 			
 			<%
 			if(showContent){
 			%>
+			<input type="button" value="导出" onclick="$('#baseform').attr('action','../MatchOrderExport');$('#baseform').submit()"/>
+			<br/>
 			<input type="submit" value="提交"/>
 			<%
 			}

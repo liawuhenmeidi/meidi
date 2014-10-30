@@ -122,7 +122,7 @@ td {
 <table  cellspacing="1" border="2px"  id="table">
 		
 		<tr>
-			<td colspan="4" style="color:red"><h3><%=salaryModelList.get(0).getName()() %></h3></td>
+			<td colspan="4" style="color:red"><h3><%=salaryModelList.get(0).getName() %></h3></td>
 		</tr>
 		<%
 		if(salaryModelList.size() == 1 && salaryModelList.get(0).getId() == -1){
