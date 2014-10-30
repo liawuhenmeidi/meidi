@@ -114,7 +114,7 @@ public class UploadManager {
 			pstmt.setString(2, fmt.format(new Date()));
 			pstmt.setInt(3, -1);
 			pstmt.executeUpdate();
-			
+			logger.info(sql);
 			flag = true ;
 			
 		} catch (SQLException e) {
@@ -205,6 +205,7 @@ public class UploadManager {
 				pstmt.setInt(3,DBOrderID);
 				pstmt.setInt(4, UploadOrderID);
 				pstmt.executeUpdate();
+				logger.info(sql);
 			}
 			if(OrderManager.updateStatues("orderCharge",Order.query, dbIdString) != 1){
 				throw new SQLException();

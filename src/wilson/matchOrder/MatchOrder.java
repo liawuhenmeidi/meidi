@@ -30,7 +30,9 @@ public class MatchOrder {
 			unMatchedDBOrders = dbOrders;
 			
 			//取相同pos的列表
-			samePosUploadOrders = getSamePosUploadOrdersList(unMatchedUploadOrders);
+			samePosUploadOrders = new ArrayList<UploadOrder>();
+			//如果开启则右侧也会处理相同POS单号的情况
+			//samePosUploadOrders = getSamePosUploadOrdersList(unMatchedUploadOrders);
 			samePosDBOrders = getSamePosDBOrdersList(unMatchedDBOrders);
 			
 			matchOrder(unMatchedUploadOrders,unMatchedDBOrders);
@@ -55,9 +57,7 @@ public class MatchOrder {
 				
 				if(tempUo.getPosNo().toUpperCase().equals(tempDBO.getPos().toUpperCase())){
 					
-					if(tempUo.getPosNo().equals("D01982456")){
-						System.out.println("a");
-					}
+				
 					
 					//对比双方都没有重复posno的情况
 					if(!samePosDBOrders.contains(tempDBO) && !samePosUploadOrders.contains(tempUo)){
