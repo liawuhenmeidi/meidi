@@ -27,8 +27,8 @@ public class InventoryMessageManager {
 			 for(int i=0;i<orders.size();i++){ 
  
 				InventoryMessage order = orders.get(i); 
-				String sql = "insert into  inventoryMessage (id, productId ,categoryId,count, inventoryId)" + 
-	                         "  values ( null, '"+order.getProductId()+"', '"+order.getCategoryId()+"',"+order.getCount()+", "+id+")";
+				String sql = "insert into  inventoryMessage (id, productId ,categoryId,count, inventoryId,anlycount)" + 
+	                         "  values ( null, '"+order.getProductId()+"', '"+order.getCategoryId()+"',"+order.getCount()+", "+id+","+order.getAnlycount()+")";
 				logger.info(sql);   
 				sqls.add(sql);  
 			} 
@@ -65,6 +65,11 @@ public class InventoryMessageManager {
         return sql ;
 	}
 	
+	public static String deletenybranchid(int id) {
+		String sql = "delete from inventoryMessage where inventoryId in (select id from inventory where inbranchid = " + id + " and intype = 2) ";
+        return sql ;
+	}
+	 
 	private static InventoryMessage getCategoryFromRs(ResultSet rs){
 		InventoryMessage c = new InventoryMessage();
 		try {    

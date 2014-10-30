@@ -38,7 +38,7 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
   </jsp:include>
 
 <!--   头部结束   -->
-
+ 
 <div class="main">
  
  <!--       -->    
@@ -46,7 +46,6 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
      <div class="">
    <div class="weizhi_head">现在位置：单据管理
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     
-<a href="analyzrecepts.jsp?type=confirmed">查看已确认单据</a>
 
 
    </div>    
@@ -104,10 +103,13 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
 			 if(invetory.getOutstatues() == 0){
 				%> 
 				未打印
-				<%
+				<% 
+			 }else {
+			 %>
+			 打印
+			 <%
 			 }
 			 %>
-			
 			</td>
 		</tr>
 

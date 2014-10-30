@@ -82,13 +82,13 @@ public class InventoryManager {
 		String sql = "";
 		if(UserManager.checkPermissions(user, Group.dealSend)){
 			if("unconfirmed".equals(statues)){ 
-				sql = "select * from inventory where (instatues = 0 or outstatues = 0 )and intype = 2  order by id desc";
+				sql = "select * from inventory where intype = 2  order by id desc";
 			}else if("confirmed".equals(statues)){
 				sql = "select * from inventory where instatues = 1 and intype = 2  order by id desc";
 			}
 		}else {       
 			if("unconfirmed".equals(statues)){ 
-				sql = "select * from inventory where instatues = 0  and  inbranchid = " + branchid +"  and intype = 2  order by id desc";
+				sql = "select * from inventory where inbranchid = " + branchid +"  and intype = 2  order by id desc";
 			}else if("confirmed".equals(statues)){
 				sql = "select * from inventory where instatues = 1 and  inbranchid = " + branchid +"   and intype = 2  order by id desc";
 			}
@@ -237,7 +237,7 @@ public class InventoryManager {
 		String sqlp = InventoryMessageManager.delete(id);
        
           
-        String sql = "delete from inventory where id = " + id;
+        String sql = "delete from inventory where id = " + id ;
         listsqls.add(sqlp); 
         
         listsqls.add(sql); 
@@ -249,7 +249,25 @@ public class InventoryManager {
 		return flag ;
 	}
 	
-	
+	public static boolean deleteBybranchid(int id) {
+		   
+	    boolean flag = false;
+	    List<String> listsqls = new ArrayList<String>();
+  
+		String sqlp = InventoryMessageManager.deletenybranchid(id);
+       
+          
+        String sql = "delete from inventory where inbranchid = " + id + "  and intype = 2 ";
+        listsqls.add(sqlp); 
+        
+        listsqls.add(sql); 
+		 
+		if (listsqls.size() == 0) {  
+            return false;   
+        }      
+        flag = DBUtill.sava(listsqls);
+		return flag ;
+	}
 	
 	public static Inventory getInventoryID(User user ,int id){
 		   

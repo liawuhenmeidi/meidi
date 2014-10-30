@@ -13,15 +13,18 @@ String inittime = inventory.getIntime();
 
 String remark = inventory.getRemark();
 
+StringUtill.isNull(remark);
 JSONObject  resu = JSONObject.fromObject(remark);
 
 String starttime = resu.getString("starttime"); 
-String endtime = resu.getString("endtime");
+String endtimeH = resu.getString("endtime"); 
+String endtime = TimeUtill.dataAdd(endtimeH,1);
 List<InventoryMessage> list = inventory.getInventory(); 
 
 Map<String,Integer> listcount = InventoryBranchMessageManager.getMapAnalyze(inventory.getInbranchid()+"",starttime,endtime); 
-
- 
+String str = StringUtill.GetJson(listcount); 
+System.out.println(str);
+Map<String,InventoryBranch> invnetorymap = InventoryBranchManager.getmapType(inventory.getInbranchid()+"", "");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -54,7 +57,7 @@ position:fixed;
 }
 
 td{
- width:200px; 
+ width:150px; 
 }
 
 #th td{
@@ -135,7 +138,7 @@ function println(){
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
    开始时间:<%=starttime%>---结束时间:<%=endtime %>
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="print.jsp?id=<%=inventoryid%>&type=<%=inventory.getIntype() %>"><font style="color:blue;font-size:20px;">打印</font></a> 
+
 <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>  
 </div>  
  
@@ -143,6 +146,7 @@ function println(){
     
 <form action="InventoryServlet" method="post" >
 <input type="hidden" name="method" value="updatesubscribe"/>
+<input type="hidden" name="id" value="<%=inventoryid%>"/>
 <%if(user.getBranch().equals(inventory.getOutbranchid()+"")){
 	%>
 	<input type="hidden" name="add" value="outbranch" />
@@ -155,6 +159,8 @@ function println(){
 		<tr id="th">  
      			<td align="center">名称</td>
      			<td align="center">型号</td> 
+     			<td align="center">账面库存</td> 
+     			<td align="center">实际库存</td>
      			<td align="center">出库数量</td> 
      			<td align="center">调拨数量</td>
      			<td align="center">确认数量</td>
@@ -170,20 +176,24 @@ function println(){
             	
              %>
             	   <tr id="<%=in.getId() %>" class="asc">   
-        			   <td align="center"><%=mapc.get(in.getCategoryId()).getName() %> </td>
+        			  <td align="center"><%=mapc.get(in.getCategoryId()).getName() %> </td>
         			   <td align="center"><%=in.getProductname() %> </td>
-        			   <td align="center"><%=listcount.get(in.getProductname()) %> </td>
-        			   <td align="center">
+        			 
+        			    
+        			   <td align="center"><%=invnetorymap.get(in.getProductname()).getPapercount() %> </td>
+        			   <td align="center"><%=invnetorymap.get(in.getProductname()).getRealcount() %> </td>
+        			    <td align="center"><%=listcount.get(in.getProductname())*(-1) %> </td>
+        			   <td align="center"> 
         			    <input type="hidden" name="product" value="<%=in.getId() %>" />
-        			    <% if(user.getBranch().equals(inventory.getOutbranchid()+"")) {%>
-        			    <input type="text" name="real<%=in.getId() %>"  id="<%=in.getId() %>"  value="<%=in.getCount() %>" /> 
+        			    <% if(UserManager.checkPermissions(user, Group.dealSend)) {%>
+        			    <input type="text" name="real<%=in.getId() %>"  id="<%=in.getId() %>"  value="<%=in.getCount() %>"   style="border:0; width:50px" /> 
         			     <%}else{ %>
-        			       <%=in.getCount() %>
+        			       <%=in.getCount() %> 
         			     <% } %>
         			    </td>
         			   <td align="center"> 
         			   <% if(user.getBranch().equals(inventory.getInbranchid()+"")){ %>
-        			  <input type="text" name="<%=in.getId() %>"  id="<%=in.getId() %>"  value="<%=in.getAnlycount() %>" /> 
+        			  <input type="text" name="<%=in.getId() %>"  id="<%=in.getId() %>"  value="<%=in.getAnlycount() %>" style="border:0; width:50px" /> 
         			  <% }else { %>
         			    <%=in.getAnlycount() %>
         			  <% }%>
@@ -194,8 +204,16 @@ function println(){
             <%  }%>
 		       
 	   <tr class="asc" >
-		    <td align="center"  colspan=5> 
-		    <input type="submit"  style="background-color:;font-size:20px;" value="调货提交" />
+		    <td align="center"  colspan=7> 
+		    <% if(UserManager.checkPermissions(user, Group.dealSend)){ %>
+		    <input type="submit"  style="background-color:;font-size:20px;" value="打印" />
+		    <%
+		    }else {
+		    %>
+		     <input type="submit"  style="background-color:;font-size:20px;" value="调货提交" />
+		     <%
+		    }
+		     %>
 		    </td>
        </tr> 			
 </table> 

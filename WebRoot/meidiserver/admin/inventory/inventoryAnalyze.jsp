@@ -5,28 +5,48 @@ User user = (User)session.getAttribute("user");
 String ctype = request.getParameter("ctype");
 
 String branchName = request.getParameter("branch");
-if(StringUtill.isNull(branchName)){
-	branchName = "";
-}
 String starttime = request.getParameter("starttime");
 
 String endtimeH = request.getParameter("endtime");
 String endtime = TimeUtill.dataAdd(endtimeH,1); 
+
+String counttyepe = request.getParameter("counttyepe");
+int countt = -1 ;
+if(StringUtill.isNull(counttyepe)){
+	countt = -1 ;
+}else { 
+	countt = Integer.valueOf(counttyepe);
+}
+ 
+String submittype = "";
 String branchid = "";
 Branch b = null;
-if(!StringUtill.isNull(branchName)){
-	if(NumbleUtill.isNumeric(branchName)){
-		b = BranchManager.getLocatebyid(branchName);
+
+if(UserManager.checkPermissions(user, Group.dealSend)){
+	submittype = "inbranch";
+	if(!StringUtill.isNull(branchName)){
+		if(NumbleUtill.isNumeric(branchName)){
+			b = BranchManager.getLocatebyid(branchName);
+		}else {
+			b = BranchService.gerBranchByname(branchName);
+		}
+		branchid = b.getId()+""; 
 	}else {
-		b = BranchService.gerBranchByname(branchName);
-	}
-	branchid = b.getId()+""; 
-}  
+		branchName = "";
+	}  
+}else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
+	branchid = user.getBranch()+"";   
+	b = BranchManager.getLocatebyid(branchid); 
+	submittype = "outbranch";
+} 
+
+
+
 
 List<InventoryBranch>  listInventory = null ;
-Map<String,Integer> list = null ;
+Map<String,Integer> list = null ; 
 Map<String,String> maptype = null ;
-if(!StringUtill.isNull(branchid)){
+if(!StringUtill.isNull(branchid) && !StringUtill.isNull(starttime)  && !StringUtill.isNull(endtimeH)){
 	listInventory = InventoryBranchManager.getCategoryid(branchid, "");
 	list = InventoryBranchMessageManager.getMapAnalyze(branchid,starttime,endtime); 
 	 maptype = InventoryBranchManager.getBranchType(user,branchid); 
@@ -60,25 +80,25 @@ position:fixed;
     padding:0;
 }
 #table{  
-    width:1200px;
+    width:900px;
     table-layout:fixed ;
 }
 
 #th{  
     background-color:white;
     position:absolute; 
-    width:1200px; 
+    width:900px; 
     height:30px;
     top:0;
     left:0;
 }
 
 td{
- width:200px; 
+ width:150px; 
 }
 
 #th td{
-width:200px; 
+width:150px; 
 }
 
 #wrap{
@@ -101,7 +121,7 @@ width:200px;
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript">
 var jsonall = <%=listall%>;
-
+var count = "<%=countt%>";
 $(function () { 
 
 	$("#wrap").bind("scroll", function(){ 
@@ -125,6 +145,8 @@ $(function () {
 			 source: jsonall
 		    });
 		 
+		 $("select[id='counttyepe'] option[value='"+count+"']").attr("selected","selected");
+		 
 }); 
 
 function inventory(inventory,type){
@@ -137,12 +159,26 @@ function inventory(inventory,type){
 	 }
 } 
 
-function check(){
+function checkTime(){
+	
+	var starttime = $("#starttime").val();
+
+	var endtime = $("#endtime").val();
+	if(starttime == null || starttime == ""){
+		alert("开始时间不能为空");
+		return false;
+	}
+	if(endtime == null || endtime == ""){
+		alert("结束时间不能为空");
+		return false;
+	}
 	if(!isNaN(val)){
 		   alert("是数字");
 		}else{
 		   alert("不是数字");
 		}
+	
+	return false ;
 }
 </script>
 <div style="position:fixed;width:100%;height:20%;">
@@ -151,8 +187,16 @@ function check(){
   <jsp:param name="" value="" />
   </jsp:include>     
 </div > 
-<form action="" >
- 选择安装网点：<input type="text" name="branch" id="branch" value="<%=branchName %>"   /> 
+<form action="" id="inventory" onsubmit="return checkTime()"> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<% if(UserManager.checkPermissions(user, Group.dealSend)){ %>
+ 选择安装网点：<input type="text" name="branch" id="branch" value="<%=branchName %>"   />
+ <% }else {
+%> 
+ 网点名称： <%=user.getBranchName() %>
+ <%
+ }
+ %> 
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
 选择出库时间:<input name="starttime" type="text" id="starttime" size="10"
                         maxlength="10" value="<%=starttime %>" onclick="new Calendar().show(this);"  readonly="readonly" />
@@ -160,6 +204,11 @@ function check(){
                         maxlength="10" onclick="new Calendar().show(this);"  readonly="readonly" />
    
    &nbsp;&nbsp;&nbsp;&nbsp;
+   <select id="counttyepe" name = "counttyepe">
+     <option value="-1">全部显示</option>
+     <option value=0 >只显示库存不为0</option>
+  </select> 
+    
    <input type="submit"  value="查询" />
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
    <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>
@@ -171,8 +220,11 @@ function check(){
 <br/>  
 
 <div id="wrap">
-<form action="InventoryServlet" method="post" onsubmit="return check()">
+<form action="InventoryServlet" method="post" onsubmit="return checkTime()">
 <input type="hidden" name="method" value="addsubscribe"/>
+
+<input type="hidden" name="typebranch" value="<%=submittype%>"/>
+
 <input type="hidden" name="inbranch" value="<%=branchid%>"/>
  
 <input type="hidden" name="starttime" value="<%=starttime %>"/>
@@ -183,7 +235,7 @@ function check(){
      			<td align="center">名称</td>
      			<td align="center">型号</td> 
      			<td align="center">账面库存</td>
-     			<td align="center">实际库存</td> 
+     			<td align="center">实际库存</td>  
      			<td align="center">出库数量</td> 
      			<td align="center">关联门店出样型号</td> 
      			<td align="center">需调货数量</td>
@@ -193,15 +245,19 @@ function check(){
               <% 
               if(null !=  listInventory ){
             	  for(int i=0;i<listInventory.size();i++){
-            	  InventoryBranch in = listInventory.get(i);
-            	  String branchtype = maptype.get(in.getType());
-            	  if(StringUtill.isNull(branchtype)){
-            		  branchtype = "";
-            	  }else {
-            		  maptype.remove(in.getType());
-            	  }
+	            	  InventoryBranch in = listInventory.get(i);
+	            	  
+	            	  if(countt == 0 && in.getRealcount() != 0 || countt != 0  ){
+	            		 
+	            	  
+			            	  String branchtype = maptype.get(in.getType());
+			            	  if(StringUtill.isNull(branchtype)){
+			            		  branchtype = "";
+			            	  }else {
+			            		  maptype.remove(in.getType());
+			            	  }
             	  %>
-            	  	
+            	  	 
             	   <tr id=""  class="asc"  onclick="updateClass(this)">   
 			 
         			  <td align="center"><%=mapc.get(in.getInventoryid()).getName() %></td>    
@@ -220,6 +276,8 @@ function check(){
             	  
             	  
             	  <%
+	            		 
+	            	  }
                 }
             	  System.out.println(maptype.size());
                %>

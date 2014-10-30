@@ -180,13 +180,12 @@ function getmap(){
   <table> 
      <tr> 
           <td></td>
-          <td><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span></td>
           <td><span class="qiangdan"><a href="chaxun_sale.jsp">订单查询</a></span></td>
-           <% if(returns != 0 && returns != 2 && huanhuo != 0 && huanhuo != 2 && modify != 0 ){ %>
+           <% if(returns != 0 && returns != 2 && huanhuo != 0 && huanhuo != 2 && modify != 0 && or.getDeliveryStatues() != 1 && or.getDeliveryStatues() != 2  ){ %>
           <td><span class="qiangdan"><a href="javascript:void(0)" onclick="updateOeder()">修改</a></span></td>
                <%}  
                if(modify != 0 && modify != 2 && huanhuo != 0 && huanhuo != 2 && returns != 0 ){
-            	   if(!((or.getDeliveryStatues() == 1 || or.getDeliveryStatues() == 2) && or.getOderStatus().equals(20+""))){
+            	   if(!((or.getDeliveryStatues() == 1 || or.getDeliveryStatues() == 2) && or.getOderStatus().equals(20+"")) && or.getReturnstatuse() == 0 ){
              %>     
           <td><span class="qiangdan"><a href="javascript:void(0)" onclick="updateOeders('tuihuo')">退货</a></span></td>
               <%    } 

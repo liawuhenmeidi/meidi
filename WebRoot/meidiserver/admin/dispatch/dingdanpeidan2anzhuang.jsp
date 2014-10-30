@@ -67,55 +67,17 @@ var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";
 
 $(function () {
-	$("#wrap").bind("scroll", function(){ 
-
-		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
-	        //滚动了竖直滚动条
-	        pre_scrollTop=($("#wrap").scrollTop() || document.body.scrollTop);
-	       
-	        if(obj_th){
-	            obj_th.style.top=($("#wrap").scrollTop() || document.body.scrollTop)+"px";
-	        }
-	    }
-	    else if(pre_scrollLeft != (document.documentElement.scrollLeft || document.body.scrollLeft)){
-	        //滚动了水平滚动条
-	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
-	    }
-		}); 
 	
 });
 
-function func(str){
-    $(id).css("display","none");
-	$("#"+str).css("display","block");
-	id = "#"+str ;
-}
-function funcc(str,str2){
-    $(id).css("display","none");
-	$("#"+str).css("display","block");
-	id = "#"+str ;
-	$.ajax({  
-        type: "post", 
-         url: "../server.jsp", 
-         data:"method=dingdan&id="+str2,
-         dataType: "", 
-         success: function (data) {
-            // window.location.href="senddingdan.jsp";
-           }, 
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-        // alert(errorThrown); 
-            }
-           });
-}
- 
-function changes(oid,id,statues){
+function changes(oid,id,statues,printid){
 	$.ajax({  
         type: "post", 
          url: "../server.jsp", 
          data:"method=dingdaned&oid="+oid+"&id="+id+"&statues="+statues, 
          dataType: "",  
          success: function (data) { 
-           window.location.href="dingdanpeidan2anzhuang.jsp";
+        	 window.location.href="../printPaigong.jsp?id="+oid+"&type=<%=Order.deliveryStatuesTuihuo%>&uid="+printid;
            },  
          error: function (XMLHttpRequest, textStatus, errorThrown) { 
         // alert(errorThrown); 
@@ -206,40 +168,7 @@ function wconfirm(){
 	}
 }
 
-function winconfirm(str,str2){
-	
-  //alert(str2);
-    if(4 == str2){
-    	var question = confirm("您的驳回请求别拒绝，是否继续申请？");
-			if(question == 0){
-				return ;
-			}
-    }else if(0 == str2){
-    	alert("您已提交驳回请求");
-    	return ; 
-    }
 
-	     
-    question = confirm("你确认要驳回吗？(商品入库后再驳回)");
-	
-	if (question != "0"){
-
-		$.ajax({    
-	        type:"post",  
-	         url:"../../user/server.jsp",
-	         //data:"method=list_pic&page="+pageCount,      
-	         data:"method=shifang&oid="+str+"&pGroupId="+pgroup+"&opstatues="+opstatues,
-	         dataType: "",  
-	         success: function (data) {     
-	          alert("驳回申请已提交成功");  
-	          window.location.href="dingdanpeidan2anzhuang.jsp";
-	           },  
-	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	          alert("驳回申请失败");
-	            } 
-	           });
-	 }
-}
 function adddetail(src){ 
 	//window.location.href=src ;
 	winPar=window.open(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
@@ -478,8 +407,8 @@ function seletall(all){
 			 if(orp != null){
          %> 
 		   <%=orp.getMessage() %>
-		    <input type="button" onclick="changes('<%=o.getId()%>','<%=orp.getId() %>','<%=OrderPrintln.comited%>')"  value="同意"/>
-		    <input type="button" onclick="changes('<%=o.getId()%>','<%=orp.getId() %>','<%=OrderPrintln.uncomited%>')"  value="不同意"/>
+		    <input type="button" onclick="changes('<%=o.getId()%>','<%=orp.getId() %>','<%=OrderPrintln.comited%>','<%=o.getInstallid() %>')"  value="同意"/>
+		    <input type="button" onclick="changes('<%=o.getId()%>','<%=orp.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getInstallid() %>')"  value="不同意"/>
 		<%   
 		  }
 		  

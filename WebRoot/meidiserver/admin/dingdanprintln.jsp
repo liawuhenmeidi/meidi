@@ -459,13 +459,9 @@ function orderPrint(id,statues,type,deliveryStatues){
 
 		
 		<td align="center" style="white-space:nowrap;">  
-		  <% if(o.getSendId() != 0){
-			  if(usermap.get(Integer.valueOf(o.getSendId())) != null){
-		 %>
-		 <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
-		 <%
-		  }}
-		 %>
+
+		 <%=o.getsendName() %>
+
 		 
 		</td>
         <td align="center" > 
@@ -474,13 +470,9 @@ function orderPrint(id,statues,type,deliveryStatues){
 		 
 		</td>
         <td align="center" style="white-space:nowrap;"> 
-		  <% if(o.getInstallid() != 0){
-			  if(usermap.get(Integer.valueOf(o.getInstallid())) != null){
-		 %>
-		 <%=usermap.get(Integer.valueOf(o.getInstallid())).getUsername() %>
-		 <%
-		  }}
-		 %>
+
+		 <%=o.getinstallName() %>
+
 		 
 		</td>
 		  <td align="center"> 
@@ -489,14 +481,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 		 
 		</td>
 		<td align="center">
-		
-		 <% if(o.getDealsendId() != 0){  
-		 %>
-		 <%=usermap.get(Integer.valueOf(o.getDealsendId())).getUsername()+"<p/>"+usermap.get(Integer.valueOf(o.getDealsendId())).getPhone() %>
-		 <%
-		  }
-		 %>
-		
+		 <%=o.getdealsendName()+"<p/>"+o.getdealsendphone()%>
 		</td>
 		<td align="center"> 
 		    <%=o.getStatues4()==0?"否":"是" %> 

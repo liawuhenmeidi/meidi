@@ -47,8 +47,8 @@ List<InventoryMessage> list = inventory.getInventory();
 
   <tr>
     <td colspan="2">&nbsp;</td> 
-    <td width="384" rowspan="2" align="center" style="font-size:30px; font-family:"楷体";><strong><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %></strong></td>
-    <td width="300"><strong><FONT size=5>单&nbsp;&nbsp;号：<%=inventory.getId() %></strong></FONT></td> 
+    <td width="384" rowspan="2" align="center" style="font-size:30px; font-family:"楷体";><strong>预约调货单</strong></td>
+    <td width="300"></td> 
   </tr>
   <tr>  
     <td width="110" style="font-size:25px; font-family:"楷体";>&nbsp;&nbsp;&nbsp;<strong>&nbsp;</strong></td>
@@ -62,14 +62,9 @@ List<InventoryMessage> list = inventory.getInventory();
   <td height="30" colspan="5" align="center" valign="middle" bgcolor="#FFFFFF">
   <table width="1010" width="100%" border="0" cellspacing="0" cellpadding="0"> 
  <tr> 
+
  <td id="d" width="15%" align="center">
- 出库方
- </td > 
- <td id="d" width="35%" align="center">
- <%=branchmap.get(inventory.getOutbranchid()).getLocateName() %>
- </td>  
- <td id="d" width="15%" align="center">
-入库方
+入库单位
  </td>
  <td id="d" width="35%" align="center">
 <%=branchmap.get(inventory.getInbranchid()).getLocateName() %>

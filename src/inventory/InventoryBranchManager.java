@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -509,6 +510,18 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		return order; 
 
   }
+	
+	public static Map<String,InventoryBranch> getmapType(String branchid,String type){
+		Map<String,InventoryBranch> map = new HashMap<String,InventoryBranch>();
+		 List<InventoryBranch>  listInventory = InventoryBranchManager.getCategoryid(branchid,type);
+		 Iterator<InventoryBranch> it = listInventory.iterator();
+		 while(it.hasNext()){
+			 InventoryBranch in = it.next();
+			 map.put(in.getType(), in);
+		 }
+		 return map;
+	}
+	
 	
 	public static InventoryBranch getInventoryID(User user ,int branchid,String type){
 		   

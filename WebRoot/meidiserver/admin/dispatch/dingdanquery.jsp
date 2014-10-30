@@ -28,13 +28,13 @@ width:50px
     padding:0;
 }
 #table{  
-    width:2500px;
+    width:2600px;
      table-layout:fixed ;
 }
 #th{
     background-color:white;
     position:absolute;
-    width:2500px; 
+    width:2600px; 
     height:30px;
     top:0;
     left:0; 
@@ -269,6 +269,7 @@ function orderPrint(id,statues){
 			<td align="center">安装时间</td> 
 			<td align="center">释放</td>
 			<td align="center">操作</td>
+			<td align="center">退货员</td> 
 			<td align="center">退货</td> 
 			<td align="center">送货状态</td> 
 			
@@ -363,11 +364,14 @@ function orderPrint(id,statues){
      int statues = OrderManager.getShifangStatues(o);
      int shifang = -1 ;  
      boolean query = true;
+ 
 	if(statues != -1){
 		
 		if(opmap.get(statues) != null){
+
 			OrderPrintln orp = opmap.get(statues).get(o.getId());    
 			if(orp != null){
+				
 				query = false ;
 				shifang = orp.getStatues();
 				if(shifang == 4 ){
@@ -381,6 +385,10 @@ function orderPrint(id,statues){
 				您已提交
 				<%
 				}
+			}else {
+				%>
+				<input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>	
+				<%
 			} 
 		}else {
 		     	query = true ;
@@ -432,6 +440,17 @@ function orderPrint(id,statues){
     if(o.getReturnstatuse() == 0 && o.getReturnid() != 0 && query){
 
     %>
+    <td align="center"> 
+		<% if(o.getReturnid() != 0){
+			if(usermap.get(Integer.valueOf(o.getReturnid())) != null){
+		 %> 
+		 <%=usermap.get(Integer.valueOf(o.getReturnid())).getUsername() %>
+		 <%
+		  }
+		}
+		 %>
+		
+		</td>
     <td class="s_list_m"> 
      <select class = "category" name="category"  id="return<%=o.getId() %>" >
      <%

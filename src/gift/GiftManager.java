@@ -84,6 +84,7 @@ import database.DB;
 						pstmt.setString(1, Gift.getName());
 						logger.info(Gift.getName());
 						pstmt.executeUpdate();
+						resetOrPMap();
 					} catch (SQLException e) {   
 						e.printStackTrace();
 					} finally {

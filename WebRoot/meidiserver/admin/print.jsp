@@ -9,12 +9,16 @@ String id = request.getParameter("id");
 String type = request.getParameter("type");
 String dingma = request.getParameter("dingma");
 String uid = request.getParameter("uid");
-Order order = OrderManager.getOrderID(user, Integer.valueOf(id));
-HashMap<Integer,User> usermap = UserManager.getMap();
 
+Order order = OrderManager.getOrderID(user, Integer.valueOf(id));
+message = OrderManager.getOrderStatues(order);
+
+HashMap<Integer,User> usermap = UserService.getMapId();
 String dealsendName = order.getDealsendId()==0?"":usermap.get(order.getDealsendId()).getUsername();
+
+
 if((Order.deliveryStatuesTuihuo+"").equals(type)){
-	message = "退货单"; 
+	message += "退货单"; 
 	if(usermap.get(Integer.valueOf(uid)) != null){
 		dealsendName = usermap.get(Integer.valueOf(uid)).getUsername();
 	}
@@ -22,27 +26,7 @@ if((Order.deliveryStatuesTuihuo+"").equals(type)){
 	message = "调账单";  
 	flagdiagma = true ; 
 } 
-  
-String deliveryStatues = request.getParameter("deliveryStatues");
 
-if((0+"").equals(deliveryStatues)){
-	message = "需派送单"; 
-}else if((9+"").equals(deliveryStatues)){
-	message = "只安装(门店提货)单"; 
-}else if((10+"").equals(deliveryStatues)){
-	message = "只安装(顾客已提)单"; 
-}else if((8+"").equals(deliveryStatues)){
-	if((2+"").equals(dingma)){
-		message = "已自提单";  
-	}else { 
-		message = "已自提单";
-	}
-	  
-}else {
-	if(order.getOderStatus().equals(20+"")){
-		message = "换货单";
-	}
-}
    
 int iddd = 0;
 
@@ -82,7 +66,7 @@ Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(us
 <table width="1010">
   <tr>
     <td colspan="2">&nbsp;</td>  
-    <td width="384" rowspan="2" align="center" style="font-size:30px; font-family:"楷体";><strong><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName()+message %></strong></td>
+    <td width="384" rowspan="2" align="center" style="font-size:30px; font-family:"楷体";><strong><%=user.getBranchName()+message %></strong></td>
     <td width="300"><strong><FONT size=5>单&nbsp;&nbsp;号：<%=order.getPrintlnid() == null?"":order.getPrintlnid()%></strong></FONT></td> 
   </tr>
   <tr>  

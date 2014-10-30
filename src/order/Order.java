@@ -19,6 +19,7 @@ import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
 import product.ProductService;
 import user.User;
+import user.UserService;
  
 public class Order {
   
@@ -248,7 +249,60 @@ public void setReturnstatuse(int returnstatuse) {
 	this.returnstatuse = returnstatuse;
 }
   
+public  String getdealsendName(){ 
+	String str = "";
+	if(this.getDealsendId() != 0){
+		User user = UserService.getMapId().get(this.getDealsendId());
+		if(null != user ){
+			str = user.getUsername();
+		}
+	}
+	return str ;
+}
   
+public  String getdealsendphone(){ 
+	String str = "";
+	if(this.getDealsendId() != 0){
+		User user = UserService.getMapId().get(this.getDealsendId());
+		if(null != user ){
+			str = user.getPhone();
+		}
+	}
+	return str ;
+}
+
+public  String getsendName(){ 
+	String str = "";
+	if(this.getSendId() != 0){
+		User user = UserService.getMapId().get(this.getSendId());
+		if(null != user ){
+			str = user.getUsername();
+		}
+	}
+	return str ;
+}
+
+public  String getinstallName(){ 
+	String str = "";
+	if(this.getInstallid() != 0){
+		User user = UserService.getMapId().get(this.getInstallid() );
+		if(null != user ){
+			str = user.getUsername();
+		}
+	}
+	return str ;
+}
+
+public  String getreturnName(){ 
+	String str = "";
+	if(this.getReturnid() != 0){
+		User user = UserService.getMapId().get(this.getReturnid());
+		if(null != user ){
+			str = user.getUsername();
+		}
+	}
+	return str ;
+}
   public int getStatuesinstall() {
 		return statuesinstall;
 	}
@@ -829,6 +883,7 @@ public String getSendCount(int statues,String decollator){
 	 }
 	return sendCount;
 }
+  
 
 public void clear() {
 	this.branch = -1;
@@ -836,5 +891,5 @@ public void clear() {
 	this.pos = "";
 	this.saleTime = "";
 }
-  
+
 }

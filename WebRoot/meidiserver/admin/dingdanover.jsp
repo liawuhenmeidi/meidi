@@ -76,26 +76,7 @@ $(function () {
 	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
 	    }
 		}); 
-	
-	
 });
-
-function serch(){
-	 var str = "";
-	 var search = $("#search").val();
-	 var serchProperty = $("#serchProperty").val();
-	 var dealSendid = $("#dealSendid").val();
-	  
-	 if(dealSendid != null && dealSendid !=""){
-		 str += "and dealSendid = " + dealSendid ;
-	 }
-	 if(serch != null && serchProperty != null && serchProperty != "" && serch != ""){
-		 str += "  and " + serchProperty + "  like '%25"+search+"%25'	";
-	 } 
-	 window.location.href="dingdanover.jsp?search="+str;  
-	 // sencondsend
-
-}
 
 function winconfirm(){
 	var question = confirm("你确认要执行此操作吗？");	
@@ -271,22 +252,16 @@ function adddetail(src){
 		
 		<td align="center" style="white-space:nowrap;">
 		 
-		 <% if(o.getDealsendId() != 0){  
-		 %> 
-		 <%=usermap.get(Integer.valueOf(o.getDealsendId())).getUsername() %>
-		 <%
-		  }
-		 %>
+		
+		 <%=o.getdealsendName() %>
+
           
 		</td>
         
         <td align="center" style="white-space:nowrap;"> 
-		  <% if(o.getSendId() != 0){  
-		 %>
-		 <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
-		 <%
-		  }
-		 %>
+		  
+		 <%=o.getsendName() %>
+	
 		 
 		</td>
          

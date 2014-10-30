@@ -178,11 +178,11 @@ function inventory(inventory,type){
 		        		 }else if(type == 6){   
 		        			 strtype = usermap.get(in.getReceiveuser()).getUsername()+"释放给"+usermap.get(in.getSendUser()).getBranchName();
 		        		 }else if(type == 7){    
-		        			 strtype = "退货员"+usermap.get(in.getReceiveuser()).getBranchName()+"拉回给"+usermap.get(in.getSendUser()).getBranchName();
+		        			 strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回给"+usermap.get(in.getSendUser()).getBranchName();
 		        		 } else if(type == 8){    
 		        			 strtype = usermap.get(in.getSendUser()).getBranchName()+"同意"+usermap.get(in.getReceiveuser()).getBranchName()+"退货";
 		        		 } else if(type == 9 ) {
-		        			 strtype = "退货员"+usermap.get(in.getReceiveuser()).getBranchName()+"释放给"+usermap.get(in.getSendUser()).getBranchName();
+		        			 strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"释放给"+usermap.get(in.getSendUser()).getBranchName();
 		        		 }else if(type == 12){
 		        			 strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回次品给"+usermap.get(in.getSendUser()).getBranchName();
 		        		 } 

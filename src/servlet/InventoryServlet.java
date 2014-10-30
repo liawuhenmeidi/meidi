@@ -1,5 +1,6 @@
 package servlet;
 
+import group.Group;
 import inventory.Inventory;
 import inventory.InventoryAnalyze;
 import inventory.InventoryBranchManager;
@@ -24,6 +25,7 @@ import product.Product;
 import product.ProductService;
 
 import user.User;
+import user.UserManager;
 import utill.DBUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
@@ -123,6 +125,8 @@ System.out.println(type+"type");
         
 		String outbranch = request.getParameter("outbranch");
 		String inbranch = request.getParameter("inbranch");
+		
+		String typebranch = request.getParameter("typebranch");
 		 
 		int outbranchid = BranchManager.getBranchID(outbranch);
 		int inbranchid = BranchManager.getBranchID(inbranch); 
@@ -142,7 +146,11 @@ System.out.println(type+"type");
 			String count = request.getParameter("orderproductNum"+producs[i]);
 			inven.setProductId(type);   
 			inven.setCategoryId(categoryId);  
-			inven.setCount(Integer.valueOf(count));   
+			if("inbranch".equals(typebranch)){
+				inven.setCount(Integer.valueOf(count));  
+			}else {
+				inven.setAnlycount(Integer.valueOf(count));
+			}
 			inventoryMessage.add(inven); 			
 		}
 		
@@ -184,6 +192,9 @@ System.out.println(type+"type");
  		String starttime = request.getParameter("starttime");
  		
  		String endtime = request.getParameter("endtime");
+ 		 
+ 		InventoryManager.deleteBybranchid(Integer.valueOf(inbranch));
+ 		
  		
  		InventoryAnalyze in = new InventoryAnalyze();
  		
@@ -199,7 +210,8 @@ System.out.println(type+"type");
  		
  		//String remark = request.getParameter("remark");  
  		
- 		  
+ 		String typebranch = request.getParameter("typebranch");
+ 		
  		List<InventoryMessage> inventoryMessage = new ArrayList<InventoryMessage>();
  		  
  		String[] producs = request.getParameterValues("product"); 
@@ -211,16 +223,25 @@ System.out.println(type+"type");
  			Product p = ProductService.getIDmap().get(Integer.valueOf(type));
  			int categoryId = p.getCategoryID();
  			type = p.getId()+""; 
+ 			
  			String count = request.getParameter(producs[i]);
  			inven.setProductId(type);   
- 			inven.setCategoryId(categoryId);  
- 			inven.setCount(Integer.valueOf(count));   
+ 			inven.setCategoryId(categoryId);
+ 			if("outbranch".equals(typebranch)){
+ 				inven.setAnlycount(Integer.valueOf(count));
+ 	 		}else {
+ 	 			inven.setCount(Integer.valueOf(count));   
+ 	 		} 
+
  			inventoryMessage.add(inven); 			
- 		}
+ 		} 
  		
- 		inventory.setId(Integer.valueOf(id)); 
- 		inventory.setInbranchid(Integer.valueOf(inbranch)); 
- 		inventory.setOutbranchid(Integer.valueOf(user.getBranch()));
+ 		inventory.setId(Integer.valueOf(id));
+ 		if("outbranch".equals(typebranch)){
+ 			inventory.setInbranchid(Integer.valueOf(inbranch)); 
+ 		}else {
+ 			inventory.setOutbranchid(Integer.valueOf(inbranch));
+ 		} 
  		inventory.setIntime(time);   
  		inventory.setUid(uid);  
  		inventory.setRemark(remark);
@@ -238,7 +259,8 @@ System.out.println(type+"type");
  	}  
     
      private void updatesubscribeBranch(HttpServletRequest request, HttpServletResponse response){
-  		
+    	 User user  = (User)request.getSession().getAttribute("user");
+    	 
   		String[] producs = request.getParameterValues("product"); 
   		
   		String add = request.getParameter("add");
@@ -256,15 +278,25 @@ System.out.println(type+"type");
   			
   			}else if("outbranch".equals(add)){
   				String count = request.getParameter("real"+producs[i]);	
-	  			String sql = "update inventorymessage set count = " + count + "   where id = " + type ;
-	  			 sqls.add(sql); 			
+  				String sql1 = "update inventory set outstatues = 1 where id in (select inventoryId from inventorymessage where id = "+type+")"; 
+	  			 
+  				
+	  			String sql = "update inventorymessage set count = " + count + "    where id = " + type ;
+	  			sqls.add(sql1);
+	  			sqls.add(sql); 			
   			} 
   		}
   		
   	   DBUtill.sava(sqls);
   		
   		try {
-  			response.sendRedirect("analyzrecepts.jsp");
+  			if(UserManager.checkPermissions(user, Group.dealSend)){
+  				String id = request.getParameter("id");
+  				response.sendRedirect("print.jsp?id="+id+"&type=2");
+  			}else {
+  				response.sendRedirect("analyzrecepts.jsp");
+  			}
+  			
   			return ;
   		} catch (IOException e) {
   		

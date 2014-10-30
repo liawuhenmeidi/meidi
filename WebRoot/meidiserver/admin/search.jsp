@@ -41,7 +41,7 @@ function add(){
 		    if("statues4" == name || "statues1" == name || "statues2" == name || "statues3" == name || "statuesdingma" == name || "statues" == name || "deliverytype" == name){
 		    	$("#search").append(value+":是<input type=\"radio\"  name=\""+name+"\"  value=\"1\" />否<input type=\"radio\"  name=\""+name+"\"  value=\"0\" /><input type=\"hidden\"  name=\"search\" value=\""+name+"\"></input>");  
 		    }else if("deliveryStatues" == name){
-		    	var str = "";
+		    	var str = "送货状态：";
 		    	str +=  "<select name=\""+name+"\">"+
 		    	           "<option value=\"1\">已送货</option>"+
 		    	           "<option value=\"2\">已安装</option>"+
@@ -51,7 +51,7 @@ function add(){
 		    	         " <input type=\"hidden\"  name=\"search\" value=\""+name+"\"></input>";
 		    	$("#search").append(str);
 		    }else if("oderStatus" == name){
-		    	var str = "";
+		    	var str = "上报状态：";
 		    	str +=  "<select name=\""+name+"\">"+
 		    	           "<option value=\"0\">需派送</option>"+
 		    	           "<option value=\"8\">已自提</option>"+

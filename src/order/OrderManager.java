@@ -157,7 +157,7 @@ logger.info(pstmt);
 		String str = "";
 		// 0 表示未送货  1 表示正在送  2 送货成功
 		 if(0 == statues){
-		    str = "需派送";
+		    str = "需配送";
           }else if( 8 == statues){ 
         	  str = "已自提 ";
           }else if(9 == statues){
@@ -167,9 +167,6 @@ logger.info(pstmt);
           }else if(20 == statues){
         	   str = "换货单";
           }
-        		
-		
-		
 		return str ;
 		
 		
@@ -178,7 +175,7 @@ logger.info(pstmt);
 	
 	public static Map<String,String> getDeliveryStatuesMap(){
 		Map<String,String> map = new HashMap<String,String>();
-		map.put(0+"", "需派送安装");
+		map.put(0+"", "需配送安装");
 		map.put(1+"", "已送货");
 		map.put(8+"", "已自提 ");
 		map.put(9+"", "只安装(门店提货)");
@@ -246,8 +243,8 @@ logger.info(pstmt);
 					Order order = OrderManager.getOrderID(user, Integer.valueOf(id));
 				    if((2 == statues || 1 == statues ) && order.getOderStatus().equals(20+"")){
 				    	flags = true ;
-				    	String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl();
-				    	listsql.add(sql1);
+				    	//String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl();
+				    	//listsql.add(sql1);
 				    }
 				}
 				
@@ -1293,7 +1290,10 @@ logger.info(sql);
 		}else if (or.getDeliveryStatues() == 1 || or.getDeliveryStatues() == 10){
 			if(or.getInstallid() != 0){  
 				opstatues = OrderPrintln.salereleaseanzhuang;
-			}  
+			}
+			if(or.getReturnid() != 0){ 
+				opstatues = OrderPrintln.salereleasereturn ;
+			}
 		}else if(or.getDeliveryStatues() == 2 ){  
 			if(or.getReturnid() != 0){ 
 				opstatues = OrderPrintln.salereleasereturn ;

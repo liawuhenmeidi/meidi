@@ -1,42 +1,52 @@
 <%@ page language="java" import="java.util.*,utill.*,java.text.SimpleDateFormat,category.*,product.*,branch.*,orderPrint.*,gift.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
-<%   
-request.setCharacterEncoding("utf-8"); 
-User user = (User)session.getAttribute("user");
-String id = request.getParameter("id");
-String type = request.getParameter("type");
-String uid = request.getParameter("uid");
+<%  
 String message = "";
 String username = "";
 String htmlname = "";
+
+request.setCharacterEncoding("utf-8"); 
+User user = (User)session.getAttribute("user");
+
+String id = request.getParameter("id");
+String type = request.getParameter("type");
+String uid = request.getParameter("uid");
+
 Order order = OrderManager.getOrderID(user, Integer.valueOf(id));
 HashMap<Integer,User> usermap = UserManager.getMap();
+message = OrderManager.getOrderStatues(order);
 
 String deliveryStatues = order.getOderStatus();
-
-if((0+"").equals(deliveryStatues)){
-	htmlname = "送货员";
-	message = "需派送单"; 
-	username = usermap.get(order.getSendId()).getUsername();
-}else if((9+"").equals(deliveryStatues)){
-	message = "只安装(门店提货)单"; 
-}else if((10+"").equals(deliveryStatues)){
-	message = "只安装(顾客已提)单"; 
-	htmlname = "安装员";
-	username = usermap.get(order.getInstallid()).getUsername();
+if((Order.deliveryStatuesTuihuo+"").equals(type)){
+	message += "退货单";  
+	htmlname = "退货员";
+	username = usermap.get(Integer.valueOf(uid)).getUsername();
+}else if((Order.returns+"").equals(type)  || (Order.orderreturn+"").equals(type)){
+	message += "退货单";  
+	htmlname = "退货员";    
+	username = usermap.get(order.getReturnid()).getUsername();
 }else {
-	if(order.getOderStatus().equals(20+"")){
-		message = "换货单";
-		htmlname = "换货员";
+	if((0+"").equals(deliveryStatues)){
+		htmlname = "送货员";
+		
 		username = usermap.get(order.getSendId()).getUsername();
+	}else if((9+"").equals(deliveryStatues)){
+		htmlname = "送货员";
+		 
+		username = usermap.get(order.getSendId()).getUsername();
+	}else if((10+"").equals(deliveryStatues)){
+		
+		htmlname = "安装员";
+		username = usermap.get(order.getInstallid()).getUsername();
+	}else {
+		if(order.getOderStatus().equals(20+"")){
+			htmlname = "换货员";
+			username = usermap.get(order.getSendId()).getUsername();
+		}
 	}
 }
 
-if((Order.returns+"").equals(type)  || (Order.orderreturn+"").equals(type)){
-	message += "退货单"; 
-	htmlname = "退货员";   
-	username = usermap.get(order.getReturnid()).getUsername();
-}
+
 
 int iddd = 0;
 

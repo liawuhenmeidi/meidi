@@ -67,62 +67,24 @@ var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";
 
 $(function () {
-	$("#wrap").bind("scroll", function(){ 
 
-		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
-	        //滚动了竖直滚动条
-	        pre_scrollTop=($("#wrap").scrollTop() || document.body.scrollTop);
-	       
-	        if(obj_th){
-	            obj_th.style.top=($("#wrap").scrollTop() || document.body.scrollTop)+"px";
-	        }
-	    }
-	    else if(pre_scrollLeft != (document.documentElement.scrollLeft || document.body.scrollLeft)){
-	        //滚动了水平滚动条
-	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
-	    }
-		}); 
-	
 });
-
-function func(str){
-    $(id).css("display","none");
-	$("#"+str).css("display","block");
-	id = "#"+str ;
-}
-function funcc(str,str2){
-    $(id).css("display","none");
-	$("#"+str).css("display","block");
-	id = "#"+str ;
-	$.ajax({  
-        type: "post", 
-         url: "../server.jsp", 
-         data:"method=dingdan&id="+str2,
-         dataType: "", 
-         success: function (data) {
-            // window.location.href="senddingdan.jsp";
-           }, 
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-        // alert(errorThrown); 
-            }
-           });
-}
  
 function changes(oid,id,statues,flag,returnstatues,type,printid){
 	if(statues == 2){ 
 		if(flag == 2){
 			alert("请联系送货员驳回");
 			return ;      
-		} 
-		
-		if(flag == 1){
+		}else if(flag == 3){
+			alert("请联系安装呀驳回");
+			return ;
+		}else if(flag == 1){
 			if(returnstatues == 0){
 				alert("请配置退货员拉回商品再同意");
 				return ;
 			}
 		}
-		
-		
+
 	} 
 		$.ajax({   
 	        type: "post", 
@@ -154,7 +116,7 @@ function changes(oid,id,statues,flag,returnstatues,type,printid){
 	           }); 
 	
 }
- 
+ // 派工送货员
 function change(str1,oid,type,statues,types,saleId){
 	
 	var uid = $("#"+str1).val();
@@ -389,7 +351,7 @@ function adddetail(src){
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>
 		<td align="center">
-		<%=OrderManager.getOrderStatues(o)+OrderManager.getDeliveryStatues(o) %>
+		<%=OrderManager.getDeliveryStatues(o) %>
 		</td>
 		<td align="center">
 		
@@ -552,6 +514,10 @@ function adddetail(src){
 					statues = 1 ;  
 				}else if(o.getDeliveryStatues() == 2){ 
 					statues = 1 ; 
+				}else if(o.getDeliveryStatues() == 10){
+					if(o.getInstallid() != 0 ){
+						statues = 3 ;
+					}
 				}  
 		
 				%> 

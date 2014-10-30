@@ -60,13 +60,14 @@ var pgroup = "<%=pgroup%>";
 var usermapstr = <%=usermapstr%>;
 var opstatues = "<%=opstatues%>"; 
 var inventory = "";  
-
+// types   产品型号 
 function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	var uid = $("#"+str1).val();
 	var saleid = $("#"+str1).val();
    if(deliveryStatues == 9 || deliveryStatues == 10 || deliveryStatues == 8){
 	   saleid = saleId;
    }
+
    var branch = usermapstr[saleid].branchName;
    
 	if(deliveryStatues != 8 ){ 
