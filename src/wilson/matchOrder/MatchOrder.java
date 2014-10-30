@@ -54,6 +54,11 @@ public class MatchOrder {
 				Order tempDBO = unCheckedDBOrders.get(j);
 				
 				if(tempUo.getPosNo().toUpperCase().equals(tempDBO.getPos().toUpperCase())){
+					
+					if(tempUo.getPosNo().equals("D01982456")){
+						System.out.println("a");
+					}
+					
 					//对比双方都没有重复posno的情况
 					if(!samePosDBOrders.contains(tempDBO) && !samePosUploadOrders.contains(tempUo)){
 						amo = new AfterMatchOrder(tempUo,tempDBO);
@@ -69,17 +74,30 @@ public class MatchOrder {
 					}else if(samePosDBOrders.contains(tempDBO) && !samePosUploadOrders.contains(tempUo)){
 						
 						List<Order> tempList = getSamePosDBOrdersFromList(samePosDBOrders, tempDBO.getPos());		
+						tempDouble = 0.0;
 						
-						for(int k = 0 ; k < tempList.size() ; k ++){							
-							//第一单
-							if(k == 0){
-								amo = new AfterMatchOrder(tempUo,tempList.get(k));
+						//取出comparelevel最大的一对作为第一对
+						int maxCompareLevelIterator = 0 ;
+
+						for(int m = 0 ; m <tempList.size() ; m++){
+							amo = new AfterMatchOrder(tempUo,tempList.get(m));
+							if(amo.calcLevel()>tempDouble){
 								tempDouble = amo.calcLevel();
-								matchedOrders.add(amo);
-								unMatchedUploadOrders.remove(tempUo);
-								unMatchedDBOrders.remove(tempList.get(k));
-								continue;
-							}	
+								maxCompareLevelIterator = m;
+							}
+						}
+						
+						//第一单
+						amo = new AfterMatchOrder(tempUo,tempList.get(maxCompareLevelIterator));
+						tempDouble = amo.calcLevel();
+						matchedOrders.add(amo);
+						unMatchedUploadOrders.remove(tempUo);
+						unMatchedDBOrders.remove(tempList.get(maxCompareLevelIterator));
+						tempList.remove(maxCompareLevelIterator);
+						
+						//其他对
+						for(int k = 0 ; k < tempList.size() ; k ++){							
+							
 							//其他单据
 							//对应处设置一个新单据与他对应，ID为-1
 							UploadOrder o = new UploadOrder();
@@ -97,20 +115,30 @@ public class MatchOrder {
 					}else if(!samePosDBOrders.contains(tempDBO) && samePosUploadOrders.contains(tempUo)){
 						
 						List<UploadOrder> tempList = getSamePosUploadOrdersFromList(samePosUploadOrders, tempUo.getPosNo());
-												
+						tempDouble = 0.0;
+										
+						//取出comparelevel最大的一对作为第一对
+						int maxCompareLevelIterator = 0 ;
+
+						for(int m = 0 ; m <tempList.size() ; m++){
+							amo = new AfterMatchOrder(tempList.get(m),tempDBO);
+							if(amo.calcLevel()>tempDouble){
+								tempDouble = amo.calcLevel();
+								maxCompareLevelIterator = m;
+							}
+						}
+						
+						//第一单
+						amo = new AfterMatchOrder(tempList.get(maxCompareLevelIterator),tempDBO);
+						tempDouble = amo.calcLevel();
+						matchedOrders.add(amo);
+						unMatchedUploadOrders.remove(tempList.get(maxCompareLevelIterator));
+						unMatchedDBOrders.remove(tempDBO);
+						tempList.remove(maxCompareLevelIterator);
+						
 						
 						for(int k = 0 ; k < tempList.size() ; k ++){
-							
-							if(k == 0){
-								//第一单
-								amo = new AfterMatchOrder(tempList.get(k),tempDBO);
-								tempDouble = amo.calcLevel();
-								matchedOrders.add(amo);
-								unMatchedUploadOrders.remove(tempList.get(k));
-								unMatchedDBOrders.remove(tempDBO);
-								continue;
-							}
-		
+
 							//其他单
 							//对应处设置一个新单据与他对应，ID为-1
 							Order o = new Order();
@@ -130,17 +158,38 @@ public class MatchOrder {
 						
 						List<Order> tempDBOrder = getSamePosDBOrdersFromList(samePosDBOrders, tempDBO.getPos());
 						List<UploadOrder> tempUploadOrder = getSamePosUploadOrdersFromList(samePosUploadOrders, tempUo.getPosNo());
+						tempDouble = 0.0;
+						
+						//取出comparelevel最大的一对作为第一对
+						int maxCompareLevelIteratorDB = 0 ;
+						int maxCompareLevelIteratorUpload = 0 ;
 
-						for(int k = 0;;){
-							if(k == 0){
-								//第一单
-								amo = new AfterMatchOrder(tempUploadOrder.get(k),tempDBOrder.get(k));
-								tempDouble = amo.calcLevel();
-								matchedOrders.add(amo);
-								unMatchedUploadOrders.remove(tempUploadOrder.get(k));
-								unMatchedDBOrders.remove(tempDBOrder.get(k));
-								continue;
-							}					
+						for(int m = 0 ; m <tempDBOrder.size() ; m++){
+							for(int n = 0 ; n < tempUploadOrder.size() ; n ++){
+								
+								amo = new AfterMatchOrder(tempUploadOrder.get(n),tempDBOrder.get(m));
+								if(amo.calcLevel()>tempDouble){
+									tempDouble = amo.calcLevel();
+									maxCompareLevelIteratorDB = m;
+									maxCompareLevelIteratorUpload = n;
+								}
+								
+							}
+						}
+						
+						
+						//第一单
+						amo = new AfterMatchOrder(tempUploadOrder.get(maxCompareLevelIteratorUpload),tempDBOrder.get(maxCompareLevelIteratorDB));
+						tempDouble = amo.calcLevel();
+						matchedOrders.add(amo);
+						unMatchedUploadOrders.remove(tempUploadOrder.get(maxCompareLevelIteratorUpload));
+						unMatchedDBOrders.remove(tempDBOrder.get(maxCompareLevelIteratorDB));
+						tempDBOrder.remove(maxCompareLevelIteratorDB);
+						tempUploadOrder.remove(maxCompareLevelIteratorUpload);
+							
+						
+						
+						for(int k = 0;;){				
 							
 							//其他单
 							//对应处设置一个新单据与他对应，ID为-1
