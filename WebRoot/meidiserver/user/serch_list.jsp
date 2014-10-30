@@ -50,7 +50,6 @@ function search(type){
           <td><span class="qiangdan"><a href="chaxun_sale.jsp">我要查询</a></span></td>
           <td><span class="qiangdan"><a href="order.jsp">我要报装</a></span></td>
           <td><span class="qiangdan"><a href="welcom.jsp">返回</a></span></td>
-          <td><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span></td>
      </tr>
     
   </table>  

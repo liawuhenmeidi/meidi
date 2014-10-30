@@ -265,7 +265,7 @@ logger.info(message);
 							listg.add(g);
 						}
 					} 
-			}
+			}   
 
 					String username = request.getParameter("username");
 					

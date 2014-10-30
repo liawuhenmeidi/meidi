@@ -3,7 +3,7 @@
 <%      
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
-boolean searchflag = false ;
+boolean searchflag = false ; 
 String pageNum = request.getParameter("page");
 String numb = request.getParameter("numb");  
 String sort = request.getParameter("sort");   

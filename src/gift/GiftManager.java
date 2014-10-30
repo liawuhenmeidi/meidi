@@ -99,7 +99,6 @@ import database.DB;
 			
 			 public static List<String> save(int id, Order orderr) {
 				 List<String> sqls = new ArrayList<String>();
-				 
 				 List<Gift> orders = orderr.getOrdergift();
 				 if(null != orders){
 					 
@@ -111,6 +110,8 @@ import database.DB;
 						
 				   } 
 				 }
+				 
+				 GiftManager.resetOrPMap();
 				return sqls ;
 		   }
 			 

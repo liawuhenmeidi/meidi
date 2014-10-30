@@ -58,28 +58,23 @@ public class OrderManager {
 	
 	public static int updateMessage(String phone1,String andate,String locations,String POS,String sailId,String check,String oid,String remark,String saledate,String diqu) {
 		int flag = -1 ;  
-		Connection conn = DB.getConn(); 
+		List<String> sqls = new ArrayList<String>();
 		//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
-		String sql = "update mdorder set phone1= ? , andate = ? , locateDetail = ?, pos = ?, sailId = ? ,checked =? , remark = ? ,saledate = ? ,locates = ? where id = " + oid;
-		PreparedStatement pstmt = DB.prepare(conn, sql);
-		try {   
-			pstmt.setString(1,phone1);   
-			pstmt.setString(2,andate);   
-			pstmt.setString(3,locations);    
-			pstmt.setString(4,POS);     
-			pstmt.setString(5,sailId);    
-			pstmt.setString(6,check);   
-			pstmt.setString(7,remark);
-			pstmt.setString(8,saledate);
-			pstmt.setString(9,diqu);
-logger.info(pstmt);    
-			flag = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally { 
-			DB.close(pstmt);
-			DB.close(conn);
-		} 
+		String sql = "update mdorder set phone1= "+phone1+" , andate = "+andate+" , locateDetail = "+locations+", pos = "+POS+", sailId = "+sailId+" ,checked ="+check+" , remark = "+remark+" ,saledate = "+saledate+" ,locates = "+diqu+" where id = " + oid;
+        
+		String sql1 = "update mdorder set posRemark = 0 where pos != " + POS ;  
+		
+		String sql2 = "update mdorder set checkedremark = 0 where checked !="+check ;
+			
+		String sql3 = "update mdorder set sailIdremark = 0 where sailId != "+sailId ;
+				
+		sqls.add(sql);
+		
+		sqls.add(sql1);
+		sqls.add(sql2);
+		sqls.add(sql3);
+		
+		DBUtill.sava(sqls);
 		return flag ;
 	}  
 	
@@ -236,15 +231,15 @@ logger.info(pstmt);
 			}else if("orderCharge".equals(method)){
 				sql = "update mdorder set statues3 = "+statues+" where id in " + ids;
 			} else if("orderover".equals(method)){ 
-				sql = "update mdorder set statues4 = "+statues+" where id in " + ids;
+				sql = "update mdorder set statues4 = "+statues+"  , chargeDealsendtime = "+TimeUtill.gettime()+" where id in " + ids;
 			} else if("songhuo".equals(method)){
 				boolean flags = false ;
 				if(NumbleUtill.isNumeric(id)){
 					Order order = OrderManager.getOrderID(user, Integer.valueOf(id));
 				    if((2 == statues || 1 == statues ) && order.getOderStatus().equals(20+"")){
-				    	flags = true ;
-				    	//String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl();
-				    	//listsql.add(sql1);
+				    	flags = true ; 
+				    	String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl();
+				    	listsql.add(sql1);
 				    }
 				}
 				
@@ -283,12 +278,12 @@ logger.info(pstmt);
 			}   else if("statuescallback".equals(method)){ 
 				sql = "update mdorder set statuescallback = "+statues+" where id in " + ids;
 			} else if("statuespaigong".equals(method)){ 
-				sql = "update mdorder set statuespaigong = "+statues+" where id in " + ids;
+				sql = "update mdorder set statuespaigong = "+statues+"  , chargeSendtime = "+TimeUtill.gettime()+" where id in " + ids;
 			} else if("statuesinstall".equals(method)){  
-				sql = "update mdorder set statuesinstall = "+statues+" where id in " + ids;
+				sql = "update mdorder set statuesinstall = "+statues+"  , chargeInstalltime = "+TimeUtill.gettime()+" where id in " + ids;
 			} else if("statuesinstalled".equals(method)){
 				statues = 2 ;
-				sql = "update mdorder set statuesinstall = "+statues+" where id in " + ids;
+				sql = "update mdorder set statuesinstall = "+statues+" , chargeInstalltime = "+TimeUtill.gettime()+"  where id in " + ids;
 			}else if("statuescallback".equals(method)){ 
 				sql = "update mdorder set statuescallback = "+statues+" where id in " + ids;
 			}else if("wenyuancallback".equals(method)){ 
@@ -674,6 +669,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				"( "+maxid+", '"+order.getOdate()+"', '"+order.getSaleTime()+"', '"+order.getPos()+"', '"+order.getUsername()+"', '" 
 	    		+order.getLocate()+"', '"+order.getLocateDetail()+"',"+order.getSaleID()+", "+order.getPrintSatues()    
 	    		+", "+order.getOderStatus()+", '"+order.getSailId()+"', '"+order.getCheck()+"', '"+order.getPhone1()+"','"+order.getPhone2()+"','"+order.getRemark()+"',"+order.getDeliveryStatues()+",'"+order.getBranch()+"',0,0,0,0,"+order.getDealsendId()+",'"+order.getSubmitTime()+"','"+printlnid+"',"+daymark+","+dayID+","+order.getPhoneRemark()+","+order.getSailidrecked()+","+order.getReckedremark()+","+order.getPosremark()+","+order.getImagerUrl()+")";   
+	   
 	    sqls.add(sql);
 	    logger.info(sql);       
 	  
