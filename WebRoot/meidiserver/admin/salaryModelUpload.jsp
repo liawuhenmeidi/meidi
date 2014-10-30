@@ -15,10 +15,13 @@
 	
 	boolean confirmResult = false;
 	
-	if(confirm != null && confirm != "" && confirm.equals("confirm")){
-		confirmResult = UploadManager.saveSalaryFileToDB(filePath,fileName);
+	if(confirm != null && confirm != ""){
+		if(confirm.equals("confirm")){
+			confirmResult = UploadManager.saveSalaryFileToDB(filePath,fileName);
+		}
 		response.sendRedirect("./excelUpload.jsp");
 		return;
+		
 	}else{
 		if(fileName != null && fileName != "" && !fileName.equals("")){			
 			salaryModelList = new XLSReader().readSalaryModelXLS(filePath,fileName);
@@ -101,8 +104,8 @@ td {
 %>
 
 
-<div style="position:fixed;width:100%;height:200px;">
-<div style="position:fixed;width:80%;height:200px;">
+<div style="position:fixed;width:100%;height:80px;">
+<div style="position:fixed;width:80%;height:80px;">
   
   <jsp:include flush="true" page="head.jsp">
   <jsp:param name="dmsn" value="" />
@@ -118,12 +121,26 @@ td {
 </div>
  
 <br/>  
-<div >
+<form id="baseform" method="post" action="" >
+
+<table width="100%" align="center" border=0>
+       <tr style="height:30px" align="center">
+       <td width="100%" align="center">		
+       <input type="hidden" name="fileName" value="<%=fileName %>"/>
+		<input type="hidden" name="confirm" value="confirm" id="submitswitcher"/>
+       <h3><%=salaryModelList.get(0).getName() %>	</h3>
+       <%if(showContent){ %>
+		<input type="button" id="commitbutton" value="提交" onmousedown="$('#commitbutton').val('正在提交');$('#baseform').submit();$('#submitswitcher').val('confirmed')"></input>
+		<%} %>
+		</td>
+		</tr> 
+ 
+   <tr>
+   <td align="center" width="100%">
+    <div style="overflow-y:auto; width:100%;height:450px">
 <table  cellspacing="1" border="2px"  id="table">
 		
-		<tr>
-			<td colspan="4" style="color:red"><h3><%=salaryModelList.get(0).getName() %></h3></td>
-		</tr>
+		
 		<%
 		if(salaryModelList.size() == 1 && salaryModelList.get(0).getId() == -1){
 			return;
@@ -169,20 +186,16 @@ td {
 		</tr> 
 		<%
 			}
-		%>
-		<form method="post" action="">
-		<input type="hidden" name="fileName" value="<%=fileName %>"/>
-		<input type="hidden" name="confirm" value="confirm"/>
-		<tr>
-			<td colspan="4" align="center" ><input name="submit" type="submit" value="确认"/></td>
-
-		</tr>
-		</form>
-		<%
 		}
 		%>
+		
+		
+		
 </table> 
-     </div>
-
+</div>
+   </td>
+   </tr>
+ </table>
+ </form>
 </body>
 </html>

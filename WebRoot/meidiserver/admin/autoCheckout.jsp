@@ -271,7 +271,7 @@ $(function (){
        </tr>
    <tr>
    <td align="center" width="100%">
-    <div style="overflow-y:auto; width:100%;height:650px">
+    <div style="overflow-y:auto; width:100%;height:500px">
 
 <table  align="center" width="100%" cellspacing="1" border="2px" >
 		
@@ -484,12 +484,13 @@ $(function (){
 		
 		
 </table> 
-</form>
+
 
 
 </div>
    </td>
    </tr>
  </table>
+ </form>
 </body>
 </html>
