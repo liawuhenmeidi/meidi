@@ -229,6 +229,8 @@ function pandian(type,branchid){
 //alert(branch);
 //alert(b);
 //alert(b!= null);
+    var counttype = $("#counttyepe").val();
+
 	 if((branch == null || branch == "") && b!= null&&b!=""){
 		 branch = b ; 
 	 }
@@ -277,18 +279,20 @@ function pandian(type,branchid){
 	                		 pandian = str.time; 
 	                	 }
 	                 }
-	                
-	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.typeid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+str.typeid+'\',\''+branch+'\',this)">' +  
-	        		    
-	        		     ' <td>'+str.cateoryName+'</td> ' +   
-	        		     ' <td>'+str.type+'</td> ' +   
-	        		     ' <td>'+str.papercount+'</td> ' +  
-	        		     // inventoryid
-	        		     ' <td>'+str.realcount+'</td> ' + 
-	        		      
-	        		     ' <td>'+pandian+'</td> ' +  
-	        		     ' </tr>'; 
-	        		     row++;
+	                 
+	                 if(counttype != 0 || counttype == 0 && str.papercount != 0 ){
+		        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.typeid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+str.typeid+'\',\''+branch+'\',this)">' +  
+		        		    
+		        		     ' <td>'+str.cateoryName+'</td> ' +   
+		        		     ' <td>'+str.type+'</td> ' +   
+		        		     ' <td>'+str.papercount+'</td> ' +  
+		        		     // inventoryid
+		        		     ' <td>'+str.realcount+'</td> ' + 
+		        		      
+		        		     ' <td>'+pandian+'</td> ' +  
+		        		     ' </tr>'; 
+		        		     row++;
+	                 }
 	        	 }
 	        	
 	        	 $("#table").append(addstr);      
@@ -328,7 +332,12 @@ function pandian(type,branchid){
     产品类别:     
     
     <input type="text" name="product" id="product" value=""   /> 
-
+    
+    <select id="counttyepe" name = "counttyepe">
+         <option value="-1">全部显示</option>
+         <option value=0 >只显示库存不为0</option>
+     </select> 
+      
     <input type="button" name="" value="查询" onclick="add()"/>   
 			   <%
 	}  

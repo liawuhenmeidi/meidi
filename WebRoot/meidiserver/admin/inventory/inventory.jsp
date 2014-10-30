@@ -85,6 +85,8 @@ td {
 	// if(branch == null || branch == ""){
 	//	 branch = b ;
 	// }  
+	var counttype = $("#counttyepe").val();
+	
 	if(b != null && b != ""){
 		branch = b ;
 	} 
@@ -113,17 +115,19 @@ td {
 	        		 if(str.isquery == true){
 	        			 pandian = "是";
 	        		 }
-	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+branch+'\',this)" >' +  
-	        		     
-	        		     ' <td>'+str.cateoryName+'</td> ' +  
-	        		     ' <td>'+str.type+'</td> ' +    
-	        		     ' <td>'+str.papercount+'</td> ' +  
-	        		     // inventoryid
-	        		     ' <td>'+str.realcount+'</td> ' + 
-	        		      
-	        		     ' <td>'+pandian+'</td> ' +  
-	        		     ' </tr>'; 
-	        		     row ++;
+	        		 if(counttype != 0 || counttype == 0 && str.papercount != 0 ){
+		        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+branch+'\',this)" >' +  
+		        		      
+		        		     ' <td>'+str.cateoryName+'</td> ' +  
+		        		     ' <td>'+str.type+'</td> ' +    
+		        		     ' <td>'+str.papercount+'</td> ' +  
+		        		     // inventoryid
+		        		     ' <td>'+str.realcount+'</td> ' + 
+		        		      
+		        		     ' <td>'+pandian+'</td> ' +  
+		        		     ' </tr>'; 
+		        		     row ++;
+	        		 }
 	        	 }
 	        	
 	        	 $("#table").append(addstr);      
@@ -158,7 +162,12 @@ td {
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
        仓库:   
        <input type="text" name="branch" id="branch" class="cba"  />  
-	
+	 
+	   <select id="counttyepe" name = "counttyepe">
+         <option value="-1">全部显示</option>
+         <option value=0 >只显示库存不为0</option>
+     </select> 
+  
 	   <input type="button" name="" value="查询" onclick="add()"/>   
 			   <%
 	} 

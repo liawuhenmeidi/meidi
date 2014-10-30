@@ -75,6 +75,9 @@ td {
   
  function add(){    
 	 $("#table tr").remove();
+	 
+	 var counttype = $("#counttyepe").val();
+	 
 	 var category = "<%=category%>";  
 	 $.ajax({ 
 	        type: "post", 
@@ -101,16 +104,19 @@ td {
 	        		 if(str.isquery == true){
 	        			 pandian = "是";
 	        		 }
-	        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branchstr[str.branchid].locateName+'\')">' +  
-	        		  
-	        		     ' <td>'+branchstr[str.branchid].locateName+'</td> ' + 
-	        		     ' <td>'+str.cateoryName+'</td> ' +   
-	        		     ' <td>'+str.type+'</td> ' +   
-	        		     ' <td>'+str.papercount+'</td> ' +  
-	        		     // inventoryid
-	        		     ' <td>'+str.realcount+'</td> ' + 
-	        		     ' <td>'+pandian +'</td> ' +  
-	        		     ' </tr>'; 
+	        		 
+	        		 if(counttype != 0 || counttype == 0 && str.papercount != 0 ){
+		        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branchstr[str.branchid].locateName+'\')">' +  
+		        		  
+		        		     ' <td>'+branchstr[str.branchid].locateName+'</td> ' + 
+		        		     ' <td>'+str.cateoryName+'</td> ' +   
+		        		     ' <td>'+str.type+'</td> ' +   
+		        		     ' <td>'+str.papercount+'</td> ' +  
+		        		     // inventoryid
+		        		     ' <td>'+str.realcount+'</td> ' + 
+		        		     ' <td>'+pandian +'</td> ' +  
+		        		     ' </tr>'; 
+	        		 }
 	        	 }
 	        	 
 	        	 $("#table").append(addstr);      
@@ -135,6 +141,15 @@ td {
 <div class="main">   
   <div class="weizhi_head">现在位置：<%=c.getName() %>分布
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+      
+       <select id="counttyepe" name = "counttyepe">
+         <option value="-1">全部显示</option>
+         <option value=0 >只显示库存不为0</option>
+     </select> 
+      
+      
+      <input type="button" name="" value="查询" onclick="add()"/>  
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
     <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>            
  </div>     
  
