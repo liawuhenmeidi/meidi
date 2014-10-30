@@ -60,21 +60,22 @@ public class OrderManager {
 		int flag = -1 ;  
 		List<String> sqls = new ArrayList<String>();
 		//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
-		String sql = "update mdorder set phone1= "+phone1+" , andate = "+andate+" , locateDetail = "+locations+", pos = "+POS+", sailId = "+sailId+" ,checked ="+check+" , remark = "+remark+" ,saledate = "+saledate+" ,locates = "+diqu+" where id = " + oid;
+		String sql = "update mdorder set phone1= '"+phone1+"' , andate = '"+andate+"' , locateDetail = '"+locations+"', pos = '"+POS+"', sailId = '"+sailId+"' ,checked ='"+check+"' , remark = '"+remark+"' ,saledate = '"+saledate+"' ,locates = '"+diqu+"' where id = " + oid;
         
-		String sql1 = "update mdorder set posRemark = 0 where pos != " + POS ;  
+		String sql1 = "update mdorder set posRemark = 0 where pos != '" + POS +"' and id = " + oid ;  
 		
-		String sql2 = "update mdorder set checkedremark = 0 where checked !="+check ;
-			
-		String sql3 = "update mdorder set sailIdremark = 0 where sailId != "+sailId ;
+		String sql2 = "update mdorder set checkedremark = 0 where checked != '"+check+"' and id = " + oid ;
+			 
+		String sql3 = "update mdorder set sailIdremark = 0 where sailId != '"+sailId+"' and id = " + oid ;
 				
-		sqls.add(sql);
+		
 		
 		sqls.add(sql1);
 		sqls.add(sql2);
 		sqls.add(sql3);
-		
-		DBUtill.sava(sqls);
+		sqls.add(sql);
+		DBUtill.sava(sqls); 
+		flag = 1 ;
 		return flag ;
 	}  
 	
