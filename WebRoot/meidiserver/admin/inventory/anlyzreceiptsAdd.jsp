@@ -15,15 +15,14 @@ String remark = inventory.getRemark();
 
 StringUtill.isNull(remark);
 JSONObject  resu = JSONObject.fromObject(remark);
-
+ 
 String starttime = resu.getString("starttime"); 
 String endtimeH = resu.getString("endtime"); 
 String endtime = TimeUtill.dataAdd(endtimeH,1);
 List<InventoryMessage> list = inventory.getInventory(); 
 
 Map<String,Integer> listcount = InventoryBranchMessageManager.getMapAnalyze(inventory.getInbranchid()+"",starttime,endtime); 
-String str = StringUtill.GetJson(listcount); 
-System.out.println(str);
+
 Map<String,InventoryBranch> invnetorymap = InventoryBranchManager.getmapType(inventory.getInbranchid()+"", "");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

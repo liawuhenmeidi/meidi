@@ -2,7 +2,7 @@
  
 <%@ include file="../searchdynamic.jsp"%> 
 <%   
-if(searchflag){
+if(searchflag){ 
 	sort= "andate asc";
 }  
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderDispatching,num,Page,sort,sear);  
@@ -42,7 +42,7 @@ width:50px
     height:30px;
     top:0;
     left:0;
-}
+} 
 #wrap{
 
     position:relative;
@@ -65,6 +65,7 @@ var num = "";
 var uuid ="<%=id%>";
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";
+var usermapstr = <%=usermapstr%>;
 
 $(function () {
 
@@ -129,6 +130,8 @@ function change(str1,oid,type,statues,types,saleId){
 		alert("请选择送货员");
 		return ;
 	}
+	 
+	var branch = usermapstr[saleid].branchName;
 	
 	if(0 == statues){   
 		alert("您已提交驳回申请，不能派工");
@@ -146,7 +149,7 @@ function change(str1,oid,type,statues,types,saleId){
 	        	    if(type == 3){
 	        	    	question = confirm("您确定要配单并打印吗？\n");
 	        	    }else {
-	        	    	question = confirm("您确定要配单并打印吗？\n"+data);
+	        	    	question = confirm("您确定要配单并打印吗？\n"+branch+"\n"+data);
 	        	    }
 				     
 				     if (question != "0"){

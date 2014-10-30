@@ -126,7 +126,11 @@ function inventory(inventory,type){
 </div >
    <div class="weizhi_head">现在位置：库存查询
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    门店：<%= b== null?"总库存":b.getLocateName() %>   
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
    开始时间:<%=starttime%>---结束时间:<%=endtime %>
+     
+  
    <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>
    </div>  
 
@@ -177,8 +181,9 @@ function inventory(inventory,type){
 		        			 strtype =usermap.get(in.getSendUser()).getUsername()+"派工给"+usermap.get(in.getReceiveuser()).getUsername();
 		        		 }else if(type == 6){   
 		        			 strtype = usermap.get(in.getReceiveuser()).getUsername()+"释放给"+usermap.get(in.getSendUser()).getBranchName();
-		        		 }else if(type == 7){    
-		        			 strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回给"+usermap.get(in.getSendUser()).getBranchName();
+		        		 }else if(type == 7){     
+		        			 //strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回给"+usermap.get(in.getSendUser()).getBranchName();
+		        			 strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回给"+usermap.get(in.getBranchid()).getBranchName();
 		        		 } else if(type == 8){    
 		        			 strtype = usermap.get(in.getSendUser()).getBranchName()+"同意"+usermap.get(in.getReceiveuser()).getBranchName()+"退货";
 		        		 } else if(type == 9 ) {

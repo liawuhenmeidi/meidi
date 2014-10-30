@@ -258,6 +258,7 @@ function seletall(all){
 			<td align="center">备注</td>
 			<td align="center">送货员</td>
 			<td align="center">送货日期</td>
+			
 			<td align="center">安装员</td>
 			
 			    
@@ -353,6 +354,7 @@ function seletall(all){
 		</td>  
 		
 		
+	
 		
 		<%  int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId()) ; %>
 		<td align="center">

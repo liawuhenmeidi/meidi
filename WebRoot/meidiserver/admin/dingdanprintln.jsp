@@ -460,7 +460,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 		
 		<td align="center" style="white-space:nowrap;">  
 
-		 <%=o.getsendName() %>
+		 <%=o.getsendName() %> 
 
 		 
 		</td>
@@ -504,11 +504,11 @@ function orderPrint(id,statues,type,deliveryStatues){
 		</td>
 		<%
 		  if(o.getStatuesDingma()==1){
-			  %>  
+			  %>   
 		  <td align="center">  
 		    <a href="javascript:void(0);" onclick="orderPrint('<%=o.getId()%>',1,'<%= Order.dingma%>','')">[打印]</a>
 		</td>
-		 
+		  
 		<% 
 		  }else {
 		%>

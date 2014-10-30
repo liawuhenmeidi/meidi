@@ -278,7 +278,7 @@ public  String getsendName(){
 		if(null != user ){
 			str = user.getUsername();
 		}
-	}
+	} 
 	return str ;
 }
 

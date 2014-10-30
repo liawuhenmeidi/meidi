@@ -248,8 +248,6 @@ function checkTime(){
 	            	  InventoryBranch in = listInventory.get(i);
 	            	  
 	            	  if(countt == 0 && in.getRealcount() != 0 || countt != 0  ){
-	            		 
-	            	  
 			            	  String branchtype = maptype.get(in.getType());
 			            	  if(StringUtill.isNull(branchtype)){
 			            		  branchtype = "";

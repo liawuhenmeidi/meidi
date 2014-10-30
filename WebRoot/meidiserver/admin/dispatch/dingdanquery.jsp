@@ -435,12 +435,13 @@ function orderPrint(id,statues){
     	%>
      
     </td>
+    <td align="center"> 
 		 <% 
    
     if(o.getReturnstatuse() == 0 && o.getReturnid() != 0 && query){
 
     %>
-    <td align="center"> 
+    
 		<% if(o.getReturnid() != 0){
 			if(usermap.get(Integer.valueOf(o.getReturnid())) != null){
 		 %> 

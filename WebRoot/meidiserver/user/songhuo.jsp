@@ -45,7 +45,7 @@ function search(type){
   </jsp:include>
 
 <!--  头 单种类  -->
-<div class="s_main_tit"><span class="qiangdan"><a href="chaxun_songhuo.jsp">我要查询</a></span><span class="qiangdan"><a href="welcom.jsp">返回</a></span><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span></div>
+<div class="s_main_tit"><span class="qiangdan"><a href="chaxun_songhuo.jsp">我要查询</a></span><span class="qiangdan"><a href="welcom.jsp">返回</a></span></div>
 <div class="s_main_tit"><span style="cursor:hand" id="<%=Order.serach%>" onclick="search('<%=Order.serach%>')">待派送</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.orderDispatching%>" onclick="search('<%=Order.orderDispatching%>')">待安装</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.over%>" onclick="search('<%=Order.over%>')">已送货</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.returns%>" onclick="search('<%=Order.returns%>')">已安装</span></div>
   
 <!--  订单详情  -->
