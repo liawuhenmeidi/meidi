@@ -1,11 +1,12 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="../searchdynamic.jsp"%>      
-<%          
+<%         
+if(searchflag){
+	sort= "andate asc";
+}
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.neworder,0,0,sort,sear); 
 count =  OrderManager.getOrderlistcount(user,Group.dealSend,Order.neworder,0,0,sort,sear); 
-
 session.setAttribute("exportList", list);
-
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -14,7 +15,7 @@ session.setAttribute("exportList", list);
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>文员派工页</title>
   
-<link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
+<link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <style type="text/css">
 .fixedHead { 
 position:fixed;
@@ -25,14 +26,14 @@ position:fixed;
     padding:0;
 }
 #table{  
-    width:2400px;
+    width:2100px;
     table-layout:fixed ;
 }
 
 #th{  
     background-color:white;
     position:absolute; 
-    width:2400px; 
+    width:2100px; 
     height:30px;
     top:0;
     left:0;
@@ -51,54 +52,24 @@ position:fixed;
 <body style="scoll:no">
   
 <!--   头部开始   --> 
-<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
 var id = "";
 var pgroup = "<%=pgroup%>";
+var usermapstr = <%=usermapstr%>;
 var opstatues = "<%=opstatues%>"; 
 var inventory = "";  
-$(function () { 
-	$("#wrap").bind("scroll", function(){ 
-
-		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
-	        //滚动了竖直滚动条
-	        pre_scrollTop=($("#wrap").scrollTop() || document.body.scrollTop);
-	       
-	        if(obj_th){
-	            obj_th.style.top=($("#wrap").scrollTop() || document.body.scrollTop)+"px";
-	        }
-	    }
-	    else if(pre_scrollLeft != (document.documentElement.scrollLeft || document.body.scrollLeft)){
-	        //滚动了水平滚动条
-	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
-	    }
-		}); 
-
-}); 
-     
-     
-function getinventory(uid,types){
-	$.ajax({ 
-        type: "post",  
-         url: "server.jsp",   
-         data:"method=getinventory&types="+types+"&uid="+uid,
-         dataType: "",  
-         success: function (data) { 
-        	 inventory = data; 
-           alert(data);
-           },  
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-            } 
-           });  
-}     
-      
+// types   产品型号 
 function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	var uid = $("#"+str1).val();
 	var saleid = $("#"+str1).val();
-   if(deliveryStatues == 9 || deliveryStatues == 10){
+   if(deliveryStatues == 9 || deliveryStatues == 10 || deliveryStatues == 8){
 	   saleid = saleId;
    }
+
+   var branch = usermapstr[saleid].branchName;
+   
 	if(deliveryStatues != 8 ){ 
 		if(uid == null || uid == ""){
 			alert("请选择安装公司");
@@ -116,7 +87,7 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	        	    data = data.replace(/}/g, "");
 	        	    data = data.replace(/,/g, "\n"); 
 	               // alert(str);  
-	                question = confirm("您确定要配单并打印吗？\n"+data);
+	                question = confirm("您确定要配单并打印吗？\n"+branch+":\n"+data);
 	        		if (question != "0"){  
 	        			//alert(deliveryStatues);
 	        			$.ajax({ 
@@ -173,7 +144,7 @@ function addImage(src){
 } 
 
 function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,object){
-	$(object).css("display","none"); 
+	//$(object).css("display","none"); 
 	if( 2 == conmited ){         
 		if(type == '<%=OrderPrintln.releasemodfy %>' || type == '<%=OrderPrintln.releasedispatch %>'){
 			if(Returnstatuse != 2 ){         
@@ -218,7 +189,7 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 			         success: function (data) {
 			        	 
 			        	 if(data == true || data == "true"){ 
-			        		 window.location.href="print.jsp?id="+oid+"&type="+type ;
+			        		 window.location.href="print.jsp?id="+oid+"&type="+type+"&uid="+dealsendid ;
 			        	 }
 			           },  
 			         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -270,7 +241,6 @@ function searchlocate(id){
 
  
 function adddetail(src){ 
-	//window.location.href=src ;
 	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 
@@ -292,13 +262,13 @@ function adddetail(src){
 </jsp:include> 
 
 <jsp:include page="../search.jsp">
- <jsp:param name="page" value="<%=pageNum %>" />
+    <jsp:param name="page" value="<%=pageNum %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  
 	<jsp:param name="count" value="<%=count %>"/> 
 </jsp:include> 
 </div > 
-<div style=" height:170px;">
+<div style="height:140px;">
 </div>
 <br/>  
 
@@ -326,11 +296,13 @@ function adddetail(src){
             <td align="center">预约日期</td>
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
+           <td align="center">上报状态</td>
            <td align="center">送货状态</td>
 			<td align="center">备注</td>
 			 
 			<td align="center">配单</td>
 			<td align="center">查看位置</td> 
+			
 		</tr> 
 	
   <%  
@@ -374,8 +346,11 @@ function adddetail(src){
 				<td align="center"><%=o.getLocate()%></td>
 				<td align="center"><%=o.getLocateDetail() %></td>
 				<td align="center">
-				<%=OrderManager.getDeliveryStatues(o) %>
-				</td> 
+				<%=OrderManager.getOrderStatues(o) %> 
+				</td>
+				<td align="center">
+				<%=OrderManager.getDeliveryStatues(o) %> 
+				</td>
 		        <td align="center"> 
 				    <%=o.getRemark() %>
 				</td>
@@ -385,6 +360,7 @@ function adddetail(src){
 		        OrderPrintln orp = null ; 
 		        OrderPrintln op = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.modify, o.getId()) ;
 		        OrderPrintln op1 = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.returns, o.getId()) ;
+		        OrderPrintln huanhuoo = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.huanhuo, o.getId()) ;
 		        OrderPrintln huanhuoObject = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.huanhuo, o.getId()) ;
 		        
 		        int modify = OrderPrintlnManager.getstatues(opmap, OrderPrintln.modify, o.getId()) ;
@@ -414,7 +390,7 @@ function adddetail(src){
 				<td align="center"> 
 				
 				 <%    	  
-				   if(o.getDealsendId() == 0 && o.getDeliveryStatues() != 8 && o.getPrintSatues() == 0){
+				   if(o.getDealsendId() == 0 && Integer.valueOf(o.getOderStatus()) != 8 && o.getPrintSatues() == 0){
 					   if(modify != 2 && modify != 0 && returns != 2 && returns != 0){
 					   %>
 						<select class = "category" name="category"  id="songh<%=o.getId() %>" >
@@ -433,22 +409,22 @@ function adddetail(src){
 						     }
 					            %>
 				         </select> 
-				         <input type="button" onclick="changepeidan('songh<%=o.getId()%>','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="确定"/> 
+				         <input type="button" onclick="changepeidan('songh<%=o.getId()%>','<%=o.getId()%>','<%=Integer.valueOf(o.getOderStatus()) %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="确定"/> 
 				         
 					<% 	
 				     }
-				   }else if(o.getDealsendId() == 0 && o.getDeliveryStatues() == 8 && o.getPrintSatues() == 0){
+				   }else if(o.getDealsendId() == 0 && Integer.valueOf(o.getOderStatus()) == 8 && o.getPrintSatues() == 0){
 				
 					   if(OrderManager.Check(o.getId())){ 
 						  %>   
-						   <input type="button" onclick="changepeidan('2','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="打印"/>
+						   <input type="button" onclick="changepeidan('2','<%=o.getId()%>','<%=Integer.valueOf(o.getOderStatus()) %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="打印"/>
 					         &nbsp;&nbsp;&nbsp;
 						  <%
 					   }else {
 						   %>
-						   <input type="button" onclick="changepeidan('1','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="打印"/>
+						   <input type="button" onclick="changepeidan('1','<%=o.getId()%>','<%=Integer.valueOf(o.getOderStatus()) %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="打印"/>
 					         &nbsp;&nbsp;&nbsp;
-						   <input type="button" onclick="changepeidan('0','<%=o.getId()%>','<%=o.getDeliveryStatues() %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="确定"/>  
+						   <input type="button" onclick="changepeidan('0','<%=o.getId()%>','<%=Integer.valueOf(o.getOderStatus()) %>','<%=o.getSendType(0,"</p>")%>','<%=o.getSaleID() %>')"  value="确定"/>  
 						   				   
 						   <%
 					   }
@@ -463,7 +439,8 @@ function adddetail(src){
 				<td align="center"> 
 				    <a href="javascript:void(0);"  onclick="searchlocate('<%=o.getId() %>')">[查看位置]</a> 
 				</td>
-
+				
+				
 		    </tr>
       <% 
 		 }

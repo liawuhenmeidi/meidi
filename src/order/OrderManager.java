@@ -68,8 +68,7 @@ public class OrderManager {
 			 
 		String sql3 = "update mdorder set sailIdremark = 0 where sailId != '"+sailId+"' and id = " + oid ;
 				
-		
-		
+
 		sqls.add(sql1);
 		sqls.add(sql2);
 		sqls.add(sql3);
@@ -279,12 +278,12 @@ public class OrderManager {
 			}   else if("statuescallback".equals(method)){ 
 				sql = "update mdorder set statuescallback = "+statues+" where id in " + ids;
 			} else if("statuespaigong".equals(method)){ 
-				sql = "update mdorder set statuespaigong = "+statues+"  , chargeSendtime = "+TimeUtill.gettime()+" where id in " + ids;
+				sql = "update mdorder set statuespaigong = "+statues+"  , chargeSendtime = '"+TimeUtill.gettime()+"' where id in " + ids;
 			} else if("statuesinstall".equals(method)){  
-				sql = "update mdorder set statuesinstall = "+statues+"  , chargeInstalltime = "+TimeUtill.gettime()+" where id in " + ids;
+				sql = "update mdorder set statuesinstall = "+statues+"  , chargeInstalltime = '"+TimeUtill.gettime()+"' where id in " + ids;
 			} else if("statuesinstalled".equals(method)){
 				statues = 2 ;
-				sql = "update mdorder set statuesinstall = "+statues+" , chargeInstalltime = "+TimeUtill.gettime()+"  where id in " + ids;
+				sql = "update mdorder set statuesinstall = "+statues+" , chargeInstalltime = '"+TimeUtill.gettime()+"'  where id in " + ids;
 			}else if("statuescallback".equals(method)){ 
 				sql = "update mdorder set statuescallback = "+statues+" where id in " + ids;
 			}else if("wenyuancallback".equals(method)){ 
@@ -327,8 +326,8 @@ public class OrderManager {
 			return ;     
 		}else if(type == OrderPrintln.returns){  // releasedispatch    
 			sql = "update mdorder set deliveryStatues  = (mdorder.deliveryStatues + 3)  where id = " + id;
-			if(or.getOderStatus().equals(20+"")){
-				String sql1 = " delete from mdorderupdateprint where orderid = "+ or.getImagerUrl()+ " and statues = 10 ";
+			if(or.getOderStatus().equals(20+"")){ 
+				String sql1 = " delete from mdorderupdateprint where orderid = "+ or.getImagerUrl()+ " and mdtype = 10 ";
 	            listsql.add(sql1);
 			}
             
@@ -803,6 +802,8 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   sql = "select * from mdorder where   ( mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+")) ) and  dealSendid = 0   and printSatues = 0 and deliveryStatues != 3   and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))  "+search+" order by  "+sort+str ;
 				   }else if(Order.motify == statues){     
 					   sql = "select * from mdorder where   ( mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+")) )  and   id in (select orderid from mdorderupdateprint where   pGroupId= "+user.getUsertype()+"  and statues = 0  and mdtype = 0 )   "+search+" order by  "+sort+str;
+				   }else if(Order.huanhuo == statues){
+					   sql = "select * from mdorder where   ( mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+")) )  and   id in (select orderid from mdorderupdateprint where   pGroupId= "+user.getUsertype()+"  and statues = 0  and mdtype = 10 )   "+search+" order by  "+sort+str;
 				   }else if(Order.returns == statues){    
 					   sql = "select * from mdorder where   ( mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+")) )  and   id in (select orderid from mdorderupdateprint where   pGroupId= "+user.getUsertype()+"  and statues = 0  and mdtype = 1 )   "+search+" order by  "+sort+str ;
 				   }else if(Order.release == statues){     
