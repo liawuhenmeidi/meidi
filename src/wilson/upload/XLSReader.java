@@ -87,14 +87,20 @@ public class XLSReader {
 				Workbook wb = Workbook.getWorkbook(srcFile);
 				Sheet sheet0 = wb.getSheet(0);
 				String tempString = "{";
-				int tempInt = 0;
+				Double tempDouble = 0.0;
 				
 				String name = sheet0.getCell(1,0).getContents().trim();
 				String startTime = "";
 				String endTime = "";
-				String shop = sheet0.getCell(7,0).getContents().trim();
 				
+				//暂时先去掉门店
+				//String shop = sheet0.getCell(7,0).getContents().trim();
+				String shop = "无";
+				
+				
+				//暂时先去掉时间
 				//excel取到格式有问题，做下特殊处理
+				/**
 				SimpleDateFormat s1 = new SimpleDateFormat("M/dd/yy HH:mm");
 				Date date = s1.parse(sheet0.getCell(3,0).getContents().trim());
 				SimpleDateFormat s2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");	
@@ -105,10 +111,11 @@ public class XLSReader {
 				}else{
 					endTime = s2.format(s1.parse(sheet0.getCell(5,0).getContents().trim()));
 				}
+				**/
 				
 				
-				
-				
+				endTime = "3014-01-01 00:00:00";
+				startTime = "2014-01-01 00:00:00";
 				
 				for(i = 2 ; i < sheet0.getRows(); i ++){
 					usm.setStartTime(startTime);
@@ -119,12 +126,16 @@ public class XLSReader {
 					if(sheet0.getCell(1,i).getContents().equals("")||sheet0.getCell(2,i).getContents().trim().equals("")){
 						break;
 					}
-					//类别
-					usm.setCatergory(sheet0.getCell(1,i).getContents().trim());
-					//型号
-					usm.setType(sheet0.getCell(2,i).getContents().trim());
+					////暂时先去掉类别
+					//usm.setCatergory(sheet0.getCell(1,i).getContents().trim());
+					usm.setCatergory("无");
+					////型号
+					usm.setType(sheet0.getCell(0,i).getContents().trim());
+					
+					
 					//判断提成内容
-					for(j = 3 ; j < sheet0.getColumns();j = j+2){
+					for(j = 1 ; j < sheet0.getColumns();j = j+2){
+
 						//零售价为空，break;
 						if(sheet0.getCell(j,i).getContents()==""||sheet0.getCell(j,i).getContents().trim().equals("")){
 							
@@ -133,7 +144,7 @@ public class XLSReader {
 							}
 							//如果上一项是最后一项
 							if(!tempString.contains("-/")){
-								tempString += "\"" + tempInt + "-/" + "\"" + ":" + tempString.split(":")[tempString.split(":").length - 1];
+								tempString += "\"" + tempDouble + "-/" + "\"" + ":" + tempString.split(":")[tempString.split(":").length - 1];
 								// "0-111":"10",
 							}
 							break;
@@ -143,12 +154,22 @@ public class XLSReader {
 							throw new Exception();
 						}
 						
+						//如果这一项小于上一项,不让上传
+						if( tempDouble  >= Double.parseDouble(sheet0.getCell(j,i).getContents().trim()) ){
+							throw new Exception();
+						}
+						
+						//如果格式不对，不让上传
+						Double.parseDouble(sheet0.getCell(j,i).getContents().trim());
+						Double.parseDouble(sheet0.getCell(j+1,i).getContents().trim().replace("%", ""));
+						
+						
 						//增加提成内容
-						tempString += "\"" + tempInt + "-" + sheet0.getCell(j,i).getContents().trim() + "\"" + ":" + "\"" + sheet0.getCell(j+1,i).getContents().trim() + "\""+",";
-						tempInt = Integer.parseInt(sheet0.getCell(j,i).getContents().trim());
+						tempString += "\"" + tempDouble + "-" + Double.parseDouble(sheet0.getCell(j,i).getContents().trim()) + "\"" + ":" + "\"" + sheet0.getCell(j+1,i).getContents().trim() + "\""+",";
+						tempDouble = Double.parseDouble(sheet0.getCell(j,i).getContents().trim());
 						//如果是最后一项
 						if(j + 2 >= sheet0.getColumns()){
-							tempString += "\"" + tempInt + "-/" + "\"" + ":" + "\"" + sheet0.getCell(j+1,i).getContents().trim() + "\""+",";
+							tempString += "\"" + tempDouble + "-/" + "\"" + ":" + "\"" + sheet0.getCell(j+1,i).getContents().trim() + "\""+",";
 						}
 //						if(!sheet0.getCell(j,i).getContents().contains("以上")){
 //							tempString += "\"" + sheet0.getCell(j,i).getContents() + "\"" + ":" + "\"" + sheet0.getCell(j+1,i).getContents() + "\""+",";
@@ -178,7 +199,7 @@ public class XLSReader {
 					usm.setFileName(srcFile.getName());
 					uploadSalaryModelList.add(usm);
 					usm = new UploadSalaryModel();
-					tempInt = 0;
+					tempDouble = 0.0;
 					tempString = "{";
 				}
 		        wb.close();

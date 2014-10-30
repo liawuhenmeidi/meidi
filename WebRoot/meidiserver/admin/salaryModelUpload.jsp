@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.ArrayListUtil,wilson.upload.*,wilson.matchOrder.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%
 	request.setCharacterEncoding("utf-8");
@@ -12,6 +12,7 @@
 
 	
 	boolean showContent =false;
+	int maxLength = 0 ;
 	
 	boolean confirmResult = false;
 	
@@ -25,6 +26,7 @@
 	}else{
 		if(fileName != null && fileName != "" && !fileName.equals("")){			
 			salaryModelList = new XLSReader().readSalaryModelXLS(filePath,fileName);
+			maxLength = ArrayListUtil.getMaxLengthInUploadSalaryModelList(salaryModelList);
 			showContent = true;
 		}	
 	}
@@ -129,6 +131,11 @@ td {
        <input type="hidden" name="fileName" value="<%=fileName %>"/>
 		<input type="hidden" name="confirm" value="confirm" id="submitswitcher"/>
        <h3><%=salaryModelList.get(0).getName() %>	</h3>
+       <%
+		if(salaryModelList.size() == 1 && salaryModelList.get(0).getId() == -1){
+			return;
+		}
+		%>
        <%if(showContent){ %>
 		<input type="button" id="commitbutton" value="提交" onmousedown="$('#commitbutton').val('正在提交');$('#baseform').submit();$('#submitswitcher').val('confirmed')"></input>
 		<%} %>
@@ -141,24 +148,20 @@ td {
 <table  cellspacing="1" border="2px"  id="table">
 		
 		
-		<%
-		if(salaryModelList.size() == 1 && salaryModelList.get(0).getId() == -1){
-			return;
-		}
-		%>
+		
 		
 		
 		<tr>  
-			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
-			
-			<td align="center">类别</td>
 			<td align="center">型号</td>
+			<%
+			for(int j = 0 ; j < maxLength ; j ++){
+			%>
 			<td align="center">零售价</td>
 			<td align="center">提成</td> 
-		
+			<%
+			}
+			%>
 		</tr> 
-		
-		
 		
 		
 		<%
@@ -169,7 +172,6 @@ td {
 		<tr>  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			
-			<td align="center"><%= salaryModelList.get(i).getCatergory() %></td>
 			<td align="center"><%= salaryModelList.get(i).getType() %></td>
 			<%
 				String tempContent = salaryModelList.get(i).getContent();

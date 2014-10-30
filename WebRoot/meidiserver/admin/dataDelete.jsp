@@ -98,6 +98,7 @@ body {
 	%>
 </select>
 <input type="submit" value="确认"/>
+
 </form>
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 <hr style="border : 1px dashed blue;" />
