@@ -267,11 +267,13 @@ function orderPrint(id,statues){
 			<td align="center">送货人员</td>
 			<td align="center">送货时间</td>
 			<td align="center">送货员结款</td>
+			
 			<td align="center">安装人员</td>
 			<td align="center">安装时间</td> 
 			<td align="center">先送货后安装</td>
 			<td align="center">是否已回访</td>
-            <td align="center">安装是否已结款</td>
+            <td align="center">安装结款</td>
+           
 		</tr>
 	 
 <tbody> 
@@ -357,7 +359,7 @@ function orderPrint(id,statues){
 		    <%=o.getRemark() %>
 		</td>
         <td align="center"> 
-		<%=o.getStatues4() == 1 ?"是":"否"
+		<%=o.getChargeDealsendtime()
 		 %>
 		
 		</td>
@@ -378,9 +380,10 @@ function orderPrint(id,statues){
 		
 		</td>
 		 <td align="center"> 
-		<%=o.getStatuesPaigong() == 1 ?"是":"否"
+		<%=o.getChargeSendtime()
 		 %> 
 		 </td>
+
 		<td align="center"> 
 		<% if(o.getInstallid() != 0 ){
 			 if(usermap.get(o.getInstallid()) != null){
@@ -415,7 +418,7 @@ function orderPrint(id,statues){
 		    if(o.getStatuesinstall()==0){
 		    	message = "否";
 		    }else if(o.getStatuesinstall()==1){
-		    	message = "是";
+		    	message = o.getInstalltime()  ;
 		    }else if(o.getStatuesinstall()==2){
 		    	message = "已忽略";
 		    }

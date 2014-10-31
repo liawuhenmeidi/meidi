@@ -31,14 +31,14 @@ position:fixed;
 
 #table{  
     
-     width:3800px;
+     width:3700px;
      table-layout:fixed ;
 } 
  
 #th{
     background-color:white;
     position:absolute;
-    width:3800px;
+    width:3700px;
     height:30px; 
     top:0;
     left:0;
@@ -329,7 +329,7 @@ function orderPrint(id,statues,type,deliveryStatues){
              <td align="center">上报状态</td>
             <td align="center">送货状态</td>
 			<td align="center">打印状态</td>
-			<td align="center">送货人员</td>
+			<td align="center">送货人员</td> 
 			 <td align="center">送货时间</td>
 			 
 			 <td align="center">安装人员</td>
@@ -343,7 +343,6 @@ function orderPrint(id,statues,type,deliveryStatues){
 			<td align="center">备注</td> 
 			
 			<td align="center">打印</td> 
-			<td align="center">调账打印</td> 
 			<td align="center">安装网点驳回</td> 
 			<td align="center">导购修改申请</td> 
 			<td align="center">导购退货申请</td>   
@@ -448,6 +447,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 		 未打印
 		<%
          }else if(1 == o.getPrintSatues()){
+        	
 		%>
 		已打印
 		<%
@@ -484,7 +484,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 		 <%=o.getdealsendName()+"<p/>"+o.getdealsendphone()%>
 		</td>
 		<td align="center"> 
-		    <%=o.getStatues4()==0?"否":"是" %> 
+		    <%= o.getChargeDealsendtime()%> 
 		</td>
 		<td align="center">  
 		    <%=o.getStatues1()==0?"否":"是" %> 
@@ -502,22 +502,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 		<td align="center"> 
 		    <a href="javascript:void(0);" onclick="orderPrint('<%=o.getId()%>',<%=o.getPrintSatues() %>,'','<%=o.getDeliveryStatues() %>')">[打印]</a>
 		</td>
-		<%
-		  if(o.getStatuesDingma()==1){
-			  %>   
-		  <td align="center">  
-		    <a href="javascript:void(0);" onclick="orderPrint('<%=o.getId()%>',1,'<%= Order.dingma%>','')">[打印]</a>
-		</td>
-		  
-		<% 
-		  }else {
-		%>
-		  <td align="center"> 
-		    
-		</td>
-		<%
-		  }
-		%> 
+
 		<td align="center">  
 		<% 
 		if(opmap.get(OrderPrintln.release) != null){ 

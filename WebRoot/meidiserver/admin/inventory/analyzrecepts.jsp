@@ -106,7 +106,7 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
 				<% 
 			 }else {
 			 %>
-			 打印
+			已打印
 			 <%
 			 }
 			 %>

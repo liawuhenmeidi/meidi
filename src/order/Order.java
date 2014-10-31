@@ -20,6 +20,7 @@ import orderproduct.OrderProductManager;
 import product.ProductService;
 import user.User;
 import user.UserService;
+import utill.StringUtill;
  
 public class Order {
   
@@ -168,7 +169,47 @@ public class Order {
   
   private String oderStatus ;//  初始送货状态
   
-  public String getOderStatus() {
+  private String chargeDealsendtime ;
+  
+  private String chargeSendtime ;
+  
+  private String chargeInstalltime ;
+  
+  
+  public String getChargeDealsendtime() {
+	  if(StringUtill.isNull(chargeDealsendtime)){
+		  return "";
+	  }
+	return chargeDealsendtime;
+}
+
+public void setChargeDealsendtime(String chargeDealsendtime) {
+	this.chargeDealsendtime = chargeDealsendtime;
+}
+
+public String getChargeSendtime() {
+	if(StringUtill.isNull(chargeSendtime)){
+		return "";
+	}
+	return chargeSendtime;
+}
+
+public void setChargeSendtime(String chargeSendtime) {
+	this.chargeSendtime = chargeSendtime;
+}
+
+public String getChargeInstalltime() {
+	if(StringUtill.isNull(chargeInstalltime)){
+		return "";
+	}
+	return chargeInstalltime;
+}
+
+public void setChargeInstalltime(String chargeInstalltime) {
+	this.chargeInstalltime = chargeInstalltime;
+}
+
+public String getOderStatus() {
 	return oderStatus;
 }
 
@@ -193,6 +234,9 @@ public void setWenyuancallback(int wenyuancallback) {
 }
 
 public String getDealSendTime() {
+	if(StringUtill.isNull(dealSendTime)){
+		return "";
+	}
 	return dealSendTime;
 }
 
@@ -234,6 +278,9 @@ public void setReturnid(int returnid) {
 }
 
 public String getReturntime() {
+	if(StringUtill.isNull(returntime)){
+		return "";
+	}
 	return returntime;
 }
 
@@ -345,6 +392,9 @@ public void setDeliverytype(int deliverytype) {
 }
 
 public String getSendtime() {
+	if(StringUtill.isNull(sendtime)){
+		return "";
+	}
 	return sendtime;
 }
 
@@ -353,6 +403,9 @@ public void setSendtime(String sendtime) {
 }
 
 public String getInstalltime() {
+	if(StringUtill.isNull(installtime)){
+		return "";
+	}
 	return installtime;
 }
 
@@ -719,7 +772,11 @@ public String getCategory(){
 // 赠品
  public String getGifttype(String decollator){    
 	String category = "";   
+	
 	Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
+	if(!gMap.containsKey(this.getId())){
+		GiftManager.resetOrPMap();
+	}
 	 List<Gift> lists = gMap.get(this.getId());  
 	 if(null != lists){
 		     for(int g = 0 ;g<lists.size();g++){
@@ -735,6 +792,9 @@ public String getCategory(){
  public String getGifcount(String decollator){   
 		String category = "";   
 		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
+		if(!gMap.containsKey(this.getId())){
+			GiftManager.resetOrPMap();
+		}
 		 List<Gift> lists = gMap.get(this.getId()); 
 		 if(null != lists){ 
 			     for(int g = 0 ;g<lists.size();g++){
@@ -750,6 +810,9 @@ public String getCategory(){
  public String getGifStatues(String decollator){   
 		String category = "";   
 		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
+		if(!gMap.containsKey(this.getId())){
+			GiftManager.resetOrPMap();
+		}
 		 List<Gift> lists = gMap.get(this.getId()); 
 		 if(null != lists){ 
 			     for(int g = 0 ;g<lists.size();g++){
@@ -780,7 +843,7 @@ public String getCategory(int statues,String decollator){
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	HashMap<Integer,Category> categorymap = CategoryService.getmap();
 	if(lists != null){
-		for(int g = 0 ;g<lists.size();g++){     
+		for(int g = 0 ;g<lists.size();g++){      
 			String tempType = categorymap.get(Integer.valueOf(lists.get(g).getCategoryId())).getName();
 			if(lists.get(g).getStatues() == statues){
 			   category += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);

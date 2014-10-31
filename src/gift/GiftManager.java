@@ -32,11 +32,12 @@ import database.DB;
 		    Connection conn = DB.getConn();
 			Statement stmt = DB.getStatement(conn);
 			String sql = "select * from  mdordergift "; 
-			logger.info(sql); 
+logger.info(sql); 
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try { 
 				while (rs.next()) {
-					Gift Order = getGiftFromRs(rs); 
+					Gift Order = getGiftFromRs(rs);
+					System.out.println(Order.getId());
 					List<Gift> list = Orders.get(Order.getOrderId());
 					if(list == null){
 						list = new ArrayList<Gift>();
@@ -84,7 +85,6 @@ import database.DB;
 						pstmt.setString(1, Gift.getName());
 						logger.info(Gift.getName());
 						pstmt.executeUpdate();
-						resetOrPMap();
 					} catch (SQLException e) {   
 						e.printStackTrace();
 					} finally {
@@ -98,6 +98,7 @@ import database.DB;
 			 
 			
 			 public static List<String> save(int id, Order orderr) {
+
 				 List<String> sqls = new ArrayList<String>();
 				 List<Gift> orders = orderr.getOrdergift();
 				 if(null != orders){
