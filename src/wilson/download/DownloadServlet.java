@@ -1,8 +1,10 @@
 package wilson.download;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import javax.servlet.ServletConfig;
@@ -11,6 +13,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import wilson.upload.ExcelUpload;
+import wilson.upload.UploadManager;
 
 public class DownloadServlet extends HttpServlet{
 	 /**
@@ -56,10 +61,14 @@ public class DownloadServlet extends HttpServlet{
 		
 		if(type.equals("uploadorder")){
 			//已经上传文件的下载
-			filePath
+			name = URLDecoder.decode(name,"utf-8");
+			filename = name + ".xls";
+			filePath = ExcelUpload.getSalesFilePath() + File.separator + UploadManager.getOrdersByName(name).get(0).getFileName();
 		}else if(type.equals("salarymodel")){
 			//已经上传文件的下载
-			
+			name = URLDecoder.decode(name,"utf-8");
+			filename = name + ".xls";
+			filePath = ExcelUpload.getSalaryFilePath() + File.separator + UploadManager.getSalaryModelsByName(name).get(0).getFileName();
 		}else if(type.equals("model")){
 			//模板下载
 			if(name.equals("suningmuban")){
@@ -75,7 +84,8 @@ public class DownloadServlet extends HttpServlet{
 			
 		}
 	
-		
+		System.out.println("path = " + filePath);
+		System.out.println("name = " + filename);
 		
 		
 		filename = URLEncoder.encode(filename,"UTF-8");

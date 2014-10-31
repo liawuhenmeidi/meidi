@@ -84,11 +84,11 @@ td {
       
     <div > 
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-  <a href="../modelDownload?name=suningmuban&type=model"><font style="color:red;font-size:20px;" >系统比对模板</font> </a><br />
+  <a href="../DownloadServlet?name=suningmuban&type=model"><font style="color:red;font-size:20px;" >系统比对模板</font> </a><br />
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-  <a href="../modelDownload?name=tichengmuban&type=model"><font style="color:red;font-size:20px;" >提成标准模板</font> </a><br />
+  <a href="../DownloadServlet?name=tichengmuban&type=model"><font style="color:red;font-size:20px;" >提成标准模板</font> </a><br />
  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-  <a href="../modelDownload?name=xiaoshoudanmuban&type=model"><font style="color:red;font-size:20px;" >销售单模板</font> </a>
+  <a href="../DownloadServlet?name=xiaoshoudanmuban&type=model"><font style="color:red;font-size:20px;" >销售单模板</font> </a>
   
 
   <form action="../ExcelUpload" method="post" enctype ="multipart/form-data" runat="server"> 

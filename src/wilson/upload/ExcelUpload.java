@@ -34,9 +34,9 @@ public class ExcelUpload extends HttpServlet {
 	private static String uploadPath;
 	private static String realPath;
 	
-	private static String suningFilePath ;
-	private static String salaryFilePath ;
-	private static String salesFilePath ;
+	private static String suningFilePath = "data/suningXLS";
+	private static String salaryFilePath = "data/salaryModelXLS";
+	private static String salesFilePath = "data/salesXLS";
 
 	
 	private ServletContext sc;

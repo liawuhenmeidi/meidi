@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="wilson.salaryCalc.SalaryCalcManager"%>
 <%@page import="wilson.salaryCalc.SalaryResult"%>
 <%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,wilson.salaryCalc.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
@@ -27,9 +28,14 @@
 			}else if(button != null && button.equals("导出")){
 				
 				if(type.equals("uploadorder")){
-					response.sendRedirect("../UploadExport?type=uploadorder&name=" + name);
+
+					String url = "../DownloadServlet?type=uploadorder&name=" + URLEncoder.encode(URLEncoder.encode(name,"utf-8"));
+					response.sendRedirect(url);
+					return ;
 				}else if(type.equals("salarymodel")){
-					response.sendRedirect("../UploadExport?type=salarymodel&name=" + name);
+					String url = "../DownloadServlet?type=salarymodel&name=" + URLEncoder.encode(URLEncoder.encode(name,"utf-8"));
+					response.sendRedirect(url);
+					return ;
 				}
 				
 			}

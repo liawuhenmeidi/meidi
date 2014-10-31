@@ -549,7 +549,7 @@ public class UploadManager {
 
 		Connection conn = DB.getConn(); 
 		String sql = "select * from uploadorder where name = '" + name + "'";
-
+		logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		UploadOrder uo = new UploadOrder();
@@ -588,7 +588,7 @@ public class UploadManager {
 
 		Connection conn = DB.getConn(); 
 		String sql = "select * from uploadorder where name = '" + name + "' and checked = 0";
-
+		logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		UploadOrder uo = new UploadOrder();
@@ -656,6 +656,8 @@ public class UploadManager {
 		}	
 		return result;
 	}
+	
+	
 	
 	public static List<UploadOrder> getAllUploadOrders(){
 		List<UploadOrder> result = new ArrayList<UploadOrder>();

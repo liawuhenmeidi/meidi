@@ -198,7 +198,7 @@
 	  	<servlet-class>wilson.upload.ExcelUpload</servlet-class>
 	  	<init-param>
 	  		<param-name>suningFilePath</param-name>
-	  		<param-value>data/suningXLS</param-value>
+	  		<param-value>data/salesXLS</param-value>
 	  	</init-param>
 	  	<init-param>
 	  		<param-name>salaryFilePath</param-name>
@@ -232,7 +232,7 @@
 	  </servlet>
 	  <servlet-mapping>
 	  	<servlet-name>DownloadServlet</servlet-name>
-	  	<url-pattern>/meidiserver/modelDownload</url-pattern>
+	  	<url-pattern>/meidiserver/DownloadServlet</url-pattern>
 	  </servlet-mapping>
 	          
     <servlet>  
