@@ -33,6 +33,7 @@ public class DownloadServlet extends HttpServlet{
 		suningmubanPath = config.getInitParameter("suningmubanPath");
 		tichengmubanPath = config.getInitParameter("tichengmubanPath");
 		xiaoshoudanmubanPath = config.getInitParameter("xiaoshoudanmubanPath");
+		
 	}
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -40,10 +41,27 @@ public class DownloadServlet extends HttpServlet{
         // TODO Auto-generated method stub
 		 
 		String name = request.getParameter("name");
+		String type = request.getParameter("type");
 		
 		String filename = "";
 		String filePath = "";
-		if(name != null && !name.equals("")){
+		
+		if(name == null || name.equals("")){
+			return;
+		}
+		
+		if(type == null || type.equals("")){
+			return;
+		}
+		
+		if(type.equals("uploadorder")){
+			//已经上传文件的下载
+			filePath
+		}else if(type.equals("salarymodel")){
+			//已经上传文件的下载
+			
+		}else if(type.equals("model")){
+			//模板下载
 			if(name.equals("suningmuban")){
 				filename = "系统对比模板.xls";
 				filePath = suningmubanPath;
@@ -54,9 +72,11 @@ public class DownloadServlet extends HttpServlet{
 				filename = "销售单模板.xls";
 				filePath = xiaoshoudanmubanPath;
 			}
-		}else{
-			return;
+			
 		}
+	
+		
+		
 		
 		filename = URLEncoder.encode(filename,"UTF-8");
 		response.setHeader("content-type", "application/xls");

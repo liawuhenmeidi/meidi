@@ -8,13 +8,32 @@
 	
 	String type = request.getParameter("type");
 	String name =request.getParameter("name");
+	String button = request.getParameter("button");
+
+	//类型不能为空
 	if(type != null && !type.equals("")){
+		//接受到的名称不能为空
 		if(name != null && !name.equals("")){
-			if(type.equals("uploadorder")){
-				UploadManager.deleteUploadOrderByName(name);
-			}else if(type.equals("salarymodel")){
-				UploadManager.deleteSalaryModelByName(name);
+			
+			//判断行为
+			if(button != null && button.equals("删除")){
+				
+				if(type.equals("uploadorder")){
+					UploadManager.deleteUploadOrderByName(name);
+				}else if(type.equals("salarymodel")){
+					UploadManager.deleteSalaryModelByName(name);
+				}
+				
+			}else if(button != null && button.equals("导出")){
+				
+				if(type.equals("uploadorder")){
+					response.sendRedirect("../UploadExport?type=uploadorder&name=" + name);
+				}else if(type.equals("salarymodel")){
+					response.sendRedirect("../UploadExport?type=salarymodel&name=" + name);
+				}
+				
 			}
+				
 		}
 			
 	}
@@ -75,7 +94,8 @@ body {
 	} 
 	%>
 </select>
-<input type="submit" value="确认"/>
+<input name="button" type="submit" value="删除"/>
+<input name="button" type="submit" value="导出"/>
 </form>
 
 
@@ -95,7 +115,8 @@ body {
 	} 
 	%>
 </select>
-<input type="submit" value="确认"/>
+<input name="button" type="submit" value="删除"/>
+<input name="button" type="submit" value="导出"/>
 
 </form>
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>

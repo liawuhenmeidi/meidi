@@ -260,6 +260,19 @@
 	        <url-pattern>/meidiserver/MatchOrderExport</url-pattern>   
     </servlet-mapping>
     
+    <servlet>
+    <servlet-name>UploadExportServlet</servlet-name>  
+    <servlet-class>  
+          wilson.upload.UploadExportServlet
+      </servlet-class>  
+   </servlet>   
+    <servlet-mapping>   
+        <servlet-name>UploadExportServlet</servlet-name>  
+	        <url-pattern>/meidiserver/UploadExport</url-pattern>   
+    </servlet-mapping>
+    
+    
+    
     <!-- android支持 -->
 	 <servlet>
 	    <description>支持android的登录</description>
