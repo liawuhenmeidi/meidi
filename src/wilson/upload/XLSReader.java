@@ -317,6 +317,14 @@ public class XLSReader {
 						e.printStackTrace();
 						return UploadOrders;
 					}
+				} catch(Exception e){
+					e.printStackTrace();
+					UploadOrders = new ArrayList<UploadOrder>();
+					uo = new UploadOrder();
+					uo.setId(-1);
+					uo.setName("第"+ (i+1) + "行附近有问题，请检查");
+					UploadOrders.add(uo);
+					return UploadOrders;
 				}
 				uo.setFileName(srcFile.getName());
 				uo.setChecked(0);
