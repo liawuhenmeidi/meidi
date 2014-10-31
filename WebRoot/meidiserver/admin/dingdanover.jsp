@@ -1,8 +1,12 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
 <%@ include file="searchdynamic.jsp"%>
- 
+  
 <%   
+if(searchflag){
+	sort= "phone1 asc";
+}
+
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.over,num,Page,sort,sear);
 session.setAttribute("exportList", list); 
 count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.over,num,Page,sort,sear);
@@ -28,13 +32,13 @@ width:50px
 }
 
 #table{  
-    width:1500px;
+    width:1100px;
      table-layout:fixed ;
 }
 #th{
     background-color:white;
     position:absolute;
-    width:1500px;
+    width:1100px;
     height:30px;
     top:0;
     left:0;
@@ -51,32 +55,15 @@ width:50px
 </head>
 
 <body>
-<script type="text/javascript" src="../js/common.js"></script>
+
 <!--   头部开始   -->
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 var id = "";
 var pages = "<%=Page%>";   
 var num = "<%=num%>";
-  
-
-$(function () {
-	$("#wrap").bind("scroll", function(){ 
-
-		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
-	        //滚动了竖直滚动条
-	        pre_scrollTop=($("#wrap").scrollTop() || document.body.scrollTop);
-	       
-	        if(obj_th){
-	            obj_th.style.top=($("#wrap").scrollTop() || document.body.scrollTop)+"px";
-	        }
-	    }
-	    else if(pre_scrollLeft != (document.documentElement.scrollLeft || document.body.scrollLeft)){
-	        //滚动了水平滚动条
-	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
-	    }
-		}); 
-});
+ 
 
 function winconfirm(){
 	var question = confirm("你确认要执行此操作吗？");	
@@ -181,29 +168,17 @@ function adddetail(src){
 		<tr id="th">  
 			<td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>
 			<td align="center">单号</td>
-			<td align="center">门店</td>
-			
-			
+			<td align="center">安装网点</td>
 			<td align="center">顾客信息</td>
-		
-			
+
 			<td align="center">送货名称</td>
 			<td align="center">送货型号</td>
 			<td align="center">送货数量</td>
-			<td align="center">赠品</td>
-			<td align="center">赠品数量</td>
-			<td align="center">赠品状态</td>
             
            
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
             <td align="center">送货状态</td>
-            
-			
-			
-			<td align="center">安装网点</td>
-			<td align="center">送货人员</td>
-			<td align="center">送货时间</td>
 			<td align="center">备注</td>
 		</tr>
 
@@ -221,7 +196,9 @@ function adddetail(src){
     <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
 		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getbranchName(o.getBranch())%></td> 
+		<td align="center" style="white-space:nowrap;">
+		 <%=o.getdealsendName() %>   
+		</td>
 		<%  
 		String tdcol = " bgcolor=\"red\"" ;
 		if(o.getPhoneRemark()!=1){
@@ -238,9 +215,6 @@ function adddetail(src){
 		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
 		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>  
 		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>   
-		<td align="center" ><%= o.getGifttype("</p>")%></td>  
-		<td align="center" ><%= o.getGifcount("</p>")%></td>  
-		<td align="center" ><%= o.getGifStatues("</p>")%></td>
 		
 		
 		
@@ -249,26 +223,7 @@ function adddetail(src){
 		<td align="center">
 		<%=OrderManager.getDeliveryStatues(o) %>
 		</td>
-		
-		<td align="center" style="white-space:nowrap;">
-		 
-		
-		 <%=o.getdealsendName() %>
-
-          
-		</td>
-        
-        <td align="center" style="white-space:nowrap;"> 
-		  
-		 <%=o.getsendName() %>
-	
-		 
-		</td>
-         
-        <td align="center"> 
-		    <%=o.getSendtime() %>
-		</td>
-        
+ 
         <td align="center"> 
 		    <%=o.getRemark() %>
 		</td>

@@ -50,9 +50,10 @@ width:50px
 
 <body>
 
-<script type="text/javascript" src="../../js/common.js"></script>
+
 <!--   头部开始   -->
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
 var id = "";
 var pages = "" ;
@@ -62,21 +63,7 @@ var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";
 
 $(function () {
-	$("#wrap").bind("scroll", function(){ 
-
-		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
-	        //滚动了竖直滚动条
-	        pre_scrollTop=($("#wrap").scrollTop() || document.body.scrollTop);
-	       
-	        if(obj_th){
-	            obj_th.style.top=($("#wrap").scrollTop() || document.body.scrollTop)+"px";
-	        }
-	    }
-	    else if(pre_scrollLeft != (document.documentElement.scrollLeft || document.body.scrollLeft)){
-	        //滚动了水平滚动条
-	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
-	    }
-		}); 
+	
 	
 });
 
@@ -267,11 +254,13 @@ function orderPrint(id,statues){
 			<td align="center">送货人员</td>
 			<td align="center">送货时间</td>
 			<td align="center">送货员结款</td>
+			
 			<td align="center">安装人员</td>
 			<td align="center">安装时间</td> 
 			<td align="center">先送货后安装</td>
 			<td align="center">是否已回访</td>
-            <td align="center">安装是否已结款</td>
+            <td align="center">安装结款</td>
+           
 		</tr>
 	 
 <tbody> 
@@ -357,7 +346,7 @@ function orderPrint(id,statues){
 		    <%=o.getRemark() %>
 		</td>
         <td align="center"> 
-		<%=o.getStatues4() == 1 ?"是":"否"
+		<%=o.getChargeDealsendtime()
 		 %>
 		
 		</td>
@@ -378,9 +367,10 @@ function orderPrint(id,statues){
 		
 		</td>
 		 <td align="center"> 
-		<%=o.getStatuesPaigong() == 1 ?"是":"否"
+		<%=o.getChargeSendtime()
 		 %> 
 		 </td>
+
 		<td align="center"> 
 		<% if(o.getInstallid() != 0 ){
 			 if(usermap.get(o.getInstallid()) != null){
@@ -415,7 +405,7 @@ function orderPrint(id,statues){
 		    if(o.getStatuesinstall()==0){
 		    	message = "否";
 		    }else if(o.getStatuesinstall()==1){
-		    	message = "是";
+		    	message = o.getInstalltime()  ;
 		    }else if(o.getStatuesinstall()==2){
 		    	message = "已忽略";
 		    }

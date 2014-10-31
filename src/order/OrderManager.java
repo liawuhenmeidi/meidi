@@ -231,7 +231,7 @@ public class OrderManager {
 			}else if("orderCharge".equals(method)){
 				sql = "update mdorder set statues3 = "+statues+" where id in " + ids;
 			} else if("orderover".equals(method)){ 
-				sql = "update mdorder set statues4 = "+statues+"  , chargeDealsendtime = "+TimeUtill.gettime()+" where id in " + ids;
+				sql = "update mdorder set statues4 = "+statues+"  , chargeDealsendtime = '"+TimeUtill.gettime()+"' where id in " + ids;
 			} else if("songhuo".equals(method)){
 				boolean flags = false ;
 				if(NumbleUtill.isNumeric(id)){
@@ -1355,6 +1355,9 @@ logger.info(sql);
 		    p.setWenyuancallback(rs.getInt("wenyuancallback"));
 		    p.setOderStatus(rs.getString("oderStatus"));
 		    p.setImagerUrl(rs.getString("imagerUrl")); 
+		    p.setChargeDealsendtime(rs.getString("chargeDealsendtime"));
+		    p.setChargeSendtime(rs.getString("chargeSendtime"));
+		    p.setChargeInstalltime(rs.getString("chargeInstalltime"));
 		} catch (SQLException e) {  
 			e.printStackTrace();
 		} 

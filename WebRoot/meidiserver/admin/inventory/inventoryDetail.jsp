@@ -19,11 +19,14 @@ if(!StringUtill.isNull(branchid)){
 	branchid = b.getId()+""; 
 }
 
+System.out.println(1);
+
 Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 List<InventoryBranchMessage > list = InventoryBranchMessageManager.getCategory(ctype,branchid,starttime,endtime);  
 Map<Integer,User> usermap = UserService.getMapId(); 
 Map<String,String> mapdevity = OrderManager.getDeliveryStatuesMap();
 
+System.out.println(2);
 int papercount = 0 ;
 int realcount = 0 ;
 Set<Integer> bidset = new HashSet<Integer>();
@@ -130,6 +133,7 @@ function inventory(inventory,type){
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
    开始时间:<%=starttime%>---结束时间:<%=endtime %>
      
+System.out.println(3);
   
    <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>
    </div>  
@@ -180,6 +184,7 @@ function inventory(inventory,type){
 		        		 }else if(type == 11){ 
 		        			 strtype =usermap.get(in.getSendUser()).getUsername()+"派工给"+usermap.get(in.getReceiveuser()).getUsername();
 		        		 }else if(type == 6){   
+		        			 System.out.println(in.getReceiveuser());
 		        			 strtype = usermap.get(in.getReceiveuser()).getUsername()+"释放给"+usermap.get(in.getSendUser()).getBranchName();
 		        		 }else if(type == 7){     
 		        			 //strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回给"+usermap.get(in.getSendUser()).getBranchName();

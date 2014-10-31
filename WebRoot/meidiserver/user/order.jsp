@@ -866,7 +866,7 @@ String[] branlist =  branchmessage.split("_");
 
 
 
-<div class="s_main_tit"><span class="qiangdan"><a href="serch_list.jsp">订单查询</a></span><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span><span class="qiangdan"><a href="welcom.jsp">返回</a></span></div>
+<div class="s_main_tit"><span class="qiangdan"><a href="serch_list.jsp">订单查询</a></span><span class="qiangdan"><a href="welcom.jsp">返回</a></span></div>
 <form action="OrderServlet"  method ="post"  id="form"   onsubmit="return checkedd()"  > 
 <!--  头 单种类  -->  
 

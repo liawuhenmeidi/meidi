@@ -50,9 +50,10 @@ position:fixed;
 
 <body>
 
-<script type="text/javascript" src="../js/common.js"></script>
+
 <!--   头部开始   -->
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 var id = "";
 var pages = "<%=Page%>";   
