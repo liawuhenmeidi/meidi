@@ -314,8 +314,18 @@ public class XLSReader {
 					try {
 						uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents())));
 					} catch (ParseException e1) {
-						e.printStackTrace();
-						return UploadOrders;
+						s1 = new SimpleDateFormat("yyyyMMdd");
+						try{
+							uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents())));
+						}catch(ParseException e2){
+							e.printStackTrace();
+							UploadOrders = new ArrayList<UploadOrder>();
+							uo = new UploadOrder();
+							uo.setId(-1);
+							uo.setName("第"+ (i+1) + "行附近有问题，请检查");
+							UploadOrders.add(uo);
+							return UploadOrders;
+						}						
 					}
 				} catch(Exception e){
 					e.printStackTrace();
