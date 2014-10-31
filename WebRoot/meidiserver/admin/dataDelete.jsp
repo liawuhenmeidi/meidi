@@ -11,11 +11,9 @@
 	if(type != null && !type.equals("")){
 		if(name != null && !name.equals("")){
 			if(type.equals("uploadorder")){
-				UploadManager.deprecatedUploadOrderByName(name);
+				UploadManager.deleteUploadOrderByName(name);
 			}else if(type.equals("salarymodel")){
-				UploadManager.deprecatedSalaryModelByName(name);
-			}else if(type.equals("delete")){
-				UploadManager.deleteDeprecatedItems();
+				UploadManager.deleteSalaryModelByName(name);
 			}
 		}
 			
@@ -62,8 +60,8 @@ body {
   <jsp:param name="dmsn" value="" />
   </jsp:include> 
       
-<!--  
-<p>苏宁/销售单 隐藏</p>
+
+<p>苏宁/销售单 删除</p>
 <form action="" method="post">
 <input type="hidden" name="type" value="uploadorder"/>
 <select name="name">
@@ -79,13 +77,13 @@ body {
 </select>
 <input type="submit" value="确认"/>
 </form>
--->
 
 
 
-<p>提成模板  隐藏</p>
+
+<p>提成模板  删除</p>
 <form action="" method="post">
-	<input type="hidden" name="type" value="salarymodel"/>
+<input type="hidden" name="type" value="salarymodel"/>
 <select name="name">
 	<option value="" selected="selected"></option>
 	<%
@@ -103,11 +101,5 @@ body {
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 <hr style="border : 1px dashed blue;" />
 
-<!-- 
-<form action="" method="post">
-	<input type="hidden" name="type" value="delete"/>
-	<input align="bottom"  name="name" type="submit" value="删除所有隐藏数据"/>
-</form>
- -->
 </body>
 </html>
