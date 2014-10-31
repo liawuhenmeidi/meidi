@@ -37,7 +37,6 @@ logger.info(sql);
 			try { 
 				while (rs.next()) {
 					Gift Order = getGiftFromRs(rs);
-					System.out.println(Order.getId());
 					List<Gift> list = Orders.get(Order.getOrderId());
 					if(list == null){
 						list = new ArrayList<Gift>();

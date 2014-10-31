@@ -64,21 +64,7 @@ position:fixed;
 <script type="text/javascript">
 
 $(function () { 
-	 
-	$("#wrap").bind("scroll", function(){ 
-		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
-	        //滚动了竖直滚动条
-	        pre_scrollTop=($("#wrap").scrollTop() || document.body.scrollTop);
-	       
-	        if(obj_th){
-	            obj_th.style.top=($("#wrap").scrollTop() || document.body.scrollTop)+"px";
-	        }
-	    }
-	    else if(pre_scrollLeft != (document.documentElement.scrollLeft || document.body.scrollLeft)){
-	        //滚动了水平滚动条
-	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
-	    }
-		}); 	 
+	 	 
 });
 
 function adddetail(src){ 

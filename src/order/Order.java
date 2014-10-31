@@ -772,9 +772,10 @@ public String getCategory(){
 // 赠品
  public String getGifttype(String decollator){    
 	String category = "";   
-	
 	Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
+	
 	if(!gMap.containsKey(this.getId())){
+System.out.print(1);
 		GiftManager.resetOrPMap();
 	}
 	 List<Gift> lists = gMap.get(this.getId());  
@@ -794,6 +795,7 @@ public String getCategory(){
 		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
 		if(!gMap.containsKey(this.getId())){
 			GiftManager.resetOrPMap();
+			System.out.print(1);
 		}
 		 List<Gift> lists = gMap.get(this.getId()); 
 		 if(null != lists){ 
@@ -812,6 +814,7 @@ public String getCategory(){
 		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
 		if(!gMap.containsKey(this.getId())){
 			GiftManager.resetOrPMap();
+			System.out.print(1);
 		}
 		 List<Gift> lists = gMap.get(this.getId()); 
 		 if(null != lists){ 
@@ -882,6 +885,7 @@ public String getSendType(){
 
 public String getSendType(int statues,String decollator){ 
 	String sendType = ""; 
+	
 	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
 		OrderProductManager.resetOrPMap();
 	}
