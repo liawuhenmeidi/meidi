@@ -42,7 +42,7 @@
 	if(paraSave != null && !paraSave.equals("")){
 		if(showOrders!=null&&showOrders.size()>0 && showSalaryModels!=null&&showSalaryModels.size()>0){
 			SalaryCalcManager.saveSalaryResult(salaryResult);
-			response.sendRedirect("/meidi/meidiserver/admin/salaryCalc.jsp");
+			response.sendRedirect("salaryCalc.jsp");
 			return;
 		}
 	}
