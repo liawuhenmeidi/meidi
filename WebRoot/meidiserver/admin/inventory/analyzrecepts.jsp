@@ -57,7 +57,7 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
 	<thead>
 		<tr>
 			
-			<th align="left">出库单位</th>
+			<th align="left">入库单位</th>
 			<th align="left">状态</th> 
 			<th align="left">日期</th>
 			

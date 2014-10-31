@@ -194,6 +194,9 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellValue("送货地址");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
+				cell.setCellValue("上报状态");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
 				cell.setCellValue("送货状态");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
@@ -277,8 +280,9 @@ public class PrintServlet extends HttpServlet {
 					row.createCell((short) y++).setCellValue(order.getSaleTime());
 					row.createCell((short) y++).setCellValue(order.getOdate()); 
 					row.createCell((short) y++).setCellValue(order.getDealSendTime());
-					row.createCell((short) y++).setCellValue(order.getLocate()); 
-					row.createCell((short) y++).setCellValue(order.getLocateDetail()); 
+					row.createCell((short) y++).setCellValue(order.getLocate());  
+					row.createCell((short) y++).setCellValue(order.getLocateDetail());
+					row.createCell((short) y++).setCellValue(OrderManager.getOrderStatues(order)); 
 					String songhuo = OrderManager.getDeliveryStatues(order);
 					  
 					row.createCell((short) y++).setCellValue(songhuo); 

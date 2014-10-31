@@ -87,12 +87,12 @@ function func(str){
  
 function winconfirm(str){
 	if(str == 0 ){
-		alert("您已经提交释放申请");
+		alert("您已经提交驳回申请");
 		return ;
 	}else if(str == 4){
 		question = confirm("您的申请被拒绝，是否继续提交？");
 	}else { 
-		question = confirm("你确认要释放吗？");
+		question = confirm("你确认要驳回吗？");
 	}
 		
 		if (question != "0"){
@@ -105,11 +105,11 @@ function winconfirm(str){
 		        data:"method=shifang&oid="+id+"&pGroupId="+pgroup+"&opstatues="+opstatues,
 		         dataType: "", 
 		         success: function (data) { 
-		          alert("释放申请已提交成功");    
+		          alert("驳回申请已提交成功");    
 		          window.location.href="dingdanDetailsonghuo.jsp?id="+id;
 		           }, 
 		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-		          alert("释放申请失败");
+		          alert("驳回申请失败");
 		            } 
 		           }); 
 		 }
@@ -159,7 +159,7 @@ function change(str1,str2,type){
   <jsp:param name="dmsn" value="" />
   </jsp:include>
   
-<span class="qiangdan"><a href="welcom.jsp">返回</a></span><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span>
+<span class="qiangdan"><a href="welcom.jsp">返回</a></span>
 </div>
 
 <!--  头 单种类  -->
@@ -170,7 +170,7 @@ function change(str1,str2,type){
  <tr>
    
      <tr>
-    <td class="s_list_m">释放状态
+    <td class="s_list_m">驳回状态
      
 
     </td>
@@ -193,7 +193,7 @@ function change(str1,str2,type){
 			        	  sm = "您的申请被拒绝";
 			        	  query = true ;
 			        	  %>
-			        	  <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=opstatues%>')"></input>
+			        	  <input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=opstatues%>')"></input>
 			        	  <%
 			          }  
 	      %> 
@@ -204,7 +204,7 @@ function change(str1,str2,type){
 	        	  query = true ;
 	     %>
 	              无
-	              <input type="submit" class="button" name="dosubmit" value="释放" onclick="winconfirm('<%=opstatues%>')"></input>
+	              <input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=opstatues%>')"></input>
 	     <%
 		   }
 		}

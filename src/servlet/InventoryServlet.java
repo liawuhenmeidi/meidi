@@ -225,23 +225,25 @@ System.out.println(type+"type");
  			type = p.getId()+""; 
  			
  			String count = request.getParameter(producs[i]);
+ 			int countInt = 0 ;
+ 			if(!StringUtill.isNull(count)){
+ 				countInt = Integer.valueOf(count);
+ 			}
  			inven.setProductId(type);   
  			inven.setCategoryId(categoryId);
  			if("outbranch".equals(typebranch)){
- 				inven.setAnlycount(Integer.valueOf(count));
+ 				inven.setAnlycount(countInt);
  	 		}else {
- 	 			inven.setCount(Integer.valueOf(count));   
+ 	 			inven.setCount(countInt);   
  	 		} 
 
  			inventoryMessage.add(inven); 			
  		} 
  		
  		inventory.setId(Integer.valueOf(id));
- 		if("outbranch".equals(typebranch)){
- 			inventory.setInbranchid(Integer.valueOf(inbranch)); 
- 		}else {
- 			inventory.setOutbranchid(Integer.valueOf(inbranch));
- 		} 
+ 		
+ 		inventory.setInbranchid(Integer.valueOf(inbranch)); 
+
  		inventory.setIntime(time);   
  		inventory.setUid(uid);  
  		inventory.setRemark(remark);

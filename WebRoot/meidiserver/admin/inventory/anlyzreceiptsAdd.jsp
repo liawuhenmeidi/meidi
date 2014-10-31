@@ -146,7 +146,7 @@ function println(){
 <form action="InventoryServlet" method="post" >
 <input type="hidden" name="method" value="updatesubscribe"/>
 <input type="hidden" name="id" value="<%=inventoryid%>"/>
-<%if(user.getBranch().equals(inventory.getOutbranchid()+"")){
+<%if(UserManager.checkPermissions(user, Group.dealSend)){
 	%>
 	<input type="hidden" name="add" value="outbranch" />
 	<%

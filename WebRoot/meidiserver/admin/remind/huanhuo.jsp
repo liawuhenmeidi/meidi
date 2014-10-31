@@ -1,11 +1,11 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="../searchdynamic.jsp"%>      
 <%         
+
 List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.huanhuo ,0,0,"id",sear); 
 count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.huanhuo,0,0,"id",sear);      
 
 session.setAttribute("exportList", list);
-
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -77,7 +77,7 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 		
 		$.ajax({ 
 	        type: "post",  
-	         url: "server.jsp",   
+	         url: "../server.jsp",   
 	         data:"method=getinventory&types="+types+"&uid="+saleid,
 	         dataType: "",  
 	         success: function (data) {  
@@ -98,7 +98,7 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	        		            if(data == 8){
 	        		            	alert("导购修改中。稍后重试"); 
 	        		            }else{ 
-	        		            	 window.location.href="print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues;  
+	        		            	 window.location.href="../print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues;  
 	        		            }
 	        		           },  
 	        		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -117,7 +117,7 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 		uid = 0; 
 		$.ajax({ 
 	        type: "post", 
-	         url: "server.jsp",
+	         url: "../server.jsp",
 	         data:"method=peidan&id="+oid+"&uid="+uid,
 	         dataType: "", 
 	         success: function (data) { 
@@ -125,9 +125,9 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	            	alert("导购修改中。稍后重试"); 
 	            }else{
 	            	if(str1 != 0){ 
-	            	   window.location.href="print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues+"&dingma="+str1;  
+	            	   window.location.href="../print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues+"&dingma="+str1;  
 	            	}else {
-	            		window.location.href="dingdan.jsp";	 
+	            		window.location.href="huanhuo.jsp";	 
 	            	}
 	            }
 	           },  
@@ -155,13 +155,13 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 				}else {
 				$.ajax({     
 			        type:"post",  
-			         url:"../user/server.jsp",  
+			         url:"../../user/server.jsp",  
 			         //data:"method=list_pic&page="+pageCount,       
 			         data:"method=shifang&oid="+oid+"&pGroupId="+pgroup+"&opstatues="+type,
 			         dataType: "",  
 			         success: function (data) {    
 			          alert("驳回申请已提交成功"); 
-			          window.location.href="dingdan.jsp";
+			          window.location.href="huanhuo.jsp";
 			           },  
 			         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 			          alert("驳回申请失败");
@@ -182,13 +182,13 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 				var type = "<%=Order.deliveryStatuesTuihuo%>";
 				$.ajax({  
 			        type: "post", 
-			         url: "server.jsp",   
+			         url: "../server.jsp",   
 			         data:"method=dingdaned&id="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 			         dataType: "",  
 			         success: function (data) {
 			        	 
 			        	 if(data == true || data == "true"){ 
-			        		 window.location.href="print.jsp?id="+oid+"&type="+type+"&uid="+dealsendid ;
+			        		 window.location.href="../print.jsp?id="+oid+"&type="+type+"&uid="+dealsendid ;
 			        	 }
 			           },  
 			         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -203,11 +203,11 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 		}else {
 			$.ajax({    
 		        type: "post", 
-		         url: "server.jsp",   
+		         url: "../server.jsp",   
 		         data:"method=dingdaned&id="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 		         dataType: "",   
 		         success: function (data) {
-		             window.location.href="dingdan.jsp";
+		             window.location.href="huanhuo.jsp";
 		        	
 		           }, 
 		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -217,11 +217,11 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 	}else { 
 		$.ajax({   
 	        type: "post", 
-	         url: "server.jsp",   
+	         url: "../server.jsp",   
 	         data:"method=dingdaned&id="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 	         dataType: "",   
 	         success: function (data) {
-	             window.location.href="dingdan.jsp";
+	             window.location.href="huanhuo.jsp";
 	        	
 	           }, 
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -234,10 +234,9 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 }  
 
 function searchlocate(id){
-	window.open('../adminmap.jsp?id='+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+	window.open('../../adminmap.jsp?id='+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 }
-
  
 function adddetail(src){ 
 	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
@@ -299,11 +298,10 @@ function adddetail(src){
            <td align="center">上报状态</td>
            <td align="center">送货状态</td>
 			<td align="center">备注</td>
-
+			 
 			<td align="center">查看位置</td> 
-		
-			<td align="center">导购退货申请</td> 
-          
+			
+            <td align="center">导购换货申请</td> 
 		</tr> 
 	
   <%  
@@ -387,59 +385,26 @@ function adddetail(src){
 			    	orp = opmap.get(OrderPrintln.salereleaseanzhuang).get(o.getId()); 
 			    }
 		       %>
-		 
-				
-				
+
 				<td align="center"> 
 				    <a href="javascript:void(0);"  onclick="searchlocate('<%=o.getId() %>')">[查看位置]</a> 
 				</td>
 				
-				
-				<td align="center"> 
-				<% 
-					 if(returns == 2){ 
-				    	 %> 
-				    	   <p>退货申请已同意</p>
-				    	 <% 
-				    	  }else if(returns == 4){ 
-						     	
-						    	 %> 
-						    	   <p>退货申请已拒绝</p>
-						    	 <%
-						    	 
-						   }else if(returns != -1){
-									 %>
-								 <%=op1.getMessage() %>
-								  <%if(releasedispatch == 0 ){
-								   %>    
-								   安装公司处理中 
-								  <% } else if(releasedispatch == 2 ){%>
-								  
-								  <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>',this)"  value="同意退货"/>
-								   
-								  <%}else {
-									  if(Integer.valueOf(o.getOderStatus()) == 8){
-										  %>
-								     <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.release %>',this)"  value="打印"/>
-								     <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','',this)"  value="确定"/>  
+              <td>
+              <%if(huanhuo == 2){
+               %>
+                                                          安装公司处理中
+              <%
+                }else if(huanhuo == 0){
+              %> 
+              <%=huanhuoo.getMessage() %>
+              <input type="button" onclick="changes('<%=huanhuoObject.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=huanhuo%>','-1','-1',this)"  value="同意"/>
+			  <input type="button" onclick="changes('<%=huanhuoObject.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=huanhuo %>','-1','-1',this)"  value="不同意"/>  
 						
-										  <%
-									  }else {
-										  if(totalshifang == 0){
-											    %>
-											            请先处理驳回信息
-											    <%
-											    }else {
-									  %>	         
-								    <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>',this)"  value="同意"/>
-								    <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=releasedispatch %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>',this)"  value="不同意"/>   
-								  <% } 
-								 }
-						      }
-				         }%>
-				</td>
-             
-             
+              <%
+               }
+              %>
+              </td>
 		    </tr>
       <% 
 		 }

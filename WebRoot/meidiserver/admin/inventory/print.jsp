@@ -73,18 +73,20 @@ List<InventoryMessage> list = inventory.getInventory();
 </table>
   <table width="100%" border="0" cellspacing="0" cellpadding="0"> 
   <% for(int i=0;i<list.size();i++){ 
-	  InventoryMessage in = list.get(i); 
+	  InventoryMessage in = list.get(i);
+	  if(in.getCount() != 0){
   %> 			
-    <tr>
-      <td width="4%" height="30" align="center" valign="middle" id="d"><%=i+1 %></td>
-      <td width="9%" height="30" align="center" valign="middle" id="d">品类</td> 
-      <td width="17%" height="30" align="center"  id="d">&nbsp;<%=categorymap.get(in.getCategoryId()).getName() %></td>
-      <td width="11%" height="30" align="center" valign="middle" id="d">型号</td> 
-      <td width="38%" height="30" align="center" valign="middle" id="d"><%=ProductService.getIDmap().get(Integer.valueOf(in.getProductId())).getType() %></td>
-      <td width="12%" height="30" align="center" valign="middle" id="d">数量</td>
-      <td width="9%" height="30" align="center"valign="middle" id="e"><%=in.getCount() %></td>
-    </tr> 
-   <% }%>
+	    <tr>
+	      <td width="4%" height="30" align="center" valign="middle" id="d"><%=i+1 %></td>
+	      <td width="9%" height="30" align="center" valign="middle" id="d">品类</td> 
+	      <td width="17%" height="30" align="center"  id="d">&nbsp;<%=categorymap.get(in.getCategoryId()).getName() %></td>
+	      <td width="11%" height="30" align="center" valign="middle" id="d">型号</td> 
+	      <td width="38%" height="30" align="center" valign="middle" id="d"><%=ProductService.getIDmap().get(Integer.valueOf(in.getProductId())).getType() %></td>
+	      <td width="12%" height="30" align="center" valign="middle" id="d">数量</td>
+	      <td width="9%" height="30" align="center"valign="middle" id="e"><%=in.getCount() %></td>
+	    </tr> 
+   <% }
+   }%>
  
   </table></td>
 </tr> 
