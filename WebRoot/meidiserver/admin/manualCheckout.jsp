@@ -92,7 +92,10 @@
 	
 	session.setAttribute("afterMatchOrders", afterMatchOrders);
 	session.setAttribute("unCheckedDBOrders", unCheckedDBOrders);
-	session.setAttribute("unCheckedUploadOrders", unCheckedUploadOrders);	
+	session.setAttribute("unCheckedUploadOrders", unCheckedUploadOrders);
+	
+	String backgroundColor ="#B9D3EE";
+	boolean showColor = false;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -279,22 +282,26 @@ $(function (){
 		<%
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
 			if(afterMatchOrders.get(i).getCompareLevel() >= 5.0){
+				showColor = false;
+				if(afterMatchOrders.get(i).getUploadSideOrderId() == -1){
+					showColor = true;
+				}	
 		%>
 		<tr>
 			<td align="center"><input name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" id=""></td>
-			<td align="center" id=""><%=inter++ %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%=inter++ %></td> 
 			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
 		<%
@@ -305,22 +312,26 @@ $(function (){
 		<%
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
 			if(afterMatchOrders.get(i).getCompareLevel() >= 4.0 && afterMatchOrders.get(i).getCompareLevel()< 5.0){
+				showColor = false;
+				if(afterMatchOrders.get(i).getUploadSideOrderId() == -1){
+					showColor = true;
+				}	
 		%>
 		<tr>
 			<td align="center"><input name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" id=""></td>
-			<td align="center" id=""><%=inter++ %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%=inter++ %></td> 
 			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
 		<%
@@ -331,22 +342,26 @@ $(function (){
 		<%
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
 			if(afterMatchOrders.get(i).getCompareLevel() >= 3.0 && afterMatchOrders.get(i).getCompareLevel() < 4.0){
+				showColor = false;
+				if(afterMatchOrders.get(i).getUploadSideOrderId() == -1){
+					showColor = true;
+				}	
 		%>
 		<tr>
 			<td align="center"><input name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" id=""></td>
-			<td align="center" id=""><%=inter++ %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%=inter++ %></td> 
 			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
 		<%
@@ -357,22 +372,26 @@ $(function (){
 		<%
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
 			if(afterMatchOrders.get(i).getCompareLevel() >= 2.0 && afterMatchOrders.get(i).getCompareLevel() <3.0){
+				showColor = false;
+				if(afterMatchOrders.get(i).getUploadSideOrderId() == -1){
+					showColor = true;
+				}	
 		%>
 		<tr>
 			<td align="center"><input name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" id=""></td>
-			<td align="center" id=""><%=inter++ %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%=inter++ %></td> 
 			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
 		<%
@@ -384,22 +403,26 @@ $(function (){
 		<%
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
 			if(afterMatchOrders.get(i).getCompareLevel() >= 1.0 && afterMatchOrders.get(i).getCompareLevel()< 2.0){
+				showColor = false;
+				if(afterMatchOrders.get(i).getUploadSideOrderId() == -1){
+					showColor = true;
+				}	
 		%>
 		<tr>
 			<td align="center"><input name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" id=""></td>
-			<td align="center" id=""><%=inter++ %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%=inter++ %></td> 
 			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
 		<%
@@ -410,22 +433,26 @@ $(function (){
 		<%
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
 			if(afterMatchOrders.get(i).getCompareLevel() >= 0.0 && afterMatchOrders.get(i).getCompareLevel()< 1.0){
+				showColor = false;
+				if(afterMatchOrders.get(i).getUploadSideOrderId() == -1){
+					showColor = true;
+				}	
 		%>
 		<tr>
 			<td align="center"><input name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" id=""></td>
-			<td align="center" id=""><%=inter++ %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%=inter++ %></td> 
 			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
 		<%
