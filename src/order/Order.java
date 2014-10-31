@@ -856,7 +856,8 @@ public String getSendType(){
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	if(null != lists){	
 		for(int g = 0 ;g<lists.size();g++){
-				if(lists.get(g).getStatues() == 1){        
+				if(lists.get(g).getStatues() == 1){ 
+					sendType = "";
 					String tempType = lists.get(g).getSaleType();
 					//System.out.println(tempType);
 					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
@@ -885,7 +886,8 @@ public String getSendType(int statues,String decollator){
 	if(lists != null){
 		for(int g = 0 ;g<lists.size();g++){
 			if(lists.get(g).getStatues() == statues){   
-				if(statues == 1){          
+				if(statues == 1){ 
+					sendType = "";
 					String tempType = lists.get(g).getSaleType(); 
 					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
 					sendType += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);
@@ -909,7 +911,8 @@ public String getSendCount(){
 	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
 	 if(null != lists){
 		for(int g = 0 ;g<lists.size();g++){
-			if(lists.get(g).getStatues() == 1){        
+			if(lists.get(g).getStatues() == 1){ 
+				sendCount = "" ;
 				String tempCount = String.valueOf(lists.get(g).getCount());   
 				sendCount += ((tempCount == null || tempCount.equals("null"))?"":tempCount)+"|";
 				return sendCount;
