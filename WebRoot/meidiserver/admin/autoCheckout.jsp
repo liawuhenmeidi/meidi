@@ -3,7 +3,7 @@
 <%
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
-	long a = System.currentTimeMillis();
+	long startTime = System.currentTimeMillis();
 	//接受id
 	String[] auto = request.getParameterValues("auto");
 	String[] manual = request.getParameterValues("manual");
@@ -91,7 +91,7 @@
 	session.setAttribute("afterMatchOrders", afterMatchOrders);
 	session.setAttribute("unCheckedDBOrders", unCheckedDBOrders);
 	session.setAttribute("unCheckedUploadOrders", unCheckedUploadOrders);	
-	System.out.println(System.currentTimeMillis() - a);
+	System.out.println("自动对比页面总执行时间(毫秒) = " + (System.currentTimeMillis() - startTime));
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
