@@ -1,7 +1,7 @@
 <%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="detaildynamic.jsp"%> 
 <%  
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(); 
+Map<Integer,List<Gift>> gMap = GiftService.getmap(); 
 %>
 <!DOCTYPE html>
 <html>
@@ -43,13 +43,15 @@ function updateOeder(){
 	 	      				window.location.href="order.jsp?id="+id;
 	 	      				return ;  
 	 	      			}else if(oppstatues == -1){
-	 	      				window.location.href="updatedingmayPrintl.jsp?id="+id;
+	 	      				alert("已配送，请联系公司文员进行修改");
+	 	      				//window.location.href="updatedingmayPrintl.jsp?id="+id;
 	 	      			    return ;
 	 	      			}if(oppstatues == 4 ){
-	 	      				var question = confirm("您的申请被拒绝，确定要重新提交申请吗？");
-	 	      				if(question != "0"){
-	 	      				 window.location.href="updatedingmayPrintl.jsp?id="+id;
-	 	      				}
+	 	      				alert("已配送，请联系公司文员进行修改");
+	 	      				//var question = confirm("您的申请被拒绝，确定要重新提交申请吗？");
+	 	      				//if(question != "0"){
+	 	      				// window.location.href="updatedingmayPrintl.jsp?id="+id;
+	 	      				//}
 	 	      				
 	 	      				return ; 
 	 	      			}else {  
@@ -86,7 +88,7 @@ function updateOeders(type){
 		if(1 == canupdate){
 			   $.ajax({  
 			        type:"post",  
-			         url:"server.jsp",
+			         url:"server.jsp", 
 			         //data:"method=list_pic&page="+pageCount,
 			         data:"method=printlnStatues&oid="+id,
 			         dataType: "", 

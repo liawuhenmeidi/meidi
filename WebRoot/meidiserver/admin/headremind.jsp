@@ -30,11 +30,11 @@ $(document).ready(function () {
     	         success: function (data) { 
     	           var json =  $.parseJSON(data);   
     	           $("#zhuce").html(json.ucount);
-    	           $("#motyfy").html(json.mcount); 
+    	         //  $("#motyfy").html(json.mcount); 
     	           $("#release").html(json.rcount); 
     	           $("#neworder").html(json.ncount);
     	           $("#returns").html(json.recount); 
-    	           $("#huanhuo").html(json.hcount); 
+    	          // $("#huanhuo").html(json.hcount); 
     	           $("#inventory").html(json.inventory); 
     	           },  
     	         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -49,8 +49,8 @@ $(document).ready(function () {
 		  window.open('remind/huiyuan.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }else if("neworder" == str){ 
 		  window.open('remind/neworder.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
-	  }else if("motyfy" == str){
-		  window.open('remind/motify.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 // }else if("motyfy" == str){
+	//	  window.open('remind/motify.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }else if("release" == str){
 		  window.open('remind/release.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }else if("returns" == str){ 
@@ -84,21 +84,25 @@ $(document).ready(function () {
   &nbsp;&nbsp;&nbsp;&nbsp;   
   <span style="color:red;font-size:20px;" id="release"></span>
    </td>
+   <!--  
    <td>
   <a href="javascript:void(0);" onclick="serach('motyfy')" style="font-size:15px;">导购修改申请</a>
   &nbsp;&nbsp;&nbsp;&nbsp;   
  <span style="color:red;font-size:20px;" id="motyfy"></span> 
    </td>
+   -->
    <td>
   <a href="javascript:void(0);" onclick="serach('returns')" style="font-size:15px;">导购退货申请</a> 
   &nbsp;&nbsp;&nbsp;&nbsp;   
   <span style="color:red;font-size:20px;" id="returns"></span>
    </td>
+   <!--  
     <td>
   <a href="javascript:void(0);" onclick="serach('huanhuo')" style="font-size:15px;">导购换货申请</a> 
   &nbsp;&nbsp;&nbsp;&nbsp;   
   <span style="color:red;font-size:20px;" id="huanhuo"></span>
    </td>
+   -->
     <td>
   <a href="javascript:void(0);" onclick="serach('inventory')" style="font-size:15px;">调拨单待确认</a> 
    &nbsp;&nbsp;&nbsp;&nbsp;   

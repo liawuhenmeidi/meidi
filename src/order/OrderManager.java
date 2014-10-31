@@ -594,6 +594,10 @@ public static void updateSendstat(int statues,int sid, int oid) {
 		 Order oldorder = OrderManager.getOrderID(user,order.getId());
 		 
 		 if(oldorder != null){ 
+			 // 判断是否已配工，已配工返回
+			 if(oldorder.getDealsendId() != 0){
+				 return false ;
+			 }
 			 maxid = oldorder.getId();   
 			 daymark =oldorder.getDayremark(); 
 			 dayID = oldorder.getDayID(); 
@@ -672,7 +676,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 	   
 	    sqls.add(sql);
 	    logger.info(sql);       
-	  
+	    
 	    flag  = DBUtill.sava(sqls);
         
 		return flag ; 
@@ -710,7 +714,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				 // sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5)  and  ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search+"  order by  "+sort+"  limit " + ((page-1)*num)+","+ page*num ;  
 				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13) or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4,10) ))  "+search+"  order by  "+sort+str ;  
 			  }else if(Order.neworder == statues){
-				  sql = "select * from  mdorder  where  dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues != 3  and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))   "+search+"  order by "+sort+" ";   
+				  sql = "select * from  mdorder  where  dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13)  and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))   "+search+"  order by "+sort+" ";   
 			  }else if(Order.motify == statues){
 				  sql = "select * from  mdorder  where  id in (select orderid from mdorderupdateprint where statues = 0 and mdtype = 0 )   "+search+"  order by "+sort;   
 			  }else if(Order.returns == statues){ 

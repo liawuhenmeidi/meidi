@@ -26,13 +26,13 @@ if((Order.deliveryStatuesTuihuo+"").equals(type)){
 	message = "调账单";  
 	flagdiagma = true ; 
 } 
-
+ 
    
 int iddd = 0;
 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(); 
+Map<Integer,List<Gift>> gMap = GiftService.getmap(); 
 Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 
 %> 

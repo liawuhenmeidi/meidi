@@ -13,7 +13,7 @@ String type = request.getParameter("type");
 String uid = request.getParameter("uid");
 
 Order order = OrderManager.getOrderID(user, Integer.valueOf(id));
-HashMap<Integer,User> usermap = UserManager.getMap();
+HashMap<Integer,User> usermap = UserManager.getMap(); 
 message = OrderManager.getOrderStatues(order);
 
 String deliveryStatues = order.getOderStatus();
@@ -54,7 +54,7 @@ User send = usermap.get(order.getDealsendId());
 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
  
-Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();  
+Map<Integer,List<Gift>> gMap = GiftService.getmap(); 
 Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 
 String time = TimeUtill.getPrintlnTime();
