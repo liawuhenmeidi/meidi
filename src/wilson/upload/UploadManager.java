@@ -752,4 +752,57 @@ public class UploadManager {
 		return flag ; 
 	}
 	
+	public static boolean isUploaderFileNameExist(String fileName){
+		boolean result = true;
+		Connection conn = DB.getConn();
+		String sql = "select count(*) from uploadorder where name = '" + fileName + "'";
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(sql);
+			int temp = 0 ;
+			while(rs.next()){
+				temp = Integer.parseInt(rs.getString("count(*)"));
+			}
+			if(temp == 0 ){
+				result = false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return result ; 
+	}
+	
+	public static boolean isSalaryModelFileNameExist(String fileName){
+		boolean result = true;
+		Connection conn = DB.getConn();
+		String sql = "select count(*) from uploadsalarymodel where name = '" + fileName + "'";
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(sql);
+			int temp = 0 ;
+			while(rs.next()){
+				temp = Integer.parseInt(rs.getString("count(*)"));
+			}
+			if(temp == 0 ){
+				result = false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return result ; 
+	}
+	
+	
 }

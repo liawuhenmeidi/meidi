@@ -41,6 +41,15 @@ public class XLSReader {
 			
 			String name = sheet0.getCell(1,0).getContents();
 			
+			//如果文件名一样
+			if(UploadManager.isUploaderFileNameExist(name)){
+				UploadOrders = new ArrayList<UploadOrder>();
+				uo = new UploadOrder();
+				uo.setId(-1);
+				uo.setName("文件名称重复!请修改名称");
+				UploadOrders.add(uo);
+				return UploadOrders;
+			}
 			
 			for(i = 2 ; i < sheet0.getRows(); i ++){
 				if(sheet0.getCell(0,i).getContents().equals("")){
@@ -90,6 +99,17 @@ public class XLSReader {
 				Double tempDouble = 0.0;
 				
 				String name = sheet0.getCell(1,0).getContents().trim();
+				
+				//如果文件名一样
+				if(UploadManager.isSalaryModelFileNameExist(name)){
+					uploadSalaryModelList = new ArrayList<UploadSalaryModel>();
+					usm = new UploadSalaryModel();
+					usm.setId(-1);
+					usm.setName("文件名称重复!请修改名称");
+					uploadSalaryModelList.add(usm);
+					return uploadSalaryModelList;
+				}
+				
 				String startTime = "";
 				String endTime = "";
 				
@@ -210,6 +230,7 @@ public class XLSReader {
 				usm.setId(-1);
 				usm.setName("第"+ (i+1) + "行第"+ (j+1) + "列附近有问题，请检查");
 				uploadSalaryModelList.add(usm);
+				return uploadSalaryModelList;
 			}
 			return uploadSalaryModelList;
 		}
@@ -242,17 +263,50 @@ public class XLSReader {
 			SimpleDateFormat s1 = new SimpleDateFormat("yy-MM-dd");
 			SimpleDateFormat s2 = new SimpleDateFormat("yyyyMMdd");
 			
-			String name = sheet0.getCell(1,0).getContents();
-			for(int i = 2 ; i < sheet0.getRows(); i ++){
-				if(sheet0.getCell(0,i).getContents().equals("")){
-					continue;
+			String name = "";
+			try{
+				name = sheet0.getCell(1,0).getContents();
+				if(UploadManager.isUploaderFileNameExist(name)){
+					UploadOrders = new ArrayList<UploadOrder>();
+					uo = new UploadOrder();
+					uo.setId(-1);
+					uo.setName("文件名称重复!请修改名称");
+					UploadOrders.add(uo);
+					return UploadOrders;
 				}
-				uo.setName(name);
-				uo.setShop(sheet0.getCell(1,i).getContents());
-				uo.setType(sheet0.getCell(2,i).getContents());
-				uo.setSaleManName(sheet0.getCell(3,i).getContents());
-				uo.setSalePrice(Double.parseDouble(sheet0.getCell(4,i).getContents()));
-				uo.setNum(Integer.parseInt(sheet0.getCell(5,i).getContents()));
+			}catch(Exception e){
+				e.printStackTrace();
+				UploadOrders = new ArrayList<UploadOrder>();
+				uo = new UploadOrder();
+				uo.setId(-1);
+				uo.setName("文件名有问题，请检查");
+				UploadOrders.add(uo);
+				return UploadOrders;
+			}
+			
+			
+			for(int i = 2 ; i < sheet0.getRows(); i ++){
+				
+				try{
+					if(sheet0.getCell(0,i).getContents().equals("")){
+						continue;
+					}
+					uo.setName(name);
+					uo.setShop(sheet0.getCell(1,i).getContents());
+					uo.setType(sheet0.getCell(2,i).getContents());
+					uo.setSaleManName(sheet0.getCell(3,i).getContents());
+					uo.setSalePrice(Double.parseDouble(sheet0.getCell(4,i).getContents()));
+					uo.setNum(Integer.parseInt(sheet0.getCell(5,i).getContents()));
+				}catch(Exception e){
+					e.printStackTrace();
+					UploadOrders = new ArrayList<UploadOrder>();
+					uo = new UploadOrder();
+					uo.setId(-1);
+					uo.setName("第"+ (i+1) + "行附近有问题，请检查");
+					UploadOrders.add(uo);
+					return UploadOrders;
+				}
+				
 				try {
 					uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents())));
 				} catch (ParseException e) {

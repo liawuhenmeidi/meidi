@@ -128,6 +128,11 @@ td {
        <input type="hidden" name="fileName" value="<%=fileName %>"/>
 		<input type="hidden" name="confirm" value="confirm" id="submitswitcher"/>
 		<h3><%=UploadOrders.get(0).getName() %></h3>
+		<%
+		if(UploadOrders.size() == 1 && UploadOrders.get(0).getId() == -1){
+			return;
+		}
+		%>
 		<%if(showContent){ %>
 		<input type="button" id="commitbutton" value="提交" onmousedown="$('#commitbutton').val('正在提交');$('#baseform').submit();$('#submitswitcher').val('confirmed')"></input>
 		<%} %>
@@ -139,11 +144,7 @@ td {
     <div style="overflow-y:auto; width:100%;height:450px">
 <table  cellspacing="1" border="2px"  id="table">
 		
-		<%
-		if(UploadOrders.size() == 1 && UploadOrders.get(0).getId() == -1){
-			return;
-		}
-		%>
+		
 		<tr>  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			
