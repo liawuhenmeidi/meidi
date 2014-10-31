@@ -185,12 +185,12 @@
     <servlet>  
 	        <servlet-name>SalaryExport</servlet-name>  
 	        <servlet-class>  
-	            wilson.salaryCalc.ResponseServlet 
+	            wilson.salaryCalc.SalaryExportServlet 
 	        </servlet-class>
    </servlet> 
    <servlet-mapping>    
         <servlet-name>SalaryExport</servlet-name>  
-	    <url-pattern>/meidiserver/SalaryExport</url-pattern>   
+	    <url-pattern>/meidiserver/SalaryExportServlet</url-pattern>   
     </servlet-mapping>
 	          
      <servlet>

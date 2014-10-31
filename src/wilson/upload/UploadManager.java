@@ -699,20 +699,57 @@ public class UploadManager {
 	}
 	
 	public static boolean deleteUploadOrderByName(String name){
+		
+		//加trasaction 删除salaryResult里面记录
 		boolean flag = false;
 		Connection conn = DB.getConn();
-		String sql = "delete from uploadorder where name = '" + name + "'";
-		PreparedStatement pstmt = DB.prepare(conn, sql);
-		Statement stmt = DB.getStatement(conn);
+		ResultSet rs = null;
+		Statement stmt = null;
+		String ids = "";
+		
 		try {
+			logger.info("删除uploadOrder事务开始");
+			boolean autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			
+			String sql = "select id from uploadorder where name = '" + name + "'";
+			stmt = DB.getStatement(conn);
+			rs = DB.getResultSet(stmt, sql);
+			while(rs.next()){
+				ids += rs.getInt("id") + ",";
+			}
+			if(ids.length() <= 0){
+				return flag;
+			}
+			
+			ids = ids.substring(0,ids.length()-1);
+			
+			sql = "delete from uploadorder where id in (" + ids + ")";
 			stmt.execute(sql);
+			sql = "delete from salaryresult where uploadorderid in (" + ids + ")";
+			stmt.execute(sql);
+			
+			conn.commit();
+			conn.setAutoCommit(autoCommit);
+			
 			flag = true ;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.info("删除uploadOrder事务失败");
+			try {
+				logger.info("删除uploadOrder事务回滚");
+				conn.rollback();
+				logger.info("删除uploadOrder事务回滚成功");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				logger.info("删除uploadOrder事务回滚失败!!!");
+			}
 		} finally {
-			DB.close(pstmt);
+			DB.close(rs);
+			DB.close(stmt);
 			DB.close(conn);
 		}
+		logger.info("删除uploadOrder事务成功");
 		return flag ;  
 	}
 	

@@ -126,7 +126,7 @@ body {
 if(byTime){
 %>
 
-<form action="/meidi/meidiserver/SalaryExport" method="post">
+<form action="/meidi/meidiserver/SalaryExportServlet" method="post">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名称:
 <input type="hidden" name="type" value="byname"/>
 <select name="name">
@@ -150,7 +150,7 @@ if(byTime){
 
 <p>按文件名导出</p>
 
-<form action="/meidi/meidiserver/SalaryExport" method="post">
+<form action="/meidi/meidiserver/SalaryExportServlet" method="post">
 <input type="hidden" name="type" value="byname"/>
 <select name="name">
 	<option value="" selected="selected"></option>

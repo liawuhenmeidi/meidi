@@ -26,7 +26,7 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 
-public class ResponseServlet extends HttpServlet {
+public class SalaryExportServlet extends HttpServlet {
 	private static final long serialVersionUID = -3093078939187798780L;
 	private List<AfterMatchOrder> unMatchOrders =  new ArrayList<AfterMatchOrder>();
 
