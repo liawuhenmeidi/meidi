@@ -19,14 +19,11 @@ if(!StringUtill.isNull(branchid)){
 	branchid = b.getId()+""; 
 }
 
-System.out.println(1);
-
 Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 List<InventoryBranchMessage > list = InventoryBranchMessageManager.getCategory(ctype,branchid,starttime,endtime);  
 Map<Integer,User> usermap = UserService.getMapId(); 
 Map<String,String> mapdevity = OrderManager.getDeliveryStatuesMap();
 
-System.out.println(2);
 int papercount = 0 ;
 int realcount = 0 ;
 Set<Integer> bidset = new HashSet<Integer>();
@@ -92,26 +89,12 @@ position:fixed;
 <script type="text/javascript">
  
 $(function () { 
-	$("#wrap").bind("scroll", function(){ 
-
-		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
-	        //滚动了竖直滚动条
-	        pre_scrollTop=($("#wrap").scrollTop() || document.body.scrollTop);
-	       
-	        if(obj_th){
-	            obj_th.style.top=($("#wrap").scrollTop() || document.body.scrollTop)+"px";
-	        }
-	    }
-	    else if(pre_scrollLeft != (document.documentElement.scrollLeft || document.body.scrollLeft)){
-	        //滚动了水平滚动条
-	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
-	    }
-		}); 
+	
 
 }); 
 
 function inventory(inventory,type){
-	 if(type == 0 || type == 1){
+	 if(type == 0 || type == 1 || type == 3){
 		 window.location.href='inventorysearch.jsp?id='+inventory;
 		 //window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }else {
@@ -132,8 +115,6 @@ function inventory(inventory,type){
     门店：<%= b== null?"总库存":b.getLocateName() %>   
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
    开始时间:<%=starttime%>---结束时间:<%=endtime %>
-     
-System.out.println(3);
   
    <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>
    </div>  
@@ -146,15 +127,15 @@ System.out.println(3);
 <div id="wrap">
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
-			    <td align="left">单号</td>
-     			<td align="left">日期</td>
-     			<td align="left">型号</td>
-     			<td align="left">上报状态</td> 
-     			<td align="left">操作类型</td>
-     			<td align="left">账面调拨数量</td>
-     			<td align="left">账面库存数量</td> 
-     			<td align="left">实际调拨数量</td>
-     			<td align="left">实际库存数量</td> 
+			    <td align="center">单号</td>
+     			<td align="center">日期</td>
+     			<td align="center">型号</td>
+     			<td align="center">上报状态</td> 
+     			<td align="center">操作类型</td>
+     			<td align="center">账面调拨数量</td>
+     			<td align="center">账面库存数量</td> 
+     			<td align="center">实际调拨数量</td>
+     			<td align="center">实际库存数量</td>
 		</tr>      
 		    
                <% for(int i=0;i<list.size();i++){
@@ -188,7 +169,7 @@ System.out.println(3);
 		        			 strtype = usermap.get(in.getReceiveuser()).getUsername()+"释放给"+usermap.get(in.getSendUser()).getBranchName();
 		        		 }else if(type == 7){     
 		        			 //strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回给"+usermap.get(in.getSendUser()).getBranchName();
-		        			 strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回给"+usermap.get(in.getBranchid()).getBranchName();
+		        			 strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回给"+branchmap.get(in.getBranchid()).getLocateName();
 		        		 } else if(type == 8){    
 		        			 strtype = usermap.get(in.getSendUser()).getBranchName()+"同意"+usermap.get(in.getReceiveuser()).getBranchName()+"退货";
 		        		 } else if(type == 9 ) {
@@ -227,6 +208,7 @@ System.out.println(3);
 		        		      <td align="center"><%=in.getAllotRealcount()%></td>  
 		        		    
 		        		      <td align="center"><%=realcount%></td>  
+		        		         
 		        		      </tr>
 		        		<% 
 		        		 }

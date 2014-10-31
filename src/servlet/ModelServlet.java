@@ -2,6 +2,7 @@ package servlet;
 
 import gift.Gift;
 import gift.GiftManager;
+import gift.GiftService;
 import group.Group;
 
 import java.io.IOException;
@@ -95,7 +96,7 @@ public class ModelServlet extends HttpServlet {
 		HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
 		Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
-		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
+		Map<Integer,List<Gift>> gMap = GiftService.getmap();
 		System.out.println("%%%%%"+gMap);  
 		//修改申请  
 		Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,0);

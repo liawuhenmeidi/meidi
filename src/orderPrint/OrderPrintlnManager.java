@@ -3,6 +3,7 @@ package orderPrint;
 
 import gift.Gift;
 import gift.GiftManager;
+import gift.GiftService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -74,7 +75,7 @@ logger.info(pstmt);
 
 						Order oldOrder = OrderManager.getOrderID(user, oid);
 						 
-						Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM(); 
+						Map<Integer,List<Gift>> gMap = GiftService.getmap();
 						Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
 					    List<OrderProduct> listp = OrPMap.get(oid);
 					    for(int i=0;i<listp.size();i++){

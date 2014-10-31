@@ -2,6 +2,7 @@ package order;
 
 import gift.Gift;
 import gift.GiftManager;
+import gift.GiftService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -772,12 +773,8 @@ public String getCategory(){
 // 赠品
  public String getGifttype(String decollator){    
 	String category = "";   
-	Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
+	Map<Integer,List<Gift>> gMap = GiftService.getmap();
 	
-	if(!gMap.containsKey(this.getId())){
-System.out.print(1);
-		GiftManager.resetOrPMap();
-	}
 	 List<Gift> lists = gMap.get(this.getId());  
 	 if(null != lists){
 		     for(int g = 0 ;g<lists.size();g++){
@@ -792,11 +789,8 @@ System.out.print(1);
 
  public String getGifcount(String decollator){   
 		String category = "";   
-		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
-		if(!gMap.containsKey(this.getId())){
-			GiftManager.resetOrPMap();
-			System.out.print(1);
-		}
+		Map<Integer,List<Gift>> gMap = GiftService.getmap();
+		
 		 List<Gift> lists = gMap.get(this.getId()); 
 		 if(null != lists){ 
 			     for(int g = 0 ;g<lists.size();g++){
@@ -811,11 +805,8 @@ System.out.print(1);
   
  public String getGifStatues(String decollator){   
 		String category = "";   
-		Map<Integer,List<Gift>> gMap = GiftManager.getOrderStatuesM();
-		if(!gMap.containsKey(this.getId())){
-			GiftManager.resetOrPMap();
-			System.out.print(1);
-		}
+		Map<Integer,List<Gift>> gMap = GiftService.getmap();
+		
 		 List<Gift> lists = gMap.get(this.getId()); 
 		 if(null != lists){ 
 			     for(int g = 0 ;g<lists.size();g++){

@@ -15,7 +15,7 @@ public class Inventory {
   private int outstatues ;   // 出库放确认状态   
   private int instatues ;    // 入库方确认状态    
   private String remark ;     
-  private int intype ;  //   1 表示调货单   2 预约调货单
+  private int intype ;  //   1 表示调货单   2 预约调货单  3 票面调货单
   
   public int getIntype() {
 	return intype;

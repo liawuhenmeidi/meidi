@@ -26,7 +26,8 @@ import database.DB;
 		 public static Map<Integer,List<Gift>> OrPMap; 
 		 
 		 
-		 public static Map<Integer,List<Gift>> getOrderStatues(User user){
+		 
+		 public static Map<Integer,List<Gift>> getOrderStatues(){
 			   
     	    Map<Integer,List<Gift>> Orders = new HashMap<Integer,List<Gift>>();
 		    Connection conn = DB.getConn();
@@ -55,18 +56,6 @@ logger.info(sql);
 			return Orders;
 	 }
 		
-		 public static Map<Integer,List<Gift>> getOrderStatuesM(){
-					if(OrPMap == null){
-						OrPMap = GiftManager.getOrderStatues(new User());
-					}
-					return OrPMap;
-		 }
-		 
-		 
-		 public static Map<Integer,List<Gift>> resetOrPMap(){
-			 OrPMap = GiftManager.getOrderStatues(new User()); 
-			 return OrPMap;
-		}
 		 
 			public static void save(User user,Gift Gift) {
 				boolean flag = false ;
@@ -107,11 +96,9 @@ logger.info(sql);
 						String sql = "insert into  mdordergift(id, orderid ,giftName,count,statues)" +
 			                         "  values ( null, "+id+", '"+order.getName()+"', "+order.getCount()+","+order.getStatues()+")";
 	                    sqls.add(sql);
-						
 				   } 
 				 }
 				 
-				 GiftManager.resetOrPMap();
 				return sqls ;
 		   }
 			 

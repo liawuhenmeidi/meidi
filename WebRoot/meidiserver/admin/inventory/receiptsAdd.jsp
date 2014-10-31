@@ -1,7 +1,13 @@
 <%@ page language="java" import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user"); 
+User user = (User)session.getAttribute("user");
+String message = "调拨单";
+String type = request.getParameter("type");
+if("paper".equals(type)){
+	message = "调账面库存单据";
+}
+
 String inventoryid = request.getParameter("id");
 
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
@@ -32,7 +38,9 @@ if(!StringUtill.isNull(inventoryid)){
 		   outbranch = branchmap.get(inventory.getOutbranchid());
 		   inbranch = branchmap.get(inventory.getInbranchid());
 	   }
-	
+	if(inventory.getIntype() == 3){
+		message = "调账面库存单据";
+	}
 	remark = inventory.getRemark(); 
 	inittime = inventory.getIntime();  
 	List<InventoryMessage> list = inventory.getInventory();
@@ -248,11 +256,12 @@ var disable = '<%=isdisabel %>';
    </div>      
      <div>      
      <form action="InventoryServlet"  method = "post"  onsubmit="return check()">
-      <input type="hidden" name="method" value="add"/>  
+      <input type="hidden" name="method" value="add"/> 
+      <input type="hidden" name="type" value="<%=type%>"/>  
       <input type="hidden" name="id" value="<%=inventoryid %>"/>
                      
   <div > 
-   <center><div id="branchmessage"><font style="color:red;font-size:20px;" >调拨单</font></div></center>
+   <center><div id="branchmessage"><font style="color:red;font-size:20px;" ><%=message %></font></div></center>
    <br/>
      <font style="color:red;font-size:20px;" > 单号：<%=inventoryid %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><br/>
      <font style="color:red;font-size:20px;" > 日期：<%=inventory.getIntime()==null?"":inventory.getIntime() %></font> <br/>

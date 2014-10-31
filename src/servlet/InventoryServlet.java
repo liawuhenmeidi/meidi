@@ -125,7 +125,8 @@ System.out.println(type+"type");
         
 		String outbranch = request.getParameter("outbranch");
 		String inbranch = request.getParameter("inbranch");
-		
+		String typemethod = request.getParameter("type");
+		System.out.println(typemethod);
 		String typebranch = request.getParameter("typebranch");
 		 
 		int outbranchid = BranchManager.getBranchID(outbranch);
@@ -145,12 +146,17 @@ System.out.println(type+"type");
 			type = p.getId()+""; 
 			String count = request.getParameter("orderproductNum"+producs[i]);
 			inven.setProductId(type);   
-			inven.setCategoryId(categoryId);  
-			if("inbranch".equals(typebranch)){
+			inven.setCategoryId(categoryId); 
+			if(StringUtill.isNull(typebranch)){
 				inven.setCount(Integer.valueOf(count));  
 			}else {
-				inven.setAnlycount(Integer.valueOf(count));
+				if("inbranch".equals(typebranch)){
+					inven.setCount(Integer.valueOf(count));  
+				}else if("outbranch".equals(typebranch)){
+					inven.setAnlycount(Integer.valueOf(count));
+				}
 			}
+			
 			inventoryMessage.add(inven); 			
 		}
 		
@@ -160,8 +166,13 @@ System.out.println(type+"type");
 		inventory.setIntime(time);  
 		inventory.setUid(uid);  
 		inventory.setRemark(remark);
-		inventory.setInventory(inventoryMessage); 
-		inventory.setIntype(1); 
+		inventory.setInventory(inventoryMessage);
+		if("paper".equals(typemethod)){
+			inventory.setIntype(3);
+		}else {
+			inventory.setIntype(1); 
+		}
+		
 		InventoryManager.save(user, inventory); 
 		
 		

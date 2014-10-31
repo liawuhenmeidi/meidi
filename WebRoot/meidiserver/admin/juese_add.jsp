@@ -200,6 +200,7 @@ $(function () {
         	%>
         <li><input type="checkbox" value="1" name = "permission" id="p1" checked="checked" onClick="return false" />&nbsp;提交报装单</li>
         <li><input type="checkbox" value="13" name = "permission" id="p13" checked="checked" onClick="return false" />&nbsp;确认调货单权限</li>
+        <li><input type="checkbox" value="7" name = "permission" id="p7"  checked="checked" onClick="return false" />&nbsp;查询门店权限</li>
         <%
          }else if(type == Group.send && null != map) {
         	 listg = map.get(3+"");
