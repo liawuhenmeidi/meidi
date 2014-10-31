@@ -159,4 +159,8 @@ logger.info(sql);
 			return branch ;
 		}	
 		
+		public static String getNameById(int id){
+			return getLocate(id).getName();
+		}
+		
 }

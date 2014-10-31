@@ -392,6 +392,10 @@ logger.info(sql);
 			}	
 			return branch ;
 		}	
+		
+		public  static String getNameById(int id){
+			return BranchService.getMap().get(id).getLocateName();
+		}
 }
 
 

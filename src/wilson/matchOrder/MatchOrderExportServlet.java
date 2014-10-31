@@ -6,11 +6,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import branch.Branch;
+import branch.BranchManager;
+import branch.BranchService;
+import branchtype.BranchTypeManager;
 
 import jxl.Workbook;
 import jxl.format.Colour;
@@ -64,11 +70,11 @@ public class MatchOrderExportServlet extends HttpServlet {
         //  在Label对象的构造子中指名单元格位置是第一列第一行(0,0)
         //  以及单元格内容为test 
         
-       
         
+
         Label label0  =   new  Label( 3 ,  0 ,  " 本地记录订单 " );
-        Label label1  =   new  Label( 3 ,  1 ,  selectBranchType.equals("all")?"全部":selectBranchType );
-        Label label2  =   new  Label( 4 ,  1 ,  selectBranch.equals("all")?"全部":selectBranch );
+        Label label1  =   new  Label( 3 ,  1 ,  selectBranchType.equals("all")?"全部":BranchTypeManager.getNameById(Integer.parseInt(selectBranchType)));
+        Label label2  =   new  Label( 4 ,  1 ,  selectBranch.equals("all")?"全部":BranchManager.getNameById(Integer.parseInt(selectBranch)));
               
         Label label3  =   new  Label( 9 ,  0 ,  " 上传的订单 " );
         Label label4  =   new  Label( 9 ,  1 ,  selectOrderName.equals("all")?"全部":selectOrderName );
