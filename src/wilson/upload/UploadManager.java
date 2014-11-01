@@ -270,7 +270,7 @@ public class UploadManager {
 		return true;
 	}
 	
-	private static boolean saveSalaryModelList(List<UploadSalaryModel> uploadSalaryModelList) {
+	public static boolean saveSalaryModelList(List<UploadSalaryModel> uploadSalaryModelList) {
 		boolean flag = false;
 		String sql = "insert into uploadsalarymodel (id,shop,name,starttime,endtime,catergory,type,content,committime,filename,status) VALUES (null,?,?,?,?,?,?,?,?,?,0)";	
 		Connection conn = DB.getConn();
@@ -295,6 +295,37 @@ public class UploadManager {
 				pstmt.executeUpdate();
 				usm = new UploadSalaryModel();
 			}		
+			flag = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return flag;
+	}
+	
+	public static boolean saveSalaryModel(UploadSalaryModel uploadSalary) {
+		boolean flag = false;
+		String sql = "insert into uploadsalarymodel VALUES (null,?,?,?,?,?,?,?,?,?,0)";	
+		Connection conn = DB.getConn();
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		try {
+			pstmt.setString(1, uploadSalary.getShop());
+			pstmt.setString(2, uploadSalary.getName());
+			pstmt.setString(3, uploadSalary.getStartTime());
+			pstmt.setString(4, uploadSalary.getEndTime());
+			pstmt.setString(5, uploadSalary.getCatergory());
+			pstmt.setString(6, uploadSalary.getType());
+			pstmt.setString(7, uploadSalary.getContent());
+			pstmt.setString(8, fmt.format(new Date()));
+			pstmt.setString(9, uploadSalary.getFileName());
+			pstmt.executeUpdate();
+			uploadSalary = new UploadSalaryModel();
+					
 			flag = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -646,6 +677,38 @@ public class UploadManager {
 				usm.setStatus(rs.getInt("status"));
 				result.add(usm);
 				usm = new UploadSalaryModel();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
+	}
+	
+	public static UploadSalaryModel getSalaryModelsById(int id){
+		UploadSalaryModel result = new UploadSalaryModel();
+		
+		Connection conn = DB.getConn(); 
+		String sql = "select * from uploadsalarymodel where id = " + id  +" and status != -1";
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {     
+			while (rs.next()) {
+				result.setId(rs.getInt("id"));
+				result.setShop(rs.getString("shop"));
+				result.setName(rs.getString("name"));
+				result.setStartTime(rs.getString("starttime"));
+				result.setEndTime(rs.getString("endtime"));
+				result.setCatergory(rs.getString("catergory"));
+				result.setType(rs.getString("type"));
+				result.setContent(rs.getString("content"));
+				result.setCommitTime(rs.getString("committime"));
+				result.setFileName(rs.getString("filename"));
+				result.setStatus(rs.getInt("status"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -4,8 +4,8 @@ public class UploadSalaryModel {
 	
 	private int id = 0 ;//id
 	private String name = ""; //文件内部的命名
-	private String startTime = ""; //生效时间
-	private String endTime = ""; //截至时间
+	private String endTime = "3014-01-01 00:00:00"; //生效时间
+	private String startTime = "2014-01-01 00:00:00"; //截至时间
 	private String catergory = ""; //类别
 	private String type = ""; //型号
 	private String content = ""; //内容，JSON格式吧
@@ -87,5 +87,34 @@ public class UploadSalaryModel {
 	}
 	public void setShop(String shop) {
 		this.shop = shop;
+	}
+	
+	public boolean checkContent(){
+		boolean result = false;
+		try{
+			
+			if(this.getContent().startsWith("{") && this.getContent().endsWith("}")){
+				String[] items = this.getContent().replace("\"","").replace("{","").replace("}","").split(",");
+				double tempInt = 0 ;
+				for(int i = 0 ; i < items.length ; i ++){
+					if(tempInt == Double.parseDouble(items[i].split(":")[0].split("-")[0])){
+						tempInt = Double.parseDouble(items[i].split(":")[1]);
+						if(items[i].split(":")[0].split("-")[1].equals("以上") || items[i].split(":")[0].split("-")[1].equals("/")){
+							this.setContent(this.getContent().replace("以上", "/"));
+						}else{
+							tempInt = Double.parseDouble(items[i].split(":")[0].split("-")[1]);
+						}	
+					}else{
+						throw new Exception();
+					}
+				}
+				
+				result = true;
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

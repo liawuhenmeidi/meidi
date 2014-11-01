@@ -46,6 +46,10 @@
 			return;
 		}
 	}
+	
+	if(showSalaryModels!= null && showSalaryModels.size() > 0 ){	
+		session.setAttribute("altSalaryModel", showSalaryModels.get(0));
+	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -77,7 +81,7 @@
 	<table  cellspacing="1" border="2px" >
 			<tr>
 				<form method="post" action="">
-				<td colspan="6" align="center">
+				<td colspan="7" align="center">
 				<h3>需要提成的订单</h3>
 				&nbsp;&nbsp;
 				<select name="orders"/>
@@ -97,7 +101,7 @@
 				
 			</tr>
 			<tr>  
-	
+				<td align="center">序号</td>
 				<td align="center">销售门店</td>
 				<td align="center">pos(厂送)单号</td>
 				<td align="center">销售日期</td>
@@ -110,7 +114,7 @@
 			for(int i = 0 ; i < showOrders.size() ; i ++){
 			%>
 			<tr>  
-	
+				<td align="center"><%=i+1 %></td>
 				<td align="center"><%=showOrders.get(i).getShop() %></td>
 				<td align="center"><%=showOrders.get(i).getPosNo()%></td>
 				<td align="center"><%=showOrders.get(i).getSaleTime() %></td>
@@ -129,7 +133,7 @@
 	<table cellspacing="1" border="2px">
 			<tr>
 				
-				<td colspan="6" align="center">
+				<td colspan="7" align="center">
 				<h3>提成标准</h3>
 				&nbsp;&nbsp;
 				<select name="models"/>
@@ -147,6 +151,7 @@
 				</form>
 			</tr>
 			<tr>
+				<td align="center">序号</td>
 				<td align="center">门店</td>
 				<td align="center">类别</td>
 				<td align="center">型号</td>
@@ -159,13 +164,21 @@
 			for(int i = 0 ; i < showSalaryModels.size() ; i ++){
 			%>
 			<tr>
+				<td align="center"><%=i+1 %></td>
 				<td align="center"><%=showSalaryModels.get(i).getShop() %></td>
 				<td align="center"><%=showSalaryModels.get(i).getCatergory() %></td>
-				<td align="center"><%=showSalaryModels.get(i).getType() %></td>
+				<td align="center"><a href="salarymodelDetail.jsp?id=<%=showSalaryModels.get(i).getId() %>"  target="_BLANK"><%=showSalaryModels.get(i).getType() %></a></td>
 				<td align="center"><%=showSalaryModels.get(i).getContent() %></td>
 				<td align="center"><%=showSalaryModels.get(i).getStartTime() %></td>
 				<td align="center"><%=showSalaryModels.get(i).getEndTime() %></td> 
 		
+			</tr> 
+			<%
+			}
+			if(showSalaryModels.size() > 0 ){		
+			%>
+			<tr>
+				<td align="center" colspan="7"><a href="salarymodelDetail.jsp?id=-1"><input type="button" value="新增一行"/></a></td>
 			</tr> 
 			<%
 			}
@@ -179,9 +192,10 @@
 <td colspan="3" align="center">
 	<table border="2px" align="center">
 		<tr>
-			<td align="center" colspan="9"><h3>提成结果</h3></td>
+			<td align="center" colspan="10"><h3>提成结果</h3></td>
 		</tr>
 		<tr>
+			<td align="center">序号</td>
 			<td align="center">销售门店</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
@@ -195,6 +209,7 @@
 		<%for(int i = 0 ; i < salaryResult.size() ; i ++){
 		%>
 		<tr>
+			<td align="center"><%=i+1 %></td>
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getShop() %></td>
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getPosNo() %></td>
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSaleTime() %></td>
@@ -210,10 +225,11 @@
 		%>
 		
 		<tr>
-			<td align="center" colspan="9"><h3>无对应提成标准的订单</h3></td>
+			<td align="center" colspan="10"><h3>无对应提成标准的订单</h3></td>
 		</tr>
 		
 		<tr>
+			<td align="center">序号</td>
 			<td align="center">销售门店</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
@@ -226,6 +242,7 @@
 			
 		%>
 		<tr>
+			<td align="center"><%=i+1 %></td>
 			<td align="center"><%=unCalcUploadOrders.get(i).getShop() %></td>
 			<td align="center"><%=unCalcUploadOrders.get(i).getPosNo() %></td>
 			<td align="center"><%=unCalcUploadOrders.get(i).getSaleTime() %></td>
@@ -241,7 +258,7 @@
 		{ 
 		%>
 		<tr>
-			<td align="center" colspan="9">
+			<td align="center" colspan="10">
 			<form method="post" action="">
 			<input type="hidden"  name="save" value="true" />
 			<input type="hidden"  name="orders" value="<%=paraOrderName%>"/>
