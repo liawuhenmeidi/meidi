@@ -308,32 +308,65 @@ public class UploadManager {
 	
 	public static boolean saveSalaryModel(UploadSalaryModel uploadSalary) {
 		boolean flag = false;
-		String sql = "insert into uploadsalarymodel VALUES (null,?,?,?,?,?,?,?,?,?,0)";	
-		Connection conn = DB.getConn();
-		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		//id为-1时，新增
+		if(uploadSalary.getId() == -1){
+			String sql = "insert into uploadsalarymodel VALUES (null,?,?,?,?,?,?,?,?,?,0)";	
+			Connection conn = DB.getConn();
+			SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		PreparedStatement pstmt = DB.prepare(conn, sql);
-		try {
-			pstmt.setString(1, uploadSalary.getShop());
-			pstmt.setString(2, uploadSalary.getName());
-			pstmt.setString(3, uploadSalary.getStartTime());
-			pstmt.setString(4, uploadSalary.getEndTime());
-			pstmt.setString(5, uploadSalary.getCatergory());
-			pstmt.setString(6, uploadSalary.getType());
-			pstmt.setString(7, uploadSalary.getContent());
-			pstmt.setString(8, fmt.format(new Date()));
-			pstmt.setString(9, uploadSalary.getFileName());
-			pstmt.executeUpdate();
-			uploadSalary = new UploadSalaryModel();
-					
-			flag = true;
-		} catch (SQLException e) {
-			e.printStackTrace();
+			PreparedStatement pstmt = DB.prepare(conn, sql);
+			try {
+				pstmt.setString(1, uploadSalary.getShop());
+				pstmt.setString(2, uploadSalary.getName());
+				pstmt.setString(3, uploadSalary.getStartTime());
+				pstmt.setString(4, uploadSalary.getEndTime());
+				pstmt.setString(5, uploadSalary.getCatergory());
+				pstmt.setString(6, uploadSalary.getType());
+				pstmt.setString(7, uploadSalary.getContent());
+				pstmt.setString(8, fmt.format(new Date()));
+				pstmt.setString(9, uploadSalary.getFileName());
+				pstmt.executeUpdate();
+				uploadSalary = new UploadSalaryModel();
+						
+				flag = true;
+			} catch (SQLException e) {
+				e.printStackTrace();
 
-		} finally {
-			DB.close(pstmt);
-			DB.close(conn);
+			} finally {
+				DB.close(pstmt);
+				DB.close(conn);
+			}
+		}else{
+		//id不为-1的时候，为修改
+			String sql = "update uploadsalarymodel set shop=?,name=?,starttime=?,endtime=?,catergory=?,type=?,content=?,committime=?,filename=?,status=? where id = " + uploadSalary.getId();	
+			Connection conn = DB.getConn();
+			SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+			PreparedStatement pstmt = DB.prepare(conn, sql);
+			try {
+				pstmt.setString(1, uploadSalary.getShop());
+				pstmt.setString(2, uploadSalary.getName());
+				pstmt.setString(3, uploadSalary.getStartTime());
+				pstmt.setString(4, uploadSalary.getEndTime());
+				pstmt.setString(5, uploadSalary.getCatergory());
+				pstmt.setString(6, uploadSalary.getType());
+				pstmt.setString(7, uploadSalary.getContent());
+				pstmt.setString(8, uploadSalary.getCommitTime());
+				pstmt.setString(9, uploadSalary.getFileName());
+				pstmt.setInt(10, uploadSalary.getStatus());
+				pstmt.executeUpdate();		
+				flag = true;
+			} catch (SQLException e) {
+				e.printStackTrace();
+
+			} finally {
+				DB.close(pstmt);
+				DB.close(conn);
+			}
+			
 		}
+		
 		return flag;
 	}
 

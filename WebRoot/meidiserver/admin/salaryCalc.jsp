@@ -49,6 +49,11 @@
 	
 	if(showSalaryModels!= null && showSalaryModels.size() > 0 ){	
 		session.setAttribute("altSalaryModel", showSalaryModels.get(0));
+	}else{
+		UploadSalaryModel tmp = new UploadSalaryModel();
+		tmp.setName(paraSalaryModelName);
+		tmp.setShop("无");
+		session.setAttribute("altSalaryModel", tmp);
 	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -130,7 +135,7 @@
 </td>
 <td width="100px"></td>
 <td valign="top">
-	<table cellspacing="1" border="2px">
+	<table cellspacing="1" border="2px" id="salarymodels">
 			<tr>
 				
 				<td colspan="7" align="center">
@@ -178,7 +183,7 @@
 			if(showSalaryModels.size() > 0 ){		
 			%>
 			<tr>
-				<td align="center" colspan="7"><a href="salarymodelDetail.jsp?id=-1"><input type="button" value="新增一行"/></a></td>
+				<td align="center" colspan="7"><a href="salarymodelDetail.jsp?id=-1" target="_BLANK"><input type="button" value="新增一行"/></a></td>
 			</tr> 
 			<%
 			}

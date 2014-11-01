@@ -13,13 +13,12 @@ String contentNum = request.getParameter("contentNum");
 String idSTR = request.getParameter("id");
 int id = Integer.parseInt(idSTR);
 
+boolean close = false;
 //接受参数
 String catergory = request.getParameter("catergory");
 String type = request.getParameter("type");
 salarymodel = (UploadSalaryModel)request.getSession().getAttribute("altSalaryModel");
-salarymodel.setCatergory(catergory);
-salarymodel.setType(type);
-salarymodel.setCommitTime(TimeUtill.gettime());
+
 
 //接受提成标准
 String tempStr = "";
@@ -28,26 +27,67 @@ String content = "{";
 for(int i = 0  ; i < Integer.parseInt(StringUtill.isNull(contentNum)?"0":contentNum) ; i++){
 	tempStr = request.getParameter("contentstart" + i);
 	if(!StringUtill.isNull(tempStr)){
-		content += "\"" + tempStr + "\"";
+		content += "\"" + tempStr;
 	}
 	tempStr = request.getParameter("contentend" + i);
 	if(!StringUtill.isNull(tempStr)){
-		content += "-" + "\"" + tempStr + "\"";
+		content += "-" + tempStr + "\"";
 	}
 	tempStr = request.getParameter("contentvalue" + i);
 	if(!StringUtill.isNull(tempStr)){
 		content += ":" + "\"" + tempStr + "\"";
 	}
+	
+	content += ",";
 }
+if(content.endsWith(",")){
+	content = content.substring(0,content.length()-1);
+}
+
 content += "}";
 
-
+salarymodel.setCatergory(catergory);
+salarymodel.setType(type);
+salarymodel.setCommitTime(TimeUtill.gettime());
+salarymodel.setContent(content);
 
 //id为-1是新建
 if(id ==-1){
 	//如果是提交的
+	if(button!= null && button.equals("确认修改")){	
+		
+		//验证是否符合规范
+		if(salarymodel.checkContent()){
+
+			if(UploadManager.saveSalaryModel(salarymodel)){
+				//保存成功
+				close =true;
+				return;
+			}else{
+				//保存失败
+			}
+		}else{
+			//不符合 规范的，重新填写!
+			salarymodel.setContent("");
+			salarymodel.setCatergory("无");
+		}
+	
+	//如果不是提交的	
+	}else{
+		//直接展示上面的就行
+	}
+	
+//id不为-1，为修改
+}else{
+	salarymodel = UploadManager.getSalaryModelsById(id);
+	
+	//如果是提交的
 	if(button!= null && button.equals("确认修改")){
 		salarymodel.setContent(content);
+		salarymodel.setCatergory(catergory);
+		salarymodel.setType(type);
+		salarymodel.setCommitTime(TimeUtill.gettime());
+		
 		//验证是否符合规范
 		if(salarymodel.checkContent()){
 
@@ -63,18 +103,6 @@ if(id ==-1){
 			//不符合 规范的，重新填写!
 			salarymodel.setContent("");
 		}
-	
-	//如果不是提交的	
-	}else{
-		//直接展示上面的就行
-	}
-	
-//id不为-1，为修改
-}else{
-	if(button!= null && button.equals("确认修改")){
-		
-	}else{
-		salarymodel = UploadManager.getSalaryModelsById(id);
 	}
 }
 
@@ -84,7 +112,13 @@ if(id ==-1){
 
 %>
 
-<%String[] items =  salarymodel.getContent().replace("{", "").replace("}", "").replace("\"", "").split(",");%>
+<%
+String[] items =  salarymodel.getContent().replace("{", "").replace("}", "").replace("\"", "").split(",");
+	//没东西的话，清空
+	if(items[0].equals("")){
+		items = new String[0];
+	}
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -112,6 +146,25 @@ position:fixed;
 
 <script type="text/javascript">
 var rows = Number(<%=items.length %>);
+var close = <%=close%>;
+
+window.onload = function() { 
+	if(rows == 0){
+		firstItem();
+	}
+	if(close){
+		window.close();
+	}
+	}; 
+
+function firstItem(){
+	var newCol = "<tr class='asc'><td align='center' colspan='3'><input name='contentstart" + rows + "' id='contentstart" + rows + "' type='text' value='0' readonly='readonly'/> - <input name='contentend" + rows + "'  id='contentend" + rows + "' type='text' value='以上'/></td><td align='center' colspan='2'><input name='contentvalue" + rows + "' id='contentvalue" + rows + "' type='text'/></td></tr>"
+	$('#addTarget').before(newCol);
+	$('#left').attr("rowspan",Number($('#left').attr("rowspan")) + 1);
+	rows = rows + 1 ;
+	$('#contentNum').val(Number($('#contentNum').val()) + 1);
+}
+	
 function newItem(){
 	var newCol = "<tr class='asc'><td align='center' colspan='3'><input name='contentstart" + rows + "' id='contentstart" + rows + "' type='text'/> - <input name='contentend" + rows + "'  id='contentend" + rows + "' type='text' value='以上'/></td><td align='center' colspan='2'><input name='contentvalue" + rows + "' id='contentvalue" + rows + "' type='text'/></td></tr>"
 	$('#addTarget').before(newCol);
@@ -124,6 +177,14 @@ function checkContent(){
 	var newCol = Number($('#contentNum').val());
 	var tempDouble = 0.0;
 	
+	white($('#catergory'));
+	white($('#type'));
+	
+	if($('#catergory').val() == ""){
+		red($('#catergory'));
+	}else if($('#type').val()== ""){
+		red($('#type'));
+	}
 	for(var i = 0 ; i < newCol ; i ++){
 		white($('#'+"contentstart" + i));
 		white($('#'+"contentend" + i));
@@ -177,7 +238,7 @@ function checkedd(){
 	if(!checkContent()){
 		return false;
 	}
-	
+ 
 }
 </script>
 <div style="position:fixed;width:100%;height:100px;">
@@ -239,7 +300,7 @@ function checkedd(){
 		%>
 		<tr class="asc">
 			<td align="center" colspan="3">
-			<input type="text" id="contentstart<%=i %>" name="contentstart<%=i %>" value="<%=items[i].split(":")[0].split("-")[0] %>" <%if(items[i].split(":")[0].split("-")[0].equals("0.0")){ %>disabled="disabled" <%} %>/>
+			<input type="text" id="contentstart<%=i %>" name="contentstart<%=i %>" value="<%=items[i].split(":")[0].split("-")[0] %>" <%if(items[i].split(":")[0].split("-")[0].equals("0.0")){ %>readonly="readonly" <%} %>/>
 			-
 			<input type="text" id="contentend<%=i %>" name="contentend<%=i %>" value="<%=items[i].split(":")[0].split("-")[1].equals("/")?"以上":items[i].split(":")[0].split("-")[1] %>"/>
 			</td>
