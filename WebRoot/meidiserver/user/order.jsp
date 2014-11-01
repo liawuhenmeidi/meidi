@@ -44,6 +44,9 @@ if(!StringUtill.isNull(id)){
 		List<Gift> listg = GiftManager.getGift(user, Integer.valueOf(id));
 		listgg = StringUtill.GetJson(listg);
 		isdisabel = " disabled=\"disabled\" "; 
+		
+	}else {
+		id = "";
 	}
 	 
 }
@@ -107,7 +110,7 @@ String[] branlist =  branchmessage.split("_");
    var statues = '<%=statues%>' ;
    var order = <%=strorder%>;
   //alert(order);
-   if(order != null && order != "" && statues == null || statues == ""){
+   if(order != null && order != "" && (statues == null || statues == "")){
 	  
 	   var listopp = '<%=listopp%>' ;
 	   var listgg = '<%=listgg%> ';

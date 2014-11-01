@@ -30,6 +30,7 @@ import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
+import orderproduct.OrderProductService;
 import product.Product;
 import product.ProductService;
 
@@ -316,7 +317,8 @@ logger.info(message);
 		                return ;  
 		            }   
 		               
-					int flag = OrderManager.save(user, order);  
+					int flag = OrderManager.save(user, order); 
+					
 					tokenGen.resetToken(request);  
 					if(flag != -1){     
 						request.getSession().setAttribute("message","您的订单提交成功"); 
@@ -348,7 +350,7 @@ logger.info(message);
 			        String oid = request.getParameter("orderid");
 			        
 			    	Order oldOrder = OrderManager.getOrderID(user, Integer.valueOf(oid));
-			    	Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
+			    	Map<Integer,List<OrderProduct>> OrPMap = OrderProductService.getStaticOrderStatuesM();
 			    	List<OrderProduct> listp = new ArrayList<OrderProduct>();  	
 			    	List<OrderProduct> list = OrPMap.get(Integer.valueOf(oid));
 				  

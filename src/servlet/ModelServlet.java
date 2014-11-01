@@ -22,6 +22,7 @@ import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
+import orderproduct.OrderProductService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -95,7 +96,7 @@ public class ModelServlet extends HttpServlet {
 
 		HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
-		Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
+		Map<Integer,List<OrderProduct>> OrPMap = OrderProductService.getStaticOrderStatuesM();
 		Map<Integer,List<Gift>> gMap = GiftService.getmap();
 		System.out.println("%%%%%"+gMap);  
 		//修改申请  

@@ -432,6 +432,7 @@ if("peidan".equals(method)){
 }else if("updateorder".equals(method)){
 	int statues = -1 ;
 	int pstatues = 0 ;
+	String typeMethod = request.getParameter("typeMethod");
 	String oid = request.getParameter("oid"); 
 	String phone1 = request.getParameter("phone1");
 	String andate = request.getParameter("andate");
@@ -449,7 +450,8 @@ if("peidan".equals(method)){
 		String count = request.getParameter("dingmaproductNum");
 		statues = OrderManager.updateMessage(phone1,andate,locations,POS,sailId,check,oid,remark,saledate,diqu) ; 
 	    if(!StringUtill.isNull(saleType) && !StringUtill.isNull(categoryId)){
-	    	Order order = new Order();
+	    	
+	    	Order order = new Order(); 
 	    	order.setId(Integer.valueOf(oid));
 	    	String type = order.getSendType(1, "");
 
@@ -459,7 +461,7 @@ if("peidan".equals(method)){
 		    		 if(!NumbleUtill.isNumeric(saleType)){
 						   type = ProductService.gettypemap().get(saleType).getId()+"";
 					   }
-		    
+		     
 		    		    o.setCategoryId(Integer.valueOf(categoryId));
 						o.setCount(Integer.valueOf(count));
 						o.setSaleType(type);	
@@ -479,7 +481,7 @@ if("peidan".equals(method)){
     		String sql = OrderProductManager.delete(Integer.valueOf(oid),1);
     		DBUtill.sava(sql); 
     	} 
-	    OrderProductManager.resetOrPMap(); 
+	    OrderProductService.flag = true ;
 	}else {    
 		statues = OrderManager.updateMessage(phone1,andate,locations,oid,remark);  
 	} 
@@ -499,9 +501,14 @@ if("peidan".equals(method)){
 		session.setAttribute("message", "修改失败");
 		 
 	}else {
-		response.sendRedirect("../jieguo.jsp?type=updated");
-		//System.out.println(123);   
-		session.setAttribute("message", "修改成功");
+		if("print".equals(typeMethod)){
+			response.sendRedirect("print.jsp?id="+ oid);
+		}else{
+			response.sendRedirect("../jieguo.jsp?type=updated");
+			//System.out.println(123);   
+			session.setAttribute("message", "修改成功");
+		}
+		
 	}
 	return ;   
 }else if("pandian".equals(method)){

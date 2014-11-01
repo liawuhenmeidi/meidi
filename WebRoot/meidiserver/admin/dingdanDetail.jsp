@@ -51,7 +51,7 @@ position:fixed;
 <!--   头部开始   --> 
 
 <script type="text/javascript">
-var id = "";
+var id = "<%=id%>";
 var jsons = <%=plist%> ; 
 
 $(function () {
@@ -192,14 +192,20 @@ function searchlocate(id){
 	 // window.open.href="../adminmap.jsp?id="+id;
 }
 
-function checkedd(){
+function checkedd(type){
 	// window.opener.document.getElementById("refresh").value ="refresh";
 	//parent.location.reload(); 
 	//window.returnValue='refresh'; 
 	//window.close();
 	//window.oper.reload();
+	// alert(type);
+	$("#print").val(type);
+	$("#form").submit();
+	 
 	 window.opener.location.reload();
-	
+	// if("print" == type){
+	//	 window.location.href="print.jsp?id="+ id;
+	// }
 }
 
 </script>
@@ -221,10 +227,12 @@ function checkedd(){
 <br/>  
  
 <div id="wrap">  
-<form  action="server.jsp"  method ="post"  id="form"   onsubmit="return checkedd()"  >
+<form  action="server.jsp"  name = "myForm" method ="post"  id="form"   >
 
 <input type="hidden" name="method" value="updateorder"/>
-<input type="hidden" name="oid" value="<%=id%>"/>  
+<input type="hidden" name="oid" value="<%=id%>"/> 
+<input type="hidden" name="typeMethod" id="print" value=""/>  
+
 <table  cellspacing="1"  id="table" style="background-color:black" > 
        <%  
 		String tdcol = " bgcolor=\"red\"" ; 
@@ -802,7 +810,12 @@ function checkedd(){
        
        </td>
           <td></td>
-    <td width="100%" class="center"><input type="submit"  style="background-color:red;font-size:25px;"  value="确认修改" /></td>
+    <td width="100%" class="center"><input type="button"  style="background-color:red;font-size:25px;"  value="确认修改" onclick="checkedd('query')"  /></td>
+    <td width="100%" class="center">
+    <% if(o.getPrintSatues() == 1){ %>
+    <input type="button"  style="background-color:red;font-size:25px;"  value="打印" onclick="checkedd('print')"/>
+    <% }%>
+    </td>
    </tr> 
    </table> 
 

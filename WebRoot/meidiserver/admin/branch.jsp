@@ -151,7 +151,7 @@ if(list != null){
 		<td align="left"><%=category.getName() %></td> 
 		
 		<td align="left">
-		<% if(category.getId() != 1 && category.getId() != 2 ){%>
+		<% if(category.getIsSystem() == 0 ){%>
 		<a href="branchupdate.jsp?id=<%=category.getId() %>">[修改]</a>
 		<% }%>
 		</td>

@@ -45,7 +45,7 @@ function updateOeder(){
 	 	      			}else if(oppstatues == -1){
 	 	      				alert("已配送，请联系公司文员进行修改");
 	 	      				//window.location.href="updatedingmayPrintl.jsp?id="+id;
-	 	      			    return ;
+	 	      			    return ; 
 	 	      			}if(oppstatues == 4 ){
 	 	      				alert("已配送，请联系公司文员进行修改");
 	 	      				//var question = confirm("您的申请被拒绝，确定要重新提交申请吗？");

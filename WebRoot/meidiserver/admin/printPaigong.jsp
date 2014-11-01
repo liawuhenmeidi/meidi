@@ -51,11 +51,11 @@ if((Order.deliveryStatuesTuihuo+"").equals(type)){
 int iddd = 0;
 
 User send = usermap.get(order.getDealsendId());  
-
+ 
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
  
 Map<Integer,List<Gift>> gMap = GiftService.getmap(); 
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
+Map<Integer,List<OrderProduct>> OrPMap =OrderProductService.getStaticOrderStatuesM();;
 
 String time = TimeUtill.getPrintlnTime();
 

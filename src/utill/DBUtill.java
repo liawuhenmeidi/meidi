@@ -121,7 +121,6 @@ public class DBUtill {
 		try { 
 			logger.info(sql);
 			pstmt.executeUpdate();
-			OrderProductManager.resetOrPMap(); 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

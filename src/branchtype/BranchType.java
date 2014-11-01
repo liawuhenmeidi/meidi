@@ -3,8 +3,18 @@ package branchtype;
 public class BranchType {
    private int id ;
    private String name ;
+   // 导购是否可见
    private int statues; 
+   // 1 表示系统默认，不可修改
+   private int isSystem ;
    
+   
+public int getIsSystem() {
+	return isSystem;
+}
+public void setIsSystem(int isSystem) {
+	this.isSystem = isSystem;
+}
 public int getStatues() {
 	return statues;
 }

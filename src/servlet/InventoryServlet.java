@@ -151,9 +151,11 @@ System.out.println(type+"type");
 				inven.setCount(Integer.valueOf(count));  
 			}else {
 				if("inbranch".equals(typebranch)){
-					inven.setCount(Integer.valueOf(count));  
+					inven.setRealString(count);
+					//inven.setCount(Integer.valueOf(count));  
 				}else if("outbranch".equals(typebranch)){
-					inven.setAnlycount(Integer.valueOf(count));
+					inven.setPaperString(count);
+					//inven.setAnlycount(Integer.valueOf(count));	
 				}
 			}
 			
@@ -236,16 +238,14 @@ System.out.println(type+"type");
  			type = p.getId()+""; 
  			
  			String count = request.getParameter(producs[i]);
- 			int countInt = 0 ;
- 			if(!StringUtill.isNull(count)){
- 				countInt = Integer.valueOf(count);
- 			}
+ 		
  			inven.setProductId(type);   
  			inven.setCategoryId(categoryId);
  			if("outbranch".equals(typebranch)){
- 				inven.setAnlycount(countInt);
+ 				inven.setPaperString(count);
  	 		}else {
- 	 			inven.setCount(countInt);   
+ 	 			inven.setRealString(count);
+ 	 			//inven.setCount(countInt);   
  	 		} 
 
  			inventoryMessage.add(inven); 			
@@ -283,7 +283,7 @@ System.out.println(type+"type");
   			String type =producs[i];
   			if("inbranch".equals(add)){
 	  			String count = request.getParameter(producs[i]);	
-	  			String sql = "update inventorymessage set anlycount = " + count + "   where id = " + type ;
+	  			String sql = "update inventorymessage set paperString = '" + count + "'   where id = " + type ;
 	  		   
 	  			String sql1 = "update inventory set instatues = 1 where id in (select inventoryId from inventorymessage where id = "+type+")"; 
 	  			 sqls.add(sql);
@@ -294,7 +294,7 @@ System.out.println(type+"type");
   				String sql1 = "update inventory set outstatues = 1 where id in (select inventoryId from inventorymessage where id = "+type+")"; 
 	  			 
   				
-	  			String sql = "update inventorymessage set count = " + count + "    where id = " + type ;
+	  			String sql = "update inventorymessage set realString = '" + count + "'    where id = " + type ;
 	  			sqls.add(sql1);
 	  			sqls.add(sql); 			
   			} 

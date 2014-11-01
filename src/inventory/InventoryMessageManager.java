@@ -27,11 +27,11 @@ public class InventoryMessageManager {
 			 for(int i=0;i<orders.size();i++){ 
  
 				InventoryMessage order = orders.get(i); 
-				String sql = "insert into  inventoryMessage (id, productId ,categoryId,count, inventoryId,anlycount)" + 
-	                         "  values ( null, '"+order.getProductId()+"', '"+order.getCategoryId()+"',"+order.getCount()+", "+id+","+order.getAnlycount()+")";
-				logger.info(sql);   
+				String sql = "insert into  inventoryMessage (id, productId ,categoryId,count, inventoryId,anlycount,realString,paperString)" + 
+	                         "  values ( null, '"+order.getProductId()+"', '"+order.getCategoryId()+"',"+order.getCount()+", "+id+","+order.getAnlycount()+",'"+order.getRealString()+"','"+order.getPaperString()+"')";
+			    logger.info(sql);   
 				sqls.add(sql);  
-			} 
+			}  
 			 return sqls; 
 	   }
 	
@@ -81,6 +81,8 @@ public class InventoryMessageManager {
 			
 			c.setProductname(ProductService.getIDmap().get(Integer.valueOf(c.getProductId())).getType()); 
 		    c.setAnlycount(rs.getInt("anlycount"));
+		    c.setRealString(rs.getString("realString"));
+		    c.setPaperString(rs.getString("paperString"));
 		} catch (SQLException e) { 
 			e.printStackTrace();
 		}	
