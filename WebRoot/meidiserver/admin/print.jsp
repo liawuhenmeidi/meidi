@@ -23,7 +23,7 @@ if((Order.deliveryStatuesTuihuo+"").equals(type)){
 	}
 }else if((Order.dingma+"").equals(type)){
 	message = "调账单";  
-	flagdiagma = true ; 
+	flagdiagma = true ;  
 } 
  
    
@@ -32,7 +32,7 @@ int iddd = 0;
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
 Map<Integer,List<Gift>> gMap = GiftService.getmap(); 
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
+Map<Integer,List<OrderProduct>> OrPMap = OrderProductService.getStaticOrderStatuesM();;
 
 %> 
 

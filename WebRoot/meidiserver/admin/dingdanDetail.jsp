@@ -199,11 +199,13 @@ function checkedd(type){
 	//window.close();
 	//window.oper.reload();
 	// alert(type);
-	 myForm.submit();
+	$("#print").val(type);
+	$("#form").submit();
+	 
 	 window.opener.location.reload();
-	 if("print" == type){
-		 window.location.href="print.jsp?id="+ id;
-	 }
+	// if("print" == type){
+	//	 window.location.href="print.jsp?id="+ id;
+	// }
 }
 
 </script>
@@ -228,7 +230,8 @@ function checkedd(type){
 <form  action="server.jsp"  name = "myForm" method ="post"  id="form"   >
 
 <input type="hidden" name="method" value="updateorder"/>
-<input type="hidden" name="oid" value="<%=id%>"/>  
+<input type="hidden" name="oid" value="<%=id%>"/> 
+<input type="hidden" name="typeMethod" id="print" value=""/>  
 <table  cellspacing="1"  id="table" style="background-color:black" > 
        <%  
 		String tdcol = " bgcolor=\"red\"" ; 

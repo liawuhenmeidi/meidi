@@ -22,6 +22,7 @@ import order.Order;
 import order.OrderManager;
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
+import orderproduct.OrderProductService;
 
 import user.User;
 import utill.TimeUtill;
@@ -74,9 +75,9 @@ logger.info(pstmt);
 					}else  if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.huanhuo){
 
 						Order oldOrder = OrderManager.getOrderID(user, oid);
-						 
+						  
 						Map<Integer,List<Gift>> gMap = GiftService.getmap();
-						Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
+						Map<Integer,List<OrderProduct>> OrPMap = OrderProductService.getStaticOrderStatuesM();
 					    List<OrderProduct> listp = OrPMap.get(oid);
 					    for(int i=0;i<listp.size();i++){
 					    	OrderProduct or = listp.get(i);

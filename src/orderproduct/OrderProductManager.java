@@ -30,30 +30,9 @@ import utill.TimeUtill;
 import database.DB;
   
 public class OrderProductManager {
-	
-	public static Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM();
-	
-	public static Map<Integer,List<OrderProduct>> getStaticOrderStatuesM(){
-		if(OrPMap == null){
-			OrPMap = OrderProductManager.getOrderStatuesM();
-		}
-		return OrPMap;
-	}
-	
-	public static List<OrderProduct> getStaticOrderStatuesMByid(int id){
-		if(!OrderProductManager.getStaticOrderStatuesM().containsKey(id)){
-			OrderProductManager.resetOrPMap();
-		}
-		List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(id);
-		return lists;
-	}
-	
-	public static void resetOrPMap(){
-		 OrPMap = OrderProductManager.getOrderStatuesM();
-	}
-	
+
 	protected static Log logger = LogFactory.getLog(OrderProductManager.class);
-	 
+
 	   public static int updateOrderStatues(User user, String categoryid ,String type ,String count ,String oid){
 		   int statues = -1 ; 
 		   if(UserManager.checkPermissions(user, Group.dealSend)){
@@ -66,7 +45,7 @@ public class OrderProductManager {
 				PreparedStatement pstmt = DB.prepare(conn, sql);
 				try { 
 					statues = pstmt.executeUpdate();
-					OrderProductManager.resetOrPMap(); 
+					OrderProductService.flag = true ;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				} finally {
@@ -78,13 +57,13 @@ public class OrderProductManager {
 	   }
 	public static String delete(int id) {
 		String sql = "delete from mdorderproduct where orderid = " + id;
-		OrderProductManager.resetOrPMap(); 
+		OrderProductService.flag = true ;
         return sql ;
 	}
 	 
 	public static String delete(int id,int statues) {
 		String sql = "delete from mdorderproduct where orderid = " + id + " and statues = 1";
-		OrderProductManager.resetOrPMap(); 
+		OrderProductService.flag = true ;
         return sql ;
 	}
 	
@@ -100,7 +79,7 @@ public class OrderProductManager {
 	                         "  values ( null, "+order.getCategoryId()+", '"+order.getSendType()+"', '"+order.getSaleType()+"',"+order.getCount()+","+id+","+order.getStatues()+",'"+order.getCategoryName()+"',"+order.getSalestatues()+",'"+TimeUtill.gettime()+"')";
 				logger.info(sql); 
 				sqls.add(sql); 
-				OrderProductManager.resetOrPMap();
+				OrderProductService.flag = true ;
 			} 
 			 return sqls; 
 	   }
@@ -150,13 +129,7 @@ public class OrderProductManager {
 				 }
 				return Orders;
 		 }
-	    
-	   
-	   //author wilsonlee
-	   public static Map<Integer,List<OrderProduct>> getOrderStatuesM(){
-		   return getOrderStatuesM(new User());
-	   }
-	   
+
 	   //author wilsonlee
 	   public static List<OrderProduct> getOrderStatuesMByOrderID(int orderID){
 		   List<OrderProduct> list = new ArrayList<OrderProduct>();
@@ -177,9 +150,9 @@ public class OrderProductManager {
 				DB.close(conn);
 			 }
 			return list;
-	   }
-	   
-        public static Map<Integer,List<OrderProduct>> getOrderStatuesM(User user){
+	   } 
+	    
+        public static Map<Integer,List<OrderProduct>> getOrderStatuesM(){
 		   
         	    Map<Integer,List<OrderProduct>> Orders = new HashMap<Integer,List<OrderProduct>>();
 			    Connection conn = DB.getConn();

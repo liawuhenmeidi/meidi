@@ -432,6 +432,7 @@ if("peidan".equals(method)){
 }else if("updateorder".equals(method)){
 	int statues = -1 ;
 	int pstatues = 0 ;
+	String typeMethod = request.getParameter("typeMethod");
 	String oid = request.getParameter("oid"); 
 	String phone1 = request.getParameter("phone1");
 	String andate = request.getParameter("andate");
@@ -499,9 +500,14 @@ if("peidan".equals(method)){
 		session.setAttribute("message", "修改失败");
 		 
 	}else {
-		response.sendRedirect("../jieguo.jsp?type=updated");
-		//System.out.println(123);   
-		session.setAttribute("message", "修改成功");
+		if("print".equals(typeMethod)){
+			response.sendRedirect("print.jsp?id="+ oid);
+		}else{
+			response.sendRedirect("../jieguo.jsp?type=updated");
+			//System.out.println(123);   
+			session.setAttribute("message", "修改成功");
+		}
+		
 	}
 	return ;   
 }else if("pandian".equals(method)){

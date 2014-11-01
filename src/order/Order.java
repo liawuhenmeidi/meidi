@@ -1,7 +1,7 @@
 package order;
 
 import gift.Gift;
-import gift.GiftManager;
+
 import gift.GiftService;
 
 import java.util.ArrayList;
@@ -9,15 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import branch.BranchManager;
-import branch.BranchService;
 
 import category.Category;
-import category.CategoryManager;
+
 import category.CategoryService;
 
 import orderproduct.OrderProduct;
-import orderproduct.OrderProductManager;
+
+import orderproduct.OrderProductService;
 import product.ProductService;
 import user.User;
 import user.UserService;
@@ -572,14 +571,7 @@ public void setBranch(int branch) {
 private List<OrderProduct> Orderproduct = null; 
   
   public List<OrderProduct> getOrderproduct() {
-	  
-	  if(Orderproduct == null){
-		  if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
-				OrderProductManager.resetOrPMap();
-			}  
-		  Orderproduct = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
-	  }
-	  
+		  Orderproduct = OrderProductService.getStaticOrderStatuesM().get(this.getId());
 	return Orderproduct;  
 }
 
@@ -757,10 +749,7 @@ public void setTime(String time) {
  
 public String getCategory(){   
 	String category = ""; 
-	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
-		OrderProductManager.resetOrPMap();
-	}
-	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
+	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
 	HashMap<Integer,Category> categorymap = CategoryService.getmap();
 	 if(null != lists){
 		for(int g = 0 ;g<lists.size();g++){   
@@ -832,10 +821,8 @@ public String getCategory(){
    
 public String getCategory(int statues,String decollator){   
 	String category = "";  
-	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
-		OrderProductManager.resetOrPMap();
-	}
-	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
+
+	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
 	HashMap<Integer,Category> categorymap = CategoryService.getmap();
 	if(lists != null){
 		for(int g = 0 ;g<lists.size();g++){      
@@ -850,11 +837,8 @@ public String getCategory(int statues,String decollator){
 // 是否是顶码
 public String getSendType(){
 	String sendType = "";
-	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
-		OrderProductManager.resetOrPMap();
-	}
-
-	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
+	
+	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
 	if(null != lists){	
 		for(int g = 0 ;g<lists.size();g++){
 				if(lists.get(g).getStatues() == 1){ 
@@ -878,12 +862,8 @@ public String getSendType(){
 
 public String getSendType(int statues,String decollator){ 
 	String sendType = ""; 
-	
-	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
-		OrderProductManager.resetOrPMap();
-	}
-	
-	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
+
+	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
 	if(lists != null){
 		for(int g = 0 ;g<lists.size();g++){
 			if(lists.get(g).getStatues() == statues){   
@@ -905,10 +885,7 @@ public String getSendType(int statues,String decollator){
 
 public String getSendCount(){
 	String sendCount = "";
-	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
-		OrderProductManager.resetOrPMap();
-	}
-	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
+	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
 	 if(null != lists){
 		for(int g = 0 ;g<lists.size();g++){
 			if(lists.get(g).getStatues() == 1){ 
@@ -927,14 +904,11 @@ public String getSendCount(){
  
 public String getbranchName(int branchid){
 	return OrderService.getBranchName(branchid);
-}
+} 
 
 public String getSendCount(int statues,String decollator){
 	String sendCount = "";
-	if(!OrderProductManager.getStaticOrderStatuesM().containsKey(this.getId())){
-		OrderProductManager.resetOrPMap();
-	}
-	List<OrderProduct> lists = OrderProductManager.getStaticOrderStatuesM().get(this.getId());
+	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
 	 if(null != lists){
 		for(int g = 0 ;g<lists.size();g++){
 			if(lists.get(g).getStatues() == statues){
