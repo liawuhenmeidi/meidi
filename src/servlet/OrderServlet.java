@@ -316,7 +316,8 @@ logger.info(message);
 		                return ;  
 		            }   
 		               
-					int flag = OrderManager.save(user, order);  
+					int flag = OrderManager.save(user, order); 
+					
 					tokenGen.resetToken(request);  
 					if(flag != -1){     
 						request.getSession().setAttribute("message","您的订单提交成功"); 

@@ -185,16 +185,16 @@ function println(){
         			   <td align="center"> 
         			    <input type="hidden" name="product" value="<%=in.getId() %>" />
         			    <% if(UserManager.checkPermissions(user, Group.dealSend)) {%>
-        			    <input type="text" name="real<%=in.getId() %>"  id="<%=in.getId() %>"  value="<%=in.getCount() %>"   style="border:0; width:50px" /> 
+        			    <input type="text" name="real<%=in.getId() %>"  id="<%=in.getId() %>"  value="<%=in.getRealString() %>"   style="border:0; width:100px" /> 
         			     <%}else{ %>
-        			       <%=in.getCount() %> 
+        			       <%=in.getRealString() %> 
         			     <% } %>
         			    </td>
         			   <td align="center"> 
         			   <% if(user.getBranch().equals(inventory.getInbranchid()+"")){ %>
-        			  <input type="text" name="<%=in.getId() %>"  id="<%=in.getId() %>"  value="<%=in.getAnlycount() %>" style="border:0; width:50px" /> 
+        			  <input type="text" name="<%=in.getId() %>"  id="<%=in.getId() %>"  value="<%=in.getPaperString() %>" style="border:0; width:100px" /> 
         			  <% }else { %>
-        			    <%=in.getAnlycount() %>
+        			    <%=in.getPaperString() %>
         			  <% }%>
         			  </td>
                        </tr>

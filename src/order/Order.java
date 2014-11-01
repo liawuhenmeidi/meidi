@@ -776,6 +776,7 @@ public String getCategory(){
 	Map<Integer,List<Gift>> gMap = GiftService.getmap();
 	
 	 List<Gift> lists = gMap.get(this.getId());  
+	 
 	 if(null != lists){
 		     for(int g = 0 ;g<lists.size();g++){
 		    	 Gift op = lists.get(g);

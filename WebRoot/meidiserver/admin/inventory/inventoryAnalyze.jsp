@@ -123,24 +123,6 @@ width:150px;
 var jsonall = <%=listall%>;
 var count = "<%=countt%>";
 $(function () { 
-
-	$("#wrap").bind("scroll", function(){ 
-
-		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
-	        //滚动了竖直滚动条
-	        pre_scrollTop=($("#wrap").scrollTop() || document.body.scrollTop);
-	       
-	        if(obj_th){
-	            obj_th.style.top=($("#wrap").scrollTop() || document.body.scrollTop)+"px";
-	        }
-	    }
-	    else if(pre_scrollLeft != (document.documentElement.scrollLeft || document.body.scrollLeft)){
-	        //滚动了水平滚动条
-	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
-	    }
-		});
-	
-	
 		 $("#branch").autocomplete({ 
 			 source: jsonall
 		    });
@@ -172,13 +154,8 @@ function checkTime(){
 		alert("结束时间不能为空");
 		return false;
 	}
-	if(!isNaN(val)){
-		   alert("是数字");
-		}else{
-		   alert("不是数字");
-		}
 	
-	return false ;
+	return true ;
 }
 </script>
 <div style="position:fixed;width:100%;height:20%;">

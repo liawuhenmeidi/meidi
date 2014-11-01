@@ -99,6 +99,7 @@ logger.info(sql);
 				   } 
 				 }
 				 
+				 GiftService.flag = true ;
 				return sqls ;
 		   }
 			 

@@ -159,12 +159,18 @@ var disable = '<%=isdisabel %>';
 		 alert("型号不能为空");
 		 return false ;
 	 }else {
-		 if($.inArray(ctype,ctypes) != -1){
-			 alert("您已添加此型号"); 
+		 if($.inArray(ctype,jsonallp) != -1){
+			 if($.inArray(ctype,ctypes) != -1){
+				 alert("您已添加此型号"); 
+				 return ;
+			 }else{
+				 ctypes.push(ctype); 
+			 } 
+		 }else {
+			 alert("您输入的产品不存在，请重新输入");
 			 return ;
-		 }else{
-			 ctypes.push(ctype); 
 		 }
+		 
 	 }
 	 
 	 rows.push(row);
@@ -219,11 +225,12 @@ var disable = '<%=isdisabel %>';
 	 
 	for(var i=0;i<rows.length;i++){
 		var count = $("#orderproductNum"+rows[i]).val();
-		if(count <=0){
-			alert("产品数量不能小于1");
+		
+		if(isNaN(count)){
+			alert("产品数量必须是数字");
 			return false ;
-		}
-	} 
+	      } 
+	}
 	
 	 $("#submit").css("display","none");
 	 

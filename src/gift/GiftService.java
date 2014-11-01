@@ -8,9 +8,11 @@ public class GiftService {
    public static boolean flag  = false ;
    
    public static Map<Integer,List<Gift>> getmap(){
+	   init();
 	   if(map == null){
 		   map = GiftManager.getOrderStatues();
 	   }
+	  
 	   return map ;
    }
    

@@ -1,6 +1,7 @@
 package inventory;
 
-import product.ProductService;
+import utill.StringUtill;
+
 
 public class InventoryMessage {
   private int id ; 
@@ -10,8 +11,33 @@ public class InventoryMessage {
   
   private String  productname;
   private int anlycount;
+  private int count ;   	  
+  private int inventoryId; // 订单信息所属单据号
+   
+  private String realString ;
+  
+  private String paperString ;
   
   
+  
+public String getRealString() {
+	if(StringUtill.isNull(realString)){
+		return "";
+	}
+	return realString;
+}
+public void setRealString(String realString) {
+	this.realString = realString;
+}
+public String getPaperString() {
+	if(StringUtill.isNull(paperString)){
+		return "";
+	}
+	return paperString;
+}
+public void setPaperString(String paperString) {
+	this.paperString = paperString;
+}
 public String getCategoryName() {
 	return categoryName;
 }
@@ -30,9 +56,7 @@ public String getProductname() {
 public void setProductname(String productname) {
 	this.productname = productname;
 }
-private int count ;   	  
-  private int inventoryId; // 订单信息所属单据号
-   
+
   public String getProductId() {
 		return productId;
 	}
