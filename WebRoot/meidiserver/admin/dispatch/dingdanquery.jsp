@@ -116,7 +116,7 @@ function change(str1,str2,type){
          data:"method=songhuo&id="+str2+"&statues="+statues+"&type="+type,
          dataType: "",  
          success: function (date) {
-        	
+        	alert(date);
         	 if(date == 0){
         		 alert("导购提交修改申请，不能配工");
         		 return ; 

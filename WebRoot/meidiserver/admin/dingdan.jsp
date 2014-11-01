@@ -26,14 +26,14 @@ position:fixed;
     padding:0;
 }
 #table{  
-    width:2500px;
+    width:2400px;
     table-layout:fixed ;
 }
 
 #th{  
     background-color:white;
     position:absolute; 
-    width:2500px; 
+    width:2400px; 
     height:30px;
     top:0;
     left:0;
@@ -307,7 +307,7 @@ function adddetail(src){
 			<td align="center">配单</td>
 			<td align="center">查看位置</td> 
 			<td align="center">安装网点驳回</td> 
-			<td align="center">导购修改申请</td> 
+		<!-- 	<td align="center">导购修改申请</td>  -->
 			<td align="center">导购退货申请</td> 
             <td align="center">导购换货申请</td> 
 		</tr> 
@@ -471,7 +471,8 @@ function adddetail(src){
 					   }  
 				
 				%>
-				</td> 
+				</td>
+				<!--  
 				<td align="center"> 
 				<%
 					 if(modify == 2){ 
@@ -512,6 +513,7 @@ function adddetail(src){
 				<%
 				 } 
 				%>
+				--> 
 				<td align="center"> 
 				<% 
 					 if(returns == 2){ 

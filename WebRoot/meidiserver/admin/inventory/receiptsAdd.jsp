@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 String message = "调拨单";
 String type = request.getParameter("type");
-if("paper".equals(type)){
+if("paper".equals(type)){ 
 	message = "调账面库存单据";
 }
 
@@ -189,14 +189,29 @@ var disable = '<%=isdisabel %>';
  }
  
  function check(){
-	var branch = $("#outbranch").val();
+	var outbranch = $("#outbranch").val();
+	var inbranch = $("#inbranch").val();
 	
-	if(branch == ""){ 
-		alert("请选择仓库"); 
+	if(outbranch == "" || outbranch == null){ 
+		alert("请选择出库单位"); 
 		return false ;
+	}else {
+		if($.inArray(outbranch, jsonall) == -1){
+			alert("出库单位不存在"); 
+			return false ;
+		}
 	}
-	 
-	 
+	
+	if(inbranch == "" || inbranch == null){ 
+		alert("请选择入库单位"); 
+		return false ;
+	}else{
+		if($.inArray(inbranch, jsonall) == -1){
+			alert("入库单位不存在"); 
+			return false ;
+		}
+	}
+
 	if(rows.length <1){
 		alert("没有记录可以提交"); 
 		return false ;

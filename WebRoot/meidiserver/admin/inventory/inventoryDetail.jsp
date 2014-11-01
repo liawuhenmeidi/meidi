@@ -158,6 +158,8 @@ function inventory(inventory,type){
 		        			 strtype = branch+"出库";
 		        		 }else if(type == 1){ 
 		        			 strtype = branch+"入库";
+		        		 }else if(type == 3){ 
+		        			 strtype = branch+"账面调货";
 		        		 }else if(type == 2){
 		        			 strtype = usermap.get(in.getSendUser()).getBranchName()+"派工给"+usermap.get(in.getReceiveuser()).getBranchName();
 		        		 }else if(type == 20){

@@ -7,7 +7,6 @@ String message = "";
 boolean flagdiagma = false ;
 String id = request.getParameter("id");
 String type = request.getParameter("type");
-String dingma = request.getParameter("dingma");
 String uid = request.getParameter("uid");
 
 Order order = OrderManager.getOrderID(user, Integer.valueOf(id));

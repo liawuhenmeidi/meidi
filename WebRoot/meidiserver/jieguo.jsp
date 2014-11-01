@@ -5,7 +5,9 @@
  session.removeAttribute("message");
  
  String type = request.getParameter("type");
-  
+ String oid = request.getParameter("oid");
+ 
+  System.out.println("oid"+oid);
 %>
 
 
@@ -54,7 +56,18 @@ function checkedd(){
 <% if("order".equals(type)){  
 	
 %> 
-<div class="s_main_tit">报单提交<span class="qiangdan"><a href="user/order.jsp">继续报装</a></span><span class="qiangdan"><a href="user/welcom.jsp">返回</a></span></div>
+<div class="s_main_tit">报单提交
+	<span class="qiangdan"><a href="user/order.jsp">继续报装</a></span>
+	<% if(!StringUtill.isNull(oid)){
+		if(Integer.valueOf(oid) != -1){
+			%>
+	 <span class="qiangdan"><a href="user/order.jsp?id=<%=oid%>&statues=statues">相同顾客报装</a></span>	
+			<%
+		}
+	} %>
+	
+	<span class="qiangdan"><a href="user/welcom.jsp">返回</a></span>
+</div>
 
 <% 
 } else if("zhuce".equals(type)){

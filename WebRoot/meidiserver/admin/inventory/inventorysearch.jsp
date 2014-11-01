@@ -2,7 +2,7 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
-  
+String message = "";  
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
   
 List<BranchType> listb = BranchTypeManager.getLocate();
@@ -46,7 +46,11 @@ if(!StringUtill.isNull(inventoryid)){
 	    	   inbranch = branch.getLocateName();  
 	       }
 	   }
-	
+	if(inventory.getIntype() == 3){
+		message = "调账面库存单据";
+	}else {
+		message = "调货单";
+	}
 	remark = inventory.getRemark();
 	inittime = inventory.getIntime(); 
 	List<InventoryMessage> list = inventory.getInventory();
@@ -226,8 +230,8 @@ var disable = '<%=isdisabel %>';
    </div> 
         
      <div>     
-    
-         单号：<%=inventoryid %> 
+     操作类型：<%=message %> <br />
+         单号：<%=inventoryid %> <br />
          日期：<%=inventory.getIntime()==null?"":inventory.getIntime() %> <br/>               
     <br/>
                  出库单位：  

@@ -316,14 +316,14 @@ logger.info(message);
 		                return ;  
 		            }   
 		               
-					boolean flag = OrderManager.save(user, order);  
+					int flag = OrderManager.save(user, order);  
 					tokenGen.resetToken(request);  
-					if(flag){     
+					if(flag != -1){     
 						request.getSession().setAttribute("message","您的订单提交成功"); 
 					}else { 
 						request.getSession().setAttribute("message","对不起，您的订单提交失败，请您重新提交");  
 					}   
-					response.sendRedirect("../jieguo.jsp?type=order");
+					response.sendRedirect("../jieguo.jsp?type=order&oid="+flag);
 		    	} 
 	       
 	       }
@@ -412,13 +412,14 @@ logger.info(message);
 	                
 					order.setImagerUrl(oldOrder.getId()+"");
 					
-					boolean flag = OrderManager.save(user, order);  
+					int flag = OrderManager.save(user, order);  
 					tokenGen.resetToken(request);  
-					if(flag){     
+					if(flag != -1){     
 						request.getSession().setAttribute("message","您的订单提交成功"); 
 					}else { 
 						request.getSession().setAttribute("message","对不起，您的订单提交失败，请您重新提交");  
 					}   
+					logger.info(flag);
 					response.sendRedirect("../jieguo.jsp?type=order");
 		    	} 
 	       }

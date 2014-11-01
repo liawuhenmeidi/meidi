@@ -887,7 +887,6 @@ public String getSendType(int statues,String decollator){
 		for(int g = 0 ;g<lists.size();g++){
 			if(lists.get(g).getStatues() == statues){   
 				if(statues == 1){ 
-					sendType = "";
 					String tempType = lists.get(g).getSaleType(); 
 					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
 					sendType += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);

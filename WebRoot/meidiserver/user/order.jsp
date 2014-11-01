@@ -15,8 +15,7 @@ String clist = StringUtill.GetJson(list);
 HashMap<Integer,ArrayList<Product>> map = ProductManager.getProduct();
 List<Locate> listl = LocateManager.getLocate();
  
-
-HashMap<String,ArrayList<String>> listt = ProductManager.getProductName();
+HashMap<String,ArrayList<String>> listt = ProductService.gettypeName();
 
 String plist = StringUtill.GetJson(listt);
 
@@ -24,6 +23,9 @@ Branch branch = BranchService.getMap().get(Integer.valueOf(user.getBranch()));
   
 
 String id = request.getParameter("id");
+// 为空表示正常修改     不为空表示导购报送相同顾客单据
+String statues = request.getParameter("statues");
+
 Order order = null ; 
 String listopp = "";
 String listgg = "";
@@ -34,13 +36,16 @@ if(!StringUtill.isNull(id)){
 	order = OrderManager.getOrderID(user,Integer.valueOf(id));
 	strorder = StringUtill.GetJson(order);
 	
-	List<OrderProduct> listop = OrderProductManager.getOrderStatues(user, Integer.valueOf(id));
+	if(StringUtill.isNull(statues)){
+		List<OrderProduct> listop = OrderProductManager.getOrderStatues(user, Integer.valueOf(id));
 
-	listopp = StringUtill.GetJson(listop);
+		listopp = StringUtill.GetJson(listop);
 
-	List<Gift> listg = GiftManager.getGift(user, Integer.valueOf(id));
-	listgg = StringUtill.GetJson(listg);
-	isdisabel = " disabled=\"disabled\" ";  
+		List<Gift> listg = GiftManager.getGift(user, Integer.valueOf(id));
+		listgg = StringUtill.GetJson(listg);
+		isdisabel = " disabled=\"disabled\" "; 
+	}
+	 
 }
  
 
@@ -98,10 +103,11 @@ String[] branlist =  branchmessage.split("_");
    var listop =  null;
    var listg =  null;
    var order = null;
- 
+   // statues 表示是否是相同顾客报装
+   var statues = '<%=statues%>' ;
    var order = <%=strorder%>;
   //alert(order);
-   if(order != null && order != ""){
+   if(order != null && order != "" && statues == null || statues == ""){
 	  
 	   var listopp = '<%=listopp%>' ;
 	   var listgg = '<%=listgg%> ';
@@ -206,24 +212,27 @@ String[] branlist =  branchmessage.split("_");
 	   
 	   
 	   if(order != null && order != "" && order != "null"){
+		   if(statues == null || statues == ""){
+			   $("#serviceDate").val(order.saleTime);
+			  
+			   $("#pos").val(order.pos);
+			   $("#sailId").val(order.sailId);
+			   $("#checked").val(order.check);
+			   $("#phoneremark").val(order.phoneRemark);
+			   $("#posremarkremark").val(order.phoneRemark);
+			   $("#checkedremark").val(order.phoneRemark);
+			   $("#sailidremark").val(order.phoneRemark);
+		   }
 		   
-		   $("#serviceDate").val(order.saleTime);
 		   $("#serviceDate2").val(order.odate);
-		   $("#pos").val(order.pos);
-		   $("#sailId").val(order.sailId);
-		   $("#checked").val(order.check);
 		   $("#username").val(order.username);
 		   $("#phone1").val(order.phone1);
 		   $("#phone2").val(order.phone2);
 		   $("#locations").val(order.locateDetail);
 		   $("#remark").val(order.remark);
-		  
 		   $("#quyu").val(order.locate); 
 		   
-		   $("#phoneremark").val(order.phoneRemark);
-		   $("#posremarkremark").val(order.phoneRemark);
-		   $("#checkedremark").val(order.phoneRemark);
-		   $("#sailidremark").val(order.phoneRemark);
+		   
 	   }
    }
     
@@ -1018,11 +1027,11 @@ String[] branlist =  branchmessage.split("_");
                	  <td width="25%" class="center">送货状态</td>
               	  <td width="50%" class=""> 
               	  <select  name="productsta0"   id="productsta0"  style="width:90%; " <%=isdisabel %>>
-              	 <option value="" id=""></option>       
-              	 <option value="1" id="1">需配送安装</option>    
-              	 <option value="0" id="0">已自提</option>     
-              	 <option value="2" id="2">只安装(师傅门店提货)</option>   
-              	 <option value="3" id="3">只安装(顾客已提)</option>  
+	              	 <option value="" id=""></option>       
+	              	 <option value="1" id="1">需配送安装</option>    
+	              	 <option value="0" id="0">已自提</option>     
+	              	 <option value="2" id="2">只安装(师傅门店提货)</option>   
+	              	 <option value="3" id="3">只安装(顾客已提)</option>  
         
               	 </select>
 

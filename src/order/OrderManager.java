@@ -204,10 +204,7 @@ public class OrderManager {
 					}else if(o.getType() == OrderPrintln.returns && o.getStatues() != 4 && !"tuihuo".equals(method) && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method) && !"orderover".equals(method) && !"statuescallback".equals(method)){
 						//logger.info(1);   
 						return 20 ;     
-					}else if(o.getType() == OrderPrintln.unmodify && !"print4".equals(method) && !"orderCome".equals(method) && !"orderGo".equals(method)&& !"orderCharge".equals(method)  && !"orderover".equals(method) && !"statuescallback".equals(method)){
-						//logger.info(1);   
-						return OrderPrintln.unmodify ;  
-					} 
+					}
 				}
 				 
 				}
@@ -581,8 +578,8 @@ public static void updateSendstat(int statues,int sid, int oid) {
     
    
   
-   public static boolean save(User user,Order order) {
-	     boolean flag  = false ; 
+   public static int save(User user,Order order) {
+	     int flag  = -1 ; 
 	     List<String> sqls = new ArrayList<String>(); 
 	      
 		 //boolean isflag = OrderManager.getid(order.getId());
@@ -596,7 +593,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 		 if(oldorder != null){ 
 			 // 判断是否已配工，已配工返回
 			 if(oldorder.getDealsendId() != 0){
-				 return false ;
+				 return flag ;
 			 }
 			 maxid = oldorder.getId();   
 			 daymark =oldorder.getDayremark(); 
@@ -604,7 +601,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 			 OrderPrintln oor = OrderPrintlnManager.getOrderStatues(user, oldorder.getId(),0);
 			 if(oldorder.getPrintSatues() == 1){
 				 if(oor != null && oor.getStatues() != 2){
-					 return false ;
+					 return flag ;
 				 } 
 			 }  
 			
@@ -677,7 +674,9 @@ public static void updateSendstat(int statues,int sid, int oid) {
 	    sqls.add(sql);
 	    logger.info(sql);       
 	    
-	    flag  = DBUtill.sava(sqls);
+	    if(DBUtill.sava(sqls)){
+	    	flag = maxid;
+	    };
         
 		return flag ; 
 
