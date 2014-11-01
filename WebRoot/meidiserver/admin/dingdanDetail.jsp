@@ -232,6 +232,7 @@ function checkedd(type){
 <input type="hidden" name="method" value="updateorder"/>
 <input type="hidden" name="oid" value="<%=id%>"/> 
 <input type="hidden" name="typeMethod" id="print" value=""/>  
+
 <table  cellspacing="1"  id="table" style="background-color:black" > 
        <%  
 		String tdcol = " bgcolor=\"red\"" ; 

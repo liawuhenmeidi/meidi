@@ -571,7 +571,9 @@ public void setBranch(int branch) {
 private List<OrderProduct> Orderproduct = null; 
   
   public List<OrderProduct> getOrderproduct() {
+	  if(null == Orderproduct){
 		  Orderproduct = OrderProductService.getStaticOrderStatuesM().get(this.getId());
+	  }
 	return Orderproduct;  
 }
 

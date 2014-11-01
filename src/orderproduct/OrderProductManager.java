@@ -77,7 +77,7 @@ public class OrderProductManager {
 				OrderProduct order = orders.get(i); 
 				String sql = "insert into  mdorderproduct (id, categoryID ,sendtype,saletype, count,orderid ,statues ,categoryname,salestatues,subtime)" +  
 	                         "  values ( null, "+order.getCategoryId()+", '"+order.getSendType()+"', '"+order.getSaleType()+"',"+order.getCount()+","+id+","+order.getStatues()+",'"+order.getCategoryName()+"',"+order.getSalestatues()+",'"+TimeUtill.gettime()+"')";
-				logger.info(sql); 
+		logger.info(sql); 
 				sqls.add(sql); 
 				OrderProductService.flag = true ;
 			} 
