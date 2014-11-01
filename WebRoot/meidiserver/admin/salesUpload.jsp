@@ -147,7 +147,7 @@ td {
 		
 		<tr>  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
-			
+			<td align="center">序号</td>
 			<td align="center">销售门店</td>
 			<td align="center">票面型号</td> 
 			<td align="center">销售员姓名</td> 
@@ -163,7 +163,7 @@ td {
 		
 		<tr>  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
-			
+			<td align="center"><%= i+1 %></td>
 			<td align="center"><%= UploadOrders.get(i).getShop() %></td>
 			<td align="center"><%= UploadOrders.get(i).getType() %></td>
 			<td align="center"><%= UploadOrders.get(i).getSaleManName() %></td>

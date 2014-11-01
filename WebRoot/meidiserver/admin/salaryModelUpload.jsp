@@ -152,6 +152,7 @@ td {
 		
 		
 		<tr>  
+			<td align="center">序号</td>
 			<td align="center">型号</td>
 			<%
 			for(int j = 0 ; j < maxLength ; j ++){
@@ -171,7 +172,7 @@ td {
 		
 		<tr>  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
-			
+			<td align="center"><%= i+1 %></td>
 			<td align="center"><%= salaryModelList.get(i).getType() %></td>
 			<%
 				String tempContent = salaryModelList.get(i).getContent();
