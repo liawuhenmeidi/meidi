@@ -80,6 +80,7 @@ public class CompanyManager {
 					g.setPhone(rs.getString("phone"));  
 					g.setUsername(rs.getString("uname"));
 					g.setLocation(rs.getString("locatedetail"));
+					g.setUsercount(rs.getInt("usetcunt"));
 				}   
 			} catch (SQLException e) { 
 				e.printStackTrace();

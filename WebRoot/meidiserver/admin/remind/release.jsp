@@ -2,8 +2,8 @@
 <%@ include file="../searchdynamic.jsp"%>      
 <%         
 
-List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.release,0,0,"id",""); 
-count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.release,0,0,"id","");
+List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.release,num,Page,"id",""); 
+count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.release,num,Page,"id","");
 session.setAttribute("exportList", list);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -58,83 +58,6 @@ var usermapstr = <%=usermapstr%>;
 var opstatues = "<%=opstatues%>"; 
 var inventory = "";  
 // types   产品型号 
-function changepeidan(str1,oid,deliveryStatues,types,saleId){
-	var uid = $("#"+str1).val();
-	var saleid = $("#"+str1).val();
-   if(deliveryStatues == 9 || deliveryStatues == 10 || deliveryStatues == 8){
-	   saleid = saleId;
-   }
-
-   var branch = usermapstr[saleid].branchName;
-   
-	if(deliveryStatues != 8 ){ 
-		if(uid == null || uid == ""){
-			alert("请选择安装公司");
-			return ;
-		}
-		
-		$.ajax({ 
-	        type: "post",  
-	         url: "server.jsp",   
-	         data:"method=getinventory&types="+types+"&uid="+saleid,
-	         dataType: "",  
-	         success: function (data) {  
-	        	    inventory = data;
-	        	    data = data.replace(/{/g, "");
-	        	    data = data.replace(/}/g, "");
-	        	    data = data.replace(/,/g, "\n"); 
-	               // alert(str);  
-	                question = confirm("您确定要配单并打印吗？\n"+branch+":\n"+data);
-	        		if (question != "0"){  
-	        			//alert(deliveryStatues);
-	        			$.ajax({ 
-	        		        type: "post", 
-	        		         url: "server.jsp",
-	        		         data:"method=peidan&id="+oid+"&uid="+uid,
-	        		         dataType: "", 
-	        		         success: function (data) { 
-	        		            if(data == 8){
-	        		            	alert("导购修改中。稍后重试"); 
-	        		            }else{ 
-	        		            	 window.location.href="print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues;  
-	        		            }
-	        		           },  
-	        		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	        		            } 
-	        		           });
-	        		}else {
-	        			return ;
-	        		}
-	           },  
-	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	            } 
-	           });   
-		
-		
-	}else { 
-		uid = 0; 
-		$.ajax({ 
-	        type: "post", 
-	         url: "server.jsp",
-	         data:"method=peidan&id="+oid+"&uid="+uid,
-	         dataType: "", 
-	         success: function (data) { 
-	            if(data == 8){
-	            	alert("导购修改中。稍后重试"); 
-	            }else{
-	            	if(str1 != 0){ 
-	            	   window.location.href="print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues+"&dingma="+str1;  
-	            	}else {
-	            		window.location.href="dingdan.jsp";	 
-	            	}
-	            }
-	           },  
-	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	            } 
-	           });
-	}
-	
-}
 
 function addImage(src){
 	window.open(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
@@ -153,7 +76,7 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 				}else {
 				$.ajax({     
 			        type:"post",  
-			         url:"../user/server.jsp",  
+			         url:"../../user/server.jsp",  
 			         //data:"method=list_pic&page="+pageCount,       
 			         data:"method=shifang&oid="+oid+"&pGroupId="+pgroup+"&opstatues="+type,
 			         dataType: "",  
@@ -180,7 +103,7 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 				var type = "<%=Order.deliveryStatuesTuihuo%>";
 				$.ajax({  
 			        type: "post", 
-			         url: "server.jsp",   
+			         url: "../server.jsp",   
 			         data:"method=dingdaned&id="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 			         dataType: "",  
 			         success: function (data) {
@@ -201,11 +124,11 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 		}else {
 			$.ajax({    
 		        type: "post", 
-		         url: "server.jsp",   
+		         url: "../server.jsp",   
 		         data:"method=dingdaned&id="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 		         dataType: "",   
 		         success: function (data) {
-		             window.location.href="dingdan.jsp";
+		             window.location.href="release.jsp";
 		        	
 		           }, 
 		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -215,11 +138,11 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 	}else { 
 		$.ajax({   
 	        type: "post", 
-	         url: "server.jsp",   
+	         url: "../server.jsp",   
 	         data:"method=dingdaned&id="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 	         dataType: "",   
 	         success: function (data) {
-	             window.location.href="dingdan.jsp";
+	             window.location.href="release.jsp";
 	        	
 	           }, 
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -312,7 +235,7 @@ function adddetail(src){
 		     
 		    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)">   
 
-				<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
+				<td align="center"><a href="javascript:void(0)" onclick="adddetail('../dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
 				<td align="center"><%=o.getbranchName(o.getBranch())%></td>  
 				<td align="center"> 	                		  
 				<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>

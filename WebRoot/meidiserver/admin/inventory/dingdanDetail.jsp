@@ -5,7 +5,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 
 String id = request.getParameter("id");
-
+ 
 Order o = OrderManager.getOrderID(user,Integer.valueOf(id));
    
 HashMap<Integer,User> usermap = UserManager.getMap();

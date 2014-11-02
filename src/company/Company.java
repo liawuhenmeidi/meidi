@@ -5,8 +5,16 @@ public class Company {
   private String phone ;
   private String locate;  // 地区 
   private String location; // 详细地址
+  private int usercount ;
  
-private String username; 
+  private String username; 
+
+public int getUsercount() {
+	return usercount;
+}
+public void setUsercount(int usercount) {
+	this.usercount = usercount;
+}
 public String getLocation() {
 	return location;
 }

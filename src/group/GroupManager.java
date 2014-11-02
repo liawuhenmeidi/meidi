@@ -1,4 +1,7 @@
 package group;
+import grouptype.Grouptype;
+import grouptype.GrouptypeManager;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -103,9 +106,9 @@ public class GroupManager {
 					pstmt.setInt(7, group.getPtype());  
 
                  // listsql.add(pstmt); 	
-					
-                  if(group.getPtype() == 3){
-                	   
+				Grouptype gtype = GrouptypeManager.getGrouptype(group.getPtype());	
+                  if(gtype.getType() == 2){
+                	    
                   	String sql2 = BranchManager.save();
                   	PreparedStatement pstmt1 = DB.prepare(conn, sql2); 
                   	String permissons = "2_";

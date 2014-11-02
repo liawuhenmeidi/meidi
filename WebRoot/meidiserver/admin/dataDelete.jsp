@@ -86,7 +86,7 @@ body {
   </jsp:include> 
       
 
-<p>苏宁/销售单 删除</p>
+<p>系统对比/销售单 删除</p>
 <form action="" method="post">
 <input type="hidden" name="type" value="uploadorder"/>
 <select name="name">

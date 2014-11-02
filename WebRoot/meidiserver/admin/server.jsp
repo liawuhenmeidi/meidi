@@ -502,7 +502,7 @@ if("peidan".equals(method)){
 		 
 	}else {
 		if("print".equals(typeMethod)){
-			response.sendRedirect("print.jsp?id="+ oid);
+			response.sendRedirect("print.jsp?id="+ oid+"&type="+Order.dingma);
 		}else{
 			response.sendRedirect("../jieguo.jsp?type=updated");
 			//System.out.println(123);   

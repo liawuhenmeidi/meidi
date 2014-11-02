@@ -31,14 +31,14 @@ position:fixed;
 
 #table{  
     
-     width:3700px;
+     width:3600px;
      table-layout:fixed ;
 } 
  
 #th{
     background-color:white;
     position:absolute;
-    width:3700px;
+    width:3600px;
     height:30px; 
     top:0;
     left:0;
@@ -330,7 +330,6 @@ function orderPrint(id,statues,type,deliveryStatues){
 			
 			<td align="center">打印</td> 
 			<td align="center">安装网点驳回</td> 
-			<td align="center">导购修改申请</td> 
 			<td align="center">导购退货申请</td>   
 		</tr>
 	
@@ -522,41 +521,6 @@ function orderPrint(id,statues,type,deliveryStatues){
 		</td>
 		<%
 		   }   
-		 }
-		}
-		%>
-		
-			
-		<td align="center"> 
-		<%
-		if(opmap.get(OrderPrintln.modify) != null){
-		OrderPrintln op = opmap.get(OrderPrintln.modify).get(o.getId());
-		
-		 if(op != null){
-			
-			 if(op.getStatues() == 2){ 
-			     	
-		    	 %> 
-		    	
-		    	   <p>修改申请已同意</p>
-		    	   
-		    	 <%
-		    	 
-		    	  }else if(op.getStatues() == 4){ 
-				     	
-				    	 %> 
-				    	 
-				    	   <p>修改申请已拒绝</p>
-				    	   
-				    	 <%
-				    	 
-				    	  }else {
-			 %>
-		  
-		 <%=op.getMessage() %>   
-		</td>
-		<%
-		 }
 		 }
 		}
 		%> 

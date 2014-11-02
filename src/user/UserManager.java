@@ -16,6 +16,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import utill.DBUtill;
 import utill.StringUtill;
 import branch.Branch;
 import branch.BranchService;
@@ -692,6 +693,27 @@ logger.info(sql);
 			}
 			return users;
 	   }
+	// 系统活跃用户数   
+	   public static HashMap<Integer,User> getMapstatues(){
+		   HashMap<Integer,User> users = new HashMap<Integer,User>();
+			Connection conn = DB.getConn();
+			String sql = "select * from  mduser where statues != 2";
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) {
+					User u = UserManager.getUserFromRs(rs);
+					users.put(u.getId(), u);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return users;
+	   }
 	   
 	   public static HashMap<String,User> getMap(String str){
 		   HashMap<String,User> users = new HashMap<String,User>();
@@ -856,16 +878,21 @@ logger.info(sql);
 	//  激活和关闭职工
 	public  static boolean setStatues(int id , int statues){
 		boolean flag = false ;
-		String sql = "update mduser set statues = "+statues + "  where id = " + id;
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStatement(conn);
-		try {
-			flag = stmt.execute(sql);
-			UserService.flag = true ;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		User user = UserService.getMapId().get(id);
 		
+		List<String> sqls = new ArrayList<String>();
+		
+		String sql = "update mduser set statues = "+statues + "  where id = " + id ;
+		
+		String str1 = "(select id from mdgroup where pid = "+user.getUsertype()+") "; 
+		
+		
+		String sql1 = "update mduser set statues = "+statues + "  where  usertype in "+str1 ;
+		
+		sqls.add(sql);
+		sqls.add(sql1);
+		
+		flag = DBUtill.sava(sqls);
 		
 		
 		return flag ;
