@@ -155,7 +155,22 @@ public class XLSReader {
 					
 					//判断提成内容
 					for(j = 1 ; j < sheet0.getColumns();j = j+2){
-
+						//第一个就是/的话，默认所有区间都是这个提成标准
+						if(j == 1){
+							if(sheet0.getCell(1,i).getContents().trim().equals("/")){
+								tempString = "{\"";
+								tempString += "0-/";
+								tempString += "\":";
+								tempString += "\"";
+								//验证格式
+								String.valueOf(Double.parseDouble(sheet0.getCell(2,i).getContents().trim().replace("%", "")));
+								tempString += sheet0.getCell(2,i).getContents().trim();
+								tempString += "\"";
+								break;
+							}
+						}
+						
+						
 						//零售价为空，break;
 						if(sheet0.getCell(j,i).getContents()==""||sheet0.getCell(j,i).getContents().trim().equals("")){
 							
@@ -242,7 +257,6 @@ public class XLSReader {
 				return null;
 			}
 			
-			logger.info("系统是" + osName);
 			
 			String filepath = path.replace("\\", "/");
 			List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();

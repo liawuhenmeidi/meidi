@@ -1,6 +1,7 @@
 package wilson.upload;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,10 +12,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.util.StringUtil;
+
+import utill.StringUtill;
+
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 
 public class UploadExportServlet extends HttpServlet {
 
@@ -31,27 +38,15 @@ public class UploadExportServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		
-		String fileName = "";
+		String name = "";
 		String type = "uploadorder";
 		
-		fileName = request.getParameter("name");
+		name = request.getParameter("name");
 		type = request.getParameter("type");
-		
-		List content;
-		if(type!= null){
-			if(type.equals("uploadorder")){
-				content = new ArrayList<UploadOrder>();
-				content = UploadManager.getOrdersByName(fileName);
-			}else if(type.equals("salarymodel")){
-				content = new ArrayList<UploadSalaryModel>();
-				content = UploadManager.getSalaryModelsByName(fileName);
-			}
-		}else{
-			return;
+		if(StringUtill.isNull(type) || StringUtill.isNull(name)){
+			return ;
 		}
-		
-		
-		
+		name = URLDecoder.decode(name,"utf-8");
 		
 		try{  
 		
@@ -66,15 +61,13 @@ public class UploadExportServlet extends HttpServlet {
         //  在Label对象的构造子中指名单元格位置是第一列第一行(0,0)
         //  以及单元格内容为test 
         
-       
-        
-        Label label0  =   new  Label( 3 ,  0 ,  " 本地记录订单 " );
-       
-        //  将定义好的单元格添加到工作表中 
-        sheet.addCell(label0);
-       
-        
-        
+        if(type.equals("uploadorder")){
+        	exportUploadOrder(sheet,name);
+        }else if(type.equals("salarymodel")){
+        	exportSalaryModel(sheet,name);
+        }else{
+        	return;
+        }
         
 		// 将文件存到指定位置
 		  
@@ -91,6 +84,138 @@ public class UploadExportServlet extends HttpServlet {
 		}
 		
     }
+
+	private void exportUploadOrder(WritableSheet sheet,String name) {
+       try {
+        	
+    		Label label0  =   new  Label( 0 ,  0 ,  " 名称 " );
+			sheet.addCell(label0);
+			label0  =   new  Label( 1 ,  0 ,  name );
+			sheet.addCell(label0);
+			List<UploadOrder> list = UploadManager.getOrdersByName(name);
+			UploadOrder temp = new UploadOrder();
+			
+			if(UploadManager.isSalesOrder(list)){
+				//销售单
+				//第二行
+				label0  =   new  Label( 0 ,  1 ,  " 序号 " );
+				sheet.addCell(label0);
+				label0  =   new  Label( 1 ,  1 ,  " 门店 " );
+				sheet.addCell(label0);
+				label0  =   new  Label( 2 ,  1 ,  " 型号 " );
+				sheet.addCell(label0);
+				label0  =   new  Label( 3 ,  1 ,  " 销售员姓名 " );
+				sheet.addCell(label0);
+				label0  =   new  Label( 4 ,  1 ,  " 零售价 " ); 
+				sheet.addCell(label0);
+				label0  =   new  Label( 5 ,  1 ,  " 数量 " );
+				sheet.addCell(label0);
+				label0  =   new  Label( 6 ,  1 ,  " 销售时间 " );
+				sheet.addCell(label0);
+				
+				//其他行
+				for(int i = 0 ; i < list.size() ; i ++){
+					temp = list.get(i);
+					label0  =   new  Label( 0 ,  i + 2 ,  String.valueOf(i+1) );
+					sheet.addCell(label0);
+					label0  =   new  Label( 1 ,  i + 2 ,  temp.getShop() );
+					sheet.addCell(label0);
+					label0  =   new  Label( 2 ,  i + 2 ,  temp.getType() );
+					sheet.addCell(label0);
+					label0  =   new  Label( 3 ,  i + 2 ,  temp.getSaleManName() );
+					sheet.addCell(label0);
+					label0  =   new  Label( 4 ,  i + 2 ,  String.valueOf(temp.getSalePrice()) ); 
+					sheet.addCell(label0);
+					label0  =   new  Label( 5 ,  i + 2 ,  String.valueOf(temp.getNum()) );
+					sheet.addCell(label0);
+					label0  =   new  Label( 6 ,  i + 2 ,  temp.getSaleTime() );
+					sheet.addCell(label0);
+				}
+			}else{
+				//系统对比单据
+				//第二行
+				
+				label0  =   new  Label( 0 ,  1 ,  " 门店名称 " );
+				sheet.addCell(label0);
+				label0  =   new  Label( 1 ,  1 ,  " POS订单号 " );
+				sheet.addCell(label0);
+				label0  =   new  Label( 2 ,  1 ,  " 销售日期 " );
+				sheet.addCell(label0);
+				label0  =   new  Label( 3 ,  1 ,  " 票面型号 " );
+				sheet.addCell(label0);
+				label0  =   new  Label( 4 ,  1 ,  " 票面数量 " ); 
+				sheet.addCell(label0);
+				label0  =   new  Label( 5 ,  1 ,  " 供价 " );
+				sheet.addCell(label0);
+				
+				//其他行
+				for(int i = 0 ; i < list.size() ; i ++){
+					temp = list.get(i);
+					label0  =   new  Label( 0 ,  i + 2 ,  temp.getShop() );
+					sheet.addCell(label0);
+					label0  =   new  Label( 1 ,  i + 2 ,  temp.getPosNo());
+					sheet.addCell(label0);
+					label0  =   new  Label( 2 ,  i + 2 ,  temp.getSaleTime() );
+					sheet.addCell(label0);
+					label0  =   new  Label( 3 ,  i + 2 ,  temp.getType() );
+					sheet.addCell(label0);
+					label0  =   new  Label( 4 ,  i + 2 ,  String.valueOf(temp.getNum()) ); 
+					sheet.addCell(label0);
+					label0  =   new  Label( 5 ,  i + 2 ,  String.valueOf(temp.getSalePrice()) );
+					sheet.addCell(label0);
+				}
+			}
+			
+			
+			
+		} catch (RowsExceededException e) {
+			e.printStackTrace();
+		} catch (WriteException e) {
+			e.printStackTrace();
+		}
+       
+	}
+
+	private void exportSalaryModel(WritableSheet sheet,String name) {
+        try {
+        	List<UploadSalaryModel> list = UploadManager.getSalaryModelsByName(name);
+        	
+        	//第一行
+        	Label label0  =   new  Label( 0 ,  0 ,  " 名称 " );
+			sheet.addCell(label0);
+			label0  =   new  Label( 1 ,  0 ,  name );
+			sheet.addCell(label0);
+			
+			//第二行
+			label0  =   new  Label( 0 ,  1 ,  " 型号 " );
+			sheet.addCell(label0);
+			label0  =   new  Label( 1 ,  1 ,  " 零售价 " );
+			sheet.addCell(label0);
+			label0  =   new  Label( 2 ,  1 ,  " 提成 " );
+			sheet.addCell(label0);
+			label0  =   new  Label( 3 ,  1 ,  " 零售价 " );
+			sheet.addCell(label0);
+			label0  =   new  Label( 4 ,  1 ,  " 提成 " );
+			sheet.addCell(label0);
+			
+			//其他行
+        	for(int i = 0 ; i < list.size() ; i ++){
+        		label0  =   new  Label( 0 ,  i+2 ,  list.get(i).getType() );
+    			sheet.addCell(label0);
+        		for(int j = 0 ; j < list.get(i).getExportContent().split(",").length ; j ++){
+        			label0  =   new  Label( j+1 ,  i + 2 ,  list.get(i).getExportContent().split(",")[j] );
+        			sheet.addCell(label0);
+        		}
+        	}
+        	
+			
+		} catch (RowsExceededException e) {
+			e.printStackTrace();
+		} catch (WriteException e) {
+			e.printStackTrace();
+		}
+       
+	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

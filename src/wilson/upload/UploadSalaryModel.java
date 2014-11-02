@@ -1,5 +1,7 @@
 package wilson.upload;
 
+import utill.StringUtill;
+
 public class UploadSalaryModel {
 	
 	private int id = 0 ;//id
@@ -163,6 +165,43 @@ public class UploadSalaryModel {
 		
 		String result = "";
 		//回头再写吧...
+		return result;
+	}
+	
+	/**
+	 * @param  //{"0.0-1001.0":"-1%","1001.0-1699.0":"3.50%","1699.0-/":"3.50%"}  {"0-/":"40"}
+	 * @return // 1000,-1%,1698,3.50%       /,40
+	 * 将显示给用户的格式转化为存储的格式
+	 */
+	public String getExportContent(){
+		
+		String result = "";
+		String tempContent = this.content.replace("{", "").replace("}", "").replace("\"", "");
+		
+		if(StringUtill.isNull(tempContent)){
+			return result;
+		}
+		
+		if(tempContent.split(",").length == 1 && (tempContent.split(",")[0].split(":")[0].equals("0-/")||tempContent.split(",")[0].split(":")[0].equals("0.0-/"))){
+			result += "/";
+			result += ",";
+			result += tempContent.split(",")[0].split(":")[1];
+			return result;
+		}
+		
+		for(int i = 0 ; i < tempContent.split(",").length ; i++){
+			if(tempContent.split(",")[i].contains("-/")){
+				break;
+			}
+			result += (Double.parseDouble(tempContent.split(",")[i].split(":")[0].split("-")[1]) - 1);
+			result += ",";
+			result += tempContent.split(",")[i].split(":")[1];
+			result += ",";
+		}
+		
+		if(result.endsWith(",")){
+			result = result.substring(0,result.length() - 1);
+		}
 		return result;
 	}
 }

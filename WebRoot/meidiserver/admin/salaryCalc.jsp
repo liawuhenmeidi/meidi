@@ -180,7 +180,7 @@ function del(id,obj){
 				<td align="center">提成标准</td>
 				<td align="center">生效日期</td>
 				<td align="center">截至日期</td> 
-				<td align="center" id="ddd">删除</td> 
+				<td align="center">删除</td> 
 		
 			</tr> 
 			<%
@@ -202,7 +202,7 @@ function del(id,obj){
 			if(showSalaryModels.size() > 0 ){		
 			%>
 			<tr>
-				<td align="center" colspan="7"><a href="salarymodelDetail.jsp?id=-1" target="_BLANK"><input type="button" value="新增一行"/></a></td>
+				<td align="center" colspan="8"><a href="salarymodelDetail.jsp?id=-1" target="_BLANK"><input type="button" value="新增一行"/></a></td>
 			</tr> 
 			<%
 			}

@@ -29,11 +29,11 @@
 				
 				if(type.equals("uploadorder")){
 
-					String url = "../DownloadServlet?type=uploadorder&name=" + URLEncoder.encode(URLEncoder.encode(name,"utf-8"));
+					String url = "../UploadExport?type=uploadorder&name=" + URLEncoder.encode(URLEncoder.encode(name,"utf-8"));
 					response.sendRedirect(url);
 					return ;
 				}else if(type.equals("salarymodel")){
-					String url = "../DownloadServlet?type=salarymodel&name=" + URLEncoder.encode(URLEncoder.encode(name,"utf-8"));
+					String url = "../UploadExport?type=salarymodel&name=" + URLEncoder.encode(URLEncoder.encode(name,"utf-8"));
 					response.sendRedirect(url);
 					return ;
 				}

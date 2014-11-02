@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 
 import order.Order;
 import order.OrderManager;
+import utill.StringUtill;
 import wilson.matchOrder.AfterMatchOrder;
 
 import database.DB;
@@ -993,5 +994,17 @@ public class UploadManager {
 		return result ; 
 	}
 	
+	public static boolean isSalesOrder(List<UploadOrder> list){
+		boolean result = true;
+		for(int i = 0 ; i < list.size() ; i ++){
+			if(!StringUtill.isNull(list.get(i).getPosNo())){
+				if(list.get(i).getPosNo().length() > 0){
+					result = false;
+					break;
+				}
+			}
+		}
+		return result;
+	}
 	
 }
