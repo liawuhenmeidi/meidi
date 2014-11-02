@@ -231,6 +231,10 @@ public class AfterMatchOrder {
 	//计算相似度
 	public Double calcLevel(){
 		
+		if(this.DBSidePosNo.equals("D00176975")){
+			System.out.println("o");
+		}
+		
 		String key = "";
 		//对比posNo
 		String tempDB = this.getDBOrder().getPos().toUpperCase().trim();
@@ -319,17 +323,32 @@ public class AfterMatchOrder {
 		
 		//对比型号
 		tempDB = this.getDBOrder().getSendType().trim().replace("(", "").replace(")", "").replace("（", "").replace("）", "");
-		tempUpLoad = this.getUploadOrder().getType().trim().replace("(", "").replace(")", "").replace("（", "").replace("）", "");
+		
+		tempUpLoad = this.getUploadOrder().getType().trim();
+		
+		//去掉括号里面的内容
+		String brackets = "";
+		if(tempUpLoad.contains("(") && tempUpLoad.contains(")")){
+			brackets += tempUpLoad.substring(tempUpLoad.indexOf("("),tempUpLoad.indexOf(")")+1);
+			tempUpLoad = tempUpLoad.substring(0, tempUpLoad.indexOf("(")) + tempUpLoad.substring(tempUpLoad.indexOf(")") + 1, tempUpLoad.length());
+		}
+		if(tempUpLoad.contains("（") && tempUpLoad.contains("）")){
+			brackets += tempUpLoad.substring(tempUpLoad.indexOf("（"),tempUpLoad.indexOf("）")+1);
+			tempUpLoad = tempUpLoad.substring(0, tempUpLoad.indexOf("（")) + tempUpLoad.substring(tempUpLoad.indexOf("）") + 1, tempUpLoad.length());			
+		}
+		
+		
 		key = tempUpLoad.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
+		
 		if(tempDB.contains(key)){
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			//精准对比
-			if(tempDB.equals(tempUpLoad)){			
+			if(tempDB.equals(this.getUploadOrder().getType().trim())){			
 				this.setDBSideType(HighLighter(tempDB));
 				this.setUploadSideType(HighLighter(tempUpLoad));
 			}else{
-				this.setDBSideType(HighLighter(tempDB,tempDB.indexOf(key),tempDB.indexOf(key) + key.length()));
-				this.setUploadSideType(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()));	
+				this.setDBSideType(HighLighter(tempDB,tempDB.indexOf(key),tempDB.indexOf(key) + key.length()) + brackets);
+				this.setUploadSideType(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()) + brackets);	
 			}
 		}		
 					

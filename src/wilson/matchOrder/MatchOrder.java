@@ -272,7 +272,7 @@ public class MatchOrder {
 		//而且型号一样
 		key = tempUo.getType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")", "").replace("（", "").replace("）", "");
 		
-		if(tempDBO.getSendType().contains(key)){
+		if(tempDBO.getSendType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")", "").replace("（", "").replace("）", "").contains(key)){
 			level += 1;
 		}
 		
