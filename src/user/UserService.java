@@ -6,8 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class UserService {
-   public static boolean flag = false ;
+   public static boolean flag = true ;
    public static HashMap<Integer,User>  usermap ;
+ //未被删除用户
+   public static HashMap<Integer,User>  usermapstatues ;  
+   
    public static HashMap<String,User>  usermapStr ;
    public static HashMap<String,List<User>>  usermapBranch ;
    
@@ -16,18 +19,27 @@ public class UserService {
    // 送货员
    public static List<User>  listsend ;  
    
+ 
    public static HashMap<Integer,User> getMapId(){
-	   
-	   if(usermap == null || flag == true){
+	   init();
+	   if(usermap == null){
 		   usermap = UserManager.getMap();
 	   }
 	    
 	   return usermap;
    }
    
+   public static HashMap<Integer,User> getMapstatues(){
+	   init();
+	   if(usermapstatues == null){
+		   usermapstatues = UserManager.getMapstatues();
+	   }
+	    
+	   return usermapstatues;
+   }
+   
 public static  List<User> getsencondDealsend(User user){
-	   
-	   if(list == null || flag == true){ 
+	   if(list == null){ 
 		   list = UserManager.getUsers(user,Group.sencondDealsend);
 	   }
 	    
@@ -36,7 +48,7 @@ public static  List<User> getsencondDealsend(User user){
 
 public static  List<User> getsend(User user){
 	   
-	   if(listsend == null || flag == true){ 
+	   if(listsend == null){ 
 		   listsend =UserManager.getUsers(user,Group.send);
 	   }
 	    
@@ -44,8 +56,8 @@ public static  List<User> getsend(User user){
 }
 
   public static HashMap<String,User> getuserIdStr(){
-	   
-	   if(usermapStr == null || flag == true){
+	   init();
+	   if(usermapStr == null){
 		   usermapStr = UserManager.getMap("");
 	   }  
 	   
@@ -53,11 +65,23 @@ public static  List<User> getsend(User user){
    }
  
 public static HashMap<String,List<User>> getMapBranchid(){
-	     
-	   if(usermapBranch == null || flag == true){
+	    init();
+	   if(usermapBranch == null){
 		   usermapBranch = UserManager.getMapBranch();
 	   }
 	   
 	   return usermapBranch;
    }
+
+ public static void init(){
+	 if(flag){
+		 usermap = UserManager.getMap();
+		 usermapstatues = UserManager.getMapstatues();
+		 usermapStr = UserManager.getMap("");
+		 usermapBranch = UserManager.getMapBranch();
+		 list = null ;
+		 listsend = null;
+	 }
+	 flag = false ;
+ }
 }

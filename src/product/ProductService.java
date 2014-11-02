@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductService {
-   public static boolean flag = false ;
+   public static boolean flag = true ;
    public static Map<String,Product> typemap ;  // 
    public static Map<Integer,Product> idmap ; 
    public static List<String> list ;
    public static HashMap<String,ArrayList<String>> typeName;
    
   public static Map<String, Product> gettypemap() {
+	  init();
 	 if(typemap == null ){
 		typemap = ProductManager.getProductType();
 	 } 
@@ -20,6 +21,7 @@ public class ProductService {
 }
  
   public static HashMap<String,ArrayList<String>> gettypeName() {
+	  init();
 	 if(typeName == null){
 		 typeName = ProductManager.getProductName();
 	 } 
@@ -27,6 +29,7 @@ public class ProductService {
 }
   
   public static List<String> getlist(int id) {
+	  init();
 		 if(list == null){
 			 list = ProductManager.getProduct(id);
 		 } 
@@ -35,6 +38,7 @@ public class ProductService {
 	 
   
 public static Map<Integer, Product> getIDmap() {
+	init();
 	if(idmap == null ){
 		idmap = ProductManager.getProductID();
 	}  

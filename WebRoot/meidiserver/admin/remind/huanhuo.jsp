@@ -2,8 +2,8 @@
 <%@ include file="../searchdynamic.jsp"%>      
 <%         
 
-List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.huanhuo ,0,0,"id",sear); 
-count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.huanhuo,0,0,"id",sear);      
+List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.huanhuo ,num,Page,"id",sear); 
+count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.huanhuo,num,Page,"id",sear);      
 
 session.setAttribute("exportList", list);
 
@@ -91,7 +91,7 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	        			//alert(deliveryStatues);
 	        			$.ajax({ 
 	        		        type: "post", 
-	        		         url: "server.jsp",
+	        		         url: "../server.jsp",
 	        		         data:"method=peidan&id="+oid+"&uid="+uid,
 	        		         dataType: "", 
 	        		         success: function (data) { 

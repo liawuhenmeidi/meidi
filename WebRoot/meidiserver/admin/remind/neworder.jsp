@@ -4,8 +4,8 @@
 if(searchflag){
 	sort= "andate asc";
 }
-List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.neworder,0,0,sort,sear); 
-count =  OrderManager.getOrderlistcount(user,Group.dealSend,Order.neworder,0,0,sort,sear); 
+List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.neworder,num,Page,sort,sear); 
+count =  OrderManager.getOrderlistcount(user,Group.dealSend,Order.neworder,num,Page,sort,sear); 
 session.setAttribute("exportList", list);
 
 %>
@@ -143,97 +143,6 @@ function addImage(src){
 	window.open(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 } 
 
-function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,object){
-	//$(object).css("display","none"); 
-	if( 2 == conmited ){         
-		if(type == '<%=OrderPrintln.releasemodfy %>' || type == '<%=OrderPrintln.releasedispatch %>'){
-			if(Returnstatuse != 2 ){         
-			question = confirm("商品已送货，您不能直接同意，是否联系安装公司驳回");
-			if (question != "0"){
-				
-				if(printlnstateus == 0){   
-					alert("您已经提交"); 
-				}else {
-				$.ajax({     
-			        type:"post",  
-			         url:"../user/server.jsp",  
-			         //data:"method=list_pic&page="+pageCount,       
-			         data:"method=shifang&oid="+oid+"&pGroupId="+pgroup+"&opstatues="+type,
-			         dataType: "",  
-			         success: function (data) {    
-			          alert("驳回申请已提交成功"); 
-			          window.location.href="dingdan.jsp";
-			           },  
-			         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-			          alert("驳回申请失败");
-			            } 
-			           });
-			}
-			}
-			return ;
-			} 
-		}
-
-		if(<%=OrderPrintln.salereleaseanzhuang%> == type || <%=OrderPrintln.salereleasesonghuo%> == type
-			|| <%=OrderPrintln.release%> == type || <%=OrderPrintln.releasedispatch%> == type && 2 == Returnstatuse || 0 == type)
-		   {
-		    question = confirm("请先打印");
-		
-			if (question != "0"){
-				var type = "<%=Order.deliveryStatuesTuihuo%>";
-				$.ajax({  
-			        type: "post", 
-			         url: "server.jsp",   
-			         data:"method=dingdaned&id="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
-			         dataType: "",  
-			         success: function (data) {
-			        	 
-			        	 if(data == true || data == "true"){ 
-			        		 window.location.href="print.jsp?id="+oid+"&type="+type+"&uid="+dealsendid ;
-			        	 }
-			           },  
-			         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-			            } 
-			           });
-				
-			}else {
-				return ;
-			} 
-			
-			
-		}else {
-			$.ajax({    
-		        type: "post", 
-		         url: "server.jsp",   
-		         data:"method=dingdaned&id="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
-		         dataType: "",   
-		         success: function (data) {
-		             window.location.href="dingdan.jsp";
-		        	
-		           }, 
-		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-		            } 
-		           });
-		}	 
-	}else { 
-		$.ajax({   
-	        type: "post", 
-	         url: "server.jsp",   
-	         data:"method=dingdaned&id="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
-	         dataType: "",   
-	         success: function (data) {
-	             window.location.href="dingdan.jsp";
-	        	
-	           }, 
-	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	            } 
-	           });
-	} 
- 
-		
-	
-}  
-
 function searchlocate(id){
 	window.open('../adminmap.jsp?id='+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
@@ -313,7 +222,7 @@ function adddetail(src){
 		     
 		    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)">   
 
-				<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
+				<td align="center"><a href="javascript:void(0)" onclick="adddetail('../dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
 				<td align="center"><%=o.getbranchName(o.getBranch())%></td>  
 				<td align="center"> 	                		  
 				<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>

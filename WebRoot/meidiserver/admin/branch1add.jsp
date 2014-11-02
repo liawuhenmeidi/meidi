@@ -7,7 +7,7 @@ String pid = request.getParameter("pid");
 String id = request.getParameter("id"); 
  
 HashMap<String,List<User>> map = UserService.getMapBranchid();
-
+System.out.println(StringUtill.GetJson(map.get(id)));
 Branch branchold = null;
 String branchoidname = "";
 String message = null;
