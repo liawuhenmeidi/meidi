@@ -31,9 +31,7 @@ for(int i = 0  ; i < Integer.parseInt(StringUtill.isNull(contentNum)?"0":content
 	
 	tempStr = request.getParameter("contentend" + i);
 	if(!StringUtill.isNull(tempStr)){
-		if(!tempStr.equals("以上") && !tempStr.equals("/")){
-			tempStr = (Double.parseDouble(tempStr) + 1) + "";
-		}
+		tempStr = (Double.parseDouble(tempStr) + 1) + "";
 		content += "-" + tempStr + "\"";
 	}
 	tempStr = request.getParameter("contentvalue" + i);
@@ -43,22 +41,26 @@ for(int i = 0  ; i < Integer.parseInt(StringUtill.isNull(contentNum)?"0":content
 	
 	content += ",";
 }
+
+content += "\"" + request.getParameter("contentstartlast") + "-" + request.getParameter("contentendlast") + "\":\"" + request.getParameter("contentvaluelast") + "\""; 
+
+
 if(content.endsWith(",")){
 	content = content.substring(0,content.length()-1);
 }
 
 content += "}";
 
-salarymodel.setCatergory(catergory);
-salarymodel.setType(type);
-salarymodel.setCommitTime(TimeUtill.gettime());
-salarymodel.setContent(content);
+
 
 //id为-1是新建
 if(id ==-1){
 	//如果是提交的
 	if(button!= null && button.equals("确认修改")){	
-		
+		salarymodel.setCatergory(catergory);
+		salarymodel.setType(type);
+		salarymodel.setCommitTime(TimeUtill.gettime());
+		salarymodel.setContent(content);
 		//验证是否符合规范
 		if(salarymodel.checkContent()){
 
@@ -72,12 +74,16 @@ if(id ==-1){
 		}else{
 			//不符合 规范的，重新填写!
 			salarymodel.setContent("");
+			
 			salarymodel.setCatergory("无");
 		}
 	
 	//如果不是提交的	
 	}else{
 		salarymodel.setId(-1);
+		salarymodel.setType("");
+		salarymodel.setCommitTime(TimeUtill.gettime());
+		salarymodel.setContent("");
 		//直接展示上面的就行
 	}
 	
@@ -149,11 +155,15 @@ position:fixed;
 <!--   头部开始   --> 
 
 <script type="text/javascript">
-var rows = Number(<%=items.length %>);
+var rows = Number(<%=items.length %>) - 1;
 
 window.onload = function() { 
 	if(rows == 0){
-		firstItem();
+		$('#contentvaluelast').removeAttr("readonly");
+	}
+	if(rows == -1){
+		$('#contentvaluelast').removeAttr("readonly");
+		rows = 0;
 	}
 	}; 
 
@@ -166,47 +176,76 @@ function firstItem(){
 }
 	
 function newItem(){
-	if(rows == 0){
-		firstItem();
-	}else{
-		var newCol = "<tr class='asc'><td align='center' colspan='3'><input name='contentstart" + rows + "' id='contentstart" + rows + "' type='text' readonly='readonly'  /> - <input name='contentend" + rows + "'  id='contentend" + rows + "' onchange='itemOnchange($(this),"+ rows + ")' type='text' value='以上'/></td><td align='center' colspan='2'><input name='contentvalue" + rows + "' id='contentvalue" + rows + "' type='text'/></td></tr>"
-		$('#addTarget').before(newCol);
-		$('#left').attr("rowspan",Number($('#left').attr("rowspan")) + 1);
-		var target1 = "contentend" + (Number(rows)-1);
-		var target2 = "contentstart" + rows;
-		rows = rows + 1 ;
-		$('#contentNum').val(Number($('#contentNum').val()) + 1);	
-		$('#' + target2).val(Number($('#' + target1).val())+1);
-	}
+	var newCol = "<tr class='asc'><td align='center' colspan='3'><input name='contentstart" + rows + "' id='contentstart" + rows + "' type='text' readonly='readonly'  /> - <input name='contentend" + rows + "'  id='contentend" + rows + "' onchange='itemOnchange($(this),"+ rows + ")' type='text' value=''/></td><td align='center' colspan='2'><input name='contentvalue" + rows + "' id='contentvalue" + rows + "' type='text' value='0' onchange='changelast($(this)," + rows + ")'/></td></tr>"
+	$('#addTarget').before(newCol);
+	$('#left').attr("rowspan",Number($('#left').attr("rowspan")) + 1);
+	var target1 = "contentend" + (Number(rows)-1);
+	var target2 = "contentstart" + rows;
 	
+	if(rows == 0){
+		target2 = "contentstartlast";
+		
+		$('#contentstart0').val('0');
+	}
+	$('#' + target2).val(Number($('#' + target1).val())+1);
+	
+	rows = rows + 1 ;
+	$('#contentNum').val(Number($('#contentNum').val()) + 1);
+	$('#contentvaluelast').attr("readonly","readonly");
+	
+	var target = "contentvalue" + (rows -1);
+	changelast($('#' + target),(rows -1));
 }
 
 function delItem(){
-	if(rows > 1){
+	if(rows > 0){
 		$('#addTarget').prev().remove();
 		$('#left').attr("rowspan",Number($('#left').attr("rowspan")) - 1);
 		rows = rows - 1 ;
 		$('#contentNum').val(Number($('#contentNum').val()) - 1);
 	}
+	if(rows == 0){
+		$('#contentvaluelast').removeAttr("readonly");
+		$('#contentstartlast').val('0');
+	}
+	
+	var target = "contentvalue" + (rows -1);
+	changelast($('#' + target),(rows -1));
 }
 
 function itemOnchange(obj,id){
 	var target = "contentstart" + (Number(id)+1);
+	if((Number(id)+1) == rows){
+		target = "contentstartlast";
+	}
 	$('#' + target).val(Number(obj.val()) + 1);
 }
 
+function changelast(obj,id){
+	if(Number(id) + 1 == rows){
+		$('#contentvaluelast').val(obj.val());
+	}
+}
 
 function checkContent(){
-	var newCol = Number($('#contentNum').val());
+	var newCol = Number($('#contentNum').val()) - 1;
+	if(newCol < 0){
+		newCol = 0 ;
+	}
 	var tempDouble = -1.0;
 	
 	white($('#catergory'));
 	white($('#type'));
+	white($('#contentstartlast'));
+	white($('#contentendlast'));
+	white($('#contentvaluelast'));
 	
 	if($('#catergory').val() == ""){
 		red($('#catergory'));
+		return false;
 	}else if($('#type').val()== ""){
 		red($('#type'));
+		return false;
 	}
 	for(var i = 0 ; i < newCol ; i ++){
 		white($('#'+"contentstart" + i));
@@ -234,16 +273,23 @@ function checkContent(){
 		}
 	} 
 	
-	tempDouble = $('#'+"contentend" + (newCol-1)).val();
-
-	if(tempDouble != '/' && tempDouble != '以上'){
-		red($('#'+"contentend" + (newCol-1)));
+	var target = "contentvalue" + newCol;
+	if($('#' + target).val() != $('#contentvaluelast').val() && newCol != 0){
+		red($('#contentvaluelast'));
 		return false;
 	}
+	//tempDouble = $('#'+"contentend" + (newCol-1)).val();
+
+	//if(tempDouble != '/' && tempDouble != '以上'){
+	//	red($('#'+"contentend" + (newCol-1)));
+	//	return false;
+	//}
 	
 	return true;
 	
 }
+
+
 
 function a(){
 	alert(checkContent());
@@ -310,15 +356,15 @@ function checkedd(){
 
 		<tr class="asc" >
 		
-		<td align="center" rowspan="<%=items.length + 1 %>" id="left">提成标准
+		<td align="center" rowspan="<%=items.length + 1 + 1 %>" id="left">提成标准
 		<button type="button" onclick="newItem()">增加一项</button>
 		<button type="button" onclick="delItem()">删除一项</button>
-		<input name="contentNum" id="contentNum" value="<%=items.length %>" type="hidden"/>
+		<input name="contentNum" id="contentNum" value="<%=items.length - 1 < 0 ? "0" : String.valueOf(items.length - 1)%>" type="hidden"/>
 		</td>
 		<td align="center" colspan="3" >零售价</td>
 		<td align="center" colspan="2">提成</td>
 		<%
-		for(int i = 0 ; i < items.length ; i ++){
+		for(int i = 0 ; i < items.length -1 ; i ++){
 			
 		
 		%>
@@ -326,11 +372,11 @@ function checkedd(){
 			<td align="center" colspan="3">
 			<input type="text" id="contentstart<%=i %>" name="contentstart<%=i %>" value="<%=items[i].split(":")[0].split("-")[0]%>" readonly="readonly"/>
 			-
-			<input type="text" id="contentend<%=i %>" name="contentend<%=i %>" onchange="itemOnchange($(this),<%=i %>)" value="<%=items[i].split(":")[0].split("-")[1].equals("/")?"以上":String.valueOf(Double.parseDouble(items[i].split(":")[0].split("-")[1])-1) %>"/>
+			<input type="text" id="contentend<%=i %>" name="contentend<%=i %>" onchange="itemOnchange($(this),<%=i %>)" value="<%=String.valueOf(Double.parseDouble(items[i].split(":")[0].split("-")[1])-1) %>"/>
 			</td>
 		
 			<td align="center" colspan="2">
-			<input type="text" id="contentvalue<%=i %>" name="contentvalue<%=i %>" value="<%=items[i].split(":")[1] %>" />  
+			<input type="text" id="contentvalue<%=i %>" name="contentvalue<%=i %>" value="<%=items[i].split(":")[1] %>" onchange="changelast($(this),<%=i %>)" />  
 			</td>
 		</tr>
 		<%
@@ -338,7 +384,27 @@ function checkedd(){
 		%>
 		</tr>
 		
+		<%
+		int i = items.length - 1;
+		boolean itemsIsNull = false;
+		
+		if(items.length == 0){	
+			itemsIsNull = true;
+		}
+		%>
 		<tr class="asc" id="addTarget">
+			<td align="center" colspan="3">
+			<input type="text" id="contentstartlast" name="contentstartlast" value="<%=itemsIsNull ? "0" : items[i].split(":")[0].split("-")[0]%>" readonly="readonly"/>
+			-
+			<input type="text" id="contentendlast" name="contentendlast" readonly="readonly" value="以上"/>
+			</td>
+		
+			<td align="center" colspan="2">
+			<input type="text" id="contentvaluelast" name="contentvaluelast" value="<%=itemsIsNull?"0":items[i].split(":")[1] %>" readonly="readonly" />  
+		</tr>
+		
+		
+		<tr class="asc">
 			<td width="100%" align="center" colspan="6"><input name="button" type="submit"  style="background-color:red;font-size:25px;"  value="确认修改" /></td>
 		</tr>
 </table> 
