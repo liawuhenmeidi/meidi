@@ -30,9 +30,6 @@
 	List<String> orderNames = UploadManager.getAllUploadOrderNames(uploadOrders);
 	List<String> salaryModelsNames = UploadManager.getAllSalaryModelNames(salaryModels);
 	
-	//下面用到的
-	String tempString = "";
-	
 	
 	List<SalaryResult> salaryResult = SalaryCalcManager.calcSalary(showOrders, showSalaryModels);
 	List<UploadOrder> unCalcUploadOrders = SalaryCalcManager.getUnCalcUploadOrders();
@@ -55,6 +52,9 @@
 		tmp.setShop("无");
 		session.setAttribute("altSalaryModel", tmp);
 	}
+	
+	//下面用到
+	String tempString = "";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -71,6 +71,23 @@
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
+function del(id,obj){
+	obj.text('删除中');
+	
+	$.ajax({ 
+        type:"post", 
+         url:"salarymodelDelete.jsp",
+         //data:"method=list_pic&page="+pageCount,
+         data:"type=delete&id="+id,
+         dataType: "",  
+         success: function (data) {
+        	obj.parent().parent().remove();
+           },  
+          error: function (XMLHttpRequest, textStatus, errorThrown) { 
+        	  return false ;
+            } 
+           }); 
+}
 
 
 </script>
@@ -86,7 +103,7 @@
 	<table  cellspacing="1" border="2px" >
 			<tr>
 				<form method="post" action="">
-				<td colspan="7" align="center">
+				<td colspan="8" align="center">
 				<h3>需要提成的订单</h3>
 				&nbsp;&nbsp;
 				<select name="orders"/>
@@ -138,7 +155,7 @@
 	<table cellspacing="1" border="2px" id="salarymodels">
 			<tr>
 				
-				<td colspan="7" align="center">
+				<td colspan="8" align="center">
 				<h3>提成标准</h3>
 				&nbsp;&nbsp;
 				<select name="models"/>
@@ -163,6 +180,7 @@
 				<td align="center">提成标准</td>
 				<td align="center">生效日期</td>
 				<td align="center">截至日期</td> 
+				<td align="center" id="ddd">删除</td> 
 		
 			</tr> 
 			<%
@@ -173,10 +191,11 @@
 				<td align="center"><%=showSalaryModels.get(i).getShop() %></td>
 				<td align="center"><%=showSalaryModels.get(i).getCatergory() %></td>
 				<td align="center"><a href="salarymodelDetail.jsp?id=<%=showSalaryModels.get(i).getId() %>"  target="_BLANK"><%=showSalaryModels.get(i).getType() %></a></td>
-				<td align="center"><%=showSalaryModels.get(i).getContent() %></td>
+				<td align="center"><%=showSalaryModels.get(i).getPrintContent() %></td>
 				<td align="center"><%=showSalaryModels.get(i).getStartTime() %></td>
 				<td align="center"><%=showSalaryModels.get(i).getEndTime() %></td> 
-		
+				<td align="center"><button type="button" onclick="del(<%=showSalaryModels.get(i).getId() %>,$(this))">删除此项</button></td>
+
 			</tr> 
 			<%
 			}

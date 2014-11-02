@@ -13,7 +13,6 @@ String contentNum = request.getParameter("contentNum");
 String idSTR = request.getParameter("id");
 int id = Integer.parseInt(idSTR);
 
-boolean close = false;
 //接受参数
 String catergory = request.getParameter("catergory");
 String type = request.getParameter("type");
@@ -21,16 +20,20 @@ salarymodel = (UploadSalaryModel)request.getSession().getAttribute("altSalaryMod
 
 
 //接受提成标准
-String tempStr = "";
+String tempStr = "0";
 String content = "{";
 
 for(int i = 0  ; i < Integer.parseInt(StringUtill.isNull(contentNum)?"0":contentNum) ; i++){
 	tempStr = request.getParameter("contentstart" + i);
 	if(!StringUtill.isNull(tempStr)){
-		content += "\"" + tempStr;
+		content += "\"" + Double.parseDouble(tempStr);
 	}
+	
 	tempStr = request.getParameter("contentend" + i);
 	if(!StringUtill.isNull(tempStr)){
+		if(!tempStr.equals("以上") && !tempStr.equals("/")){
+			tempStr = (Double.parseDouble(tempStr) + 1) + "";
+		}
 		content += "-" + tempStr + "\"";
 	}
 	tempStr = request.getParameter("contentvalue" + i);
@@ -60,8 +63,8 @@ if(id ==-1){
 		if(salarymodel.checkContent()){
 
 			if(UploadManager.saveSalaryModel(salarymodel)){
-				//保存成功
-				close =true;
+				//保存成功 
+				out.print("<script>alert('操作成功!!');window.close()</script>"); 
 				return;
 			}else{
 				//保存失败
@@ -74,6 +77,7 @@ if(id ==-1){
 	
 	//如果不是提交的	
 	}else{
+		salarymodel.setId(-1);
 		//直接展示上面的就行
 	}
 	
@@ -92,23 +96,23 @@ if(id ==-1){
 		if(salarymodel.checkContent()){
 
 			if(UploadManager.saveSalaryModel(salarymodel)){
-				//保存成功
-				response.getWriter().write("成功");  
-				response.getWriter().flush();   
-				response.getWriter().close();    
+				//保存成功  
+				out.print("<script>alert('操作成功!!');window.close()</script>"); 
+				return;
 			}else{
 				//保存失败
 			}
 		}else{
 			//不符合 规范的，重新填写!
 			salarymodel.setContent("");
+			salarymodel.setCatergory("无");
 		}
 	}
 }
 
 
 
-
+String tempString = "";
 
 %>
 
@@ -146,19 +150,15 @@ position:fixed;
 
 <script type="text/javascript">
 var rows = Number(<%=items.length %>);
-var close = <%=close%>;
 
 window.onload = function() { 
 	if(rows == 0){
 		firstItem();
 	}
-	if(close){
-		window.close();
-	}
 	}; 
 
 function firstItem(){
-	var newCol = "<tr class='asc'><td align='center' colspan='3'><input name='contentstart" + rows + "' id='contentstart" + rows + "' type='text' value='0' readonly='readonly'/> - <input name='contentend" + rows + "'  id='contentend" + rows + "' type='text' value='以上'/></td><td align='center' colspan='2'><input name='contentvalue" + rows + "' id='contentvalue" + rows + "' type='text'/></td></tr>"
+	var newCol = "<tr class='asc'><td align='center' colspan='3'><input name='contentstart" + rows + "' id='contentstart" + rows + "' type='text' value='0' readonly='readonly'/> - <input name='contentend" + rows + "'  id='contentend" + rows + "'  onchange='itemOnchange($(this),"+ rows + ")' type='text' value='以上'/></td><td align='center' colspan='2'><input name='contentvalue" + rows + "' id='contentvalue" + rows + "' type='text'/></td></tr>"
 	$('#addTarget').before(newCol);
 	$('#left').attr("rowspan",Number($('#left').attr("rowspan")) + 1);
 	rows = rows + 1 ;
@@ -166,16 +166,39 @@ function firstItem(){
 }
 	
 function newItem(){
-	var newCol = "<tr class='asc'><td align='center' colspan='3'><input name='contentstart" + rows + "' id='contentstart" + rows + "' type='text'/> - <input name='contentend" + rows + "'  id='contentend" + rows + "' type='text' value='以上'/></td><td align='center' colspan='2'><input name='contentvalue" + rows + "' id='contentvalue" + rows + "' type='text'/></td></tr>"
-	$('#addTarget').before(newCol);
-	$('#left').attr("rowspan",Number($('#left').attr("rowspan")) + 1);
-	rows = rows + 1 ;
-	$('#contentNum').val(Number($('#contentNum').val()) + 1);
+	if(rows == 0){
+		firstItem();
+	}else{
+		var newCol = "<tr class='asc'><td align='center' colspan='3'><input name='contentstart" + rows + "' id='contentstart" + rows + "' type='text' readonly='readonly'  /> - <input name='contentend" + rows + "'  id='contentend" + rows + "' onchange='itemOnchange($(this),"+ rows + ")' type='text' value='以上'/></td><td align='center' colspan='2'><input name='contentvalue" + rows + "' id='contentvalue" + rows + "' type='text'/></td></tr>"
+		$('#addTarget').before(newCol);
+		$('#left').attr("rowspan",Number($('#left').attr("rowspan")) + 1);
+		var target1 = "contentend" + (Number(rows)-1);
+		var target2 = "contentstart" + rows;
+		rows = rows + 1 ;
+		$('#contentNum').val(Number($('#contentNum').val()) + 1);	
+		$('#' + target2).val(Number($('#' + target1).val())+1);
+	}
+	
 }
+
+function delItem(){
+	if(rows > 1){
+		$('#addTarget').prev().remove();
+		$('#left').attr("rowspan",Number($('#left').attr("rowspan")) - 1);
+		rows = rows - 1 ;
+		$('#contentNum').val(Number($('#contentNum').val()) - 1);
+	}
+}
+
+function itemOnchange(obj,id){
+	var target = "contentstart" + (Number(id)+1);
+	$('#' + target).val(Number(obj.val()) + 1);
+}
+
 
 function checkContent(){
 	var newCol = Number($('#contentNum').val());
-	var tempDouble = 0.0;
+	var tempDouble = -1.0;
 	
 	white($('#catergory'));
 	white($('#type'));
@@ -192,7 +215,7 @@ function checkContent(){
 	}
 	
 	for(var i = 0 ; i < newCol ; i ++){
-		if(tempDouble == Number($('#'+"contentstart" + i).val())){
+		if(tempDouble == (Number($('#'+"contentstart" + i).val())) - 1){
 			if(Number($('#'+"contentend" + i).val()) <= tempDouble){
 				red($('#'+"contentend" + i));
 				return false;
@@ -289,9 +312,10 @@ function checkedd(){
 		
 		<td align="center" rowspan="<%=items.length + 1 %>" id="left">提成标准
 		<button type="button" onclick="newItem()">增加一项</button>
+		<button type="button" onclick="delItem()">删除一项</button>
 		<input name="contentNum" id="contentNum" value="<%=items.length %>" type="hidden"/>
 		</td>
-		<td align="center" colspan="3" onclick="a()">零售价</td>
+		<td align="center" colspan="3" >零售价</td>
 		<td align="center" colspan="2">提成</td>
 		<%
 		for(int i = 0 ; i < items.length ; i ++){
@@ -300,9 +324,9 @@ function checkedd(){
 		%>
 		<tr class="asc">
 			<td align="center" colspan="3">
-			<input type="text" id="contentstart<%=i %>" name="contentstart<%=i %>" value="<%=items[i].split(":")[0].split("-")[0] %>" <%if(items[i].split(":")[0].split("-")[0].equals("0.0")){ %>readonly="readonly" <%} %>/>
+			<input type="text" id="contentstart<%=i %>" name="contentstart<%=i %>" value="<%=items[i].split(":")[0].split("-")[0]%>" readonly="readonly"/>
 			-
-			<input type="text" id="contentend<%=i %>" name="contentend<%=i %>" value="<%=items[i].split(":")[0].split("-")[1].equals("/")?"以上":items[i].split(":")[0].split("-")[1] %>"/>
+			<input type="text" id="contentend<%=i %>" name="contentend<%=i %>" onchange="itemOnchange($(this),<%=i %>)" value="<%=items[i].split(":")[0].split("-")[1].equals("/")?"以上":String.valueOf(Double.parseDouble(items[i].split(":")[0].split("-")[1])-1) %>"/>
 			</td>
 		
 			<td align="center" colspan="2">

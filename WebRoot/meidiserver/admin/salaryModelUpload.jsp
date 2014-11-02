@@ -175,8 +175,8 @@ td {
 			<td align="center"><%= i+1 %></td>
 			<td align="center"><%= salaryModelList.get(i).getType() %></td>
 			<%
-				String tempContent = salaryModelList.get(i).getContent();
-				tempContent = tempContent.replace("{", "").replace("}", "");
+				String tempContent = salaryModelList.get(i).getPrintContent();
+				tempContent = tempContent.replace("{", "").replace("}", "").replace("\"", "");
 				//System.out.println(tempContent);
 				for(int j = 0 ; j < tempContent.split(",").length ; j ++){
 			%>

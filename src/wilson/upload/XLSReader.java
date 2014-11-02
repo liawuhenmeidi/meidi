@@ -174,7 +174,7 @@ public class XLSReader {
 							throw new Exception();
 						}
 						
-						//如果这一项小于上一项,不让上传
+						//如果上一项大于这一项,不让上传
 						if( tempDouble  >= Double.parseDouble(sheet0.getCell(j,i).getContents().trim()) ){
 							throw new Exception();
 						}
@@ -185,8 +185,8 @@ public class XLSReader {
 						
 						
 						//增加提成内容
-						tempString += "\"" + tempDouble + "-" + Double.parseDouble(sheet0.getCell(j,i).getContents().trim()) + "\"" + ":" + "\"" + sheet0.getCell(j+1,i).getContents().trim() + "\""+",";
-						tempDouble = Double.parseDouble(sheet0.getCell(j,i).getContents().trim());
+						tempString += "\"" + tempDouble + "-" + (Double.parseDouble(sheet0.getCell(j,i).getContents().trim()) + 1) + "\"" + ":" + "\"" + sheet0.getCell(j+1,i).getContents().trim() + "\""+",";
+						tempDouble = Double.parseDouble(sheet0.getCell(j,i).getContents().trim()) + 1;
 						//如果是最后一项
 						if(j + 2 >= sheet0.getColumns()){
 							tempString += "\"" + tempDouble + "-/" + "\"" + ":" + "\"" + sheet0.getCell(j+1,i).getContents().trim() + "\""+",";

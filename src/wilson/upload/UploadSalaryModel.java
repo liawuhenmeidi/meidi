@@ -89,6 +89,10 @@ public class UploadSalaryModel {
 		this.shop = shop;
 	}
 	
+	/**
+	 * @param 输入的是saveMode的content
+	 * @return
+	 */
 	public boolean checkContent(){
 		boolean result = false;
 		try{
@@ -98,7 +102,7 @@ public class UploadSalaryModel {
 				double tempInt = 0 ;
 				for(int i = 0 ; i < items.length ; i ++){
 					if(tempInt == Double.parseDouble(items[i].split(":")[0].split("-")[0])){
-						tempInt = Double.parseDouble(items[i].split(":")[1]);
+						tempInt = Double.parseDouble(items[i].split(":")[1].replace("%", ""));
 						if(items[i].split(":")[0].split("-")[1].equals("以上") || items[i].split(":")[0].split("-")[1].equals("/")){
 							this.setContent(this.getContent().replace("以上", "/"));
 						}else{
@@ -115,6 +119,50 @@ public class UploadSalaryModel {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		return result;
+	}
+	
+	/**
+	 * @param //{"0.0-1899.0":"60","1899.0-1999.0":"70","1999.0-/":"70"}
+	 * @return // 0.0-1898.0:60,1899.0-1998.0:70,1999.0-/:70
+	 * 将存储的格式转化为显示给用户的格式
+	 */
+	public String getPrintContent(){
+		
+		String result = "";
+		String tempContent = this.content.replace("{", "").replace("}", "").replace("\"", "");
+		for(int i = 0 ; i < tempContent.split(",").length ; i ++){
+			result += "\"";
+			result += tempContent.split(",")[i].split(":")[0].split("-")[0];
+			result += "-";
+			if(i == tempContent.split(",").length -1){
+				result += tempContent.split(",")[i].split(":")[0].split("-")[1];
+			}else{
+				result += Double.parseDouble(tempContent.split(",")[i].split(":")[0].split("-")[1]) - 1;
+			}
+			result += "\"";
+			result += ":";
+			result += "\"";
+			result += tempContent.split(",")[i].split(":")[1];
+			result += "\"";
+			result += ",";
+		}
+		if(result.endsWith(",")){
+			result = result.substring(0,result.length()-1);
+		}
+				
+		return result;
+	}
+	
+	/**
+	 * @return  //{"0.0-1899.0":"60","1899.0-1999.0":"70","1999.0-/":"70"}
+	 * @param // 0.0-1898.0:60,1899.0-1998.0:70,1999.0-/:70
+	 * 将显示给用户的格式转化为存储的格式
+	 */
+	public String getSaveContent(String inputString){
+		
+		String result = "";
+		//回头再写吧...
 		return result;
 	}
 }

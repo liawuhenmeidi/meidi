@@ -867,6 +867,24 @@ public class UploadManager {
 		return flag ;  
 	}
 	
+	public static boolean deleteSalaryModelById(int id){
+		boolean flag = false;
+		Connection conn = DB.getConn();
+		String sql = "delete from uploadsalarymodel  where id = " + id;
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		Statement stmt = DB.getStatement(conn);
+		try {
+			stmt.execute(sql);
+			flag = true ;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return flag ;  
+	}
+	
 	public static boolean deprecatedUploadOrderByName(String name){
 		boolean flag = false;
 		Connection conn = DB.getConn();
