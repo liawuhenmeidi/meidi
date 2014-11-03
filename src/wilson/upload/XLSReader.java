@@ -56,12 +56,12 @@ public class XLSReader {
 					continue;
 				}
 				uo.setName(name);
-				uo.setShop(sheet0.getCell(0,i).getContents());
-				uo.setPosNo(sheet0.getCell(1,i).getContents());
-				uo.setSaleTime(sheet0.getCell(2,i).getContents());
-				uo.setType(sheet0.getCell(3,i).getContents());
-				uo.setNum(Integer.parseInt(sheet0.getCell(4,i).getContents().replace(",", "")));
-				uo.setSalePrice(Double.parseDouble(sheet0.getCell(5,i).getContents().replace(",", "")));
+				uo.setShop(sheet0.getCell(0,i).getContents().trim());
+				uo.setPosNo(sheet0.getCell(1,i).getContents().trim());
+				uo.setSaleTime(sheet0.getCell(2,i).getContents().trim());
+				uo.setType(sheet0.getCell(3,i).getContents().trim());
+				uo.setNum(Integer.parseInt(sheet0.getCell(4,i).getContents().replace(",", "").trim()));
+				uo.setSalePrice(Double.parseDouble(sheet0.getCell(5,i).getContents().replace(",", "").trim()));
 				uo.setFileName(srcFile.getName());
 				UploadOrders.add(uo);
 				uo = new UploadOrder();
