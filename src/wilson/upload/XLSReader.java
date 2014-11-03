@@ -143,7 +143,7 @@ public class XLSReader {
 					usm.setEndTime(endTime);
 					usm.setShop(shop);
 					//判断是否为空行
-					if(sheet0.getCell(1,i).getContents().equals("")||sheet0.getCell(2,i).getContents().trim().equals("")){
+					if(sheet0.getCell(1,i).getContents().trim().equals("")||sheet0.getCell(2,i).getContents().trim().equals("")){
 						break;
 					}
 					////暂时先去掉类别
@@ -172,7 +172,7 @@ public class XLSReader {
 						
 						
 						//零售价为空，break;
-						if(sheet0.getCell(j,i).getContents()==""||sheet0.getCell(j,i).getContents().trim().equals("")){
+						if(sheet0.getCell(j,i).getContents().trim()==""||sheet0.getCell(j,i).getContents().trim().equals("")){
 							
 							if(tempString.length() ==0){
 								break;
@@ -185,7 +185,7 @@ public class XLSReader {
 							break;
 						}
 						//没有成对匹配，throw Exception
-						if(sheet0.getCell(j+1,i).getContents()==""||sheet0.getCell(j+1,i).getContents().trim().equals("")){
+						if(sheet0.getCell(j+1,i).getContents().trim()==""||sheet0.getCell(j+1,i).getContents().trim().equals("")){
 							throw new Exception();
 						}
 						
@@ -279,7 +279,7 @@ public class XLSReader {
 			
 			String name = "";
 			try{
-				name = sheet0.getCell(1,0).getContents();
+				name = sheet0.getCell(1,0).getContents().trim();
 				if(UploadManager.isUploaderFileNameExist(name)){
 					UploadOrders = new ArrayList<UploadOrder>();
 					uo = new UploadOrder();
@@ -302,15 +302,15 @@ public class XLSReader {
 			for(int i = 2 ; i < sheet0.getRows(); i ++){
 				
 				try{
-					if(sheet0.getCell(0,i).getContents().equals("")){
+					if(sheet0.getCell(0,i).getContents().trim().equals("")){
 						continue;
 					}
 					uo.setName(name);
-					uo.setShop(sheet0.getCell(1,i).getContents());
-					uo.setType(sheet0.getCell(2,i).getContents());
-					uo.setSaleManName(sheet0.getCell(3,i).getContents());
-					uo.setSalePrice(Double.parseDouble(sheet0.getCell(4,i).getContents()));
-					uo.setNum(Integer.parseInt(sheet0.getCell(5,i).getContents()));
+					uo.setShop(sheet0.getCell(1,i).getContents().trim());
+					uo.setType(sheet0.getCell(2,i).getContents().trim());
+					uo.setSaleManName(sheet0.getCell(3,i).getContents().trim());
+					uo.setSalePrice(Double.parseDouble(sheet0.getCell(4,i).getContents().trim()));
+					uo.setNum(Integer.parseInt(sheet0.getCell(5,i).getContents().trim()));
 				}catch(Exception e){
 					e.printStackTrace();
 					UploadOrders = new ArrayList<UploadOrder>();
@@ -322,15 +322,15 @@ public class XLSReader {
 				}
 				
 				try {
-					uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents())));
+					uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents().trim())));
 				} catch (ParseException e) {
 					s1 = new SimpleDateFormat("MM/dd/yy");
 					try {
-						uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents())));
+						uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents().trim())));
 					} catch (ParseException e1) {
 						s1 = new SimpleDateFormat("yyyyMMdd");
 						try{
-							uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents())));
+							uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents().trim())));
 						}catch(ParseException e2){
 							e.printStackTrace();
 							UploadOrders = new ArrayList<UploadOrder>();
