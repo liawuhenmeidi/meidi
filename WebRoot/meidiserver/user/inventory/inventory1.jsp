@@ -246,7 +246,7 @@ function add(){
    %>
   </select> 
   <br/> 
-	    选择产品类别:     
+	    选择产品型号:     
 	  <select id="product">  
 	  <option value=""></option>
 	   <% if(listp != null){

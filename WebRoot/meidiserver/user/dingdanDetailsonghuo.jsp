@@ -3,7 +3,7 @@
 <%  
 int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
 Map<Integer,List<Gift>> gMap = GiftService.getmap(); 
-  
+User sale = UserService.getMapId().get(or.getSaleID());
 request.setAttribute("order", or);
 
 %>
@@ -218,7 +218,7 @@ function change(str1,str2,type){
     <% 
    
     if(or.getReturnstatuse() == 0 && or.getReturnid() == user.getId() && query){
-
+         
     %>
     <tr>
     <td class="s_list_m">退货</td>  
@@ -234,6 +234,7 @@ function change(str1,str2,type){
   <tr>
    <%
     }else if(or.getReturnstatuse() == 1){   
+    	
 		%> 
 		  <tr>  
     <td class="s_list_m">商品已退</td> 
@@ -249,7 +250,32 @@ function change(str1,str2,type){
     <td width="25%" class="s_list_m">单号</td>
     <td class="s_list_m"><%=or.getPrintlnid() == null?"":or.getPrintlnid()%></td>
    
-  </tr>  
+  </tr> 
+   <tr>
+    <td width="25%" class="s_list_m">门店</td>
+    <td class="s_list_m"><%= sale.getBranchName()%></td>
+   
+  </tr> 
+   <tr>
+    <td width="25%" class="s_list_m">导购员</td>
+    <td class="s_list_m"><%=sale.getUsername()%></td>
+   
+  </tr> 
+   <tr>
+    <td width="25%" class="s_list_m">导购员电话</td>
+    <td class="s_list_m"><%=sale.getPhone()%></td>
+   
+  </tr> 
+   <tr>
+    <td width="25%" class="s_list_m">上报状态</td>
+    <td class="s_list_m"><%=OrderManager.getOrderStatues(or)%></td>
+   
+  </tr>
+   <tr>
+    <td width="25%" class="s_list_m">送货状态</td>
+    <td class="s_list_m"><%=OrderManager.getDeliveryStatues(or)%></td>
+   
+  </tr> 
   <%
   List<OrderProduct> lists = OrderProductManager.getOrderStatues(user, or.getId());
   for(int g = 0 ;g<lists.size();g++){

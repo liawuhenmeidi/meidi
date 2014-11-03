@@ -107,7 +107,7 @@ public class GroupManager {
 
                  // listsql.add(pstmt); 	
 				Grouptype gtype = GrouptypeManager.getGrouptype(group.getPtype());	
-                  if(gtype.getType() == 2){
+                  if(gtype.getType() == 8){
                 	    
                   	String sql2 = BranchManager.save();
                   	PreparedStatement pstmt1 = DB.prepare(conn, sql2); 

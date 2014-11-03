@@ -145,14 +145,14 @@ logger.info(sql);
 			return b;
 		}
 		
-		
-		
+
 		private static BranchType getBranchFromRs(ResultSet rs){
 			BranchType branch= new BranchType();
 			try {   
 				branch.setId(rs.getInt("id"));  
 				branch.setName(rs.getString("bname"));
 				branch.setStatues(rs.getInt("statues")); 
+				branch.setIsSystem(rs.getInt("isSystem"));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}	

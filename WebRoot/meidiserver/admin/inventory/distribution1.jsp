@@ -70,11 +70,30 @@ td {
 	 add();
  });
  
- function search(category,branchid){
+ function search(category,branchid,ctype){
 	// window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
-	 window.location.href='inventory1.jsp?category='+category+'&branchid='+branchid;
+	 //window.location.href='inventory1.jsp?category='+category+'&branchid='+branchid;
+	 $("#time").val("");
+	 $("#starttime").val(""); 
+	 $("#endtime").val(""); 
+	 winPar = window.open("time.jsp","time","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
+	
+	 setInterval("startRequest('"+ctype+"','"+branchid+"')",500);  
+	 
  } 
   
+ function startRequest(ctype,branchid){ 
+	 var time = $("#time").val();
+	 if("fresh" == time){
+		 var starttime = $("#starttime").val(); 
+		 var endtime = $("#endtime").val(); 
+		 window.location.href='inventoryDetail.jsp?ctype='+ctype+'&branchid='+branchid+'&starttime='+starttime+'&endtime='+endtime; 
+		 $("#time").val("");
+		 return ;
+	 }
+	
+ }
+ 
  function add(){    
 	 $("#table tr").remove();
 	 var category = "<%=category%>";
@@ -108,7 +127,7 @@ td {
 	        		 }
 	        		 
 	        		 if(counttype != 0 || counttype == 0 && str.papercount != 0 ){
-		        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branchstr[str.branchid].locateName+'\')">' +  
+		        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branchstr[str.branchid].locateName+'\',\''+str.typeid+'\')">' +  
 		        		  
 		        		     ' <td>'+branchstr[str.branchid].locateName+'</td> ' + 
 		        		     ' <td>'+str.cateoryName+'</td> ' +   
@@ -155,7 +174,9 @@ td {
  </div>      
  </div>        
           <div class="table-list" >
-        
+        <input type="hidden" id="time"  value=""/>
+  <input type="hidden" id="starttime"  value=""/>
+  <input type="hidden" id="endtime"  value=""/>
   <table width="100%"  cellspacing="1" id="table" >
     
  

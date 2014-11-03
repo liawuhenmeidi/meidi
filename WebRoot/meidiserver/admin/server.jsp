@@ -159,6 +159,7 @@ if("peidan".equals(method)){
 	int recount = OrderManager.getOrderlistcount(user,Group.dealSend,Order.returns,0,0,"id",""); 
 	int hcount = OrderManager.getOrderlistcount(user,Group.dealSend,Order.huanhuo,0,0,"id",""); 
 	int inventory = InventoryManager.getCategory(user,"unconfirmed").size(); 
+	int analyInventory = InventoryManager.getCategoryAnalyze(user, "confirmed").size();
 	
 	map.put("ucount", ucount);
 	map.put("mcount", mcount);
@@ -167,6 +168,8 @@ if("peidan".equals(method)){
 	map.put("recount",recount); 
 	map.put("hcount",hcount); 
 	map.put("inventory",inventory);
+	map.put("analyInventory",analyInventory);
+	
 	String strmap = StringUtill.GetJson(map);
 	response.getWriter().write(strmap);  
 	response.getWriter().flush(); 
@@ -183,13 +186,14 @@ if("peidan".equals(method)){
 		hcount = UserManager.getUserszhuce(user).size(); 
 	} 
 	int inventory = InventoryManager.getCategory(user,"unconfirmed").size(); 
-	
+	int analyInventory = InventoryManager.getCategoryAnalyze(user, "confirmed").size();
 	int rcount = OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.release,0,0,"id",""); 
 	map.put("dcount", dcount);
 	map.put("icount", icount);  
 	map.put("hcount",hcount);    
 	map.put("rcount",rcount); 
 	map.put("inventory",inventory);
+	map.put("analyInventory",analyInventory);
 	
 	String strmap = StringUtill.GetJson(map);
 	response.getWriter().write(strmap);  

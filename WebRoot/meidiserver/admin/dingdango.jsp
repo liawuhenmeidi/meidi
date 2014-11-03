@@ -12,7 +12,7 @@ count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.go,num,Page,s
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>订单管理</title>
+<title>厂送票未消</title>
 
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <style type="text/css">
@@ -179,13 +179,12 @@ function adddetail(src){
 		<tr id="th">  
 			<td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>
 			<td align="center">单号</td>
-			<td align="center">门店</td> 
-			<td align="center">销售员</td>
+			
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">OMS订单号</td>
 			<td align="center">验证码(联保单)</td>
 			
-			<td align="center">顾客信息</td>
+			 <td align="center">开票日期</td>
 			<td align="center">票面名称</td>
 			<td align="center">票面型号</td>
 			<td align="center">票面数量</td>
@@ -197,7 +196,10 @@ function adddetail(src){
 			<td align="center">赠品数量</td>
 			
 			<td align="center">赠品状态</td>
-            <td align="center">开票日期</td>
+			<td align="center">门店</td> 
+			<td align="center">销售员</td>
+			<td align="center">顾客信息</td>
+           
             <td align="center">预约日期</td>
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
@@ -222,26 +224,14 @@ function adddetail(src){
    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
 		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
-		<td align="center"> 		   
-		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
-		</td> 
+		 
 		<% 
 		String tdcol = " bgcolor=\"red\"" ;
-		
 		  %>   
 		<td align="center" <%=o.getPosremark()==1?tdcol:"" %>><%=o.getPos() %></td>
 		<td align="center" <%=o.getSailidrecked()==1?tdcol:"" %>><%=o.getSailId() %></td>
 		<td align="center" <%=o.getReckedremark()==1?tdcol:"" %>><%=o.getCheck() %></td>
-		<%if(o.getPhoneRemark()!=1){ 
-			tdcol = "";
-		} %>
-			<td align="center"><%=o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+  
-		                      o.getPhone1()
-		%>
-		
-		</td> 
+		<td align="center"><%=o.getSaleTime() %></td>
 	    <td align="center"><%= o.getCategory(1,"</p>")%></td>    
 		  <td align="center" ><%=o.getSendType(1,"</p>")%></td>    
 		  <td align="center" ><%= o.getSendCount(1,"</p>")%></td>    
@@ -251,8 +241,20 @@ function adddetail(src){
 		<td align="center" ><%= o.getGifttype("</p>")%></td>  
 		<td align="center" ><%= o.getGifcount("</p>")%></td>  
 		<td align="center" ><%= o.getGifStatues("</p>")%></td>
+		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
+		<td align="center"> 		   
+		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
+		</td>
+		<%if(o.getPhoneRemark()!=1){ 
+			tdcol = "";
+		} %>
+			<td align="center"><%=o.getUsername()  +"</p>"+
+				"<p><font color=\""+tdcol+"\"> "+  
+		                      o.getPhone1()
+		%>
 		
-		<td align="center"><%=o.getSaleTime() %></td>
+		</td> 
+		
 		<td align="center"><%=o.getOdate() %></td>
 		<td align="center"><%=o.getLocate()%></td>
 		<td align="center"><%=o.getLocateDetail() %></td>

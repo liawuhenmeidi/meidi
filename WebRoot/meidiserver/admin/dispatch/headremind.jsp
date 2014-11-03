@@ -31,6 +31,7 @@ $(document).ready(function () {
     	           $("#release").html(json.rcount);
     	           $("#huiyuan").html(json.hcount);
     	           $("#inventory").html(json.inventory);
+    	           $("#analyInventory").html(json.analyInventory);
     	           // huiyuan
     	         //  $("#neworder").html(json.ncount);
     	         //  $("#returns").html(json.recount);  
@@ -42,6 +43,7 @@ $(document).ready(function () {
        }
 
   function serach(str){ 
+	  return ;
 	  if("Dispatching" == str){ 
 		  window.open('remind/dispatch.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }else if("installonly" == str){  
@@ -54,6 +56,8 @@ $(document).ready(function () {
 		  window.open('remind/huiyuan.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }else if("inventory" == str){ 
 		  window.open('../inventory/receipts.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	  }else if("analyInventory" == str){ 
+		  window.open('inventory/analyzrecepts.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }
   }
  
@@ -88,9 +92,14 @@ $(document).ready(function () {
  <span style="color:red;font-size:20px;" id="huiyuan"></span> <br/>
    </td>
     <td>
-  <a href="javascript:void(0);" onclick="serach('inventory')" style="font-size:15px;">调拨单待确认</a> 
+  <a href="javascript:void(0);" onclick="serach('inventory')" style="font-size:20px;">调拨单待确认</a> 
    &nbsp;&nbsp;&nbsp;&nbsp;   
   <span style="color:red;font-size:20px;" id="inventory"></span>
+   </td>
+   <td>
+  <a href="javascript:void(0);" onclick="serach('analyInventory')" style="font-size:20px;">调货处理</a> 
+   &nbsp;&nbsp;&nbsp;&nbsp;   
+  <span style="color:red;font-size:20px;" id="analyInventory"></span>
    </td>
   </tr >
   

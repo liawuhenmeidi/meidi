@@ -84,13 +84,13 @@ public class InventoryManager {
 			if("unconfirmed".equals(statues)){ 
 				sql = "select * from inventory where intype = 2  order by id desc";
 			}else if("confirmed".equals(statues)){
-				sql = "select * from inventory where instatues = 1 and intype = 2  order by id desc";
+				sql = "select * from inventory where outstatues = 0 and intype = 2  order by id desc";
 			}
 		}else {       
 			if("unconfirmed".equals(statues)){ 
 				sql = "select * from inventory where inbranchid = " + branchid +"  and intype = 2  order by id desc";
 			}else if("confirmed".equals(statues)){
-				sql = "select * from inventory where instatues = 1 and  inbranchid = " + branchid +"   and intype = 2  order by id desc";
+				sql = "select * from inventory where instatues = 0 and  inbranchid = " + branchid +"   and intype = 2  order by id desc";
 			}
 			
 		} 

@@ -25,6 +25,10 @@ if((Order.deliveryStatuesTuihuo+"").equals(type)){
 	message += "退货单";  
 	htmlname = "退货员";    
 	username = usermap.get(order.getReturnid()).getUsername();
+}else if((Order.orderinstall+"").equals(type)){
+	message += "安装单";  
+	htmlname = "安装员";    
+	username = usermap.get(order.getInstallid()).getUsername();
 }else {
 	if((0+"").equals(deliveryStatues)){
 		htmlname = "送货员";

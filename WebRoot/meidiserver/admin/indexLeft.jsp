@@ -183,8 +183,7 @@ User user = (User)session.getAttribute("user");
                <p ><a href="dispatch/dingdan_chargeall.jsp"  target="contentpage">送货安装结款</a></p>  
             </div>        
           </li> 
-
-        	 
+ 	 
         	<%	  
         	  
         }

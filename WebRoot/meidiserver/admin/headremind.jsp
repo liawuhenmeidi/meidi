@@ -36,6 +36,7 @@ $(document).ready(function () {
     	           $("#returns").html(json.recount); 
     	          // $("#huanhuo").html(json.hcount); 
     	           $("#inventory").html(json.inventory); 
+    	           $("#analyInventory").html(json.analyInventory);
     	           },  
     	         error: function (XMLHttpRequest, textStatus, errorThrown) {
     	            } 
@@ -57,6 +58,8 @@ $(document).ready(function () {
 		  window.open('remind/return.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }else if("inventory" == str){ 
 		  window.open('inventory/receipts.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	  }else if("analyInventory" == str){ 
+		  window.open('inventory/analyzrecepts.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }
 	
   }
@@ -74,11 +77,7 @@ $(document).ready(function () {
    &nbsp;&nbsp;&nbsp;&nbsp;
    <span style="color:red;font-size:20px;" id="neworder"></span>
    </td>
-   <td>
-  <a href="javascript:void(0);" onclick="serach('zhuce')" style="font-size:15px;">职工注册信息</a>
-   &nbsp;&nbsp;&nbsp;&nbsp; 
-  <span style="color:red;font-size:20px;" id="zhuce"></span>
-   </td>
+
    <td>
   <a href="javascript:void(0);" onclick="serach('release')" style="font-size:15px;">安装单位释放</a> 
   &nbsp;&nbsp;&nbsp;&nbsp;   
@@ -107,6 +106,16 @@ $(document).ready(function () {
   <a href="javascript:void(0);" onclick="serach('inventory')" style="font-size:15px;">调拨单待确认</a> 
    &nbsp;&nbsp;&nbsp;&nbsp;   
   <span style="color:red;font-size:20px;" id="inventory"></span>
+   </td>
+      <td>
+  <a href="javascript:void(0);" onclick="serach('zhuce')" style="font-size:15px;">职工注册信息</a>
+   &nbsp;&nbsp;&nbsp;&nbsp; 
+  <span style="color:red;font-size:20px;" id="zhuce"></span>
+   </td>
+    <td>
+  <a href="javascript:void(0);" onclick="serach('analyInventory')" style="font-size:15px;">调货处理</a> 
+   &nbsp;&nbsp;&nbsp;&nbsp;   
+  <span style="color:red;font-size:20px;" id="analyInventory"></span>
    </td>
   </tr>
   </table> 

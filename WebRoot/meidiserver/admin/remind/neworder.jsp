@@ -78,7 +78,7 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 		
 		$.ajax({ 
 	        type: "post",  
-	         url: "server.jsp",   
+	         url: "../server.jsp",   
 	         data:"method=getinventory&types="+types+"&uid="+saleid,
 	         dataType: "",  
 	         success: function (data) {  
@@ -92,14 +92,14 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	        			//alert(deliveryStatues);
 	        			$.ajax({ 
 	        		        type: "post", 
-	        		         url: "server.jsp",
+	        		         url: "../server.jsp",
 	        		         data:"method=peidan&id="+oid+"&uid="+uid,
 	        		         dataType: "", 
 	        		         success: function (data) { 
 	        		            if(data == 8){
 	        		            	alert("导购修改中。稍后重试"); 
 	        		            }else{ 
-	        		            	 window.location.href="print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues;  
+	        		            	 window.location.href="../print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues;  
 	        		            }
 	        		           },  
 	        		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -118,7 +118,7 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 		uid = 0; 
 		$.ajax({ 
 	        type: "post", 
-	         url: "server.jsp",
+	         url: "../server.jsp",
 	         data:"method=peidan&id="+oid+"&uid="+uid,
 	         dataType: "", 
 	         success: function (data) { 
@@ -126,9 +126,9 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	            	alert("导购修改中。稍后重试"); 
 	            }else{
 	            	if(str1 != 0){ 
-	            	   window.location.href="print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues+"&dingma="+str1;  
+	            	   window.location.href="../print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues+"&dingma="+str1;  
 	            	}else {
-	            		window.location.href="dingdan.jsp";	 
+	            		window.location.href="neworder.jsp";	 
 	            	}
 	            }
 	           },  

@@ -26,14 +26,14 @@ position:fixed;
     padding:0;
 }
 #table{  
-    width:2400px;
+    width:2500px;
     table-layout:fixed ;
 }
 
 #th{  
     background-color:white;
     position:absolute; 
-    width:2400px; 
+    width:2500px; 
     height:30px;
     top:0;
     left:0;
@@ -290,14 +290,14 @@ function adddetail(src){
 			<td align="center">顾客信息</td>
 			<td align="center">送货名称</td>
 			<td align="center" >送货型号</td> 
-			   
 			<td align="center" >送货数量</td>
+			
 			<td align="center">赠品</td>
 			<td align="center">赠品数量</td>
 			<td align="center">赠品状态</td>
             <td align="center">开票日期</td>
-            
             <td align="center">预约日期</td>
+            
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
            <td align="center">上报状态</td>

@@ -17,7 +17,7 @@ count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.serach,num,Pa
 <head> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   
-<title>文员派工页</title>  
+<title>查看订单页</title>  
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <style type="text/css">
 .fixedHead {  
@@ -31,14 +31,14 @@ position:fixed;
 
 #table{  
     
-     width:3600px;
+     width:3700px;
      table-layout:fixed ;
 } 
  
 #th{
     background-color:white;
     position:absolute;
-    width:3600px;
+    width:3700px;
     height:30px; 
     top:0;
     left:0;
@@ -297,14 +297,14 @@ function orderPrint(id,statues,type,deliveryStatues){
 			<td align="center">顾客信息</td>
 			<td align="center">票面名称</td>
 			<td align="center">票面型号</td>
-			
 			<td align="center">票面数量</td>
+			
 			<td align="center">送货名称</td>
 			<td align="center">送货型号</td>
 			<td align="center">送货数量</td>
-			<td align="center">赠品</td>
-			
+			<td align="center">赠品</td>	
 			<td align="center">赠品数量</td>
+			
 			<td align="center">赠品状态</td>
             <td align="center">开票日期</td>
             <td align="center">预约日期</td>
@@ -316,19 +316,19 @@ function orderPrint(id,statues,type,deliveryStatues){
             <td align="center">送货状态</td>
 			<td align="center">打印状态</td>
 			<td align="center">送货人员</td> 
+			
 			 <td align="center">送货时间</td>
-			 
 			 <td align="center">安装人员</td>
 			 <td align="center">安装时间</td>
 			<td align="center">安装网点</td>
 			<td align="center">安装网点结款</td>
-			<td align="center">厂送票是否已回</td>
 			
+			<td align="center">厂送票是否已回</td>
 			<td align="center">厂送票是否已消</td>
 			<td align="center">厂送票是否结款</td>
 			<td align="center">备注</td> 
-			
-			<td align="center">打印</td> 
+			<td align="center">打印</td>
+			 
 			<td align="center">安装网点驳回</td> 
 			<td align="center">导购退货申请</td>   
 		</tr>
@@ -348,10 +348,7 @@ function orderPrint(id,statues,type,deliveryStatues){
     		col = "style='background-color:yellow'";
     	}
   %>
- <% 
- long end0 = System.currentTimeMillis();
- 
- %>  
+
   
   <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
 		<!--  <td align="center"><input type="checkbox" value="1" name="userid[]"/></td> -->
@@ -360,16 +357,9 @@ function orderPrint(id,statues,type,deliveryStatues){
 		<%} %> 
 
 		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-				  <% 
- long end20 = System.currentTimeMillis();
- System.out.println("endAa"+(end20-end0)); 
- %>			
+		
 		<td align="center"><%=o.getbranchName(o.getBranch())%></td> 
 
-  <% 
- long end2 = System.currentTimeMillis();
- System.out.println("endaa"+(end2-end20)); 
- %>
 		<td align="center"> 		  
 		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
 		</td>
@@ -395,18 +385,12 @@ function orderPrint(id,statues,type,deliveryStatues){
 		  <td align="center"><%= o.getCategory(1,"</p>")%></td>    
 		  <td align="center" ><%=o.getSendType(1,"</p>")%></td>    
 		  <td align="center" ><%= o.getSendCount(1,"</p>")%></td> 
-		  		   <%  
- long end1 = System.currentTimeMillis();
-	   System.out.println("enda"+(end1-end2));
- %>    
+
 		  <td align="center"><%= o.getCategory(0,"</p>")%></td>
  
 		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>  
 		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td> 
-   <% 
- long end3 = System.currentTimeMillis();
- System.out.println("endA"+(end3-end1)); 
- %>	
+
 		<td align="center" ><%= o.getGifttype("</p>")%></td>  
 		<td align="center" ><%= o.getGifcount("</p>")%></td>  
 		<td align="center" ><%= o.getGifStatues("</p>")%></td>
@@ -555,8 +539,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 		 }
 		}
 		%>
-			
-       
+
     </tr>
     <%   
        

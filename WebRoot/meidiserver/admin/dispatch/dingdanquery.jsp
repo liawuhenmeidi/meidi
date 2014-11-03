@@ -13,7 +13,7 @@ count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.orderqu
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>订单管理</title>
+<title>送货确认页</title>
 
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <style type="text/css">
@@ -116,7 +116,7 @@ function change(str1,str2,type){
          data:"method=songhuo&id="+str2+"&statues="+statues+"&type="+type,
          dataType: "",  
          success: function (date) {
-        	alert(date);
+        	//alert(date);
         	 if(date == 0){
         		 alert("导购提交修改申请，不能配工");
         		 return ; 

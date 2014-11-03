@@ -39,7 +39,7 @@ td {
 
 </style>  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>产品管理</title>
+<title>库存查询</title>
 
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>

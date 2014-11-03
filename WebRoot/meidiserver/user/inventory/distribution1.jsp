@@ -63,8 +63,9 @@ td {
 	 add();
  });
  
- function search(category,branchid){
-	 window.location.href='inventory1.jsp?category='+category+'&branchid='+branchid;
+ function search(category,branchid,typeid){
+	 window.location.href="time.jsp?ctype="+typeid+"&branchid="+branchid;
+	// window.location.href='inventory1.jsp?category='+category+'&branchid='+branchid;
 	 //window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
 }
   
@@ -92,7 +93,7 @@ td {
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
 	        		 
-	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="search(\''+str.categoryid+'\',\''+str.branchid+'\')">' +  
+	        		 addstr += '<tr id="record'+row+'" class="asc" onclick="search(\''+str.categoryid+'\',\''+str.branchid+'\',\''+str.typeid+'\')">' +  
 	        		  
 	        		     ' <td>'+branchstr[str.branchid].locateName+'</td> ' + 
 	        		     ' <td>'+str.cateoryName+'</td> ' +   
