@@ -652,7 +652,7 @@ public class UploadManager {
 		List <UploadOrder> result = new ArrayList<UploadOrder>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadorder where checked = 1 andname = '" + name + "'";
+		String sql = "select * from uploadorder where checked = 1 and name = '" + name + "'";
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
