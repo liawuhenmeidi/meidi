@@ -69,7 +69,7 @@
 		if(selectOrderName.equals("all")){
 			unCheckedUploadOrders = uploadOrders;
 		}else{
-			unCheckedUploadOrders = UploadManager.getOrdersByName(selectOrderName);
+			unCheckedUploadOrders = UploadManager.getUnCheckedUploadOrdersByName(selectOrderName);
 		}
 	}
 	
