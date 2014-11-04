@@ -929,4 +929,32 @@ public void clear() {
 	this.saleTime = "";
 }
 
+
+//以下是对比页面优化专用
+private String sendTypeForCompare = null;
+private String sendCountForCompare = null;
+private String shopNameForCompare = null;
+
+
+public String getSendTypeForCompareWithOutCharactar() {
+	if(sendTypeForCompare == null){
+		sendTypeForCompare = getSendType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")", "").replace("（", "").replace("）", "");;
+	}
+	return sendTypeForCompare;
+}
+
+public String getSendCountForCompare() {
+	if(sendCountForCompare == null){
+		sendCountForCompare = getSendCount();
+	}
+	return sendCountForCompare;
+}
+
+public String getShopNameForCompare() {
+	if(shopNameForCompare == null){
+		shopNameForCompare = getbranchName(getBranch());
+	}
+	return shopNameForCompare;
+}
+
 }

@@ -47,9 +47,15 @@ public class MatchOrder {
 	private void matchOrder(List <UploadOrder> unCheckedUploadOrders,List <Order> unCheckedDBOrders) {
 		AfterMatchOrder amo ;
 		Double tempDouble = 0.0;
+		int tempInt = 0 ;
+
+		long timeSer = System.currentTimeMillis();
 		
 		//先过滤掉大多数posNo相等的
 		for(int i = 0 ; i < unCheckedUploadOrders.size(); i ++){
+			
+			timeSer = System.currentTimeMillis();
+			
 			UploadOrder tempUo = unCheckedUploadOrders.get(i);
 			
 			for(int j = 0 ; j < unCheckedDBOrders.size() ; j ++){	
@@ -57,16 +63,19 @@ public class MatchOrder {
 				
 				if(tempUo.getPosNo().toUpperCase().equals(tempDBO.getPos().toUpperCase())){
 					
-				
-					
 					//对比双方都没有重复posno的情况
 					if(!samePosDBOrders.contains(tempDBO) && !samePosUploadOrders.contains(tempUo)){
 						amo = new AfterMatchOrder(tempUo,tempDBO);
-						amo.calcLevel();
-						matchedOrders.add(amo);
-						unMatchedUploadOrders.remove(tempUo);
-						unMatchedDBOrders.remove(tempDBO);
-						i --;
+						if(amo.calcLevel() == 5){
+							matchedOrders.add(amo);
+							
+							unCheckedUploadOrders.remove(tempUo);
+							unCheckedDBOrders.remove(tempDBO);
+							unMatchedUploadOrders.remove(tempUo);
+							unMatchedDBOrders.remove(tempDBO);
+							
+							i --;
+						}
 						break;
 						
 						
@@ -91,8 +100,12 @@ public class MatchOrder {
 						amo = new AfterMatchOrder(tempUo,tempList.get(maxCompareLevelIterator));
 						tempDouble = amo.calcLevel();
 						matchedOrders.add(amo);
+						
 						unMatchedUploadOrders.remove(tempUo);
 						unMatchedDBOrders.remove(tempList.get(maxCompareLevelIterator));
+						unCheckedUploadOrders.remove(tempUo);
+						unCheckedDBOrders.remove(tempList.get(maxCompareLevelIterator));
+						
 						tempList.remove(maxCompareLevelIterator);
 						
 						//其他对
@@ -105,7 +118,9 @@ public class MatchOrder {
 							amo = new AfterMatchOrder(o,tempList.get(k));
 							amo.setCompareLevel(tempDouble);
 							matchedOrders.add(amo);
+							
 							unMatchedDBOrders.remove(tempList.get(k));
+							unCheckedDBOrders.remove(tempList.get(k));
 						}
 						i --;
 						break;					
@@ -132,8 +147,12 @@ public class MatchOrder {
 						amo = new AfterMatchOrder(tempList.get(maxCompareLevelIterator),tempDBO);
 						tempDouble = amo.calcLevel();
 						matchedOrders.add(amo);
+						
 						unMatchedUploadOrders.remove(tempList.get(maxCompareLevelIterator));
 						unMatchedDBOrders.remove(tempDBO);
+						unCheckedUploadOrders.remove(tempList.get(maxCompareLevelIterator));
+						unCheckedDBOrders.remove(tempDBO);
+						
 						tempList.remove(maxCompareLevelIterator);
 						
 						
@@ -146,7 +165,10 @@ public class MatchOrder {
 							amo = new AfterMatchOrder(tempList.get(k),o);
 							amo.setCompareLevel(tempDouble);
 							matchedOrders.add(amo);
+							
 							unMatchedUploadOrders.remove(tempList.get(k));
+							unCheckedUploadOrders.remove(tempList.get(k));
+
 						}
 						i --;
 						break;	
@@ -184,8 +206,14 @@ public class MatchOrder {
 						matchedOrders.add(amo);
 						unMatchedUploadOrders.remove(tempUploadOrder.get(maxCompareLevelIteratorUpload));
 						unMatchedDBOrders.remove(tempDBOrder.get(maxCompareLevelIteratorDB));
+						
+						unCheckedUploadOrders.remove(tempUploadOrder.get(maxCompareLevelIteratorUpload));
+						unCheckedDBOrders.remove(tempDBOrder.get(maxCompareLevelIteratorDB));
+						
 						tempDBOrder.remove(maxCompareLevelIteratorDB);
 						tempUploadOrder.remove(maxCompareLevelIteratorUpload);
+						
+						
 							
 						
 						
@@ -199,6 +227,7 @@ public class MatchOrder {
 							}else{
 								tempDBO = tempDBOrder.get(k);
 								unMatchedDBOrders.remove(tempDBO);
+								unCheckedDBOrders.remove(tempDBO);
 							}
 							
 							if(k >= tempUploadOrder.size()){
@@ -207,6 +236,7 @@ public class MatchOrder {
 							}else{
 								tempUo = tempUploadOrder.get(k);
 								unMatchedUploadOrders.remove(tempUo);
+								unCheckedUploadOrders.remove(tempUo);
 							}
 							amo = new AfterMatchOrder(tempUo,tempDBO);
 							amo.setCompareLevel(tempDouble);
@@ -223,64 +253,109 @@ public class MatchOrder {
 					
 				}
 			}
+			
+			
+			
 		}
+		
+		//最高对比等级
+		int requeredLevel = 4;
+		//最低对比等级
+		int minRequeredLevel = 2;
+		
+		
 		
 		//再用模糊对比进行过滤(日期相同，型号，数量和门店对的上的)
 		for(int i = 0 ; i < unCheckedUploadOrders.size(); i ++){
+			
+			timeSer = System.currentTimeMillis();
+			
 			UploadOrder tempUo = unCheckedUploadOrders.get(i);
 			
+			//权重
+			tempInt = 0;
+			//最优结果
+			AfterMatchOrder tempAfterMatchOrder = new AfterMatchOrder();
+			//是否找到
+			boolean find = false;
+			
+			
 			for(int j = 0 ; j < unCheckedDBOrders.size() ; j ++){	
-				Order tempDBO = unCheckedDBOrders.get(j);
+				Order tempDBO = unCheckedDBOrders.get(j);		
 				
-				if(fuzzyCompare(tempUo,tempDBO)){
+				
+				int level = fuzzyCompare(tempUo,tempDBO);
+
+				if(level == requeredLevel ){				
+					find = true;
 					amo = new AfterMatchOrder(tempUo,tempDBO);
 					amo.calcLevel();
-					matchedOrders.add(amo);
-					unMatchedUploadOrders.remove(tempUo);
-					unMatchedDBOrders.remove(tempDBO);
-					i --;
-					break;
+					if(amo.getCompareResult() > tempInt){
+						tempAfterMatchOrder = amo;
+						tempInt = amo.getCompareResult();
+					}
 				}
 			}
+			
+			
+			if(find){
+				matchedOrders.add(tempAfterMatchOrder);
+				
+				unMatchedUploadOrders.remove(tempAfterMatchOrder.getUploadOrder());
+				unMatchedDBOrders.remove(tempAfterMatchOrder.getDBOrder());
+				unCheckedUploadOrders.remove(tempAfterMatchOrder.getUploadOrder());
+				unCheckedDBOrders.remove(tempAfterMatchOrder.getDBOrder());
+				
+				find = false;
+				i --;
+			}
+			
+			if(i == unCheckedUploadOrders.size() - 1 ){
+				if(requeredLevel != minRequeredLevel){
+					requeredLevel -= 1;
+					i = 0;
+				}
+			}
+			
 		}
-
 	}
 	
 	//模糊对比，如果认为对比成功则返回true，否则返回false
-	private boolean fuzzyCompare(UploadOrder tempUo, Order tempDBO) {
-		boolean flag = false;
+	private int fuzzyCompare(UploadOrder tempUo, Order tempDBO) {
+
 		String key = "";
 			
-		int level = 0 ; //相似等级 2项相同，就给弄一起吧
+		int level = 0 ;
+		
+		//如果pos单号相同
+		if(tempDBO.getPos().toUpperCase().equals(tempUo.getPosNo().toUpperCase())){
+			level += 1;
+		}
+				
 		//如果销售时间相同
 		if(tempDBO.getSaleTime().replace("-", "").equals(tempUo.getSaleTime())){
 			level += 1;
 			
 		}
-		
+
 		//而且票面数量一样
-		if(String.valueOf(tempUo.getNum()).replace("|", "").equals(tempDBO.getSendCount().replace("|", ""))){
+		if(String.valueOf(tempUo.getNum()).replace("|", "").equals(tempDBO.getSendCountForCompare().replace("|", ""))){
 			level += 1;
 		}
 		
 		//而且销售门店一样
-		key = tempDBO.getbranchName(tempDBO.getBranch()).replace("苏宁", "").replace("店", "");
+		key = tempDBO.getShopNameForCompare().replace("苏宁", "").replace("店", "");
 		if(tempUo.getShop().contains(key)){
 			level += 1;
 		}
-		
-		
-		key = tempUo.getType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")", "").replace("（", "").replace("）", "");
-		
-		if(tempDBO.getSendType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")", "").replace("（", "").replace("）", "").contains(key)){
+			
+		//而且型号相同
+		key = tempUo.getTypeForCompareWithOutCharactar();	
+		if(tempDBO.getSendTypeForCompareWithOutCharactar().contains(key)){
 			level += 1;
 		}
 		
-		if(level >= 2){
-			flag = true;
-		}			
-			
-		return flag;
+		return level;
 	}
 
 	public static List<Order> getUnCheckedDBOrders(){

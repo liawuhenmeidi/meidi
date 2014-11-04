@@ -96,6 +96,22 @@ public class AfterMatchOrder {
 	Double compareLevel = 0.0; //对比等级，每个对比项，完全相同，等级+1，部分相同，等级+0.5
 	Double maxCompareLevel = 5.0; //最大等级，目前对比项有5个，默认最大等级为5
 	
+	String compareResult = "00000";  //0为没对比上，1是对比上了  依次对应: 门店>型号>时间>pos>数量
+	
+	private static final int SHOP = 0;
+	private static final int TYPE = 1;
+	private static final int SALETIME = 2;
+	private static final int POSNO = 3;
+	private static final int NUM = 4;
+	
+	public void setCompareResult(int name,boolean result){
+		this.compareResult = compareResult.substring(0,name) + (result?"1":"0") + compareResult.substring(name + 1,this.compareResult.length());
+	}
+	
+	public int getCompareResult(){
+		return Integer.parseInt(this.compareResult);
+	}
+	
 	public String getDBSideShop() {
 		return DBSideShop;
 	}
@@ -231,12 +247,16 @@ public class AfterMatchOrder {
 	//计算相似度
 	public Double calcLevel(){
 		
+		this.setCompareLevel(0.0);
 		String key = "";
 		//对比posNo
 		String tempDB = this.getDBOrder().getPos().toUpperCase().trim();
 		String tempUpLoad = this.getUploadOrder().getPosNo().toUpperCase().trim();
 		if(tempDB.equals(tempUpLoad)){
+			
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
+			this.setCompareResult(AfterMatchOrder.POSNO, true);
+			
 			this.setDBSidePosNo(HighLighter(tempDB));
 			this.setUploadSidePosNo(HighLighter(tempUpLoad));
 			
@@ -283,6 +303,8 @@ public class AfterMatchOrder {
 		if(tempDB.replace("-", "").equals(tempUpLoad)){
 			
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
+			this.setCompareResult(AfterMatchOrder.SALETIME, true);
+			
 			this.setDBSideSaleTime(HighLighter(tempDB));
 			this.setUploadSideSaleTime(HighLighter(tempUpLoad));
 		}else{
@@ -293,7 +315,10 @@ public class AfterMatchOrder {
 		tempDB = String.valueOf(this.getUploadOrder().getNum());
 		tempUpLoad = String.valueOf(this.getDBOrder().getSendCount());
 		if(tempDB.replace("|", "").equals(tempUpLoad.replace("|", ""))){
+			
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
+			this.setCompareResult(AfterMatchOrder.NUM, true);
+			
 			this.setDBSideCount(HighLighter(tempDB));
 			this.setUploadSideCount(HighLighter(tempUpLoad));
 		}else{
@@ -305,7 +330,10 @@ public class AfterMatchOrder {
 		tempUpLoad = this.getUploadOrder().getShop().trim();
 		key = tempDB.replace("苏宁", "").replace("店", "");
 		if(tempUpLoad.contains(key)){
+			
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
+			this.setCompareResult(AfterMatchOrder.SHOP, true);
+			
 			//精准对比
 			if(tempUpLoad.equals(tempDB)){
 				this.setDBSideShop(HighLighter(tempDB));
@@ -326,7 +354,10 @@ public class AfterMatchOrder {
 		key = tempUpLoad.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
 		
 		if(tempDB.contains(key)){
+			
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
+			this.setCompareResult(AfterMatchOrder.TYPE, true);
+			
 			//精准对比
 			if(tempDB.equals(tempUpLoad)){			
 				this.setDBSideType(HighLighter(tempDB));
@@ -340,7 +371,10 @@ public class AfterMatchOrder {
 		
 		tempUpLoad = this.getUploadOrder().getType().trim();
 		if(tempDB.replace("|", "").equals(tempUpLoad)){
+			
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
+			this.setCompareResult(AfterMatchOrder.TYPE, true);
+			
 			this.setDBSideType(HighLighter(tempDB));
 			this.setUploadSideType(HighLighter(tempUpLoad));
 		}

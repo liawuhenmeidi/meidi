@@ -55,6 +55,15 @@ public class UploadOrder {
 	public String getType() {
 		return type;
 	}
+	
+	private String typeForCompare = null;
+	
+	public String getTypeForCompareWithOutCharactar(){
+		if(typeForCompare == null){
+			typeForCompare = getType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")", "").replace("（", "").replace("）", "");
+		}
+		return typeForCompare;
+	}
 
 	public void setType(String type) {
 		this.type = type;
