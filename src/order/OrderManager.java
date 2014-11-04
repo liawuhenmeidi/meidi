@@ -814,13 +814,13 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   }else if(Order.orderPrint == statues){   
 					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and  dealSendid != 0  and printSatues = 0  and sendId = 0  and  deliveryStatues = 0  "+search+"  order by "+sort+str ;  
 				   }else if(Order.charge == statues){ 
-					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and statues1 = 1 and statues2 = 1 and statues3 = 0  "+search+"  order by "+sort+str ;  
+					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and statues1 = 1 and statues2 = 1 and statues3 = 0   and oderStatus not in (20)  "+search+"  order by "+sort+str ;  
 				   }else if(Order.callback == statues){ 
 					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and deliveryStatues in (2)   and wenyuancallback = 0  "+search+" order by "+sort+str;  
 				   }else if(Order.come == statues){
-					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))    and statues1 = 0 "+search+" order by "+sort+str ;  
+					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))    and statues1 = 0  and oderStatus not in (20)  "+search+" order by "+sort+str ;  
 				   }else if(Order.go == statues){ 
-					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))    and statues1 = 1 and statues2 = 0   "+search+" order by "+sort+str ;  
+					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))    and statues1 = 1 and statues2 = 0   and oderStatus not in (20)  "+search+" order by "+sort+str ;  
 				   }else if(Order.over == statues){  
 					   sql = "select * from  mdorder where  mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and printSatues = 1 and sendId != 0  and deliveryStatues not in (0,3)  and statues4 = 0  "+search+" order by "+sort+str; 
 				   }else if(Order.serach == statues){    
@@ -1055,7 +1055,7 @@ logger.info(sql);
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0 and oderStatus not in (20)";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();
@@ -1086,7 +1086,7 @@ logger.info(sql);
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and oderStatus not in (20) ";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();
@@ -1116,7 +1116,7 @@ logger.info(sql);
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0 and orderbranch in ("+branchid+")";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0  and oderStatus not in (20) and orderbranch in ("+branchid+")";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();
@@ -1146,7 +1146,7 @@ logger.info(sql);
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0 and orderbranch in (select id from mdbranch where pid in ( "+branchid+"))";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0 and oderStatus not in (20)  and orderbranch in (select id from mdbranch where pid in ( "+branchid+"))";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();
