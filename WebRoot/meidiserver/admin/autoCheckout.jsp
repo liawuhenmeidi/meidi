@@ -52,9 +52,9 @@
 			if(selectBranch != null && !selectBranch.equals("")){
 				//第二级选择的是否是all
 				if(selectBranch.equals("all")){
-					unCheckedDBOrders = OrderManager.getCheckedDBOrdersbyBranchType(selectBranchType);
+					unCheckedDBOrders = OrderManager.getUnCheckedDBOrdersbyBranchType(selectBranchType);
 				}else{
-					unCheckedDBOrders = OrderManager.getCheckedDBOrdersbyBranch(selectBranch);
+					unCheckedDBOrders = OrderManager.getUnCheckedDBOrdersbyBranch(selectBranch);
 				}
 			}
 			
@@ -67,7 +67,7 @@
 		if(selectOrderName.equals("all")){
 			unCheckedUploadOrders = uploadOrders;
 		}else{
-			unCheckedUploadOrders = UploadManager.getOrdersByName(selectOrderName);
+			unCheckedUploadOrders = UploadManager.getUnCheckedUploadOrdersByName(selectOrderName);
 		}
 	}
 	

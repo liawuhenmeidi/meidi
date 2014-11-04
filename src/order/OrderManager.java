@@ -1111,7 +1111,7 @@ logger.info(sql);
     
   //wrote by 
     //根据门店获取Order
-    public static List<Order> getCheckedDBOrdersbyBranch(String branchid){
+    public static List<Order> getUnCheckedDBOrdersbyBranch(String branchid){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
@@ -1141,7 +1141,7 @@ logger.info(sql);
     
   //wrote by 
     //根据门店类别获取Order
-    public static List<Order> getCheckedDBOrdersbyBranchType(String branchid){
+    public static List<Order> getUnCheckedDBOrdersbyBranchType(String branchid){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
