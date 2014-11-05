@@ -6,7 +6,7 @@ if(type.equals(Order.serach+"")){
 }
 
 List<Order> list = OrderManager.getOrderlist(user,Group.tuihuo,Integer.valueOf(type),-1,0,sort,sear);
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);
+Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM();
 //System.out.println(user);
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 

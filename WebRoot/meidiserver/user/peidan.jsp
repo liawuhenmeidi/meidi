@@ -46,7 +46,7 @@ list = OrderManager.getOrderlist(user,Group.sencondDealsend,str,"id");
 HashMap<Integer,User> usermap = UserManager.getMap(); 
 //获取送货员    
 List<User> listS = UserManager.getUsers(user,Group.send);
-Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM(user);   
+Map<Integer,List<OrderProduct>> OrPMap = OrderProductManager.getOrderStatuesM();   
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 Map<Integer,OrderPrintln> opMap = OrderPrintlnManager.getOrderStatues(user,3);
 
