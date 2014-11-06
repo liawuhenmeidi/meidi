@@ -652,14 +652,14 @@ String[] branlist =  branchmessage.split("_");
 	//	 alert("已自提和需派送需安装不能一起提交");
 	//	 return false; 
 	 //}
-	 if(!messageflag){ 
+	 //if(!messageflag){ 
 		 //alert(3);
-		 $("#disable").css("display","none");
-	 }  
-	 if(messageflag){
+		// $("#disable").css("display","none");
+	// }  
+	// if(messageflag){
 		// alert(4);
-		 $("#disable").css("display","block");
-	 }
+	//	 $("#disable").css("display","block");
+	// }
  }
  
   
