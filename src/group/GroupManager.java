@@ -2,6 +2,9 @@ package group;
 import grouptype.Grouptype;
 import grouptype.GrouptypeManager;
 
+import inventory.InventoryBranch;
+import inventory.InventoryBranchManager;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +19,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import branch.BranchManager;
+import branchtype.BranchTypeManager;
 
 import category.CategoryManager;
 
@@ -111,20 +115,19 @@ public class GroupManager {
                 	    
                   	String sql2 = BranchManager.save();
                   	PreparedStatement pstmt1 = DB.prepare(conn, sql2); 
-                  	String permissons = "2_";
-                  	int type = 4; 
-                  	pstmt1.setString(1, group.getName()+"员工");
+                  	String permissons = "2_";     
+                  	int type = GrouptypeManager.getgrouptype(Group.send);  
+                  	pstmt1.setString(1, group.getName()+"员工"); 
 					pstmt1.setString(2, group.getDetail());
 					pstmt1.setInt(3, group.getStatues());
 					pstmt1.setString(4, permissons);
 					pstmt1.setString(5, group.getProducts());
 					pstmt1.setInt(7,type);   
 
-					String sql3 = "insert into mdbranch(id,bname,pid,bmessage,relatebranch) values (null, ?,?,?,'')";
+					String sql3 = "insert into mdbranch(id,bname,pid,bmessage,relatebranch) values (null, ?,?,'','')";
 					PreparedStatement pstmt3 = DB.prepare(conn, sql3); 
 					pstmt3.setString(1,group.getName() );
-					pstmt3.setInt(2,1); 
-					pstmt3.setString(3, group.getName());
+					pstmt3.setInt(2,1);  
  
                     DBUtill.PreparedStatement(conn, pstmt, pstmt1, pstmt3);
                     GroupService.flag = true ;
@@ -403,28 +406,43 @@ logger.info(sql);
 			return map;
 		}
 		
-		public static int delete(String str ) {
-			String ids = "(" + str + ")";
+		public static int delete(String id ) {
 			 
-			List<User> list = UserManager.getUsers(ids);
+			List<String> sqls = new ArrayList<String>();
+			
+			List<User> list = UserManager.getUsers("("+id+")");
 			
 			if(list.size() > 0){   
 				return -1 ;
 			}
 			
-			int count = 0 ;
-			Connection conn = DB.getConn();
-			String sql = "delete from mdgroup where id in " + ids;
-logger.info(sql);  
-			Statement stmt = DB.getStatement(conn);
-
-			try {
-				count = DB.executeUpdate(stmt, sql);
-				GroupService.flag = true ;
-			} finally {
-				DB.close(stmt);
-				DB.close(conn);
+			boolean flag  = InventoryBranchManager.isEmpty(id);
+			
+			if(flag == false){
+				return -2 ;
 			}
+			int count = 0 ;
+			
+			
+			String sql = "delete from mdgroup where id = " + id;
+			
+			String sql1 = "delete from mdgroup where pid =  " + id;
+			
+			String sql2 = "delete from mdbranch where bname =  (select groupname  from mdgroup where id = "+id+" )" ;
+			
+	        sqls.add(sql2); 
+	        
+	        sqls.add(sql1);
+	           
+            sqls.add(sql);
+           
+         
+           
+           DBUtill.sava(sqls);
+           
+           count ++;
+		  GroupService.flag = true ;
+		
 			return count;
 		}
 

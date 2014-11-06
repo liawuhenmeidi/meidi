@@ -15,6 +15,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import branchtype.BranchType;
+
 import user.User;
 import user.UserManager;
 import database.DB;
@@ -106,6 +108,28 @@ public class GrouptypeManager {
 			DB.close(conn);
 		} 
 		return g;
+	}
+	
+	
+	public static int getgrouptype(int id ) {
+		int type = 0;   
+		Connection conn = DB.getConn();
+		String sql = "select * from mdgrouptype where type = "+ id ;
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {  
+			while (rs.next()) {  
+				Grouptype branch = getGroupFromRs(rs);
+				type = branch.getId(); 
+			}  
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return type;
 	}
 	
 	

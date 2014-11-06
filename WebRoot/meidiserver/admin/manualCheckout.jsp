@@ -17,7 +17,7 @@
 			MatchOrderManager.checkDBOrderList(dbSide);
 		}
 		if(uploadSide != null && uploadSide.length > 0){
-			MatchOrderManager.checkUploadOrderList(uploadSide);
+			MatchOrderManager.checkUploadOrderList(uploadSide); 
 		}
 	}
 	
@@ -53,10 +53,10 @@
 			
 			if(selectBranch != null && !selectBranch.equals("")){
 				//第二级选择的是否是all
-				if(selectBranch.equals("all")){
-					unCheckedDBOrders = OrderManager.getCheckedDBOrdersbyBranchType(selectBranchType);
+				if(selectBranch.equals("all")){ 
+					unCheckedDBOrders = OrderManager.getUnCheckedDBOrdersbyBranchType(selectBranchType);
 				}else{
-					unCheckedDBOrders = OrderManager.getCheckedDBOrdersbyBranch(selectBranch);
+					unCheckedDBOrders = OrderManager.getUnCheckedDBOrdersbyBranch(selectBranch);
 				}
 			}
 			

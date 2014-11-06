@@ -27,6 +27,7 @@ if(list != null && listg != null){
 
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 </head>
 <body>
 
@@ -37,29 +38,22 @@ if(list != null && listg != null){
 	function winconfirm(){
 		var question = confirm("你确认要删除吗？");	
 		if (question != "0"){
-			var attract = new Array();
-			var i = 0;
-			 
-			$("input[type='checkbox']").each(function(){          
-		   		if($(this).attr("checked")){
-		   				var str = this.name;
-		   	            attract[i] = str;
-		   	            i++;	
-		   		}
-		   	}); 
-		//alert(attract.toString())	;
+			var id = $("input[name='id']:checked").val();
 			$.ajax({ 
 		        type: "post", 
 		         url: "delete.jsp",
-		         data:"method=juese&id="+attract.toString(),
+		         data:"method=juese&id="+id,
 		         dataType: "", 
 		         success: function (data) {
 		        	 if(data == -1){
 		        		 alert("职位内有职员，请先删除职员") ;
 		        		 return ;
+		        	 }else if(data == -2){
+		        		 alert("职位内门店内有库存,请先处理库存") ;
+		        		 return ;
 		        	 }else if (data > 0){
 		        		  alert("删除成功"); 
-		        		  window.location.href="juese.jsp?ptype=<%=pid%>";
+		        		  window.location.href="juese.jsp?ptype=<%=pid%>&type=<%=type%>";
 		        	 };	  
 		           }, 
 		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -69,19 +63,7 @@ if(list != null && listg != null){
 
 		}
 	}
-	
-	function seletall(all){
-		if($(all).attr("checked")){
-			$("input[type='checkbox']").each(function(){
-				$(this).attr("checked",true);
-	
-		     });
-		}else if(!$(all).attr("checked")){
-			$("input[type='checkbox']").each(function(){
-				$(this).attr("checked",false);
-		     });
-		};
-	}  
+	 
 	
 </script>
 <!--   头部开始   -->
@@ -126,7 +108,7 @@ if(list != null && listg != null){
 	   g = list.get(i);
     %> 
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
-		<th align="left" width="20"><input type="checkbox" value="" id="check_box" name = "<%=g.getId() %>"></input></th>
+		<th align="left" width="20"><input type="radio" id="check_box" name = "id"  value="<%=g.getId() %>"></input></th>
 		<td align="left"><%=g.getName() %></td>
 		<td align="left"><%=g.getDetail() %></td>
 		<%
@@ -142,15 +124,22 @@ if(list != null && listg != null){
 		}
 		%>
 		<td align="left">
-		<% if(g.getPtype() == 1) {
+		<% 
+		 if(Integer.valueOf(type) != 2){
+			 if(g.getPtype() == 1) {
+				%>
+		    <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">修改</a>  
+				<%
+			}else { 
 			%>
-	    <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">修改</a>  
-			<%
-		}else { 
-		%>
-        <a href="authority.jsp?id=<%=g.getId()%>&ptype=<%=pid%>&type=<%=type%>">权限设置</a> | <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">修改</a>   
-        <%
-		}
+	        <a href="authority.jsp?id=<%=g.getId()%>&ptype=<%=pid%>&type=<%=type%>">权限设置</a> | <a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">成员管理</a> | <a href="jueseUpdate.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">修改</a>   
+	        <%
+			}
+		 }else {
+			 %>
+			<a href="huiyuanJ.jsp?id=<%=g.getId()%>&ptype=<%=pid%>">成员管理</a> 
+			 <%
+		 }
         %>
         </td>	
     </tr>
@@ -158,9 +147,9 @@ if(list != null && listg != null){
     %>
 </tbody>
 </table>
-
+ 
 <div class="btn">
-<% if(null!= g && g.getPtype() != 1){ 
+<% if(null!= g && g.getPtype() != 1 && Integer.valueOf(type) != 2){ 
 	
  %>
  <input type="submit" class="button" name="dosubmit" value="删除" onclick="winconfirm()"></input>  

@@ -596,8 +596,10 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				 return flag ;
 			 }
 			 maxid = oldorder.getId();   
-			 daymark =oldorder.getDayremark(); 
-			 dayID = oldorder.getDayID(); 
+			 daymark =oldorder.getDayremark();  
+			 dayID = oldorder.getDayID();  
+			 order.setPrintlnid(oldorder.getPrintlnid());   
+			 //order.setSubmitTime(oldorder.getSubmitTime());
 			 OrderPrintln oor = OrderPrintlnManager.getOrderStatues(user, oldorder.getId(),0);
 			 if(oldorder.getPrintSatues() == 1){
 				 if(oor != null && oor.getStatues() != 2){
@@ -624,7 +626,18 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				 }    
 				 dayID = TimeUtill.getdate();   
 			 }
+			 if(daymark<10){   
+				 daymarkk = "00"+daymark;
+			 }else if(9<daymark && daymark <100){
+				 daymarkk = "0"+daymark; 
+			 }
 			 
+			 
+			if(maxid == 0){ 
+				maxid = 1 ;
+			}  
+			
+			order.setPrintlnid(order.getPrintlnid()+"-"+daymarkk);
 		 }
 		 
 	/*	 if(isflag){   
@@ -634,16 +647,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 		 }else {   
 			 maxid = OrderManager.getMaxid();
 		 }  */
-		 if(daymark<10){   
-			 daymarkk = "00"+daymark;
-		 }else if(9<daymark && daymark <100){
-			 daymarkk = "0"+daymark; 
-		 }
-		 
-		 
-		if(maxid == 0){ 
-			maxid = 1 ;
-		}    
+		   
 	
 		
 		List<String> sqlp = OrderProductManager.save(maxid, order);
@@ -661,15 +665,15 @@ public static void updateSendstat(int statues,int sid, int oid) {
 	    	 sqls.add(sql1);
 	    	 
 	    	 printlnid = "H"+order.getPrintlnid();
-	     }else {
-	    	 printlnid = order.getPrintlnid()+"-"+daymarkk;
+	    	 
+	    	 order.setPrintlnid(printlnid);
 	     }
 	    String sql = "insert into  mdorder ( id ,andate , saledate ,pos, username, locates" +
 				", locateDetail, saleID , printSatues ,oderStatus,sailId,checked,phone1,phone2,remark,"+
 	    		"deliveryStatues,orderbranch,sendId,statues1,statues2,statues3,dealSendid,submittime,printlnid,dayremark,dayID,phoneRemark,sailIdremark,checkedremark,posRemark,imagerUrl) values "+  
 				"( "+maxid+", '"+order.getOdate()+"', '"+order.getSaleTime()+"', '"+order.getPos()+"', '"+order.getUsername()+"', '" 
 	    		+order.getLocate()+"', '"+order.getLocateDetail()+"',"+order.getSaleID()+", "+order.getPrintSatues()    
-	    		+", "+order.getOderStatus()+", '"+order.getSailId()+"', '"+order.getCheck()+"', '"+order.getPhone1()+"','"+order.getPhone2()+"','"+order.getRemark()+"',"+order.getDeliveryStatues()+",'"+order.getBranch()+"',0,0,0,0,"+order.getDealsendId()+",'"+order.getSubmitTime()+"','"+printlnid+"',"+daymark+","+dayID+","+order.getPhoneRemark()+","+order.getSailidrecked()+","+order.getReckedremark()+","+order.getPosremark()+","+order.getImagerUrl()+")";   
+	    		+", "+order.getOderStatus()+", '"+order.getSailId()+"', '"+order.getCheck()+"', '"+order.getPhone1()+"','"+order.getPhone2()+"','"+order.getRemark()+"',"+order.getDeliveryStatues()+",'"+order.getBranch()+"',0,0,0,0,"+order.getDealsendId()+",'"+order.getSubmitTime()+"','"+order.getPrintlnid()+"',"+daymark+","+dayID+","+order.getPhoneRemark()+","+order.getSailidrecked()+","+order.getReckedremark()+","+order.getPosremark()+","+order.getImagerUrl()+")";   
 	   
 	    sqls.add(sql);
 	    logger.info(sql);       

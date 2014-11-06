@@ -61,7 +61,7 @@ public class BranchManager {
 		public static List<Branch> getLocate(String id ) {
 			List<Branch> users = new ArrayList<Branch>();
 			Connection conn = DB.getConn();
-			String sql = "select * from mdbranch where pid = "+ id ;
+			String sql = "select * from mdbranch where pid = "+ id +" and disable = 0 ";
 			Statement stmt = DB.getStatement(conn); 
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {  
@@ -95,9 +95,12 @@ public class BranchManager {
 				DB.close(rs);
 				DB.close(stmt);
 				DB.close(conn);
-			}
+			} 
 			return count;
 		}
+		
+	
+		
 		
 		public static List<Branch> getLocate(int statues ) {
 			List<Branch> users = new ArrayList<Branch>();

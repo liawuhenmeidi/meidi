@@ -629,6 +629,34 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		   return count ;
 	}
 	
+	public static boolean isEmpty(String bid){
+		
+		boolean flag = true ;
+		String sql = "select from mdinventorybranch where branchid = "+ bid;
+		
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn);
+		ResultSet rs = DB.getResultSet(stmt, sql); 
+		try {  
+			while (rs.next()) {  
+				InventoryBranch orders = getCategoryFromRs(rs); 
+				if(orders.getRealcount() != 0 || orders.getPapercount() != 0){
+					flag =  false ;
+				}
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(stmt);
+			DB.close(rs);
+			DB.close(conn);
+		 }
+		
+		
+		return flag ;
+	}
+	
+	
 	private static InventoryBranch getCategoryFromRs(ResultSet rs){
 		InventoryBranch c = new InventoryBranch(); 
 		try {  

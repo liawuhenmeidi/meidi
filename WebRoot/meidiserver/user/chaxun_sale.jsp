@@ -106,11 +106,11 @@ function initTime(){
      </td>
   </tr> 
  <tr>
-    <td>销售单号:</td>
+    <td>OMS订单号：</td>
     <td width="25%"><input type="text"  name="sailId" id ="sailId"/></td>
- </tr>
+ </tr> 
  <tr>
-    <td width="25%">POS单号:</td>
+    <td width="25%">pos(提货)单号：</td>
     <td width="25%"><input type="text"  name="pos" id ="pos"/></td>
   </tr>
  <tr>

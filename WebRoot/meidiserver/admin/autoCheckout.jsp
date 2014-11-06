@@ -51,7 +51,7 @@
 			
 			if(selectBranch != null && !selectBranch.equals("")){
 				//第二级选择的是否是all
-				if(selectBranch.equals("all")){
+				if(selectBranch.equals("all")){ 
 					unCheckedDBOrders = OrderManager.getUnCheckedDBOrdersbyBranchType(selectBranchType);
 				}else{
 					unCheckedDBOrders = OrderManager.getUnCheckedDBOrdersbyBranch(selectBranch);

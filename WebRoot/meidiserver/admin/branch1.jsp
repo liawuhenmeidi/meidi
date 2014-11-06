@@ -53,10 +53,15 @@ function winconfirm(){
 	 }
 }
 
-function update(id,statues){
-	if(statues != 1){
-		 window.location.href="branch1add.jsp?pid=<%=id%>&id="+id;
+function update(id,statues,type){
+	if(type == 1){
+		alert("请到职位管理进行修改");
+	}else {
+		if(statues != 1){
+			 window.location.href="branch1add.jsp?pid=<%=id%>&id="+id;
+		}
 	}
+	
 	
 }
 
@@ -126,7 +131,6 @@ function seletall(all){
 			<th align="left">导购人数</th>
 			<th align="left">门店报装单所需信息</th>
 			<!-- <th align="left">是否做为总库</th> -->
-			<th align="left">修改</th>
 		</tr>
 	</thead>
 <tbody>
@@ -138,7 +142,7 @@ if(list != null){
 	
 	  int count =map.get(category.getId()+"")==null?0:map.get(category.getId()+"").size();
 %>     
-    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)" ondblclick="update('<%= category.getId()%>','<%=category.getId()%>')" >  
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)" ondblclick="update('<%= category.getId()%>','<%=category.getId()%>','<%=branch.getIsSystem() %>')" >  
 		<td align="left">
 		<% if(category.getPid() != 2){ %>
 		<input type="checkbox" value="1" name="<%=category.getId() %>"></input>
@@ -177,12 +181,6 @@ if(list != null){
              
          </td>  
           --> 
-         <td align="left"> 
-               <%if(category.getStatues() != 1){  
-                %>
-               <a href="branch1add.jsp?pid=<%=id%>&id=<%=category.getId()%>">[修改]</a>
-               <% }%>
-         </td> 
     </tr>  
     <% } 
     }%>
@@ -198,8 +196,8 @@ if(list != null){
   <!--  
       门店名称： <input type="text"  id="locate" name="locate" />  
   <input type="button" onclick="changes()"  value="增加"/> </br> 
-   -->  
-   <%if(Integer.valueOf(id) != 2 ){%>   
+   -->   
+   <%if(branch.getIsSystem() == 0 ){%>   
   <input type="submit" class="button" name="dosubmit" value="删除"  onclick="winconfirm()"></input>
    <%} %>
 </div>

@@ -1,15 +1,20 @@
 package orderproduct;
 
+import product.ProductService;
+
 public class OrderProduct {
 	private int id ;
     private int categoryId ;
     private String categoryName;
+    
     private String sendType;
-  
+    
 	private String saleType;
 	
     private  int orderid ;
+    
     private  int count ;
+    
     private int statues ;    // 1 顶码   0 非顶码
      
     private int salestatues ; //  1 需配送     0  已自提      2 只安装门店提货    3 只安装顾客已提
@@ -18,7 +23,8 @@ public class OrderProduct {
     
     private String typeName ;
     
-    public String getTypeName() {
+    
+	public String getTypeName() {
 		return typeName;
 	}
 

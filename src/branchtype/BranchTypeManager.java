@@ -80,6 +80,7 @@ public class BranchTypeManager {
 		   return true;
 		}
 	 
+
 		public static List<BranchType> getLocate() {
 			List<BranchType> users = new ArrayList<BranchType>();
 			Connection conn = DB.getConn();
