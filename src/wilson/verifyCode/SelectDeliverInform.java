@@ -21,16 +21,16 @@ public class SelectDeliverInform {
         try {
         	HttpUriRequest selectPost = RequestBuilder.post()
             .setUri(uri)
-            .addParameter("isinit", "N")
-            .addParameter("deliveryinformid", "")
-            .addParameter("type", "10")
-            .addParameter("saleorderno", saleOrderNo)
-            .addParameter("customername", "")
-            .addParameter("prodcode", "")
-            .addParameter("status", "")
-            .addParameter("ordercreatedatebegin", "")
-            .addParameter("ordercreatedateend", "")
-            .addParameter("distchannel", "")
+            .addParameter("omsOrderCodes", "N")
+            .addParameter("choosedtab", "")
+            .addParameter("omsOrderItemNo", saleOrderNo)
+            .addParameter("saleOrderDate1", "")
+            .addParameter("saleOrderDate2", "")
+            .addParameter("orderStatus", "")
+            .addParameter("returnOrderStatus", "")
+            .addParameter("deliveryChannel", "")
+            .addParameter("cmmdtyCode", "")
+            .addParameter("mobPhoneNum", "")
             .build();
             
             //cookies

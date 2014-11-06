@@ -16,13 +16,12 @@ public class VerifyCode {
 	int FLASE = 1;
 	int TRUE = 0;
 	int OTHER = 2;
-	public int VerifyCode(URI uri,String code,String Hidreturnnoticedetailid){
+	public int VerifyCode(URI uri,String code,String omsOrderItemNo){
         try {
         	HttpUriRequest verifyCodePost = RequestBuilder.post()
             .setUri(uri)
-            .addParameter("status", "40")
-            .addParameter("hidreturnnoticedetailid",Hidreturnnoticedetailid )
-            .addParameter("checkcode", code)
+            .addParameter("omsOrderItemNo", omsOrderItemNo)
+            .addParameter("iunik", code)
             .build();
             
         	String verifyCodeResult = "null";

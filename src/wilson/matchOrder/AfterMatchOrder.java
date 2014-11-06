@@ -326,23 +326,27 @@ public class AfterMatchOrder {
 		}
 			
 		//对比门店名称
-		tempDB = dbOrder.getbranchName(dbOrder.getBranch());
+		tempDB = dbOrder.getShopNameForCompare();
 		tempUpLoad = this.getUploadOrder().getShop().trim();
-		key = tempDB.replace("苏宁", "").replace("店", "");
-		if(tempUpLoad.contains(key)){
+		
+		
+		if(utill.StringCompare.getSimilarityRatio(tempDB, tempUpLoad) >= 0.19){
 			
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setCompareResult(AfterMatchOrder.SHOP, true);
 			
-			//精准对比
-			if(tempUpLoad.equals(tempDB)){
-				this.setDBSideShop(HighLighter(tempDB));
-				this.setUploadSideShop(HighLighter(tempUpLoad));
-			}else{
-			//模糊对比
-				this.setDBSideShop(HighLighter(tempDB,tempDB.indexOf(key),tempDB.indexOf(key) + key.length()));
-				this.setUploadSideShop(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()));
-			}
+			this.setDBSideShop(HighLighter(tempDB));
+			this.setUploadSideShop(HighLighter(tempUpLoad));
+			
+//			//精准对比
+//			if(tempUpLoad.equals(tempDB)){
+//				this.setDBSideShop(HighLighter(tempDB));
+//				this.setUploadSideShop(HighLighter(tempUpLoad));
+//			}else{
+//			//模糊对比
+//				this.setDBSideShop(HighLighter(tempDB,tempDB.indexOf(key),tempDB.indexOf(key) + key.length()));
+//				this.setUploadSideShop(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()));
+//			}
 		}
 		
 		//对比型号

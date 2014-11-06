@@ -60,8 +60,8 @@
 		}
 		
 		
-		userName = "1005949101"; 
-		password = "26556199sn"; 
+		userName = "haoyueshangmao@163.com"; 
+		password = "sn26524316"; 
 		//userName = "1007944401"; 
 		//password = "060541"; 
 		
