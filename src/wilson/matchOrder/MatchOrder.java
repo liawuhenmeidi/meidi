@@ -344,8 +344,7 @@ public class MatchOrder {
 		}
 		
 		//而且销售门店一样
-		key = tempDBO.getShopNameForCompare().replace("苏宁", "").replace("店", "");
-		if(tempUo.getShop().contains(key)){
+		if(utill.StringCompare.getSimilarityRatio(tempDBO.getShopNameForCompare(), tempUo.getShop()) >= 0.19){
 			level += 1;
 		}
 			

