@@ -145,6 +145,7 @@ String[] branlist =  branchmessage.split("_");
 	
 	init();   
 	initmessage("#productsta0");
+	setMessage("必填");
    });
    
    
@@ -652,17 +653,27 @@ String[] branlist =  branchmessage.split("_");
 	//	 alert("已自提和需派送需安装不能一起提交");
 	//	 return false; 
 	 //}
-	 //if(!messageflag){ 
+	 if(!messageflag){ 
+		 setMessage("非必填");
 		 //alert(3);
 		// $("#disable").css("display","none");
-	// }  
-	// if(messageflag){
+	 }  
+	 if(messageflag){
+		 setMessage("必填");
 		// alert(4);
 	//	 $("#disable").css("display","block");
-	// }
+	 }
  }
  
   
+ function setMessage(str){
+	 var andate = $("#serviceDate2").attr("placeholder",str);
+	 var username = $("#username").attr("placeholder",str);
+	 var phone1 = $("#phone1").attr("placeholder",str);
+	 var locations = $("#locations").attr("placeholder",str);
+ }
+ 
+ 
  function checkedd(){
      
 	 

@@ -226,14 +226,14 @@ function checkedd(type){
  
 <br/>  
  
-<div id="wrap">  
+<div id="wrap" style="text-align:center;">  
 <form  action="server.jsp"  name = "myForm" method ="post"  id="form"   >
 
 <input type="hidden" name="method" value="updateorder"/>
 <input type="hidden" name="oid" value="<%=id%>"/> 
 <input type="hidden" name="typeMethod" id="print" value=""/>  
 
-<table  cellspacing="1"  id="table" style="background-color:black" > 
+<table  cellspacing="1"  id="table"  style="margin:auto; width:80%;"> 
        <%  
 		String tdcol = " bgcolor=\"red\"" ; 
 		  %>
@@ -793,7 +793,7 @@ function checkedd(type){
 			</tr>
 </table> 
 
-<table cellspacing="1"  id="table" style="background-color:black">  
+<table cellspacing="1"  id="table" style="margin:auto; width:80%;">  
     <tr id="th">   
     <td align="center">留言</td>
     
