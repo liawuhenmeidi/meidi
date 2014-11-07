@@ -76,19 +76,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <title>微网站管理登陆页面</title>
 <style type="text/css">
 	div{overflow:hidden; *display:inline-block;}div{*display:block;}
-	.login_box{background:url(style/image/login_bg.jpg) no-repeat; width:602px; height:416px; overflow:hidden; position:absolute; left:50%; top:50%; margin-left:-301px; margin-top:-208px;}
-	.login_iptbox{bottom:90px;_bottom:72px;color:#FFFFFF;font-size:12px;height:30px;left:50%;
-       margin-left:-280px;position:absolute;width:560px; overflow:visible;}
-	.login_iptbox .ipt{height:24px; width:110px; margin-right:22px; color:#fff; background:url(http://www.qw365.org/statics/images/admin_img/ipt_bg.jpg) repeat-x; *line-height:24px; border:none; color:#000; overflow:hidden;}
+	.login_box{background:url(style/image/login_bg.jpg) no-repeat; width:800px; height:500px; overflow:hidden; position:absolute; left:50%; top:50%; margin-left:-400px; margin-top:-250px;}
+	.login_iptbox{bottom:90px;_bottom:72px;color:black;font-size:12px;height:30px;left:50%;
+       margin-left:-200px;position:absolute;width:800px; overflow:visible;}
+	.login_iptbox .ipt{height:24px; width:110px; margin-right:40px; color:#fff; background:url(http://www.qw365.org/statics/images/admin_img/ipt_bg.jpg) repeat-x; *line-height:24px; border:none; color:#000; overflow:hidden;}
 		.login_iptbox label{ *position:relative; *top:-6px;}
 	.login_iptbox .ipt_reg{margin-left:12px;width:46px; margin-right:16px; background:url(http://www.qw365.org/statics/images/admin_img/ipt_bg.jpg) repeat-x; *overflow:hidden;text-align:left;padding:2px 0 2px 5px;font-size:16px;font-weight:bold;}
-	.login_tj_btn{ background:url(http://www.qw365.org/statics/images/admin_img/login_dl_btn.jpg) no-repeat 0px 0px; width:52px; height:24px; margin-left:16px; border:none; cursor:pointer; padding:0px; float:right;}
+	
 	.yzm{position:absolute; background:url(http://www.qw365.org/statics/images/admin_img/login_ts140x89.gif) no-repeat; width:140px; height:89px;right:56px;top:-96px; text-align:center; font-size:12px; display:none;}
 	.yzm a:link,.yzm a:visited{color:#036;text-decoration:none;}
-	.yzm a:hover{color:#C30;}
+	.yzm a:hover{color:black;}
 	.yzm img{cursor:pointer; margin:4px auto 7px; width:130px; height:50px; border:1px solid #fff;}
-	.cr{font-size:12px;font-style:inherit;text-align:center;color:#ccc;width:100%; position:absolute; bottom:58px;}
-	.cr a{color:#ccc;text-decoration:none;}
+	.cr{font-size:12px;font-style:inherit;text-align:center;color:black;width:100%; position:absolute; bottom:58px;}
+	.cr a{color:black;text-decoration:none;}
 </style>
 <script type = "text/javascript" language = "javascript">
 
@@ -113,11 +113,12 @@ function clear(){
     <div id="yzm" class="yzm"> 
     <img id='code_img' onclick='this.src=this.src+"&"+Math.random()' src='http://www.qw365.org/api.php?op=checkcode&code_len=4&font_size=20&width=130&height=50&font_color=&background='/> 
     <br/>  
-    <a href="javascript:document.getElementById('code_img').src='http://www.qw365.org/api.php?op=checkcode&m=admin&c=index&a=checkcode&time='+Math.random();void(0);">单击更换验证码</a></div>
+    <a href="javascript:document.getElementById('code_img').src='http://www.qw365.org/api.php?op=checkcode&m=admin&c=index&a=checkcode&time='+Math.random();void(0);">单击更换验证码</a>
+    </div>
 
      </form>
     </div>
-    <div class="cr">CopyRight 2006-2013  <a href="http://www.sdo.com" target="_blank">圣荣公司</a>  <a href="http://www.phpcms.cn" target="_blank">全网365 TEAM</a> </div>
+    <div class="cr">CopyRight 2006-2013  <a href="" target="_blank">智历软件科技有限公司</a> </div>
 </div>
 </body>
 </html>

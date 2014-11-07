@@ -96,15 +96,11 @@ function initTime(){
     <td width="25%"><input type="text"  name="printlnid" id ="printlnid"/></td>
   </tr>
   <tr>
-    <td width="40%">销售开始时间:</td>
-    <td>  <input class="date" type="text" name="saledateStart" placeholder=""  id="saledateStart"  readonly="readonly" style="width:90% "></input>
+    <td width="40%">开票日期:</td>
+    <td>  <input class="date" type="text" name="saledateStart" placeholder=""  id="saledateStart"  readonly="readonly" style="width:90% "></input><br>
+          至<input class="date2" type="text" name="saledateEnd" id ="saledateEnd" placeholder=""  readonly="readonly" style="width:90% "></input> 
      </td>
-      </tr> 
-    <tr>
-     <td width="40%">销售结束时间:</td>
-     <td ><input class="date2" type="text" name="saledateEnd" id ="saledateEnd" placeholder=""  readonly="readonly" style="width:90% "></input> 
-     </td>
-  </tr> 
+  </tr>  
  <tr>
     <td>OMS订单号：</td>
     <td width="25%"><input type="text"  name="sailId" id ="sailId"/></td>

@@ -78,16 +78,7 @@ function initTime(){
     <td width="25%">单号:</td>
     <td width="25%"><input type="text"  name="printlnid" id ="printlnid"/></td>
   </tr>
-  <tr>
-    <td width="40%">销售开始时间:</td>
-    <td width="60%">  <input class="date" type="text" name="saledateStart" placeholder=""  id="saledateStart"  readonly="readonly" style="width:90% "></input>
-     </td>
-      </tr> 
-    <tr>
-     <td width="40%">销售结束时间:</td>
-     <td width="60%"><input class="date2" type="text" name="saledateEnd" id ="saledateEnd" placeholder=""  readonly="readonly" style="width:90% "></input> 
-     </td> 
-  </tr>
+ 
  <tr> 
     <td>配送状态</td>
     <td colspan="3">
@@ -95,7 +86,9 @@ function initTime(){
      <option value="0" >未完成 </option> 
      <option value="1" >已送货 </option>
      <option value="2" >已送货安装</option>
+     <option value="-1">已退货</option>
       </select>
+
     </td>
     </tr>
   <tr> 

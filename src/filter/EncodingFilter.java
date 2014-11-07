@@ -2,6 +2,7 @@ package filter;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Enumeration;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -32,10 +33,65 @@ public class EncodingFilter implements Filter {
 		}
 		// 声明包装类的实例
 		// 放行
-		chain.doFilter(request, response);
+		Enumeration<String> params = req.getParameterNames();  
+		
+        String sql = "";  
+        while (params.hasMoreElements()) {  
+            //得到参数名  
+            String name = params.nextElement().toString();  
+            //System.out.println("name===========================" + name + "--");  
+            //得到参数对应值  
+            String[] value = req.getParameterValues(name);  
+            for (int i = 0; i < value.length; i++) {  
+                sql = sql + value[i];  
+            }  
+        }  
+        //System.out.println("============================SQL"+sql);  
+        //有sql关键字，跳转到error.html  
+        if (sqlValidate(sql)) {  
+            throw new IOException("您发送请求中的参数中含有非法字符");  
+            //String ip = req.getRemoteAddr();  
+        } else {  
+        	chain.doFilter(request, response);  
+        }  
+		
 	}
+	
+	
 	public void destroy() {
 	}
+	
+	public static void main(String args[]){
+		String badStr = "exec|execute|insert|delete|update|drop|chr|mid|master|truncate|" +  
+                "char|declare|sitename|net user|xp_cmdshell|;|or|-|+|create|drop|" +  
+                "table|grant|use|group_concat|column_name|" +   
+                "information_schema.columns|table_schema|union|*|" +  
+                "--|//|/|#";//过滤掉的sql关键字，可以手动添加  
+        String[] badStrs = badStr.split("\\|");  
+        for (int i = 0; i < badStrs.length; i++) {  
+            System.out.println(badStrs[i]);
+        }  
+	}
+	
+	protected static boolean sqlValidate(String str) {  
+        str = str.toLowerCase();//统一转为小写     
+        String badStr = "exec|execute|insert|delete|drop|chr|mid|master|truncate|" +  
+                "char|declare|sitename|net user|xp_cmdshell|;|+|create|drop|" +  
+                "table|grant|use|group_concat|column_name|" +   
+                "information_schema.columns|table_schema|union|*|" +  
+                "--|//|/|#";//过滤掉的sql关键字，可以手动添加  
+        
+        String[] badStrs = badStr.split("\\|");  
+        for (int i = 0; i < badStrs.length; i++) {  
+            if (str.indexOf(badStrs[i]) >= 0) { 
+            	System.out.println(badStrs[i]);
+                return true;  
+            }  
+        }  
+        return false;  
+    }  
+
+
 }
 
 // 声明包装类
@@ -52,7 +108,7 @@ class MyRequest extends HttpServletRequestWrapper {
 			if("".equals(val) || "null".equals(val) || null == val){
 				return "";
 			}else {
-				
+
 				val = new String(val.getBytes("ISO-8859-1"),
 						super.getCharacterEncoding());
 			}

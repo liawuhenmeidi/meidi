@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%@ include file="searchdynamic.jsp"%> 
+<%@ include file="searchdynamic.jsp"%>  
 
 <%     
 List<Order> list = OrderManager.getOrderlist(user,Group.sale,Integer.valueOf(type),-1,0,sort,sear); 
