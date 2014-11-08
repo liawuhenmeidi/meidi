@@ -54,14 +54,10 @@ function winconfirm(){
 }
 
 function update(id,statues,type){
-	if(type == 1){
-		alert("请到职位管理进行修改");
-	}else {
+
 		if(statues != 1){
-			 window.location.href="branch1add.jsp?pid=<%=id%>&id="+id;
+			 window.location.href="branch1add.jsp?pid=<%=id%>&id="+id+"&type="+type;
 		}
-	}
-	
 	
 }
 

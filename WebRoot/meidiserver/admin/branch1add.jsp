@@ -5,7 +5,8 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 String pid = request.getParameter("pid");
 String id = request.getParameter("id"); 
- 
+String type = request.getParameter("type");
+
 HashMap<String,List<User>> map = UserService.getMapBranchid();
 System.out.println(StringUtill.GetJson(map.get(id)));
 Branch branchold = null;
@@ -166,6 +167,9 @@ function changes(){
       
       </table>
       <br/>
+      
+      <% if(!"1".equals(type)){ %>
+      
      <form action="branch1add.jsp"  method = "post"  onsubmit="return checkedd()">
       <input type="hidden" name="action" value="add"/>
       <input type="hidden" name="pid" value="<%=pid%>"/> 
@@ -194,16 +198,8 @@ function changes(){
       <input type="submit" value="提  交" />
 
  </form>
-
+ <%} %>
      </div>
-     
-     
-     
-   
-
-
-
-
 
 
 </body>

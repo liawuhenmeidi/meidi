@@ -16,6 +16,7 @@ import user.User;
 import user.UserManager;
 import user.UserService;
 
+import utill.StringUtill;
 import utill.TokenGen;
 
 
@@ -66,6 +67,7 @@ public class RegistServlet extends HttpServlet {
 			    String phone = request.getParameter("phone");
 			    String password = request.getParameter("password");
 			    String charge = request.getParameter("zhuguan");
+			   
 			    String location = request.getParameter("location");
 			    User u = new User();       
 			    u.setBranch(branch);  

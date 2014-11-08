@@ -50,19 +50,21 @@ function update(uid,phone){
 	$("#phone").val("");
 	
 
-	 winPar = window.open("updateUserPhone.jsp?oldphone="+phone,"phone","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
+	 winPar = window.open("updateUserPhone.jsp?uid="+uid,"phone","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
 	 timer1 = setInterval("startRequest('"+uid+"')",500);
 }
 
 function startRequest(uid){ 
 	 var time = $("#fresh").val();
 	 if("fresh" == time){
+		 $("#fresh").val("");
 		 var phone = $("#phone").val();
+		 var branchid = $("#branchid").val();
 		 clearInterval(timer1);
 		 $.ajax({ 
 		        type: "post", 
 		         url: "server.jsp",
-		         data:"method=updatePhone&uid="+uid+"&phone="+phone,
+		         data:"method=updatePhone&uid="+uid+"&phone="+phone+"&branchid="+branchid,
 		         dataType: "",  
 		         success: function (data) {
 		           window.location.href="huiyuan.jsp";
@@ -74,7 +76,6 @@ function startRequest(uid){
 		
 		 //window.location.href='inventoryDetail.jsp?ctype='+ctype+'&branchid='+branchid+'&starttime='+starttime+'&endtime='+endtime; 
 	 }
-	
 }
 
 
@@ -110,6 +111,7 @@ function startRequest(uid){
    
    <input type="hidden" id="fresh"  value=""/>
   <input type="hidden" id="phone"  value=""/>
+  <input type="hidden" id="branchid"  value=""/>
    
     
 <table width="100%" cellspacing="1" id="table"> 
@@ -132,6 +134,7 @@ function startRequest(uid){
   for(int i =0 ;i<list.size();i++){
 	 User u = list.get(i) ;
 	 
+	 
 %> 
     <tr  id="<%=u.getId() %>" class="asc"  onclick="updateClass(this)" ondblclick="update('<%=u.getId()%>','<%=u.getPhone() %>')">    
 
@@ -140,7 +143,7 @@ function startRequest(uid){
 		<td align="left"><%=u.getUsername() %></td>
 		<td align="left"><%=u.getPhone() %></td> 
 		<td align="left"><%=map.get(u.getUsertype()).getName() %></td>
-		<td align="left"><%=u.getCharge()==null?"暂无主管":u.getCharge()%></td>
+		<td align="left"><%=u.getChargeName()%></td>
 		<td align="left"><%= u.getBranchName() %></td>
 		<td align="left"><%=u.getEntryTime() %></td> 
 		<td align="left">

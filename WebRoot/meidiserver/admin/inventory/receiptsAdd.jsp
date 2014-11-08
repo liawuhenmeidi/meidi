@@ -13,7 +13,7 @@ String inventoryid = request.getParameter("id");
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
 List<Branch> listbranch = BranchService.getList();
   
-List<String> listbranchp = BranchManager.getLocateAll();  
+List<String> listbranchp = BranchService.getListStr(); 
 String listall = StringUtill.GetJson(listbranchp); 
   
 List<String> listallp = ProductManager.getProductlist();

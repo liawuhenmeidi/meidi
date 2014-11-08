@@ -4,9 +4,9 @@
 request.setCharacterEncoding("utf-8");
 
 User user = (User)session.getAttribute("user");
-// peidan
+// peidan 
 String method = request.getParameter("method");
- 
+  
 if("peidan".equals(method)){ 
 	String uid = request.getParameter("uid"); 
 	String id = request.getParameter("id");   
@@ -60,11 +60,11 @@ if("peidan".equals(method)){
 	response.getWriter().write(""+b);
 	response.getWriter().flush();
 	response.getWriter().close();
-	//updatePhone
 }else if("updatePhone".equals(method)){     
 	String uid = request.getParameter("uid");
 	String phone = request.getParameter("phone");
-	boolean b = UserManager.updatePhone(uid, phone);
+	String branchid = request.getParameter("branchid");
+	boolean b = UserManager.updatePhone(uid, phone,branchid);
 	response.getWriter().write(""+b);
 	response.getWriter().flush();
 	response.getWriter().close();

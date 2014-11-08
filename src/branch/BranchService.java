@@ -8,6 +8,7 @@ public class BranchService {
     public static Map<Integer,Branch>  map = null;
     public static List<Branch>  list = null; 
     public static Map<String,Branch> nameMap = null ;
+    public static List<String> listStr = null;
    
 	public static Map<Integer, Branch> getMap() {
 		if(map == null){
@@ -36,7 +37,15 @@ public class BranchService {
 		init();
 		return list ;
 	}
- 
+  
+	public static List<String> getListStr() {
+		if(listStr == null){ 
+			listStr = BranchManager.getLocateAllIsable( ); 
+		}
+		init();
+		return listStr ;
+	}
+	
    
    public static void init(){
 	   if(flag){

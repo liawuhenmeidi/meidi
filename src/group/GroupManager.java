@@ -406,6 +406,33 @@ logger.info(sql);
 			return map;
 		}
 		
+		public static HashMap<String,List<User>> getGroupPidMapUser() {
+			HashMap<String,List<User>> map = new HashMap<String,List<User>>();
+		    HashMap<String,List<User>> mapuser = UserManager.getMapPidUser();
+			Connection conn = DB.getConn();    
+			String sql = "select * from mdgroup";  
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {   
+				while (rs.next()) {
+					Group g = GroupManager.getGroupFromRs(rs);
+					List<User> list = map.get(g.getId()+"");
+					if(list == null){    
+					   // list = UserManager.getUsersregist(g.getPid());
+				 		list = mapuser.get(g.getPid()+""); 
+						map.put(g.getId()+"", list); 
+					}
+				} 
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			} 
+			return map;
+		}
+		
 		public static int delete(String id ) {
 			 
 			List<String> sqls = new ArrayList<String>();

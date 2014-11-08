@@ -72,11 +72,23 @@ logger.info(sql);
 	   }
 	 
 	 
-	 public static boolean updatePhone(String uid,String phone){
+	 public static boolean updatePhone(String uid,String phone,String branchid){
 		   boolean flag = false ;
+		   String sql = "";
 		    Connection conn = DB.getConn();
-			Statement stmt = DB.getStatement(conn); 
-			String  sql = "update mduser set phone = '"+phone+"' where id = " + uid ;
+			Statement stmt = DB.getStatement(conn);
+			if(!StringUtill.isNull(phone)){
+				if(StringUtill.isNull(branchid)){
+					sql = "update mduser set phone = '"+phone+"' where id = " + uid ;
+				}else {
+					sql = "update mduser set phone = '"+phone+"' , branch = '"+branchid+"'  where id = " + uid ;
+				}
+			}else {
+				if(!StringUtill.isNull(branchid)){
+					sql = "update mduser set branch = '"+branchid+"' where id = " + uid ;
+				}
+			}
+			
 			try {
 				stmt.executeUpdate(sql);
 				flag = true ; 
@@ -846,6 +858,34 @@ logger.info(sql);
 			return users;
 	   }
 	   
+	   public static HashMap<String,List<User>> getMapPidUser(){
+		    
+		   HashMap<String,List<User>> users = new HashMap<String,List<User>>();
+			Connection conn = DB.getConn(); 
+			String sql = "select * from  mduser  where statues = 1 ";
+//	logger.info(sql);		
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) {
+					User u= UserManager.getUserFromRs(rs);
+					List<User> list = users.get(u.getUsertype()+"");
+					if(list == null ){
+						list = new ArrayList<User>();
+						users.put(u.getUsertype()+"", list);
+					} 
+					list.add(u);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return users;
+	   }
+	   
 	public static User check(String username, String password)
 			throws UserNotFoundException, PasswordNotCorrectException, UnsupportedEncodingException {
 		User u = null;
@@ -884,10 +924,10 @@ logger.info(sql);
 		
 		String sql = "update mduser set statues = "+statues + "  where id = " + id ;
 		
-		String str1 = "(select id from mdgroup where pid = "+user.getUsertype()+") "; 
-		
-		
-		String sql1 = "update mduser set statues = "+statues + "  where  usertype in "+str1 ;
+		//String str1 = "(select id from mdgroup where pid = "+user.getUsertype()+") ";  
+		 
+		//String sql1 = "update mduser set statues = "+statues + "  where  usertype in "+str1 ;
+		String sql1 = "update mduser set statues = "+statues + "  where charge = " + id ;
 		
 		sqls.add(sql);
 		sqls.add(sql1);

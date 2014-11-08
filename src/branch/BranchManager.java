@@ -143,6 +143,28 @@ public class BranchManager {
 			}
 			return users;
 		}
+		
+		public static List<String> getLocateAllIsable( ) {
+			List<String> users = new ArrayList<String>();
+			Connection conn = DB.getConn();   
+			String sql = "select * from mdbranch where disable = 0 " ;
+			Statement stmt = DB.getStatement(conn); 
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {    
+				while (rs.next()) {  
+					Branch g = getBranchFromRs(rs);
+					users.add(g.getLocateName()); 
+				}   
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return users;
+		}
+		
 		public static List<Branch> getLocate( ) {
 			List<Branch> users = new ArrayList<Branch>();
 			Connection conn = DB.getConn();   
@@ -316,7 +338,7 @@ logger.info(sql);
 		public static Map<String,List<Branch>> getLocateMapBranch() {
 			Map<String,List<Branch>> map = new HashMap<String,List<Branch>>();
 			Connection conn = DB.getConn();
-			String sql = "select * from mdbranch ";
+			String sql = "select * from mdbranch where disable = 0  ";
 			Statement stmt = DB.getStatement(conn); 
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {  

@@ -14,8 +14,8 @@ Map<String,List<Group>> mapgroup = GroupManager.getLocateMap();
 String mapgroupg = StringUtill.GetJson(mapgroup);
  
 //System.out.println(mapgroupg);
-  
-HashMap<String,List<String>> mapg = GroupManager.getGroupPidMap();
+   
+HashMap<String,List<User>> mapg = GroupManager.getGroupPidMapUser();
 String mapgg = StringUtill.GetJson(mapg);
  
 List<BranchType> listb = BranchTypeManager.getLocate();
@@ -121,11 +121,11 @@ $(function () {
 	          var options = '<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>'; 
 	          if(json != null){
 	        	  for(var i=0; i<json.length; i++) 
-		        	 {
-		        	 options +=  "<option value='"+json[i]+"'>"+json[i]+"</option>";
+		        	 { 
+		        	 options +=  "<option value='"+json[i].id+"'>"+json[i].username+"</option>";
 		        	 } 
 	          }
-	         
+	          
 	        	 $("#zhuguan").html(options);   
 			 }); 
     
@@ -156,7 +156,7 @@ $(function () {
 	 var juese = $("#juese").val();
 	 var position = $("#position").val();
 	 var branch = $("#branch").val(); 
-	 var phone = $("#phone").val();
+	 var phone = $("#phone").val(); 
 	 var password = $("#password").val();
 	 var password2 = $("#password2").val(); 
 	 var zhuguan = $("#zhuguan").val();

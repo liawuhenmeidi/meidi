@@ -1,5 +1,7 @@
 package user;
 
+import utill.StringUtill;
+
 public class User {
 	
    private int id;
@@ -41,6 +43,15 @@ public void setChargeid(int chargeid) {
 	public String getCharge() {
 	return charge;
 }
+	public String getChargeName() {
+		if(StringUtill.isNull(charge)){
+			return "";
+		}else {
+			return UserService.getMapId().get(Integer.valueOf(charge)).getUsername();
+		}
+		
+	}
+	
 public void setCharge(String charge) {
 	this.charge = charge;
 }
