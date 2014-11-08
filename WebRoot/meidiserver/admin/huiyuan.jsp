@@ -182,7 +182,7 @@ function startRequest(uid){
 	 User u = listg.get(i) ;
 	 
 %> 
-    <tr class="asc" onclick="updateClass(this)">
+    <tr class="asc"  id="<%=u.getId() %>"  onclick="updateClass(this)">
     
 		
 		
@@ -191,7 +191,7 @@ function startRequest(uid){
 		<td align="left"><%=u.getUsername() %></td>
 		<td align="left"><%=u.getPhone() %> </td> 
 		<td align="left"><%=map.get(u.getUsertype()).getName() %></td>
-		<td align="left"><%=u.getCharge()==null?"暂无主管":u.getCharge()%></td>
+		<td align="left"><%=u.getChargeName()%></td>
 		<td align="left"><%=BranchService.getMap().get(Integer.valueOf(u.getBranch())) == null ? "":BranchService.getMap().get(Integer.valueOf(u.getBranch())).getLocateName() %></td>
 		<td align="left"><%=u.getEntryTime() %></td> 
 		<td align="left">

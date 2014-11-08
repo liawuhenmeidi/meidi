@@ -918,27 +918,63 @@ logger.info(sql);
 	//  激活和关闭职工
 	public  static boolean setStatues(int id , int statues){
 		boolean flag = false ;
-		User user = UserService.getMapId().get(id);
 		
+		User user = UserService.getMapId().get(id);
+		 
 		List<String> sqls = new ArrayList<String>();
+		if(statues != 0){
+			if(!check(user)){
+				String str1 = "(select id from mdgroup where pid = "+user.getUsertype()+") ";  
+				 
+				String sql1 = "update mduser set statues = "+statues + "  where  usertype in "+str1 ;
+
+				sqls.add(sql1);
+			} 
+		}
+		
 		
 		String sql = "update mduser set statues = "+statues + "  where id = " + id ;
+        
 		
-		//String str1 = "(select id from mdgroup where pid = "+user.getUsertype()+") ";  
-		 
-		//String sql1 = "update mduser set statues = "+statues + "  where  usertype in "+str1 ;
-		String sql1 = "update mduser set statues = "+statues + "  where charge = " + id ;
+		
+		
 		
 		sqls.add(sql);
-		sqls.add(sql1);
+		
 		
 		flag = DBUtill.sava(sqls);
 		
-		
+		 
 		return flag ;
 		
 		
 	}
+	
+	public static boolean check(User user){
+		boolean flag = false ;
+		Connection conn = DB.getConn();
+		
+		String sql = "select * from mduser where usertype = " + user.getUsertype() + "  and id != "+user.getId()+" and statues = 1 "; 
+		
+		logger.info(sql);
+		Statement stmt = DB.getStatement(conn); 
+		
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while(rs.next()){
+				flag = true ;
+			}
+			 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return flag ;
+	}
+	
 	private static User getUserFromRs(ResultSet rs){
 		User u = new User();
 		try {

@@ -64,7 +64,7 @@ if("peidan".equals(method)){
 	String uid = request.getParameter("uid");
 	String phone = request.getParameter("phone");
 	String branchid = request.getParameter("branchid");
-	boolean b = UserManager.updatePhone(uid, phone,branchid);
+	boolean b = UserManager.updatePhone(uid, phone,branchid); 
 	response.getWriter().write(""+b);
 	response.getWriter().flush();
 	response.getWriter().close();

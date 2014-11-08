@@ -638,7 +638,19 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				maxid = 1 ;
 			}  
 			
-			order.setPrintlnid(order.getPrintlnid()+"-"+daymarkk);
+		  String printlnid = "";
+		     if(order.getOderStatus().equals(20+"")){ 
+		    	 String sql1 = "insert into  mdorderupdateprint (id, message ,statues , orderid,mdtype ,pGroupId)" +
+	                     "  values ( null, '换货申请', 0,"+order.getImagerUrl()+","+OrderPrintln.huanhuo+","+user.getUsertype()+")";
+		    	 
+		    	 sqls.add(sql1);
+		    	 
+		    	 printlnid = "H"+order.getPrintlnid();
+		    	 
+		    	 order.setPrintlnid(printlnid);
+		     }else {
+		    	 order.setPrintlnid(order.getPrintlnid()+"-"+daymarkk);
+		     }
 		 }
 		 
 	/*	 if(isflag){   
@@ -649,7 +661,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 			 maxid = OrderManager.getMaxid();
 		 }  */
 		   
-	
+	 
 		
 		List<String> sqlp = OrderProductManager.save(maxid, order);
 	    List<String> sqlg = GiftManager.save(maxid, order);
@@ -658,17 +670,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 	     sqls.addAll(sqlp);
 	     sqls.addAll(sqlg);
 	     
-	     String printlnid = "";
-	     if(order.getOderStatus().equals(20+"")){ 
-	    	 String sql1 = "insert into  mdorderupdateprint (id, message ,statues , orderid,mdtype ,pGroupId)" +
-                     "  values ( null, '换货申请', 0,"+order.getImagerUrl()+","+OrderPrintln.huanhuo+","+user.getUsertype()+")";
-	    	 
-	    	 sqls.add(sql1);
-	    	 
-	    	 printlnid = "H"+order.getPrintlnid();
-	    	 
-	    	 order.setPrintlnid(printlnid);
-	     }
+	   
 	    String sql = "insert into  mdorder ( id ,andate , saledate ,pos, username, locates" +
 				", locateDetail, saleID , printSatues ,oderStatus,sailId,checked,phone1,phone2,remark,"+
 	    		"deliveryStatues,orderbranch,sendId,statues1,statues2,statues3,dealSendid,submittime,printlnid,dayremark,dayID,phoneRemark,sailIdremark,checkedremark,posRemark,imagerUrl) values "+  
@@ -784,7 +786,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   }else if(Order.orderDispatching == statues){   // 待安装
 						   sql = "select * from  mdorder where  installid = "+user.getId() + " and deliveryStatues in (1,10)" +search+"  order by "+sort + str ; 
 					   }else if(Order.over == statues){  // 已送货
-						   sql = "select * from  mdorder where  ( sendId = "+user.getId() + " ) " +search+"  order by "+sort + str;
+						   sql = "select * from  mdorder where  ( sendId = "+user.getId() + " )  and deliveryStatues in (1) " +search+"  order by "+sort + str;
 					   }else if(Order.returns == statues){ // 已安装
 						   sql = "select * from  mdorder where  (sendId = "+user.getId() + " and installid = 0  or  installid = "+user.getId() + " )  and deliveryStatues in (2,5)    " +search+"  order by "+sort + str;
 					   }
