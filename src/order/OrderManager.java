@@ -626,11 +626,13 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					 daymark = 1 ; 
 				 }    
 				 dayID = TimeUtill.getdate();   
-			 }
+			 } 
 			 if(daymark<10){   
 				 daymarkk = "00"+daymark;
 			 }else if(9<daymark && daymark <100){
 				 daymarkk = "0"+daymark; 
+			 }else {
+				 daymarkk = daymark+""; 
 			 }
 			 
 			 
@@ -794,8 +796,8 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   
 			   }else if(flag && Group.sale == type){
 				   if(!StringUtill.isNull(search)){ 
-					   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +search+"  order by "+sort + str;
-				   }else {
+					   sql = "select * from  mdorder where  orderbranch = "+  user.getBranch() +search+"  order by "+sort + str;
+				   }else { 
 					   if(Order.serach == statues){
 						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (0,9,10) " +search+"  order by "+sort + str;
 					   }else if(Order.orderDispatching == statues){ 

@@ -197,7 +197,7 @@ function getmap(){
                <td><span class="qiangdan"><a href="javascript:void(0)" onclick="updateOeders('huanhuo')">换货</a></span></td>
                 <% }
                 %>
-         <td><span class="qiangdan"><a href="serch_list.jsp">返回</a></span></td>
+         <td><span class="qiangdan"><a href="javascript:history.go(-1);"> 返回</a> </span></td>
      </tr>
   
   </table>

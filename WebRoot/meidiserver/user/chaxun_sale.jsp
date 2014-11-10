@@ -1,8 +1,10 @@
 <%@ page language="java" import="java.util.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-
+<%
+String type = request.getParameter("type");
+%>
 <!DOCTYPE html>
 <html>
-<head>
+<head> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta charset="utf-8">
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -89,10 +91,12 @@ function initTime(){
 <!--  订单详情  -->
 <div class="s_main_box">
 <form action="serch_list.jsp"  method ="post"  id="form"  onsubmit="return checkedd()" >
+  
+<input type="hidden" name="type" value="-1"/>
 
 <table width="100%" class="s_main_table">
 <tr>
-    <td width="25%">单号:</td>
+    <td width="25%">单号:</td> 
     <td width="25%"><input type="text"  name="printlnid" id ="printlnid"/></td>
   </tr>
   <tr>

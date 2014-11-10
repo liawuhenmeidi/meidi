@@ -4,6 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 
 String type = request.getParameter("type"); 
+
 if(StringUtill.isNull(type)){
 	type = Order.serach+"";
 }
@@ -31,7 +32,7 @@ if(saledateEnd != null && saledateEnd != "" && saledateEnd != "null"){
 }
   
 if(sailId != null && sailId  != "" && sailId  != "null"){
-	sear += " and sailId like '%"+sailId+"%'";
+	sear += " and sailId in (select id from mduser  where username like '%" + sailId +"%')"; 
 }
 if(pos != null && pos != "" && pos != "null"){
 	sear += " and pos like '%"+pos+"%'";
@@ -41,9 +42,9 @@ if(username != null && username != "" && username != "null"){
 }     
 if(phone1 != null && phone1 != "" && phone1 != "null"){
 	sear += " and phone1 like '%"+phone1+"%'";
-};
+}; 
 if(!StringUtill.isNull(printlnid)){
-	sear += "and printlnid like '%" + printlnid +"%'";
+	sear += " and printlnid like '%" + printlnid +"%'";
 }
 
 %>

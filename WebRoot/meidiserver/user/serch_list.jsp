@@ -46,9 +46,9 @@ function search(type){
   <jsp:param name="dmsn" value="" />
   </jsp:include>
  <table> 
-     <tr> 
-          <td><span class="qiangdan"><a href="chaxun_sale.jsp">我要查询</a></span></td>
-          <td><span class="qiangdan"><a href="order.jsp">我要报装</a></span></td>
+     <tr>  
+          <td><span class="qiangdan"><a href="chaxun_sale.jsp?type=<%=type%>">我要查询</a></span></td>
+          <td><span class="qiangdan"><a href="order.jsp">我要报装</a></span></td> 
           <td><span class="qiangdan"><a href="welcom.jsp">返回</a></span></td>
      </tr>
     
