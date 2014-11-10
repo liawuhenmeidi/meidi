@@ -1,9 +1,10 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,order.*,orderproduct.*,branchtype.*,branch.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
-	
+	long startTime = System.currentTimeMillis();
 	//接受两边的id
 	String[] dbSide = request.getParameterValues("dbside");
 	String[] uploadSide = request.getParameterValues("uploadside");
@@ -44,6 +45,19 @@
 	String selectBranch = request.getParameter("branch");
 	String selectOrderName = request.getParameter("uploadorder");
 	
+	
+	//截至时间
+	String selectDate = request.getParameter("deadline");
+	String deadline = "";
+	if(StringUtill.isNull(deadline)){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");	
+		deadline = sdf.format(new Date());
+	}else{
+		deadline = selectDate;
+	}
+	
+	
+	
 	//查询条件提交后，左侧侧显示内容
 	if(selectBranchType != null && !selectBranchType.equals("") ){
 		//第一级选择的是否是all
@@ -54,9 +68,9 @@
 			if(selectBranch != null && !selectBranch.equals("")){
 				//第二级选择的是否是all
 				if(selectBranch.equals("all")){ 
-					unCheckedDBOrders = OrderManager.getUnCheckedDBOrdersbyBranchType(selectBranchType);
+					unCheckedDBOrders = OrderManager.getUnCheckedDBOrdersbyBranchType(selectBranchType,deadline);
 				}else{
-					unCheckedDBOrders = OrderManager.getUnCheckedDBOrdersbyBranch(selectBranch);
+					unCheckedDBOrders = OrderManager.getUnCheckedDBOrdersbyBranch(selectBranch,deadline);
 				}
 			}
 			
@@ -93,6 +107,7 @@
 	session.setAttribute("afterMatchOrders", afterMatchOrders);
 	session.setAttribute("unCheckedDBOrders", unCheckedDBOrders);
 	session.setAttribute("unCheckedUploadOrders", unCheckedUploadOrders);
+	System.out.println("自动对比页面总执行时间(毫秒) = " + (System.currentTimeMillis() - startTime));
 	
 	String backgroundColor ="#B9D3EE";
 	boolean showColor = false;
@@ -118,6 +133,7 @@ tr strong,tr td {white-space:normal}
 <!--   头部开始   --> 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript" src="../js/calendar.js"></script> 
 <script type="text/javascript">
 
 var jsonmap = '<%=mapjosn%>';   
@@ -192,7 +208,7 @@ $(function (){
        <tr>
 			<td colspan="6" align="center">
 			&nbsp;&nbsp;&nbsp;&nbsp;
-			<h3>本地记录的订单</h3>
+			<h3>本地记录的订单(截至时间<input class="date2" type="text" name="deadline" id ="serviceDate2" onclick="new Calendar().show(this);"  placeholder="默认为今天"  readonly="readonly" style="width:20% "></input>)</h3>
 			<select name="branchtype" id="branchtype" >
           	<option value="all">全部</option> 
           	<%
@@ -232,7 +248,7 @@ $(function (){
 			</td>
 			
 			
-			<td colspan="7" align="center">
+			<td colspan="6" align="center">
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<h3>上传的订单</h3>
 			<select name="uploadorder">
@@ -259,7 +275,6 @@ $(function (){
 			<td align="center">销售日期</td>
 			<td align="center">票面型号</td> 
 			<td align="center">票面数量</td> 
-			<td align="center"></td> 
 			<td align="center">序号</td> 
 			<td align="center">选中</td>
 			<td align="center">销售门店</td>
@@ -294,8 +309,7 @@ $(function (){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""></td>
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%=inter++ %></td> 
+			<td align="center" id=""><%=inter++ %></td> 
 			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
@@ -324,8 +338,7 @@ $(function (){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""></td>
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%=inter++ %></td> 
+			<td align="center" id=""><%=inter++ %></td> 
 			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
@@ -354,8 +367,7 @@ $(function (){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""></td>
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%=inter++ %></td> 
+			<td align="center"  id=""><%=inter++ %></td> 
 			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
@@ -384,8 +396,7 @@ $(function (){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""></td>
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%=inter++ %></td> 
+			<td align="center"  id=""><%=inter++ %></td> 
 			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
@@ -415,8 +426,8 @@ $(function (){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""></td>
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%=inter++ %></td> 
+
+			<td align="center" id=""><%=inter++ %></td> 
 			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
@@ -445,8 +456,8 @@ $(function (){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""></td>
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%=inter++ %></td> 
+
+			<td align="center"  id=""><%=inter++ %></td> 
 			<td align="center"><input name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
@@ -487,7 +498,7 @@ $(function (){
 			
 				if(unCheckedUploadOrders != null && unCheckedUploadOrders.size() > 0 && i< unCheckedUploadOrders.size()){
 		%>
-							<td align="center"></td>
+
 							<td align="center" id=""><%=inter++ %></td>
 							<td align="center"><input name="uploadside" type="checkbox" value="<%=unCheckedUploadOrders.get(i).getId() %>"/></td> 
 							<td align="center"><%= unCheckedUploadOrders.get(i).getShop() %></td>
@@ -499,7 +510,7 @@ $(function (){
 		<%
 				}else{
 		%>
-							<td align="center"></td>
+
 							<td align="center"></td>
 							<td align="center"><input name="uploadside" type="checkbox" value="" disabled="disabled"/></td>
 							<td align="center"></td>
