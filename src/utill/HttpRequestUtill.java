@@ -49,9 +49,9 @@ public class HttpRequestUtill {
     				if(strr != "" && strr != null){    
     					sear += " and id in (select orderid  from mdordergift where " + str + " like '%" + strr +"%')"; 
     				}  // giftName
-    			}else if("dealSendid".equals(str) || "saleID".equals(str) || "sendId".equals(str)){
+    			}else if("dealSendid".equals(str) || "saleID".equals(str) || "sendId".equals(str) || "installid".equals(str) || "returnid".equals(str) ){
     				String strr = request.getParameter(str);
-    				if(strr != "" && strr != null){ 
+    				if(strr != "" && strr != null){  
     				  sear += " and " + str + " in (select id from mduser  where username like '%" + strr +"%')"; 
     				}
     			}else if("orderbranch".equals(str)){

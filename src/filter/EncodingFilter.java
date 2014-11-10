@@ -72,16 +72,16 @@ public class EncodingFilter implements Filter {
             System.out.println(badStrs[i]);
         }  
 	}
-	
+	 
 	protected static boolean sqlValidate(String str) {  
         str = str.toLowerCase();//统一转为小写  
         System.out.println(str);
         String badStr = "exec|execute|insert|delete|drop|chr|mid|master|truncate|" +  
-                "char|declare|sitename|net user|xp_cmdshell|;|+|create|drop|" +  
+                "declare|sitename|net user|xp_cmdshell|;|+|create|drop|" +  
                 "table|grant|group_concat|column_name|" +   
                 "information_schema.columns|table_schema|union|*|" +  
                 "--|//|#";//过滤掉的sql关键字，可以手动添加  
-        
+         
         String[] badStrs = badStr.split("\\|");  
         for (int i = 0; i < badStrs.length; i++) {  
             if (str.indexOf(badStrs[i]) >= 0) { 

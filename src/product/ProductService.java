@@ -30,10 +30,10 @@ public class ProductService {
   
   public static List<String> getlist(int id) {
 	  init();
-		 if(list == null){
-			 list = ProductManager.getProduct(id);
-		 } 
-		return list;
+		 if(typeName == null){
+			 typeName = ProductManager.getProductName();
+		 }  
+		return typeName.get(id+"");
 	}
 	 
   

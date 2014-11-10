@@ -59,7 +59,6 @@ td {
  }); 
    
  function search(category,branchid){ 
-	
 	  window.location.href='inventory1.jsp?category='+category+'&branchid='+branchid;
 		// window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
  }   

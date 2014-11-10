@@ -44,15 +44,15 @@ if(UserManager.checkPermissions(user, Group.dealSend)){
 
 
 List<InventoryBranch>  listInventory = null ;
-Map<String,Integer> list = null ; 
-Map<String,String> maptype = null ;
+Map<String,Integer> list = null ;  
+Map<String,InventoryBranch> maptype = null ;
 if(!StringUtill.isNull(branchid) && !StringUtill.isNull(starttime)  && !StringUtill.isNull(endtimeH)){
 	listInventory = InventoryBranchManager.getCategoryid(branchid, "");
 	list = InventoryBranchMessageManager.getMapAnalyze(branchid,starttime,endtime); 
-	 maptype = InventoryBranchManager.getBranchType(user,branchid); 
+	 maptype = InventoryBranchManager.getBranchTypeObject(user,branchid); 
 }
 
- 
+
 HashMap<Integer,Category>  mapc = CategoryManager.getCategoryMap();
 Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 Map<Integer,User> usermap = UserService.getMapId(); 
@@ -220,18 +220,24 @@ function checkTime(){
 		</tr>      
 		    
               <% 
+              boolean flag = false ;
               if(null !=  listInventory ){
             	  for(int i=0;i<listInventory.size();i++){
+            		  flag = true ;
 	            	  InventoryBranch in = listInventory.get(i);
 	            	  
 	            	  if(countt == 0 && in.getRealcount() != 0 || countt != 0  ){
-			            	  String branchtype = maptype.get(in.getType());
-			            	  if(StringUtill.isNull(branchtype)){
-			            		  branchtype = "";
+	            		  InventoryBranch branchtype = maptype.get(in.getType());
+	            		  String branchtypeStr ;
+			            	  if(branchtype == null){ 
+			            		//  System.out.println(1+in.getType());
+			            		  branchtypeStr = ""; 
 			            	  }else {
+			            		 // System.out.println(2+in.getType());
+			            		  branchtypeStr = branchtype.getType();
 			            		  maptype.remove(in.getType());
 			            	  }
-            	  %>
+            	  %> 
             	  	 
             	   <tr id=""  class="asc"  onclick="updateClass(this)">   
 			 
@@ -240,7 +246,7 @@ function checkTime(){
         			  <td align="center"><%=in.getPapercount() %> </td>   
         			  <td align="center"><%=in.getRealcount() %> </td>   
         			  <td align="center"><%=list.get(in.getType())*(-1) %> </td> 
-        			  <td align="center"><%=branchtype %> </td>  
+        			  <td align="center"><%=branchtypeStr %> </td>  
         			  <td align="center"> 
         			  <input type="hidden" name="product" value="<%=in.getTypeid() %>"/>
         			  <input type="text" name="<%=in.getTypeid() %>" id="<%=in.getTypeid() %>" value=""  /> 
@@ -254,7 +260,41 @@ function checkTime(){
 	            		 
 	            	  }
                 }
-            	  System.out.println(maptype.size());
+              } 
+              
+             
+              if(null != maptype && maptype.size() > 0){
+            	  Set<Map.Entry<String, InventoryBranch>> set = maptype.entrySet();
+            	  Iterator<Map.Entry<String, InventoryBranch>> it = set.iterator();
+            	  
+            	  while(it.hasNext()){
+            		  flag = true ;
+            		  Map.Entry<String, InventoryBranch> map = it.next();
+            		   
+            		  InventoryBranch in = map.getValue();
+            		  %>
+            	<tr id=""  class="asc"  onclick="updateClass(this)">   
+			 
+        			  <td align="center"></td>    
+        			  <td align="center"></td>   
+        			  <td align="center"> </td>   
+        			  <td align="center"> </td>   
+        			  <td align="center"> </td> 
+        			  <td align="center"><%=in.getType() %> </td>  
+        			  <td align="center"> 
+        			  <input type="hidden" name="product" value="<%=in.getTypeid() %>"/>
+        			  <input type="text" name="<%=in.getTypeid() %>" id="<%=in.getTypeid() %>" value=""  /> 
+        			
+        			  </td>
+        			 
+                       </tr>	  
+            		  
+            		  
+            		  <%
+            	  }
+              }
+              
+              if(flag){
                %>
 		       
 		       

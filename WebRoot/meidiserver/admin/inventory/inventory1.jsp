@@ -9,6 +9,7 @@ String branchid = request.getParameter("branchid");
 Category c = CategoryManager.getCategory(category);
 
 List<String> listp = ProductService.getlist(Integer.valueOf(category));
+
 String allp = StringUtill.GetJson(listp); 
 
 List<String> listbranchp = BranchManager.getLocateAll();  
@@ -127,6 +128,7 @@ td {
 var disable = '<%=isdisabel %>';
 var jsonall = <%=listall%>;
 var allp = <%=allp%>;
+
  var jsonmap = '<%=mapjosn%>';  
 
  var jsons =  <%=plist%>;
@@ -143,6 +145,7 @@ var allp = <%=allp%>;
   var typeid = ""; 
   var branch = "<%=branchid%>"; 
   var userbranch = "<%=userbranch%>";
+  
  $(function () { 
 	 $("#branch").autocomplete({ 
 		 source: jsonall
@@ -329,7 +332,7 @@ function pandian(type,branchid){
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
         仓库:   
     <input type="text" name="branch" id="branch" value=""   />  
-    产品类别:     
+    产品型号:     
     
     <input type="text" name="product" id="product" value=""   /> 
     

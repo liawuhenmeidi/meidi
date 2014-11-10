@@ -613,6 +613,31 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 				return list;
 		 }
 	
+	public static Map<String,InventoryBranch> getBranchTypeObject(User user ,String branchid){
+		  //String branchid
+		   Map<String,InventoryBranch> list = new HashMap<String,InventoryBranch>();
+		   
+		   String sql = "";    
+			   sql = "select * from   mdinventorybranch  where branchid in (select branchid from relatebranch where relatebranchid =  " + branchid +")"; 
+	logger.info(sql); 
+			    Connection conn = DB.getConn();
+				Statement stmt = DB.getStatement(conn);
+				ResultSet rs = DB.getResultSet(stmt, sql); 
+				try {  
+					while (rs.next()) {  
+						InventoryBranch orders = getCategoryFromRs(rs); 
+						list.put(orders.getType(),orders); 
+					} 
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally {
+					DB.close(stmt);
+					DB.close(rs);
+					DB.close(conn);
+				 }
+				return list;
+		 }
+	
 	
 	public static int update(User user ,String branchid,String type){
 		   int count = -1 ; 

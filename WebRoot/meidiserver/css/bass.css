@@ -1,11 +1,13 @@
 /* CSS Document */
 
 /* 总体 */
-
+ 
 body {
     overflow-x: hidden;    -webkit-text-size-adjust: none;    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;    color: #000;    margin: 0;    padding: 0;    font-size: 14px;    display: -webkit-box;
-    BACKGROUND-IMAGE: url('../image/f.JPG');background-repeat:no-repeat";
-   /*  We want to layout our first container vertically */
+    background-color:#E8E8D0;background-repeat:no-repeat";
+   /*  
+   BACKGROUND-IMAGE: url('../image/f.JPG');background-repeat:no-repeat";
+   We want to layout our first container vertically */
     -webkit-box-orient: vertical;
     /* we want our child elements to stretch to fit the container */
     -webkit-box-align: stretch;
