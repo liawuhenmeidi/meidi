@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -1128,15 +1129,23 @@ logger.info(sql);
     	return Orders;  
     }
     
+    public static void main(String args[]){
+    	List<Order> orders = getUnCheckedDBOrdersbyBranch(74+"","2014-09-06");
+    	 Iterator<Order> it = orders.iterator();
+    	 while(it.hasNext()){
+    		 System.out.println(it.next().getId());
+    	 }
+    	
+    }
   //wrote by 
     //根据门店获取Order
-    public static List<Order> getUnCheckedDBOrdersbyBranch(String branchid){
+    public static List<Order> getUnCheckedDBOrdersbyBranch(String branchid,String time){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0  and oderStatus not in (20) and orderbranch in ("+branchid+")  order by orderbranch";                  
-    	   
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0  and oderStatus not in (20) and orderbranch in ("+branchid+")  and saledate <= "+time+" order by orderbranch";                  
+    	  // logger.info(sql);
     	if(true){
     		Connection conn = DB.getConn();
             Statement stmt = DB.getStatement(conn);
@@ -1160,12 +1169,12 @@ logger.info(sql);
     
   //wrote by 
     //根据门店类别获取Order
-    public static List<Order> getUnCheckedDBOrdersbyBranchType(String branchid){
+    public static List<Order> getUnCheckedDBOrdersbyBranchType(String branchid,String time){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0 and oderStatus not in (20)  and orderbranch in (select id from mdbranch where pid in ( "+branchid+")) order by orderbranch";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0 and oderStatus not in (20)  and orderbranch in (select id from mdbranch where pid in ( "+branchid+")) and saledate <= "+time+"  order by orderbranch";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();
@@ -1188,12 +1197,12 @@ logger.info(sql);
     	return Orders;  
     }
     
-    public static List<Order> getCheckedDBOrdersbyBranchType(String branchid){
+    public static List<Order> getCheckedDBOrdersbyBranchType(String branchid,String time){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and oderStatus not in (20)  and orderbranch in (select id from mdbranch where pid in ( "+branchid+")) order by orderbranch ";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and oderStatus not in (20)  and orderbranch in (select id from mdbranch where pid in ( "+branchid+")) and saledate <= "+time+" order by orderbranch ";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();
@@ -1216,12 +1225,12 @@ logger.info(sql);
     	return Orders;  
     }
      
-    public static List<Order> getCheckedDBOrdersbyBranch(String branchid){
+    public static List<Order> getCheckedDBOrdersbyBranch(String branchid,String time){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and oderStatus not in (20)  and orderbranch in ( "+branchid+") order by orderbranch";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and oderStatus not in (20)  and orderbranch in ( "+branchid+") and saledate <= "+time+"  order by orderbranch";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();
