@@ -322,39 +322,12 @@ public class MatchOrder {
 	
 	//模糊对比，如果认为对比成功则返回true，否则返回false
 	private int fuzzyCompare(UploadOrder tempUo, Order tempDBO) {
-
-		String key = "";
-			
-		int level = 0 ;
 		
-		//如果pos单号相同
-		if(tempDBO.getPos().toUpperCase().equals(tempUo.getPosNo().toUpperCase())){
-			level += 1;
-		}
-				
-		//如果销售时间相同
-		if(tempDBO.getSaleTime().replace("-", "").equals(tempUo.getSaleTime())){
-			level += 1;
-			
-		}
-
-		//而且票面数量一样
-		if(String.valueOf(tempUo.getNum()).replace("|", "").equals(tempDBO.getSendCountForCompare().replace("|", ""))){
-			level += 1;
-		}
+		AfterMatchOrder tempAfterMatchOrder = new AfterMatchOrder(tempUo,tempDBO);
 		
-		//而且销售门店一样
-		if(utill.StringCompare.getSimilarityRatio(tempDBO.getShopNameForCompare(), tempUo.getShop()) >= 0.19){
-			level += 1;
-		}
-			
-		//而且型号相同
-		key = tempUo.getTypeForCompareWithOutCharactar();	
-		if(tempDBO.getSendTypeForCompareWithOutCharactar().contains(key)){
-			level += 1;
-		}
 		
-		return level;
+		
+		return tempAfterMatchOrder.simpleCompare();
 	}
 
 	public static List<Order> getUnCheckedDBOrders(){

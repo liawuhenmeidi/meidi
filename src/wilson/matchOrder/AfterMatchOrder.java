@@ -19,8 +19,6 @@ public class AfterMatchOrder {
 	private String UploadSideType = "";
 	private String UploadSideCount = "";
 	private int UploadSideOrderId = 0;
-	
-	private Order duplicateDBOrder = null;
 
 	
 	public void initDBSideOrder(Order dbOrder){
@@ -212,18 +210,25 @@ public class AfterMatchOrder {
 	}
 	
 	//给字符串加入<redTag class=\"style\"></redTag>标签，参数为加入的位置，比如:
-	//HighLighter("abcde",3,5) => abc<redTag class=\"style\">de</redTag>
-	//接受参数start和end的类型为String，值为",1,2,3" ,"4,3,2"这样的类型
-	public static String HighLighter(String inputString,String start,String end){
-		if(start == null || end == null || start.length()*end.length() == 0){
+	//HighLighter("abcde","3,5") => abc<redTag class=\"style\">de</redTag>
+	//接受参数index的类型为String，值为"1,2,4,5"这样的类型
+	public static String HighLighter(String inputString,String index){
+		if(index == null || index.length() == 0 || index.split(",").length % 2 != 0){
 			return inputString;
 		}
-		String outPut = inputString.substring(0,Integer.parseInt(start.split(",")[1]));
-		for(int i = 0 ; i + 1< start.split(",").length;i++){
+		String outPut = inputString.substring(0,Integer.parseInt(index.split(",")[0]));
+		for(int i = 0 ; i< index.split(",").length; i+=2){
 			outPut += "<redTag class=\"style\">";
-			outPut += inputString.substring(Integer.parseInt(start.split(",")[i+1]),Integer.parseInt(end.split(",")[i+1]));
+			outPut += inputString.substring(Integer.parseInt(index.split(",")[i]),Integer.parseInt(index.split(",")[i + 1]));
 			outPut += "</redTag>";
+			if(i + 2 != index.split(",").length){
+				outPut += inputString.substring(Integer.parseInt(index.split(",")[i + 1]),Integer.parseInt(index.split(",")[i + 2]));
+			}else{
+				outPut += inputString.substring(Integer.parseInt(index.split(",")[i + 1]),inputString.length());
+			}
+			
 		}
+		
 		return outPut;
 	}
 		
@@ -246,19 +251,20 @@ public class AfterMatchOrder {
 	
 	//计算相似度
 	public Double calcLevel(){
-		
+		//清空
 		this.setCompareLevel(0.0);
 		String key = "";
+		
+		
 		//对比posNo
-		String tempDB = this.getDBOrder().getPos().toUpperCase().trim();
-		String tempUpLoad = this.getUploadOrder().getPosNo().toUpperCase().trim();
-		if(tempDB.equals(tempUpLoad)){
+		
+		if(comparePosNo(this.getDBOrder().getPos(), this.getUploadOrder().getPosNo())){
 			
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setCompareResult(AfterMatchOrder.POSNO, true);
 			
-			this.setDBSidePosNo(HighLighter(tempDB));
-			this.setUploadSidePosNo(HighLighter(tempUpLoad));
+			this.setDBSidePosNo(HighLighter(this.getDBSidePosNo()));
+			this.setUploadSidePosNo(HighLighter(this.getUploadSidePosNo()));
 			
 		}else{
 		//模糊对比posNo
@@ -297,46 +303,39 @@ public class AfterMatchOrder {
 		}
 		
 		//对比saleTime
-		tempDB = this.getDBOrder().getSaleTime();
-		tempUpLoad = this.getUploadOrder().getSaleTime();
-		tempDB = tempDB.length() > 10 ? tempDB.substring(0,10):tempDB;
-		if(tempDB.replace("-", "").equals(tempUpLoad)){
-			
+
+		if(compareSaleTime(this.getDBSideSaleTime(), this.getUploadSideSaleTime())){	
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setCompareResult(AfterMatchOrder.SALETIME, true);
 			
-			this.setDBSideSaleTime(HighLighter(tempDB));
-			this.setUploadSideSaleTime(HighLighter(tempUpLoad));
+			this.setDBSideSaleTime(HighLighter(this.getDBSideSaleTime()));
+			this.setUploadSideSaleTime(HighLighter(this.getUploadSideSaleTime()));
 		}else{
 		//无模糊对比
 		}
 		
 		//对比票面数量
-		tempDB = String.valueOf(this.getUploadOrder().getNum());
-		tempUpLoad = String.valueOf(this.getDBOrder().getSendCount());
-		if(tempDB.replace("|", "").equals(tempUpLoad.replace("|", ""))){
+
+		if(compareNum(this.getDBSideCount(), this.getUploadSideCount())){
 			
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setCompareResult(AfterMatchOrder.NUM, true);
 			
-			this.setDBSideCount(HighLighter(tempDB));
-			this.setUploadSideCount(HighLighter(tempUpLoad));
+			this.setDBSideCount(HighLighter(this.getDBSideCount()));
+			this.setUploadSideCount(HighLighter(this.getUploadSideCount()));
 		}else{
 		//无模糊对比
 		}
 			
-		//对比门店名称
-		tempDB = dbOrder.getShopNameForCompare();
-		tempUpLoad = this.getUploadOrder().getShop().trim();
+		//对比门店名称		
 		
-		
-		if(utill.StringCompare.getSimilarityRatio(tempDB, tempUpLoad) >= 0.19){
+		if(compareShop(dbOrder.getShopNameForCompare(), this.getUploadOrder().getShop()) >= 0.19){
 			
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setCompareResult(AfterMatchOrder.SHOP, true);
 			
-			this.setDBSideShop(HighLighter(tempDB));
-			this.setUploadSideShop(HighLighter(tempUpLoad));
+			this.setDBSideShop(HighLighter(this.getDBSideShop()));
+			this.setUploadSideShop(HighLighter(this.getUploadSideShop()));
 			
 //			//精准对比
 //			if(tempUpLoad.equals(tempDB)){
@@ -350,49 +349,220 @@ public class AfterMatchOrder {
 		}
 		
 		//对比型号
-		tempDB = this.getDBOrder().getSendType().trim();
 		
-		tempUpLoad = this.getUploadOrder().getType().trim().replace("(", "").replace(")", "").replace("（", "").replace("）", "");
-		
-		
-		key = tempUpLoad.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
-		
-		if(tempDB.contains(key)){
+		if(compareType(this.getDBOrder().getSendType(), this.getUploadSideType(), true)){
 			
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setCompareResult(AfterMatchOrder.TYPE, true);
-			
-			//精准对比
-			if(tempDB.equals(tempUpLoad)){			
-				this.setDBSideType(HighLighter(tempDB));
-				this.setUploadSideType(HighLighter(tempUpLoad));
-			}else{
-				this.setDBSideType(HighLighter(tempDB,tempDB.indexOf(key),tempDB.indexOf(key) + key.length()));
-				this.setUploadSideType(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()));	
-			}
 		}	
 		
 		
-		tempUpLoad = this.getUploadOrder().getType().trim();
-		if(tempDB.replace("|", "").equals(tempUpLoad)){
-			
-			this.setCompareLevel(this.getCompareLevel() + 1.0);
-			this.setCompareResult(AfterMatchOrder.TYPE, true);
-			
-			this.setDBSideType(HighLighter(tempDB));
-			this.setUploadSideType(HighLighter(tempUpLoad));
-		}
+		
 					
+		
 		return this.getCompareLevel();	
 	}
 
-	public Order getDuplicateDBOrder() {
-		return duplicateDBOrder;
-	}
+	
+	
+	
+	
+	
+	//以下为对比用工具方法
+	
+	public int simpleCompare(){
+		int result = 0 ;
+		//pos单号
+		if(comparePosNo(this.getDBSidePosNo(), this.getUploadSidePosNo())){
+			result += 1;
+		}
+				
+		//销售时间
+		if(compareSaleTime(this.getDBSideSaleTime(), this.getUploadSideSaleTime())){
+			result += 1;
+		}
 
-	public void setDuplicateDBOrder(Order duplicateDBOrder) {
-		this.duplicateDBOrder = duplicateDBOrder;
+		//票面数量
+		if(compareNum(this.getDBSideCount(), this.getUploadSideCount())){
+			result += 1;
+		}
+		
+		//销售门店
+		if(compareShop(this.getDBSideShop(), this.getUploadSideShop()) >= 0.2){
+			result += 1;
+		}
+			
+		//型号
+		if(compareType(this.getDBSideType(), this.getUploadSideType(), false)){
+			result += 1;
+		}
+		
+		return result;
 	}
 	
+	//对比门店名称
+	public double compareShop(String dbSide,String uploadSide){
+		double result = 0.0;
+		dbSide = dbSide.trim();
+		uploadSide = uploadSide.trim();
+		
+		result = utill.StringCompare.getSimilarityRatio(dbSide, uploadSide);
+		
+		return result;
+	}
+	
+	
+	//对比posno
+	public boolean comparePosNo(String dbSide,String uploadSide){
+		boolean result = false;
+		String tempDB = dbSide.toUpperCase().trim();
+		String tempUpLoad = uploadSide.toUpperCase().trim();
+		if(tempDB.equals(tempUpLoad)){
+			result = true;
+		}
+		return result;
+	}
+	
+	//对比saleTime
+	public boolean compareSaleTime(String dbSide,String uploadSide){
+		boolean result = false;
+		dbSide = dbSide.length() > 10 ? dbSide.substring(0,10):dbSide;
+		if(dbSide.replace("-", "").equals(uploadSide)){
+			result = true;
+		}
+		return result;
+	}
+	
+	//对比票面数量
+	public boolean compareNum(String dbSide,String uploadSide){
+		boolean result = false;
+		
+		if(dbSide.replace("|", "").equals(uploadSide.replace("|", ""))){
+			
+			result = true;
+		}else{
+		//无模糊对比
+		}
+		return result;
+	}
+	
+	
+	//对比型号
+	public boolean compareType(String dbSide,String uploadSide,boolean HighLight){
+		boolean result = false;
+		dbSide = dbSide.trim();
+		uploadSide = uploadSide.trim();
+		
+		//快速对比，是否完全相同?
+		if(dbSide.replace("|", "").equals(uploadSide)){
+			if(HighLight){
+				this.setDBSideType(HighLighter(dbSide));
+				this.setUploadSideType(HighLighter(uploadSide));
+			}
+			return true;
+		}
+		
+		//有括号吗？
+		boolean isBlock = false;
+
+		
+		String tempDB = "";
+		String tempUpload = "";
+		
+		//括号内部分
+		String tempDBInBlock = "";
+		String tempUploadInBlock = "";
+
+		
+		//判断是否有括号
+		if((dbSide.contains("(") && dbSide.contains(")"))||(dbSide.contains("（") && dbSide.contains("）"))){
+			if((uploadSide.contains("(") && uploadSide.contains(")"))||(uploadSide.contains("（") && uploadSide.contains("）"))){
+				isBlock = true;
+			}
+		}
+
+		
+		
+		//如果没括号
+		if(!isBlock){
+			tempUpload = uploadSide.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
+			if(tempDB.contains(tempUpload)){
+				result = true;
+				return result;
+			}
+
+			if(dbSide.replace("|", "").equals(uploadSide)){
+				result = true;
+				return result;
+			}
+		}else{
+		//如果有括号	
+			
+			//分离括号内外
+			if(dbSide.contains("(") && dbSide.contains(")")){
+				tempDB = dbSide.substring(dbSide.indexOf("(") + 1,dbSide.indexOf(")"));
+				tempDBInBlock = dbSide.substring(0,dbSide.indexOf("(")) + dbSide.substring(dbSide.indexOf(")") + 1,dbSide.length());
+			}else if(dbSide.contains("（") && dbSide.contains("）")){
+				tempDB = dbSide.substring(dbSide.indexOf("（")+ 1,dbSide.indexOf("）"));
+				tempDBInBlock = dbSide.substring(0,dbSide.indexOf("（")) + dbSide.substring(dbSide.indexOf("）") + 1,dbSide.length());
+			}
+			
+			
+			if(uploadSide.contains("(") && uploadSide.contains(")")){
+				tempUpload = uploadSide.substring(uploadSide.indexOf("(")+ 1,uploadSide.indexOf(")"));
+				tempUploadInBlock = uploadSide.substring(0,uploadSide.indexOf("(")) + uploadSide.substring(uploadSide.indexOf(")") + 1,uploadSide.length());
+			}else if(uploadSide.contains("（") && uploadSide.contains("）")){
+				tempUpload = uploadSide.substring(uploadSide.indexOf("（")+ 1,uploadSide.indexOf("）"));
+				tempUploadInBlock = uploadSide.substring(0,uploadSide.indexOf("（")) + uploadSide.substring(uploadSide.indexOf("）") + 1,uploadSide.length());
+			}
+			
+			
+			tempDB = tempDB.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
+			tempUpload = tempUpload.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
+			tempDBInBlock = tempDBInBlock.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
+			tempUploadInBlock = tempUploadInBlock.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
+					
+			
+			//括号外的部分
+			if(tempDB.contains(tempUpload)){
+				result = true;//括号外相同，暂时先true
+			}else{
+				return result; //此时为false;
+			}
+		
+			//括号内部分
+			if(tempDBInBlock.contains(tempUploadInBlock)){
+				if(result == true){ 
+					//括号内外都能匹配上
+					
+					//是否上色
+					if(HighLight){
+						try{	
+							String dbSideIndex = String.valueOf(dbSide.indexOf(tempUpload)) + "," + String.valueOf(dbSide.indexOf(tempUpload) + tempUpload.length()) + "," + String.valueOf(dbSide.indexOf(tempUploadInBlock)) + "," + String.valueOf(dbSide.indexOf(tempUploadInBlock) + tempUploadInBlock.length());
+							String uploadSideIndex = String.valueOf(uploadSide.indexOf(tempDB)) + "," + String.valueOf(uploadSide.indexOf(tempDB) + tempDB.length()) + "," + String.valueOf(uploadSide.indexOf(tempDBInBlock)) + "," + String.valueOf(uploadSide.indexOf(tempDBInBlock) + tempDBInBlock.length());
+							
+							this.setDBSideType(HighLighter(dbSide, dbSideIndex));
+							this.setUploadSideType(HighLighter(uploadSide, uploadSideIndex));
+						}catch(Exception e){
+							this.setDBSideType(HighLighter(dbSide));
+							this.setUploadSideType(HighLighter(uploadSide));
+						}
+						
+					}
+					return result;
+				}else{
+					result = false;
+					return result;//这里能匹配上，但是括号外不能，返回false;
+				}
+				
+			}else{
+				result = false;
+				return result;//这里不能匹配上，返回false;
+			}
+			
+		}
+		return result;
+
+	}
 	
 }
