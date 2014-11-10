@@ -1188,6 +1188,90 @@ logger.info(sql);
     	return Orders;  
     }
     
+    public static List<Order> getCheckedDBOrdersbyBranchType(String branchid){
+    	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
+    	//flag = true;
+    	List<Order> Orders = new ArrayList<Order>();
+   
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and oderStatus not in (20)  and orderbranch in (select id from mdbranch where pid in ( "+branchid+"))";                  
+    	   
+    	if(true){
+    		Connection conn = DB.getConn();
+            Statement stmt = DB.getStatement(conn);
+            ResultSet rs = DB.getResultSet(stmt, sql);
+
+ 			try { 
+ 				while (rs.next()) {
+ 					Order p = gerOrderFromRs(rs);
+  					Orders.add(p);
+ 				}
+ 			} catch (SQLException e) {
+ 				e.printStackTrace();
+ 			} finally {
+ 				DB.close(stmt);
+ 				DB.close(rs);
+ 				DB.close(conn);
+ 			}   
+    	}
+    	return Orders;  
+    }
+    
+    public static List<Order> getCheckedDBOrdersbyBranch(String branchid){
+    	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
+    	//flag = true;
+    	List<Order> Orders = new ArrayList<Order>();
+   
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and oderStatus not in (20)  and orderbranch in ( "+branchid+")";                  
+    	   
+    	if(true){
+    		Connection conn = DB.getConn();
+            Statement stmt = DB.getStatement(conn);
+            ResultSet rs = DB.getResultSet(stmt, sql);
+
+ 			try { 
+ 				while (rs.next()) {
+ 					Order p = gerOrderFromRs(rs);
+  					Orders.add(p);
+ 				}
+ 			} catch (SQLException e) {
+ 				e.printStackTrace();
+ 			} finally {
+ 				DB.close(stmt);
+ 				DB.close(rs);
+ 				DB.close(conn);
+ 			}   
+    	}
+    	return Orders;  
+    }
+     
+    public static List<Order> getunCheckedDBOrdersbyBranch(String branchid){
+    	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
+    	//flag = true;
+    	List<Order> Orders = new ArrayList<Order>();
+   
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0 and oderStatus not in (20)  and orderbranch in ( "+branchid+")";                  
+    	   
+    	if(true){
+    		Connection conn = DB.getConn();
+            Statement stmt = DB.getStatement(conn);
+            ResultSet rs = DB.getResultSet(stmt, sql);
+
+ 			try { 
+ 				while (rs.next()) {
+ 					Order p = gerOrderFromRs(rs);
+  					Orders.add(p);
+ 				}
+ 			} catch (SQLException e) {
+ 				e.printStackTrace();
+ 			} finally {
+ 				DB.close(stmt);
+ 				DB.close(rs);
+ 				DB.close(conn);
+ 			}   
+    	}
+    	return Orders;  
+    }
+    
     
    public static Order getOrderID(User user ,int id){
 	   
