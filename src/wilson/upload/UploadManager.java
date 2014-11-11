@@ -376,7 +376,7 @@ public class UploadManager {
 		List <UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadorder where checked = 1";
+		String sql = "select * from uploadorder where checked = 1 order by shop";
 
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -652,7 +652,7 @@ public class UploadManager {
 		List <UploadOrder> result = new ArrayList<UploadOrder>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadorder where checked = 1 and name = '" + name + "'";
+		String sql = "select * from uploadorder where checked = 1 and name = '" + name + "' order by shop" ;
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
