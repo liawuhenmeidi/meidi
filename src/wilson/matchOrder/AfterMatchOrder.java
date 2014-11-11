@@ -329,7 +329,7 @@ public class AfterMatchOrder {
 			
 		//对比门店名称		
 		
-		if(compareShop(dbOrder.getShopNameForCompare(), this.getUploadOrder().getShop()) >= 0.19){
+		if(compareShop(dbOrder.getShopNameForCompare(), this.getUploadOrder().getShop()) > MatchOrder.SHOPNAME_DISTANCE){
 			
 			this.setCompareLevel(this.getCompareLevel() + 1.0);
 			this.setCompareResult(AfterMatchOrder.SHOP, true);

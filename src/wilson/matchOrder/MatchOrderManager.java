@@ -20,9 +20,9 @@ public class MatchOrderManager {
 		}
 	}
 	
-	public static List<Order> getUnCheckedDBOrders(){
+	public static List<Order> getUnCheckedDBOrders(String time){
 		List <Order> unCheckedDBOrders = new ArrayList<Order>();
-		unCheckedDBOrders = OrderManager.getUnCheckedDBOrders();
+		unCheckedDBOrders = OrderManager.getUnCheckedDBOrders(time);
 		if(unCheckedDBOrders != null && unCheckedDBOrders.size() >= 0){
 			return unCheckedDBOrders;
 		}else{
