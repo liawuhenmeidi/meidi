@@ -1137,7 +1137,7 @@ logger.info(sql);
     	 }
     	
     }
-  //wrote by 
+
     //根据门店获取Order
     public static List<Order> getUnCheckedDBOrdersbyBranch(String branchid,String time){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
@@ -1167,7 +1167,6 @@ logger.info(sql);
     	return Orders;  
     }
     
-  //wrote by 
     //根据门店类别获取Order
     public static List<Order> getUnCheckedDBOrdersbyBranchType(String branchid,String time){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
