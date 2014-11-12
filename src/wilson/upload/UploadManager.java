@@ -271,6 +271,32 @@ public class UploadManager {
 		return true;
 	}
 	
+	public static boolean saveUploadOrder(UploadOrder uploadOrder){
+		boolean result = false;
+		String sql = ""; 
+		sql = "update uploadorder set shop=?,posno=?,saletime=?,type=?,num=? where id = " + uploadOrder.getId();	
+		Connection conn = DB.getConn();
+		
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		try {
+				pstmt.setString(1, uploadOrder.getShop());
+				pstmt.setString(2, uploadOrder.getPosNo());
+				pstmt.setString(3, uploadOrder.getSaleTime());
+				pstmt.setString(4, uploadOrder.getType());
+				pstmt.setInt(5, uploadOrder.getNum());
+				pstmt.executeUpdate();
+				result = true;
+				logger.info(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return result;
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return result;
+	}
+	
 	public static boolean saveSalaryModelList(List<UploadSalaryModel> uploadSalaryModelList) {
 		boolean flag = false;
 		String sql = "insert into uploadsalarymodel (id,shop,name,starttime,endtime,catergory,type,content,committime,filename,status) VALUES (null,?,?,?,?,?,?,?,?,?,0)";	
@@ -445,6 +471,44 @@ public class UploadManager {
 			DB.close(conn);
 		}	
 		return checkedUploadOrders;
+	}
+	
+	public static UploadOrder getUploadOrderById(int id){
+		UploadOrder result = new UploadOrder();
+
+		Connection conn = DB.getConn(); 
+		String sql = "select * from uploadorder where id = " + id;
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadOrder uo = new UploadOrder();
+		try {     
+			while (rs.next()) {
+				uo.setId(rs.getInt("id"));
+				uo.setName(rs.getString("name"));
+				uo.setSaleManName(rs.getString("salesman"));
+				uo.setShop(rs.getString("shop"));
+				uo.setPosNo(rs.getString("posno"));
+				if(uo.getPosNo()==null||uo.getPosNo().equals("")){
+					uo.setPosNo("");
+				}
+				uo.setSaleTime(rs.getString("saletime"));
+				uo.setType(rs.getString("type"));
+				uo.setNum(rs.getInt("num"));
+				uo.setSalePrice(rs.getDouble("saleprice"));
+				uo.setFileName(rs.getString("filename"));
+				uo.setChecked(rs.getInt("checked"));
+				uo.setCheckedTime(rs.getString("checkedtime"));
+				result = uo	;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
 	}
 	
 	public static List<AfterMatchOrder> getCheckedAfterMatchOrder(Date startDate,Date endDate){
