@@ -63,7 +63,9 @@ body {
 
 <body>
  
-
+<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript" src="../js/calendar.js"></script> 
 <div style="position:fixed;width:100%;height:200px;">
 <div style="position:fixed;width:80%;height:200px;">
   
@@ -73,7 +75,7 @@ body {
 <p>按时间导出</p>
 <form action="" method="post">
 <input type="hidden" name="type" value="bydate"/>
-开始: <input name="startDate" type="text" id="datepicker1"/>----------结束: <input name="endDate" type="text" id="datepicker2"/>
+开始: <input class="date2" name="startDate" type="text" id="datepicker1" onclick="new Calendar().show(this);" placeholder="必填"/>----------结束: <input class="date2" name="endDate" type="text" id="datepicker2" onclick="new Calendar().show(this);" placeholder="必填"/>
 <input type="submit" value="搜索"/>
 </form>
 
