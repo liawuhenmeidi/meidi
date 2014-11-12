@@ -5,12 +5,13 @@ import java.util.List;
 
 import order.Order;
 import utill.StringCompare;
+import utill.StringUtill;
 import wilson.upload.UploadOrder;
 
 public class MatchOrder {
 	
 	//店名匹配等级
-	public static Double SHOPNAME_DISTANCE = 0.19;
+	public static Double SHOPNAME_DISTANCE = 0.19999;
 	
 	
 	//来自上传的匹配失败列表
@@ -28,66 +29,35 @@ public class MatchOrder {
 	public boolean startMatch(List<Order> dbOrders,List<UploadOrder> uploadOrders){
 		boolean flag = false;
 		try{
+	
+			//取两个源数据中,店名相似度最高的位置i。如14,23
+			String position = "";
+			
+			//临时使用的匹配用列表容器
 			List<Order> tempDBOrderList = new ArrayList<Order>();
 			List<UploadOrder> tempUploadOrderList = new ArrayList<UploadOrder>();
-			
-			String tempDBShopName = "";
-			
-			while(dbOrders.size()> 0 ){
-				
-				
-				//将同一个店名的dbOrder放到tempDBOrderList中
-				for(int i = 0 ; i < dbOrders.size() ; i ++){
-					if(i == 0){
-						tempDBShopName = dbOrders.get(i).getShopNameForCompare();
-						tempDBOrderList.add(dbOrders.get(i));
-						continue;
-					}
-					if(dbOrders.get(i).getShopNameForCompare().equals(tempDBShopName)){
-						tempDBOrderList.add(dbOrders.get(i));
-						//剔除已经添加到tempDBOrderList中的项
-						dbOrders.remove(i);
-						i -- ;
-						continue;
-					}else{
-						//剔除第一项
-						dbOrders.remove(0);
-						break;
-					}
 					
+			while(dbOrders.size()> 0 ){
+				//循环前，清空变量
+				position = "";
+				tempDBOrderList = new ArrayList<Order>();
+				tempUploadOrderList = new ArrayList<UploadOrder>();
+				
+				
+				//取两个源数据中,店名相似度最高的位置i。如14,23
+				position = getSimilarPosFromList(dbOrders,uploadOrders);
+				
+				
+				//出问题了!!
+				if(position.equals("")){
+					break;
 				}
 				
 				
-				//获取到最相似的店名的位置tempI
-				Double tempDistance = 0.0;
-				String tempUploadShopName = "";
-				int tempI = 0 ;
-				for(int i = 0 ; i < uploadOrders.size() ; i ++){
-					if(!uploadOrders.get(i).getShop().equals(tempUploadShopName)){
-						tempUploadShopName = uploadOrders.get(i).getShop();
-						if(StringCompare.getSimilarityRatio(tempDBShopName, tempUploadShopName) > tempDistance){
-							tempI = i ;			
-						}
-					}
-						
-				}
+				//根据位置取出对应要匹配的列表
 				
-				//将最相似的店名的uploadOrder放到tempUploadOrderList中(相似度在0.19以上才行，不然直接清空tempUoloadOrderList)
-				if(tempDistance > MatchOrder.SHOPNAME_DISTANCE){
-					tempUploadShopName = uploadOrders.get(tempI).getShop();			
-					while(uploadOrders.get(tempI).getShop().equals(tempUploadShopName)){
-						tempUploadOrderList.add(uploadOrders.get(tempI));
-						uploadOrders.remove(tempI);
-						if(tempI >= uploadOrders.size()){
-							break;
-						}
-					}
-				}else{
-					tempUploadOrderList = new ArrayList<UploadOrder>();
-				}
-				
-				
-				
+				tempDBOrderList = getSameShopNameSubListFromdbOrders(dbOrders,position.split(",")[0]);   
+				tempUploadOrderList = getSameShopNameSubListFromUploadOrders(uploadOrders,position.split(",")[1]);
 				
 				//赋值本轮需要进行匹配的双方列表
 				unMatchedUploadOrders = tempUploadOrderList;
@@ -114,6 +84,132 @@ public class MatchOrder {
 		return flag;
 	}
 	
+	private List<UploadOrder> getSameShopNameSubListFromUploadOrders(
+			List<UploadOrder> uploadOrders, String index) {
+		
+		
+		List<UploadOrder> result = new ArrayList<UploadOrder>();
+		int i = Integer.parseInt(index);
+		if(i >= 0){
+			String shopName = uploadOrders.get(i).getShop();
+			while(uploadOrders.get(i).getShop().equals(shopName)){
+				result.add(uploadOrders.get(i));
+				uploadOrders.remove(uploadOrders.get(i));
+				if(i >= uploadOrders.size()){
+					break;
+				}
+			}
+			
+		}else{
+			//相当与返回空
+		}
+		
+		return result;
+	}
+
+	private List<Order> getSameShopNameSubListFromdbOrders(
+			List<Order> dbOrders, String index) {
+		List<Order> result = new ArrayList<Order>();
+		int i = Integer.parseInt(index);
+		if(i >= 0 ){
+			String shopName = dbOrders.get(i).getShopNameForCompare();
+			while(dbOrders.get(i).getShopNameForCompare().equals(shopName)){
+				result.add(dbOrders.get(i));
+				dbOrders.remove(dbOrders.get(i));
+				if(i >= dbOrders.size()){
+					break;
+				}
+			}
+		}else{
+			//相当与返回空
+		}
+		
+		return result;
+	}
+
+	private String getSimilarPosFromList(List<Order> dbOrders,
+			List<UploadOrder> uploadOrders) {
+		String result = "";
+		
+		//取不重复的店名的list
+		List<String> dbOrderShopNames = getShopNamesFromdbOrderList(dbOrders);
+		List<String> uploadOrderShopNames = getShopNamesFromUploadOrderList(uploadOrders);
+		double distance = 0.0;
+		String resultDBShopName = "";
+		String resultUploadShopName="";
+		
+		double similarityRatio = 0.0;
+		
+		//找出相似度最高的店名组合
+		for(int i = 0 ; i < dbOrderShopNames.size() ; i ++){
+			for(int j = 0 ; j < uploadOrderShopNames.size() ; j ++){
+				similarityRatio = (double)StringCompare.getSimilarityRatio(dbOrderShopNames.get(i), uploadOrderShopNames.get(j));
+				if(similarityRatio > distance){
+					distance = similarityRatio;
+					resultDBShopName = dbOrderShopNames.get(i);
+					resultUploadShopName = uploadOrderShopNames.get(j);
+				}
+			}
+		}
+
+		//找出这个组合对应在DBList中的开始位置
+		for(int i = 0 ; i < dbOrders.size() ; i ++){
+			if(dbOrders.get(i).getShopNameForCompare().equals(resultDBShopName)){
+				result += String.valueOf(i) + ",";
+				break;
+			}
+		}
+		
+		//没找到?
+		if(!result.endsWith(",")){
+			return "";
+		}
+		
+		if(distance < MatchOrder.SHOPNAME_DISTANCE){
+			return result + "-1";
+		}
+		
+		//找出这个组合对应在UploadList中的开始位置
+		for(int i = 0 ; i < uploadOrders.size() ; i ++){
+			if(uploadOrders.get(i).getShop().equals(resultUploadShopName)){
+				result += String.valueOf(i);
+				break;
+			}
+		}
+		
+		//没找到?
+		if(result.endsWith(",")){
+			return "";
+		}
+		
+		return result;
+	}
+
+	private List<String> getShopNamesFromUploadOrderList(
+			List<UploadOrder> uploadOrders) {
+		List<String> result = new ArrayList<String>();
+		String tempName = "";
+		for(int i = 0  ; i < uploadOrders.size() ; i ++){
+			if(!uploadOrders.get(i).getShop().equals(tempName)){
+				tempName = uploadOrders.get(i).getShop();
+				result.add(tempName);
+			}
+		}
+		return result;
+	}
+
+	private List<String> getShopNamesFromdbOrderList(List<Order> dbOrders) {
+		List<String> result = new ArrayList<String>();
+		String tempName = "";
+		for(int i = 0  ; i < dbOrders.size() ; i ++){
+			if(!dbOrders.get(i).getShopNameForCompare().equals(tempName)){
+				tempName = dbOrders.get(i).getShopNameForCompare();
+				result.add(tempName);
+			}
+		}
+		return result;
+	}
+
 	private void matchOrder(List <UploadOrder> unCheckedUploadOrders,List <Order> unCheckedDBOrders) {
 		AfterMatchOrder amo ;
 		Double tempDouble = 0.0;
@@ -178,11 +274,11 @@ public class MatchOrder {
 						for(int k = 0 ; k < tempList.size() ; k ++){							
 							
 							//其他单据
-							//对应处设置一个新单据与他对应，ID为-1
+							//对应处设置一个新单据与他对应，ID为-2
 							UploadOrder o = new UploadOrder();
-							o.setId(-1);
+							o.setId(-2);
 							amo = new AfterMatchOrder(o,tempList.get(k));
-							amo.setCompareLevel(tempDouble);
+							//amo.setCompareLevel(tempDouble);
 							matchedOrders.add(amo);
 							
 							unMatchedDBOrders.remove(tempList.get(k));
@@ -253,7 +349,7 @@ public class MatchOrder {
 			if(i == unCheckedUploadOrders.size() - 1 ){
 				if(requeredLevel != minRequeredLevel){
 					requeredLevel -= 1;
-					i = 0;
+					i = -1;
 				}
 			}
 			

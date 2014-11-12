@@ -111,6 +111,10 @@
 	
 	//下面用到的是否check
 	boolean isChecked = false;
+	
+	//是否禁用
+	boolean dbsideDisabled =false;
+	boolean uploadsideDisabled=false;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -299,22 +303,32 @@ $(function (){
 			
 			showColor = false;
 			isChecked = false;
-			if(afterMatchOrders.get(i).getUploadSideOrderId() == -1){
+			dbsideDisabled =false;
+			uploadsideDisabled=false;
+			if(afterMatchOrders.get(i).getUploadSideOrderId() == -2){
 				showColor = true;
 			}	
 			if(afterMatchOrders.get(i).getCompareLevel() == 5){
 				isChecked = true;
 			}
+			
+			if(afterMatchOrders.get(i).getUploadSideOrderId() < 0){
+				uploadsideDisabled = true;
+			}
+			if(afterMatchOrders.get(i).getDBSideOrderId() < 0){
+				dbsideDisabled = true;
+			}
+			
 		%>
 		<tr>
-			<td align="center"><input <%if(isChecked) {%>checked="checked"<% }%> name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"/></td>
+			<td align="center"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(dbsideDisabled) {%>disabled="disabled"<% }%> name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"  /></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
 			<td align="center" id=""><%=inter++ %></td> 
-			<td align="center"><input <%if(isChecked) {%>checked="checked"<% }%> name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
+			<td align="center"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(uploadsideDisabled) {%>disabled="disabled"<% }%> name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSidePosNo() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id=""><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>

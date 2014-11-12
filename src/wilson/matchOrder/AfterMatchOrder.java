@@ -48,11 +48,11 @@ public class AfterMatchOrder {
 	public AfterMatchOrder(UploadOrder uploadOrder, Order dbOrder) {
 		setUploadOrder(uploadOrder);
 		setDBOrder(dbOrder);
-		if(uploadOrder.getId() != -1){
+		if(uploadOrder.getId() > 0){
 			this.uploadOrder = uploadOrder;
 			UploadSideShop = uploadOrder.getShop();
 			UploadSidePosNo = uploadOrder.getPosNo();
-			UploadSideSaleTime = uploadOrder.getSaleTime();
+			UploadSideSaleTime = uploadOrder.getSaleTime().replace("/", "");
 			UploadSideType = uploadOrder.getType();
 			UploadSideCount = String.valueOf(uploadOrder.getNum());
 			UploadSideOrderId = uploadOrder.getId();
@@ -68,7 +68,7 @@ public class AfterMatchOrder {
 			this.uploadOrder.clear();
 		}
 		
-		if(dbOrder.getId() != -1){
+		if(dbOrder.getId() > 0){
 			this.dbOrder = dbOrder;
 			DBSideShop = dbOrder.getbranchName(dbOrder.getBranch());
 			DBSidePosNo = dbOrder.getPos();
@@ -235,11 +235,16 @@ public class AfterMatchOrder {
 	//给字符串加入<redTag class=\"style\"></redTag>标签，参数为加入的位置，比如:
 	//HighLighter("abcde",3,5) => abc<redTag class=\"style\">de</redTag>
 	public static String HighLighter(String inputString,int start,int end){
-		if(start<0||start>end||end>inputString.length()){
-			return inputString;
+		try{
+			if(start<0||start>end||end>inputString.length()){
+				return inputString;
+			}
+			//System.out.println("inputString = " + inputString + "start = " + start + "end = " + end);
+			return inputString.substring(0,start) + "<redTag class=\"style\">" + inputString.substring(start,end) + "</redTag>" + inputString.substring(end);
+		
+		}catch(Exception e){
+			return HighLighter(inputString);
 		}
-		//System.out.println("inputString = " + inputString + "start = " + start + "end = " + end);
-		return inputString.substring(0,start) + "<redTag class=\"style\">" + inputString.substring(start,end) + "</redTag>" + inputString.substring(end);
 	}
 	
 	//给字符串加入<redTag class=\"style\"></redTag>标签，比如:
@@ -388,7 +393,7 @@ public class AfterMatchOrder {
 		}
 		
 		//销售门店
-		if(compareShop(this.getDBSideShop(), this.getUploadSideShop()) >= 0.2){
+		if(compareShop(this.getDBSideShop(), this.getUploadSideShop()) >= MatchOrder.SHOPNAME_DISTANCE){
 			result += 1;
 		}
 			
@@ -414,6 +419,9 @@ public class AfterMatchOrder {
 	
 	//对比posno
 	public boolean comparePosNo(String dbSide,String uploadSide){
+//		if(dbSide.equals("D00141162")){
+//			System.out.println("断点专用");
+//		}
 		boolean result = false;
 		String tempDB = dbSide.toUpperCase().trim();
 		String tempUpLoad = uploadSide.toUpperCase().trim();
@@ -447,117 +455,130 @@ public class AfterMatchOrder {
 	}
 	
 	
-	//对比型号
+	//对比型号(最新改成uploadOrder.contains(dborder))
 	public boolean compareType(String dbSide,String uploadSide,boolean HighLight){
 		boolean result = false;
-		dbSide = dbSide.trim();
+		dbSide = dbSide.replace("|", "").trim();
 		uploadSide = uploadSide.trim();
 		
-		//快速对比，是否完全相同?
-		if(dbSide.replace("|", "").equals(uploadSide)){
-			if(HighLight){
-				this.setDBSideType(HighLighter(dbSide));
-				this.setUploadSideType(HighLighter(uploadSide));
+		try{
+			//快速对比，是否完全相同?
+			if(uploadSide.equals(dbSide)){
+				if(HighLight){
+					this.setDBSideType(HighLighter(dbSide));
+					this.setUploadSideType(HighLighter(uploadSide));
+				}
+				return true;
 			}
-			return true;
-		}
-		
-		//有括号吗？
-		boolean isBlock = false;
+			
+			//有括号吗？
+			boolean isBlock = false;
 
-		
-		String tempDB = "";
-		String tempUpload = "";
-		
-		//括号内部分
-		String tempDBInBlock = "";
-		String tempUploadInBlock = "";
-
-		
-		//判断是否有括号
-		if((dbSide.contains("(") && dbSide.contains(")"))||(dbSide.contains("（") && dbSide.contains("）"))){
-			if((uploadSide.contains("(") && uploadSide.contains(")"))||(uploadSide.contains("（") && uploadSide.contains("）"))){
-				isBlock = true;
-			}
-		}
-
-		
-		
-		//如果没括号
-		if(!isBlock){
-			tempUpload = uploadSide.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
-			if(tempDB.contains(tempUpload)){
-				result = true;
-				return result;
-			}
-
-			if(dbSide.replace("|", "").equals(uploadSide)){
-				result = true;
-				return result;
-			}
-		}else{
-		//如果有括号	
 			
-			//分离括号内外
-			if(dbSide.contains("(") && dbSide.contains(")")){
-				tempDB = dbSide.substring(dbSide.indexOf("(") + 1,dbSide.indexOf(")"));
-				tempDBInBlock = dbSide.substring(0,dbSide.indexOf("(")) + dbSide.substring(dbSide.indexOf(")") + 1,dbSide.length());
-			}else if(dbSide.contains("（") && dbSide.contains("）")){
-				tempDB = dbSide.substring(dbSide.indexOf("（")+ 1,dbSide.indexOf("）"));
-				tempDBInBlock = dbSide.substring(0,dbSide.indexOf("（")) + dbSide.substring(dbSide.indexOf("）") + 1,dbSide.length());
-			}
+			String tempDB = "";
+			String tempUpload = "";
 			
-			
-			if(uploadSide.contains("(") && uploadSide.contains(")")){
-				tempUpload = uploadSide.substring(uploadSide.indexOf("(")+ 1,uploadSide.indexOf(")"));
-				tempUploadInBlock = uploadSide.substring(0,uploadSide.indexOf("(")) + uploadSide.substring(uploadSide.indexOf(")") + 1,uploadSide.length());
-			}else if(uploadSide.contains("（") && uploadSide.contains("）")){
-				tempUpload = uploadSide.substring(uploadSide.indexOf("（")+ 1,uploadSide.indexOf("）"));
-				tempUploadInBlock = uploadSide.substring(0,uploadSide.indexOf("（")) + uploadSide.substring(uploadSide.indexOf("）") + 1,uploadSide.length());
-			}
-			
-			
-			tempDB = tempDB.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
-			tempUpload = tempUpload.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
-			tempDBInBlock = tempDBInBlock.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
-			tempUploadInBlock = tempUploadInBlock.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "");
-					
-			
-			//括号外的部分
-			if(tempDB.contains(tempUpload)){
-				result = true;//括号外相同，暂时先true
-			}else{
-				return result; //此时为false;
-			}
-		
 			//括号内部分
-			if(tempDBInBlock.contains(tempUploadInBlock)){
-				if(result == true){ 
-					//括号内外都能匹配上
-					
-					//是否上色
+			String tempDBInBlock = "";
+			String tempUploadInBlock = "";
+
+			
+			//判断是否有括号
+			if((dbSide.contains("(") && dbSide.contains(")"))||(dbSide.contains("（") && dbSide.contains("）"))){
+				if((uploadSide.contains("(") && uploadSide.contains(")"))||(uploadSide.contains("（") && uploadSide.contains("）"))){
+					isBlock = true;
+				}
+			}
+
+			
+			
+			//如果没括号
+			if(!isBlock){
+				tempDB = dbSide.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").trim();
+				if(uploadSide.contains(tempDB)){
+					//如果没有
 					if(HighLight){
-						try{	
-							String dbSideIndex = String.valueOf(dbSide.indexOf(tempUpload)) + "," + String.valueOf(dbSide.indexOf(tempUpload) + tempUpload.length()) + "," + String.valueOf(dbSide.indexOf(tempUploadInBlock)) + "," + String.valueOf(dbSide.indexOf(tempUploadInBlock) + tempUploadInBlock.length());
-							String uploadSideIndex = String.valueOf(uploadSide.indexOf(tempDB)) + "," + String.valueOf(uploadSide.indexOf(tempDB) + tempDB.length()) + "," + String.valueOf(uploadSide.indexOf(tempDBInBlock)) + "," + String.valueOf(uploadSide.indexOf(tempDBInBlock) + tempDBInBlock.length());
-							
-							this.setDBSideType(HighLighter(dbSide, dbSideIndex));
-							this.setUploadSideType(HighLighter(uploadSide, uploadSideIndex));
-						}catch(Exception e){
-							this.setDBSideType(HighLighter(dbSide));
-							this.setUploadSideType(HighLighter(uploadSide));
-						}
+						setDBSideType(HighLighter(dbSide,dbSide.indexOf(tempDB),(dbSide.indexOf(tempDB) + tempDB.length())));
+						setUploadSideType(HighLighter(uploadSide,uploadSide.indexOf(tempDB),(uploadSide.indexOf(tempDB) + tempDB.length())));
 						
 					}
+					result = true;
 					return result;
-				}else{
-					result = false;
-					return result;//这里能匹配上，但是括号外不能，返回false;
+				}
+
+			}else{
+			//如果有括号	
+				
+				//分离括号内外
+				if(dbSide.contains("(") && dbSide.contains(")")){
+					tempDBInBlock = dbSide.substring(dbSide.indexOf("(") + 1,dbSide.indexOf(")"));
+					tempDB = dbSide.substring(0,dbSide.indexOf("(")) + dbSide.substring(dbSide.indexOf(")") + 1,dbSide.length());
+				}else if(dbSide.contains("（") && dbSide.contains("）")){
+					tempDBInBlock = dbSide.substring(dbSide.indexOf("（")+ 1,dbSide.indexOf("）"));
+					tempDB = dbSide.substring(0,dbSide.indexOf("（")) + dbSide.substring(dbSide.indexOf("）") + 1,dbSide.length());
 				}
 				
+				
+				if(uploadSide.contains("(") && uploadSide.contains(")")){
+					tempUploadInBlock = uploadSide.substring(uploadSide.indexOf("(")+ 1,uploadSide.indexOf(")"));
+					tempUpload = uploadSide.substring(0,uploadSide.indexOf("(")) + uploadSide.substring(uploadSide.indexOf(")") + 1,uploadSide.length());
+				}else if(uploadSide.contains("（") && uploadSide.contains("）")){
+					tempUploadInBlock = uploadSide.substring(uploadSide.indexOf("（")+ 1,uploadSide.indexOf("）"));
+					tempUpload = uploadSide.substring(0,uploadSide.indexOf("（")) + uploadSide.substring(uploadSide.indexOf("）") + 1,uploadSide.length());
+				}
+				
+				
+				tempDB = tempDB.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").trim();
+				tempUpload = tempUpload.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").trim();
+				tempDBInBlock = tempDBInBlock.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").trim();
+				tempUploadInBlock = tempUploadInBlock.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").trim();
+						
+				
+				//括号外的部分
+				if(tempUpload.contains(tempDB)){
+					result = true;//括号外相同，暂时先true
+				}else{
+					return result; //此时为false;
+				}
+			
+				//括号内部分
+				if(tempUploadInBlock.contains(tempDBInBlock)){
+					if(result == true){ 
+						//括号内外都能匹配上
+						
+						//是否上色
+						if(HighLight){
+							try{	
+								String dbSideIndex = String.valueOf(dbSide.indexOf(tempDB)) + "," + String.valueOf(dbSide.indexOf(tempDB) + tempDB.length()) + "," + String.valueOf(dbSide.indexOf(tempDBInBlock)) + "," + String.valueOf(dbSide.indexOf(tempDBInBlock) + tempDBInBlock.length());
+								String uploadSideIndex = String.valueOf(uploadSide.indexOf(tempDB)) + "," + String.valueOf(uploadSide.indexOf(tempDB) + tempDB.length()) + "," + String.valueOf(uploadSide.indexOf(tempDBInBlock)) + "," + String.valueOf(uploadSide.indexOf(tempDBInBlock) + tempDBInBlock.length());
+								
+								this.setDBSideType(HighLighter(dbSide, dbSideIndex));
+								this.setUploadSideType(HighLighter(uploadSide, uploadSideIndex));
+							}catch(Exception e){
+								this.setDBSideType(HighLighter(dbSide));
+								this.setUploadSideType(HighLighter(uploadSide));
+							}
+							
+						}
+						return result;
+					}else{
+						result = false;
+						return result;//这里能匹配上，但是括号外不能，返回false;
+					}
+					
+				}else{
+					result = false;
+					return result;//这里不能匹配上，返回false;
+				}
+				
+			}
+			
+		}catch(Exception e){
+			//出Exception的话，做个简单对比即可
+			if(uploadSide.replace("(","").replace(")","").replace("（","").replace("）","").trim().contains(dbSide.replace("(","").replace(")","").replace("（","").replace("）","").trim())){
+				return true;
 			}else{
-				result = false;
-				return result;//这里不能匹配上，返回false;
+				return false;
 			}
 			
 		}
