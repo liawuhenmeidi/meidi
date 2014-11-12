@@ -14,9 +14,9 @@
 	String startButton = request.getParameter("startbutton");
 	
 	if(startButton == null){
-		if(dbSide != null && dbSide.length >0){
-			MatchOrderManager.checkDBOrderList(dbSide);
-		}
+		//if(dbSide != null && dbSide.length >0){
+		//	MatchOrderManager.checkDBOrderList(dbSide);
+		//}
 		if(uploadSide != null && uploadSide.length > 0){
 			MatchOrderManager.checkUploadOrderList(uploadSide); 
 		}
@@ -62,15 +62,16 @@
 	if(selectBranchType != null && !selectBranchType.equals("") ){
 		//第一级选择的是否是all
 		if(selectBranchType.equals("all")){
-			unCheckedDBOrders = MatchOrderManager.getUnCheckedDBOrders(deadline);
+			unCheckedDBOrders = OrderManager.getCheckedDBOrders(deadline);
 		}else{
 			
 			if(selectBranch != null && !selectBranch.equals("")){
 				//第二级选择的是否是all
 				if(selectBranch.equals("all")){ 
-					unCheckedDBOrders = OrderManager.getUnCheckedDBOrdersbyBranchType(selectBranchType,deadline);
+					unCheckedDBOrders = OrderManager.getCheckedDBOrdersbyBranchType(selectBranchType,deadline);
+				
 				}else{
-					unCheckedDBOrders = OrderManager.getUnCheckedDBOrdersbyBranch(selectBranch,deadline);
+					unCheckedDBOrders = OrderManager.getCheckedDBOrdersbyBranch(selectBranch,deadline);
 				}
 			}
 			
@@ -120,7 +121,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>结款页</title>
+<title>手动结款页</title>
   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 	<style>
@@ -205,7 +206,7 @@ $(function (){
 </jsp:include>
     
     
-<h3><a href="CheckedOrders.jsp">已结款</a>     未结款</h3>
+<h3>已结款     <a href="manualCheckout.jsp">未结款</a></h3>
 <form name="baseform" id="baseform" method="post">
 <table width="100%" height="100%" align="center" border=0>
        <tr>
@@ -322,9 +323,9 @@ $(function (){
 			
 		%>
 		<tr>
-			<td align="center"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(dbsideDisabled) {%>disabled="disabled"<% }%> name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"  /></td>
+			<td align="center"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(true) {%>disabled="disabled"<% }%> name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"  /></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="#" onClick="javascript:window.open('./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"  target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>" target="_BLANK"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 

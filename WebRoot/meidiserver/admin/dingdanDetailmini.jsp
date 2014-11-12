@@ -199,7 +199,7 @@ function checkedd(type){
 	//window.close();
 	//window.oper.reload();
 	 //window.opener.location.reload();
-	$('#<%=o.getId()%>dbposno', window.opener.document).html("<a href=./dingdanDetailmini.jsp?id=" + <%=o.getId()%> + " target='_BLANK'>" + $('#pos').val()) + "</a>";
+	$('#<%=o.getId()%>dbposno', window.opener.document).html("<a href=# onClick=\"javascript:window.open('./dingdanDetailmini.jsp?id=<%=o.getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')\"" + " target='_BLANK'>" + $('#pos').val()) + "</a>";
 	$('#<%=o.getId()%>dbsaletime', window.opener.document).html($('#serviceDate2').val());
 	
 	if($('#dingmatype').val() != ""){
