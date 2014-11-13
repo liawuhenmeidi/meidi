@@ -143,7 +143,7 @@ function checkedd(){
 			</td>
 		</tr>
 		<tr class="asc">
-			<td width="100%" class="center" colspan="2"><input type="submit"  style="background-color:red;font-size:25px;"  value="确认修改" /></td>
+			<td width="100%" class="center" colspan="2"><input type="submit"  style="background-color:red;font-size:25px;"  value="搜索" /></td>
 		</tr>
 	
 </table> 
