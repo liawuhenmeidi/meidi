@@ -494,7 +494,7 @@ public class AfterMatchOrder {
 			
 			//如果没括号
 			if(!isBlock){
-				tempDB = dbSide.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").trim();
+				tempDB = dbSide.replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(","").replace(")","").replace("（","").replace("）","").trim();
 				if(uploadSide.contains(tempDB)){
 					//如果没有
 					if(HighLight){
