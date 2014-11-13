@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
-<%@ include file="../searchdynamic.jsp"%>
+<%@ include file="searchdynamic.jsp"%>
 <%  
 if(searchflag){ 
 	sort= "andate asc";
@@ -74,11 +74,16 @@ $(function () {
 function changes(oid,id,statues,printid){
 	$.ajax({  
         type: "post", 
-         url: "../server.jsp", 
-         data:"method=dingdaned&oid="+oid+"&id="+id+"&statues="+statues, 
+         url: "../../LogisticsServlet", 
+         data:"oid="+oid+"&opid="+id+"&statues="+statues, 
          dataType: "",  
          success: function (data) { 
-        	 window.location.href="../printPaigong.jsp?id="+oid+"&type=<%=Order.deliveryStatuesTuihuo%>&uid="+printid;
+        	 if(data == -1){
+        		 alert("请刷新页面");
+        	 }else {
+        		 window.location.href="../printPaigong.jsp?id="+oid+"&type=<%=Order.deliveryStatuesTuihuo%>&uid="+printid;
+        	 }
+        	 
            },  
          error: function (XMLHttpRequest, textStatus, errorThrown) { 
         // alert(errorThrown); 
@@ -98,8 +103,8 @@ function change(str1,oid,type){
 
 		$.ajax({ 
 	        type: "post",     
-	         url: "../../user/server.jsp",
-	         data:"method=peidan&id="+oid+"&uid="+uid+"&type="+type,
+	         url: "../../LogisticsServlet",
+	         data:"method="+type+"&oid="+oid+"&uid="+uid,
 	         dataType: "", 
 	         success: function (data) {
 	        	 if(data == 0){
@@ -200,7 +205,7 @@ function seletall(all){
   <jsp:param name="" value="" />
   </jsp:include>   
       
-<jsp:include flush="true" page="../page.jsp">
+<jsp:include flush="true" page="page.jsp">
     <jsp:param name="sear" value="<%=sear %>" /> 
 	<jsp:param name="page" value="<%=Page %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
@@ -213,7 +218,7 @@ function seletall(all){
 <jsp:include page="headremind.jsp"/>
 </div>
 
-<jsp:include page="../search.jsp">
+<jsp:include page="search.jsp">
  <jsp:param name="page" value="<%=pageNum %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  

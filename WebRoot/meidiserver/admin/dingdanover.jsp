@@ -1,17 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
-<%@ include file="searchdynamic.jsp"%>
+<%@ include file="searchdynamic.jsp"%>  
   
-<%   
-if(searchflag){
-	sort= "phone1 asc";
-}
-
-List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.over,num,Page,sort,sear);
-session.setAttribute("exportList", list); 
-count = OrderManager.getOrderlistcount(user,Group.dealSend,Order.over,num,Page,sort,sear);
-
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -61,10 +51,17 @@ width:50px
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 var id = "";
-var pages = "<%=Page%>";   
-var num = "<%=num%>";
- 
+var type = "<%=Group.dealSend%>";
+sort= "phone1 asc";
 
+$(function () { 
+	 fixation();
+	 initOrder(type,statues,num,page,sort,sear);
+	 
+}); 
+  
+
+ 
 function winconfirm(){
 	var question = confirm("你确认要执行此操作吗？");	
 	if (question != "0"){
@@ -127,8 +124,12 @@ function adddetail(src){
     }
 
 }
-</script>
 
+function amortization(src){
+	window.open(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+}
+
+</script>
 
 <div style="position:fixed;width:100%;height:20%;">
   <jsp:include flush="true" page="head.jsp">
@@ -136,11 +137,7 @@ function adddetail(src){
   </jsp:include>   
       
 <jsp:include flush="true" page="page.jsp">
-    <jsp:param name="sear" value="<%=sear %>" /> 
-	<jsp:param name="page" value="<%=Page %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
+    
 	<jsp:param name="type" value="<%=Order.over %>"/>
 </jsp:include> 
 
@@ -149,14 +146,14 @@ function adddetail(src){
 </div>
 
 <jsp:include page="search.jsp">
- <jsp:param name="page" value="<%=pageNum %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
 	<jsp:param name="count" value="<%=count %>"/> 
 </jsp:include> 
 
 <div class="btn">
- <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <input type="submit" class="button" value="设置标准" onclick="amortization('salesmoney.jsp')" ></input> 
 </div>
 
 </div > 
@@ -165,7 +162,7 @@ function adddetail(src){
 <br/>  
 <div id="wrap">
 <table  cellspacing="1" id="table">
-		<tr id="th">  
+		<tr id="th" >  
 			<td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>
 			<td align="center">单号</td>
 			<td align="center">安装网点</td>
@@ -175,65 +172,12 @@ function adddetail(src){
 			<td align="center">送货型号</td>
 			<td align="center">送货数量</td>
             
-           
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
             <td align="center">送货状态</td>
 			<td align="center">备注</td>
 		</tr>
 
-<tbody> 
-  <% 
-   if(null != list){
-    for(int i = 0;i<list.size();i++){
-    	Order o = list.get(i);
-    	
-    	String col = "";
-    	if(i%2 == 0){
-    		col = "style='background-color:yellow'";
-    	}
-  %> 
-    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
-		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>
-		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center" style="white-space:nowrap;">
-		 <%=o.getdealsendName() %>   
-		</td>
-		<%  
-		String tdcol = " bgcolor=\"red\"" ;
-		if(o.getPhoneRemark()!=1){
-			tdcol = "";
-		}
-		  %>  
-			<td align="center"><%=o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+  
-		                      o.getPhone1()
-		%>
-		
-		</td>  
-		    
-		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
-		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>  
-		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>   
-		
-		
-		
-		<td align="center"><%=o.getLocate()%></td>
-		<td align="center"><%=o.getLocateDetail() %></td>
-		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o) %>
-		</td>
- 
-        <td align="center"> 
-		    <%=o.getRemark() %>
-		</td>
-		
-		
-    </tr>
-    <%}
-    
-    }%>
-</tbody>
 </table> 
 
      </div>

@@ -1,13 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
 <%@ include file="searchdynamic.jsp"%>
- <%  
  
-List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.deliveryStatuesTuihuo,num,Page,sort,sear); 
-session.setAttribute("exportList", list); 
-count =   OrderManager.getOrderlistcount(user,Group.dealSend,Order.deliveryStatuesTuihuo,num,Page,sort,sear); 
-
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -58,14 +52,8 @@ width:50px
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 var id = "";
-var pages = "<%=Page%>";   
-var num = "<%=num%>";
-  
-$(function () {
-	
-	
-});
-
+var type = "<%=Group.dealSend%>";
+   
 function serch(){
 	 var search = $("#search").val();
 	 var serchProperty = $("#serchProperty").val();
@@ -74,12 +62,13 @@ function serch(){
 
 	
 }
-function func(str){
-    $(id).css("display","none");
-	$("#"+str).css("display","block");
-	id = "#"+str ;
-}
-  
+
+$(function () { 
+	fixation();
+	initOrder(type,statues,num,page,sort,sear);	 
+});
+
+
 function funcc(str,str2){
     $(id).css("display","none");
 	$("#"+str).css("display","block");
@@ -186,11 +175,7 @@ function adddetail(src){
   </jsp:include>   
       
 <jsp:include flush="true" page="page.jsp">
-    <jsp:param name="sear" value="<%=sear %>" /> 
-	<jsp:param name="page" value="<%=Page %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
+    
 	 <jsp:param name="type" value="<%=Order.deliveryStatuesTuihuo %>"/> 
 </jsp:include> 
 
@@ -199,10 +184,8 @@ function adddetail(src){
 </div>
 
 <jsp:include page="search.jsp">
- <jsp:param name="page" value="<%=pageNum %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
+ <jsp:param name="page" value="" />
+	
 </jsp:include> 
 
 </div > 
@@ -241,135 +224,9 @@ function adddetail(src){
 			<td align="center">备注</td>
 			<td align="center">打印</td>
 		</tr>
-
-<tbody> 
-  <% 
-   if(null != list){
-    for(int i = 0;i<list.size();i++){
-    	Order o = list.get(i);
-    	
-    	String col = "";
-    	if(i%2 == 0){
-    		col = "style='background-color:yellow'";
-    	}
-  %>
-   <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
-		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getbranchName(o.getBranch())%></td> 
-		<td align="center"> 		  
-		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
-		</td> 
-		<%  
-		String tdcol = " bgcolor=\"red\"" ;
-		if(o.getPhoneRemark()!=1){
-			tdcol = "";
-		}
-		  %>  
-		<td align="center"><%=o.getPos() %></td>
-		<td align="center"><%=o.getSailId() %></td>
-		<td align="center"><%=o.getCheck() %></td>
-			<td align="center"><%=o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+  
-		                      o.getPhone1()
-		%>
-		
-		</td> 
-	    <td align="center"><%= o.getCategory(1,"</p>")%></td>    
-		  <td align="center" ><%=o.getSendType(1,"</p>")%></td>    
-		  <td align="center" ><%= o.getSendCount(1,"</p>")%></td>    
-		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
-		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>  
-		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>   
-		<td align="center" ><%= o.getGifttype("</p>")%></td>  
-		<td align="center" ><%= o.getGifcount("</p>")%></td>  
-		<td align="center" ><%= o.getGifStatues("</p>")%></td>
-		 
-		<td align="center"><%=o.getSaleTime() %></td>
-		<td align="center"><%=o.getOdate() %></td>
-		<td align="center"><%=o.getLocate()%></td>
-		<td align="center"><%=o.getLocateDetail() %></td>
-		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o) %>
-		</td>
-		<td align="center">
-		
-		<% 
-		//打印状态     0  未打印   1 打印
-		if(0 == o.getReturnwenyuan()){
-		%>
-		 未打印
-		<%
-         }else if(1 == o.getReturnwenyuan()){
-		%>
-		已打印 
-		<%
-         }
-		%>
-		
-		
-		</td>
-		
-		
-		<td align="center" style="white-space:nowrap;">
-		
-		<%  if(2 == o.getDeliveryStatues()) {
-			 String str = "";
-			 if(null != listS){
-			 for(int j=0;j< listS.size();j++){
-          	   User u = listS.get(j);
-          	   if(u.getId() == o.getSendId()){
-          		   str = u.getUsername() ;
-          	   } 
-			 }
-			 }
-         %>
-         <%=str %>
-         
-		<%
-         }else {
-        	 String str = "";
-        	 for(int j=0;j< listS.size();j++){
-          	   User u = listS.get(j);
-          	   
-          	   if(u.getId() == o.getSendId()){
-          		  str = u.getUsername() ;
-          	   } 
-        	 }
-		%>
-	<%=str %>
-		<%
-        
-         }
-		%>
-		 
-		 
-		</td>
-        
-        <td align="center"> 
-		    <%=o.getRemark() %>
-		</td>
-		<td align="center"> 
-		    <a href="javascript:void(0);" onclick="orderPrint('<%=o.getId()%>',1,'<%=Order.deliveryStatuesTuihuo%>')">[打印]</a>
-		</td>
-    </tr>
-    <%} 
-    
-    }%>
-</tbody>
 </table>
- <!--
-<div class="btn">
- <input type="submit" class="button" name="dosubmit" value="删除" onclick="return confirm('您确定要删除吗？')"></input>
+</div> 
 
-</div>  
- -->
-
-     </div>
-
-
-</div>
-</div>
-
-
+ 
 </body>
 </html>

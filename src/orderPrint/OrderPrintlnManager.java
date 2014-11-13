@@ -2,7 +2,6 @@ package orderPrint;
 
 
 import gift.Gift;
-import gift.GiftManager;
 import gift.GiftService;
 
 import java.sql.Connection;
@@ -12,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.List; 
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -21,7 +20,6 @@ import org.apache.commons.logging.LogFactory;
 import order.Order;
 import order.OrderManager;
 import orderproduct.OrderProduct;
-import orderproduct.OrderProductManager;
 import orderproduct.OrderProductService;
 
 import user.User;
@@ -41,38 +39,8 @@ logger.info(pstmt);
 					pstmt.executeUpdate();
 					
 					OrderPrintln o = OrderPrintlnManager.getOrderStatues(id); 
-					  
-					if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.salerelease){
-						OrderPrintlnManager.delete(id);   
-						OrderManager.updateShifang(user,oid,uid,OrderPrintln.salerelease); 
-						return true ; 
-					}if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.salereleasereturn){
-						OrderPrintlnManager.delete(id);   
-						OrderManager.updateShifang(user,oid,uid,OrderPrintln.salereleasereturn); 
-						return true ; 
-					}else if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.salereleasesonghuo){
-						OrderPrintlnManager.delete(id);
-						OrderManager.updateShifang(user,oid,uid,OrderPrintln.salereleasesonghuo); 
-						return true ;
-					}else if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.salereleaseanzhuang){
-						OrderPrintlnManager.delete(id);
-						OrderManager.updateShifang(user,oid,uid,OrderPrintln.salereleaseanzhuang); 
-						return true ; 
-					}else if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.release){
-						OrderPrintlnManager.delete(id);
-						OrderManager.updateShifang(user,oid,uid,OrderPrintln.release); 
-						return true ;
-					} else  if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.returns){
-						//OrderPrintlnManager.delete(id);
-						OrderPrintlnManager.delete(oid, statues);
-						OrderManager.updateShifang(user,oid,uid,OrderPrintln.returns); 
-					} else  if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.releasedispatch){
-						//OrderPrintlnManager.delete(id);         
-						OrderManager.updateShifang(user,oid,uid,OrderPrintln.releasedispatch); 
-					} else  if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.modify){
-						OrderPrintlnManager.delete(oid, statues);       
-						//OrderManager.updateShifang(oid,uid,OrderPrintln.releasedispatch); 
-					}else  if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.huanhuo){
+					
+					if(OrderPrintln.comited == statues && o.getType() == OrderPrintln.huanhuo){
 
 						Order oldOrder = OrderManager.getOrderID(user, oid);
 						  

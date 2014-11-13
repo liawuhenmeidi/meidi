@@ -2,8 +2,15 @@ package utill;
 
 import java.util.*;
 import javax.servlet.http.*;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import filter.EncodingFilter;
  
 public class TokenGen {
+	
+	protected static Log logger = LogFactory.getLog(TokenGen.class);
     private static TokenGen instance = new TokenGen();
  
     private TokenGen() {}
@@ -28,6 +35,8 @@ public class TokenGen {
         // request请求参数中不含token,
         // 判为非法
         String rtoken = request.getParameter("token");
+        //String rtoken = (String)request.getAttribute("token"); 
+        
         if (rtoken == null)
             return false;
  
@@ -35,6 +44,34 @@ public class TokenGen {
         return stoken.equals(rtoken);
     }
      
+    public synchronized boolean isTokenValidNew(HttpServletRequest request) {
+    	boolean flag = false ;
+    	 
+    	String savedToken = "";
+    	String requestToken=request.getParameter("token");
+    	
+    	
+    	if(null != request.getSession().getAttribute("token")){
+    		savedToken=request.getSession().getAttribute("token").toString();
+    	}
+    	
+    	if(StringUtill.isNull(requestToken)){
+    		return true ;
+    	} 
+    	//String requestToken=request.getParameter("token");
+
+    	request.getSession().removeAttribute("token");
+    	
+    	logger.info(savedToken);
+    	logger.info(requestToken);
+    	if(savedToken.equals(requestToken))
+    	{
+    	   flag = true ;
+    	}
+    	
+    	return flag ;
+    }
+    
     /*
      * 重新设置token，当页面被请求后，将session中的token属性去除
      */
@@ -55,6 +92,7 @@ public class TokenGen {
         HttpSession session = request.getSession(true);
         Random rand = new Random();
         Double d = rand.nextDouble();
-        session.setAttribute("token", d.toString());    
+        session.setAttribute("token", d.toString()); 
+        request.setAttribute("token", d.toString()); 
     }
 }

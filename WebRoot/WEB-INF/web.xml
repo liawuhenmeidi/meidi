@@ -8,7 +8,7 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
-    <error-page>  
+    <error-page>   
 <error-code>400</error-code>  
 <location>/meidiserver/error.jsp</location>  
 </error-page>  
@@ -76,7 +76,7 @@
 	    
 	    <servlet>  
 	        <servlet-name>OrderServlet</servlet-name>  
-	        <servlet-class>  
+	        <servlet-class>   
 	            servlet.OrderServlet  
 	        </servlet-class>  
    </servlet>  
@@ -85,6 +85,30 @@
 	        <url-pattern>/meidiserver/user/OrderServlet</url-pattern>  
 	    </servlet-mapping>
 	    
+	    
+	    <servlet>  
+	        <servlet-name>LogisticsServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.LogisticsServlet 
+	        </servlet-class>   
+   </servlet>    
+	    <servlet-mapping>     
+	        <servlet-name>LogisticsServlet</servlet-name>  
+	        <url-pattern>/meidiserver/LogisticsServlet</url-pattern>  
+	    </servlet-mapping>
+	    
+	    
+	    
+	    <servlet>  
+	        <servlet-name>OrderServiceServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.OrderServiceServlet 
+	        </servlet-class>  
+   </servlet>  
+	    <servlet-mapping>    
+	        <servlet-name>OrderServiceServlet</servlet-name>  
+	        <url-pattern>/meidiserver/admin/OrderServiceServlet</url-pattern>  
+	    </servlet-mapping>
 	    
 	<servlet>  
 	        <servlet-name>InventoryServlet</servlet-name>  

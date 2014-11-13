@@ -27,7 +27,7 @@ public class InventoryMessageManager {
 			 for(int i=0;i<orders.size();i++){ 
  
 				InventoryMessage order = orders.get(i); 
-				String sql = "insert into  inventoryMessage (id, productId ,categoryId,count, inventoryId,anlycount,realString,paperString)" + 
+				String sql = "insert into  inventorymessage (id, productId ,categoryId,count, inventoryId,anlycount,realString,paperString)" + 
 	                         "  values ( null, '"+order.getProductId()+"', '"+order.getCategoryId()+"',"+order.getCount()+", "+id+","+order.getAnlycount()+",'"+order.getRealString()+"','"+order.getPaperString()+"')";
 			    logger.info(sql);   
 				sqls.add(sql);  
@@ -39,7 +39,7 @@ public class InventoryMessageManager {
 	public static List<InventoryMessage> getInventoryID(User user ,int id){
 		List<InventoryMessage> listm = new ArrayList<InventoryMessage>(); 
 		       String sql = "";    
-			   sql = "select * from  inventoryMessage where inventoryId = "+ id ;
+			   sql = "select * from  inventorymessage where inventoryId = "+ id ;
 	logger.info(sql);  
 			    Connection conn = DB.getConn();
 				Statement stmt = DB.getStatement(conn);
@@ -61,13 +61,13 @@ public class InventoryMessageManager {
 	 
 	
 	public static String delete(int id) {
-		String sql = "delete from inventoryMessage where inventoryId = " + id;
+		String sql = "delete from inventorymessage where inventoryId = " + id;
         return sql ;
 	}
 	
 	public static String deletenybranchid(int id) {
-		String sql = "delete from inventoryMessage where inventoryId in (select id from inventory where inbranchid = " + id + " and intype = 2) ";
-        return sql ;
+		String sql = "delete from inventorymessage where inventoryId in (select id from inventory where inbranchid = " + id + " and intype = 2) ";
+        return sql ; 
 	}
 	 
 	private static InventoryMessage getCategoryFromRs(ResultSet rs){

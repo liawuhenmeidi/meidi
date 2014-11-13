@@ -1,12 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
-<%@ include file="searchdynamic.jsp"%>
-<%  
-List<Order> list = OrderManager.getOrderlist(user,Group.dealSend,Order.callback,num,Page,sort,sear);  
-session.setAttribute("exportList", list); 
-count =  OrderManager.getOrderlistcount(user,Group.dealSend,Order.callback,num,Page,sort,sear);  
-
-%>
+<%@ include file="searchdynamic.jsp"%>  
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -53,19 +48,53 @@ width:50px
 
 
 <!--   头部开始   -->
-<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+
+
+
+<div style="position:fixed;width:100%;height:20%;">
+  <jsp:include flush="true" page="head.jsp">
+  <jsp:param name="" value="" />
+  </jsp:include>   
+      
+<jsp:include flush="true" page="page.jsp">
+  
+	<jsp:param name="type" value="<%=Order.callback%>"/> 
+</jsp:include> 
+
+<div id="headremind">
+<jsp:include page="headremind.jsp"/>
+</div>
+ 
+<jsp:include page="search.jsp">
+ <jsp:param name="page" value="" />
+	
+</jsp:include> 
+
+<div class="btn">
+ <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input>  
+</div>
+
+</div > 
+<div style=" height:170px;">
+</div>
+<br/>  
+ 
+ <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
+var type = "<%=Group.dealSend%>";
 var id = "";
-var pages = "" ;
-var num = "";
 var oid ="<%=id%>";
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";
 
-$(function () {
-
+$(function () { 
+	fixation();
+	 initOrder(type,statues,num,page,sort,sear); 
 });
+
+
+
 
 function func(str){
     $(id).css("display","none");
@@ -201,44 +230,10 @@ function seletall(all){
 </script>
 
 
-<div style="position:fixed;width:100%;height:20%;">
-  <jsp:include flush="true" page="head.jsp">
-  <jsp:param name="" value="" />
-  </jsp:include>   
-      
-<jsp:include flush="true" page="page.jsp">
-    <jsp:param name="sear" value="<%=sear %>" /> 
-	<jsp:param name="page" value="<%=Page %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
-	<jsp:param name="type" value="<%=Order.callback%>"/> 
-</jsp:include> 
-
-<div id="headremind">
-<jsp:include page="headremind.jsp"/>
-</div>
-
-<jsp:include page="search.jsp">
- <jsp:param name="page" value="<%=pageNum %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
-</jsp:include> 
-
-<div class="btn">
- <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input>  
-</div>
-
-</div > 
-<div style=" height:170px;">
-</div>
-<br/>  
- 
 <div id="wrap">
 <table  cellspacing="1" id="table">
 		<tr id="th">  
-			
+			 
 			<td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>
 			<td align="center">单号</td>
 			<td align="center">门店</td>
@@ -267,102 +262,8 @@ function seletall(all){
 		  
 		     
 		</tr>
-	
-<tbody> 
-  <% 
-   if(null != list){
-    for(int i = 0;i<list.size();i++){
-    	Order o = list.get(i);
-    	
-    	String col = "";
-    	if(i%2 == 0){
-    		col = "style='background-color:yellow'";
-    	}
-  %>
-   <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
-		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>
-		<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
-		<%  
-		String tdcol = " bgcolor=\"red\"" ;
-		if(o.getPhoneRemark()!=1){
-			tdcol = "";
-		}  
-		  %>    
-		<td align="center"><%=o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+  
-		                      o.getPhone1()
-		%>
-		
-		</td>  
-		
-		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o) %>
-		</td> 
-		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
-		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>     
-		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>  
-		<td align="center" ><%= o.getGifttype("</p>")%></td>  
-		<td align="center" ><%= o.getGifcount("</p>")%></td>  
-		<td align="center" ><%= o.getGifStatues("</p>")%></td>
-		 
-		
-		<td align="center"><%=o.getOdate() %></td>
-		<td align="center"><%=o.getLocate()%></td>
-		<td align="center"><%=o.getLocateDetail() %></td>
-		<td align="center"> 		  
-		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
-		</td> 
-		
-			
-        <td align="center">   
-		    <%=o.getRemark() %>
-		</td>
+
   
-		<td align="center"> 
-		<% if(o.getSendId() != 0){
-			if(usermap.get(Integer.valueOf(o.getSendId())) != null){
-		 %>
-		 <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
-		 <%
-		  }
-		}
-		 %>
-		
-		</td>
-	<td align="center"> 
-		<%=o.getSendtime()
-		 %>
-		
-		</td>
-		<td align="center"> 
-		<% if(o.getInstallid() != 0){   
-		      
-			%> 
-		 <%=usermap.get(o.getInstallid()).getUsername() %>
-		 <%
-		  }else if(o.getInstallid() == 0 && o.getDeliveryStatues() == 2){
-			  if(usermap.get(o.getSendId()) != null){
-			  %> 
-			  
-			 <%=usermap.get(o.getSendId()).getUsername() %>
-			 
-			 <% 
-		  }  
-		  }
-		 %>
-		
-		</td>
-		<td align="center"> 
-		
-		<%=o.getInstalltime()==null?"空":o.getInstalltime()
-		 %> 
-		 </td>
-    </tr>
-    <%}
-    
-    }%>
-</tbody>
 </table>
 
 

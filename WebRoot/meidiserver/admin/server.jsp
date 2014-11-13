@@ -4,19 +4,10 @@
 request.setCharacterEncoding("utf-8");
 
 User user = (User)session.getAttribute("user");
-// peidan 
+
 String method = request.getParameter("method");
-  
-if("peidan".equals(method)){ 
-	String uid = request.getParameter("uid"); 
-	String id = request.getParameter("id");   
-	int statues = OrderManager.updateStatues(user,method,Integer.valueOf(uid), id);  
-	//int i = OrderManager.updatePeidan(Integer.valueOf(uid), Integer.valueOf(id));
-	response.getWriter().write(""+statues); 
-	response.getWriter().flush();  
-	response.getWriter().close();  // deleteOrder
-	
-}else if("deleteOrder".equals(method)){ 
+    
+if("deleteOrder".equals(method)){ 
 	String id = request.getParameter("id");
 	String[] list = id.split(",");
 	int count = 0 ; 
@@ -29,31 +20,6 @@ if("peidan".equals(method)){
 	response.getWriter().write(""+count);  
 	response.getWriter().flush();   
 	response.getWriter().close();    
-}else if("dingdaned".equals(method)){  
-	String id = request.getParameter("id"); 
-	String oid = request.getParameter("oid");
-	String statues = request.getParameter("statues");
-	String uid = request.getParameter("uid");
-	if(StringUtill.isNull(uid)){ 
-		uid = "-1";    
-	}     
-	System.out.println("uid"+uid); 
-	boolean flag= OrderPrintlnManager.updateOrderStatues(user,Integer.valueOf(id),Integer.valueOf(oid),Integer.valueOf(uid),Integer.valueOf(statues)); 
-	response.getWriter().write(""+flag); 
-	response.getWriter().flush(); 
-	response.getWriter().close(); 
-}else if("dealshifang".equals(method)){   
-	String statues = request.getParameter("statues"); 
-	String oid = request.getParameter("oid"); 
-	String uid = request.getParameter("uid"); 
-	System.out.println(oid+"**"+uid+"**"+statues);
-	
-	OrderManager.updateShifang(user,Integer.valueOf(oid),Integer.valueOf(uid),Integer.valueOf(statues));    
-	//boolean flag= OrderPrintlnManager.updateOrderStatues(user,Integer.valueOf(id),Integer.valueOf(oid),Integer.valueOf(uid),Integer.valueOf(statues)); 
-	//response.getWriter().write(""+flag); 
-	
-	//response.getWriter().flush(); 
-	//response.getWriter().close(); 
 }else if("category_add".equals(method)){     
 	String categoryName = request.getParameter("categoryName");
 	boolean b = CategoryManager.getName(categoryName);

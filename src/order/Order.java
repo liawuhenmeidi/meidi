@@ -957,4 +957,24 @@ public String getShopNameForCompare() {
 	return shopNameForCompare;
 }
 
+public  String getprint(){
+	//打印状态     0  未打印   1 打印
+	String str = "";
+	if(0 == this.getPrintSatues()){
+	   str = "未打印";
+     }else if(1 == this.getPrintSatues()){
+	 str = "已打印";
+     }
+	return str ;
+	
+}
+
+public boolean isreturn(){
+	boolean flag = false ;
+	if(this.getDeliveryStatues() == 3 || this.getDeliveryStatues() == 4 || this.getDeliveryStatues() == 5 || this.getDeliveryStatues() == 11 || this.getDeliveryStatues() == 12 || this.getDeliveryStatues() == 13){
+		flag = true ;
+	}
+	return flag ;
+	
+}
 }

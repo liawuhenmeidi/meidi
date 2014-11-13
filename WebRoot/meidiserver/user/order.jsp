@@ -1,10 +1,7 @@
-<%@ page language="java" import="java.util.*,gift.*,orderproduct.*,order.*,branch.*,locate.*,category.*,group.*,user.*,utill.*,product.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%
-User user = (User)session.getAttribute("user");
-
-TokenGen.getInstance().saveToken(request);
-String s = (String)session.getAttribute("token");
-
+<%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ include file="../common.jsp"%>  
+<%  
+ 
 if(!UserManager.checkPermissions(user, Group.sale)){ 
 	response.sendRedirect("welcom.jsp");
 } 
@@ -90,7 +87,7 @@ String[] branlist =  branchmessage.split("_");
    var messageflag = false;  // 是否需要填写顾客信息
    var flag = false ;
   
-  var jsons = <%=plist%> ; 
+   var jsons = <%=plist%> ; 
 
    var cid = "";  
    var ids = "";  
@@ -591,9 +588,9 @@ String[] branlist =  branchmessage.split("_");
 	 }
  }
  
- 
- function checkMessage(str,message){
-	 var filter = /^1[3|4|5|8][0-9]\d{9}$/;
+  
+ function checkMessage(str,message){ 
+	 var filter = /^1[3|4|5|7|8][0-9]\d{9}$/;
 	 //var fiter = /^(((13[0-9]{1})|159|153)+\d{8})$/ ;
 	 if(filter.test(message)){
 		 return true;
@@ -852,7 +849,7 @@ String[] branlist =  branchmessage.split("_");
 			 return false;
 		 }
 		 else {
-		    var filter = /^1[3|4|5|8][0-9]\d{8}$/;  
+		    var filter = /^1[3|4|5|7|8][0-9]\d{8}$/;  
 		    var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
 			 if(!filter.test(phone1) && !isPhone.test(phone1)){
 				 alert("请填写正确的手机号码或电话");     
@@ -900,7 +897,7 @@ String[] branlist =  branchmessage.split("_");
 <input type="hidden" id="checkedremark" name="chekedremark" value="0"/>
 <input type="hidden" id="sailIdremark" name="sailidremark" value="0"/>
 <input type="hidden" name="orderid" value="<%=id %>"/>
-<input type="hidden" name="token" value="<%=s%>"/> 
+<input type="hidden" name="token" value="<%=token%>"/> 
  
 <div class="s_main_tit">销售报单<span class="qiangdan"></span></div>
 <div class="s_main_tit">门店:<span class="qian"><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %></span></div>  
