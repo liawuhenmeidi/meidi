@@ -266,6 +266,8 @@ public class MatchOrder {
 						//第一单
 						amo = new AfterMatchOrder(tempUo,tempList.get(maxCompareLevelIterator));
 						tempDouble = amo.calcLevel();
+						//为了让前台不勾选这个
+						amo.setCompareLevel(0.0);
 						matchedOrders.add(amo);
 						
 						unMatchedUploadOrders.remove(tempUo);
