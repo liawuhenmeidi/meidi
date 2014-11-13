@@ -27,6 +27,11 @@ public class MatchOrder {
 	List<Order> samePosDBOrders = new ArrayList<Order>();
 	
 	public boolean startMatch(List<Order> dbOrders,List<UploadOrder> uploadOrders){
+		unMatchedUploadOrders = new ArrayList<UploadOrder>();
+		unMatchedDBOrders = new ArrayList<Order>();
+		matchedOrders = new ArrayList<AfterMatchOrder>();
+		
+		
 		boolean flag = false;
 		try{
 	
