@@ -63,7 +63,7 @@
 		
 		
 	//查询条件提交后，右侧显示内容
-	unCheckedUploadOrders = MatchOrderManager.getCheckedUploadOrders(selectOrderName);
+	unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders(selectOrderName);
 	
 	
 	if(startButton != null && startButton.equals("正在对比")){
@@ -86,7 +86,7 @@
 		
 
 		unCheckedDBOrders = MatchOrderManager.getCheckedDBOrders((String)request.getSession().getAttribute("selectBranchType"), (String)request.getSession().getAttribute("selectBranch"), (String)request.getSession().getAttribute("deadline"));
-		unCheckedUploadOrders = MatchOrderManager.getCheckedUploadOrders((String)request.getSession().getAttribute("selectOrderName"));
+		unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders((String)request.getSession().getAttribute("selectOrderName"));
 		
 		
 		unCheckedDBOrders = MatchOrderManager.searchOrderList(unCheckedDBOrders, searchOrder);
