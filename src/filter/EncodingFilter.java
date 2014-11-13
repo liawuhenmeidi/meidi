@@ -12,11 +12,18 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import servlet.OrderServlet;
+import utill.TokenGen;
    
 public class EncodingFilter implements Filter {
 	// 声明编码的成员变量
 	private String encoding;
-
+	 protected static Log logger = LogFactory.getLog(EncodingFilter.class);
+	 
 	public void init(FilterConfig config) throws ServletException {
 		encoding = config.getInitParameter("encoding");
 	}
@@ -28,32 +35,41 @@ public class EncodingFilter implements Filter {
 		response.setContentType("text/html;charset=" + encoding);
 		// 判断是否需要包装
 		HttpServletRequest req = (HttpServletRequest) request;
-		if (req.getMethod().equals("GET")) {
-			request = new MyRequest(req);
-		}
-		// 声明包装类的实例
-		// 放行
-		Enumeration<String> params = req.getParameterNames();  
 		
-        String sql = "";  
-        while (params.hasMoreElements()) {  
-            //得到参数名  
-            String name = params.nextElement().toString();  
-            //System.out.println("name===========================" + name + "--");  
-            //得到参数对应值  
-            String[] value = req.getParameterValues(name);  
-            for (int i = 0; i < value.length; i++) {  
-                sql = sql + value[i];  
-            }  
-        }  
-        //System.out.println("============================SQL"+sql);  
-        //有sql关键字，跳转到error.html  
-        if (sqlValidate(sql)) {  
-            throw new IOException("您发送请求中的参数中含有非法字符");  
-            //String ip = req.getRemoteAddr();  
-        } else {  
-        	chain.doFilter(request, response);  
-        }  
+		TokenGen tokenGen=TokenGen.getInstance();
+		      
+	    if (!tokenGen.isTokenValidNew(req)){ 
+	        logger.info("这是重复提交的单据"); 
+	        return ; 
+	    }else { 
+	    	if (req.getMethod().equals("GET")) {
+				request = new MyRequest(req);
+			}
+			// 声明包装类的实例
+			// 放行
+			Enumeration<String> params = req.getParameterNames();  
+			
+	        String sql = "";  
+	        while (params.hasMoreElements()) {  
+	            //得到参数名  
+	            String name = params.nextElement().toString();  
+	            //System.out.println("name===========================" + name + "--");  
+	            //得到参数对应值  
+	            String[] value = req.getParameterValues(name);  
+	            for (int i = 0; i < value.length; i++) {  
+	                sql = sql + value[i];  
+	            }  
+	        }  
+	        //System.out.println("============================SQL"+sql);  
+	        //有sql关键字，跳转到error.html  
+	        if (sqlValidate(sql)) {  
+	            throw new IOException("您发送请求中的参数中含有非法字符");  
+	            //String ip = req.getRemoteAddr();  
+	        } else {  
+	        	chain.doFilter(request, response);  
+	        }  
+			
+	    }
 		
 	}
 	

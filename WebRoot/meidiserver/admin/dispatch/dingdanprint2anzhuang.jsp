@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
-<%@ include file="../searchdynamic.jsp"%>
+<%@ include file="searchdynamic.jsp"%>
   
 <%  
 
@@ -154,7 +154,7 @@ function adddetail(src){
   <jsp:param name="" value="" />
   </jsp:include>   
       
-<jsp:include flush="true" page="../page.jsp">
+<jsp:include flush="true" page="page.jsp">
     <jsp:param name="sear" value="<%=sear %>" /> 
 	<jsp:param name="page" value="<%=Page %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
@@ -167,7 +167,7 @@ function adddetail(src){
 <jsp:include page="headremind.jsp"/>
 </div>
 
-<jsp:include page="../search.jsp">
+<jsp:include page="search.jsp">
  <jsp:param name="page" value="<%=pageNum %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  

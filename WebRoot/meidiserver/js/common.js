@@ -19,6 +19,23 @@ $(function () {
 
 }); 
 
+function fixation(){
+	$("#wrap").bind("scroll", function(){ 
+
+		if(pre_scrollTop != ($("#wrap").scrollTop() || document.body.scrollTop)){
+	        //滚动了竖直滚动条
+	        pre_scrollTop=($("#wrap").scrollTop() || document.body.scrollTop);
+	       
+	        if(obj_th){
+	            obj_th.style.top=($("#wrap").scrollTop() || document.body.scrollTop)+"px";
+	        }
+	    }
+	    else if(pre_scrollLeft != (document.documentElement.scrollLeft || document.body.scrollLeft)){
+	        //滚动了水平滚动条
+	        pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollLeft);
+	    }
+		});
+}
 
 function updateClass(obj) { 
 	
@@ -42,3 +59,66 @@ window.onload =function () {
     pre_scrollLeft=(document.documentElement.scrollLeft || document.body.scrollTop);
     obj_th=document.getElementById("th");
 };
+
+
+
+
+function changecss(){
+	 $(".fixedHead ").css({ 
+		 "position":"fixed"
+		 }); 
+	 
+	 $(".tabled tr td").css({  
+		 "width":"50px"
+		 });  
+
+	 $("#table").css({  
+	     "width":"1100px",
+	     "table-layout":"fixed"
+	});
+	 
+	 $("#th").css({
+		 "background-color" :"white",
+		 "position" :"absolute",
+		 "width" :"1100px",
+		 "height" :"30px",
+		 " top" :"0",
+		 " left" :"0"
+	 });
+	 
+	 $("#wrap").css({ 
+	    
+	    "position":"relative",
+	    "padding-top":"30px",
+	    "overflow":"auto",
+	    "height":"400px"
+	});
+
+}
+
+
+function initOrder(type,statues,num,page,sort,sear){  
+	 $("#page").val(page);
+	 $("#table .asc").remove();
+	 $.ajax({ 
+	        type: "post", 
+	         url: "OrderServiceServlet",    
+	         data:"method=GETLIST&type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+sear,
+	         dataType: "",   
+	         success: function (data) { 
+	        	 var json =  $.parseJSON(data);
+	        	  var html = json.html;
+	        	 
+	        	  count = json.count;
+               
+	        	 $("#table").append(html);
+	        	 $("#count").html(count);
+	        	
+	           },   
+	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	            } 
+	           });
+
+}
+
+

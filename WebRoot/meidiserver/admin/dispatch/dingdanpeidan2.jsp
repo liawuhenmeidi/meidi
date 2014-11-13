@@ -1,8 +1,8 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
- 
-<%@ include file="../searchdynamic.jsp"%> 
+
+<%@ include file="searchdynamic.jsp"%>  
 <%   
-if(searchflag){ 
+if(searchflag){  
 	sort= "andate asc";
 }  
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderDispatching,num,Page,sort,sear);  
@@ -90,8 +90,8 @@ function changes(oid,id,statues,flag,returnstatues,type,printid){
 	} 
 		$.ajax({   
 	        type: "post", 
-	         url: "../server.jsp", 
-	         data:"method=dingdaned&oid="+oid+"&id="+id+"&statues="+statues, 
+	         url: "../../LogisticsServlet", 
+	         data:"oid="+oid+"&opid="+id+"&statues="+statues, 
 	         dataType: "", 
 	         success: function (data) {
 	        	
@@ -156,12 +156,15 @@ function change(str1,oid,type,statues,types,saleId){
 				     if (question != "0"){
 								$.ajax({   
 							        type: "post",     
-							         url: "../../user/server.jsp", 
-							         data:"method=peidan&id="+oid+"&uid="+uid+"&type="+type,
+							         url: "../../LogisticsServlet", 
+							         data:"method="+type+"&oid="+oid+"&uid="+uid,
 							         dataType: "",  
 							         success: function (data) { 
 							        	 if(data == 0){
 							        		 alert("导购提交修改申请，不能配工");
+							        		 return ; 
+							        	 }if(data == -1){
+							        		 alert("请刷新页面");
 							        		 return ; 
 							        	 }else if(data == 20){ 
 							        		 alert("导购提交退货申请，不能配工");
@@ -229,7 +232,7 @@ function winconfirm(str,str2,sendid){
 	           });
 	 }
 }
-
+ 
 function searchlocate(id){  
 	  window.location.href="../../adminmap.jsp?id="+id;
 }
@@ -250,7 +253,7 @@ function adddetail(src){
   <jsp:param name="" value="" />
   </jsp:include>   
       
-<jsp:include flush="true" page="../page.jsp">
+<jsp:include flush="true" page="page.jsp">
     <jsp:param name="sear" value="<%=sear %>" /> 
 	<jsp:param name="page" value="<%=Page %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
@@ -261,9 +264,9 @@ function adddetail(src){
 
 <div id="headremind">
 <jsp:include page="headremind.jsp"/>
-</div>
+</div> 
 
-<jsp:include page="../search.jsp">
+<jsp:include page="search.jsp">
  <jsp:param name="page" value="<%=pageNum %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  
@@ -330,11 +333,11 @@ function adddetail(src){
 		<td align="center"><%=o.getbranchName(o.getBranch())%></td>  
 		
 		<%  
-		String tdcol = " bgcolor=\"red\"" ;
+		String tdcol = " bgcolor=\"red\""  ;
 		if(o.getPhoneRemark()!=1){
 			tdcol = "";
 		}
-		  %>   
+		  %>    
 		<td align="center"><%=o.getUsername()  +"</p>"+
 				"<p><font color=\""+tdcol+"\"> "+  
 		                      o.getPhone1()

@@ -2,7 +2,12 @@
 
 <%    
 request.setCharacterEncoding("utf-8");
-  
+
+String pageNum = request.getParameter("page");
+String numb = request.getParameter("numb");  
+String sort = request.getParameter("sort");  
+String searched = request.getParameter("searched");
+ 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,37 +33,36 @@ var search = new Array();
 var searchstr = "";  
 function add(){
 	  var name = ($("#serch").children('option:selected').attr("value"));
-	  var value = ($("#serch").children('option:selected').text());
-	 
+	  var value = ($("#serch").children('option:selected').text());  
 	  var flag = $.inArray(name,search);
 	  if(flag == -1 && name != "" ){ 
 		  search.push(name); 
 		 // alert(name == "");  
 		    if("statues4" == name || "statues1" == name || "statues2" == name || "statues3" == name || "statuesdingma" == name || "statues" == name || "deliverytype" == name){
-		    	$("#search").append(value+":是<input type=\"radio\"  name=\""+name+"\"  id=\""+name+"\"  value=\"1\" />否<input type=\"radio\"  name=\""+name+"\"  value=\"0\" /><input type=\"hidden\"  name=\"search\"  class =\"search\"  value=\""+name+"\"></input>");  
+		    	$("#search").append(value+":是<input type=\"radio\"  name=\""+name+"\"  value=\"1\" />否<input type=\"radio\"  name=\""+name+"\"  value=\"0\" /><input type=\"hidden\"  name=\"search\" value=\""+name+"\"></input>");  
 		    }else if("deliveryStatues" == name){
 		    	var str = "送货状态：";
-		    	str +=  "<select name=\""+name+"\"> id=\""+name+"\""+
+		    	str +=  "<select name=\""+name+"\">"+
 		    	           "<option value=\"1\">已送货</option>"+
 		    	           "<option value=\"2\">已安装</option>"+
 		    	           "<option value=\"0\">未送货</option>"+
 		    	           "<option value=\"-1\">已退货</option>"+
 		    	         "</select>" + 
-		    	         " <input type=\"hidden\"  name=\"search\" class =\"search\"   value=\""+name+"\"></input>";
+		    	         " <input type=\"hidden\"  name=\"search\" value=\""+name+"\"></input>";
 		    	$("#search").append(str);
 		    }else if("oderStatus" == name){
 		    	var str = "上报状态：";
-		    	str +=  "<select name=\""+name+"\"  id=\""+name+"\">"+
+		    	str +=  "<select name=\""+name+"\">"+
 		    	           "<option value=\"0\">需派送</option>"+
 		    	           "<option value=\"8\">已自提</option>"+
 		    	           "<option value=\"9\">只安装(门店提货)</option>"+
 		    	           "<option value=\"10\">只安装(顾客已提)</option>"+
 		    	           "<option value=\"20\">换货单</option>"+
 		    	         "</select>" + 
-		    	         " <input type=\"hidden\"  name=\"search\" class =\"search\"  value=\""+name+"\"></input>";
+		    	         " <input type=\"hidden\"  name=\"search\" value=\""+name+"\"></input>";
 		    	$("#search").append(str);
 		    }else if("saledate" == name || "andate" == name || "dealsendTime" == name ){ 
-		    	$("#search").append(value+":开始时间<input type=\"text\"  id=\""+name+"start\"  name=\""+name+"start\"  placeholder=\"yyyy-mm-dd\"></input> 结束时间<input type=\"text\"  id=\""+name+"end\"  name=\""+name+"end\" placeholder=\"yyyy-mm-dd\"></input><input type=\"hidden\"  name=\"search\" class =\"search\" value=\""+name+"\"></input>");  
+		    	$("#search").append(value+":开始时间<input type=\"text\"  id=\""+name+"start\"  name=\""+name+"start\"  placeholder=\"yyyy-mm-dd\"></input> 结束时间<input type=\"text\"  id=\""+name+"end\"  name=\""+name+"end\" placeholder=\"yyyy-mm-dd\"></input><input type=\"hidden\"  name=\"search\" value=\""+name+"\"></input>");  
 		        var start = name+"start";
 		        var end = name+"end";
 		        var opt = { };   
@@ -70,44 +74,19 @@ function add(){
 				$("#"+end).scroller("destroy").scroller($.extend(opt2["date"], 
 				{ theme: "android-ics light", mode: "scroller", display: "modal",lang: "zh" ,startYear:"1980",endYear:"2020"}));
 		    }else {  
-		    	$("#search").append(value+"<input type=\"text\"  name=\""+name+"\" id=\""+name+"\"></input><input type=\"hidden\"  name=\"search\"  class =\"search\"  value=\""+name+"\"></input>");  
+		    	$("#search").append(value+"<input type=\"text\"  name=\""+name+"\"></input><input type=\"hidden\"  name=\"search\"  value=\""+name+"\"></input>");  
 		    }
 	  }else{    
 		  alert("您已选择"+value+"搜索");    
 	  }
 	}
-	
-	function clickSearch(){
-		sear = "";
-		var search = $(".search");
-		
-		if(search.length >0){
-			sear += "&searched=searched";
-		}
-		
-		for(var i=0;i<search.length;i++){
-			var name = $(search[i]).val(); 
-			
-			sear += "&search="+name;
-			 
-			if("saledate" == name || "andate"  == name || "dealsendTime"  == name){
-				var startvalue = $("#"+name+"start").val();
-				var endvalue = $("#"+name+"end").val();
-				
-				sear += "&"+name+"start="+startvalue;
-				sear += "&"+name+"end="+endvalue; 
-			}else {
-				var value = $("#"+name).val();
-				sear += "&"+name+"="+value; 
-			}
-		}
-		
-		initOrder(type,statues,num,page,sort,sear);
-		
-	}
-	
 </script>
-
+ 
+<form action="">  
+ <input type="hidden" name="searched" value="searched"/>
+ <input type="hidden" name="page" value="<%=pageNum%>"/>
+ <input type="hidden" name="numb" value="<%=numb%>"/>
+ <input type="hidden" name="sort" value="<%=sort%>"/>
 <div id="search">      
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <select id="serch" name="serch"> 
@@ -147,10 +126,16 @@ function add(){
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <input type="button" name="" value="增加搜索条件" style="height:20px" onclick="add()"/>
  
- <input type="button"  value="搜索" style="width:80px;height:20px" onclick="clickSearch()" />
  
+ <input type="submit"  value="搜索" style="width:80px;height:20px"/>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <input type="submit"  value="刷新" style="width:80px;height:20px;color:red"/>
 </div>
 
+</form>
 
 
 </body>

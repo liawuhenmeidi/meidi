@@ -1,7 +1,7 @@
-<%@ page language="java" import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%
-request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
+<%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ include file="../../common.jsp"%>  
+
+<% 
 String message = "调拨单";
 String type = request.getParameter("type");
 if("paper".equals(type)){ 
@@ -15,10 +15,10 @@ List<Branch> listbranch = BranchService.getList();
   
 List<String> listbranchp = BranchService.getListStr(); 
 String listall = StringUtill.GetJson(listbranchp); 
-  
+System.out.println(listall);  
 List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
-    
+System.out.println(listallpp);    
 //Map<Integer,Branch> branchmap = BranchManager.getNameMap();
 Map<Integer,Branch> branchmap = BranchService.getMap();
 
@@ -29,7 +29,7 @@ Branch inbranch = new Branch();
 String remark = "";  
 String inittime = ""; 
 String isdisabel = " ";  
-
+System.out.println(1);  
 if(!StringUtill.isNull(inventoryid)){
 	isdisabel = " disabled=\"disabled\" ";
 	inventory = InventoryManager.getInventoryID(user, Integer.valueOf(inventoryid));  
@@ -63,12 +63,9 @@ td {
     line-height:30px;
 }
 
-
-
-
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>产品管理</title>
+<title>单据管理</title>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/> 
@@ -76,14 +73,14 @@ td {
  
 <script type="text/javascript">
 var disable = '<%=isdisabel %>';
-  
- var listallp = '<%=listallpp%>';
+   
+ //var listallp = ''; 
 //alert(listallp);
- var jsonallp =  $.parseJSON(listallp); 
+ var jsonallp =  <%=listallpp%>; 
  
  var jsonall = <%=listall%>;
 
- var row = 1; 
+ var row = 1;  
  var rows = new Array();
    
  var jsoninventstr =  '<%=invent%>';
@@ -257,13 +254,13 @@ var disable = '<%=isdisabel %>';
       //System.out.println("aa"+user.getBranch()+inventory.getOutstatues()+UserManager.checkPermissions(user, Group.inventoryquery));
       if(user.getBranch().equals(outbranch.getId()+"") && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || outbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend) && inventory.getOutstatues() == 0 ){ 
       %>    
-      <li><a href="InventoryServlet?method=outbranch&id=<%=inventory.getId() %>">出库方确认</a></li>
+      <li><a href="InventoryServlet?method=outbranch&id=<%=inventory.getId() %>&token=<%=token%>">出库方确认</a></li>
       <%
-      }  
+      }   
       %>
      <% if(user.getBranch().equals(inbranch.getId()+"") && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || inbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend) && inventory.getInstatues() == 0){ 
       %>   
-      <li><a href="InventoryServlet?method=inbranch&id=<%=inventory.getId() %>">入库方确认</a></li>
+      <li><a href="InventoryServlet?method=inbranch&id=<%=inventory.getId() %>&token=<%=token%>">入库方确认</a></li>
       <% 
       } 
      

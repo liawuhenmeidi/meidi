@@ -2,9 +2,22 @@
 <%
 request.setCharacterEncoding("utf-8");
 int type = Integer.valueOf(request.getParameter("type"));
-String message = ""; 
-
+String message = "";
 String href = request.getParameter("href");
+int count = 0 ;
+ 
+if(request.getParameter("count") != null && !"".equals(request.getParameter("count"))){
+	count = Integer.valueOf(request.getParameter("count"));
+} 
+
+String pageNum = request.getParameter("page");
+String numb = request.getParameter("numb");  
+String sort = request.getParameter("sort");  
+String sear = request.getParameter("sear");
+
+int Page = Integer.valueOf(pageNum);
+int num = Integer.valueOf(numb);
+ 
 
 
 if(Order.orderDispatching == type){
@@ -53,75 +66,50 @@ if(Order.orderDispatching == type){
 
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/meidiserver/";
- 
+
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <style type="text/css">
 td {
- align:center 
+ align:center
 }
 </style> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <script type="text/javascript">
-var num = 100; 
-var page = 1; 
-var sort = "submittime desc";
-var sear = ""; 
-var count = ""; 
-var statues = "<%=type%>";  
+
+var num = "<%=num%>";
+var sort = "<%=sort%>" ;
+var href = "<%=href%>";
+var page = "<%=pageNum%>";
+var sear = "<%=sear%>";
+
 $(function () { 
-	 
+	
 	$("select[id='numb'] option[value='"+num+"']").attr("selected","selected");
 	$("select[id='sort'] option[value='"+sort+"']").attr("selected","selected");
 	
 	$("#page").blur(function(){
 		 page = $("#page").val();
-		 $("#page").val(page);
-		 initOrder(type,statues,num,page,sort,sear); 
-		 //window.location.href=href+"?page="+page+"&numb="+num+"&sort="+sort+"&sear="+sear;
+		
+		 window.location.href=href+"?page="+page+"&numb="+num+"&sort="+sort+"&sear="+sear;
 	 });
-  
+
 	 $("#numb").change(function(){
 		 num = ($("#numb").children('option:selected').val());
-		  
-		 initOrder(type,statues,num,page,sort,sear); 
 		// alert(num);
-		// window.location.href=href+"?page="+page+"&numb="+num+"&sort="+sort+"&sear="+sear;
+		 window.location.href=href+"?page="+page+"&numb="+num+"&sort="+sort+"&sear="+sear;
 	 }); 
 	   
 	 $("#sort").change(function(){
 		 sort = ($("#sort").children('option:selected').val()); 
-		 initOrder(type,statues,num,page,sort,sear);
-		 //window.location.href=href+"?page="+page+"&numb="+num+"&sort="+sort+"&sear="+sear;
+		 window.location.href=href+"?page="+page+"&numb="+num+"&sort="+sort+"&sear="+sear;
 	 }); 
 }); 
 
-function pageadd(){
-	page = page*1 +1 ;
-	initOrder(type,statues,num,page,sort,sear);
-}
-
-function pagesubtraction(){
-	page = page*1 -1 ;
-	if(page <1){
-		page = 1;
-	}
-	initOrder(type,statues,num,page,sort,sear);
-}
-
-function pageinit(){
-	page = 1 ;
-	initOrder(type,statues,num,page,sort,sear);
-}
-
-function pagelast(){
-	page = Math.ceil(count/num) ;
-	initOrder(type,statues,num,page,sort,sear);
-}
 
 
 </script>
@@ -145,19 +133,19 @@ function pagelast(){
      	</select>     
    </td>
    <td>
-     <a href="javascript:void(0)" onclick="pageinit()">首页</a>     
-     <a href="javascript:void(0)" onclick="pagesubtraction()">上一页</a>
-     <a href="javascript:void(0)" onclick="pageadd()">下一页</a>  
-     <a href="javascript:void(0)" onclick="pagelast()">尾页</a>   
+  <a href="<%=href %>?page=1&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">首页</a>     
+     <a href="<%=href %>?page=<%=Page-1%>&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">上一页</a>
+     <a href="<%=href %>?page=<%=Page+1%>&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">下一页</a>
+     <a href="<%=href %>?page=<%=count/num+1%>&numb=<%=num %>&sort=<%=sort%>&sear=<%=sear%>">尾页</a>   
    </td>
    <td>
     第    
-     <input type="text" size="5" value=""  id="page"/>    
+     <input type="text" size="5" name="username" value="<%=Page%>"  id="page"/>    
         页
    </td>
    <td>
       共
-    <label id="count" style="color:red;"> </label> 
+    <%=count %> 
     
    条记录  
    </td>

@@ -1,8 +1,8 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
-<%@ include file="../searchdynamic.jsp"%>
+<%@ include file="searchdynamic.jsp"%>
   
-<%  
+<%   
 
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
 session.setAttribute("exportList", list); 
@@ -73,7 +73,7 @@ function func(str){
     $(id).css("display","none");
 	$("#"+str).css("display","block");
 	id = "#"+str ;
-}
+} 
 function funcc(str,str2){
     $(id).css("display","none");
 	$("#"+str).css("display","block");
@@ -111,10 +111,10 @@ function change(str1,str2,type){
 	var statues = $("#"+str1).val(); 
 	//alert(uid);
 	$.ajax({   
-        type: "post",   
-         url: "../../user/server.jsp", 
-         data:"method=songhuo&id="+str2+"&statues="+statues+"&type="+type,
-         dataType: "",  
+        type: "post",    
+         url: "../../LogisticsServlet", 
+         data:"method="+type+"&oid="+str2+"&statues="+statues,
+         dataType: "",   
          success: function (date) {
         	//alert(date);
         	 if(date == 0){
@@ -217,7 +217,7 @@ function orderPrint(id,statues){
   <jsp:param name="" value="" />
   </jsp:include>   
       
-<jsp:include flush="true" page="../page.jsp">
+<jsp:include flush="true" page="page.jsp">
     <jsp:param name="sear" value="<%=sear %>" /> 
 	<jsp:param name="page" value="<%=Page %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
@@ -230,7 +230,7 @@ function orderPrint(id,statues){
 <jsp:include page="headremind.jsp"/>
 </div>
 
-<jsp:include page="../search.jsp">
+<jsp:include page="search.jsp">
  <jsp:param name="page" value="<%=pageNum %>" />
 	<jsp:param name="numb" value="<%=numb %>" />
 	<jsp:param name="sort" value="<%=sort %>" />  
