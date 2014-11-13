@@ -59,11 +59,11 @@
 	
 	
 	//查询条件提交后，左侧侧显示内容
-	unCheckedDBOrders = MatchOrderManager.getDBOrders(selectBranchType, selectBranch, deadline);
+	unCheckedDBOrders = MatchOrderManager.getCheckedDBOrders(selectBranchType, selectBranch, deadline);
 		
 		
 	//查询条件提交后，右侧显示内容
-	unCheckedUploadOrders = MatchOrderManager.getUploadOrders(selectOrderName);
+	unCheckedUploadOrders = MatchOrderManager.getCheckedUploadOrders(selectOrderName);
 	
 	
 	if(startButton != null && startButton.equals("正在对比")){
@@ -85,8 +85,8 @@
 		UploadOrder searchOrder = (UploadOrder)request.getSession().getAttribute("searchUploadOrder");
 		
 
-		unCheckedDBOrders = MatchOrderManager.getDBOrders((String)request.getSession().getAttribute("selectBranchType"), (String)request.getSession().getAttribute("selectBranch"), (String)request.getSession().getAttribute("deadline"));
-		unCheckedUploadOrders = MatchOrderManager.getUploadOrders((String)request.getSession().getAttribute("selectOrderName"));
+		unCheckedDBOrders = MatchOrderManager.getCheckedDBOrders((String)request.getSession().getAttribute("selectBranchType"), (String)request.getSession().getAttribute("selectBranch"), (String)request.getSession().getAttribute("deadline"));
+		unCheckedUploadOrders = MatchOrderManager.getCheckedUploadOrders((String)request.getSession().getAttribute("selectOrderName"));
 		
 		
 		unCheckedDBOrders = MatchOrderManager.searchOrderList(unCheckedDBOrders, searchOrder);
@@ -205,9 +205,13 @@ $(function (){
 <jsp:param name="dmsn" value="" />
 </jsp:include>
     
-<h3>本页显示为已结款单据</h3>
-<h3><a href="manualCheckout.jsp">对比未结款单据</a></h3>
-<h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3>
+<table width="100%">
+	<tr>
+		<td width="15%"><h3>本页显示为已结款单据</h3></td>
+		<td width="15%"><h3><a href="manualCheckout.jsp">对比未结款单据</a></h3></td>
+		<td align="right"><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
+	</tr>
+</table>
 <form name="baseform" id="baseform" method="post">
 <table width="100%" height="100%" align="center" border=0>
        <tr>
@@ -324,7 +328,7 @@ $(function (){
 			
 		%>
 		<tr>
-			<td align="center"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(dbsideDisabled) {%>disabled="disabled"<% }%> name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"  /></td>
+			<td align="center"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(true) {%>disabled="disabled"<% }%> name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"  /></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="#" onClick="javascript:window.open('./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>

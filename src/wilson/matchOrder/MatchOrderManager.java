@@ -12,7 +12,7 @@ import wilson.upload.UploadManager;
 public class MatchOrderManager {
 	
 	//根据条件取order(仅提供给manualCheckout.jsp使用)
-	public static List<Order> getDBOrders(String selectBranchType,String selectBranch,String deadline){
+	public static List<Order> getUnCheckedDBOrders(String selectBranchType,String selectBranch,String deadline){
 		List<Order> unCheckedDBOrders = new ArrayList<Order>();
 		
 		//查询条件提交后，左侧侧显示内容
@@ -36,7 +36,7 @@ public class MatchOrderManager {
 		return unCheckedDBOrders;
 	}
 	//根据条件取Uploadorder(仅提供给manualCheckout.jsp使用)
-	public static List<UploadOrder> getUploadOrders(String selectOrderName){
+	public static List<UploadOrder> getUnCheckedUploadOrders(String selectOrderName){
 		List<UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
 		//查询条件提交后，右侧显示内容
 		if(selectOrderName != null && !selectOrderName.equals("")){
@@ -44,6 +44,45 @@ public class MatchOrderManager {
 				unCheckedUploadOrders = UploadManager.getUnCheckedUploadOrders();
 			}else{
 				unCheckedUploadOrders = UploadManager.getUnCheckedUploadOrdersByName(selectOrderName);
+			}
+		}
+		return unCheckedUploadOrders;
+	}
+	
+	//根据条件取order(仅提供给manualCheckout.jsp使用)
+	public static List<Order> getCheckedDBOrders(String selectBranchType,String selectBranch,String deadline){
+		List<Order> unCheckedDBOrders = new ArrayList<Order>();
+		if(selectBranchType != null && !selectBranchType.equals("") ){
+			//第一级选择的是否是all
+			if(selectBranchType.equals("all")){
+				unCheckedDBOrders = OrderManager.getCheckedDBOrders(deadline);
+			}else{
+				
+				if(selectBranch != null && !selectBranch.equals("")){
+					//第二级选择的是否是all
+					if(selectBranch.equals("all")){ 
+						unCheckedDBOrders = OrderManager.getCheckedDBOrdersbyBranchType(selectBranchType,deadline);
+					
+					}else{
+						unCheckedDBOrders = OrderManager.getCheckedDBOrdersbyBranch(selectBranch,deadline);
+					}
+				}
+				
+			}
+		}
+		return unCheckedDBOrders;
+	}
+	//根据条件取Uploadorder(仅提供给manualCheckout.jsp使用)
+	public static List<UploadOrder> getCheckedUploadOrders(String selectOrderName){
+		List<UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
+		
+		
+		//查询条件提交后，右侧显示内容
+		if(selectOrderName != null && !selectOrderName.equals("")){
+			if(selectOrderName.equals("all")){
+				unCheckedUploadOrders = UploadManager.getCheckedUploadOrders();
+			}else{
+				unCheckedUploadOrders = UploadManager.getCheckedUploadOrdersByName(selectOrderName);
 			}
 		}
 		return unCheckedUploadOrders;

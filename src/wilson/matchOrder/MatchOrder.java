@@ -157,6 +157,10 @@ public class MatchOrder {
 			}
 		}
 
+		if(resultDBShopName.equals("")){
+			resultDBShopName = dbOrderShopNames.get(0);
+		}
+		
 		//找出这个组合对应在DBList中的开始位置
 		for(int i = 0 ; i < dbOrders.size() ; i ++){
 			if(dbOrders.get(i).getShopNameForCompare().equals(resultDBShopName)){

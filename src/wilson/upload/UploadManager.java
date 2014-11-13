@@ -438,7 +438,7 @@ public class UploadManager {
 		List <UploadOrder> checkedUploadOrders = new ArrayList<UploadOrder>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadorder where checked = 0";
+		String sql = "select * from uploadorder where checked = 0 order by shop";
 
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -717,6 +717,45 @@ public class UploadManager {
 
 		Connection conn = DB.getConn(); 
 		String sql = "select * from uploadorder where checked = 1 and name = '" + name + "' order by shop" ;
+		logger.info(sql);
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadOrder uo = new UploadOrder();
+		try {     
+			while (rs.next()) {
+				uo.setId(rs.getInt("id"));
+				uo.setName(rs.getString("name"));
+				uo.setSaleManName(rs.getString("salesman"));
+				uo.setShop(rs.getString("shop"));
+				uo.setPosNo(rs.getString("posno"));
+				if(uo.getPosNo()==null||uo.getPosNo().equals("")){
+					uo.setPosNo("");
+				}
+				uo.setSaleTime(rs.getString("saletime"));
+				uo.setType(rs.getString("type"));
+				uo.setNum(rs.getInt("num"));
+				uo.setSalePrice(rs.getDouble("saleprice"));
+				uo.setFileName(rs.getString("filename"));
+				uo.setChecked(rs.getInt("checked"));
+				uo.setCheckedTime(rs.getString("checkedtime"));
+				result.add(uo);
+				uo = new UploadOrder();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
+	}
+	
+	public static List<UploadOrder> getCheckedUploadOrdersByName(String name){
+		List <UploadOrder> result = new ArrayList<UploadOrder>();
+
+		Connection conn = DB.getConn(); 
+		String sql = "select * from uploadorder where checked = 0 and name = '" + name + "' order by shop" ;
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
