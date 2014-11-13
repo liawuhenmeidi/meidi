@@ -49,7 +49,7 @@
 	//截至时间
 	String selectDate = request.getParameter("deadline");
 	String deadline = "";
-	if(StringUtill.isNull(deadline)){
+	if(StringUtill.isNull(selectDate)){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");	
 		deadline = sdf.format(new Date());
 	}else{
@@ -215,7 +215,7 @@ $(function (){
        <tr>
 			<td colspan="6" align="center">
 			&nbsp;&nbsp;&nbsp;&nbsp;
-			<h3>本地记录的订单(截至时间<input class="date2" type="text" name="deadline" id ="serviceDate2" onclick="new Calendar().show(this);"  placeholder="默认为今天"  readonly="readonly" style="width:20% "></input>)</h3>
+			<h3>本地记录的订单(截至时间<input class="date2" type="text" name="deadline" id ="serviceDate2" onclick="new Calendar().show(this);"  readonly="readonly" value="<%=deadline %>" style="width:20% "></input>)</h3>
 			<select name="branchtype" id="branchtype" >
           	<option value="all">全部</option> 
           	<%
