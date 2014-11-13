@@ -59,37 +59,39 @@
 	
 	
 	//查询条件提交后，左侧侧显示内容
-	if(selectBranchType != null && !selectBranchType.equals("") ){
-		//第一级选择的是否是all
-		if(selectBranchType.equals("all")){
-			unCheckedDBOrders = OrderManager.getCheckedDBOrders(deadline);
-		}else{
-			
-			if(selectBranch != null && !selectBranch.equals("")){
-				//第二级选择的是否是all
-				if(selectBranch.equals("all")){ 
-					unCheckedDBOrders = OrderManager.getCheckedDBOrdersbyBranchType(selectBranchType,deadline);
-				
-				}else{
-					unCheckedDBOrders = OrderManager.getCheckedDBOrdersbyBranch(selectBranch,deadline);
-				}
-			}
-			
-		}
-	}
-	
-	
+	unCheckedDBOrders = MatchOrderManager.getDBOrders(selectBranchType, selectBranch, deadline);
+		
+		
 	//查询条件提交后，右侧显示内容
-	if(selectOrderName != null && !selectOrderName.equals("")){
-		if(selectOrderName.equals("all")){
-			unCheckedUploadOrders = uploadOrders;
-		}else{
-			unCheckedUploadOrders = UploadManager.getUnCheckedUploadOrdersByName(selectOrderName);
-		}
-	}
+	unCheckedUploadOrders = MatchOrderManager.getUploadOrders(selectOrderName);
 	
 	
 	if(startButton != null && startButton.equals("正在对比")){
+		showContent = true;
+		session.setAttribute("selectBranchType", selectBranchType);
+		session.setAttribute("selectBranch", selectBranch);
+		session.setAttribute("selectOrderName", selectOrderName);
+		session.setAttribute("deadline", deadline);
+		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders)){
+			return;
+		}
+		//去自动匹配好的Order
+		afterMatchOrders = mo.getMatchedOrders();
+	}
+	
+	//如果是搜索进来的
+	String search = request.getParameter("search");
+	if(!StringUtill.isNull(search) && search.equals("true") && "".equals(startButton)){
+		UploadOrder searchOrder = (UploadOrder)request.getSession().getAttribute("searchUploadOrder");
+		
+
+		unCheckedDBOrders = MatchOrderManager.getDBOrders((String)request.getSession().getAttribute("selectBranchType"), (String)request.getSession().getAttribute("selectBranch"), (String)request.getSession().getAttribute("deadline"));
+		unCheckedUploadOrders = MatchOrderManager.getUploadOrders((String)request.getSession().getAttribute("selectOrderName"));
+		
+		
+		unCheckedDBOrders = MatchOrderManager.searchOrderList(unCheckedDBOrders, searchOrder);
+		unCheckedUploadOrders = MatchOrderManager.searchUploadOrderList(unCheckedUploadOrders, searchOrder);
+		
 		showContent = true;
 		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders)){
 			return;
@@ -100,9 +102,7 @@
 	
 	int inter = 1;
 	
-//	session.setAttribute("afterMatchOrders", afterMatchOrders);
-//	session.setAttribute("unCheckedDBOrders", unCheckedDBOrders);
-//	session.setAttribute("unCheckedUploadOrders", unCheckedUploadOrders);
+
 	System.out.println("自动对比页面总执行时间(毫秒) = " + (System.currentTimeMillis() - startTime));
 	
 	
@@ -207,6 +207,7 @@ $(function (){
     
     
 <h3>已结款     <a href="manualCheckout.jsp">未结款</a></h3>
+<h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"  target="_BLANK">搜索</a></h3>
 <form name="baseform" id="baseform" method="post">
 <table width="100%" height="100%" align="center" border=0>
        <tr>
