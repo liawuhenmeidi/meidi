@@ -105,7 +105,8 @@ public class LogisticsServlet extends HttpServlet {
 				} 
 			} 
 		}else if(!(2+"").equals(devstatues) && !StringUtill.isNull(opid)){
-			logger.info("sql");
+			String sql = "update  mdorderupdateprint set statues = 4 where id = " + opid+";";
+			DBUtill.sava(sql);
 		}
 		
 		try {
@@ -145,7 +146,7 @@ public class LogisticsServlet extends HttpServlet {
 		if(order.getSendId() == 0 ){
 			List<String> listsql = new ArrayList<String>();
 			String sql = "update mdorder set sendId = "+uid+"  , printSatuesp= 1  where id = " + order.getId() ;
-			List<String> lists = InventoryBranchManager.chage(user, method, order.getDealsendId(), order);
+			List<String> lists = InventoryBranchManager.chage(user, method, Integer.valueOf(uid), order); 
 			listsql.add(sql);
 		    listsql.addAll(lists);
 		    if( DBUtill.sava(listsql)){
@@ -161,8 +162,8 @@ public class LogisticsServlet extends HttpServlet {
 		    int count = -1 ;
 				
 			List<String> listsql = new ArrayList<String>();
-		    
-			String sql =  "update mdorder set returnstatues = 2 , returntime = '"+TimeUtill.gettime()+"'  where id = " + order.getId() ;
+		     
+			String sql =  "update mdorder set returnstatues = 1 , returntime = '"+TimeUtill.gettime()+"'  where id = " + order.getId() ;
 			
 			listsql.add(sql);  
 		    if( DBUtill.sava(listsql)){
@@ -221,14 +222,17 @@ public class LogisticsServlet extends HttpServlet {
 			int count = -1 ;
 
 				List<String> listsql = new ArrayList<String>();
-				
-				String sql1 = "update  mdorderupdateprint set statues = 2 where id = " + uid;
-				
-				listsql.add(sql1);
+				 
+				String sql1 = "update  mdorderupdateprint set statues = 2 where id = " + uid+";";
+				 
+				String sql2 =  "update mdorder set returnstatues = 2 , returntime = '"+TimeUtill.gettime()+"'  where id = " + order.getId() ;
+				  
+				listsql.add(sql1);  
+				listsql.add(sql2); 
 			    if( DBUtill.sava(listsql)){
 			    	count = 1 ;
 			    } 
-			return count ;
+			return count ; 
 			 
 		} 
 	// 送货员释放
@@ -304,7 +308,7 @@ public class LogisticsServlet extends HttpServlet {
 			 
 		} 
 		
-		// 导购同意安装网点释放
+		// 导购同意安装网点释放 
 				public synchronized int returns(User user , Order order , String uid,String method){
 					int count = -1 ;
 							
@@ -321,10 +325,7 @@ public class LogisticsServlet extends HttpServlet {
 						}
 			            
 						List<String> lists = InventoryBranchManager.chage(user,"returns", order.getDealsendId(), order);     
-					    
-						listsql.addAll(lists); 
-						
-						
+								
 						listsql.add(sql);
 						listsql.add(sql2);
 					    listsql.addAll(lists);
@@ -404,9 +405,9 @@ public class LogisticsServlet extends HttpServlet {
 	     
 		for(int i=0;i<list.size();i++){  
 			OrderPrintln o = list.get(i);  
-			if(o.getType() == OrderPrintln.modify){
-				count =  OrderPrintln.modify;
-			}else if(o.getType() == OrderPrintln.returns){  
+			if(o.getType() == OrderPrintln.modify && o.getStatues() != 4){
+				count =  OrderPrintln.modify; 
+			}else if(o.getType() == OrderPrintln.returns && o.getStatues() != 4){  
 				count =  20 ;     
 			} 
 		}

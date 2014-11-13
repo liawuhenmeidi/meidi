@@ -209,7 +209,7 @@ $(function () {
 	
 	 $("#submit").css("display","none"); 
 	 return true ;
- }
+ } 
  
  function regist(){
 		location.href = "dengluN.jsp";
@@ -226,9 +226,9 @@ $(function () {
   </jsp:include>  
   
 <!--  头 单种类  -->
-<div class="s_main_tit">员工注册</div>
-  
-<!--  订单详情  -->
+<div class="s_main_tit">员工注册<span class="qiangdan"><a href="javascript:void(0)" onclick="regist()" >登陆</a></span> </div>
+   
+<!--  订单详情  -->  
 <div class="s_main_box">      
 <form action="RegistServlet"   method = "post"  onsubmit="return check()">
  <input type="hidden" name="method" value="zhuce"/>     
@@ -353,13 +353,11 @@ $(function () {
 
 </table>
  <div id="submit">
-<table>
+<table> 
  <tr> 
-     <td width="25%"></td>
-    <td width="25%"><input type="button"  name="" value="登陆" onclick="regist()" /></td>
-    <td width="25%"><input type="submit" value="注册"/></td>
-    <td width="25%"> 
-    </td>
+   <td width="20%">
+   <td width="60%"><input type="submit" style="font-size:25px;width:300px"   value="注册"/></td>
+   <td width="20%">
   </tr> 
  
 </table>

@@ -74,7 +74,7 @@ public class OrderServiceServlet extends HttpServlet {
     			html = OrderService.getHtmlOver(list);
     		}else if(Integer.valueOf(statues) == Order.serach){
     			html = OrderService.getHtmlSearch(user,list);
-    		}else if(Integer.valueOf(statues) == Order.orderDispatching){
+    		}else if(Integer.valueOf(statues) == Order.orderDispatching || Integer.valueOf(statues) == Order.returns || Integer.valueOf(statues) == Order.neworder || Integer.valueOf(statues) == Order.release){
     			html = OrderService.getHtmlDispatching(user,list);
     		}else if(Integer.valueOf(statues) == Order.callback){
     			html = OrderService.getHtmlcallback(user,list);

@@ -493,15 +493,304 @@ function checkedd(type){
 			   %>
 		       
 		      </td>
-             
+             <td align="center">配单</td>
+             <td align="center">
+		 <%   
+		    int flag = -1 ;
+		    int flag2 = -1 ;
+		    if(opmap.get(OrderPrintln.modify) != null){
+				OrderPrintln op = opmap.get(OrderPrintln.modify).get(o.getId());
+				
+				 if(op != null){  
+					 flag = op.getStatues() ;
+					 }
+				 }
+		    
+		    if(opmap.get(OrderPrintln.returns) != null){
+				OrderPrintln op = opmap.get(OrderPrintln.returns).get(o.getId());
+				
+				 if(op != null){  
+					 flag2 = op.getStatues() ;
+					 }
+				 }
+					  
+		  
+		   if(o.getDealsendId() == 0){
+			   if(flag != 2 && flag != 0 && flag2 != 2 && flag2 != 0){
+			   %>
+				<select class = "category" name="category"  id="songh<%=o.getId() %>" >
+				 <option value=""></option>
+				<%     if(listS != null ){
+					     
+			             
+		               for(int j=0;j< listS.size();j++){
+		            	   User u = listS.get(j);
+		            	   String str = "";  
+		            	   if(u.getId() == o.getDealsendId()){ 
+		            		   str = "selected=selected" ;
+		            	   }     
+		            	   %> 
+		            	    <option value=<%=u.getId() %>  <%= str%>> <%=u.getUsername() %></option>
+		            	   <% 
+		                    }
+				     }
+			            %>
+		         </select> 
+		      
+		         <input type="button" onclick="changepeidan('songh<%=o.getId()%>','<%=o.getId()%>')"  value="确定"/> 
+		         
+			<% 	
+		     }
+		   }else {
+			   %>
+			    
+			<%=usermap.get(o.getDealsendId()).getUsername() %>
+			   
+			   
+			   <% 
+		   }
+		 %>
+		</td> 
 		<td align="center">查看位置</td> 
 			  <td align="center"> 
 		    <a href="javascript:void(0);"  onclick="searchlocate('<%=o.getId() %>')">[查看位置]</a> 
 		</td>
-		<td align="center">安装网点</td> 
-			  <td align="center"> <%=o.getdealsendName() %>
+			</tr>
+		<tr class="asc">
+			
+             <td align="center">安装单位驳回</td> 
+             <td align="center"> 
+		<% 
+		int shifangstatues = -1 ;
+		if(opmap.get(OrderPrintln.release) != null){
+		OrderPrintln orp = opmap.get(OrderPrintln.release).get(o.getId()); 
+		
+		 if(orp != null){
+			 shifangstatues = orp.getStatues();
+			 if(orp.getStatues() == 2){ 
+			     	 
+		    	 %> 
+		    	  <%=orp.getMessage() %>
+		    	   <p>驳回申请已同意</p>
+		    	   
+		    	 <%
+		    	 
+		    	  }else if(orp.getStatues() == 4){ 
+				     	
+				    	 %> 
+				    	 
+				    	   <p>驳回申请已拒绝</p>
+				    	   
+				    	 <%
+				    	 
+				    	  }else {
+			 
+			 
+			 
+			 %>
+		  
+		 <%=orp.getMessage() %> 
+		    	      
+		 <input type="button" onclick="changes('<%=orp.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','0','','','<%=OrderPrintln.release %>')"  value="同意"/>
+		 <input type="button" onclick="changes('<%=orp.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','0','','','<%=OrderPrintln.release %>')"  value="不同意"/>
+	
+		
+		<%
+		   }   
+		 }
+		}
+		%>
+		 
+		<%  
+		if(opmap.get(OrderPrintln.salereleasesonghuo) != null){
+		OrderPrintln orp = opmap.get(OrderPrintln.salereleasesonghuo).get(o.getId()); 
+		
+		 if(orp != null){
+			 shifangstatues = orp.getStatues();
+			 if(orp.getStatues() == 2){ 
+			     	
+		    	 %> 
+		    	   <%=orp.getMessage() %>
+		    	   <p>驳回申请已同意</p>
+		    	   
+		    	 <%
+		    	 
+		    	  }else if(orp.getStatues() == 4){ 
+				     	
+				    	 %> 
+				    	 
+				    	   <p>驳回申请已拒绝</p>
+				    	   
+				    	 <%
+				    	 
+				    	  }else {
+
+			 %>
+		  
+		 <%=orp.getMessage() %> 
+		    	      
+		 <input type="button" onclick="changes('<%=orp.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','0','','','<%=OrderPrintln.salereleasesonghuo%>')"  value="同意"/>
+		 <input type="button" onclick="changes('<%=orp.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','0','','','<%=OrderPrintln.salereleasesonghuo %>')"  value="不同意"/>
+	
+		
+		<%
+		   }   
+		 }
+		}
+		%>
+		
+		<%  
+		
+		if(opmap.get(OrderPrintln.salereleaseanzhuang) != null){
+		OrderPrintln orp = opmap.get(OrderPrintln.salereleaseanzhuang).get(o.getId()); 
+		
+		 if(orp != null){
+			 shifangstatues = orp.getStatues();
+			 System.out.println(shifangstatues);
+			 if(orp.getStatues() == 2){ 
+				 
+		    	 %> 
+		    	   <%=orp.getMessage() %>
+		    	   <p>驳回申请已同意</p>
+		    	   
+		    	 <%
+		    	 
+		    	  }else if(orp.getStatues() == 4){ 
+				     	
+				    	 %> 
+				    	 
+				    	   <p>驳回申请已拒绝</p>
+				    	   
+				    	 <%
+				    	 
+				    	  }else {
+			 
+			 
+			 
+			 %>
+		  
+		 <%=orp.getMessage() %> 
+		    	      
+		 <input type="button" onclick="changes('<%=orp.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','0','','','<%=OrderPrintln.salereleaseanzhuang %>')"  value="同意"/>
+		 <input type="button" onclick="changes('<%=orp.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','0','','','<%=OrderPrintln.salereleaseanzhuang %>')"  value="不同意"/>
+	
+		
+		<%
+		   }   
+		 }
+		}
+		%>
+		</td> 
+			<td align="center">导购修改申请</td>
+			  <td align="center"> 
+		<%
+		 if(opmap.get(OrderPrintln.modify) != null){
+		OrderPrintln op = opmap.get(OrderPrintln.modify).get(o.getId());
+		
+		 if(op != null){  
+			
+			 if(op.getStatues() == 2){ 
+			     	
+		    	 %> 
+		    	
+		    	   <p>导购修改中</p>  
+		    	   
+		    	 <%
+		    	 
+		    	  }else if(op.getStatues() == 4){ 
+				     	
+				    	 %> 
+				    	 
+				    	   <p>修改申请已拒绝</p>
+				    	   
+				    	 <%
+				    	 
+				    	  }else {
+				    		  int statues = -1 ; 		  
+							    if(opmap.get(OrderPrintln.releasemodfy) != null){
+									OrderPrintln oppp = opmap.get(OrderPrintln.releasemodfy).get(o.getId());
+									if(oppp != null ){
+										statues = oppp.getStatues() ;
+									} 
+							    }
+			 %>
+		  
+		 <%=op.getMessage() %>  
+		 <% if(statues == 0 || shifangstatues == 0){
+			 
+		  %> 
+		   安装公司处理中 
+		 <%}else if(statues == 2 || shifangstatues == 2){  
+		 %>
+		 <input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=statues %>','','<%=OrderPrintln.releasemodfy %>')"  value="同意"/>
+	     
+		<%}else if(statues == -1){ %> 
+		<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=statues %>','','<%=OrderPrintln.releasemodfy %>')"  value="同意"/>
+		<input type="button" onclick="changes('<%=op.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=statues %>','','<%=OrderPrintln.releasemodfy %>')"  value="不同意"/>
+		<% }%>
+		 
 		</td>
-			</tr> 
+		<%
+		     
+				    	  
+				    	} 
+		 } 
+		 }
+		%>
+             <td align="center">导购退货申请</td> 
+             
+            <td align="center"> 
+		<% 
+		if(opmap.get(OrderPrintln.returns) != null){
+		OrderPrintln op1 = opmap.get(OrderPrintln.returns).get(o.getId());
+		 if(op1 != null){
+			 if(op1.getStatues() == 2){ 
+			     	 
+		    	 %> 
+		    	
+		    	   <p>退货申请已同意</p>
+		    	   
+		    	 <% 
+		    	 
+		    	  }else if(op1.getStatues() == 4){ 
+				     	
+				    	 %> 
+				    	 
+				    	   <p>退货申请已拒绝</p>
+				    	   
+				    	 <%
+				    	 
+				    	  }else{
+				    		  
+				    int statues = -1 ;		  
+				    if(opmap.get(OrderPrintln.releasedispatch) != null){
+						OrderPrintln oppp = opmap.get(OrderPrintln.releasedispatch).get(o.getId());
+						if(oppp != null){ 
+							statues = oppp.getStatues() ;
+						}
+
+				    }
+			 %>
+		 <%=op1.getMessage() %>
+		  <%if(statues == 0 || shifangstatues == 0){
+		   %>    
+		   安装公司处理中 
+		  <% } else if(statues == 2 || shifangstatues == 2){%>
+		  
+		  <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=statues %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="同意退货"/>
+		   
+		  <%}else { %>	         
+		 <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.comited%>','<%=o.getDealsendId() %>','<%=statues %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="同意"/>
+		 <input type="button" onclick="changes('<%=op1.getId()%>','<%=o.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getDealsendId() %>','<%=statues %>','<%=o.getReturnstatuse() %>','<%=OrderPrintln.releasedispatch %>')"  value="不同意"/> 
+		<% }%> 
+		</td>
+
+		<%
+		 }
+		 }
+		}
+		%>
+			</tr>
 </table> 
 
 <table cellspacing="1"  id="table" style="margin:auto; width:80%;">  

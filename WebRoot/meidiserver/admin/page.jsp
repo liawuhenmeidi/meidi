@@ -4,10 +4,10 @@ request.setCharacterEncoding("utf-8");
 int type = Integer.valueOf(request.getParameter("type"));
 String message = ""; 
 
-String href = request.getParameter("href");
+String href = request.getParameter("href"); 
 
 
-if(Order.orderDispatching == type){
+if(Order.orderDispatching == type || Order.neworder == type || Order.release == type || Order.returns == type){
 	message = "文员派工页";
 }else if(Order.charge == type){
 	message = "厂送票未结款";

@@ -5,8 +5,10 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 
 // 用户id 
-int id = user.getId();   
- 
+int id = user.getId();
+
+String statues = request.getParameter("statues");
+  
 //  上级管理组ID
 int pgroup = GroupService.getidMap().get(user.getUsertype()).getPid();   
 

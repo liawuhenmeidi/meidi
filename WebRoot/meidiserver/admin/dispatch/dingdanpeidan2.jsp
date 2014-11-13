@@ -78,7 +78,7 @@ function changes(oid,id,statues,flag,returnstatues,type,printid){
 			alert("请联系送货员驳回");
 			return ;      
 		}else if(flag == 3){
-			alert("请联系安装呀驳回");
+			alert("请联系安装员驳回");
 			return ;
 		}else if(flag == 1){
 			if(returnstatues == 0){
@@ -453,7 +453,7 @@ function adddetail(src){
 		
 		<td align="center"> 
 		 <%  
-		   if(release != 0 && releasedispatch != 0 && salerelease != 0 && modify == -1 && returns == -1  ){       
+		   if(release != 0 && releasedispatch != 0 && salerelease != 0 && modify == -1 && (returns == -1 || returns == 4 )  ){       
 				 if(releasemodfy == 0 ){ 
 					 OrderPrintln or = opmap.get(OrderPrintln.releasemodfy) == null?null:opmap.get(OrderPrintln.releasemodfy).get(o.getId()); 
 				    %> 

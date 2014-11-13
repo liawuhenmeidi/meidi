@@ -1,7 +1,12 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%@ include file="searchdynamic.jsp"%>       
- 
+ <% 
+ if(StringUtill.isNull(statues)){
+	 statues = Order.orderDispatching +"";
+ }
+
+%>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -51,8 +56,8 @@ position:fixed;
   <jsp:param name="" value="" />
   </jsp:include>   
        
-<jsp:include flush="true" page="page.jsp">
-	<jsp:param name="type" value="<%=Order.orderDispatching %>"/> 
+<jsp:include flush="true" page="page.jsp"> 
+	<jsp:param name="type" value="<%=statues%>"/> 
 </jsp:include> 
 
 <div id="headremind"> 
@@ -80,7 +85,7 @@ var usermapstr = <%=usermapstr%> ;
 var inventory = "";  
 // types   产品型号 
  
-
+ 
 $(function () { 
 	 fixation();
 	 initOrder(type,statues,num,page,sort,sear);
@@ -93,7 +98,7 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 
    if(deliveryStatues == 9 || deliveryStatues == 10 || deliveryStatues == 8){
 	   saleid = saleId;
-   }
+   } 
 
    var branch = usermapstr[saleid].branchName;
  
@@ -128,8 +133,9 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	        		            }else if(data == -1){ 
 	        		            	alert("请刷新页面");
 	        		            }else{ 
+	        		            	//window.open('print.jsp?id='+oid+'&deliveryStatues='+deliveryStatues, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 	        		            	 window.location.href="print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues;  
-	        		            }
+	        		            } 
 	        		           },  
 	        		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 	        		            } 
@@ -146,16 +152,17 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 		$.ajax({ 
 	        type: "post", 
 	         url: "../LogisticsServlet",
-	         data:"method=peidan&id="+oid+"&uid="+uid,
-	         dataType: "", 
+	         data:"method=peidan&oid="+oid+"&uid="+uid,
+	         dataType: "",  
 	         success: function (data) { 
 	            if(data == 8){
 	            	alert("导购修改中。稍后重试"); 
 	            }else{
 	            	if(str1 != 0){ 
 	            	   window.location.href="print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues+"&dingma="+str1;  
+	            	   //window.open('print.jsp?id='+oid+'&deliveryStatues='+deliveryStatues+'&dingma='+str1, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 	            	}else {
-	            		window.location.href="dingdan.jsp";	 
+	            		initOrder(type,statues,num,page,sort,sear);	 
 	            	}
 	            }
 	           },  
@@ -170,11 +177,11 @@ function addImage(src){
 	window.open(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 } 
 
-function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,object){
+function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,typesearch,object){
 	//$(object).css("display","none"); 
 	if( 2 == conmited ){         
-		if(type == '<%=OrderPrintln.releasemodfy %>' || type == '<%=OrderPrintln.releasedispatch %>'){
-			if(Returnstatuse != 1 ){         
+		if(typesearch == '<%=OrderPrintln.releasemodfy %>' || typesearch == '<%=OrderPrintln.releasedispatch %>'){
+			if(Returnstatuse != 2 ){         
 			question = confirm("商品已送货，您不能直接同意，是否联系安装公司驳回");
 			if (question != "0"){
 				
@@ -185,11 +192,11 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 			        type:"post",  
 			         url:"../user/server.jsp",  
 			         //data:"method=list_pic&page="+pageCount,       
-			         data:"method=shifang&oid="+oid+"&pGroupId="+pgroup+"&opstatues="+type,
+			         data:"method=shifang&oid="+oid+"&pGroupId="+pgroup+"&opstatues="+typesearch,
 			         dataType: "",  
 			         success: function (data) {    
 			          alert("驳回申请已提交成功"); 
-			          window.location.href="dingdan.jsp";
+			          initOrder(type,statues,num,page,sort,sear);
 			           },  
 			         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 			          alert("驳回申请失败");
@@ -201,13 +208,13 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 			} 
 		}
 
-		if(<%=OrderPrintln.salereleaseanzhuang%> == type || <%=OrderPrintln.salereleasesonghuo%> == type
-			|| <%=OrderPrintln.release%> == type || <%=OrderPrintln.releasedispatch%> == type && 2 == Returnstatuse || 0 == type)
+		if(<%=OrderPrintln.salereleaseanzhuang%> == typesearch || <%=OrderPrintln.salereleasesonghuo%> == typesearch
+			|| <%=OrderPrintln.release%> == typesearch || <%=OrderPrintln.releasedispatch%> == typesearch && 2 == Returnstatuse || 0 == typesearch)
 		   {
 		    question = confirm("请先打印");
 		
 			if (question != "0"){
-				var type = "<%=Order.deliveryStatuesTuihuo%>";
+				var typesearch = "<%=Order.deliveryStatuesTuihuo%>";
 				$.ajax({  
 			        type: "post", 
 			         url: "../LogisticsServlet",   
@@ -216,7 +223,7 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 			         success: function (data) {
 			        	  
 			        	 if(data == true || data == "true"){ 
-			        		 window.location.href="print.jsp?id="+oid+"&type="+type+"&uid="+dealsendid ;
+			        		 window.location.href="print.jsp?id="+oid+"&type="+typesearch+"&uid="+dealsendid ;
 			        	 }
 			           },  
 			         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -226,8 +233,6 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 			}else {
 				return ;
 			} 
-			
-			
 		}else {
 			$.ajax({    
 		        type: "post", 
@@ -235,7 +240,7 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,type,
 		         data:"opid="+opid+"&oid="+oid+"&statues="+conmited+"&uid="+dealsendid,  
 		         dataType: "",   
 		         success: function (data) {
-		             window.location.href="dingdan.jsp";
+		        	 initOrder(type,statues,num,page,sort,sear);
 		        	
 		           }, 
 		         error: function (XMLHttpRequest, textStatus, errorThrown) { 

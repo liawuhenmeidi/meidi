@@ -17,7 +17,7 @@ User user = (User)session.getAttribute("user");
  
 </head>
 
-<body style="background-color:#CCCCCC;"> 
+<body> 
 
 <!--   头部开始   -->
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>

@@ -12,7 +12,7 @@ boolean flag = true ;
 User user = (User)session.getAttribute("user");
 String method = request.getParameter("method");
 System.out.println("*************method"+method);
-if("songhuo".equals(method)){
+if("songhuo".equals(method)){ 
 	String statues = request.getParameter("statues");
 	String id = request.getParameter("id"); 
 	String type = request.getParameter("type");
@@ -50,15 +50,6 @@ if("songhuo".equals(method)){
 	or.setType(Integer.valueOf(opstatues));     
 	or.setpGroupId(Integer.valueOf(pGroupId));  
 	OrderPrintlnManager.save(or);  
-}else if("peidan".equals(method)){     
-	String uid = request.getParameter("uid");
-	String id = request.getParameter("id"); 
-	String type = request.getParameter("type"); 
-	//System.out.println(uid+"****"+id+"****"+type);       
-	int i = OrderManager.updatePeisong(user,Integer.valueOf(uid), Integer.valueOf(id),Integer.valueOf(type));
-	response.getWriter().write(""+i);
-	response.getWriter().flush(); 
-	response.getWriter().close();    
 }else if("printlnStatues".equals(method)){  
 	String oid = request.getParameter("oid"); 
 	//OrderPrintln  or = new OrderPrintln(); 
