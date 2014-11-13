@@ -61,11 +61,11 @@
 	
 	
 	//查询条件提交后，左侧侧显示内容
-	unCheckedDBOrders = MatchOrderManager.getDBOrders(selectBranchType, selectBranch, deadline);
+	unCheckedDBOrders = MatchOrderManager.getUnCheckedDBOrders(selectBranchType, selectBranch, deadline);
 	
 	
 	//查询条件提交后，右侧显示内容
-	unCheckedUploadOrders = MatchOrderManager.getUploadOrders(selectOrderName);
+	unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders(selectOrderName);
 	
 	
 	if(startButton != null && startButton.equals("正在对比")){
@@ -88,8 +88,8 @@
 		UploadOrder searchOrder = (UploadOrder)request.getSession().getAttribute("searchUploadOrder");
 		
 
-		unCheckedDBOrders = MatchOrderManager.getDBOrders((String)request.getSession().getAttribute("selectBranchType"), (String)request.getSession().getAttribute("selectBranch"), (String)request.getSession().getAttribute("deadline"));
-		unCheckedUploadOrders = MatchOrderManager.getUploadOrders((String)request.getSession().getAttribute("selectOrderName"));
+		unCheckedDBOrders = MatchOrderManager.getUnCheckedDBOrders((String)request.getSession().getAttribute("selectBranchType"), (String)request.getSession().getAttribute("selectBranch"), (String)request.getSession().getAttribute("deadline"));
+		unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders((String)request.getSession().getAttribute("selectOrderName"));
 		
 		
 		unCheckedDBOrders = MatchOrderManager.searchOrderList(unCheckedDBOrders, searchOrder);
@@ -211,10 +211,15 @@ $(function (){
 <jsp:param name="dmsn" value="" />
 </jsp:include>
     
-    
-<h3>本页显示为未结款单据</h3>
-<h3><a href="CheckedOrders.jsp">对比已结款单据</a></h3>
-<h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')">搜索</a></h3>
+
+<table width="100%">
+	<tr>
+		<td width="15%"><h3>本页显示为未结款单据 </h3></td>
+		<td width="15%"><h3><a href="CheckedOrders.jsp">对比已结款单据</a></h3></td>
+		<td><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
+	</tr>
+</table>
+
 <form name="baseform" id="baseform" method="post">
 <table width="100%" height="100%" align="center" border=0>
        <tr>

@@ -209,7 +209,7 @@ $(function (){
 	<tr>
 		<td width="15%"><h3>本页显示为已结款单据</h3></td>
 		<td width="15%"><h3><a href="manualCheckout.jsp">对比未结款单据</a></h3></td>
-		<td align="right"><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
+		<td ><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
 	</tr>
 </table>
 <form name="baseform" id="baseform" method="post">
