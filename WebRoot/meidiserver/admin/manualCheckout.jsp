@@ -214,7 +214,7 @@ $(function (){
     
 <h3>本页显示为未结款单据</h3>
 <h3><a href="CheckedOrders.jsp">对比已结款单据</a></h3>
-<h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"  target="_BLANK">搜索</a></h3>
+<h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')">搜索</a></h3>
 <form name="baseform" id="baseform" method="post">
 <table width="100%" height="100%" align="center" border=0>
        <tr>
