@@ -224,11 +224,13 @@ public class MatchOrder {
 		for(int i = 0 ; i < unCheckedUploadOrders.size(); i ++){
 			
 			UploadOrder tempUo = unCheckedUploadOrders.get(i);
-			
+			if(tempUo.getPosNo().equals("D00007012")){
+				System.out.println("1");
+			}
 			for(int j = 0 ; j < unCheckedDBOrders.size() ; j ++){	
 				Order tempDBO = unCheckedDBOrders.get(j);
 				
-				if(tempUo.getPosNo().toUpperCase().equals(tempDBO.getPos().toUpperCase())){
+				if(tempUo.getPosNo().toUpperCase().trim().equals(tempDBO.getPos().toUpperCase().trim())){
 					
 					//对比双方都没有重复posno的情况
 					if(!samePosDBOrders.contains(tempDBO)){

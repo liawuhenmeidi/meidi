@@ -419,7 +419,7 @@ public class AfterMatchOrder {
 	
 	//对比posno
 	public boolean comparePosNo(String dbSide,String uploadSide){
-//		if(dbSide.equals("D00141162")){
+//		if(dbSide.equals("D00007012")&&uploadSide.equals("D00007012")){
 //			System.out.println("断点专用");
 //		}
 		boolean result = false;
