@@ -122,8 +122,8 @@ function change(str1,str2,type){
 		}
 		$.ajax({  
 	        type: "post",   
-	         url: "server.jsp", 
-	         data:"method=songhuo&id="+str2+"&statues="+uid+"&type="+type,
+	         url: "../../LogisticsServlet", 
+	         data:"method="+type+"&id="+str2+"&statues="+uid,
 	         dataType: "",  
 	         success: function (date) {
 	        	
@@ -407,8 +407,8 @@ function change(str1,str2,type){
      <option value="2" >送货+安装 </option>  
      <option value="1" >只送货 </option>
      
-      </select>  
-     <input type="button" onclick="change('songh<%=or.getId()%>','<%=or.getId()%>','')"  value="确定"/>
+      </select>   
+     <input type="button" onclick="change('songh<%=or.getId()%>','<%=or.getId()%>','songhuo')"  value="确定"/>
 
    
    <%
@@ -417,9 +417,9 @@ function change(str1,str2,type){
         	   %>
     		   <select class = "category" name="category"  id="songh<%=or.getId() %>" >
     		        <option value="-1" >&nbsp;&nbsp;&nbsp;&nbsp;</option> 
-                    <option value="4" >只安装 </option>  
+                    <option value="4" >只安装 </option>     
                </select>  
-              <input type="button" onclick="change('songh<%=or.getId()%>','<%=or.getId()%>','')"  value="确定"/>
+              <input type="button" onclick="change('songh<%=or.getId()%>','<%=or.getId()%>','songhuo')"  value="确定"/>
     		<%    
            }else {    
         	   %>

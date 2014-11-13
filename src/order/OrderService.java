@@ -63,6 +63,9 @@ public class OrderService {
 						html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\"  id=\"check_box\" name = "+o.getId()+ "></input></td>");
 						html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+o.getPrintlnid() == null?"":o.getPrintlnid()+"</a></td>");
 						html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getdealsendName()+"</td>");
+						if(o.getPhoneRemark()!=1){ 
+							tdcol = ""; 
+						}
 						html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+"<p><font color=\""+tdcol+"\"> "+o.getPhone1()+"</td>  "); 
 						html.append("<td align=\"center\">"+op.getCategoryName()+"</td> ");
 						html.append("<td align=\"center\" >"+op.getTypeName()+"</td>  ");
@@ -150,6 +153,9 @@ public class OrderService {
 				
 				html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
 				
+				if(o.getPhoneRemark()!=1){ 
+					tdcol = ""; 
+				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
 				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
@@ -255,6 +261,9 @@ public class OrderService {
 				
 				html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
 				
+				if(o.getPhoneRemark()!=1){ 
+					tdcol = ""; 
+				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
 				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
@@ -339,6 +348,9 @@ public class OrderService {
 				
 				html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
 				
+				if(o.getPhoneRemark()!=1){ 
+					tdcol = ""; 
+				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
 				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
@@ -401,6 +413,9 @@ public class OrderService {
 				
 				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
 				
+				if(o.getPhoneRemark()!=1){ 
+					tdcol = ""; 
+				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
 				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
@@ -453,6 +468,7 @@ public class OrderService {
 	    List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend);
 	    
 		StringBuffer html = new StringBuffer();
+		
 		String tdcol = " bgcolor=\"red\"" ;
 		
 		if(null != list){
@@ -461,10 +477,10 @@ public class OrderService {
 			
 		    for(int i = 0;i<list.size();i++){
 		    	Order o = list.get(i);
-
+               
 				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
+				  
 				 
-				
 				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
 				
 				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
@@ -474,10 +490,11 @@ public class OrderService {
 				html.append("<td align=\"center\" "+(o.getPosremark()==1?tdcol:"") +">"+o.getPos() +"</td>");
 				
 				html.append("<td align=\"center\" "+(o.getSailidrecked()==1?tdcol:"") +">"+o.getSailId() +"</td>");
-				
+				 
 				html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
-				
-				
+				if(o.getPhoneRemark()!=1){ 
+					tdcol = ""; 
+				}
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
 				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
 				
@@ -497,7 +514,7 @@ public class OrderService {
 				
 				html.append("<td align=\"center\">"+o.getOdate() +"</td>");
 				
-				html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
+				//html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
 				
 				html.append("<td align=\"center\">"+o.getLocate()+"</td>");
 				
@@ -554,21 +571,21 @@ public class OrderService {
 						     }
 					            
 						    html.append("</select> ");
-						    html.append("<input type=\"button\" onclick=\"changepeidan('songh"+o.getId()+"','"+o.getId()+"','"+Integer.valueOf(o.getOderStatus())+" ','"+o.getSendType(0,"</p>")+"','"+o.getSaleID() +"')\"  value=\"确定\"/> ");
+						    html.append("<input type=\"button\" onclick=\"changepeidan('songh"+o.getId()+"','"+o.getId()+"','"+Integer.valueOf(o.getOderStatus())+"','"+o.getSendType(0,"</p>")+"','"+o.getSaleID() +"')\"  value=\"确定\"/> ");
 		
 				     }
 				   }else if(o.getDealsendId() == 0 && Integer.valueOf(o.getOderStatus()) == 8 && o.getPrintSatues() == 0){
 				
 					   if(OrderManager.Check(o.getId())){ 
 						     
-						   html.append("<input type=\"button\" onclick=\"changepeidan('2','"+o.getId()+"','"+Integer.valueOf(o.getOderStatus())+" ','"+o.getSendType(0,"</p>")+"','"+o.getSaleID()+" ')\"  value=\"打印\"/>"); 
+						   html.append("<input type=\"button\" onclick=\"changepeidan('2','"+o.getId()+"','"+Integer.valueOf(o.getOderStatus())+"','"+o.getSendType(0,"</p>")+"','"+o.getSaleID()+"')\"  value=\"打印\"/>"); 
 						   html.append("&nbsp;&nbsp;&nbsp");
 						  
 					   }else {
 						   
-						   html.append("<input type=\"button\" onclick=\"changepeidan('1','"+o.getId()+"','"+Integer.valueOf(o.getOderStatus()) +"','"+o.getSendType(0,"</p>")+"','"+o.getSaleID()+" ')\"  value=\"打印\"/>");
+						   html.append("<input type=\"button\" onclick=\"changepeidan('1','"+o.getId()+"','"+Integer.valueOf(o.getOderStatus()) +"','"+o.getSendType(0,"</p>")+"','"+o.getSaleID()+"')\"  value=\"打印\"/>");
 						   html.append(" &nbsp;&nbsp;&nbsp");
-						   html.append("<input type=\"button\" onclick=\"changepeidan('0','"+o.getId()+"','"+Integer.valueOf(o.getOderStatus())+" ','"+o.getSendType(0,"</p>")+"','"+o.getSaleID()+" ')\"  value=\"确定\"/>");  
+						   html.append("<input type=\"button\" onclick=\"changepeidan('0','"+o.getId()+"','"+Integer.valueOf(o.getOderStatus())+"','"+o.getSendType(0,"</p>")+"','"+o.getSaleID()+"')\"  value=\"确定\"/>");  
 						   				   
 						   
 					   }
@@ -601,8 +618,8 @@ public class OrderService {
 					  
 								html.append(orp== null ?"":orp.getMessage());  
 					    	       
-								html.append("<input type=\"button\" onclick=\"changes('"+orp.getId()+"','"+o.getId()+" ','"+OrderPrintln.comited+"','"+o.getDealsendId()+" ','','','"+totalshifang+" ',this)\"  value=\"同意\"/>") ;
-								html.append("<input type=\"button\" onclick=\"changes('"+orp.getId()+"','"+o.getId()+" ','"+OrderPrintln.uncomited+"','"+o.getDealsendId()+" ','','','"+totalshifang+"',this)\"  value=\"不同意\"/>");
+								html.append("<input type=\"button\" onclick=\"changes('"+orp.getId()+"','"+o.getId()+"','"+OrderPrintln.comited+"','"+o.getDealsendId()+"','','','"+totalshifang+"',this)\"  value=\"同意\"/>") ;
+								html.append("<input type=\"button\" onclick=\"changes('"+orp.getId()+"','"+o.getId()+"','"+OrderPrintln.uncomited+"','"+o.getDealsendId()+"','','','"+totalshifang+"',this)\"  value=\"不同意\"/>");
 					
 					   }  
 				
@@ -629,13 +646,13 @@ public class OrderService {
 									  html.append("安装公司处理中"); 
 								  } else if(releasedispatch == 2 ){
 								  
-									  html.append("<input type=\"button\" onclick=\"changes('"+op1.getId()+"','"+o.getId()+" ','"+OrderPrintln.comited+"','"+o.getDealsendId()+" ','"+releasedispatch+" ','"+o.getReturnstatuse() +"','"+OrderPrintln.releasedispatch+" ',this)\"  value=\"同意退货\"/>");
+									  html.append("<input type=\"button\" onclick=\"changes('"+op1.getId()+"','"+o.getId()+"','"+OrderPrintln.comited+"','"+o.getDealsendId()+"','"+releasedispatch+"','"+o.getReturnstatuse() +"','"+OrderPrintln.releasedispatch+"',this)\"  value=\"同意退货\"/>");
 								   
 								  }else {
 									  if(Integer.valueOf(o.getOderStatus()) == 8){
 									
-										  html.append("<input type=\"button\" onclick=\"changes('"+op1.getId()+"','"+o.getId()+" ','"+OrderPrintln.comited+"','"+o.getDealsendId()+" ','"+releasedispatch +"','"+o.getReturnstatuse()+" ','"+OrderPrintln.release +"',this)\"  value=\"打印\"/>");
-										  html.append(" <input type=\"button\" onclick=\"changes('"+op1.getId()+"','"+o.getId()+" ','"+OrderPrintln.comited+"','"+o.getDealsendId()+" ','"+releasedispatch +"','"+o.getReturnstatuse() +"','',this)\"  value=\"确定\"/> "); 
+										  html.append("<input type=\"button\" onclick=\"changes('"+op1.getId()+"','"+o.getId()+"','"+OrderPrintln.comited+"','"+o.getDealsendId()+"','"+releasedispatch +"','"+o.getReturnstatuse()+"','"+OrderPrintln.release +"',this)\"  value=\"打印\"/>");
+										  html.append(" <input type=\"button\" onclick=\"changes('"+op1.getId()+"','"+o.getId()+"','"+OrderPrintln.comited+"','"+o.getDealsendId()+"','"+releasedispatch +"','"+o.getReturnstatuse() +"','',this)\"  value=\"确定\"/> "); 
 						
 									
 									  }else {
@@ -645,8 +662,8 @@ public class OrderService {
 											  
 											    }else {
 									           
-											    	html.append("<input type=\"button\" onclick=\"changes('"+op1.getId()+"','"+o.getId()+" ','"+OrderPrintln.comited+"','"+o.getDealsendId() +"','"+releasedispatch+" ','"+o.getReturnstatuse()+" ','"+OrderPrintln.releasedispatch +"',this)\"  value=\"同意\"/>");
-											    	html.append("<input type=\"button\" onclick=\"changes('"+op1.getId()+"','"+o.getId()+" ','"+OrderPrintln.uncomited+"','"+o.getDealsendId()+" ','"+releasedispatch +"','"+o.getReturnstatuse() +"','"+OrderPrintln.releasedispatch +"',this)\"  value=\"不同意\"/>");   
+											    	html.append("<input type=\"button\" onclick=\"changes('"+op1.getId()+"','"+o.getId()+"','"+OrderPrintln.comited+"','"+o.getDealsendId() +"','"+releasedispatch+"','"+o.getReturnstatuse()+"','"+OrderPrintln.releasedispatch +"',this)\"  value=\"同意\"/>");
+											    	html.append("<input type=\"button\" onclick=\"changes('"+op1.getId()+"','"+o.getId()+"','"+OrderPrintln.uncomited+"','"+o.getDealsendId()+"','"+releasedispatch +"','"+o.getReturnstatuse() +"','"+OrderPrintln.releasedispatch +"',this)\"  value=\"不同意\"/>");   
 								   } 
 								 }
 						      }
@@ -661,8 +678,8 @@ public class OrderService {
                 }else if(huanhuo == 0){
             
               html.append(huanhuoObject.getMessage() );
-              html.append("<input type=\"button\" onclick=\"changes('"+huanhuoObject.getId()+"','"+o.getId()+"','"+OrderPrintln.comited+"','"+o.getDealsendId()+" ','"+huanhuo+"','-1','-1',this)\"  value=\"同意\"/>");
-              html.append("<input type=\"button\" onclick=\"changes('"+huanhuoObject.getId()+"','"+o.getId()+" ','"+OrderPrintln.uncomited+"','"+o.getDealsendId()+" ','"+huanhuo +"','-1','-1',this)\"  value=\"不同意\"/>");    
+              html.append("<input type=\"button\" onclick=\"changes('"+huanhuoObject.getId()+"','"+o.getId()+"','"+OrderPrintln.comited+"','"+o.getDealsendId()+"','"+huanhuo+"','-1','-1',this)\"  value=\"同意\"/>");
+              html.append("<input type=\"button\" onclick=\"changes('"+huanhuoObject.getId()+"','"+o.getId()+"','"+OrderPrintln.uncomited+"','"+o.getDealsendId()+"','"+huanhuo +"','-1','-1',this)\"  value=\"不同意\"/>");    
                }
              
               html.append("</td>");      		

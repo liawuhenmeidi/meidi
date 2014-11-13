@@ -114,7 +114,7 @@ function change(str1,str2,type){
         type: "post",    
          url: "../../LogisticsServlet", 
          data:"method="+type+"&oid="+str2+"&statues="+statues,
-         dataType: "",   
+         dataType: "",    
          success: function (date) {
         	//alert(date);
         	 if(date == 0){
@@ -406,7 +406,7 @@ function orderPrint(id,statues){
      <option value="1" >只送货 </option>
      
       </select>  
-     <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','')"  value="确定"/>
+     <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','songhuo')"  value="确定"/>
 
    
    <%
@@ -415,7 +415,7 @@ function orderPrint(id,statues){
     		   <select class = "category" name="category"  id="songh<%=o.getId() %>" >
                     <option value="4" >只安装 </option>  
                </select>   
-              <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','')"  value="确定"/>
+              <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','songhuo')"  value="确定"/>
     		<%  
           }
     }
@@ -435,7 +435,7 @@ function orderPrint(id,statues){
 		 <%=usermap.get(Integer.valueOf(o.getReturnid())).getUsername() %>
 		 <%
 		  }
-		}
+		}  
 		 %>
 		
 		</td>

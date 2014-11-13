@@ -47,9 +47,6 @@ public class RegistServlet extends HttpServlet {
 	
 	private void saveUser(HttpServletRequest request, HttpServletResponse response){
 		TokenGen tokenGen=TokenGen.getInstance();
-	    if (!tokenGen.isTokenValid(request)){
-	        logger.info("这是重复提交的单据"); 
-	    } else{ 
 	    	int count = UserService.getMapId().size();
 	    	int initcount = CompanyManager.getLocate().getUsercount();
 	    	if(count >= initcount){
@@ -90,7 +87,6 @@ public class RegistServlet extends HttpServlet {
 				}    
 				tokenGen.resetToken(request);
 	    	}
-	    }
 		 try { 
 			response.sendRedirect("jieguo.jsp?type=zhuce");
 		} catch (IOException e) {

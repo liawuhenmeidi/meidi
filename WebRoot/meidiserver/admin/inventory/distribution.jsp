@@ -40,7 +40,7 @@ td {
 
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>产品管理</title>
+<title>库存查询</title>
 
 
 

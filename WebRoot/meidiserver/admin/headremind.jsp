@@ -1,10 +1,10 @@
-<%@ page language="java"    pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,order.*;"   pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<head> 
 <style type="text/css">
-td {
+td { 
  align:center
 }
 </style> 
@@ -45,17 +45,24 @@ $(document).ready(function () {
        }
 
   function serach(str){ 
-	  
+	   
 	  if("zhuce" == str){ 
 		  window.open('remind/huiyuan.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
-	  }else if("neworder" == str){ 
-		  window.open('remind/neworder.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	  }else if("neworder" == str){
+		  window.location.href="dingdan.jsp?statues="+<%=Order.neworder%>;
+		 // window.open('remind/neworder.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 // }else if("motyfy" == str){
 	//	  window.open('remind/motify.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
-	  }else if("release" == str){
-		  window.open('remind/release.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
-	  }else if("returns" == str){ 
-		  window.open('remind/return.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	  }else if("release" == str){ 
+		  statues = "<%=Order.release%>";
+		  window.location.href="dingdan.jsp?statues="+<%=Order.release%>;
+		  //initOrder(type,statues,num,page,sort,sear);
+		 // window.open('remind/release.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
+	  }else if("returns" == str){    
+		  statues = "<%=Order.returns%>";
+		  window.location.href="dingdan.jsp?statues="+<%=Order.returns%>;
+		  //initOrder(type,statues,num,page,sort,sear);
+		 // window.open('remind/return.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }else if("inventory" == str){ 
 		  window.open('inventory/receipts.jsp', 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	  }else if("analyInventory" == str){ 

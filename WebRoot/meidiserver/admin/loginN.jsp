@@ -64,12 +64,12 @@ function clear(){
 	if (confirm("确定要退出吗？")) {
 		location.href = "../login.jsp?message=quit";
 	}
-  }
+  } 
   
 function resetPassword(){
 	//alert(1);
 	$("#repassword").css("display","block");
-	$("#readme").css("display","none");
+	$("#wap").css("display","none");
 	// $("#dingma_c").css("display","block");
   }
   
@@ -144,39 +144,47 @@ function checkedd(){
      %>
       
  <% if(UserManager.checkPermissions(user, Group.Manger)){ %>    
- <div id="readme">
+ <div id="wrap" style="text-align:center;">
  
-
-   <table width="100%" class="s_main_table">
+<br/>
+   <table id="table" class="s_main_table" cellspacing="1"  id="table"  style="margin:auto; width:50%;">
   
-  <tr>
+  <tr class="asc">
    <td width="10%"></td>
-    <td width="10%">使用说明</td>
-    <td width="70%"></td>
+    <td width="90%">使用说明</td>
+   
   </tr>
-  <tr>
-    <td></td> 
+  <tr class="asc">
+    
     <td>1</td>
     <td>产品管理注册产品</td>
   </tr>
-  <tr>
-    <td></td>
+  <tr class="asc">
+    
     <td>2</td> 
     <td>职位管理注册职位</td>
   </tr>
-  <tr>
-   <td></td>
+  <tr class="asc">
+  
      <td>3</td>
     <td>门店管理增加门店</td>
     
-    <td> </td>
   </tr>
-  <tr>
-   <td></td>
+   <tr class="asc">
+  
+   
      <td>4</td>
-    <td>手机端员工注册</td>
+    <td>增加区域</td>
     
-    <td> </td>
+   
+  </tr>
+  <tr class="asc">
+  
+   
+     <td>5</td>
+    <td>手机端注册</td>
+    
+   
   </tr>
   </table>
 	 <br/>

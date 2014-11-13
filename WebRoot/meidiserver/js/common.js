@@ -99,7 +99,8 @@ function changecss(){
 
 function initOrder(type,statues,num,page,sort,sear){  
 	 $("#page").val(page);
-	 $("#table .asc").remove();
+	 $("#table .asc").remove();  
+	 $("#table .asc_enable").remove(); 
 	 $.ajax({ 
 	        type: "post", 
 	         url: "OrderServiceServlet",    

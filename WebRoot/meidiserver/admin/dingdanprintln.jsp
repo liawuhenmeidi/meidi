@@ -4,6 +4,12 @@
   
 <%  
 long start = System.currentTimeMillis();
+ 
+if(StringUtill.isNull(statues)){
+	 statues = Order.serach+"";
+}  
+  
+
 %> 
   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -55,7 +61,7 @@ position:fixed;
 <!--   头部开始   -->
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
-<script type="text/javascript">
+<script type="text/javascript"> 
 
 var type = "<%=Group.dealSend%>";
 $(function () { 
@@ -141,15 +147,15 @@ function orderPrint(id,statues,type,deliveryStatues){
  <div style="position:fixed;width:100%;height:20%;">
   <jsp:include flush="true" page="head.jsp">
   <jsp:param name="" value="" />
-  </jsp:include>   
+  </jsp:include>    
       
 <jsp:include flush="true" page="page.jsp">
-	<jsp:param name="type" value="<%=Order.serach%>"/>  
+	<jsp:param name="type" value="<%= statues%>"/>  
 </jsp:include> 
-
+  
 <div id="headremind">
 <jsp:include page="headremind.jsp"/>
-</div>
+</div> 
 
 <jsp:include page="search.jsp"> 
 	<jsp:param name="count" value="<%=count %>"/> 
@@ -158,7 +164,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 <div class="btn"> 
  <% if(UserManager.checkPermissions(user, Group.Manger)){
 	
- %>
+ %> 
   
  <div class="btn">
  <input type="submit" class="button" name="dosubmit" value="删除" onclick="winconfirm()"></input>  
@@ -221,7 +227,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 			<td align="center">厂送票是否结款</td>
 			<td align="center">备注</td> 
 			<td align="center">打印</td>
-			 
+			  
 			<td align="center">安装网点驳回</td> 
 			<td align="center">导购退货申请</td>   
 		</tr>
