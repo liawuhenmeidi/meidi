@@ -99,7 +99,7 @@ function checkedd(){
 	//window.oper.reload();
 	 //window.opener.location.reload();
 	$('#<%=uo.getId()%>uploadshop', window.opener.document).text($('#shop').val());
-	$('#<%=uo.getId()%>uploadposno', window.opener.document).html("<a href='#' onClick=\"javascript:window.open('./uploadOrderDetail.jsp?id=" + <%=uo.getId()%> + "', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')\"  target='_BLANK'>" + $('#pos').val() + "</a>");
+	$('#<%=uo.getId()%>uploadposno', window.opener.document).html("<a href='#' onClick=\"javascript:window.open('./uploadOrderDetail.jsp?id=" + <%=uo.getId()%> + "', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')\"  >" + $('#pos').val() + "</a>");
 	$('#<%=uo.getId()%>uploadsaletime', window.opener.document).text($('#saletime').val().replace(/-/g,""));
 	$('#<%=uo.getId()%>uploadtype', window.opener.document).text($('#saletype').val());
 	$('#<%=uo.getId()%>uploadcount', window.opener.document).text($('#salenum').val());
