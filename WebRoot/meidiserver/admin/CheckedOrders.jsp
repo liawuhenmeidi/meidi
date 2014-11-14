@@ -100,6 +100,12 @@
 		afterMatchOrders = mo.getMatchedOrders();
 	}
 	
+	
+	
+	//导出用
+	session.setAttribute("afterMatchOrders", afterMatchOrders);
+	
+	
 	int inter = 1;
 	
 
@@ -204,11 +210,16 @@ $(function (){
 <jsp:include flush="true" page="head.jsp">
 <jsp:param name="dmsn" value="" />
 </jsp:include>
-    
+
 <table width="100%">
 	<tr>
-		<td width="15%"><h3>本页显示为已结款单据</h3></td>
-		<td width="15%"><h3><a href="manualCheckout.jsp">对比未结款单据</a></h3></td>
+		<td width="15%">
+		<h3>本页显示为 
+		<select onchange="location.href='manualCheckout.jsp'">
+			<option value="1" >对比未结款单据</option>
+			<option value="2" selected="selected">对比已结款单据</option>
+		</select></h3>
+		</td>
 		<td ><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
 	</tr>
 </table>

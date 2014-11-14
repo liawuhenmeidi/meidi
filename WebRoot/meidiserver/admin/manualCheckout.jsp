@@ -74,6 +74,7 @@
 		session.setAttribute("selectBranch", selectBranch);
 		session.setAttribute("selectOrderName", selectOrderName);
 		session.setAttribute("deadline", deadline);
+		
 		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders)){
 			return;
 		}
@@ -103,8 +104,8 @@
 		afterMatchOrders = mo.getMatchedOrders();
 	}
 	
-	
-	
+	//导出用
+	session.setAttribute("afterMatchOrders", afterMatchOrders);
 	
 	
 	
@@ -214,8 +215,13 @@ $(function (){
 
 <table width="100%">
 	<tr>
-		<td width="15%"><h3>本页显示为未结款单据 </h3></td>
-		<td width="15%"><h3><a href="CheckedOrders.jsp">对比已结款单据</a></h3></td>
+		<td width="15%">
+		<h3>本页显示为 
+		<select onchange="location.href='CheckedOrders.jsp'">
+			<option value="1" selected="selected">对比未结款单据</option>
+			<option value="2" >对比已结款单据</option>
+		</select></h3>
+		</td>
 		<td><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
 	</tr>
 </table>

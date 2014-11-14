@@ -48,9 +48,7 @@ public class MatchOrderExportServlet extends HttpServlet {
 		
 		MatchOrder mo = new MatchOrder();
 		List<AfterMatchOrder> afterMatchOrders = (List<AfterMatchOrder>)request.getSession().getAttribute("afterMatchOrders");
-		List <Order> unCheckedDBOrders = (List <Order>)request.getSession().getAttribute("unCheckedDBOrders");
-		List <UploadOrder> unCheckedUploadOrders = (List <UploadOrder>)request.getSession().getAttribute("unCheckedUploadOrders");
-		
+	
 		String selectBranchType = request.getParameter("branchtype");
 		String selectBranch = request.getParameter("branch");
 		String selectOrderName = request.getParameter("uploadorder");
@@ -113,339 +111,50 @@ public class MatchOrderExportServlet extends HttpServlet {
 
         int row = 3 ;
         for(int i = 0 ; i < afterMatchOrders.size() ; i++){
-        	if(afterMatchOrders.get(i).getCompareLevel() >= 5.0){
-        		//序号
-        		label0  =   new  Label( 0 , row,  String.valueOf(row-2) );
-        		sheet.addCell(label0);
-        		//左侧
-        		//销售门店
-        		label0  =   new  Label( 1 ,  row,  afterMatchOrders.get(i).getDBOrder().getbranchName(afterMatchOrders.get(i).getDBOrder().getBranch())  );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 2 ,  row,  afterMatchOrders.get(i).getDBOrder().getPos() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 3 ,  row,  afterMatchOrders.get(i).getDBOrder().getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 4 ,  row,  afterMatchOrders.get(i).getDBOrder().getSendType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 5 ,  row,  String.valueOf(afterMatchOrders.get(i).getDBOrder().getSendCount()) );
-        		sheet.addCell(label0);
-        		
-        		label0  =   new  Label( 6 ,  2 ,  "  " );
-                sheet.addCell(label0);
-                
-        		//右侧
-        		//销售门店
-        		label0  =   new  Label( 7 ,  row,  afterMatchOrders.get(i).getUploadOrder().getShop() );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 8 ,  row,  afterMatchOrders.get(i).getUploadOrder().getPosNo() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 9 ,  row,  afterMatchOrders.get(i).getUploadOrder().getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 10 ,  row,  afterMatchOrders.get(i).getUploadOrder().getType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 11 ,  row ,  String.valueOf(afterMatchOrders.get(i).getUploadOrder().getNum()));
-        		sheet.addCell(label0);
-        		
-        		row ++;
-        	}
-        }
-        
-        for(int i = 0 ; i < afterMatchOrders.size() ; i ++){
-        	if(afterMatchOrders.get(i).getCompareLevel() >= 4.0 && afterMatchOrders.get(i).getCompareLevel()< 5.0){
-        		//序号
-        		label0  =   new  Label( 0 , row,  String.valueOf(row-2) );
-        		sheet.addCell(label0);
-        		//左侧
-        		//销售门店
-        		label0  =   new  Label( 1 ,  row,  afterMatchOrders.get(i).getDBOrder().getbranchName(afterMatchOrders.get(i).getDBOrder().getBranch())  );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 2 ,  row,  afterMatchOrders.get(i).getDBOrder().getPos() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 3 ,  row,  afterMatchOrders.get(i).getDBOrder().getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 4 ,  row,  afterMatchOrders.get(i).getDBOrder().getSendType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 5 ,  row,  String.valueOf(afterMatchOrders.get(i).getDBOrder().getSendCount()) );
-        		sheet.addCell(label0);
-        		
-        		label0  =   new  Label( 6 ,  2 ,  "  " );
-                sheet.addCell(label0);
-                
-        		//右侧
-        		//销售门店
-        		label0  =   new  Label( 7 ,  row,  afterMatchOrders.get(i).getUploadOrder().getShop() );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 8 ,  row,  afterMatchOrders.get(i).getUploadOrder().getPosNo() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 9 ,  row,  afterMatchOrders.get(i).getUploadOrder().getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 10 ,  row,  afterMatchOrders.get(i).getUploadOrder().getType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 11 ,  row ,  String.valueOf(afterMatchOrders.get(i).getUploadOrder().getNum()));
-        		sheet.addCell(label0);
-        		
-        		row ++;
-        	}
-        }
-        
-        for(int i = 0 ; i < afterMatchOrders.size() ; i ++){
-        	if(afterMatchOrders.get(i).getCompareLevel() >= 3.0 && afterMatchOrders.get(i).getCompareLevel()< 4.0){
-        		//序号
-        		label0  =   new  Label( 0 , row,  String.valueOf(row-2) );
-        		sheet.addCell(label0);
-        		//左侧
-        		//销售门店
-        		label0  =   new  Label( 1 ,  row,  afterMatchOrders.get(i).getDBOrder().getbranchName(afterMatchOrders.get(i).getDBOrder().getBranch())  );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 2 ,  row,  afterMatchOrders.get(i).getDBOrder().getPos() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 3 ,  row,  afterMatchOrders.get(i).getDBOrder().getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 4 ,  row,  afterMatchOrders.get(i).getDBOrder().getSendType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 5 ,  row,  String.valueOf(afterMatchOrders.get(i).getDBOrder().getSendCount()) );
-        		sheet.addCell(label0);
-        		
-        		label0  =   new  Label( 6 ,  2 ,  "  " );
-                sheet.addCell(label0);
-                
-        		//右侧
-        		//销售门店
-        		label0  =   new  Label( 7 ,  row,  afterMatchOrders.get(i).getUploadOrder().getShop() );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 8 ,  row,  afterMatchOrders.get(i).getUploadOrder().getPosNo() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 9 ,  row,  afterMatchOrders.get(i).getUploadOrder().getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 10 ,  row,  afterMatchOrders.get(i).getUploadOrder().getType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 11 ,  row ,  String.valueOf(afterMatchOrders.get(i).getUploadOrder().getNum()));
-        		sheet.addCell(label0);
-        		
-        		row ++;
-        	}
-        }
-        
-        for(int i = 0 ; i < afterMatchOrders.size() ; i ++){
-        	if(afterMatchOrders.get(i).getCompareLevel() >= 2.0 && afterMatchOrders.get(i).getCompareLevel()< 3.0){
-        		//序号
-        		label0  =   new  Label( 0 , row,  String.valueOf(row-2) );
-        		sheet.addCell(label0);
-        		//左侧
-        		//销售门店
-        		label0  =   new  Label( 1 ,  row,  afterMatchOrders.get(i).getDBOrder().getbranchName(afterMatchOrders.get(i).getDBOrder().getBranch())  );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 2 ,  row,  afterMatchOrders.get(i).getDBOrder().getPos() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 3 ,  row,  afterMatchOrders.get(i).getDBOrder().getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 4 ,  row,  afterMatchOrders.get(i).getDBOrder().getSendType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 5 ,  row,  String.valueOf(afterMatchOrders.get(i).getDBOrder().getSendCount()) );
-        		sheet.addCell(label0);
-        		
-        		label0  =   new  Label( 6 ,  2 ,  "  " );
-                sheet.addCell(label0);
-                
-        		//右侧
-        		//销售门店
-        		label0  =   new  Label( 7 ,  row,  afterMatchOrders.get(i).getUploadOrder().getShop() );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 8 ,  row,  afterMatchOrders.get(i).getUploadOrder().getPosNo() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 9 ,  row,  afterMatchOrders.get(i).getUploadOrder().getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 10 ,  row,  afterMatchOrders.get(i).getUploadOrder().getType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 11 ,  row ,  String.valueOf(afterMatchOrders.get(i).getUploadOrder().getNum()));
-        		sheet.addCell(label0);
-        		
-        		row ++;
-        	}
-        }
-        
-        for(int i = 0 ; i < afterMatchOrders.size() ; i ++){
-        	if(afterMatchOrders.get(i).getCompareLevel() >= 1.0 && afterMatchOrders.get(i).getCompareLevel()< 2.0){
-        		//序号
-        		label0  =   new  Label( 0 , row,  String.valueOf(row-2) );
-        		sheet.addCell(label0);
-        		//左侧
-        		//销售门店
-        		label0  =   new  Label( 1 ,  row,  afterMatchOrders.get(i).getDBOrder().getbranchName(afterMatchOrders.get(i).getDBOrder().getBranch())  );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 2 ,  row,  afterMatchOrders.get(i).getDBOrder().getPos() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 3 ,  row,  afterMatchOrders.get(i).getDBOrder().getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 4 ,  row,  afterMatchOrders.get(i).getDBOrder().getSendType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 5 ,  row,  String.valueOf(afterMatchOrders.get(i).getDBOrder().getSendCount()) );
-        		sheet.addCell(label0);
-        		
-        		label0  =   new  Label( 6 ,  2 ,  "  " );
-                sheet.addCell(label0);
-                
-        		//右侧
-        		//销售门店
-        		label0  =   new  Label( 7 ,  row,  afterMatchOrders.get(i).getUploadOrder().getShop() );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 8 ,  row,  afterMatchOrders.get(i).getUploadOrder().getPosNo() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 9 ,  row,  afterMatchOrders.get(i).getUploadOrder().getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 10 ,  row,  afterMatchOrders.get(i).getUploadOrder().getType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 11 ,  row ,  String.valueOf(afterMatchOrders.get(i).getUploadOrder().getNum()));
-        		sheet.addCell(label0);
-        		
-        		row ++;
-        	}
-        }
-        
-        for(int i = 0 ; i < afterMatchOrders.size() ; i ++){
-        	if(afterMatchOrders.get(i).getCompareLevel() >= 0.0 && afterMatchOrders.get(i).getCompareLevel()< 1.0){
-        		//序号
-        		label0  =   new  Label( 0 , row,  String.valueOf(row-2) );
-        		sheet.addCell(label0);
-        		//左侧
-        		//销售门店
-        		label0  =   new  Label( 1 ,  row,  afterMatchOrders.get(i).getDBOrder().getbranchName(afterMatchOrders.get(i).getDBOrder().getBranch())  );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 2 ,  row,  afterMatchOrders.get(i).getDBOrder().getPos() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 3 ,  row,  afterMatchOrders.get(i).getDBOrder().getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 4 ,  row,  afterMatchOrders.get(i).getDBOrder().getSendType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 5 ,  row,  String.valueOf(afterMatchOrders.get(i).getDBOrder().getSendCount()) );
-        		sheet.addCell(label0);
-        		
-        		label0  =   new  Label( 6 ,  2 ,  "  " );
-                sheet.addCell(label0);
-                
-        		//右侧
-        		//销售门店
-        		label0  =   new  Label( 7 ,  row,  afterMatchOrders.get(i).getUploadOrder().getShop() );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 8 ,  row,  afterMatchOrders.get(i).getUploadOrder().getPosNo() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 9 ,  row,  afterMatchOrders.get(i).getUploadOrder().getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 10 ,  row,  afterMatchOrders.get(i).getUploadOrder().getType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 11 ,  row ,  String.valueOf(afterMatchOrders.get(i).getUploadOrder().getNum()));
-        		sheet.addCell(label0);
-        		
-        		row ++;
-        	}
-        }
-        
-        for(int i = 0 ;;){
-        	//序号
+    		//序号
     		label0  =   new  Label( 0 , row,  String.valueOf(row-2) );
     		sheet.addCell(label0);
+    		//左侧
+    		//销售门店
+    		label0  =   new  Label( 1 ,  row,  afterMatchOrders.get(i).getDBOrder().getbranchName(afterMatchOrders.get(i).getDBOrder().getBranch())  );
+    		sheet.addCell(label0);
+    		//pos(厂送)单号
+    		label0  =   new  Label( 2 ,  row,  afterMatchOrders.get(i).getDBOrder().getPos() );
+    		sheet.addCell(label0);
+    		//销售日期
+    		label0  =   new  Label( 3 ,  row,  afterMatchOrders.get(i).getDBOrder().getSaleTime() );
+    		sheet.addCell(label0);
+    		//票面型号
+    		label0  =   new  Label( 4 ,  row,  afterMatchOrders.get(i).getDBOrder().getSendType() );
+    		sheet.addCell(label0);
+    		//票面数量
+    		label0  =   new  Label( 5 ,  row,  String.valueOf(afterMatchOrders.get(i).getDBOrder().getSendCount()) );
+    		sheet.addCell(label0);
     		
-			if(unCheckedDBOrders != null && unCheckedDBOrders.size() > 0 && i< unCheckedDBOrders.size()){					
-				//序号
-        		label0  =   new  Label( 0 , row,  String.valueOf(row-2) );
-        		sheet.addCell(label0);
-        		//左侧
-        		//销售门店
-        		label0  =   new  Label( 1 ,  row,  unCheckedDBOrders.get(i).getbranchName(afterMatchOrders.get(i).getDBOrder().getBranch())  );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 2 ,  row,  unCheckedDBOrders.get(i).getPos() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 3 ,  row,  unCheckedDBOrders.get(i).getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 4 ,  row,  unCheckedDBOrders.get(i).getSendType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 5 ,  row,  String.valueOf(unCheckedDBOrders.get(i).getSendCount()) );
-        		sheet.addCell(label0);
-        		
-        		label0  =   new  Label( 6 ,  2 ,  "  " );
-                sheet.addCell(label0);
-                
-        		
-        		
-			}
-			if(unCheckedUploadOrders != null && unCheckedUploadOrders.size() > 0 && i< unCheckedUploadOrders.size()){
-				//右侧
-        		//销售门店
-        		label0  =   new  Label( 7 ,  row,  unCheckedUploadOrders.get(i).getShop() );
-        		sheet.addCell(label0);
-        		//pos(厂送)单号
-        		label0  =   new  Label( 8 ,  row,  unCheckedUploadOrders.get(i).getPosNo() );
-        		sheet.addCell(label0);
-        		//销售日期
-        		label0  =   new  Label( 9 ,  row,  unCheckedUploadOrders.get(i).getSaleTime() );
-        		sheet.addCell(label0);
-        		//票面型号
-        		label0  =   new  Label( 10 ,  row,  unCheckedUploadOrders.get(i).getType() );
-        		sheet.addCell(label0);
-        		//票面数量
-        		label0  =   new  Label( 11 ,  row ,  String.valueOf(unCheckedUploadOrders.get(i).getNum()));
-        		sheet.addCell(label0);
-        		
-			}
-			i ++ ;
+    		label0  =   new  Label( 6 ,  2 ,  "  " );
+            sheet.addCell(label0);
+            
+    		//右侧
+    		//销售门店
+    		label0  =   new  Label( 7 ,  row,  afterMatchOrders.get(i).getUploadOrder().getShop() );
+    		sheet.addCell(label0);
+    		//pos(厂送)单号
+    		label0  =   new  Label( 8 ,  row,  afterMatchOrders.get(i).getUploadOrder().getPosNo() );
+    		sheet.addCell(label0);
+    		//销售日期
+    		label0  =   new  Label( 9 ,  row,  afterMatchOrders.get(i).getUploadOrder().getSaleTime() );
+    		sheet.addCell(label0);
+    		//票面型号
+    		label0  =   new  Label( 10 ,  row,  afterMatchOrders.get(i).getUploadOrder().getType() );
+    		sheet.addCell(label0);
+    		//票面数量
+    		label0  =   new  Label( 11 ,  row ,  String.valueOf(afterMatchOrders.get(i).getUploadOrder().getNum()));
+    		sheet.addCell(label0);
+    		
     		row ++;
-			if(i >= unCheckedDBOrders.size() && i >=unCheckedUploadOrders.size()){
-				break;
-			}
-        }
+    	}
         
+             
         
 		// 将文件存到指定位置
 		  
