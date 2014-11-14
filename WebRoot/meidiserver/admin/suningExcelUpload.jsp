@@ -18,7 +18,7 @@
 		if(confirm.equals("confirm")){
 			confirmResult = UploadManager.saveSuningFileToDB(filePath,fileName);
 		}
-		response.sendRedirect("./excelUpload.jsp");
+		response.sendRedirect("./uploadManage.jsp");
 		return;
 	}else{
 		if(fileName != null && fileName != "" && !fileName.equals("")){			

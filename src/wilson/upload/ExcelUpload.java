@@ -118,7 +118,7 @@ public class ExcelUpload extends HttpServlet {
 							directUrl = "./admin/salesUpload.jsp?fileName=";
 							filePath = salesFilePath;
 						}else{
-							directUrl = "./admin/excelUpload.jsp?fileName=";
+							directUrl = "./admin/uploadManage.jsp?fileName=";
 							res.sendRedirect(directUrl+fileName);
 							return;
 						}

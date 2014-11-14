@@ -20,7 +20,7 @@
 		if(confirm.equals("confirm")){
 			confirmResult = UploadManager.saveSalaryFileToDB(filePath,fileName);
 		}
-		response.sendRedirect("./excelUpload.jsp");
+		response.sendRedirect("./uploadManage.jsp");
 		return;
 		
 	}else{

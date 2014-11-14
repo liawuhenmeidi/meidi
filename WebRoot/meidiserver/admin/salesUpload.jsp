@@ -19,7 +19,7 @@
 		if(confirm.equals("confirm")){
 			confirmResult = UploadManager.saveSalesFileToDB(filePath,fileName);
 		}
-		response.sendRedirect("./excelUpload.jsp");
+		response.sendRedirect("./uploadManage.jsp");
 		return;
 	}else{
 		if(fileName != null && fileName != "" && !fileName.equals("")){			

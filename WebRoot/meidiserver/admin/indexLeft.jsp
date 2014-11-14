@@ -65,8 +65,7 @@ User user = (User)session.getAttribute("user");
                <p ><a href="dingdanCome.jsp" target="contentpage">厂送票未回</a></p>
                <p ><a href="dingdango.jsp" target="contentpage">厂送票未消</a></p>
                <p ><a href="dingdanCharge.jsp" target="contentpage">厂送票未结款</a></p>
-               <p ><a href="excelUpload.jsp" target="contentpage">Excel上传页</a></p>
-               <p ><a href="dataDelete.jsp" target="contentpage">上传文件删除页</a></p>
+               <p ><a href="uploadManage.jsp" target="contentpage">上传管理</a></p>
               <p ><a href="manualCheckout.jsp" target="contentpage">结款页</a></p>
             </div>
           </li>

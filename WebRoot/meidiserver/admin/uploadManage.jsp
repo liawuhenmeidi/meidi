@@ -5,6 +5,13 @@
 <%
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
+	String fileName = request.getParameter("fileName");
+	
+	
+	
+	
+	
+	/////////////////////////////////////////////////////////////////////
 	
 	String type = request.getParameter("type");
 	String name =request.getParameter("name");
@@ -58,7 +65,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>上传文件删除页</title>
+<title>上传管理页面</title>
   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <style type="text/css">
@@ -76,14 +83,52 @@ body {
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
   <link rel="stylesheet" href="../css/jquery-ui.css">
- 
+ <%
+	if(fileName != null && fileName != "" && !fileName.equals("")){	
+		String temp = "上传失败";
+%>
+			<script type="text/javascript">
+				alert('<%=temp%>');
+			
+			</script>
+<%
+
+	}
+%>
 <div style="position:fixed;width:100%;height:200px;">
 <div style="position:fixed;width:80%;height:200px;">
   
   <jsp:include flush="true" page="head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include> 
-      
+  
+  
+      <div > 
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  <a href="../DownloadServlet?name=suningmuban&type=model"><font style="color:red;font-size:20px;" >系统比对模板</font> </a><br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  <a href="../DownloadServlet?name=tichengmuban&type=model"><font style="color:red;font-size:20px;" >提成标准模板</font> </a><br />
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  <a href="../DownloadServlet?name=xiaoshoudanmuban&type=model"><font style="color:red;font-size:20px;" >销售单模板</font> </a>
+  
+
+  <form action="../ExcelUpload" method="post" enctype ="multipart/form-data" runat="server"> 
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      <font style="color:red;font-size:20px;" >导入数据 : </font>
+      <input id="File1" runat="server" name="UpLoadFile" type="file" /> 
+      类型：<select name="uploadType">
+      <option value="1">系统比对单上传</option>   
+        <option value="2">提成标准上传</option>   
+        <option value="3">销售单上传</option>   
+      </select>
+      <input type="submit" name="Button1" value="提交文件" id="Button1" />
+  </form>
+  
+
+  </div> 
+  
+  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<hr style="border : 1px dashed blue;" />
 
 <p>系统对比/销售单 删除</p>
 <form action="" method="post">
@@ -124,8 +169,7 @@ body {
 <input name="button" type="submit" value="导出"/>
 
 </form>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-<hr style="border : 1px dashed blue;" />
+
 
 </body>
 </html>
