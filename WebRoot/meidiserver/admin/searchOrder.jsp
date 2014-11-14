@@ -9,6 +9,10 @@ User user = (User)session.getAttribute("user");
 
 String submit = request.getParameter("submit");
 
+//接受查询条件的提交
+String selectBranchType = request.getParameter("branchtype");
+String selectBranch = request.getParameter("branch");
+String selectOrderName = request.getParameter("uploadorder");
 
 
 UploadOrder uo = new UploadOrder();
@@ -85,7 +89,7 @@ function checkedd(){
 	//window.close();
 	//window.oper.reload();
 	 //window.opener.location.reload();
-	window.opener.location.href="manualCheckout.jsp?search=true";
+	window.opener.location.href="manualCheckout.jsp?search=true&branchtype=<%=selectBranchType %>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>";
 }
 
 </script>
@@ -108,6 +112,7 @@ function checkedd(){
  
 <div id="wrap" style="text-align:center;">  
 <form  action=""  method ="post"  name="baseForm" id="baseForm" onsubmit="return checkedd()">
+
 <input type="hidden" name="submit" id="submit" value="true"/>
  
 <table  cellspacing="1"  id="table" style="margin:auto; width:80%;"> 

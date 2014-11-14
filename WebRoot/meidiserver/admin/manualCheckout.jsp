@@ -222,11 +222,12 @@ $(function (){
 			<option value="2" >对比已结款单据</option>
 		</select></h3>
 		</td>
-		<td><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
+		<td><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp?branchtype=<%=selectBranchType%>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
 	</tr>
 </table>
 
-<form name="baseform" id="baseform" method="post">
+<form name="baseform" id="baseform" method="get">
+<input type="hidden" name="search" value="false"/>
 <table width="100%" height="100%" align="center" border=0>
        <tr>
        <table  width="100%"  border=1>

@@ -168,7 +168,9 @@ public class MatchOrderManager {
 	
 	//list中找到与target相似的订单
 	public static List<Order> searchOrderList(List<Order> orders,UploadOrder target){
-
+		if(target == null){
+			return null;
+		}
 		//店名
 		String tempName = target.getShop();
 		if(!StringUtill.isNull(tempName)){
