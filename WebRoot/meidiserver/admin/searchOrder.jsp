@@ -9,6 +9,14 @@ User user = (User)session.getAttribute("user");
 
 String submit = request.getParameter("submit");
 
+String unChecked =request.getParameter("unchecked");
+boolean fromUnCheckedPage = true;
+try{
+	fromUnCheckedPage = Boolean.parseBoolean(unChecked);
+}catch(Exception e){
+	fromUnCheckedPage = true;
+}
+
 //接受查询条件的提交
 String selectBranchType = request.getParameter("branchtype");
 String selectBranch = request.getParameter("branch");
@@ -89,7 +97,13 @@ function checkedd(){
 	//window.close();
 	//window.oper.reload();
 	 //window.opener.location.reload();
+	<%if(fromUnCheckedPage){ %>
+	 
+	
 	window.opener.location.href="manualCheckout.jsp?search=true&branchtype=<%=selectBranchType %>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>";
+	<% }else{%>
+	window.opener.location.href="CheckedOrders.jsp?search=true&branchtype=<%=selectBranchType %>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>";
+	<%}%>
 }
 
 </script>
