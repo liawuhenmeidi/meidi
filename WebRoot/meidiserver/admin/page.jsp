@@ -4,9 +4,6 @@ request.setCharacterEncoding("utf-8");
 int type = Integer.valueOf(request.getParameter("type"));
 String message = ""; 
 
-String href = request.getParameter("href"); 
-
-
 if(Order.orderDispatching == type || Order.neworder == type || Order.release == type || Order.returns == type){
 	message = "文员派工页";
 }else if(Order.charge == type){
@@ -57,14 +54,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<head>  
+<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../js/cookie/jquery.cookie.js"></script>
+
 <style type="text/css">
 td {
  align:center 
-}
-</style> 
+} 
+</style>  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
-<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <script type="text/javascript">
 var num = 100; 
@@ -116,18 +116,63 @@ function pagesubtraction(){
 function pageinit(){
 	page = 1 ;
 	initOrder(type,statues,num,page,sort,sear);
-}
+} 
 
 function pagelast(){
 	page = Math.ceil(count/num) ;
 	initOrder(type,statues,num,page,sort,sear);
 }
 
+function exportServelet(){  
+	//alert(1); 
+	window.location.href="../Print?type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+"&sear="+sear;
+}
+ 
+function initsearchOrder(){
+	var account= $.cookie("sear");
+	if(account != "" && account != null){
+		account = account.substring(1,account.length);
+	}
+	
+	account = account.split("&");
+	
+	for(var i=0;i<account.length;i++){
+		var keyvalue = account[i];
+		keyvalue = keyvalue.split("=");
+		var key = keyvalue[0];
+		var value = keyvalue[1];
+		if("statues1" == key || "statues2" == key  || "statues3" == key || "statues4" == key || "statues" == key || "deliverytype" == key ){
+			if("statues" == key){
+				key = "statues0";
+			}
+			$("#"+key+value).attr("checked","checked");
+		}else if("oderStatus" == key || "deliveryStatues" == key){
+			value = value.split(",");
+			for(var m=0;m<value.length;m++){
+				cvalue = value[m];
+				$("#"+key+cvalue).attr("checked","checked");
+			}
+			
+		}else{
+			$("#"+key).val(value);
+		}
+		
+		 
+	}
+	
+}
 
+function SearchDiv(){
+	$("#wrapsearch").css("display","block");
+	initsearchOrder();
+} 
 </script>
 </head>  
 <body>
    <div style="text-align:center">
+    <input type="hidden" id="search"  value=""/>
+    <input type="hidden" id="sear"  value=""/>
+ 
  <table  cellspacing="1" style="width: 95%;margin:auto"> 
   <tr >  
    <td >
@@ -173,13 +218,15 @@ function pagelast(){
    
    </td>
    <td>
-   <a href="<%=basePath %>Print"><font style="color:red;font-size:20px;" >导出数据</font> </a>        
+   <a href="javascript:void(0)" onclick="SearchDiv()"><img src="../image/search.png"  style="width:30px;height:30px;" alt="弹出广告图"/></a>
+   </td>
+   <td>
+   <!--<a href="<%=basePath %>Print"><font style="color:red;font-size:20px;" >导出数据</font> </a>  -->
+       <a href="javascript:void(0)" onclick="exportServelet()" ><font style="color:red;font-size:20px;" >导出数据</font></a>    
    </td>
   </tr>
   </table> 
   </div>
 
-<hr>
-</hr>
 </body>
 </html>

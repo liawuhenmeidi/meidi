@@ -906,7 +906,7 @@ logger.info(sql);
 				   if(Order.orderDispatching == statues){   
 					   sql = "select count(*) from  mdorder where   ( dealSendid = "+user.getId()+"  and printSatues = 1 and printSatuesp = 0  and sendId = 0  and  deliveryStatues in (0,9)  and mdorder.id not in (select orderid from mdorderupdateprint where statues = 2 and mdtype = 6 )   or (mdorder.id in (select orderid from mdorderupdateprint where mdtype in (3,6,7)  and statues = 0 )) )  "+search; 
 				   }else if(Order.release == statues){   
-					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+"  and  mdorder.id in (select orderid from mdorderupdateprint where mdtype in (3,4,5) and pGroupId = "+ user.getUsertype()+ " )  "+search; 
+					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+"  and  mdorder.id in (select orderid from mdorderupdateprint where mdtype in (3,4,5) and pGroupId = "+ user.getUsertype()+ " and statues != 4 )  "+search;  
 				   }else if(Order.dispatch == statues){  
 					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+"  and printSatues = 1 and printSatuesp = 0  and sendId = 0  and  deliveryStatues in (0,9) and mdorder.id not in (select orderid from mdorderupdateprint where statues = 2 and mdtype = 6 )   "+search; 
 				   }else if(Order.porderDispatching == statues){

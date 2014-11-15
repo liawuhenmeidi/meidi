@@ -1,8 +1,15 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,java.net.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
-<%      
+<% 
+
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
+
+//Cookie Cookies[]=request.getCookies();
+
+//String sear = "";
+
+//sear = CookieUtill.isRight(Cookies, "sear");
 
 // 用户id 
 int id = user.getId();

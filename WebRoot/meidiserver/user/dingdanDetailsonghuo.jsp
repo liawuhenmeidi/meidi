@@ -119,12 +119,13 @@ function change(str1,str2,type){
 		var uid = $("#"+str1).val(); 
 		if(uid == -1){
 			return false;
-		}
+		} 
+		//alert("method="+type+"&oid="+str2+"&statues="+uid);
 		$.ajax({  
-	        type: "post",   
-	         url: "../../LogisticsServlet", 
-	         data:"method="+type+"&id="+str2+"&statues="+uid,
-	         dataType: "",  
+	        type: "post",    
+	         url: "../LogisticsServlet", 
+	         data:"method="+type+"&oid="+str2+"&statues="+uid,
+	         dataType: "",     
 	         success: function (date) {
 	        	
 	        	 if(date == 0){

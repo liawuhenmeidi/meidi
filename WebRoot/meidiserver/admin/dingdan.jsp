@@ -10,6 +10,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>文员派工页</title>
   
@@ -55,30 +58,30 @@ position:fixed;
   <jsp:include flush="true" page="head.jsp">
   <jsp:param name="" value="" />
   </jsp:include>   
-       
+         
 <jsp:include flush="true" page="page.jsp"> 
 	<jsp:param name="type" value="<%=statues%>"/> 
 </jsp:include> 
-
+ 
 <div id="headremind"> 
 <jsp:include page="headremind.jsp"/>
+</div> 
+
+</div > 
+<div style="height:120px;">
 </div>
 
-<jsp:include page="search.jsp">
-	<jsp:param name="count" value="<%=count %>"/> 
-</jsp:include> 
-</div > 
-<div style="height:170px;">
-</div>
 <br/>  
 
-<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
+<%@ include file="searchOrderAll.jsp"%>  
+ 
+
 <script type="text/javascript">
 
 sort= "andate asc";
 var id = "";
 var type = "<%=Group.dealSend%>";
+
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>"; 
 var usermapstr = <%=usermapstr%> ;

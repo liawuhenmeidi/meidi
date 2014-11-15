@@ -16,7 +16,6 @@ List<Category> list =CategoryManager.getCategory(Category.sale) ;
 
 List<Group>  listg = null ;
 
-
 if("add".equals(action)){ 
 	String name = request.getParameter("name");
 	String detail = request.getParameter("detail");
@@ -35,7 +34,7 @@ if("add".equals(action)){
      }
    
     productes = productes.substring(0, productes.length()-1);
-  
+    
     Group group = new Group();
     group.setDetail(detail);
     group.setName(name);

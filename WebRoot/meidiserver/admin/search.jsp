@@ -38,7 +38,7 @@ function add(){
 		    	$("#search").append(value+":是<input type=\"radio\"  name=\""+name+"\"  id=\""+name+"\"  value=\"1\" />否<input type=\"radio\"  name=\""+name+"\"  value=\"0\" /><input type=\"hidden\"  name=\"search\"  class =\"search\"  value=\""+name+"\"></input>");  
 		    }else if("deliveryStatues" == name){
 		    	var str = "送货状态：";
-		    	str +=  "<select name=\""+name+"\"> id=\""+name+"\""+
+		    	str +=  "<select name=\""+name+"\" id=\""+name+"\">" + 
 		    	           "<option value=\"1\">已送货</option>"+
 		    	           "<option value=\"2\">已安装</option>"+
 		    	           "<option value=\"0\">未送货</option>"+

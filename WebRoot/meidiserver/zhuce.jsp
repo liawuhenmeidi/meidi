@@ -226,11 +226,11 @@ $(function () {
   </jsp:include>  
   
 <!--  头 单种类  -->
-<div class="s_main_tit">员工注册<span class="qiangdan"><a href="javascript:void(0)" onclick="regist()" >登陆</a></span> </div>
+<div class="s_main_tit">员工注册<span class="qiangdan"><a href="javascript:void(0)" onclick="regist()" >返回</a></span> </div>
    
 <!--  订单详情  -->  
 <div class="s_main_box">      
-<form action="RegistServlet"   method = "post"  onsubmit="return check()">
+<form action="RegistServlet"   method = "post"  onsubmit="return check()"> 
  <input type="hidden" name="method" value="zhuce"/>     
  <input type="hidden" name="token" value="<%=s%>"/> 
  <table width="100%" class="s_main_table">
@@ -354,10 +354,10 @@ $(function () {
 </table>
  <div id="submit">
 <table> 
- <tr> 
-   <td width="20%">
-   <td width="60%"><input type="submit" style="font-size:25px;width:300px"   value="注册"/></td>
-   <td width="20%">
+ <tr>  
+   <td width="20%"></td>
+   <td width="60%"><input type="submit" style="font-size:20px;width:200px"   value="注册"/></td>
+   <td width="20%"></td>
   </tr> 
  
 </table>

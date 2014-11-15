@@ -6,16 +6,16 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 
 String method = request.getParameter("method");
-    
-if("deleteOrder".equals(method)){ 
+     
+if("deleOrder".equals(method)){ 
 	String id = request.getParameter("id");
 	String[] list = id.split(",");
-	int count = 0 ; 
+	int count = 0 ;  
 	for(int i=0;i<list.length;i++){ 
 		boolean flag = OrderManager.delete(user,Integer.valueOf(list[i]));
 	    if(flag){
 	    	count ++ ;
-	    }
+	    } 
 	} 
 	response.getWriter().write(""+count);  
 	response.getWriter().flush();   
@@ -443,7 +443,7 @@ if("deleteOrder".equals(method)){
 						
 						List<String> sqls = OrderProductManager.save(Integer.valueOf(oid), order);
 						DBUtill.sava(sqls);
-		    	}else {
+		    	}else { 
 		    		
 		    		pstatues = OrderProductManager.updateOrderStatues(user,categoryId,saleType,count,oid);
 		    	}

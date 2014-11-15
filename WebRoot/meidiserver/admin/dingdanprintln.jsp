@@ -64,6 +64,7 @@ position:fixed;
 <script type="text/javascript"> 
 
 var type = "<%=Group.dealSend%>";
+
 $(function () { 
 	fixation();
 	initOrder(type,statues,num,page,sort,sear); 
@@ -104,7 +105,7 @@ function winconfirm(){
 		$.ajax({ 
 	        type: "post", 
 	         url: "server.jsp", 
-	         data:"method=deleteOrder&id="+attract.toString(),
+	         data:"method=deleOrder&id="+attract.toString(),
 	         dataType: "",    
 	         success: function (data) {
 	        	 if(data == -1){
@@ -157,10 +158,6 @@ function orderPrint(id,statues,type,deliveryStatues){
 <jsp:include page="headremind.jsp"/>
 </div> 
 
-<jsp:include page="search.jsp"> 
-	<jsp:param name="count" value="<%=count %>"/> 
-</jsp:include> 
-
 <div class="btn"> 
  <% if(UserManager.checkPermissions(user, Group.Manger)){
 	
@@ -176,9 +173,13 @@ function orderPrint(id,statues,type,deliveryStatues){
 </div>
 
 </div > 
-<div style=" height:170px;">
+<div style=" height:130px;">
 </div>
 <br/>  
+
+ <%@ include file="searchOrderAll.jsp"%>
+ 
+ 
 <div id="wrap">
 <table  cellspacing="1" id="table" >
 		<tr id="th">  

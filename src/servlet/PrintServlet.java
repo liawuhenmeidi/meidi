@@ -30,6 +30,7 @@ import orderproduct.OrderProductService;
 
 import user.User;
 import user.UserManager;
+import utill.HttpRequestUtill;
 import utill.StringUtill;
 
 import java.io.FileOutputStream;
@@ -66,16 +67,30 @@ public class PrintServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8"); 
 		response.setCharacterEncoding("UTF-8");
+		 
+		User user = (User)request.getSession().getAttribute("user");
 		 SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMddHH");
          Date date1 = new Date();
 		String printlntime = df2.format(date1);
 		
 		request.setCharacterEncoding("utf-8");
-
-		List<Order> list = null;
-
-		list = (List)request.getSession().getAttribute("exportList"); 
+		String type = request.getParameter("type");
+    	String statues = request.getParameter("statues");
+    	String num = request.getParameter("num");
+    	String page = request.getParameter("page");
+    	String sort = request.getParameter("sort");
+    	String sear = request.getParameter("searched");
+    	if(StringUtill.isNull(sear)){
+    		sear = "";
+    	}else {  
+    		sear = HttpRequestUtill.getSearch(request);
+    	}
+    	
+    	List<Order> list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
 		       
+		
+		
+		
 		HashMap<Integer,User> usermap = UserManager.getMap();
 
 		       // 第一步，创建一个webbook，对应一个Excel文件

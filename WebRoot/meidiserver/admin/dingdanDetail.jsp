@@ -199,6 +199,12 @@ function checkedd(type){
 	//window.close();
 	//window.oper.reload();
 	// alert(type);
+	if(null != $("#dingmatype").val() && "" != $("#dingmatype").val()){
+		if( null == $("#dingmaproductNum").val() || "" == $("#dingmaproductNum").val()){
+			alert("票面数量不能为空");
+			return false ;
+		}
+	}
 	$("#print").val(type);
 	$("#form").submit();
 	 

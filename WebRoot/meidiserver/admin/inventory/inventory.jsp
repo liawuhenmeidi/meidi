@@ -28,7 +28,7 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <style type="text/css">
-
+ 
 td {  
     width:100px;
     line-height:30px;
@@ -48,7 +48,7 @@ td {
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript">
  var jsonall = <%=listall%>;
- var row = 1; 
+ var row = 1;  
  var rows = new Array();
  var categoryid = "";
  $(function () { 

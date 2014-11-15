@@ -150,18 +150,16 @@ function adddetail(src){
 <jsp:include page="headremind.jsp"/>
 </div>
 
-<jsp:include page="search.jsp">
- <jsp:param name="page" value="" />
-</jsp:include> 
 
 <div class="btn">
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input>  
 </div>
 
 </div > 
-<div style=" height:170px;">
+<div style=" height:130px;">
 </div>
 <br/>  
+<%@ include file="searchOrderAll.jsp"%> 
 
 <div id="wrap">
 <table  cellspacing="1" id="table">

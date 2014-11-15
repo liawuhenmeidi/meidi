@@ -221,22 +221,46 @@ function checkTime(){
 		    
               <% 
               boolean flag = false ;
+              Map<String,List<String>> map = new HashMap<String,List<String>>() ;
+              if(maptype != null){  
+            	  Set<String> setold =  maptype.keySet();
+            	 Iterator<String> it = setold.iterator();
+            	 while(it.hasNext()){
+            		 String type= it.next();
+            		 String typenew = StringUtill.getStringNocn(type);
+            		 List<String> l = map.get(typenew);
+            		 if(null == l){
+            			 l = new ArrayList<String>();
+            			 map.put(typenew, l); 
+            		 }
+            		 l.add(type);
+            	 }
+              } 
+              
               if(null !=  listInventory ){
             	  for(int i=0;i<listInventory.size();i++){
             		  flag = true ;
 	            	  InventoryBranch in = listInventory.get(i);
 	            	  
 	            	  if(countt == 0 && in.getRealcount() != 0 || countt != 0  ){
-	            		  InventoryBranch branchtype = maptype.get(in.getType());
-	            		  String branchtypeStr ;
-			            	  if(branchtype == null){ 
-			            		//  System.out.println(1+in.getType());
-			            		  branchtypeStr = ""; 
-			            	  }else {
-			            		 // System.out.println(2+in.getType());
-			            		  branchtypeStr = branchtype.getType();
-			            		  maptype.remove(in.getType());
-			            	  }
+	            		  List<String> l = map.get(StringUtill.getStringNocn(in.getType()));
+	            		  String branchtypeStr = "";
+	            		  if(null != l){
+	            			  for(int j=0;j<l.size();j++){
+	            				  String s = l.get(j);
+	            				  InventoryBranch branchtype = maptype.get(s);
+	    	            		  
+	    			            	  if(branchtype == null){ 
+	    			            		//  System.out.println(1+in.getType());
+	    			            		  branchtypeStr += ""; 
+	    			            	  }else {  
+	    			            		 // System.out.println(2+in.getType());
+	    			            		  branchtypeStr += branchtype.getType()+"\n";
+	    			            		  maptype.remove(branchtype.getType());  
+	    			            	  }
+	            			  }
+	            		  }
+	            		  
             	  %> 
             	  	 
             	   <tr id=""  class="asc"  onclick="updateClass(this)">   
@@ -269,9 +293,9 @@ function checkTime(){
             	  
             	  while(it.hasNext()){
             		  flag = true ;
-            		  Map.Entry<String, InventoryBranch> map = it.next();
+            		  Map.Entry<String, InventoryBranch> maps = it.next();
             		   
-            		  InventoryBranch in = map.getValue();
+            		  InventoryBranch in = maps.getValue();
             		  %>
             	<tr id=""  class="asc"  onclick="updateClass(this)">   
 			 

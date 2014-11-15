@@ -7,7 +7,8 @@
  String type = request.getParameter("type");
  String oid = request.getParameter("oid");
  
-  System.out.println("oid"+oid);
+ 
+ // System.out.println("oid"+oid);
 %>
 
 
@@ -76,6 +77,11 @@ function checkedd(){
 <div class="s_main_tit">员工注册<span class="qiangdan"><a href="dengluN.jsp">登陆</a></span><span class="qiangdan"></span></div>
 
 <%
+}else if("loginresult".equals(type)){
+	%>
+	<div class="s_main_tit">登陆结果<span class="qiangdan"><a href="dengluN.jsp">登陆</a></span></div>
+	
+	<%
 }
 
 %>

@@ -143,11 +143,7 @@ function amortization(src){
 
 <div id="headremind">
 <jsp:include page="headremind.jsp"/>
-</div>
-
-<jsp:include page="search.jsp">
-	<jsp:param name="count" value="<%=count %>"/> 
-</jsp:include> 
+</div> 
 
 <div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -157,9 +153,12 @@ function amortization(src){
 </div>
 
 </div > 
-<div style=" height:170px;">
+<div style=" height:130px;">
 </div>
-<br/>  
+<br/> 
+ <%@ include file="searchOrderAll.jsp"%>
+ 
+  
 <div id="wrap">
 <table  cellspacing="1" id="table">
 		<tr id="th" >  

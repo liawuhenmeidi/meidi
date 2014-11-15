@@ -91,7 +91,7 @@ public class OrderService {
 	    Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 	     
 		StringBuffer html = new StringBuffer();
-		String tdcol = " bgcolor=\"red\"" ;
+		
 		
 		if(null != list){
 			boolean flag = false ; 
@@ -101,7 +101,8 @@ public class OrderService {
 			
 		    for(int i = 0;i<list.size();i++){
 		    	Order o = list.get(i);
-
+		    	String tdcol = " bgcolor=\"red\"" ;
+		    	
 				String release = ""; 
 				String returns = "";
 				
@@ -216,10 +217,10 @@ public class OrderService {
 				
 				html.append("<td align=\"center\"> "+o.getRemark() +"</td>");
 				
-                html.append("<td align=\"center\"> <a href=\"javascript:void(0);\" onclick=\"orderPrint('\"+o.getId()+\"',\"+o.getPrintSatues() +\",'','\"+o.getDeliveryStatues() +\"')\">[打印]</a></td>");
+                html.append("<td align=\"center\"> <a href=\"javascript:void(0);\" onclick=\"orderPrint('"+o.getId()+"',"+o.getPrintSatues() +",'','"+o.getDeliveryStatues() +"')\">[打印]</a></td>");
 
         		html.append("<td align=\"center\"> "+release +"</td>");
-        		
+        		   
         		html.append("<td align=\"center\"> "+returns +"</td>");
         		
 		    }
@@ -232,7 +233,7 @@ public class OrderService {
 	    HashMap<Integer,User> usermap = UserService.getMapId();
 	     
 		StringBuffer html = new StringBuffer();
-		String tdcol = " bgcolor=\"red\"" ;
+		
 		
 		if(null != list){
 			
@@ -240,7 +241,7 @@ public class OrderService {
 			
 		    for(int i = 0;i<list.size();i++){
 		    	Order o = list.get(i);
-				
+		    	String tdcol = " bgcolor=\"red\"" ;
        		
 				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
 			
@@ -319,15 +320,12 @@ public class OrderService {
 	    HashMap<Integer,User> usermap = UserService.getMapId();
 	      
 		StringBuffer html = new StringBuffer();
-		String tdcol = " bgcolor=\"red\"" ;
+		
 		
 		if(null != list){
-			
-		
-			
 		    for(int i = 0;i<list.size();i++){
 		    	Order o = list.get(i);
-				
+		    	String tdcol = " bgcolor=\"red\"" ;
       		
 				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
 			
@@ -392,19 +390,178 @@ public class OrderService {
 		return html.toString();
 		 
 	}
+    
+   public static String getHtmlgo(User user ,List<Order> list){
+	    HashMap<Integer,User> usermap = UserService.getMapId();
+	       
+		StringBuffer html = new StringBuffer();
+		
+		
+		if(null != list){
+		    for(int i = 0;i<list.size();i++){
+		    	Order o = list.get(i);
+		    	String tdcol = " bgcolor=\"red\"" ;
+     		
+				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
+			
+			    html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name = "+o.getId() +"></input></td>");
+			
+				
+				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+				
+                html.append("<td align=\"center\" "+(o.getPosremark()==1?tdcol:"") +">"+o.getPos() +"</td>");
+				
+				html.append("<td align=\"center\" "+(o.getSailidrecked()==1?tdcol:"") +">"+o.getSailId() +"</td>");
+				
+				html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
+
+				html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
+				
+                html.append("<td align=\"center\">"+ o.getCategory(1,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+o.getSendType(1,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSendCount(1,"</p>")+"</td> ");
+				
+                html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+				
+                html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
+				 
+				html.append("<td align=\"center\" >"+ o.getGifcount("</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
+				
+				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
+				
+				html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
+				
+				
+				
+								
+				if(o.getPhoneRemark()!=1){ 
+					tdcol = ""; 
+				}
+				
+				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				html.append("<td align=\"center\">"+o.getOdate() +"</td>");
+
+				html.append("<td align=\"center\">"+o.getLocate()+"</td>");
+				
+				html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
+				
+				
+				html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
+				
+				html.append("<td align=\"center\"> "+o.getRemark() +"</td>");
+     		
+		    }
+		}
+		return html.toString();
+		 
+	}
    
+   public static String getHtmlcharge(User user ,List<Order> list){
+	    HashMap<Integer,User> usermap = UserService.getMapId();
+	      
+		StringBuffer html = new StringBuffer();
+		
+		
+		if(null != list){
+		    for(int i = 0;i<list.size();i++){
+		    	Order o = list.get(i);
+		    	String tdcol = " bgcolor=\"red\"" ;
+    		
+				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
+			
+			    html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name = "+o.getId() +"></input></td>");
+			
+				
+				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+				
+				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
+				
+				html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
+				
+				
+				
+				html.append("<td align=\"center\" "+(o.getPosremark()==1?tdcol:"") +">"+o.getPos() +"</td>");
+				
+				html.append("<td align=\"center\" "+(o.getSailidrecked()==1?tdcol:"") +">"+o.getSailId() +"</td>");
+				
+				html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
+				
+				if(o.getPhoneRemark()!=1){ 
+					tdcol = ""; 
+				}
+				
+				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				
+				
+				html.append("<td align=\"center\">"+ o.getCategory(1,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+o.getSendType(1,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSendCount(1,"</p>")+"</td> ");
+				
+				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getGifcount("</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
+				
+				html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
+				
+				html.append("<td align=\"center\">"+o.getOdate() +"</td>");
+
+				html.append("<td align=\"center\">"+o.getLocate()+"</td>");
+				
+				html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
+				
+				
+				html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
+				
+				html.append("<td align=\"center\"> "+o.getRemark() +"</td>");
+    		
+		    }
+		}
+		return html.toString();
+		 
+	}
    
    public static String getHtmlcallback(User user ,List<Order> list){
 	    HashMap<Integer,User> usermap = UserService.getMapId();
 	     
 		StringBuffer html = new StringBuffer();
-		String tdcol = " bgcolor=\"red\"" ;
+		
 		
 		if(null != list){
 	
 		    for(int i = 0;i<list.size();i++){
 		    	Order o = list.get(i);
-
+		    	String tdcol = " bgcolor=\"red\"" ;
+		    	
 				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
 			
 			    html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name = "+o.getId() +"></input></td>");
@@ -469,15 +626,13 @@ public class OrderService {
 	    
 		StringBuffer html = new StringBuffer();
 		
-		String tdcol = " bgcolor=\"red\"" ;
-		
+
 		if(null != list){
-			
-			
-			
+
 		    for(int i = 0;i<list.size();i++){
 		    	Order o = list.get(i);
-               
+		    	String tdcol = " bgcolor=\"red\"" ;
+		    	
 				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
 				  
 				 

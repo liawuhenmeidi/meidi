@@ -78,8 +78,10 @@ border-right:1px #000 solid;
 
 .a{ font-size:16px;}
  
-   /*#4F9D9D  */  
+   /*#4F9D9D  */   
 .asc{ background-color:#c4e1e1;} 
+ 
+.bsc{ background-color:#c4e1e1;} 
  
 .asc_enable{ background-color:#80ffff;}
 
@@ -108,7 +110,13 @@ border-right:1px #000 solid;
     line-height:15px;
 }
  
-
+#wrapsearch{
+    clear:both;
+    position:relative;
+    padding-top:30px;
+    overflow:auto;
+    height:400px;
+}
 
 
 

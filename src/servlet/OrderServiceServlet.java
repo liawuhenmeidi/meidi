@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,12 +57,18 @@ public class OrderServiceServlet extends HttpServlet {
     	String num = request.getParameter("num");
     	String page = request.getParameter("page");
     	String sort = request.getParameter("sort");
-    	String sear = request.getParameter("searched");
-    	if(StringUtill.isNull(sear)){
-    		sear = "";
-    	}else {  
+    	String search = request.getParameter("searched");
+    	String sear = "";
+    	if(!StringUtill.isNull(search)){ 
     		sear = HttpRequestUtill.getSearch(request);
     	}
+    	 
+    	//if(!StringUtill.isNull(sear)){  
+    		//Cookie cookie=new Cookie("sear",search);
+			//cookie.setMaxAge(10*60);  //设置过期之前的最长时间
+			//response.addCookie(cookie); 
+    	//}
+    	
     	
     	List<Order> list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
     	 
@@ -80,8 +87,12 @@ public class OrderServiceServlet extends HttpServlet {
     			html = OrderService.getHtmlcallback(user,list);
     		}else if(Integer.valueOf(statues) == Order.deliveryStatuesTuihuo){
     			html = OrderService.getHtmldeliveryStatuesTuihuo(user,list);
-    		}else if(Integer.valueOf(statues) == Order.come || Integer.valueOf(statues) == Order.go || Integer.valueOf(statues) == Order.charge){
+    		}else if(Integer.valueOf(statues) == Order.come){ 
     			html = OrderService.getHtmlcome(user,list); 
+    		}else if(Integer.valueOf(statues) == Order.go){ 
+    			html = OrderService.getHtmlgo(user,list); 
+    		}else if(Integer.valueOf(statues) == Order.charge){
+    			html = OrderService.getHtmlcharge(user,list); 
     		} 
     	}
     	//

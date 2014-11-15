@@ -69,20 +69,17 @@ width:50px
 <div id="headremind">
 <jsp:include page="headremind.jsp"/>
 </div>
- 
-<jsp:include page="search.jsp">
- <jsp:param name="page" value="" />
-	
-</jsp:include> 
 
 <div class="btn">
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input>  
 </div>
 
 </div > 
-<div style=" height:170px;">
+<div style=" height:130px;">
 </div>
 <br/>  
+ 
+ <%@ include file="searchOrderAll.jsp"%>
  
  <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>

@@ -75,7 +75,7 @@ function changes(id,name,statues){
 		<td align="left"><%=u.getUsername() %></td>
 		<td align="left"><%= u.getPhone()%></td>
 		<td align="left"><%=map.get(u.getUsertype()).getName() %></td>
-		<td align="left"><%=u.getCharge()==null?"暂无主管":u.getCharge()%></td>
+		<td align="left"><%=u.getChargeName()%></td>
 		<td align="left"><%=u.getBranchName() %></td>
 		<td align="left">
 		 <%

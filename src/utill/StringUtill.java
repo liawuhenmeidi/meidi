@@ -5,6 +5,8 @@ import group.Group;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -86,4 +88,22 @@ public class StringUtill {
    	 return jsObj.toString();
    }
     
+    public static String getStringNocn(String str){
+    	 String regEx = "[\\u4e00-\\u9fa5]"; 
+
+		 Pattern p = Pattern.compile(regEx);
+		 Matcher m = p.matcher(str);  
+         String s =m.replaceAll(""); 
+         s = s.replace("(", "").replace(")", "").replace("（","").replace("）", "").replaceAll("\\s*", "");
+		return s;
+		  
+    } 
+    
+    public static void main(String args[]){
+    	String str1 = "MRO201-4（智能型）净水机";
+    	String str2 = "空壳MRO201-4(豪华型）美的净水机 空壳样机";
+    	System.out.println(getStringNocn(str1));
+    	System.out.println(getStringNocn(str2)); 
+    	System.out.print(getStringNocn(str2).equals(getStringNocn(str1)));  
+    }
 }

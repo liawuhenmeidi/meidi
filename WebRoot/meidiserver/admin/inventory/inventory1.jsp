@@ -109,7 +109,10 @@ td {
     line-height:30px;
 }
 
-
+#head td 
+{ 
+    white-space:nowrap; 
+} 
 
 
 </style>
@@ -118,9 +121,9 @@ td {
 
 
 
-
-<script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/> 
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -316,40 +319,58 @@ function pandian(type,branchid){
   <jsp:param name="dmsn" value="" />
   </jsp:include>
 
-<!--   头部结束   -->
-<div class="main">   
+<!--   头部结束   --> 
    
   <input type="hidden" id="time"  value=""/>
   <input type="hidden" id="starttime"  value=""/>
   <input type="hidden" id="endtime"  value=""/>
   
-  <div class="weizhi_head">现在位置：<%=c.getName() %>库存
-   <%
-    if(UserManager.checkPermissions(user, Group.dealSend)){
-    	%>
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
-    <a href="javascript:distri();"> 查看分布</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-        仓库:   
-    <input type="text" name="branch" id="branch" value=""   />  
-    产品型号:     
-    
-    <input type="text" name="product" id="product" value=""   /> 
-    
-    <select id="counttyepe" name = "counttyepe">
-         <option value="-1">全部显示</option>
-         <option value=0 >只显示库存不为0</option>
-     </select> 
-      
-    <input type="button" name="" value="查询" onclick="add()"/>   
-			   <%
-	}  
-   %>
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>       
-   </div>  
-       
- </div>        
+	    <table width="100%" id="head">
+	        <tr > 
+	           <td>
+	                                         现在位置：<%=c.getName() %>库存
+	           </td>
+	               <%
+                   if(UserManager.checkPermissions(user, Group.dealSend)){
+    	          %>
+	              <td> 
+	              <a href="javascript:distri();"> 查看分布</a>
+	              
+	              </td>
+	              <td>
+	                                            仓库:<input type="text" name="branch" id="branch" value=""   /> 
+	              
+	              </td>
+	              <td>
+	                                     产品型号:<input type="text" name="product" id="product" value=""   /> 
+	              
+	              </td>
+	               <td>
+	               <select id="counttyepe" name = "counttyepe">
+				         <option value="-1">全部显示</option>
+				         <option value=0 >只显示库存不为0</option>
+     				</select> 
+	               
+	               
+	               </td>
+	           <td>
+	            <input type="button" name="" value="查询" onclick="add()"/>   
+	           </td>
+	          <%
+	            }  
+                %>
+                <td>
+                 <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>  
+                
+                </td>
+	        </tr>
+	         
+	    
+	    
+	    
+	    
+	    </table>
+          
      <div class="table-list" >
         
   <table width="100%"  cellspacing="1" id="table" >

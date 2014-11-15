@@ -48,18 +48,21 @@ if(action != null && action.equals("login")) {
 			response.addCookie(cookiep);
  
 			session.setAttribute("user", u);
-			
 			response.sendRedirect("user/welcom.jsp");
 
 			return ;
 		}
 		return ;
 	} catch (UserNotFoundException e) {
-		out.println(e.getMessage());
-		return;
+		session.setAttribute("message", e.getMessage());
+		response.sendRedirect("jieguo.jsp?type=loginresult");
+		//out.println(e.getMessage()); 
+		return;   
 	} catch (PasswordNotCorrectException e) {
-		out.println(e.getMessage());
-		return;
+		session.setAttribute("message", e.getMessage());
+		response.sendRedirect("jieguo.jsp?type=loginresult");
+		//out.println(e.getMessage());
+		return; 
 	}
 }
 String path = request.getContextPath();
@@ -110,7 +113,7 @@ function regist(){
 
 
 <!--  头 单种类  -->
-<div class="s_main_tit">用户登陆</div>
+<div class="s_main_tit">用户登陆<span class="qiangdan"><a href="javascript:void(0)" onclick="regist()" >注册</a></span></div>
  
  
 <!--  订单详情  -->
@@ -119,7 +122,7 @@ function regist(){
   <form action="dengluN.jsp" method="post">
 	<input type="hidden" name="action" value="login"/>
 	<table width="100%" class="s_main_table">
-  
+   
   <tr>
    <td width="10%"></td>
     <td width="30%">职工姓名</td>
@@ -131,15 +134,17 @@ function regist(){
     <td>密码</td>
     <td><input type="password" size="10" value="<%=password==null?"":password %>" name="password"/></td>
   </tr>
-  <tr>
-     <td></td>
-     <td> 
-    <input type="button"  name="" value="注册" onclick="regist()" /></td>
-    <td><input type="submit" value="登陆"/></td>
-    
-    
-  </tr>
   </table>
+  
+  <table> 
+ <tr> 
+   <td width="20%"></td>
+   <td width="60%"><input type="submit" style="font-size:20px;width:200px"   value="登陆"/></td>
+   <td width="20%"></td>
+  </tr> 
+ 
+</table>
+
     </form>
 	 <br/>
 
