@@ -274,7 +274,7 @@ public class UploadManager {
 	public static boolean saveUploadOrder(UploadOrder uploadOrder){
 		boolean result = false;
 		String sql = ""; 
-		sql = "update uploadorder set shop=?,posno=?,saletime=?,type=?,num=? where id = " + uploadOrder.getId();	
+		sql = "update uploadorder set shop=?,posno=?,saletime=?,type=?,num=?,saleprice=? where id = " + uploadOrder.getId();	
 		Connection conn = DB.getConn();
 		
 		PreparedStatement pstmt = DB.prepare(conn, sql);
@@ -284,6 +284,7 @@ public class UploadManager {
 				pstmt.setString(3, uploadOrder.getSaleTime());
 				pstmt.setString(4, uploadOrder.getType());
 				pstmt.setInt(5, uploadOrder.getNum());
+				pstmt.setDouble(6, uploadOrder.getSalePrice());
 				pstmt.executeUpdate();
 				result = true;
 				logger.info(sql);

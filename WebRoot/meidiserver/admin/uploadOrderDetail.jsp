@@ -31,6 +31,7 @@ try{
 		String saletime = request.getParameter("saletime");
 		String type = request.getParameter("saletype");
 		String num = request.getParameter("salenum");
+		String saleprice = request.getParameter("saleprice");
 		if(StringUtill.isNull(saletime)){
 			return;
 		}
@@ -40,6 +41,7 @@ try{
 		uo.setSaleTime(sdf1.format(sdf2.parse(saletime)));
 		uo.setType(type);
 		uo.setNum(Integer.parseInt(num));
+		uo.setSalePrice(Double.parseDouble(saleprice));
 		
 		if(UploadManager.saveUploadOrder(uo)){
 			out.print("<script>alert('操作成功!!');window.close()</script>"); 
@@ -158,6 +160,12 @@ function checkedd(){
 			<td align="center" >票面数量</td>
 			<td align="center" >
 	        <input type="text"  name="salenum" id="salenum" value="<%=uo.getNum() %>"  />
+			</td>
+		</tr>
+		<tr class="asc">	 
+			<td align="center" >价格</td>
+			<td align="center" >
+	        <input type="text"  name="saleprice" id="saleprice" value="<%=String.valueOf(uo.getSalePrice()) %>"  />
 			</td>
 		</tr>
 		<tr class="asc">
