@@ -92,12 +92,13 @@ public class SalaryExportServlet extends HttpServlet {
         
         Label label0  =   new  Label( 0 ,  0 ,  " 名称 " );
         Label label1  =   new  Label( 1 ,  0 ,  " 门店 " );
-        Label label2  =   new  Label( 2 ,  0 ,  " 导购员姓名 " );
-        Label label3  =   new  Label( 3 ,  0 ,  " 销售日期 " );
-        Label label4  =   new  Label( 4 ,  0 ,  " 销售型号  " );
-        Label label5  =   new  Label( 5 ,  0 ,  " 数量  " );
-        Label label6  =   new  Label( 6 ,  0 ,  " 单价 " );
-        Label label7  =   new  Label( 7 ,  0 ,  " 提成 " );
+        Label label2  =   new  Label( 2 ,  0 ,  " POS单号 ");
+        Label label3  =   new  Label( 3 ,  0 ,  " 导购员姓名 " );
+        Label label4  =   new  Label( 4 ,  0 ,  " 销售日期 " );
+        Label label5  =   new  Label( 5 ,  0 ,  " 销售型号  " );
+        Label label6  =   new  Label( 6 ,  0 ,  " 数量  " );
+        Label label7  =   new  Label( 7 ,  0 ,  " 单价 " );
+        Label label8  =   new  Label( 8 ,  0 ,  " 提成 " );
 
         //  将定义好的单元格添加到工作表中 
         sheet.addCell(label0);
@@ -108,22 +109,26 @@ public class SalaryExportServlet extends HttpServlet {
         sheet.addCell(label5);
         sheet.addCell(label6);
         sheet.addCell(label7);
-		
+        sheet.addCell(label8);
         
         
         Double tempSum = 0.0;
+        //由于输出总计导致的空行数
+        int tempSumBlank = 0 ;
+        
         
         for(int i = 0 ; i < lists.size() ; i ++ ){
-        	label0 = new Label(0,i+1,lists.get(i).getUploadOrder().getName());
-        	label1 = new Label(1,i+1,lists.get(i).getUploadOrder().getShop());
-        	label2 = new Label(2,i+1,lists.get(i).getUploadOrder().getSaleManName());
-        	label3 = new Label(3,i+1,lists.get(i).getUploadOrder().getSaleTime());
-        	label4 = new Label(4,i+1,lists.get(i).getUploadOrder().getType());
-        	label5 = new Label(5,i+1,String.valueOf(lists.get(i).getUploadOrder().getNum()));
-        	label6 = new Label(6,i+1,String.valueOf(lists.get(i).getUploadOrder().getSalePrice()));
-        	label7 = new Label(7,i+1,String.valueOf(lists.get(i).getSalary()));
+        	label0 = new Label(0,i+1+tempSumBlank,lists.get(i).getUploadOrder().getName());
+        	label1 = new Label(1,i+1+tempSumBlank,lists.get(i).getUploadOrder().getShop());
+        	label2 = new Label(2,i+1+tempSumBlank,lists.get(i).getUploadOrder().getPosNo());
+        	label3 = new Label(3,i+1+tempSumBlank,lists.get(i).getUploadOrder().getSaleManName());
+        	label4 = new Label(4,i+1+tempSumBlank,lists.get(i).getUploadOrder().getSaleTime());
+        	label5 = new Label(5,i+1+tempSumBlank,lists.get(i).getUploadOrder().getType());
+        	label6 = new Label(6,i+1+tempSumBlank,String.valueOf(lists.get(i).getUploadOrder().getNum()));
+        	label7 = new Label(7,i+1+tempSumBlank,String.valueOf(lists.get(i).getUploadOrder().getSalePrice()));
+        	label8 = new Label(8,i+1+tempSumBlank,String.valueOf(lists.get(i).getSalary()));
         	if(lists.get(i).getSalary() == null){
-        		label7 = new Label(7,i+1,"");
+        		label8 = new Label(8,i+1+tempSumBlank,"");
         	}else{
         		tempSum += lists.get(i).getSalary();
         	}
@@ -138,16 +143,19 @@ public class SalaryExportServlet extends HttpServlet {
             sheet.addCell(label5);	
             sheet.addCell(label6);	
             sheet.addCell(label7);	
+            sheet.addCell(label8);	
             
             if((i+1) < lists.size() && !lists.get(i+1).getUploadOrder().getShop().equals(lists.get(i).getUploadOrder().getShop())){
-        		label0 = new Label(8,i+1,"总计");
-        		label1 = new Label(9,i+1,String.valueOf(tempSum));
+            	tempSumBlank ++ ;
+            	label0 = new Label(9,i+1+tempSumBlank,"总计");
+        		label1 = new Label(10,i+1+tempSumBlank,String.valueOf(tempSum));
         		sheet.addCell(label0);
                 sheet.addCell(label1);
                 tempSum = 0.0;
         	}else if((i+1) == lists.size()){
-        		label0 = new Label(8,i+1,"总计");
-        		label1 = new Label(9,i+1,String.valueOf(tempSum));
+        		tempSumBlank ++ ;
+        		label0 = new Label(9,i+1+tempSumBlank,"总计");
+        		label1 = new Label(10,i+1+tempSumBlank,String.valueOf(tempSum));
         		sheet.addCell(label0);
                 sheet.addCell(label1);
                 tempSum = 0.0;
