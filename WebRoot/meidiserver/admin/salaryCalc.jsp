@@ -190,7 +190,7 @@ function del(id,obj){
 				<td align="center"><%=i+1 %></td>
 				<td align="center"><%=showSalaryModels.get(i).getShop() %></td>
 				<td align="center"><%=showSalaryModels.get(i).getCatergory() %></td>
-				<td align="center"><a href="#" onClick="javascript:window.open('salarymodelDetail.jsp?id=<%=showSalaryModels.get(i).getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" target="_BLANK"><%=showSalaryModels.get(i).getType() %></a></td>
+				<td align="center"><a href="#" onClick="javascript:window.open('salarymodelDetail.jsp?id=<%=showSalaryModels.get(i).getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"><%=showSalaryModels.get(i).getType() %></a></td>
 				<td align="center"><%=showSalaryModels.get(i).getPrintContent() %></td>
 				<td align="center"><%=showSalaryModels.get(i).getStartTime() %></td>
 				<td align="center"><%=showSalaryModels.get(i).getEndTime() %></td> 
