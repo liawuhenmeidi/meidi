@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,order.*,orderproduct.*,branchtype.*,branch.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
-<%
+<% 
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
 	long startTime = System.currentTimeMillis();
@@ -45,7 +45,7 @@
 	//查询条件提交后，左侧侧显示内容
 	if(selectBranchType != null && !selectBranchType.equals("") ){
 		//第一级选择的是否是all
-		if(selectBranchType.equals("all")){
+		if(selectBranchType.equals("all")){ 
 			unCheckedDBOrders = MatchOrderManager.getUnCheckedDBOrders();
 		}else{
 			

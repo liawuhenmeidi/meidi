@@ -35,7 +35,7 @@ Message message = MessageManager.getMessagebyoid(id);
 <script type="text/javascript" src="../js/calendar.js"></script> 
 <script type="text/javascript" src="../js/common.js"></script>
 
-  
+   
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
@@ -487,10 +487,9 @@ function checkedd(type){
 		  <tr class="asc"> 
 			<td align="center">备注</td>
 			  <td align="center"> 
-			  <% if(UserManager.checkPermissions(user, Group.dealSend) || UserManager.checkPermissions(user, Group.sencondDealsend)){
+			  <% if(UserManager.checkPermissions(user, Group.dealSend)){
 	        	  %>  
 	        	<textarea  id="remark" name="remark" ><%=o.getRemark() %></textarea>   
-			  
 			   <% }else {    
 			   %>   
 			     <%=o.getRemark() %>

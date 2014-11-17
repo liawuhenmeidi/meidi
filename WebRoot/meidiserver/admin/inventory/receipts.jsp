@@ -66,21 +66,23 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
 <table width="100%"  cellspacing="1" id="table">
 	<thead>
 		<tr>
-			<th align="left">序号</th>
-			<th align="left">日期</th>
-			<th align="left">出库单位</th>
-			<th align="left">入库单位</th>
-			<th align="left">状态</th> 
+			<th align="center">序号</th>
+			<th align="center">日期</th>
+			<th align="center">出库单位</th>
+			<th align="center">入库单位</th>
+			<th align="center">备注</th>
+			<th align="center">状态</th> 
 		</tr>
 	</thead>
       <% 
        for(int i=0;i<invetorylist.size();i++){ 
     	   Inventory invetory = invetorylist.get(i);
+    	  
     	   %>
     	   <tr id="<%=i%>" class="asc"  ondblclick="detail('<%=invetory.getId()%>')"  onclick="updateClass(this)"  >
-			<td align="left"><%=invetory.getId() %></td>
-			<td align="left"><%=invetory.getIntime() %></td>
-			<td align="left">
+			<td align="center"><%=invetory.getId() %></td>
+			<td align="center"><%=invetory.getIntime() %></td>
+			<td align="center">
 			 <% 
 			   if(branchmap != null){
 				   Branch branch = branchmap.get(invetory.getOutbranchid());
@@ -95,7 +97,7 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
 			 %>
 			
 			</td>
-			<td align="left">
+			<td align="center">
 			<%
 			   if(branchmap != null){
 				   Branch branch = branchmap.get(invetory.getInbranchid());
@@ -110,7 +112,8 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
 			//BranchService.getMap().get(invetory.getInbranchid()).getLocateName();
 			 %>
 			</td>
-			<td align="left">
+			<td align="center"><%= invetory.getRemark() %></td>
+			<td align="center">
 			<% if(invetory.getInstatues() == 1 && invetory.getOutstatues() == 1){
 				%>
 				双方已确认

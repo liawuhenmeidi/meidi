@@ -4,9 +4,9 @@
   
 <%   
 
-List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
-session.setAttribute("exportList", list); 
-count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
+//List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
+//session.setAttribute("exportList", list); 
+//count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -58,15 +58,15 @@ width:50px
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
 var id = "";
-var pages = "" ;
-var num = "";
 var oid ="<%=id%>";
 var pgroup = "<%=pgroup%>"; 
 var opstatues = "<%=opstatues%>";
 
-$(function () {
-	 
-	
+var type = "<%=Group.sencondDealsend%>";
+$(function () { 
+	 fixation();
+	// alert(type+"*"+statues+"*"+num+"*"+page+"*"+sort+"*"+sear);
+	 initOrder(type,statues,num,page,sort,sear);
 });
 
 function func(str){
@@ -217,33 +217,20 @@ function orderPrint(id,statues){
   <jsp:param name="" value="" />
   </jsp:include>   
       
-<jsp:include flush="true" page="page.jsp">
-    <jsp:param name="sear" value="<%=sear %>" /> 
-	<jsp:param name="page" value="<%=Page %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
+<jsp:include flush="true" page="../page.jsp">
     <jsp:param name="type" value="<%=Order.orderquery%>"/> 
 </jsp:include> 
 
 <div id="headremind">
 <jsp:include page="headremind.jsp"/>
 </div>
-
-<jsp:include page="search.jsp">
- <jsp:param name="page" value="<%=pageNum %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
-</jsp:include> 
-
 </div > 
-<div style=" height:170px;">
+<div style=" height:120px;">
 </div>
  
 <br/> 
-
-<div id="wrap">
+<%@ include file="searchOrderAll.jsp"%>  
+<div id="wrap"> 
 <table  cellspacing="1" id="table">
 		<tr id="th">  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  
@@ -289,279 +276,7 @@ function orderPrint(id,statues){
 			<td align="center">是否已回访</td>
             <td align="center">安装是否已结款</td>
 		</tr>
-	 
-<tbody> 
-  <% 
-   if(null != list){
-    for(int i = 0;i<list.size();i++){
-    	Order o = list.get(i);
-    	
-    	String col = "";
-    	if(i%2 == 0){
-    		col = "style='background-color:yellow'";
-    	}
-  %>
-   <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
-		<!--  <td align="center"><input type="checkbox" value="1" name="userid[]"/></td> 
-		
-		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>-->
-		
-		<td align="center"><a href="javascript:void(0)" onclick="adddetail('../dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"> 
-		<% if(o.getSendId() != 0){
-			if(usermap.get(Integer.valueOf(o.getSendId())) != null){
-		 %>
-		 <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
-		 <%
-		  }
-		}
-		 %>
-		
-		</td>
-		<td align="center"> 
-		<%=o.getSendtime()==null?"":o.getSendtime()
-		 %>
-		
-		</td>
-		<td align="center"> 
-		<% if(o.getInstallid() != 0 ){
-			 if(usermap.get(o.getInstallid()) != null){
-		 %> 
-		 <%=usermap.get(o.getInstallid()).getUsername() %>
-		 <%
-			 } 
-			}else if(o.getInstallid() == 0 && o.getDeliveryStatues() == 2){ 
-				if(usermap.get(o.getSendId()) != null){
-		 %>
-		    <%=usermap.get(o.getSendId()).getUsername() %>
-		 <%
-				}
-		  } 
-		 %>
-		</td>
-		 <td align="center"> 
-		
-		<%=o.getInstalltime()==null?"":o.getInstalltime()
-		 %> 
-		 </td>
-		 
-		<td align="center">
 
-     <%
-     int statues = OrderManager.getShifangStatues(o);
-     int shifang = -1 ;  
-     boolean query = true;
- 
-	if(statues != -1){
-		
-		if(opmap.get(statues) != null){
-
-			OrderPrintln orp = opmap.get(statues).get(o.getId());    
-			if(orp != null){
-				
-				query = false ;
-				shifang = orp.getStatues();
-				if(shifang == 4 ){
-					query = true ;
-				%>
-				   您的申请被拒绝
-				 <input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>	
-				<%
-				}else if(shifang == 0){
-				%> 
-				您已提交
-				<%
-				}
-			}else {
-				%>
-				<input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>	
-				<%
-			} 
-		}else {
-		     	query = true ;
-			%>
-			
-		<input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=statues%>','<%=user.getUsertype() %>','<%=o.getId() %>','<%=shifang%>')"></input>	
-			 <%
-		}
-	}
-     %> 
-   </td> 
-		 
-		<td align="center">
-    <%
-   int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId()) ; 
-    if(o.getReturnid() == 0 && releasedispatch != 0  && shifang != 0){ 
-        if(o.getDeliveryStatues() == 0 || 9 == o.getDeliveryStatues()){
- 
-    %>
-     <select class = "category" name="category"  id="songh<%=o.getId() %>" >
-     
-     <%
-       
-     %>
-     <option value="" ></option> 
-     
-     <option value="2" >送货+安装 </option>   
-     <option value="1" >只送货 </option>
-     
-      </select>  
-     <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','songhuo')"  value="确定"/>
-
-   
-   <%
-    }else if(1 == o.getDeliveryStatues()  || 10 == o.getDeliveryStatues()){
-        	   %>
-    		   <select class = "category" name="category"  id="songh<%=o.getId() %>" >
-                    <option value="4" >只安装 </option>  
-               </select>   
-              <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','songhuo')"  value="确定"/>
-    		<%  
-          }
-    }
-    	%>
-     
-    </td>
-    <td align="center"> 
-		 <% 
-   
-    if(o.getReturnstatuse() == 0 && o.getReturnid() != 0 && query){
-
-    %>
-    
-		<% if(o.getReturnid() != 0){
-			if(usermap.get(Integer.valueOf(o.getReturnid())) != null){
-		 %> 
-		 <%=usermap.get(Integer.valueOf(o.getReturnid())).getUsername() %>
-		 <%
-		  }
-		}  
-		 %>
-		
-		</td>
-    <td class="s_list_m"> 
-     <select class = "category" name="category"  id="return<%=o.getId() %>" >
-     <%
-       
-     %> 
-     <option value="1" >确认 </option> 
-      </select>  
-     <input type="button" onclick="change('return<%=o.getId()%>','<%=o.getId()%>','<%=Order.returns %>')"  value="确定"/>
-       </td>
-   <%
-    }else if(o.getReturnstatuse() == 1){   
-		%>  
-    <td class="s_list_m">商品已退</td> 
-   <%
-   }else {
-	   
-  %>
-  <td class="s_list_m"></td> 
-   <%
-   }
-   %>
-		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o) %>
-		</td>
-		
-		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
-
-		<td align="center" ><%=o.getCheck() %></td>
-		<td align="center"> 		  
-		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
-		</td> 
-		<% 
-		String tdcol = " bgcolor=\"red\"" ;
-		if(o.getPhoneRemark()!=1){
-			tdcol = "";
-		}
-		  %>   
-		<td align="center"><%=o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+  
-		                      o.getPhone1()
-		%>
-		
-		</td>  
-		     <td align="center"><%= o.getCategory(0,"</p>")%></td>  
-		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>  
-		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>   
-		<td align="center" ><%= o.getGifttype("</p>")%></td>  
-		<td align="center" ><%= o.getGifcount("</p>")%></td>  
-		<td align="center" ><%= o.getGifStatues("</p>")%></td>
-		
-		
-		<td align="center"><%=o.getOdate() %></td>
-		<td align="center"><%=o.getDealSendTime() %></td>
-		<td align="center"><%=o.getLocate()%></td>
-		<td align="center"><%=o.getLocateDetail() %></td>
-		
-		<td align="center">
-		  
-		<%
-		//打印状态     0  未打印   1 打印
-		if(0 == o.getPrintSatuesP()){
-		%>
-		 未打印  
-		<%
-         }else if(1 == o.getPrintSatuesP()){
-		%>
-		已打印
-		<%
-         }
-		%> 
-	 	       
-		</td> 
-		   
-		  <td align="center"> 
-		   <%
-		      if(o.getPrintSatuesP() == 1){
-
-		   %>
-		    <a href="javascript:void(0);" onclick="orderPrint('<%=o.getId()%>',1)">[打印]</a>
-		   <%
-	    	  
-	      }
-		   %>
-		</td>
-		
-		
-        <td align="center">   
-		    <%=o.getRemark() %>
-		</td>
-
-
-		 <td align="center"> 
-		<%=o.getStatuesPaigong() == 1 ?"是":"否"
-		 %> 
-		 </td>
-		
-	
-		<td align="center"> 
-		<%=o.getDeliverytype() == 2 ?"是":"否"
-		 %> 
-		 </td>
-		<td align="center">    
-		    <%=o.getStatuescallback()==0?"否":"是" %> 
-		</td> 
-		<td align="center">  
-		    <%
-		    String message = "";
-		    if(o.getStatuesinstall()==0){
-		    	message = "否";
-		    }else if(o.getStatuesinstall()==1){
-		    	message = "是";
-		    }else if(o.getStatuesinstall()==2){
-		    	message = "已忽略";
-		    } 
-		       
-		    %>  
-		    <%=message %>  
-		</td>
-    </tr>
-    <%}
-    
-    }%>
-</tbody>
 </table>
 
 

@@ -12,7 +12,7 @@ public class OrderPrintln {
   public static int modify = 0 ;      // 导购修改申请 
   public static int returns = 1 ;     //    导购退货 
   public static int release = 2 ;      // 安装公司释放     
-  
+  public static int anzhuangrelease = 11 ;      // 安装公司释放只安装   
   
   public static int salerelease = 3 ;  // 未送货释放                
   public static int salereleasesonghuo = 4 ;  //  已送货未安装释放  

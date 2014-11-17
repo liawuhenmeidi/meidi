@@ -175,6 +175,15 @@ public class Order {
   
   private String chargeInstalltime ;
   
+  private Ostatues ostatues ; 
+  
+  public Ostatues getOstatues(){
+	 if(null == ostatues){
+		 ostatues = new Ostatues(this);
+	 } 
+	 return ostatues;
+  }
+  
   
   public String getChargeDealsendtime() {
 	  if(StringUtill.isNull(chargeDealsendtime)){
@@ -963,6 +972,18 @@ public  String getprint(){
 	if(0 == this.getPrintSatues()){
 	   str = "未打印";
      }else if(1 == this.getPrintSatues()){
+	 str = "已打印";
+     }
+	return str ;
+	
+}
+
+public  String getprintp(){
+	//打印状态     0  未打印   1 打印
+	String str = "";
+	if(0 == this.getPrintSatuesP()){
+	   str = "未打印";
+     }else if(1 == this.getPrintSatuesP()){
 	 str = "已打印";
      }
 	return str ;

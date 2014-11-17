@@ -37,21 +37,17 @@ public class OrderServiceServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		Object object = new Object();
 		  
 		String method = request.getParameter("method");
 		
 		if("GETLIST".equals(method)){
 			GEtList(request,response);
 		}
-	
-		synchronized(object){
-			
-		}
 	}
 
     private void GEtList(HttpServletRequest request, HttpServletResponse response){
     	User user = (User)request.getSession().getAttribute("user");
+    	
     	String type = request.getParameter("type");
     	String statues = request.getParameter("statues");
     	String num = request.getParameter("num");
@@ -68,7 +64,6 @@ public class OrderServiceServlet extends HttpServlet {
 			//cookie.setMaxAge(10*60);  //设置过期之前的最长时间
 			//response.addCookie(cookie); 
     	//}
-    	
     	
     	List<Order> list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
     	 
@@ -88,14 +83,33 @@ public class OrderServiceServlet extends HttpServlet {
     		}else if(Integer.valueOf(statues) == Order.deliveryStatuesTuihuo){
     			html = OrderService.getHtmldeliveryStatuesTuihuo(user,list);
     		}else if(Integer.valueOf(statues) == Order.come){ 
-    			html = OrderService.getHtmlcome(user,list); 
+    			html = OrderService.getHtmlcome(user,list);  
     		}else if(Integer.valueOf(statues) == Order.go){ 
     			html = OrderService.getHtmlgo(user,list); 
-    		}else if(Integer.valueOf(statues) == Order.charge){
+    		}else if(Integer.valueOf(statues) == Order.charge){ 
     			html = OrderService.getHtmlcharge(user,list); 
+    		}    
+    	}else if(Integer.valueOf(type) == Group.sencondDealsend){
+    		
+    		if(Integer.valueOf(statues) == Order.orderDispatching){
+    			html = OrderService.getHtmlSecondorderDispatching(user,list);
+    		}else if(Integer.valueOf(statues) == Order.orderquery){
+    			html = OrderService.getHtmlorderquery(user,list); 
+    		}else if(Integer.valueOf(statues) == Order.porderDispatching){
+    			html = OrderService.getHtmlporderDispatching(user,list);  
+    		}else if(Integer.valueOf(statues) == Order.serach){
+    			html = OrderService.getHtmlpSearch(user,list);   
+    		}else if(Integer.valueOf(statues) == Order.charge){
+    			html = OrderService.getHtmlpcharge(user,list);   
+    		}else if(Integer.valueOf(statues) == Order.chargeall){
+    			html = OrderService.getHtmlpchargeall(user,list);   
+    		}else if(Integer.valueOf(statues) == Order.pcharge){
+    			html = OrderService.getHtmlppcharge(user,list);    
+    		}else if(Integer.valueOf(statues) == Order.callback){
+    			html = OrderService.getHtmlpcallback(user,list);    
     		} 
     	}
-    	//
+    	//Order.serach
     	Map<String,String> map = new HashMap<String,String>();
     	
     	map.put("count", count+"");

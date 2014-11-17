@@ -81,8 +81,11 @@ logger.info(pstmt);
 						order.setReckedremark(oldOrder.getReckedremark());
 						order.setSailidrecked(oldOrder.getSailidrecked());
 						OrderManager.save(user, order);  
-
+                        
+						
 					}  
+					
+					OrderPrintlnService.flag = true ;
 					return true ;
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -100,6 +103,7 @@ logger.info(pstmt);
 		Statement stmt = DB.getStatement(conn);
 		try {
 			DB.executeUpdate(stmt, sql);
+			OrderPrintlnService.flag = true ;
 			b = true;
 		} finally {
 			DB.close(stmt);
@@ -111,6 +115,7 @@ logger.info(pstmt);
 	public static String deleteByoid(int id) {
  
 		String sql = "delete from mdorderupdateprint where orderid = " + id;
+		OrderPrintlnService.flag = true ;
 	    return sql ;
 	}
 	
@@ -137,7 +142,7 @@ logger.info(pstmt);
 			for(int i=0;i<sqls.size();i++){
 				DB.executeUpdate(stmt, sqls.get(i));
 			}
-			
+			OrderPrintlnService.flag = true ;
 			b = true;
 		} finally {
 			DB.close(stmt);
@@ -153,6 +158,7 @@ logger.info(pstmt);
 		Statement stmt = DB.getStatement(conn);
 		try {
 			DB.executeUpdate(stmt, sql);
+			OrderPrintlnService.flag = true ;
 			b = true;
 		} finally {
 			DB.close(stmt);
@@ -175,6 +181,7 @@ logger.info(pstmt);
 				pstmt.setInt(5, order.getpGroupId());
 		logger.info(pstmt);		 
 				pstmt.executeUpdate();
+				OrderPrintlnService.flag = true ;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -242,10 +249,13 @@ logger.info(pstmt);
 	    
 	   public static OrderPrintln getOrderPrintln(Map<Integer,Map<Integer,OrderPrintln>> opmap,int type ,int orderid){
 		   OrderPrintln op = null ; 
-		   if(opmap.get(type) != null){
-				op = opmap.get(type).get(orderid);
-				 
-				 }  
+		   if(null != opmap){
+			   if(null != opmap.get(type) ){
+					op = opmap.get(type).get(orderid);
+					 
+					 } 
+		   }
+		    
 		   
 		   return op ;
 	   }
@@ -359,7 +369,7 @@ logger.info(sql);
 				e.printStackTrace();
 			} finally {
 				DB.close(stmt);
-				DB.close(rs);
+				DB.close(rs); 
 				DB.close(conn);
 			 }
 			return Order;

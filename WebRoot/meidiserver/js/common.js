@@ -100,10 +100,14 @@ function changecss(){
 function initOrder(type,statues,num,page,sort,sear){
 	 $("#page").val(page);
 	 $("#table .asc").remove();  
-	 $("#table .asc_enable").remove(); 
-	 $.ajax({ 
+	 $("#table .asc_enable").remove();
+	 var str = "";
+	 if("8" == type){
+		 str = "../";
+	 }
+	 $.ajax({  
 	        type: "post", 
-	         url: "OrderServiceServlet",    
+	         url: str+"OrderServiceServlet",    
 	         data:"method=GETLIST&type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+sear,
 	         dataType: "",   
 	         success: function (data) { 

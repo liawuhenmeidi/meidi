@@ -21,20 +21,25 @@ if(Order.orderDispatching == type || Order.neworder == type || Order.release == 
 }else if(Order.serach == type){
 	message = "查看订单页";  
 }else if( Order.porderDispatching== type){ 
+	type = Order.orderDispatching;
 	message = "网点派工"; 
-}else if( Order.pinstall== type){ 
+}else if( Order.pinstall== type){
+	type = Order.porderDispatching;
 	message = "安装派工"; 
 }else if( Order.pinstallprintln== type){ 
 	message = "安装打印"; 
 }else if(Order.pserach == type){
 	message = "网点查询"; 
+	type = Order.serach;
 }else if(Order.porderPrint == type){
 	message = "网点打印";  
 }else if(Order.callback == type){
 	message = "客户回访";  
 }else if(Order.pcharge == type){
+	type = Order.charge;
 	message = "安装结款";   
 }else if(Order.pchargepaisong == type){
+	type = Order.pcharge;
 	message = "送货结款"; 
 }else if(Order.deliveryStatuesTuihuo == type){
 	message = "退货订单页"; 
@@ -45,7 +50,7 @@ if(Order.orderDispatching == type || Order.neworder == type || Order.release == 
 }
 
 
-
+ 
 
 
 String path = request.getContextPath();
@@ -123,9 +128,14 @@ function pagelast(){
 	initOrder(type,statues,num,page,sort,sear);
 }
 
-function exportServelet(){  
+function exportServelet(){
+	if(8 == type){
+		window.location.href="../../Print?type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+"&sear="+sear;
+	}else {
+		window.location.href="../Print?type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+"&sear="+sear;
+	}
 	//alert(1); 
-	window.location.href="../Print?type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+"&sear="+sear;
+	
 }
  
 function initsearchOrder(){
@@ -218,7 +228,7 @@ function SearchDiv(){
    
    </td>
    <td>
-   <a href="javascript:void(0)" onclick="SearchDiv()"><img src="../image/search.png"  style="width:30px;height:30px;" alt="弹出广告图"/></a>
+   <a href="javascript:void(0)" onclick="SearchDiv()"><img src="<%=basePath %>/image/search.png"  style="width:30px;height:30px;" alt="弹出广告图"/></a>
    </td>
    <td>
    <!--<a href="<%=basePath %>Print"><font style="color:red;font-size:20px;" >导出数据</font> </a>  -->

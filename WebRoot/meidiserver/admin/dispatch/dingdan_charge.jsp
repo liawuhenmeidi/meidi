@@ -66,10 +66,12 @@ var num = "";
 var oid ="<%=id%>";
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";
+var type = "<%=Group.sencondDealsend%>";
 
-$(function () {
-	
-	
+$(function () { 
+	 fixation();
+	// alert(type+"*"+statues+"*"+num+"*"+page+"*"+sort+"*"+sear);
+	 initOrder(type,statues,num,page,sort,sear);
 });
 
 function func(str){
@@ -209,33 +211,22 @@ function adddetail(src){
   <jsp:param name="" value="" />
   </jsp:include>   
       
-<jsp:include flush="true" page="page.jsp">
-    <jsp:param name="sear" value="<%=sear %>" /> 
-	<jsp:param name="page" value="<%=Page %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
+<jsp:include flush="true" page="../page.jsp">
      <jsp:param name="type" value="<%=Order.pcharge%>"/> 
 </jsp:include> 
 
 <div id="headremind">
 <jsp:include page="headremind.jsp"/>
 </div>
- 
-<jsp:include page="search.jsp">
- <jsp:param name="page" value="<%=pageNum %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
-</jsp:include> 
 
 <div class="btn">
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input>  
 </div>
 
 </div > 
-<div style=" height:170px;">
+<div style=" height:130px;">
 </div>
+  <%@ include file="searchOrderAll.jsp"%>  
  
 <br/>  
 <div id="wrap">
@@ -272,117 +263,7 @@ function adddetail(src){
 		     
 		</tr>
 	
-<tbody>  
-  <% 
-   if(null != list){
-    for(int i = 0;i<list.size();i++){
-    	Order o = list.get(i);
-    	
-    	String col = "";
-    	if(i%2 == 0){
-    		col = "style='background-color:yellow'";
-    	}
-  %>
-   <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
-		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>
-		<td align="center"><%=o.getPrintlnid() == null?"":o.getPrintlnid()%></td>
-		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
-		<td align="center">
-		    
-                		  
-		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
-		
-		</td> 
-		<% 
-		String tdcol = " bgcolor=\"red\"" ;
-		if(o.getPhoneRemark()!=1){
-			tdcol = "";
-		}
-		  %>   
-		<td align="center"><%=o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+  
-		                      o.getPhone1()
-		%>
-		
-		</td>  
-		     
-		  <td align="center"><%= o.getCategory(0,"</p>")%></td>  
-		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>  
-		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>   
-		<td align="center" ><%= o.getGifttype("</p>")%></td>  
-		<td align="center" ><%= o.getGifcount("</p>")%></td>  
-		<td align="center" ><%= o.getGifStatues("</p>")%></td>
-		
-		
-		<td align="center"><%=o.getOdate() %></td>
-		<td align="center"><%=o.getLocate()%></td>
-		<td align="center"><%=o.getLocateDetail() %></td>
-		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o) %>
-		</td>
-		
-		
-		
-        <td align="center">   
-		    <%=o.getRemark() %>
-		</td>
- 
-		<td align="center"> 
-		<% if(o.getSendId() != 0){
-			if(usermap.get(Integer.valueOf(o.getSendId())) != null){
-		 %>
-		 <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
-		 <%
-		  }
-		}
-		 %>
-		
-		</td>
-	<td align="center"> 
-		<%=o.getSendtime()
-		 %> 
-		
-		</td>
-		 <td align="center"> 
-		<%=o.getStatuesPaigong() == 1 ?"是":"否"
-		 %> 
-		 </td>
-		<td align="center"> 
-		<% if(o.getInstallid() != 0){   
-		      
-			%> 
-		 <%=usermap.get(o.getInstallid()).getUsername() %>
-		 <%
-		  }else if(o.getInstallid() == 0 && o.getDeliveryStatues() == 2){
-			  if(usermap.get(o.getSendId()) != null){
-			  %> 
-			  
-			 <%=usermap.get(o.getSendId()).getUsername() %>
-			 
-			 <% 
-		  }  
-		  }
-		 %>
-		
-		</td>
-		<td align="center"> 
-		
-		<%=o.getInstalltime()==null?"空":o.getInstalltime()
-		 %> 
-		 </td>
-		
-		 <td align="center"> 
-		<%=o.getDeliverytype() == 2 ?"是":"否"
-		 %> 
-		 </td>
-		<td align="center">    
-		    <%=o.getStatuescallback()==0?"否":"是" %> 
-		</td>
-    </tr>
-    <%}
-    
-    }%>
-</tbody>
+
 </table>
 
 

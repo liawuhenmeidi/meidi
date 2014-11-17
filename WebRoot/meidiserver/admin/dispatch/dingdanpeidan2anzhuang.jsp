@@ -6,10 +6,11 @@ if(searchflag){
 	sort= "andate asc";
 }
 //list = OrderManager.getOrderlist(user,Group.sencondDealsend,str,sort);      
-List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.porderDispatching,num,Page,sort,sear);  
-session.setAttribute("exportList", list); 
-count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.porderDispatching,num,Page,sort,sear);  
- 
+//List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.porderDispatching,num,Page,sort,sear);  
+//session.setAttribute("exportList", list); 
+//count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.porderDispatching,num,Page,sort,sear);  
+
+opstatues = OrderPrintln.release; 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -61,17 +62,21 @@ width:50px
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
 var id = "";
-var pages = "" ;
-var num = "";
+sort= "andate asc";
 var oid ="<%=id%>";
-var pgroup = "<%=pgroup%>";
-var opstatues = "<%=opstatues%>";
+var pgroup = "<%=pgroup%>"; 
+var opstatues = "<%=opstatues%>"; 
 
-$(function () {
-	
+var type = "<%=Group.sencondDealsend%>";
+
+$(function () { 
+	 fixation();
+	// alert(type+"*"+statues+"*"+num+"*"+page+"*"+sort+"*"+sear);
+	 initOrder(type,statues,num,page,sort,sear);
 });
 
 function changes(oid,id,statues,printid){
+	
 	$.ajax({  
         type: "post", 
          url: "../../LogisticsServlet", 
@@ -136,6 +141,46 @@ function adddetail(src){
 	//window.location.href=src ;
 	window.open(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
+
+function winconfirm(str,str2,sendid){
+	if(sendid != 0){
+		alert("请联系安装员驳回");
+		return ;
+	}else {
+		if(4 == str2){
+	    	var question = confirm("您的驳回请求别拒绝，是否继续申请？");
+				if(question == 0){
+					return ;
+				}
+	    }else if(0 == str2){
+	    	alert("您已提交驳回请求");
+	    	return ; 
+	    }
+	}
+  //alert(str2);
+    
+	
+    question = confirm("你确认要驳回吗？");
+	
+	if (question != "0"){
+
+		$.ajax({    
+	        type:"post",  
+	         url:"../../user/server.jsp",
+	         //data:"method=list_pic&page="+pageCount,      
+	         data:"method=shifang&oid="+str+"&pGroupId="+pgroup+"&opstatues="+opstatues,
+	         dataType: "",  
+	         success: function (data) {    
+	          alert("驳回申请已提交成功");  
+	          window.location.href="dingdanpeidan2anzhuang.jsp";
+	           }, 
+	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	          alert("驳回申请失败"); 
+	            } 
+	           });
+	 }
+}
+
 
 function wconfirm(){
 	var question = confirm("你确认要执行此操作吗？");	
@@ -205,12 +250,7 @@ function seletall(all){
   <jsp:param name="" value="" />
   </jsp:include>   
       
-<jsp:include flush="true" page="page.jsp">
-    <jsp:param name="sear" value="<%=sear %>" /> 
-	<jsp:param name="page" value="<%=Page %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
+<jsp:include flush="true" page="../page.jsp">
     <jsp:param name="type" value="<%=Order.pinstall%>"/> 
 </jsp:include> 
 
@@ -218,24 +258,17 @@ function seletall(all){
 <jsp:include page="headremind.jsp"/>
 </div>
 
-<jsp:include page="search.jsp">
- <jsp:param name="page" value="<%=pageNum %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
-</jsp:include> 
-
 <div class="btn">
  <input type="submit" class="button" name="dosubmit" value="忽略确认" onclick="wconfirm()"></input>  
 </div>
 
 </div > 
-<div style=" height:170px;">
+<div style=" height:130px;">
 </div>
  
 <br/> 
 
-
+<%@ include file="searchOrderAll.jsp"%>  
 
 <div id="wrap">
 <table  cellspacing="1" id="table">
@@ -264,193 +297,16 @@ function seletall(all){
 			<td align="center">备注</td>
 			<td align="center">送货员</td>
 			<td align="center">送货日期</td>
-			
+			<td align="center">驳回文员</td>
 			<td align="center">安装员</td>
 			
 			    
 			<td align="center">安装员驳回请求</td>  
 		    <td align="center">驳回状态</td>   
-		     
+		      
 		</tr>
 	
-<tbody> 
-  <% 
-    
-    for(int i = 0;i<list.size();i++){
-    	Order o = list.get(i);
-    	
-    	String col = "";
-    	if(i%2 == 0){
-    		col = "style='background-color:yellow'";
-    	}
-  %>
-    <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
-		<!--  <td align="center"><input type="checkbox" value="1" name="userid[]"/></td> -->
-		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>
-		<td align="center"><a href="javascript:void(0)" onclick="adddetail('../dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getbranchName(o.getBranch())%></td>  
-		<td align="center"> 		  
-		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
-		</td> 
-		<%  
-		String tdcol = " bgcolor=\"red\"" ;
-		if(o.getPhoneRemark()!=1){
-			tdcol = "";
-		}
-		  %>   
-		<td align="center"><%=o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+  
-		                      o.getPhone1()
-		%>
-		
-		</td>  
-		   <td align="center"><%= o.getCategory(0,"</p>")%></td>  
-		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>  
-		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>   
-		<td align="center" ><%= o.getGifttype("</p>")%></td>  
-		<td align="center" ><%= o.getGifcount("</p>")%></td>  
-		<td align="center" ><%= o.getGifStatues("</p>")%></td>
-		
-		
-		<td align="center"><%=o.getOdate() %></td>
-		<td align="center"><%=o.getLocate()%></td> 
-		<td align="center"><%=o.getLocateDetail() %></td>
-		<td align="center">
-		<%=OrderManager.getDeliveryStatues(o) %>
-		</td>
-		<td align="center">
-		 
-		<%
-		//打印状态     0  未打印   1 打印
-		if(0 == o.getPrintSatuesP()){
-		%>
-		 未打印
-		<%
-         }else if(1 == o.getPrintSatuesP()){
-		%>
-		已打印
-		<%
-         }
-		%>
-		
-		
-		</td>
-		
-	
-		
-        <td align="center">   
-		    <%=o.getRemark() %>
-		</td>
- 
-		<td align="center"> 
-		<% if(o.getSendId() != 0){
-			if(usermap.get(Integer.valueOf(o.getSendId())) != null){
-		 %>
-		 <%=usermap.get(Integer.valueOf(o.getSendId())) == null?"":usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
-		 <%
-		  }
-		}
-		 %>
-		
-		</td>
-		<td align="center">
 
-		 <%=o.getSendtime() %>
-  
-		</td>  
-		
-		
-	
-		
-		<%  int releasedispatch = OrderPrintlnManager.getstatues(opmap, OrderPrintln.releasedispatch, o.getId()) ; %>
-		<td align="center">
-		<%  
-		if(releasedispatch != 0){
-		   if(o.getDeliveryStatues() == 1 || o.getDeliveryStatues() == 9 || o.getDeliveryStatues() == 10){
-			   
-		   if(o.getInstallid() == 0){ 
-		%>
-		<select class = "category" name="category"  id="songh<%=o.getId() %>" >
-		 <option value=""></option>
-		<%    
-               for(int j=0;j< listSend.size();j++){
-            	   User u = listSend.get(j);
-            	   String str1 = "";
-            	   if(u.getId() == o.getInstallid()){
-            		   str1 = "selected=selected" ;
-            		   
-            	   } 
-            	   %> 
-            	    <option value=<%=u.getId() %>  <%= str1%>> <%=u.getUsername() %></option>
-            	   <% 
-            	   
-                    }
-	                	%>
-         </select>  
-      
-         <input type="button" onclick="change('songh<%=o.getId()%>','<%=o.getId()%>','<%=Order.orderinstall%>')"  value="确定"/>
-		 <%}else {
-			    if(usermap.get(o.getInstallid()) != null){
-			    %>
-				<%=usermap.get(o.getInstallid()).getUsername() %>
-				<% 
-				   } 
-		           }  
-				 
-		   }else {
-			    if(usermap.get(o.getInstallid()) != null){
-		%>
-		<%=usermap.get(o.getInstallid()).getUsername() %>
-		<%
-		   } 
-		   }	
-		}
-		%>
-		</td> 
-		 
-		<td align="center">
-		<%      
-		     if(null != opmap.get(OrderPrintln.salereleaseanzhuang)){
-			 OrderPrintln orp = opmap.get(OrderPrintln.salereleaseanzhuang).get(o.getId()); 
-			 if(orp != null){
-         %> 
-		   <%=orp.getMessage() %>
-		    <input type="button" onclick="changes('<%=o.getId()%>','<%=orp.getId() %>','<%=OrderPrintln.comited%>','<%=o.getInstallid() %>')"  value="同意"/>
-		    <input type="button" onclick="changes('<%=o.getId()%>','<%=orp.getId() %>','<%=OrderPrintln.uncomited%>','<%=o.getInstallid() %>')"  value="不同意"/>
-		<%   
-		  }
-		  
-		   }%> 
-		</td>
-		<td align="center">      
-		   <%  
-		    if(opmap.get(OrderPrintln.salereleasesonghuo) != null){
-
-			 OrderPrintln orp = opmap.get(OrderPrintln.salereleasesonghuo).get(o.getId()); 
-			 if(orp != null){
-			  int sta = orp.getStatues(); 
-	          String sm = "";
-	          if(0 == sta){
-	        	  sm = "待确认";
-	          }else if(2== sta){
-	        	  sm = "申请已同意"; 
-	          }else if(4== sta){
-	        	  sm = "申请被拒绝";
-	          }  
-         %> 
-		   <%=sm %>
-		  <%
-	    	
-	       } 
-		 }%>
-		</td>
-
-		
-    </tr>
-    <%
-  
-    }%>
-</tbody>
 </table>
 
 

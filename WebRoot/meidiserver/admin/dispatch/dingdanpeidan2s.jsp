@@ -2,9 +2,9 @@
 <%@ include file="searchdynamic.jsp"%>  
 <%  
 
-List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.serach,num,Page,sort,sear);  
-session.setAttribute("exportList", list); 
-count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.serach,num,Page,sort,sear);  
+//List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.serach,num,Page,sort,sear);  
+//session.setAttribute("exportList", list); 
+//count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.serach,num,Page,sort,sear);  
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -56,17 +56,17 @@ width:50px
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
 var id = "";
-var pages = "" ;
-var num = "";
 var oid ="<%=id%>";
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";
 
-$(function () {
-	
-	
-});
+var type = "<%=Group.sencondDealsend%>";
 
+$(function () { 
+	 fixation();
+	// alert(type+"*"+statues+"*"+num+"*"+page+"*"+sort+"*"+sear);
+	 initOrder(type,statues,num,page,sort,sear);
+});
 function func(str){
     $(id).css("display","none");
 	$("#"+str).css("display","block");
@@ -194,31 +194,18 @@ function orderPrint(id,statues){
   <jsp:include flush="true" page="../head.jsp">
   <jsp:param name="" value="" />
   </jsp:include>   
-      
-<jsp:include flush="true" page="page.jsp">
-    <jsp:param name="sear" value="<%=sear %>" /> 
-	<jsp:param name="page" value="<%=Page %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
+       
+<jsp:include flush="true" page="../page.jsp">
     <jsp:param name="type" value="<%=Order.pserach%>"/>
 </jsp:include> 
 
 <div id="headremind">
 <jsp:include page="headremind.jsp"/>
 </div>
-
-<jsp:include page="search.jsp">
- <jsp:param name="page" value="<%=pageNum %>" />
-	<jsp:param name="numb" value="<%=numb %>" />
-	<jsp:param name="sort" value="<%=sort %>" />  
-	<jsp:param name="count" value="<%=count %>"/> 
-</jsp:include> 
-
 </div > 
-<div style=" height:170px;">
+<div style=" height:120px;">
 </div>
- 
+  <%@ include file="searchOrderAll.jsp"%>  
 <br/>  
 <div id="wrap">
 <table  cellspacing="1" id="table">
@@ -263,170 +250,6 @@ function orderPrint(id,statues){
            
 		</tr>
 	 
-<tbody> 
-  <% 
-   if(null != list){
-    for(int i = 0;i<list.size();i++){
-    	Order o = list.get(i);
-    	
-    	String col = "";
-    	if(i%2 == 0){
-    		col = "style='background-color:yellow'";
-    	}
-  %>
-   <tr id="<%=o.getId()+"ss" %>"  class="asc"  onclick="updateClass(this)"> 
-		<!--  <td align="center"><input type="checkbox" value="1" name="userid[]"/></td> 
-		
-		<td align="center" width="20"><input type="checkbox" value="" id="check_box" name = "<%=o.getId() %>"></input></td>-->
-		<td align="center"><a href="javascript:void(0)" onclick="adddetail('../dingdanDetail.jsp?id=<%=o.getId()%>')" > <%=o.getPrintlnid() == null?"":o.getPrintlnid()%></a></td>
-		<td align="center"><%=o.getbranchName(o.getBranch())%></td>
-
-		<td align="center" ><%=o.getCheck() %></td>
-		<td align="center"> 		  
-		<%=usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone() %>
-		</td> 
-		<% 
-		String tdcol = " bgcolor=\"red\"" ;
-		if(o.getPhoneRemark()!=1){
-			tdcol = "";
-		}
-		  %>   
-		<td align="center"><%=o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+  
-		                      o.getPhone1()
-		%>
-		
-		</td>  
-		     <td align="center"><%= o.getCategory(0,"</p>")%></td>  
-		  <td align="center" ><%=o.getSendType(0,"</p>")%></td>  
-		  <td align="center" ><%= o.getSendCount(0,"</p>")%></td>   
-		<td align="center" ><%= o.getGifttype("</p>")%></td>  
-		<td align="center" ><%= o.getGifcount("</p>")%></td>  
-		<td align="center" ><%= o.getGifStatues("</p>")%></td>
-		
-		
-		<td align="center"><%=o.getOdate() %></td>
-		<td align="center"><%=o.getDealSendTime() %></td>
-		<td align="center"><%=o.getLocate()%></td>
-		<td align="center"><%=o.getLocateDetail() %></td>
-		<td align="center">
-		<%=OrderManager.getOrderStatues(o)+OrderManager.getDeliveryStatues(o) %>
-		</td>
-		<td align="center">
-		 
-		<%
-		//打印状态     0  未打印   1 打印
-		if(0 == o.getPrintSatuesP()){
-		%>
-		 未打印  
-		<%
-         }else if(1 == o.getPrintSatuesP()){
-		%>
-		已打印
-		<%
-         }
-		%> 
-	 	       
-		</td> 
-		   
-		  <td align="center"> 
-		   <%
-		      if(o.getPrintSatuesP() == 1){
-
-		   %>
-		    <a href="javascript:void(0);" onclick="orderPrint('<%=o.getId()%>',1)">[打印]</a>
-		   <%
-	    	  
-	      }
-		   %>
-		</td>
-		
-		
-        <td align="center">   
-		    <%=o.getRemark() %>
-		</td>
-        <td align="center"> 
-		<%=o.getChargeDealsendtime()
-		 %>
-		
-		</td>
-		<td align="center"> 
-		<% if(o.getSendId() != 0){
-			if(usermap.get(Integer.valueOf(o.getSendId())) != null){
-		 %>
-		 <%=usermap.get(Integer.valueOf(o.getSendId())).getUsername() %>
-		 <%
-		  }
-		}
-		 %>
-		
-		</td>
-	    <td align="center"> 
-		<%=o.getSendtime()
-		 %>
-		
-		</td>
-		 <td align="center"> 
-		<%=o.getChargeSendtime()
-		 %> 
-		 </td>
-
-		<td align="center"> 
-		<% if(o.getInstallid() != 0 ){
-			 if(usermap.get(o.getInstallid()) != null){
-		 %> 
-		 <%=usermap.get(o.getInstallid()).getUsername() %>
-		 <%
-			 }
-			}else if(o.getInstallid() == 0 && o.getDeliveryStatues() == 2){ 
-				if(usermap.get(o.getSendId()) != null){
-		 %>
-		    <%=usermap.get(o.getSendId()).getUsername() %>
-		 <%
-				}
-		  } 
-		 %>
-		</td>
-		 <td align="center"> 
-		
-		<%=o.getInstalltime()==null?"空":o.getInstalltime()
-		 %> 
-		 </td>
-		<td align="center"> 
-		<%=o.getDeliverytype() == 2 ?"是":"否"
-		 %> 
-		 </td>
-		<td align="center">    
-		    <%=o.getStatuescallback()==0?"否":"是" %> 
-		</td> 
-		<td align="center">  
-		    <%
-		    String message = "";
-		    if(o.getStatuesinstall()==0){
-		    	message = "否";
-		    }else if(o.getStatuesinstall()==1){
-		    	message = o.getInstalltime()  ;
-		    }else if(o.getStatuesinstall()==2){
-		    	message = "已忽略";
-		    }
-		       
-		    %>  
-		    <%=message %>  
-		</td>
-    </tr>
-    <%}
-    
-    }%>
-</tbody>
 </table>
-
-
-     </div>
-
-
 </div>
-</div>
-
-
-</body>
 </html>
