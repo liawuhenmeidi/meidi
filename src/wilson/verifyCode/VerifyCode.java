@@ -18,6 +18,7 @@ public class VerifyCode {
 	int FLASE = 1;
 	int TRUE = 0;
 	int RETRY = 2;
+	int RETRYLONG = 3;
 	int OTHER = 3;
 	 
 	
@@ -71,7 +72,7 @@ public class VerifyCode {
             }else if(verifyCodeResult.contains("nginx") && verifyCodeResult.contains("302")){
             	return RETRY;
             }else{
-            	return 0;
+            	return RETRYLONG;
             }
         } catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

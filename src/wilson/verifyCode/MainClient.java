@@ -23,6 +23,8 @@ public class MainClient extends Thread{
 	private int codeInt = 3000;
 	private int codeNow = 0;
 	
+	private boolean longWait = false;
+	
 	
 	public int getCodeNow() {
 		return codeNow;
@@ -51,9 +53,19 @@ public class MainClient extends Thread{
 	
 	public void reTry(int code){
 		MainClient mc = new MainClient();
-		mc.setUserName("haoyueshangmao@163.com");
-		mc.setPassword("sn26524316");
-		mc.setSaleOrderNo("00015683400601");
+		mc.setUserName(MainClient.getCacheUsername());
+		mc.setPassword(MainClient.getCachePassword());
+		mc.setSaleOrderNo(mc.saleOrderNo);
+		mc.setCodeInt(code);
+		mc.start();
+	}
+	
+	public void reTryLong(int code) throws InterruptedException{
+		Thread.sleep(1000*60*60);
+		MainClient mc = new MainClient();
+		mc.setUserName(MainClient.getCacheUsername());
+		mc.setPassword(MainClient.getCachePassword());
+		mc.setSaleOrderNo(mc.saleOrderNo);
 		mc.setCodeInt(code);
 		mc.start();
 	}
@@ -91,7 +103,13 @@ public class MainClient extends Thread{
     	if(!tryCode(saleOrderNo,startCode,mc)){
     		if(getCodeNow() >= 0){
     			closeClient();
-        		reTry(this.getCodeNow());
+    			if(!longWait){
+    				reTry(this.getCodeNow());
+    			}else{
+    				reTryLong(this.getCodeNow());
+    			}
+    			longWait = false;
+        		
     		}
     		
 //    		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   失败 ，验证码测试到" + this.getCodeInt());
@@ -142,6 +160,11 @@ public class MainClient extends Thread{
         		return false;
         	}else if(verifycodeResult == 2){
         		//System.out.println("验证停止，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
+        		longWait = false;
+        		return false;
+        	}else if(verifycodeResult == 3){
+        		//System.out.println("验证停止，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
+        		longWait = true;
         		return false;
         	}else{
         		System.out.println("验证停止，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
@@ -219,6 +242,9 @@ public class MainClient extends Thread{
             	System.out.println("saleOrderNo = " + saleOrderNo + " other result, result = " + resultcode);
     			break;
     		}else if(resultcode == 2){
+    			this.setCodeNow(codeInt);
+    			break;
+    		}else if(resultcode == 3){
     			this.setCodeNow(codeInt);
     			break;
     		}else{
