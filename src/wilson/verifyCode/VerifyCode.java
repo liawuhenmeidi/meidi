@@ -2,9 +2,11 @@ package wilson.verifyCode;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -15,8 +17,12 @@ import org.apache.http.util.EntityUtils;
 public class VerifyCode {
 	int FLASE = 1;
 	int TRUE = 0;
-	int OTHER = 2;
-	public int VerifyCode(URI uri,String code,String omsOrderItemNo){
+	int RETRY = 2;
+	int OTHER = 3;
+	 
+	
+
+	public int VerifyCode(URI uri,String code,String omsOrderItemNo,MainClient mc){
         try {
         	HttpUriRequest verifyCodePost = RequestBuilder.post()
             .setUri(uri)
@@ -37,7 +43,7 @@ public class VerifyCode {
 //                }
 //            }
             
-            CloseableHttpResponse response2 = MainClient.getHttpclient().execute(verifyCodePost);
+            CloseableHttpResponse response2 = mc.getHttpclient().execute(verifyCodePost);
             
             try {
 
@@ -47,21 +53,25 @@ public class VerifyCode {
                 if (entity2 != null) {  
                 	verifyCodeResult = EntityUtils.toString(entity2, "UTF-8");
 //                    System.out.println("--------------------------------------");  
-//                    System.out.println("Response content: " + " code " + code + ":" + verifyCodeResult);  
+//                    System.out.println("Response conte	nt: " + " code " + code + ":" + verifyCodeResult);  
 //                    System.out.println("--------------------------------------");  
                 }  
                 EntityUtils.consume(entity2);
+                
+                
             } finally {
                 response2.close();
             }
             
-            
+            System.out.println(code + ":" + verifyCodeResult);
             if(verifyCodeResult.equals("success")){
-            	return 0;
-            }else if(verifyCodeResult.equals("false")){
-            	return 1;
+            	return TRUE;
+            }else if(verifyCodeResult.contains("校验码输入错误")){
+            	return FLASE;
+            }else if(verifyCodeResult.contains("nginx") && verifyCodeResult.contains("302")){
+            	return RETRY;
             }else{
-            	return 2;
+            	return 0;
             }
         } catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

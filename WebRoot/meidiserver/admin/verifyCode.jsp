@@ -27,7 +27,10 @@
 	if(confirm){
 		userName = request.getParameter("userName");
 		password = request.getParameter("password");
-
+		
+		userName = "haoyueshangmao@163.com"; 
+		password = "sn26524316"; 
+		
 		saleOrderNo = request.getParameter("saleOrderNo");	
 		msg = "正在尝试中，请15分钟后在苏宁系统中刷新";
 
@@ -40,7 +43,11 @@
 
 		return;
 	}
-
+	//不查询，只执行了
+	
+	/**
+	
+	
 
 	if(requestType != null && requestType.equals("search")){
 		msg = "";
@@ -78,13 +85,17 @@
 			response.sendRedirect(request.getRequestURI() + "?msg=" + URLEncoder.encode(msg));
 			return;
 		}
+		
 		if(!mc.select(saleOrderNo)){
 			msg = "查询失败，请核对订单号";
 			response.sendRedirect(request.getRequestURI() + "?msg=" + URLEncoder.encode(msg));
 			return;
 		}
+		
 		searchResult = mc.getSdi().getSearchResult().split(",");
 	}
+	
+	**/
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -139,7 +150,9 @@
     	if(requestType == null || requestType.equals("")){ 
     	%>
     	<tr align="center">
-    		<td align="center"><input type="submit" value="查询"/>
+    		<input type="hidden" name="confirm" value="confirm"/>
+    		<td align="center"><input type="submit" value="确认"/>
+    		<!--  <td align="center"><input type="submit" value="查询"/>-->
     	</tr>
     	<%
     	}
