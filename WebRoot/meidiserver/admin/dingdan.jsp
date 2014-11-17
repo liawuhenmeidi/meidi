@@ -215,7 +215,6 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,types
 			|| <%=OrderPrintln.release%> == typesearch || <%=OrderPrintln.releasedispatch%> == typesearch && 2 == Returnstatuse || 0 == typesearch)
 		   {
 		    question = confirm("请先打印");
-		
 			if (question != "0"){
 				var typesearch = "<%=Order.deliveryStatuesTuihuo%>";
 				$.ajax({  

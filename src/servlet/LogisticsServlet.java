@@ -17,6 +17,7 @@ import order.Order;
 import order.OrderManager;
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
+import orderPrint.OrderPrintlnService;
 
 import user.User;
 import utill.DBUtill;
@@ -106,6 +107,7 @@ public class LogisticsServlet extends HttpServlet {
 			} 
 		}else if(!(2+"").equals(devstatues) && !StringUtill.isNull(opid)){
 			String sql = "update  mdorderupdateprint set statues = 4 where id = " + opid+";";
+			OrderPrintlnService.flag = true ;
 			DBUtill.sava(sql);
 		}
 		
@@ -128,6 +130,7 @@ public class LogisticsServlet extends HttpServlet {
 			List<String> listsql = new ArrayList<String>();
 
 			String sql = "update mdorder set dealSendid = "+uid+" , printSatues = 1 , dealsendTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();		
+			
 			List<String> lists = InventoryBranchManager.chage(user, method, Integer.valueOf(uid), order);
 			listsql.add(sql);
 		    listsql.addAll(lists);
@@ -203,7 +206,7 @@ public class LogisticsServlet extends HttpServlet {
 			List<String> listsql = new ArrayList<String>();
 			
 			String sql1 = "delete from mdorderupdateprint where id = " + uid;
-			
+			OrderPrintlnService.flag = true ;
 			String sql = "update mdorder set installid = 0,printSatuesp = 0  where id = " + order.getId() ;
 
 			listsql.add(sql);
@@ -224,7 +227,7 @@ public class LogisticsServlet extends HttpServlet {
 				List<String> listsql = new ArrayList<String>();
 				 
 				String sql1 = "update  mdorderupdateprint set statues = 2 where id = " + uid+";";
-				 
+				OrderPrintlnService.flag = true ;
 				String sql2 =  "update mdorder set returnstatues = 2 , returntime = '"+TimeUtill.gettime()+"'  where id = " + order.getId() ;
 				  
 				listsql.add(sql1);  
@@ -243,7 +246,7 @@ public class LogisticsServlet extends HttpServlet {
 				List<String> listsql = new ArrayList<String>();
 				
 				String sql1 = "delete from mdorderupdateprint where id = " + uid;
-				
+				OrderPrintlnService.flag = true ;
 				String sql = "update mdorder set sendId = 0, printSatuesp = 0  where id = " + order.getId();
 				
 				List<String> lists = InventoryBranchManager.chage(user, "salereleasesonghuo", order.getDealsendId(), order);
@@ -267,7 +270,7 @@ public class LogisticsServlet extends HttpServlet {
 			List<String> listsql = new ArrayList<String>();
 			
 			String sql1 = "delete from mdorderupdateprint where id = " + opid;
-			
+			OrderPrintlnService.flag = true ;
 			String sql = "update mdorder set dealSendid = 0  , printSatues = 0  where id = " + order.getId();
 			
 			List<String> lists = InventoryBranchManager.chage(user, "shifang", order.getDealsendId(), order);
@@ -291,7 +294,7 @@ public class LogisticsServlet extends HttpServlet {
 				List<String> listsql = new ArrayList<String>();
 				
 				String sql1 = "delete from mdorderupdateprint where id = " + uid;
-				
+				OrderPrintlnService.flag = true ;
 				String sql = "update mdorder set returnid = 0, printSatuesp = 0  where id = " +order.getId();
 				
 				List<String> lists = InventoryBranchManager.chage(user, "salereleasereturn", order.getDealsendId(), order);
@@ -316,7 +319,7 @@ public class LogisticsServlet extends HttpServlet {
 						List<String> listsql = new ArrayList<String>();
 						
 						String sql2 = "delete from mdorderupdateprint where id = " + uid;
-						
+						OrderPrintlnService.flag = true ;
 						String sql = "update mdorder set deliveryStatues  = (mdorder.deliveryStatues + 3)  where id = " + order.getId();
 						
 						if(order.getOderStatus().equals(20+"")){ 
@@ -368,6 +371,7 @@ public class LogisticsServlet extends HttpServlet {
 						sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 ,  printSatuesp = 0 , sendTime = '"+TimeUtill.gettime()+"'  where id = " +order.getId();
 					}
 			    	String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl();
+			    	OrderPrintlnService.flag = true ;
 			    	List<String> lists = InventoryBranchManager.chage(user, method, order.getDealsendId(), order);
 				    listsql.addAll(lists); 
 			    	listsql.add(sql1);
@@ -425,7 +429,6 @@ public class LogisticsServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-  
 		// 调用核心业务类接收消息、处理消息
 		doGet(request,response);
 

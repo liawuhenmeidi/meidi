@@ -6,10 +6,8 @@
    
 <!--   头部开始   --> 
 <script type="text/javascript" src="../../js/calendar.js"></script> 
-
+<script type="text/javascript" src="../../js/cookie/jquery.cookie.js"></script>
 <script type="text/javascript">
-
-
 
 function checkedd(){ 
 	var list = $("input");
@@ -121,21 +119,6 @@ function checkedd(){
 	        <input type="text"  name="saleID" id="saleID" value=""  />
 			</td>
 		</tr>
-		<tr class="bsc">	 
-			<td align="center" >pos(厂送)单号</td>
-			<td align="center" >
-	        <input type="text"  name="pos" id="pos" value=""  />
-			</td>
-			<td align="center" >OMS订单号</td>
-			<td align="center" >
-	        <input type="text"  name="sailId" id="sailId" value=""  />
-			</td>
-			<td align="center" >验证码(联保单)</td>
-			<td align="center" >
-	        <input type="text"  name="checked" id="checked" value=""  />
-			</td>
-			
-		</tr>
 		
 		<tr class="bsc">
 		    <td align="center" >顾客姓名</td>
@@ -146,9 +129,9 @@ function checkedd(){
 			<td align="center" >
 	        <input type="text"  name="phone1" id="phone1" value=""  />
 			</td>
-			<td align="center" >安装网点</td>
+			<td align="center" >送货员</td>
 			<td align="center" >
-	        <input type="text"  name="dealSendid" id="dealSendid" value=""  />
+	        <input type="text"  name="sendId" id="sendId" value=""  />
 			</td>	 
 		</tr>
 		
@@ -176,9 +159,9 @@ function checkedd(){
 			<td align="center" >
 	        <input type="text"  name="sendtype" id="sendtype" value=""  />
 			</td> 
-			<td align="center" >是已发提成</td> 
+			<td align="center" >安装员</td> 
 			<td align="center" >
-	        <input type="text"  name="dealSendid" id="dealSendid" value=""  />
+	        <input type="text"  name="installid" id="installid" value=""  />
 			</td>	 
 		</tr>
 		
@@ -217,12 +200,25 @@ function checkedd(){
 			</td>	 
 		</tr>
 		<tr class="bsc">
-			<td align="center" >预约日期</td>
-			<td align="center" ><input class="date2" name="andate" type="text" id="andate" onclick="new Calendar().show(this);" /></td>
-			<td align="center" >送货地区</td>
-			<td align="center" > <input type="text"  name="locates" id="locates" value=""  /></td>
-			<td align="center" >送货地址</td>
-			<td align="center" ><input type="text"  name="locateDetail" id="locateDetail" value=""  /></td>
+		    <td align="center" >是否给送货员点结款</td>
+			<td align="center"  >
+			   是<input type="radio"  name="statuesPaigong"  value="1"  id="statuesPaigong1" />
+	                           否<input type="radio"  name="statuesPaigong"  value="0"  id="statuesPaigong0"/>
+	                           任意<input type="radio"  name="statuesPaigong"  value=""  id="statuesPaigong"/>
+			</td>
+			<td align="center" >是否给安装员点结款</td>
+			<td align="center"  >
+			   是<input type="radio"  name="statuesinstall"  value="1"  id="statuesinstall1" />
+	                           否<input type="radio"  name="statuesinstall"  value="0"  id="statuesinstall0"/>
+	                           任意<input type="radio"  name="statuesinstall"  value=""  id="statuesinstall"/>
+			</td>
+			<td align="center" >是否已回访</td>
+			<td align="center"  >
+			   是<input type="radio"  name="statuescallback"  value="1"  id="statuescallback1" />
+	                           否<input type="radio"  name="statuescallback"  value="0"  id="statuescallback0"/>
+	                           任意<input type="radio"  name="statuescallback"  value=""  id="statuescallback"/>
+			</td>
+		
 		</tr>
 		
 		<tr class="bsc">	 
@@ -238,38 +234,16 @@ function checkedd(){
 		</tr>
 		<tr class="bsc">	 
 			<td align="center" >送货状态</td>  
-			<td align="center" colspan=3>
+			<td align="center" colspan=5>
 	                           已送货<input type="checkbox"  name="deliveryStatues" value="1"  id="deliveryStatues1" />
 	                           已安装 <input type="checkbox"  name="deliveryStatues"  value="2" id="deliveryStatues2"/>
 	                          未送货  <input type="checkbox"  name="deliveryStatues"  value="0" id="deliveryStatues0"/>
 	                          已退货<input type="checkbox"  name="deliveryStatues"  value="-1" id="deliveryStatues-1"/>
 	                   
 			</td> 
-			<td>备注</td>
-			<td> <input type="text"  name="remark" id="remark" value=""  /></td>
 		</tr>
 		
-		<tr class="bsc">
-		    <td align="center" >厂送票是否已回</td>
-			<td align="center" >
-	                  是<input type="radio"  name="statues1"  value="1"  id="statues11"/>
-	                 否<input type="radio"  name="statues1"  value="0"  id="statues10"/>
-	                  任意<input type="radio"  name="statues1"  value=""  id="statues1" />
-			</td>
-			<td align="center" >厂送票是否已回</td>
-			<td align="center" >
-		        是<input type="radio"  name="statues2"  value="1"  id="statues21" />
-	                   否<input type="radio"  name="statues2"  value="0"  id="statues20"/>
-	                      任意<input type="radio"  name="statues2"  value=""  id="statues2" />
-	        
-			</td>
-			<td align="center" >厂送票是否已结款</td>
-			<td align="center" >
-	                  是<input type="radio"  name="statues3"  value="1"  id="statues31"/>
-	                   否<input type="radio"  name="statues3"  value="0"  id="statues30"/>
-	                   任意<input type="radio"  name="statues3"  value=""  id="statues3"/>
-			</td>	 
-		</tr>
+		
 
 		<tr class="bsc">
 		    <td width="33%" class="center" colspan="2"><input type="button" onclick="checkinit()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="清除" /></td>

@@ -127,7 +127,7 @@ body {
 
   </div> 
   
-  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  <br/><br/><br/><br/><br/><br/><br/><br/>
 <hr style="border : 1px dashed blue;" />
 
 <p>系统对比/销售单 删除</p>
