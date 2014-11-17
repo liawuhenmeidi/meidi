@@ -147,24 +147,23 @@ public class XLSReader {
 						break;
 					}
 					////暂时先去掉类别
-					//usm.setCatergory(sheet0.getCell(1,i).getContents().trim());
-					usm.setCatergory("无");
+					usm.setCatergory(sheet0.getCell(0,i).getContents().trim());
 					////型号
-					usm.setType(sheet0.getCell(0,i).getContents().trim());
+					usm.setType(sheet0.getCell(1,i).getContents().trim());
 					
 					
 					//判断提成内容
-					for(j = 1 ; j < sheet0.getColumns();j = j+2){
+					for(j = 2 ; j < sheet0.getColumns();j = j+2){
 						//第一个就是/的话，默认所有区间都是这个提成标准
 						if(j == 1){
-							if(sheet0.getCell(1,i).getContents().trim().equals("/")){
+							if(sheet0.getCell(2,i).getContents().trim().equals("/")){
 								tempString = "{\"";
 								tempString += "0-/";
 								tempString += "\":";
 								tempString += "\"";
 								//验证格式
-								String.valueOf(Double.parseDouble(sheet0.getCell(2,i).getContents().trim().replace("%", "")));
-								tempString += sheet0.getCell(2,i).getContents().trim();
+								String.valueOf(Double.parseDouble(sheet0.getCell(3,i).getContents().trim().replace("%", "")));
+								tempString += sheet0.getCell(3,i).getContents().trim();
 								tempString += "\"";
 								break;
 							}
