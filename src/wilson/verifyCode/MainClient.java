@@ -23,8 +23,6 @@ public class MainClient extends Thread{
 	private int codeInt = 3000;
 	private int codeNow = 0;
 	
-	private boolean longWait = false;
-	
 	
 	public int getCodeNow() {
 		return codeNow;
@@ -60,15 +58,6 @@ public class MainClient extends Thread{
 		mc.start();
 	}
 	
-	public void reTryLong(int code) throws InterruptedException{
-		Thread.sleep(1000*60*60);
-		MainClient mc = new MainClient();
-		mc.setUserName(MainClient.getCacheUsername());
-		mc.setPassword(MainClient.getCachePassword());
-		mc.setSaleOrderNo(mc.saleOrderNo);
-		mc.setCodeInt(code);
-		mc.start();
-	}
 	
 	public void run(){
 		try {
@@ -103,13 +92,7 @@ public class MainClient extends Thread{
     	if(!tryCode(saleOrderNo,startCode,mc)){
     		if(getCodeNow() >= 0){
     			closeClient();
-    			if(!longWait){
-    				reTry(this.getCodeNow());
-    			}else{
-    				reTryLong(this.getCodeNow());
-    			}
-    			longWait = false;
-        		
+    			reTry(this.getCodeNow());
     		}
     		
 //    		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   失败 ，验证码测试到" + this.getCodeInt());
@@ -153,18 +136,17 @@ public class MainClient extends Thread{
     		//System.out.println("开始验证时间 =" + new Date());
         	int verifycodeResult = verifycode(startCode,saleOrderNo,mc);
 
-    		if(verifycodeResult == 0){
+    		if(verifycodeResult == VerifyCode.TRUE){
         		System.out.println("验证完成，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
-        	}else if(verifycodeResult == 1){
+        	}else if(verifycodeResult == VerifyCode.FALSE){
         		//System.out.println("验证停止，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
         		return false;
-        	}else if(verifycodeResult == 2){
+        	}else if(verifycodeResult == VerifyCode.RETRY){
         		//System.out.println("验证停止，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
-        		longWait = false;
         		return false;
-        	}else if(verifycodeResult == 3){
+        	}else if(verifycodeResult == VerifyCode.RETRYLONG){
         		//System.out.println("验证停止，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
-        		longWait = true;
+        		Thread.sleep(1000*60*60);
         		return false;
         	}else{
         		System.out.println("验证停止，销售单号 = " + saleOrderNo + " verifycodeResult = " + verifycodeResult);
@@ -238,13 +220,13 @@ public class MainClient extends Thread{
             	while(codeStr.length() < 4){
             		codeStr = "0" + codeStr;
             	}
-    		}else if (resultcode == 0){
+    		}else if (resultcode == VerifyCode.TRUE){
             	System.out.println("saleOrderNo = " + saleOrderNo + " other result, result = " + resultcode);
     			break;
-    		}else if(resultcode == 2){
+    		}else if(resultcode == VerifyCode.RETRY){
     			this.setCodeNow(codeInt);
     			break;
-    		}else if(resultcode == 3){
+    		}else if(resultcode == VerifyCode.RETRYLONG){
     			this.setCodeNow(codeInt);
     			break;
     		}else{

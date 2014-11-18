@@ -43,8 +43,9 @@ public class SelectDeliverInform {
 //                    System.out.println("- " + cookies.get(i).toString());
 //                }
 //            }
-            
-            CloseableHttpResponse response2 = MainClient.getHttpclient().execute(selectPost);
+        	//暂时去掉错误的方法而已，这个类已经废弃不用了
+            MainClient mc = new MainClient();
+            CloseableHttpResponse response2 = mc.getHttpclient().execute(selectPost);
             
             try {
 

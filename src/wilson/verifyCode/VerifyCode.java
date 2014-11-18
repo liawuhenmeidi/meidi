@@ -15,11 +15,11 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.util.EntityUtils;
 
 public class VerifyCode {
-	int FLASE = 1;
-	int TRUE = 0;
-	int RETRY = 2;
-	int RETRYLONG = 3;
-	int OTHER = 3;
+	public static final int TRUE = 0;
+	public static final int FALSE = 1;
+	public static final int RETRY = 2;
+	public static final int RETRYLONG = 3;
+	public static final int OTHER = 3;
 	 
 	
 
@@ -68,7 +68,7 @@ public class VerifyCode {
             if(verifyCodeResult.equals("success")){
             	return TRUE;
             }else if(verifyCodeResult.contains("校验码输入错误")){
-            	return FLASE;
+            	return FALSE;
             }else if(verifyCodeResult.contains("nginx") && verifyCodeResult.contains("302")){
             	return RETRY;
             }else{
