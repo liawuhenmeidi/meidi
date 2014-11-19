@@ -62,7 +62,7 @@ public class PrintServlet extends HttpServlet {
 	/**
 	 * 确认请求来自微信服务器
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8"); 
@@ -71,7 +71,7 @@ public class PrintServlet extends HttpServlet {
 		User user = (User)request.getSession().getAttribute("user");
 		 SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMddHH");
          Date date1 = new Date();
-		String printlntime = df2.format(date1);
+		String printlntime = df2.format(date1); 
 		
 		request.setCharacterEncoding("utf-8");
 		String type = request.getParameter("type");
@@ -79,13 +79,12 @@ public class PrintServlet extends HttpServlet {
     	String num = request.getParameter("num");
     	String page = request.getParameter("page");
     	String sort = request.getParameter("sort");
-    	String sear = request.getParameter("searched");
-    	if(StringUtill.isNull(sear)){
-    		sear = "";
-    	}else {  
+    	String search = request.getParameter("searched");
+    	String sear = "";
+    	if(!StringUtill.isNull(search)){ 
     		sear = HttpRequestUtill.getSearch(request);
-    	}
-    	
+    	} 
+    	 
     	List<Order> list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
 		       
 		
@@ -162,7 +161,7 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellValue("开票日期");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
-				cell.setCellValue("安装日期");
+				cell.setCellValue("预约日期");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
 				cell.setCellValue("文员派单日期");
@@ -189,10 +188,10 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellValue("安装人员");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
-				cell.setCellValue("预约日期");
+				cell.setCellValue("安装时间");
 				cell.setCellStyle(style); 
 				cell = row.createCell((short) x++);
-				cell.setCellValue("派工公司");
+				cell.setCellValue("安装网点");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
 				cell.setCellValue("送货是否已结款");
@@ -277,7 +276,7 @@ public class PrintServlet extends HttpServlet {
 					}
 
 				}
-				System.out.println(count);
+				//System.out.println(count);
 				// 第六步，将文件存到指定位置
 				try    
 				{    

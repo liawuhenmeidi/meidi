@@ -29,13 +29,13 @@ width:50px
 }
 
 #table{  
-    width:2100px;
+    width:2200px;
      table-layout:fixed ;
 }
 #th{
     background-color:white;
     position:absolute;
-    width:2100px;
+    width:2200px;
     height:30px;
     top:0;
     left:0;
@@ -57,14 +57,32 @@ width:50px
 <!--   头部开始   -->
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
-<script type="text/javascript">
+
+
+<div style="position:fixed;width:100%;height:20%;">
+  <jsp:include flush="true" page="../head.jsp">
+  <jsp:param name="" value="" />
+  </jsp:include>   
+      
+<jsp:include flush="true" page="../page.jsp">
+     <jsp:param name="type" value="<%=Order.porderDispatching%>"/>   
+</jsp:include> 
+
+<div id="headremind">
+<jsp:include page="headremind.jsp"/>
+</div> 
+ 
+</div > 
+<div style=" height:120px;">
+</div>
+ <script type="text/javascript">
+sort= "andate asc";
 var pages = "" ;
 var uuid ="<%=id%>";
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";
 var usermapstr = <%=usermapstr%>;
 var type = "<%=Group.sencondDealsend%>";
-sort= "andate asc";
 
 $(function () { 
 	 fixation();
@@ -247,24 +265,6 @@ function adddetail(src){
 
 }
 </script>
-
-<div style="position:fixed;width:100%;height:20%;">
-  <jsp:include flush="true" page="../head.jsp">
-  <jsp:param name="" value="" />
-  </jsp:include>   
-      
-<jsp:include flush="true" page="../page.jsp">
-     <jsp:param name="type" value="<%=Order.porderDispatching%>"/>   
-</jsp:include> 
-
-<div id="headremind">
-<jsp:include page="headremind.jsp"/>
-</div> 
-
-</div > 
-<div style=" height:120px;">
-</div>
- 
 <br/> 
  <%@ include file="searchOrderAll.jsp"%>  
  
@@ -279,6 +279,7 @@ function adddetail(src){
 			
 			<td align="center">送货型号</td>
 			<td align="center">送货数量</td>
+			<td align="center" >体积</td>
 			<td align="center">赠品</td>
 			<td align="center">赠品数量</td>
 			<td align="center">赠品状态</td>

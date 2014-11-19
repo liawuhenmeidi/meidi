@@ -100,13 +100,9 @@ logger.info(sql);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {
 				while (rs.next()) {
-					Product p = new Product();
-					p.setId(rs.getInt("id"));
-					p.setCategoryID(rs.getInt("categoryID"));
-					p.setType(rs.getString("ptype"));
-					p.setName(rs.getString("name"));
+					Product p = getOrderStatuesFromRs(rs);
 					categorys.add(p);
-				}
+				} 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -292,15 +288,17 @@ logger.info(sql);
 		}
 
 		
-		public static void save(String type,String id ){
+		public static void save(String type,String id ,double size){
 			Connection conn = DB.getConn();
-			System.out.println("*****"+id);
-			String sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues) VALUES (null, null,?,?,0)";
+			//System.out.println("*****"+id);
+			String sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size) VALUES (null, null,?,?,0,?)";
 			PreparedStatement pstmt = DB.prepare(conn, sql);
 			try {
 				pstmt.setString(1, type);
-				pstmt.setString(2, id);
-				pstmt.executeUpdate();
+				pstmt.setDouble(2, size); 
+				pstmt.setString(3, id);  
+				
+				pstmt.executeUpdate(); 
 				ProductService.flag = true ;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -311,13 +309,16 @@ logger.info(sql);
 		 
 		}
 		
-		public static void update(String type,String id ){
+		public static void update(String type,String id,double size ){
+logger.info(size);			
 			Connection conn = DB.getConn();
-			String sql = "update mdproduct set ptype = ? where id = ?";
+			String sql = "update mdproduct set ptype = ? , size = ? where id = ?";
 			PreparedStatement pstmt = DB.prepare(conn, sql);
 			try {
 				pstmt.setString(1, type);
-				pstmt.setString(2, id);
+				pstmt.setDouble(2, size); 
+				pstmt.setString(3, id); 
+logger.info(pstmt); 				
 				pstmt.executeUpdate();
 				ProductService.flag = true ;
 			} catch (SQLException e) {
@@ -335,8 +336,9 @@ logger.info(sql);
 					p.setId(rs.getInt("id"));  
 					p.setCategoryID(rs.getInt("categoryID"));
 					p.setType(rs.getString("ptype"));  
-					p.setName(rs.getString("name")); 
+					p.setName(rs.getString("name"));  
 					p.setStatues(rs.getInt("pstatues"));
+					p.setSize(rs.getDouble("size")); 
 				} catch (SQLException e) { 
 					e.printStackTrace();
 				}

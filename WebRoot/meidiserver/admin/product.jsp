@@ -109,6 +109,7 @@ if(!StringUtill.isNull(categoryID)){
 		<!--	<th align="left">产品类别ID</th>  -->
 			<th align="left">产品序号</th>
 			<th align="left">产品型号</th>
+			<th align="left">体积</th>
 			<th align="left">修改</th>
 		</tr>
 	</thead>
@@ -125,9 +126,10 @@ if(!StringUtill.isNull(categoryID)){
 	<!-- 	<td align="left"><%=product.getId() %></td> -->
 		<td align="left"><%=i+1 %></td> 
 		<td align="left"><%=product.getType() %></td> 
+		<td align="left"><%=product.getSize() %></td> 
 		<td align="left"><a href="productAdd.jsp?productid=<%=product.getId() %>&method=update&categoryID=<%=categoryID%>">[修改]</a></td> 
     </tr>
-    <% } %>
+    <% } %> 
 </tbody>
 </table>
 <div class="btn">

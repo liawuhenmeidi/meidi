@@ -169,6 +169,9 @@ logger.info(message);
 		              
 					String saleType = request.getParameter("dingmatype");
 			        
+					String price = request.getParameter("dingmaprize");
+
+					
 					Product p = ProductService.gettypemap().get(saleType);
 					 
 					if(p != null){
@@ -184,7 +187,10 @@ logger.info(message);
 					o.setCategoryId(Integer.valueOf(categoryId));
 					o.setSaleType(saleType);
 					o.setCount(Integer.valueOf(dingmaproductNum));
-					o.setStatues(1); 
+					o.setStatues(1);  
+					if(!StringUtill.isNull(price)){ 
+						o.setPrice(Double.valueOf(price)); 
+					}
 					o.setCategoryName(categoryName); 
 					listp.add(o);
 				}
@@ -198,7 +204,9 @@ logger.info(message);
 					String categoryName = categorymap.get(Integer.valueOf(categoryId)).getName() ;
 					//String categoryname = CategoryManager.getCategoryMap()
 					String sendType = request.getParameter("ordertype"+producs[i]);
-			         
+					
+					String price = request.getParameter("prize"+producs[i]);
+					 
 					Product p = ProductService.gettypemap().get(sendType);
 					   
 					if(p != null){ 
@@ -216,6 +224,9 @@ logger.info(message);
 					o.setCount(Integer.valueOf(productNum));
 					o.setSendType(sendType);
 					o.setStatues(0); 
+					if(!StringUtill.isNull(price)){ 
+						o.setPrice(Double.valueOf(price)); 
+					} 
 					o.setCategoryName(categoryName); 
 					o.setSalestatues(Integer.valueOf(salestatues));
 					

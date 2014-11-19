@@ -31,14 +31,14 @@ position:fixed;
 
 #table{  
     
-     width:3700px;
+     width:4000px;
      table-layout:fixed ;
 } 
  
 #th{
     background-color:white;
     position:absolute;
-    width:3700px;
+    width:4000px;
     height:30px; 
     top:0;
     left:0;
@@ -198,10 +198,12 @@ function orderPrint(id,statues,type,deliveryStatues){
 			<td align="center">票面名称</td>
 			<td align="center">票面型号</td>
 			<td align="center">票面数量</td>
-			
+			<td align="center" >零售价</td> 
 			<td align="center">送货名称</td>
 			<td align="center">送货型号</td>
 			<td align="center">送货数量</td>
+			<td align="center" >零售价</td> 
+			<td align="center" >体积</td>
 			<td align="center">赠品</td>	
 			<td align="center">赠品数量</td>
 			

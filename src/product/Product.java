@@ -9,7 +9,14 @@ public class Product {
    private String name ;
    private int categoryID; // 类别
    private int statues ;  //  0  在销售   1  已无货
+   private double size;
    
+public double getSize() {
+	return size;
+}
+public void setSize(double size) {
+	this.size = size;
+}
 public int getStatues() {
 	return statues;
 }

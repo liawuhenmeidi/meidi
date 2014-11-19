@@ -1,4 +1,6 @@
 <%@ page language="java"  import="java.util.*,utill.*,order.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+
+
 <%
 request.setCharacterEncoding("utf-8");
 int type = Integer.valueOf(request.getParameter("type"));
@@ -15,7 +17,7 @@ if(Order.orderDispatching == type || Order.neworder == type || Order.release == 
 }else if(Order.dingma == type){ 
 	message = "调账确认页";
 }else if(Order.over == type){
-	message = "安装单位结款页";
+	message = "安装网点结款页";
 }else if(Order.orderPrint == type){
 	message = "文员打印页";
 }else if(Order.serach == type){
@@ -56,13 +58,13 @@ if(Order.orderDispatching == type || Order.neworder == type || Order.release == 
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/meidiserver/";
  
-%>
+%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>  
+<head>   
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/cookie/jquery.cookie.js"></script>
-
+ 
 <style type="text/css">
 td {
  align:center 
@@ -130,11 +132,11 @@ function pagelast(){
 
 function exportServelet(){
 	if(8 == type){
-		window.location.href="../../Print?type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+"&sear="+sear;
+		window.location.href="../../Print?type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+sear;
 	}else {
-		window.location.href="../Print?type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+"&sear="+sear;
+		window.location.href="../Print?type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+sear;
 	}
-	//alert(1); 
+	//alert(1);  
 	
 }
  

@@ -7,23 +7,28 @@ String categoryID = request.getParameter("categoryID");
 String method = request.getParameter("method");
 String action = request.getParameter("action");
 String productID = request.getParameter("productid");
-String name = "";
+String name = ""; 
+double size = 0 ;
+String type = "";
 if("update".equals(method)){
 	Product p = ProductService.getIDmap().get(Integer.valueOf(productID));
 	name = p.getType(); 
-}
-
+	size = p.getSize();
+	type = CategoryManager.getCategoryMap().get(p.getCategoryID()).getName();
+} 
+ 
 if("add".equals(action)){
 	String productName = request.getParameter("name");
-	if(!StringUtill.isNull(productName)){
-		ProductManager.save(productName,categoryID);
+	String sizes = request.getParameter("size");
+	if(!StringUtill.isNull(productName)){  
+		ProductManager.save(productName,categoryID,Double.valueOf(sizes));
 		response.sendRedirect("product.jsp?categoryID="+categoryID);
-	}
-}else if("update".equals(action)){
-	String productName = request.getParameter("name");
-	
-	if(!StringUtill.isNull(productName)){
-		ProductManager.update(productName,productID);
+	} 
+}else if("update".equals(action)){ 
+	String productName = request.getParameter("name"); 
+	String sizes = request.getParameter("size");
+	if(!StringUtill.isNull(productName)){ 
+		ProductManager.update(productName,productID,Double.valueOf(sizes));
 		response.sendRedirect("product.jsp?categoryID="+categoryID);
 	}
 }
@@ -33,18 +38,24 @@ if("add".equals(action)){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
-
+<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <script type="text/javascript">
 
  function check(){
 	
 	 var name = $("#name").val();
+	 var size = $("#size").val();
 	 //alert(name);
 	 if(name == "" || name == null || name == "null"){
 		 alert("产品型号不能为空"); 
 		 return false;
-	 }	 
+	 }
+	 
+	 if(isNaN(size)){
+		 alert("体积输入不正确");
+		 return false;
+	 }
 	 return true ;
  }
  
@@ -63,29 +74,26 @@ if("add".equals(action)){
    
      
  <!--       -->    
-     <div class="">    
-   <div class="weizhi_head">现在位置：类别:</div>     
-   <div class="main_r_tianjia">
-   </div> 
-     <div > 
+     <div class="">     
+   <div class="weizhi_head">现在位置：类别:<%=type %></div>     
+   <div class="main_r_tianjia">  
+   </div>    
+     <div >   
      <form action="productAdd.jsp"  method = "post"  onsubmit="return check()">
       <input type="hidden" name="action" value="<%=method%>"/>
       <input type="hidden" name="categoryID" value="<%=categoryID%>"/>
       <input type="hidden" name="productid" value="<%=productID%>"/>
-     <div class="juese_head">产品型号：  
-        <input type="text"  id="name" name="name"  value="<%=name%>"/>      
-       
+     <div >  
+        产品型号:<input type="text"  id="name" name="name"  value="<%=name%>"/> <br /> 
+        产品体积:<input type="text"  id="size" name="size"  value="<%=size%>"/>  <br />  
+        
     <input type="submit" value="提  交" />
      
      </div>
  </form>
-     
-     
-     
+
      </div>
 
-     
-     
      </div>
 
 
