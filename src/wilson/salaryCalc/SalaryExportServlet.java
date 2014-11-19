@@ -13,7 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.util.StringUtil;
+
 import user.UserManager;
+import utill.StringUtill;
 import wilson.matchOrder.AfterMatchOrder;
 import wilson.upload.UploadManager;
 import wilson.upload.UploadSalaryModel;
@@ -39,39 +42,26 @@ public class SalaryExportServlet extends HttpServlet {
 		String type = request.getParameter("type");
 		String startDateSTR = request.getParameter("startDate");
 		String endDateSTR = request.getParameter("endDate");
-		String name = request.getParameter("name");
+
 		SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
 		Date startDate = new Date();
         Date endDate = new Date();
         String printName = df1.format(new Date());
         List<SalaryResult> lists = new ArrayList<SalaryResult>();
         
-        
-		if(type != null && !type.equals("")){
-			if(type.equals("bydate")){
+		
+		String name = (String)request.getSession().getAttribute("exportSalaryName");
 				
-				
-				startDate = df1.parse(startDateSTR);
-		        endDate = df1.parse(endDateSTR);
-		        lists = SalaryCalcManager.getSalaryResultByDate(startDate,endDate);
-		        
-			}else if(type.equals("byname")){
-				
-				if(name != null && !name.equals("")){
-					if(!name.equals("all")){
-						lists = SalaryCalcManager.getSalaryResultByName(name);
-					}else{
-						lists = (List<SalaryResult>)request.getSession().getAttribute("allOrders");
-					}
-					
-				}else{
-					return;
-				}
-				
+		if(!StringUtill.isNull(name)){
+			if(!name.equals("all")){
+				lists = SalaryCalcManager.getSalaryResultByName(name);
+			}else{
+				lists = SalaryCalcManager.getSalaryResultByDate((Date)request.getSession().getAttribute("startDate"), (Date)request.getSession().getAttribute("endDate"));
 			}
 		}else{
 			return;
 		}
+	
         
         
 		//排序
@@ -204,25 +194,36 @@ public class SalaryExportServlet extends HttpServlet {
 		List<SalaryResult> result = new ArrayList<SalaryResult>();
 		
 		while(lists.size() != 0){
-			tempShop = lists.get(0).getUploadOrder().getShop();
+			tempShop = lists.get(0).getUploadOrder().getShop().trim();
 			sameShopList.add(lists.get(0));
 			lists.remove(0);
-			for(int i = 1 ; i < lists.size() ; i++){
-				if(lists.get(i).getUploadOrder().getShop().equals(tempShop)){
+			for(int i = 0; i < lists.size() ; i++){
+				//断点专用
+//				if(lists.get(i).getUploadOrder().getPosNo().equals("D00003013")){
+//					System.out.println("a");
+//					System.out.println(lists.get(i).getUploadOrder().getShop().trim());
+//					System.out.println(lists.get(i).getUploadOrder().getShop().trim().equals(tempShop));
+//				}
+				
+				if(lists.get(i).getUploadOrder().getShop().trim().equals(tempShop)){
 					sameShopList.add(lists.get(i));
 					lists.remove(i);
+					
+					i --;
 				}
 			}
 			tempShop = "";
 			
 			while(sameShopList.size() != 0){
-				tempName = sameShopList.get(0).getUploadOrder().getSaleManName();
+				tempName = sameShopList.get(0).getUploadOrder().getSaleManName().trim();
 				result.add(sameShopList.get(0));
 				sameShopList.remove(0);
-				for(int i = 1 ; i < sameShopList.size() ; i++){
-					if(sameShopList.get(i).getUploadOrder().getSaleManName().equals(tempName)){
+				for(int i = 0 ; i < sameShopList.size() ; i++){
+					if(sameShopList.get(i).getUploadOrder().getSaleManName().trim().equals(tempName)){
 						result.add(sameShopList.get(i));
 						sameShopList.remove(i);
+						
+						i --;
 					}
 				}
 				tempName = "";

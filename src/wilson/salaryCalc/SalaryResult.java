@@ -11,8 +11,8 @@ public class SalaryResult {
 	private int uploadOrderId = 0;
 	private int uploadSalaryModelid = 0;
 	
-	private UploadOrder uploadOrder;
-	private UploadSalaryModel salaryModel;
+	private UploadOrder uploadOrder = new UploadOrder();
+	private UploadSalaryModel salaryModel = new UploadSalaryModel();
 	private String calcTime = ""; //计算提成的时间
 	private Double salary = 0.0 ; //提成数字
 	private int status = 0 ; //预留状态位置

@@ -17,6 +17,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import wilson.upload.SalaryModelUpload;
 import wilson.upload.UploadManager;
 import wilson.upload.UploadOrder;
 import wilson.upload.UploadSalaryModel;
@@ -189,6 +190,69 @@ public class SalaryCalcManager {
 		}
 		return flag ;  
 	}
+	
+	public static boolean saveSalaryResult(SalaryResult input){
+		if(input.getId() > 0){
+			boolean flag = false;
+			Connection conn = DB.getConn();
+			boolean autoCommit = false;
+			String sql = "update uploadorder set name = ?,shop=?,posno=?,salesman=?,saletime=?,type=?,num=?,saleprice=? where id =" + input.getUploadOrderId();
+			PreparedStatement pstmt = DB.prepare(conn, sql);
+			
+			try {
+				//事务开始
+				logger.info("事务开始");
+				autoCommit = conn.getAutoCommit();
+				conn.setAutoCommit(false);
+
+				logger.info(sql);
+				UploadOrder uo = input.getUploadOrder();
+				
+				pstmt.setString(1, uo.getName());
+				pstmt.setString(2, uo.getShop());
+				pstmt.setString(3,uo.getPosNo());
+				pstmt.setString(4, uo.getSaleManName());
+				pstmt.setString(5, uo.getSaleTime());
+				pstmt.setString(6, uo.getType());
+				pstmt.setInt(7, uo.getNum());
+				pstmt.setDouble(8, uo.getSalePrice());
+				pstmt.executeUpdate();
+				
+				sql = "update salaryresult set salary = ? where id = " + input.getId();
+				logger.info(sql);
+				pstmt = DB.prepare(conn, sql);
+				pstmt.setDouble(1, input.getSalary());
+				pstmt.executeUpdate();
+				
+				
+				conn.commit();
+				conn.setAutoCommit(autoCommit);
+				
+				flag = true ;
+				logger.info("事务结束");
+			} catch (SQLException e) {
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					logger.info("回滚失败，请注意!!!");
+					e1.printStackTrace();
+				}
+				flag = false;
+				e.printStackTrace();
+			} finally {
+				DB.close(pstmt);
+				DB.close(conn);
+			}
+			return flag ;  
+			
+			
+			
+		}else{
+			return false;
+		}
+		
+		
+	}
 
 	
 	
@@ -266,6 +330,7 @@ public class SalaryCalcManager {
 		List<SalaryResult> result = new ArrayList<SalaryResult>();
 		Map<Integer,SalaryResult> tempSalaryResultMap = new HashMap<Integer,SalaryResult>();
 		
+		
 		String sql = "select * from salaryresult where status = 0";
 		
 		Connection conn = DB.getConn();
@@ -280,10 +345,12 @@ public class SalaryCalcManager {
 				tempResult.setUploadOrderId(rs.getInt("uploadorderid"));
 				tempResult.setUploadSalaryModelid(rs.getInt("uploadsalarymodelid"));
 				tempResult.setCalcTime(rs.getString("calctime"));
-				tempResult.setSalary(rs.getDouble("salary"));
+				tempResult.setSalary(rs.getDouble("salary"));	
 				tempResult.setStatus(rs.getInt("status"));
+				
 				tempSalaryResultMap.put(tempResult.getUploadOrderId(), tempResult);
 			}
+			
 			
 			sql = "select * from uploadorder where name = '" + name + "'";
 			//sql += " and checked != -1";
@@ -309,23 +376,85 @@ public class SalaryCalcManager {
 				tempResult = new SalaryResult();
 				if(tempSalaryResultMap.containsKey(tempOrder.getId())){
 					tempResult = tempSalaryResultMap.get(tempOrder.getId());
-					
 				}else{
+					//千万别改这里
 					tempResult.setSalary(null);
 				}
 				tempResult.setUploadOrder(tempOrder);
 				result.add(tempResult);
 
 			}
+			
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
+			result = new ArrayList<SalaryResult>();
+			return result;
 		} finally {
 			DB.close(rs);
 			DB.close(stmt);
 			DB.close(conn);
 		}
 		return result;
+	}
+	
+	public static SalaryResult getSalaryResultById(int id) {
+		SalaryResult result = new SalaryResult();
+		String sql = "select * from salaryresult where id = " + id;
+		
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadOrder tempOrder = new UploadOrder();
+		try {
+			rs.next();
+			result.setId(rs.getInt("id"));
+			result.setUploadOrderId(rs.getInt("uploadorderid"));
+			result.setUploadSalaryModelid(rs.getInt("uploadsalarymodelid"));
+			result.setCalcTime(rs.getString("calctime"));
+			result.setSalary(rs.getDouble("salary"));	
+			result	.setStatus(rs.getInt("status"));		
+			
+			sql = "select * from uploadorder where id = " + result.getUploadOrderId();
+			//sql += " and checked != -1";
+			logger.info(sql);
+			stmt = DB.getStatement(conn); 
+			rs = DB.getResultSet(stmt, sql);
+			while(rs.next()){
+				tempOrder = new UploadOrder();
+				tempOrder.setId(rs.getInt("id"));
+				tempOrder.setName(rs.getString("name"));
+				tempOrder.setSaleManName(rs.getString("salesman"));
+				tempOrder.setShop(rs.getString("shop"));
+				tempOrder.setPosNo(rs.getString("posno"));
+				tempOrder.setSaleTime(rs.getString("saletime"));
+				tempOrder.setType(rs.getString("type"));
+				tempOrder.setNum(rs.getInt("num"));
+				tempOrder.setSalePrice(rs.getDouble("saleprice"));
+				tempOrder.setFileName(rs.getString("filename"));
+				tempOrder.setChecked(rs.getInt("checked"));
+				tempOrder.setCheckedTime(rs.getString("checkedtime"));
+				tempOrder.setCheckOrderId(rs.getInt("checkorderid"));
+				result.setUploadOrder(tempOrder);
+			}
+			
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = new SalaryResult();
+			return result;
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		
+		List<SalaryResult> tmp = new ArrayList<SalaryResult>();
+		tmp.add(result);
+		tmp = initSalaryModel(tmp);
+		return tmp.get(0);
 	}
 	
 	public static List<SalaryResult> getSalaryResultByDate(Date startDate,
@@ -401,6 +530,72 @@ public class SalaryCalcManager {
 			DB.close(stmt);
 			DB.close(conn);
 		}
+		return result;
+	}
+	
+	public static List<SalaryResult> initSalaryModel(List<SalaryResult> input){
+		List<SalaryResult> result = input;
+		try{
+
+			List<Integer> uploadSalaryModelIdList = new ArrayList<Integer>();
+			String uploadSalaryModelIdListSTR = "";
+			
+			for(int i = 0 ; i < input.size() ; i++){
+				if(!uploadSalaryModelIdList.contains(input.get(i).getUploadSalaryModelid())){
+					uploadSalaryModelIdList.add(input.get(i).getUploadSalaryModelid());
+				}
+			}
+			
+			for(int i = 0 ; i < uploadSalaryModelIdList.size(); i ++){
+				uploadSalaryModelIdListSTR += uploadSalaryModelIdList.get(i) + ",";
+			}
+			
+			if(uploadSalaryModelIdListSTR.endsWith(",")){
+				uploadSalaryModelIdListSTR = uploadSalaryModelIdListSTR.substring(0,uploadSalaryModelIdListSTR.length()-1);
+			}
+
+			if("".equals(uploadSalaryModelIdListSTR)){
+				return result;
+			}
+			List<UploadSalaryModel> salaryModelList = new ArrayList<UploadSalaryModel>();
+			
+			String sql = "select * from uploadsalarymodel where id in (" + uploadSalaryModelIdListSTR + ")";
+			//sql += " and checked != -1";
+			logger.info(sql);
+			Connection conn = DB.getConn();
+			Statement stmt = DB.getStatement(conn); 
+			ResultSet rs = DB.getResultSet(stmt, sql);
+
+			UploadSalaryModel usm = new UploadSalaryModel();
+			while(rs.next()){
+				usm.setName(rs.getString("name"));
+				usm.setShop(rs.getString("shop"));
+				usm.setId(rs.getInt("id"));
+				usm.setStartTime(rs.getString("starttime"));
+				usm.setEndTime(rs.getString("endtime"));
+				usm.setCatergory(rs.getString("catergory"));
+				usm.setType(rs.getString("type"));
+				usm.setContent(rs.getString("content"));
+				usm.setCommitTime(rs.getString("committime"));
+				usm.setFileName(rs.getString("filename"));
+				usm.setStatus(rs.getInt("status"));
+				salaryModelList.add(usm);
+				usm = new UploadSalaryModel();
+			}
+			
+			//将salaryModel放到对应的salaryresult中去
+			for(int i = 0 ; i < salaryModelList.size() ; i ++){
+				for(int j = 0 ; j < result.size() ; j ++){
+					if(salaryModelList.get(i).getId() == result.get(j).getUploadSalaryModelid()){
+						result.get(j).setSalaryModel(salaryModelList.get(i));
+						break;
+					}		
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
 		return result;
 	}
 
