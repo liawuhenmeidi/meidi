@@ -75,8 +75,8 @@ public class OrderProductManager {
 			 for(int i=0;i<orders.size();i++){ 
 			   
 				OrderProduct order = orders.get(i); 
-				String sql = "insert into  mdorderproduct (id, categoryID ,sendtype,saletype, count,orderid ,statues ,categoryname,salestatues,subtime)" +  
-	                         "  values ( null, "+order.getCategoryId()+", '"+order.getSendType()+"', '"+order.getSaleType()+"',"+order.getCount()+","+id+","+order.getStatues()+",'"+order.getCategoryName()+"',"+order.getSalestatues()+",'"+TimeUtill.gettime()+"')";
+				String sql = "insert into  mdorderproduct (id, categoryID ,sendtype,saletype, count,orderid ,statues ,categoryname,salestatues,subtime,price)" +  
+	                         "  values ( null, "+order.getCategoryId()+", '"+order.getSendType()+"', '"+order.getSaleType()+"',"+order.getCount()+","+id+","+order.getStatues()+",'"+order.getCategoryName()+"',"+order.getSalestatues()+",'"+TimeUtill.gettime()+"',"+order.getPrice()+")";
 		logger.info(sql); 
 				sqls.add(sql); 
 				OrderProductService.flag = true ;
@@ -199,6 +199,7 @@ public class OrderProductManager {
 				p.setCategoryName(rs.getString("categoryname"));
 				p.setSalestatues(rs.getInt("salestatues")); 
 				p.setSubtime(rs.getString("subtime")); 
+				p.setPrice(rs.getDouble("price"));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

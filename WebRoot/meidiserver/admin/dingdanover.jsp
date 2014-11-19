@@ -52,8 +52,7 @@ width:50px
 <script type="text/javascript">
 var id = "";
 var type = "<%=Group.dealSend%>";
-sort= "phone1 asc";
-
+ 
 $(function () { 
 	 fixation();
 	 initOrder(type,statues,num,page,sort,sear);
@@ -175,6 +174,7 @@ function amortization(src){
             <td align="center">送货地址</td>
             <td align="center">送货状态</td>
 			<td align="center">备注</td>
+			<td align="center">结款金额</td>
 		</tr>
 
 </table> 

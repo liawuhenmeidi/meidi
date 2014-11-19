@@ -443,7 +443,7 @@ String[] branlist =  branchmessage.split("_");
         rows.push(row);
     	var yellow = "";
     	if(row%2 == 0){
-    		yellow = "#fff"; 
+    		yellow = "#c4e1e1"; 
     	}
     	 
     	var type = listo.typeName == null || listo.typeName == undefined ? "":listo.typeName;
@@ -457,7 +457,7 @@ String[] branlist =  branchmessage.split("_");
     	    	   '<table style="width:100%;background-color:'+yellow+'">'+
                    ' <tr>' +
                    '<td width="25%" class="center">送货类别<span style="color:red">*</span></td>'+
-                   '<td width="50%" class="center"><select class = "category" name="ordercategory'+row+'"  id="ordercategory'+row+'"  style="width:95% " '+disable+'>'; 
+                   '<td colspan="2" class="center"><select class = "category" name="ordercategory'+row+'"  id="ordercategory'+row+'"  style="width:95% " '+disable+'>'; 
                    for(var i=0;i<json.length;i++){
                 	   var ckeck = "";
                 	   var jo = json[i];  
@@ -471,28 +471,27 @@ String[] branlist =  branchmessage.split("_");
                    str += '</select> '+
                    ' </td>'+
                    '<td width="10%" class="center" id="andate'+row+'"></td> '+
-                   '<td width="5%" class="center" >天</td>' +
-                   '<td width="15%" class="center"></td>'+ 
+                   '<td width="10%" class="center" >天</td>' +
+                   '<td width="10%" class="center"></td>'+ 
                     ' </tr>' +
-                   '</table>'+
-                   '<table style="background-color:'+yellow+'">'+
-                   ' <tr>'+
+                   ' <tr>'+ 
                    ' <td width="25%" class="center">送货型号<span style="color:red">*</span></td> '+
-                   ' <td width="35%" class=""><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="'+type+'" style="width:90% " '+disable+' onclick="serch(type'+row+')"/><div id="aotu'+row+'"></div></td> ' +
-                   ' <td width="10%" class="center">送货数量</td> '+ 
+                   ' <td  colspan="2" class=""><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="'+type+'" style="width:90% " '+disable+' onclick="serch(type'+row+')"/><div id="aotu'+row+'"></div></td> ' +
+                   ' <td  colspan="3" class="center"></td> '+ 
+                   ' </tr>'+ 
+                   ' <tr>'+ 
+                   ' <td width="25%" class="center">零售价</td> '+
+                   ' <td width="35%" ><input type="text" name="prize'+row+'" id="prize'+row+'">  </td> '+
+                   ' <td width="10%" class="center">数量</td> '+ 
                    ' <td width="10%" class=""><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'" value="'+count+'" style="width:50%" '+disable+'/></td> '+
                    ' <td width="10%" class="center"><input type="button"  style="background-color:orange" name="" value="+" onclick="add(orderproductNum'+row+')" '+disable+'/></td> '+ 
                    ' <td width="10%" class="center"><input type="button"  style="background-color:orange" name="" value="-" onclick="subtraction(orderproductNum'+row+') "  '+disable+'/></td> '+ 
                    ' </tr>'+ 
-                   '<tr></tr>'+
-                   '<table>'+
-                   '  </table>'+
-              	 '  <table style="width:100%;background-color:'+yellow+'">'+
-              	 ' <tr>'+ 
+              	 ' <tr>'+  
               	  '  <td width="25%" class="center">送货状态</td>'+
-              	  '  <td width="50%" class="">'+
+              	  '  <td  colspan="2">'+
                 '  <select  name="productsta'+row+'" id="productsta'+row+'" style="width:90%; " '+disable+'>'+
-                   
+                    
                '  <option value="" id="-1"></option>    '+ 
                 ' <option value="1" id="1">需配送安装</option>'+
                 ' <option value="0" id="0">已自提</option>'+
@@ -501,7 +500,7 @@ String[] branlist =  branchmessage.split("_");
               	  '  </select>'+
 
               	   ' </td>'+ 
-              	   ' <td width="25%" class="center"><input type="button"   style="color:white;background-color:#0080FF" name="" value="删除" onclick="deletes(produc'+row+','+row+')" '+disable+'/></td>'+
+              	   ' <td  class="center" colspan="3"><input type="button"   style="color:white;background-color:#0080FF" name="" value="删除" onclick="deletes(produc'+row+','+row+')" '+disable+'/></td>'+
               	   '</tr>'+
               	'</table>'+
                    ' <hr>' + 
@@ -745,6 +744,15 @@ String[] branlist =  branchmessage.split("_");
  				 return false ;
  			 }
 		 }
+		 
+		 var price = $("#dingmaprize").val();
+		 if(price != null && price != ""){
+			 if(isNaN(price)){ 
+				 alert("体积输入不正确");
+				 return false;
+			 }
+		 }
+		 
 	 } 
 	    
 	 for(var i=0;i<rows.length;i++){
@@ -792,6 +800,14 @@ String[] branlist =  branchmessage.split("_");
 		 if(statues == "" || statues == null || statues == "null" ){
 			 alert("产品状态不能为空"); 
 			 return false ;
+		 }
+		 
+		 var price = $("#prize"+rows[i]).val();
+		 if(price != null && price != ""){
+			 if(isNaN(price)){ 
+				 alert("体积输入不正确");
+				 return false;
+			 }
 		 }
 	 }
  
@@ -960,10 +976,10 @@ String[] branlist =  branchmessage.split("_");
   
    <div id="dingma"  style= "display:none;">
    <hr>
-  <table style="width:100%;background-color:" > 
+  <table style="width:100%;" > 
   <tr>
   <td width="25%" class="center">票面类别<span style="color:red">*</span></td>
-  <td width="50%" class="center">
+  <td class="center" colspan="2">
   <select class="category" name="dingmaordercategory" id="dingmaordercategory" style="width:95% " <%=isdisabel %>>
   
   <% 
@@ -977,32 +993,36 @@ String[] branlist =  branchmessage.split("_");
   
   </select>  
   </td>
-  <td width="10%" class="center" id=""></td>
-  <td width="5%" class="center" ></td>  
-  <td width="10%" class="center" id="">&nbsp;</td> 
+  <td  class="center" colspan="3"></td>
   </tr>
 
   <tr> 
   <td width="25%" class="center">票面型号<span style="color:red">*</span></td> 
-   <td width="75%" class="">
+   <td  class="" width="35%" colspan="2">
    <input type="text" id="dingmatype" name="dingmatype"  onclick="serch(type1)"  <%=isdisabel %>>
    </td>
-   </tr>
-    <tr> 
-   <td width="25%" class="center">票面数量</td> 
-   <td width="25%" class=""><input type="text" id="dingmaproductNum" name="dingmaproductNum" value="1" style="width:50%" <%=isdisabel %>></td>  
-   <td width="25%" class="center"><input type="button" name="" style="background-color:orange" value="+" onclick="add(dingmaproductNum)"></td>  
-   <td width="25%" class="center"><input type="button" name="" style="background-color:orange" value="-" onclick="subtraction(dingmaproductNum)"></td>  
+   <td  class="center" colspan="3"></td> 
+     </tr>
+   <tr >
+    <td width="25%" class="center">零售价</td>
+    <td  class="" width="35%">
+   <input type="text" id="" name="dingmaprize"> 
+   </td>
+    <td width="10%" class="center">数量</td> 
+   <td width="10%" class=""><input type="text" id="dingmaproductNum" name="dingmaproductNum" value="1" style="width:50%" <%=isdisabel %>></td>  
+   <td width="10%" class="center"><input type="button" name="" style="background-color:orange" value="+" onclick="add(dingmaproductNum)"></td>  
+   <td width="10%" class="center"><input type="button" name="" style="background-color:orange" value="-" onclick="subtraction(dingmaproductNum)"></td>  
+    
    </tr>
    </table>
    </div>
-   
+    
  <div id="dingma_no"  style= "display:none;">
   <table style="width:100%;background-color:"> 
   <tbody>
   <tr>
   <td width="25%" class="center">送货类别<span style="color:red">*</span></td>
-  <td width="50%" class="center">
+  <td  class="center" colspan="2">
   <select class="category" name="ordercategory0" id="ordercategory0" style="width:95% " <%=isdisabel %>>
   
   <%
@@ -1017,38 +1037,44 @@ String[] branlist =  branchmessage.split("_");
   </select>  
   </td>
   <td width="10%" class="center" id="andate0"></td>
-  <td width="5%" class="center" >天</td>  
-  <td width="10%" class="center" id="">&nbsp;</td> 
+  <td width="10%" class="center"  >天</td>
+  <td width="10%" class="center" ></td>    
   </tr>
     <tr>
    <td width="25%" class="center">送货型号<span style="color:red">*</span></td> 
-   <td width="75%" class="">
+   <td  class="" colspan="2">
    <input type="text" name="ordertype0" id="ordertype0" class="cba" <%=isdisabel %>/> 
     </td> 
+    
+    <td  class="" colspan="3"></td> 
     </tr>
-    <tr>
-   <td width="25%" class="center">送货数量</td>  
-   <td width="25%" class=""><input type="text" id="orderproductNum0" name="orderproductNum0" value="1" style="width:50%" <%=isdisabel %>></td>  
-   <td width="25%" class="center" ><input type="button" style="background-color:orange" name="" value="+" onclick="add(orderproductNum0)" <%=isdisabel %>></td>  
-   <td width="25%" class="center" ><input type="button" style="background-color:orange" name="" value="-" onclick="subtraction(orderproductNum0) " <%=isdisabel %>></td>  
-   </tr>     
-   </table>  
-  <table style="width:100%;background-color:"> 
-              	 <tr>
-               	  <td width="25%" class="center">送货状态</td>
-              	  <td width="50%" class=""> 
-              	  <select  name="productsta0"   id="productsta0"  style="width:90%; " <%=isdisabel %>>
-	              	 <option value="" id=""></option>       
-	              	 <option value="1" id="1">需配送安装</option>    
-	              	 <option value="0" id="0">已自提</option>     
-	              	 <option value="2" id="2">只安装(师傅门店提货)</option>   
-	              	 <option value="3" id="3">只安装(顾客已提)</option>  
-        
-              	 </select>
+    
+   <tr>
+    <td width="25%" class="center">零售价</td>
+    <td  class="" width="35%" >
+   <input type="text" name="prize0" id="prize0">
+   </td>
+   <td width="10%" class="center">数量</td>  
+   <td width="10%" class=""><input type="text" id="orderproductNum0" name="orderproductNum0" value="1" style="width:50%" <%=isdisabel %>></td>  
+   <td width="10%" class="center" ><input type="button" style="background-color:orange" name="" value="+" onclick="add(orderproductNum0)" <%=isdisabel %>></td>  
+   <td width="10%" class="center" ><input type="button" style="background-color:orange" name="" value="-" onclick="subtraction(orderproductNum0) " <%=isdisabel %>></td>  
+  
+   </tr>    
+   	 <tr>
+    	  <td width="25%" class="center">送货状态</td>
+   	  <td  class="" colspan="2"> 
+   	  <select  name="productsta0"   id="productsta0"  style="width:90%; " <%=isdisabel %>>
+    	 <option value="" id=""></option>       
+    	 <option value="1" id="1">需配送安装</option>    
+    	 <option value="0" id="0">已自提</option>     
+    	 <option value="2" id="2">只安装(师傅门店提货)</option>   
+    	 <option value="3" id="3">只安装(顾客已提)</option>  
 
-              	 </td> 
-              	 <td width="25%" class="center"></td>
-              	   </tr>
+   	 </select>
+
+   	 </td> 
+   	 <td  class="center" colspan="3"></td>
+   	   </tr>
               	</table>
     <hr>
    </div>

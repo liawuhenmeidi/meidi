@@ -5,7 +5,7 @@
 <body style="scoll:no">
    
 <!--   头部开始   --> 
-<script type="text/javascript" src="../../js/calendar.js"></script> 
+<script type="text/javascript" src="../js/calendar.js"></script> 
 
 <script type="text/javascript">
 
@@ -13,7 +13,6 @@
 
 function checkedd(){ 
 	var list = $("input");
-	var sear = "";
 	var oderStatus = "";
 	var deliveryStatues = "";
 	for(var i=0;i<list.length;i++){
@@ -93,7 +92,7 @@ function checkedd(){
 				}
 			}
 		} 
-
+    sear = "";
  }
  
  function tuichu(){
@@ -168,7 +167,7 @@ function checkedd(){
 		</tr>
 		
 		<tr class="bsc">
-		    <td align="center" >送货品类</td>
+		    <td align="center" >送货名称</td>
 			<td align="center" >
 	        <input type="text"  name="categoryname" id="categoryname" value=""  />
 			</td>
@@ -183,9 +182,9 @@ function checkedd(){
 		</tr>
 		
 		<tr class="bsc">
-		<td align="center" >票面品类</td>
+		<td align="center" >票面名称</td>
 			<td align="center" >
-	        <input type="text"  name="salenum" id="salenum" value=""  />
+	        <input type="text"  name="categoryname" id="categoryname" value=""  />
 			</td>	
 		<td align="center" >票面型号</td>
 			<td align="center">
@@ -256,7 +255,7 @@ function checkedd(){
 	                 否<input type="radio"  name="statues1"  value="0"  id="statues10"/>
 	                  任意<input type="radio"  name="statues1"  value=""  id="statues1" />
 			</td>
-			<td align="center" >厂送票是否已回</td>
+			<td align="center" >厂送票是否已消</td>
 			<td align="center" >
 		        是<input type="radio"  name="statues2"  value="1"  id="statues21" />
 	                   否<input type="radio"  name="statues2"  value="0"  id="statues20"/>

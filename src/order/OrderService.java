@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
@@ -16,7 +19,9 @@ import user.UserService;
 import branch.BranchService;
 
 public class OrderService {
-	
+	 
+	protected static Log logger = LogFactory.getLog(OrderService.class);
+	 
 	public static String getBranchName(int id){
 		if(BranchService.getMap().containsKey(id)){
 			return BranchService.getMap().get(id).getLocateName();
@@ -58,12 +63,12 @@ public class OrderService {
 							tdcol = ""; 
 
 						}
-						
+			    		
 						html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
 						html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\"  id=\"check_box\" name = "+o.getId()+ "></input></td>");
-						html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+o.getPrintlnid() == null?"":o.getPrintlnid()+"</a></td>");
-						html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getdealsendName()+"</td>");
-						if(o.getPhoneRemark()!=1){ 
+						html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+						html.append("<td align=\"center\">"+o.getdealsendName()+"</td>");
+						if(o.getPhoneRemark()!=1){   
 							tdcol = ""; 
 						}
 						html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+"<p><font color=\""+tdcol+"\"> "+o.getPhone1()+"</td>  "); 
@@ -82,6 +87,7 @@ public class OrderService {
 				}
 		    }
 		}
+		//logger.info(html.toString());
 		return html.toString();
 		 
 	}
@@ -146,8 +152,6 @@ public class OrderService {
 				
 				html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
 				
-				
-				
 				html.append("<td align=\"center\" "+(o.getPosremark()==1?tdcol:"") +">"+o.getPos() +"</td>");
 				
 				html.append("<td align=\"center\" "+(o.getSailidrecked()==1?tdcol:"") +">"+o.getSailId() +"</td>");
@@ -167,12 +171,18 @@ public class OrderService {
 				html.append("<td align=\"center\" >"+o.getSendType(1,"</p>")+"</td>");
 				
 				html.append("<td align=\"center\" >"+ o.getSendCount(1,"</p>")+"</td> ");
-				
+				 
+				html.append("<td align=\"center\" >"+ o.getSendprice(1,"</p>")+"</td>");
+				 
 				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
 				
 				html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
 				
 				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+				
+                html.append("<td align=\"center\" >"+ o.getSendprice(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSize(0,"</p>")+"</td>");
 				
 				html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
 				
@@ -240,7 +250,7 @@ public class OrderService {
 				
 				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
 				
-				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
 				
 				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
 				
@@ -260,6 +270,8 @@ public class OrderService {
 				html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
 				
 				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSize(0,"</p>")+"</td>"); 
 				
 				html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
 				
@@ -340,7 +352,7 @@ public class OrderService {
 				
 				html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name =\""+o.getId() +"\"></input></td>");
 				
-				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
 				
 				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
 				
@@ -430,7 +442,7 @@ public class OrderService {
 				
 				html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name =\""+o.getId() +"\"></input></td>");
 				
-				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
 				
 				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
 				
@@ -520,7 +532,7 @@ public class OrderService {
 				
 				html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name =\""+o.getId() +"\"></input></td>");
 				
-				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
 				
 				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
 				
@@ -608,7 +620,7 @@ public class OrderService {
 				
 				html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name =\""+o.getId() +"\"></input></td>");
 				
-				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
 				
 				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
 				
@@ -704,7 +716,7 @@ public class OrderService {
 
 				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
 				
-				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
 				
 				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
 				
@@ -720,6 +732,8 @@ public class OrderService {
 				html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
 				
 				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSize(0,"</p>")+"</td>");
 				
 				html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
 				
@@ -932,7 +946,7 @@ public class OrderService {
 				
 				html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name = "+o.getId() +"></input></td>");
 				
-				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
 				
 				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
 				
@@ -1069,7 +1083,7 @@ public class OrderService {
 		    	
 				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
 				
-				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
 				
 				html.append("<td align=\"center\" >"+o.getsendName() +" </td>");
 				
@@ -1653,7 +1667,7 @@ public class OrderService {
 	     
 	    List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend);
 	    
-		StringBuffer html = new StringBuffer();
+		StringBuffer html = new StringBuffer(); 
 		
 
 		if(null != list){
@@ -1687,6 +1701,10 @@ public class OrderService {
 				html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
 				
 				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSendprice(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSize(0,"</p>")+"</td>");
 				
 				html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
 				

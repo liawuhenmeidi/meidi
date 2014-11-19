@@ -78,7 +78,7 @@ function serch(){
 }
 
 
-function winconfirm(){
+function winconfirm(statues){
 	var question = confirm("你确认要执行此操作吗？");	
 	if (question != "0"){
 		var attract = new Array();
@@ -97,7 +97,7 @@ function winconfirm(){
 		$.ajax({ 
 	        type: "post", 
 	         url: "server.jsp",
-	         data:"method=orderCharge&id="+attract.toString(),
+	         data:"method=orderCharge&id="+attract.toString()+"&statues="+statues,
 	         dataType: "", 
 	         success: function (data) {
 	        	 if(data == -1){
@@ -158,7 +158,10 @@ function adddetail(src){
 
 
 <div class="btn">
- <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('1')"></input>
+ &nbsp;&nbsp;&nbsp;&nbsp;
+ <input type="submit" class="button" name="dosubmit" value="返回上一级状态" onclick="winconfirm('0')"></input>    
 </div>
 
 </div > 

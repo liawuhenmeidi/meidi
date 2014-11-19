@@ -894,6 +894,29 @@ public String getSendType(int statues,String decollator){
 	return sendType;
 }
 
+public String getSize(int statues,String decollator){ 
+	String sizes = ""; 
+
+	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
+	if(lists != null){
+		for(int g = 0 ;g<lists.size();g++){
+			if(lists.get(g).getStatues() == statues){   
+				if(statues == 1){ 
+					String tempType = lists.get(g).getSaleType(); 
+					double size = ProductService.getIDmap().get(Integer.valueOf(tempType)).getSize();
+					sizes += decollator + size;
+				}else {
+					String tempType = lists.get(g).getSendType(); 
+					double size = ProductService.getIDmap().get(Integer.valueOf(tempType)).getSize();
+					sizes += decollator + size;
+				   }
+				}
+			   
+			}
+       }
+	return sizes; 
+}
+
 public String getSendCount(){
 	String sendCount = "";
 	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
@@ -930,6 +953,19 @@ public String getSendCount(int statues,String decollator){
 	return sendCount;
 }
   
+public String getSendprice(int statues,String decollator){
+	String sendCount = "";
+	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
+	 if(null != lists){
+		for(int g = 0 ;g<lists.size();g++){
+			if(lists.get(g).getStatues() == statues){
+			   sendCount += decollator + lists.get(g).getPrice();
+			}
+		} 
+	 }
+	return sendCount;
+}
+
 
 public void clear() {
 	this.branch = -1;

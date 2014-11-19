@@ -56,6 +56,9 @@ public class InventoryServlet extends HttpServlet {
 			if("add".equals(method)){ 
 				saveBranch(request,response);
 				return ;  
+			}else if("delete".equals(method)){
+				deleteBranch(request,response);
+				return ;
 			}else if("addsubscribe".equals(method)){
 				savesubscribeBranch(request,response);
 			}else if("updatesubscribe".equals(method)){
@@ -185,7 +188,18 @@ System.out.println(type+"type");
 			e.printStackTrace();
 		}
 	}  
-
+     
+     private void deleteBranch(HttpServletRequest request, HttpServletResponse response){
+ 	  
+         String id = request.getParameter("id"); 
+         
+         if(!StringUtill.isNull(id)){ 
+        	 InventoryManager.delete(Integer.valueOf(id));
+         } 
+         
+ 		
+ 	}  
+     
      private void savesubscribeBranch(HttpServletRequest request, HttpServletResponse response){
  		
  		User user  = (User)request.getSession().getAttribute("user");
@@ -217,7 +231,7 @@ System.out.println(type+"type");
  		
  		String remark = StringUtill.GetJson(in);
  
- 		System.out.println(remark );
+ 		//System.out.println(remark );
  		//int outbranchid = BranchManager.getBranchID(outbranch);
  		//int inbranchid = BranchManager.getBranchID(inbranch); 
  		

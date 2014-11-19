@@ -8,10 +8,9 @@
 <script type="text/javascript" src="../../js/calendar.js"></script> 
 <script type="text/javascript" src="../../js/cookie/jquery.cookie.js"></script>
 <script type="text/javascript">
-
+ 
 function checkedd(){ 
 	var list = $("input");
-	var sear = "";
 	var oderStatus = "";
 	var deliveryStatues = "";
 	for(var i=0;i<list.length;i++){
@@ -91,7 +90,7 @@ function checkedd(){
 				}
 			}
 		} 
-
+   sear = ""; 
  }
  
  function tuichu(){
@@ -168,18 +167,18 @@ function checkedd(){
 		<tr class="bsc">
 		<td align="center" >票面品类</td>
 			<td align="center" >
-	        <input type="text"  name="salenum" id="salenum" value=""  />
+	        <input type="text"  name="categoryname" id="categoryname" value=""  />
 			</td>	
 		<td align="center" >票面型号</td>
 			<td align="center">
 	        <input type="text"  name="saletype" id="saletype" value=""  />
 			</td> 
-		<td align="center" >是否给安装网点结款</td>
+		<td align="center" >是否已回访</td>
 			<td align="center"  >
-			   是<input type="radio"  name="statues4"  value="1"  id="statues41" />
-	                           否<input type="radio"  name="statues4"  value="0"  id="statues40"/>
-	                           任意<input type="radio"  name="statues4"  value=""  id="statues4"/>
-			</td>	
+			   是<input type="radio"  name="statuescallback"  value="1"  id="statuescallback1" />
+	                           否<input type="radio"  name="statuescallback"  value="0"  id="statuescallback0"/>
+	                           任意<input type="radio"  name="statuescallback"  value=""  id="statuescallback"/>
+			</td>
 		</tr>
 		 <tr class="bsc">
 		    <td align="center" >赠品</td>
@@ -212,11 +211,11 @@ function checkedd(){
 	                           否<input type="radio"  name="statuesinstall"  value="0"  id="statuesinstall0"/>
 	                           任意<input type="radio"  name="statuesinstall"  value=""  id="statuesinstall"/>
 			</td>
-			<td align="center" >是否已回访</td>
+			<td align="center" >是否给送货安装员结款</td>
 			<td align="center"  >
-			   是<input type="radio"  name="statuescallback"  value="1"  id="statuescallback1" />
-	                           否<input type="radio"  name="statuescallback"  value="0"  id="statuescallback0"/>
-	                           任意<input type="radio"  name="statuescallback"  value=""  id="statuescallback"/>
+			   是<input type="radio"  name="statuesinstall"  value="1"  id="statuesinstall1" />
+	                           否<input type="radio"  name="statuesinstall"  value="0"  id="statuesinstall0"/>
+	                           任意<input type="radio"  name="statuesinstall"  value=""  id="statuesinstall"/>
 			</td>
 		
 		</tr>

@@ -40,7 +40,7 @@ Message message = MessageManager.getMessagebyoid(id);
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 <style type="text/css">
-.fixedHead { 
+.fixedHead {  
 position:fixed;
 }  
 </style>
@@ -527,8 +527,8 @@ function checkedd(type){
        </td>
           <td></td>
     <td width="100%" class="center"><input type="button"  style="background-color:red;font-size:25px;"  value="确认修改" onclick="checkedd('query')"  /></td>
-    <td width="100%" class="center">
-    <% if(o.getPrintSatues() == 1){ %>
+    <td width="100%" class="center"> 
+    <% if(o.getPrintSatues() == 1 && UserManager.checkPermissions(user, Group.dealSend)){ %>
     <input type="button"  style="background-color:red;font-size:25px;"  value="打印" onclick="checkedd('print')"/>
     <% }%>
     </td>

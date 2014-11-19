@@ -15,11 +15,10 @@ List<Branch> listbranch = BranchService.getList();
   
 List<String> listbranchp = BranchService.getListStr(); 
 String listall = StringUtill.GetJson(listbranchp); 
-System.out.println(listall);  
+//System.out.println(listall);  
 List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
-System.out.println(listallpp);    
-//Map<Integer,Branch> branchmap = BranchManager.getNameMap();
+
 Map<Integer,Branch> branchmap = BranchService.getMap();
 
 Inventory inventory = new Inventory() ; 
@@ -191,10 +190,11 @@ var disable = '<%=isdisabel %>';
 	$(str).remove();
  }
  
- function check(){
+ function checkedd(buttontype){
 	var outbranch = $("#outbranch").val();
 	var inbranch = $("#inbranch").val();
-	
+	 $("method").val(buttontype);
+	 
 	if(outbranch == "" || outbranch == null){ 
 		alert("请选择出库单位"); 
 		return false ;
@@ -229,11 +229,14 @@ var disable = '<%=isdisabel %>';
 	      } 
 	}
 	
+	$("#form").submit();
+	
 	 $("#submit").css("display","none");
 	 
 	 return true ;
  }
  
+
 </script>
 </head>
 
@@ -269,13 +272,13 @@ var disable = '<%=isdisabel %>';
       <li><a href="print.jsp?id=<%=inventoryid%>">打印</a></li> 
       <% 
       }
-      %>
+      %> 
       
      </ul>   
    </div>      
-     <div>      
-     <form action="InventoryServlet"  method = "post"  onsubmit="return check()">
-      <input type="hidden" name="method" value="add"/> 
+     <div>       
+     <form action="InventoryServlet"  method = "post"  id="form"> 
+      <input type="hidden" name="method" id="method" value=""/> 
       <input type="hidden" name="type" value="<%=type%>"/>  
       <input type="hidden" name="id" value="<%=inventoryid %>"/>
                      
@@ -319,10 +322,11 @@ var disable = '<%=isdisabel %>';
     
   <% 
 	  if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 ){
-   %>
-   <input type="submit" id="submit" value="确认提 交" <%=isdisabel %>/>
+   %> 
+   <input type="submit" id="button" value="确认提 交"  onclick="checkedd('add')" <%=isdisabel %>/>
+   <input type="button" id="button" value="删除"  onclick="checkedd('delete')" <%=isdisabel %>/> 
   <%  
-	  } 
+	  }  
   %> 
 
   </div>

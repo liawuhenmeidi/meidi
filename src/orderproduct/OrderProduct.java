@@ -1,6 +1,5 @@
 package orderproduct;
 
-import product.ProductService;
 
 public class OrderProduct {
 	private int id ;
@@ -23,7 +22,17 @@ public class OrderProduct {
     
     private String typeName ;
     
+    private double price ;
     
+    
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 	public String getTypeName() {
 		return typeName;
 	}
