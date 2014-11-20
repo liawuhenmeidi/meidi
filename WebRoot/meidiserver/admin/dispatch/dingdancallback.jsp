@@ -193,6 +193,11 @@ function seletall(all){
 	     });
 	};
 }  
+
+function adddetail(src){ 
+	//window.location.href=src ;
+	window.open(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+}
 </script>
 
 <div style="position:fixed;width:100%;height:20%;">

@@ -264,8 +264,10 @@ function change(str1,str2,type){
   </tr> 
    <tr>
     <td width="25%" class="s_list_m">导购员电话</td>
-    <td class="s_list_m"><%=sale.getPhone()%></td>
-   
+    <td class="s_list_m">
+    <a href="tel:<%=sale.getPhone() %>"><%=sale.getPhone()%></a>
+    </td>
+    
   </tr> 
    <tr>
     <td width="25%" class="s_list_m">上报状态</td>

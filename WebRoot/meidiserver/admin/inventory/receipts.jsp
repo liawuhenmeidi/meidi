@@ -55,8 +55,8 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
     %>
      <li><a href="receiptsold.jsp">查看已确认单据</a></li> 
      <%  if(UserManager.checkPermissions(user, Group.Manger)){%>
-   
-     <li><a href="receiptsAdd.jsp?type=paper">调账面单据</a></li> 
+    
+     <li><a href="receiptsAdd.jsp?type=3">调账面单据</a></li> 
    <% }%>
      </ul>
      

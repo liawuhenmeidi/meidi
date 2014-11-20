@@ -4,9 +4,13 @@
 <% 
 String message = "调拨单";
 String type = request.getParameter("type");
-if("paper".equals(type)){ 
-	message = "调账面库存单据";
+
+if(!StringUtill.isNull(type)){
+	if(Integer.valueOf(type) == 3){ 
+		message = "调账面库存单据";
+	}
 }
+
 
 String inventoryid = request.getParameter("id");
 
@@ -28,7 +32,7 @@ Branch inbranch = new Branch();
 String remark = "";  
 String inittime = ""; 
 String isdisabel = " ";  
-System.out.println(1);  
+ 
 if(!StringUtill.isNull(inventoryid)){
 	isdisabel = " disabled=\"disabled\" ";
 	inventory = InventoryManager.getInventoryID(user, Integer.valueOf(inventoryid));  
@@ -42,6 +46,7 @@ if(!StringUtill.isNull(inventoryid)){
 	}
 	remark = inventory.getRemark(); 
 	inittime = inventory.getIntime();  
+	type = inventory.getIntype()+""; 
 	List<InventoryMessage> list = inventory.getInventory();
 	invent = StringUtill.GetJson(list);  
     if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 && user.getId() == inventory.getUid()){
@@ -193,7 +198,8 @@ var disable = '<%=isdisabel %>';
  function checkedd(buttontype){
 	var outbranch = $("#outbranch").val();
 	var inbranch = $("#inbranch").val();
-	 $("method").val(buttontype);
+	
+	 $("#method").val(buttontype);
 	 
 	if(outbranch == "" || outbranch == null){ 
 		alert("请选择出库单位"); 
@@ -324,7 +330,7 @@ var disable = '<%=isdisabel %>';
 	  if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 ){
    %> 
    <input type="submit" id="button" value="确认提 交"  onclick="checkedd('add')" <%=isdisabel %>/>
-   <input type="button" id="button" value="删除"  onclick="checkedd('delete')" <%=isdisabel %>/> 
+   <input type="button" id="button" value="删除"  onclick="checkedd('del')" <%=isdisabel %>/> 
   <%  
 	  }  
   %> 
