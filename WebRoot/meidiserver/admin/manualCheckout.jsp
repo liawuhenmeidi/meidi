@@ -216,11 +216,11 @@ $(function (){
 <table width="100%">
 	<tr>
 		<td width="15%">
-		<h3>本页显示为 
+		本页显示为 
 		<select onchange="location.href='CheckedOrders.jsp'">
 			<option value="1" selected="selected">对比未结款单据</option>
 			<option value="2" >对比已结款单据</option>
-		</select></h3>
+		</select>
 		</td>
 		<td><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp?unchecked=true&branchtype=<%=selectBranchType%>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
 	</tr>
