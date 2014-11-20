@@ -864,10 +864,10 @@ public class OrderService {
 								statues = 3 ;
 							}
 						}  
-				
-					
-						html.append(o.getOstatues().releaseo.getMessage());
-						html.append("<input type=\"button\" onclick=\"changes('"+o.getId()+"','"+o.getOstatues().releasedispatch+"','"+OrderPrintln.comited+"','"+statues +"','"+o.getReturnstatuse()+"','"+OrderPrintln.releasedispatch +"','"+o.getSendId()+"')\"  value=\"同意\"/>");
+				 
+					     
+						html.append(o.getOstatues().releasedispatcho.getMessage());
+						html.append("<input type=\"button\" onclick=\"changes('"+o.getId()+"','"+o.getOstatues().releasedispatcho.getId()+"','"+OrderPrintln.comited+"','"+statues +"','"+o.getReturnstatuse()+"','"+OrderPrintln.releasedispatch +"','"+o.getSendId()+"')\"  value=\"同意\"/>");
 				   
 				    if(o.getReturnid() == 0){ 
 				 

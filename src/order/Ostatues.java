@@ -16,6 +16,7 @@ public class Ostatues {
      public OrderPrintln salereleasereturno = null;
      public OrderPrintln releaseo = null;
      public OrderPrintln salereleaseanzhuango = null;
+     public OrderPrintln releasedispatcho = null; 
       
      public int returns = -1;
      public int huanhuo = -1;
@@ -32,7 +33,7 @@ public class Ostatues {
 	    
 	    salereleaseanzhuango = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.salereleaseanzhuang, o.getId()) ; 
 	    salereleasereturno = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.salereleasereturn, o.getId()) ;
-	    
+	    releasedispatcho = OrderPrintlnManager.getOrderPrintln(opmap, OrderPrintln.releasedispatch, o.getId()) ;
 	     
 	    returns = OrderPrintlnManager.getstatues(opmap, OrderPrintln.returns, o.getId());
 	    release = OrderPrintlnManager.getstatues(opmap, OrderPrintln.release, o.getId());

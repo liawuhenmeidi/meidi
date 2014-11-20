@@ -1,7 +1,8 @@
 <%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="detaildynamic.jsp"%> 
 <%  
-Map<Integer,List<Gift>> gMap = GiftService.getmap(); 
+Map<Integer,List<Gift>> gMap = GiftService.getmap();  
+String col = "";
 %>
 <!DOCTYPE html>
 <html>
@@ -119,7 +120,7 @@ function updateOeders(type){
 			      		}else if(statues ==0 ){
 			      			if(type == "huanhuo"){
 			      				alert("商品未送货，不能换货");
-			      			}else {
+			      			}else{
 			      				window.location.href="server.jsp?method=tuihuo&oid="+id;
 			      			}
 			      			
@@ -214,36 +215,10 @@ function getmap(){
 <table width="100%" class="s_main_table">
 
 <tr>	
-		<td align="left" class="s_list_m">修改状态</td>
-		 <td align="left" class="s_list_m">
-		 <%
-		 String col = "";
-		 if(-1 != modify){  
-          String sm = "";
-          if(0 == modify){
-        	  sm = "待确认";
-          }else if(1== modify){
-        	  sm = "确认中";
-          }else if(2== modify){ 
-        	  sm = "已同意";
-        	  col= "red";
-          }else if(4 == modify){
-        	  sm = "已拒绝"; 
-        	  col= "red";
-          }
-		 %>
-		 <FONT color=<%=col %>><%=sm %></FONT> 
-		 <%
-		 }else {
-		
-		%>
-		无状态
-		
-		<% 
-		 }
-		%>
+		<td align="left" class="s_list_m">销售员</td>
+		 <td align="left" class="s_list_m"><%=usermap.get(or.getSaleID()).getUsername() %>
 		</td>
-		</tr>
+		</tr>  
 		
 		 <tr>	
 		<td align="left" class="s_list_m">退货状态</td>

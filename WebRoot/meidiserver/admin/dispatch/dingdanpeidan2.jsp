@@ -106,6 +106,7 @@ function changes(oid,id,statues,flag,returnstatues,type,printid){
 		}
 
 	} 
+	//alert(id);
 		$.ajax({   
 	        type: "post", 
 	         url: "../../LogisticsServlet", 

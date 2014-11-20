@@ -22,13 +22,16 @@
 <link rel="stylesheet" href="../css/songhuo.css">
 <script type="text/javascript">
 $(document).ready(function(){
-	initTime();
+	//initTime();
    });
 
  function change(){
 	 var saledateStart = $("#saledateStart").val();
 	 var saledateEnd = $("#saledateEnd").val();
 	 var deliveryStatues  = $("#deliveryStatues").val();
+	 var username  = $("#username").val();
+	 var phone1  = $("#phone1").val();
+	 
 	 var str = "";
 	 // pos == "" || pos == null || pos == "null"
 	 if(saledateStart != null && saledateStart != "" && saledateStart != "null"){
@@ -40,20 +43,18 @@ $(document).ready(function(){
 	 if(deliveryStatues != null && deliveryStatues != "" && deliveryStatues != "null"){
 		 str += " and deliveryStatues like '%25"+deliveryStatues+"%25'";
 	 }
-     alert(str);
+	 if(username != null && username != ""){
+		 str += " and username like '%25"+username+"%25'";
+	 } 
+	 if(phone1 != null && phone1 != ""){
+		 str += " and phone1 like '%25"+phone1+"%25'";
+	 }
+	 alert(str);
+	 
 	 window.location.href="songhuo.jsp?serch="+str;
   }
  
-function initTime(){
-	   var opt = { };
-	    opt.date = {preset : 'date'};
-		$('#saledateStart').val('').scroller('destroy').scroller($.extend(opt['date'], 
-		{ theme: 'android-ics light', mode: 'scroller', display: 'modal',lang: 'zh' ,startYear:'1980',endYear:'2015'}));
-		var opt2 = { };
-	    opt2.date = {preset : 'date'};
-		$('#saledateEnd').val('').scroller('destroy').scroller($.extend(opt2['date'], 
-		{ theme: 'android-ics light', mode: 'scroller', display: 'modal',lang: 'zh' ,startYear:'1980',endYear:'2015'}));
-} 
+
 </script>
 </head>
 
@@ -68,7 +69,7 @@ function initTime(){
 <div class="s_main_tit"><span class="qiangdan"><a href="songhuo.jsp">返回</a></span><span class="qiangdan"><a href="server.jsp?method=quit">退出</a></span></div>
 <div class="s_main_tit">订单查询页面</div>
  
-
+ 
 <!--  订单详情  -->
 <div class="s_main_box">
 <form action="songhuo.jsp"  method ="post"  id="form"  onsubmit="return checkedd()" >
@@ -78,9 +79,24 @@ function initTime(){
     <td width="25%">单号:</td>
     <td width="25%"><input type="text"  name="printlnid" id ="printlnid"/></td>
   </tr>
- 
+ <tr>
+    <td>客户姓名:</td>
+    <td><input type="text"  name="username" id ="username"/></td>
+    
+      </tr>
+ <tr>
+    
+    <td width="25%">客户电话:</td>
+    <td width="25%"><input type="text"  name="phone1" id ="phone1"/></td>
+  </tr>
+  <tr>
+    
+    <td width="25%">门店:</td>
+    <td width="25%"><input type="text"  name="orderbranch" id ="orderbranch"/></td>
+  </tr>
+
  <tr> 
-    <td>配送状态</td>
+    <td>送货状态</td>
     <td colspan="3">
      <select class = "category" name="deliveryStatues"  id="deliveryStatues" >
      <option value="0" >未完成 </option> 

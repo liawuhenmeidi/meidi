@@ -85,12 +85,10 @@ var disable = '<%=isdisabel %>';
  //alert(listall);
  var jsonall =  <%=listall%>;
  
- var row = 1; 
+ var row = 1;  
  var rows = new Array();
-  
- var inventoyr = '<%=invent%>';
  //alert(inventoyr); 
- var jsoninvent =  $.parseJSON(inventoyr);
+ var jsoninvent =  <%=invent%>;
   
  var ctypes = new Array();  
  

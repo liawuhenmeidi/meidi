@@ -680,9 +680,9 @@ public static void updateSendstat(int statues,int sid, int oid) {
 		 }else{        
 			   if(flag && Group.send == type){ 
 				   if(!StringUtill.isNull(search)){
-					   sql = "select * from  mdorder where sendId = "+user.getId() + " or  installid = "+user.getId()+ search;
-				   }else {
-					   if(Order.serach == statues){ // 待送货
+					   sql = "select * from  mdorder where ( sendId = "+user.getId() + " or  installid = "+user.getId()+ " ) " +  search;
+				   }else { 
+					   if(Order.serach == statues){ // 待送货 
 						   sql = "select * from  mdorder where  sendId = "+user.getId() + " and deliveryStatues in (0,9)   and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (1,10)  and printSatuesp = 1   "+search+"  order by "+sort + str;
 					   }else if(Order.orderDispatching == statues){   // 待安装
 						   sql = "select * from  mdorder where  installid = "+user.getId() + " and deliveryStatues in (1,10)" +search+"  order by "+sort + str ; 
@@ -1274,28 +1274,33 @@ logger.info(sql);
 	    boolean flag = false;
 	     
 	    Order order = OrderManager.getOrderID(user, oid);
-	    List<String> listsqls = new ArrayList<String>();
- 
-		String sqlp = OrderProductManager.delete(order.getId());
-        String sqlg = GiftManager.delete(order.getId()) ;  
-        String sqlop =  OrderPrintlnManager.deleteByoid(order.getId());
-         
-        String sql = "delete from mdorder where id = " + order.getId();
-        listsqls.add(sqlp); 
-        listsqls.add(sqlg); 
-        listsqls.add(sqlop);
-        listsqls.add(sql); 
-		 
-        if(order.getOderStatus().equals(20+"")){
-        	String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl();
-            listsqls.add(sql1);
-        }
-		if (listsqls.size() == 0) {  
-            return false;   
-        }        
-       
-        flag = DBUtill.sava(listsqls);
-		return flag ;
+	    
+	    if(order.getStatues2() == 1){
+	    	String sql = "update mdorder set deliveryStatues = 3 where id = " + order.getId();
+	    	flag =  DBUtill.sava(sql);
+	    }else { 
+	    	List<String> listsqls = new ArrayList<String>();
+	    	String sqlp = OrderProductManager.delete(order.getId());
+	        String sqlg = GiftManager.delete(order.getId()) ;  
+	        String sqlop =  OrderPrintlnManager.deleteByoid(order.getId());
+	         
+	        String sql = "delete from mdorder where id = " + order.getId();
+	        listsqls.add(sqlp); 
+	        listsqls.add(sqlg); 
+	        listsqls.add(sqlop);
+	        listsqls.add(sql); 
+			 
+	        if(order.getOderStatus().equals(20+"")){
+	        	String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl();
+	            listsqls.add(sql1);
+	        }
+			if (listsqls.size() == 0) {  
+	            return false;   
+	        }        
+	       
+	        flag = DBUtill.sava(listsqls);
+	    }
+	    return flag ;
 	}
      
    

@@ -16,23 +16,25 @@ String inventoryid = request.getParameter("id");
 
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
 List<Branch> listbranch = BranchService.getList();
-  
+   
 List<String> listbranchp = BranchService.getListStr(); 
 String listall = StringUtill.GetJson(listbranchp); 
-//System.out.println(listall);  
+//System.out.println(listall);    
 List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp);   
-
+//System.out.println(listallpp);
 Map<Integer,Branch> branchmap = BranchService.getMap();
 
-Inventory inventory = new Inventory() ; 
-String invent = ""; 
+Inventory inventory = new Inventory(); 
+String invent = "[]"; 
 Branch outbranch = new Branch();
 Branch inbranch = new Branch(); 
 String remark = "";  
 String inittime = ""; 
 String isdisabel = " ";  
  
+//System.out.println(inventoryid);
+
 if(!StringUtill.isNull(inventoryid)){
 	isdisabel = " disabled=\"disabled\" ";
 	inventory = InventoryManager.getInventoryID(user, Integer.valueOf(inventoryid));  
@@ -48,7 +50,7 @@ if(!StringUtill.isNull(inventoryid)){
 	inittime = inventory.getIntime();  
 	type = inventory.getIntype()+""; 
 	List<InventoryMessage> list = inventory.getInventory();
-	invent = StringUtill.GetJson(list);  
+	invent = StringUtill.GetJson(list);
     if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 && user.getId() == inventory.getUid()){
     	isdisabel = ""; 
     }
@@ -76,21 +78,18 @@ td {
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
  
 <script type="text/javascript">
+
 var disable = '<%=isdisabel %>';
-   
- //var listallp = ''; 
-//alert(listallp);
+    
  var jsonallp =  <%=listallpp%>; 
  
  var jsonall = <%=listall%>;
-
+ 
  var row = 1;  
  var rows = new Array();
-   
- var jsoninventstr =  '<%=invent%>';
  
- var jsoninvent =  $.parseJSON(jsoninventstr); 
- 
+ var jsoninvent =  <%=invent%>; 
+  
  var ctypes = new Array();  
  
  
