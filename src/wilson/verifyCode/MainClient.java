@@ -20,7 +20,7 @@ public class MainClient extends Thread{
 	private SelectDeliverInform sdi = new SelectDeliverInform();
 	private Login lg = new Login();
 	private VerifyCodeManager vcm = new VerifyCodeManager();
-	private int codeInt = 3885;
+	private int codeInt = 0;
 	private int codeNow = 0;
 	
 	
