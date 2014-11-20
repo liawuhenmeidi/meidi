@@ -20,7 +20,7 @@ public class MainClient extends Thread{
 	private SelectDeliverInform sdi = new SelectDeliverInform();
 	private Login lg = new Login();
 	private VerifyCodeManager vcm = new VerifyCodeManager();
-	private int codeInt = 3000;
+	private int codeInt = 3885;
 	private int codeNow = 0;
 	
 	
@@ -42,18 +42,18 @@ public class MainClient extends Thread{
 	private static String cacheLoginURL = "https://passport.suning.com/ids/login";
 	
 	public static void main(String[] args) {
-		MainClient mc = new MainClient();
-		mc.setUserName("haoyueshangmao@163.com");
-		mc.setPassword("sn26524316");
-		mc.setSaleOrderNo("00015683400601");
-		mc.start();
+//		MainClient mc = new MainClient();
+//		mc.setUserName("qxgs2013@163.com");
+//		mc.setPassword("qingxin2013");
+//		mc.setSaleOrderNo("00015683400601");
+//		mc.start();
 	}	
 	
-	public void reTry(int code){
+	public void reTry(int code,String orderno){
 		MainClient mc = new MainClient();
 		mc.setUserName(MainClient.getCacheUsername());
 		mc.setPassword(MainClient.getCachePassword());
-		mc.setSaleOrderNo(mc.saleOrderNo);
+		mc.setSaleOrderNo(orderno);
 		mc.setCodeInt(code);
 		mc.start();
 	}
@@ -92,7 +92,7 @@ public class MainClient extends Thread{
     	if(!tryCode(saleOrderNo,startCode,mc)){
     		if(getCodeNow() >= 0){
     			closeClient();
-    			reTry(this.getCodeNow());
+    			reTry(this.getCodeNow(),saleOrderNo);
     		}
     		
 //    		System.out.println("用户名 = " + userName + "  销售单号 = " + saleOrderNo  + "   失败 ，验证码测试到" + this.getCodeInt());
@@ -210,7 +210,13 @@ public class MainClient extends Thread{
 //				e.printStackTrace();
 //			}
     		resultcode = vc.VerifyCode(new URI("http://scs.suning.com/sps/saleOrder/updateConfirmReceipt.action"), codeStr,saleOrderNo,mc);
-    		if(resultcode == 1){   	
+    		if(resultcode == 1){   
+    			try {
+					Thread.sleep(1500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
     			codeInt ++;
     			if(0 == (i % 100)){
     				System.out.println("saleOrderNo : " + saleOrderNo + " code : " + codeInt + " " + resultcode + "  ");

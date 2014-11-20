@@ -28,8 +28,8 @@
 		userName = request.getParameter("userName");
 		password = request.getParameter("password");
 		
-		userName = "haoyueshangmao@163.com"; 
-		password = "sn26524316"; 
+		userName = "qxgs2013@163.com"; 
+		password = "qingxin2013"; 
 		
 		saleOrderNo = request.getParameter("saleOrderNo");	
 		msg = "正在尝试中，请15分钟后在苏宁系统中刷新";
