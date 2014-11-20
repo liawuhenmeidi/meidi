@@ -107,12 +107,12 @@ public class OrderManager {
 		int statues = o.getDeliveryStatues();
 		String str = "";
 		String remark = "";
-		if(o.getOderStatus().equals(20+"")){
+		if((20+"").equals(o.getOderStatus())){
 			remark = "换货单";
 		   }
 		// 0 表示未送货  1 表示正在送  2 送货成功
 		 if(0 == statues){
-		   if(o.getOderStatus().equals(20+"")){
+		   if((20+"").equals(o.getOderStatus())){ 
 			   str = "换货单";
 		   }else {
 			   str = "需派送";
