@@ -90,12 +90,13 @@ $(function () {
       <td> <input name="control_date2" type="text" id="newphone" size="10"
                         maxlength="11" /></td>
   </tr>
+   <% if(UserManager.checkPermissions(user, Group.dealSend)) { %>
   <tr> 
       <td>原门店</td>
       <td><input name="control_date" type="text" id="oldphone" value="<%=u.getBranchName() %>" size="10"
                         maxlength="11"   /> </td>
    </tr> 
-  <tr> 
+  <tr>  
       <td>新门店</td> 
       <td> <select class = "quyu" name="branchtype" id="branchtype" >
           <option >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
@@ -116,6 +117,7 @@ $(function () {
        </select>
        </td>
   </tr>
+  <% }%>
   <tr> 
      <td></td>
      <td><input type="button"  onclick="gettime()"  style="background-color:red;font-size:20px;"  value="确认" /></td>

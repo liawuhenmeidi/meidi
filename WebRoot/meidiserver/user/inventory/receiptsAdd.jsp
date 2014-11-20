@@ -30,11 +30,10 @@ Branch inbranch = new Branch();
 String remark = ""; 
 String inittime = ""; 
 String isdisabel = " ";  
-
+//System.out.println("aaa"+inventoryid);
 if(!StringUtill.isNull(inventoryid)){
 	isdisabel = " disabled=\"disabled\" ";
 	inventory = InventoryManager.getInventoryID(user, Integer.valueOf(inventoryid));  
-	
 	if(branchmap != null){ 
 		   outbranch = branchmap.get(inventory.getOutbranchid());
 		   inbranch = branchmap.get(inventory.getInbranchid());
@@ -77,19 +76,14 @@ td {
 
 <script type="text/javascript">
 var disable = '<%=isdisabel %>';
-
- var jsonmap = '<%=mapjosn%>'; 
- var availableTags = '<%=plist%>';
- var jsons =  $.parseJSON(availableTags);
  
- var listallp = '<%=listallpp%>';
-//alert(listallp);
- var jsonallp =  $.parseJSON(listallp); 
+ var jsons =  <%=plist%>;
  
- var listall = '<%=listall%>';
+//alert(listallp); 
+ var jsonallp = <%=listallpp%>; 
   
  //alert(listall);
- var jsonall =  $.parseJSON(listall);
+ var jsonall =  <%=listall%>;
  
  var row = 1; 
  var rows = new Array();

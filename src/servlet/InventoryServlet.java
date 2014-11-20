@@ -55,8 +55,8 @@ public class InventoryServlet extends HttpServlet {
 		synchronized(object){
 			if("add".equals(method)){ 
 				saveBranch(request,response);
-				return ;  
-			}else if("delete".equals(method)){
+				return ;   
+			}else if("del".equals(method)){
 				deleteBranch(request,response);
 				return ;
 			}else if("addsubscribe".equals(method)){
@@ -129,7 +129,7 @@ System.out.println(type+"type");
 		String outbranch = request.getParameter("outbranch");
 		String inbranch = request.getParameter("inbranch");
 		String typemethod = request.getParameter("type");
-		System.out.println(typemethod);
+		//System.out.println(typemethod);
 		String typebranch = request.getParameter("typebranch");
 		 
 		int outbranchid = BranchManager.getBranchID(outbranch);
@@ -172,8 +172,8 @@ System.out.println(type+"type");
 		inventory.setUid(uid);  
 		inventory.setRemark(remark);
 		inventory.setInventory(inventoryMessage);
-		if("paper".equals(typemethod)){
-			inventory.setIntype(3);
+		if(!StringUtill.isNull(typemethod)){ 
+			inventory.setIntype(Integer.valueOf(typemethod));
 		}else {
 			inventory.setIntype(1); 
 		}
@@ -196,7 +196,13 @@ System.out.println(type+"type");
          if(!StringUtill.isNull(id)){ 
         	 InventoryManager.delete(Integer.valueOf(id));
          } 
-         
+         try {
+  			response.sendRedirect("receipts.jsp");
+  			return ;
+  		} catch (IOException e) {
+  		
+  			e.printStackTrace();
+  		}
  		
  	}  
      

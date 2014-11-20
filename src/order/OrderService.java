@@ -866,10 +866,10 @@ public class OrderService {
 						}  
 				
 					
-						html.append("+oppp.getMessage()");
+						html.append(o.getOstatues().releaseo.getMessage());
 						html.append("<input type=\"button\" onclick=\"changes('"+o.getId()+"','"+o.getOstatues().releasedispatch+"','"+OrderPrintln.comited+"','"+statues +"','"+o.getReturnstatuse()+"','"+OrderPrintln.releasedispatch +"','"+o.getSendId()+"')\"  value=\"同意\"/>");
 				   
-				    if(o.getReturnid() == 0){
+				    if(o.getReturnid() == 0){ 
 				 
 				    html.append("<input type=\"button\" onclick=\"changes('"+o.getId()+"','"+o.getOstatues().releasedispatch+"','"+OrderPrintln.uncomited+"','"+statues+"','"+o.getReturnstatuse()+"','"+OrderPrintln.releasedispatch+"','"+o.getSendId()+"')\"  value=\"不同意\"/>");  
 						
