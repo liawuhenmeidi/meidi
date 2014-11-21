@@ -105,7 +105,7 @@ if("deleOrder".equals(method)){
 }else if("orderCharge".equals(method) ){  
 	String id = request.getParameter("id"); 
 	String statue = request.getParameter("statues");
-	if(Integer.valueOf(statue) == 0 ){
+	if("0".equals(statue) ){ 
 		method = "orderGo" ;
 	}  
 	int statues = OrderManager.updateStatues(user,method,statue, id);  
