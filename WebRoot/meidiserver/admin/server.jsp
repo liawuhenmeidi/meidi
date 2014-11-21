@@ -96,9 +96,9 @@ if("deleOrder".equals(method)){
 	String id = request.getParameter("id"); 
 	String statue = request.getParameter("statues"); 
 	if(Integer.valueOf(statue) == 0 ){
-		method = "orderCome" ;
-	}
-	int statues = OrderManager.updateStatues(user,method,Integer.valueOf(statue), id);  
+		method = "orderCome" ; 
+	} 
+	int statues = OrderManager.updateStatues(user,method,statue, id);  
 	response.getWriter().write(""+statues);  
 	response.getWriter().flush();    
 	response.getWriter().close();  //orderDingma
@@ -107,14 +107,14 @@ if("deleOrder".equals(method)){
 	String statue = request.getParameter("statues");
 	if(Integer.valueOf(statue) == 0 ){
 		method = "orderGo" ;
-	} 
-	int statues = OrderManager.updateStatues(user,method,Integer.valueOf(statue), id);  
+	}  
+	int statues = OrderManager.updateStatues(user,method,statue, id);  
 	response.getWriter().write(""+statues);  
 	response.getWriter().flush();   
 	response.getWriter().close();  //orderDingma
 }else if("orderDingma".equals(method) || "orderCome".equals(method)  || "print2".equals(method) || "print3".equals(method)   || "print4".equals(method)  || "print".equals(method) || "orderover".equals(method) || "statuescallback".equals(method) || "statuespaigong".equals(method) || "statuesinstall".equals(method) || "statuesinstalled".equals(method) || "printdingma".equals(method) || "statuescallback".equals(method) || "wenyuancallback".equals(method)){
-	String id = request.getParameter("id");   
-	int statues = OrderManager.updateStatues(user,method,Order.query, id);  
+	String id = request.getParameter("id");    
+	int statues = OrderManager.updateStatues(user,method,Order.query+"", id);  
 	response.getWriter().write(""+statues); 
 	response.getWriter().flush();   
 	response.getWriter().close();  //orderDingma

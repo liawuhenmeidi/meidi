@@ -10,6 +10,7 @@
 <script type="text/javascript">
  
 function checkedd(){ 
+	sear = ""; 
 	var list = $("input");
 	var oderStatus = "";
 	var deliveryStatues = "";

@@ -12,6 +12,7 @@
 
 
 function checkedd(){ 
+	sear = "";
 	var list = $("input");
 	var oderStatus = "";
 	var deliveryStatues = "";

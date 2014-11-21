@@ -934,17 +934,14 @@ logger.info(sql);
 		
 		
 		String sql = "update mduser set statues = "+statues + "  where id = " + id ;
-        
-		
-		
-		
 		
 		sqls.add(sql);
 		
 		
 		flag = DBUtill.sava(sqls);
 		
-		 
+		UserService.flag = true ;
+		
 		return flag ;
 		
 		

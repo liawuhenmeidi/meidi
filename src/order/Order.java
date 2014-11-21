@@ -177,7 +177,19 @@ public class Order {
   
   private Ostatues ostatues ; 
   
-  public Ostatues getOstatues(){
+  private String statuesCharge;
+  
+  public String getStatuesCharge() {
+	return statuesCharge;
+}
+
+
+public void setStatuesCharge(String statuesCharge) {
+	this.statuesCharge = statuesCharge;
+}
+
+
+public Ostatues getOstatues(){
 	 if(null == ostatues){
 		 ostatues = new Ostatues(this);
 	 } 

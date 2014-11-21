@@ -15,6 +15,7 @@ import orderproduct.OrderProduct;
 import user.User;
 import user.UserManager;
 import user.UserService;
+import utill.StringUtill;
 
 import branch.BranchService;
 
@@ -222,9 +223,9 @@ public class OrderService {
 				html.append("<td align=\"center\">  "+(o.getStatues1()==0?"否":"是") +" </td>");
 				
 				html.append("<td align=\"center\">  "+(o.getStatues2()==0?"否":"是") +" </td>");
-				
-				html.append("<td align=\"center\">   "+(o.getStatues3()==0?"否":"是") +" </td>");
-				
+				 
+				html.append("<td align=\"center\">   "+(StringUtill.isNull(o.getStatuesCharge())?"否":o.getStatuesCharge()) +" </td>");
+				 
 				html.append("<td align=\"center\"> "+o.getRemark() +"</td>");
 				
                 html.append("<td align=\"center\"> <a href=\"javascript:void(0);\" onclick=\"orderPrint('"+o.getId()+"',"+o.getPrintSatues() +",'','"+o.getDeliveryStatues() +"')\">[打印]</a></td>");

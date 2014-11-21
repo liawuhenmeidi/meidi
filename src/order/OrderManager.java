@@ -194,12 +194,12 @@ public class OrderManager {
 	}
 	
 	//by wilsonlee
-	public static int updateStatues(String method ,int statues,String id) {
+	public static int updateStatues(String method ,String statues,String id) {
 		return updateStatues(new User(),method,statues,id);
 	}
 	 // 确认厂送票已回
-		public static int updateStatues(User user ,String method ,int statues,String id) {
-			List<String> listsql = new ArrayList<String>(); 
+		public static int updateStatues(User user ,String method ,String statues,String id) {
+			List<String> listsql = new ArrayList<String>();  
 			String[] listt = id.split(",");
 			if(listt.length <2){  
 				for(int j=0;j<listt.length;j++){
@@ -236,7 +236,13 @@ public class OrderManager {
 			}else if("orderGo".equals(method)){ 
 				sql = "update mdorder set statues2 = "+statues+" where id in " + ids;
 			}else if("orderCharge".equals(method)){
-				sql = "update mdorder set statues3 = "+statues+" where id in " + ids;
+				if("0".equals(statues)){
+					statues = "";
+				}else { 
+					statues = TimeUtill.getdateString();  
+				} 
+				///sql = "update mdorder set statues3 = "+statues+" where id in " + ids;
+				sql = "update mdorder set statuesChargeSale = '" + statues + "' where id in " + ids ;
 			} else if("orderover".equals(method)){ 
 				sql = "update mdorder set statues4 = "+statues+"  , chargeDealsendtime = '"+TimeUtill.gettime()+"' where id in " + ids;
 			}else if("tuihuo".equals(method)){     
@@ -261,7 +267,7 @@ public class OrderManager {
 			} else if("statuesinstall".equals(method)){  
 				sql = "update mdorder set statuesinstall = "+statues+"  , chargeInstalltime = '"+TimeUtill.gettime()+"' where id in " + ids;
 			} else if("statuesinstalled".equals(method)){
-				statues = 2 ;
+				statues = 2+"" ;
 				sql = "update mdorder set statuesinstall = "+statues+" , chargeInstalltime = '"+TimeUtill.gettime()+"'  where id in " + ids;
 			}else if("statuescallback".equals(method)){ 
 				sql = "update mdorder set statuescallback = "+statues+" where id in " + ids;
@@ -732,7 +738,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   }else if(Order.orderPrint == statues){   
 					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and  dealSendid != 0  and printSatues = 0  and sendId = 0  and  deliveryStatues = 0  "+search+"  order by "+sort+str ;  
 				   }else if(Order.charge == statues){ 
-					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and statues1 = 1 and statues2 = 1 and statues3 = 0   and oderStatus not in (20)  "+search+"  order by "+sort+str ;  
+					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and statues1 = 1 and statues2 = 1 and statuesChargeSale is null   and oderStatus not in (20)  "+search+"  order by "+sort+str ;  
 				   }else if(Order.callback == statues){ 
 					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and deliveryStatues in (2)   and wenyuancallback = 0  "+search+" order by "+sort+str;  
 				   }else if(Order.come == statues){
@@ -741,7 +747,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))    and statues1 = 1 and statues2 = 0   and oderStatus not in (20)  "+search+" order by "+sort+str ;  
 				   }else if(Order.over == statues){  
 					   sql = "select * from  mdorder where  mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and printSatues = 1 and sendId != 0  and deliveryStatues not in (0,3,8,9,10)  and statues4 = 0  "+search+" order by "+sort+str; 
-				   }else if(Order.serach == statues){    
+				   }else if(Order.serach == statues){     
 						  sql = "select * from  mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  "+search+"  order by "+sort+str;  
 						  //sql = "select * from  mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  "+search+"  or (mdorder.id in (select orderid from mdorderupdateprint where mdtype = 3 and pGroupId = "+ user.getUsertype()+ " ))  order by "+sort+"  desc limit " + ((page-1)*num)+","+ page*num; 
 				   }else if(Order.dingma == statues){ 
@@ -896,7 +902,7 @@ logger.info(sql);
 				   }else if(Order.orderPrint == statues){ 
 					   sql = "select count(*) from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and  dealSendid != 0  and printSatues = 0  and sendId = 0  and deliveryStatues != 3  "+search;  
 				   }else if(Order.charge == statues){ 
-					   sql = "select count(*) from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and statues1 = 1 and statues2 = 1 and statues3 = 0  "+search;  
+					   sql = "select count(*) from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and statues1 = 1 and statues2 = 1 and statuesChargeSale is null  "+search;  
 				   }else if(Order.come == statues){  
 					   sql = "select count(*) from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))    and statues1 = 0 "+search;  
 				   }else if(Order.go == statues){ 
@@ -1412,6 +1418,7 @@ logger.info(sql);
 		    p.setChargeDealsendtime(rs.getString("chargeDealsendtime"));
 		    p.setChargeSendtime(rs.getString("chargeSendtime"));
 		    p.setChargeInstalltime(rs.getString("chargeInstalltime"));
+		    p.setStatuesCharge(rs.getString("statuesChargeSale")); 
 		} catch (SQLException e) {  
 			e.printStackTrace();
 		} 
