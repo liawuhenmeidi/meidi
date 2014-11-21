@@ -972,7 +972,7 @@ logger.info(sql);
   	 }
     
     
-    //wrote by wilsonlee
+    //wrote by wilsonlee 2014-11-21
     //未结款的Order
     public static List<Order> getUnCheckedDBOrders(String time){
     	  
@@ -981,7 +981,7 @@ logger.info(sql);
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
                   
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0 and oderStatus not in (20)  and saledate <= '"+time+"'  order by orderbranch";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and oderStatus not in (20)  and saledate <= '"+time+"' and statuesChargeSale is null  order by orderbranch";                  
     	
     	if(true){
     		Connection conn = DB.getConn();
@@ -1038,14 +1038,14 @@ logger.info(sql);
     	   
     }
     
-    //wrote by wilsonlee
+    //wrote by wilsonlee 2014-11-21
     //已经结款的Order
     public static List<Order> getCheckedDBOrders(String time){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
                  
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and oderStatus not in (20) and saledate <= '"+time+"'  order by orderbranch";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statuesChargeSale is not null and oderStatus not in (20) and saledate <= '"+time+"'  order by orderbranch";                  
     	
     	if(true){
     		Connection conn = DB.getConn();
@@ -1107,13 +1107,13 @@ logger.info(sql);
     	
     }
 
-    //根据门店获取Order
+    //根据门店获取Order 2014-11-21
     public static List<Order> getUnCheckedDBOrdersbyBranch(String branchid,String time){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0  and oderStatus not in (20) and orderbranch in ("+branchid+")  and saledate <= '"+time+"' order by orderbranch";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statuesChargeSale is null  and oderStatus not in (20) and orderbranch in ("+branchid+")  and saledate <= '"+time+"' order by orderbranch";                  
     	  // logger.info(sql);
     	if(true){
     		Connection conn = DB.getConn();
@@ -1136,13 +1136,13 @@ logger.info(sql);
     	return Orders;  
     }
     
-    //根据门店类别获取Order
+    //根据门店类别获取Order 2014-11-21
     public static List<Order> getUnCheckedDBOrdersbyBranchType(String branchid,String time){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0 and oderStatus not in (20)  and orderbranch in (select id from mdbranch where pid in ( "+branchid+")) and saledate <= '"+time+"'  order by orderbranch";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statuesChargeSale is null and oderStatus not in (20)  and orderbranch in (select id from mdbranch where pid in ( "+branchid+")) and saledate <= '"+time+"'  order by orderbranch";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();
@@ -1165,12 +1165,13 @@ logger.info(sql);
     	return Orders;  
     }
     
+    //2014-11-21
     public static List<Order> getCheckedDBOrdersbyBranchType(String branchid,String time){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and oderStatus not in (20)  and orderbranch in (select id from mdbranch where pid in ( "+branchid+")) and saledate <= '"+time+"' order by orderbranch ";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statuesChargeSale is not null and oderStatus not in (20)  and orderbranch in (select id from mdbranch where pid in ( "+branchid+")) and saledate <= '"+time+"' order by orderbranch ";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();
@@ -1193,12 +1194,13 @@ logger.info(sql);
     	return Orders;  
     }
      
+    //2014-11-21
     public static List<Order> getCheckedDBOrdersbyBranch(String branchid,String time){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
    
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 1 and oderStatus not in (20)  and orderbranch in ( "+branchid+") and saledate <= '"+time+"'  order by orderbranch";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statuesChargeSale is not null and oderStatus not in (20)  and orderbranch in ( "+branchid+") and saledate <= '"+time+"'  order by orderbranch";                  
     	   
     	if(true){
     		Connection conn = DB.getConn();

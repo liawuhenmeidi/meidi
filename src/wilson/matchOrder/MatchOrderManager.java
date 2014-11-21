@@ -266,13 +266,13 @@ public class MatchOrderManager {
 		}
 	}
 	
-	public static boolean checkOrder(int DBOrderID,int UploadOrderID){
+	public static boolean checkOrder(int DBOrderID,int UploadOrderID,String checkName){
 		//消除DB中的Order
 		//a.b();
 		//对照好了消除
 		//OrderManager.updateStatues("orderCharge",Order.query, String.valueOf(DBOrderID)); 
 		//消除Upload中的Order
-		if(UploadManager.checkOrder(UploadOrderID,DBOrderID )){
+		if(UploadManager.checkOrder(UploadOrderID,DBOrderID,checkName)){
 			return true;
 		}
 
@@ -280,7 +280,7 @@ public class MatchOrderManager {
 	}
 	
 	//接受{"1,2","2,3"}类型的ID输入,前一个是DB的Order，后一个是upload的Order哦~
-	public static boolean checkOrder(String[] idString){
+	public static boolean checkOrder(String[] idString,String checkName){
 //		int DBOrderID = 0;
 //		int UploadOrderID = 0;
 //		for(int i = 0 ; i < idString.length ; i ++){
@@ -289,12 +289,12 @@ public class MatchOrderManager {
 //			
 //		}
 		
-		return UploadManager.checkOrder(idString);
+		return UploadManager.checkOrder(idString,checkName);
 	}
 	
-	public static boolean checkDBOrder(int DBOrderID){
+	public static boolean checkDBOrder(int DBOrderID,String checkName){
 		
-		if(UploadManager.checkDBOrder(DBOrderID )){
+		if(UploadManager.checkDBOrder(DBOrderID,checkName)){
 			return true;
 		}
 
@@ -310,14 +310,14 @@ public class MatchOrderManager {
 		return false;
 	}
 	
-	public static boolean checkDBOrderList(String[] dbOrderIdStrList){
+	public static boolean checkDBOrderList(String[] dbOrderIdStrList,String checkName){
 		String idList = "";
 		for(int i = 0 ; i < dbOrderIdStrList.length ; i ++ ){
 			idList += dbOrderIdStrList[i] + ",";
 		}
 		idList = idList.substring(0,idList.length()-1);
 		
-		if(UploadManager.checkDBOrderStrList(idList)){
+		if(UploadManager.checkDBOrderStrList(idList,checkName)){
 			return true;
 		}
 
