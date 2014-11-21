@@ -239,7 +239,9 @@ public class OrderManager {
 				if("0".equals(statues)){
 					statues = "";
 				}else { 
-					statues = TimeUtill.getdateString();  
+					if(StringUtill.isNull(statues)){
+						statues = TimeUtill.getdateString();  
+					}
 				} 
 				///sql = "update mdorder set statues3 = "+statues+" where id in " + ids;
 				sql = "update mdorder set statuesChargeSale = '" + statues + "' where id in " + ids ;

@@ -86,7 +86,7 @@ if("deleOrder".equals(method)){
 	String statues = request.getParameter("statues");
 	CategoryManager.setStatues(Integer.valueOf(id), Integer.valueOf(statues));
 }else if("huiyuan_add".equals(method)){ 
-	System.out.println("&&&&&"); 
+	//System.out.println("&&&&&"); 
 	String categoryName = request.getParameter("huiyuanName");
 	boolean b = UserManager.getName(categoryName);
 	response.getWriter().write(""+b);

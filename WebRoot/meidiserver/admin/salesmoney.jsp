@@ -87,17 +87,27 @@ function checkedd(type){
 
 <table  cellspacing="1"  id="table"  style="margin:auto;"> 
        <tr class="asc">
-        <td align="center">安装网点</td> 
+        <td align="center"  colspan=2>安装网点</td> 
+        <td align="center"  colspan=2 ></td>
+       </tr>
+       <tr class="asc"> 
+        <td align="center">顾客姓名</td> 
         <td align="center">a</td>
+        <td align="center">顾客电话</td>
         <td align="center">a</td>
        </tr>
-       <tr class="asc">
-        <td align="center">a</td> 
+       <tr class="asc"> 
+        <td align="center">送货名称</td> 
         <td align="center">a</td>
+        <td align="center">顾客电话</td>
         <td align="center">a</td>
        </tr>
-       
-       
+        <tr class="asc"> 
+        <td align="center">送货地址</td> 
+        <td align="center">a</td>
+        <td align="center">预约日期</td>
+        <td align="center">a</td>
+       </tr>
    </table> 
 
 </form>
