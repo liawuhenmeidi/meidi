@@ -159,7 +159,7 @@ function adddetail(src){
 
 <div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('1')"></input>
+ <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('')"></input>
  &nbsp;&nbsp;&nbsp;&nbsp;
  <input type="submit" class="button" name="dosubmit" value="返回上一级状态" onclick="winconfirm('0')"></input>    
 </div>

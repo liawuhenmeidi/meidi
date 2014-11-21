@@ -17,7 +17,7 @@ User user = (User)session.getAttribute("user");
 <script type="text/javascript" src="../js/calendar.js"></script> 
 <script type="text/javascript" src="../js/common.js"></script>
 
-  
+
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
@@ -35,45 +35,7 @@ position:fixed;
 <script type="text/javascript">
 
 
-$(function () {
-	initproductSerch("#dingmaordercategory","#dingmatype");
-	
-}); 
 
-function initproductSerch(str,str2){ 
-    cid = $(str).val();
-	$(str2).autocomplete({
-		 source: jsons[cid]
-	    }); 
-	$(str).change(function(){
-		$(str2).val("");
-		cid = $(str).val();  
-		$(str2).autocomplete({
-			 source: jsons[cid]
-		    });
-		}) ;
-   } 
-
-function addImage(src){
-	window.open(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
-}
-
-
-function checkedd(type){
-	// window.opener.document.getElementById("refresh").value ="refresh";
-	//parent.location.reload(); 
-	//window.returnValue='refresh'; 
-	//window.close();
-	//window.oper.reload();
-	// alert(type);
-	$("#print").val(type);
-	$("#form").submit();
-	 
-	 window.opener.location.reload();
-	// if("print" == type){
-	//	 window.location.href="print.jsp?id="+ id;
-	// }
-}
 
 </script>
 

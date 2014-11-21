@@ -236,13 +236,13 @@ public class OrderManager {
 			}else if("orderGo".equals(method)){ 
 				sql = "update mdorder set statues2 = "+statues+" where id in " + ids;
 			}else if("orderCharge".equals(method)){
-				if("0".equals(statues)){
-					statues = "";
-				}else { 
-					if(StringUtill.isNull(statues)){
-						statues = TimeUtill.getdateString();  
+				if(StringUtill.isNull(statues)){
+					statues = TimeUtill.getdateString();  
+				}else {
+					if("0".equals(statues)){
+						statues = "";
 					}
-				} 
+				}
 				///sql = "update mdorder set statues3 = "+statues+" where id in " + ids;
 				sql = "update mdorder set statuesChargeSale = '" + statues + "' where id in " + ids ;
 			} else if("orderover".equals(method)){ 
