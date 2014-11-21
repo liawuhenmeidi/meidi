@@ -983,7 +983,7 @@ logger.info(sql);
     	//flag = true;
     	List<Order> Orders = new ArrayList<Order>();
                   
-    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and oderStatus not in (20)  and saledate <= '"+time+"' and statuesChargeSale is null  order by orderbranch";                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statuesChargeSale is null and oderStatus not in (20)  and saledate <= '"+time+"'  order by orderbranch";                  
     	
     	if(true){
     		Connection conn = DB.getConn();
