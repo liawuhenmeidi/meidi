@@ -506,6 +506,14 @@ if("deleOrder".equals(method)){
 	String branchid = request.getParameter("branchid"); 
     String  type = request.getParameter("type"); 
 	InventoryBranchManager.update(user, branchid, type);
+}else if("savesalecategory".equals(method)){
+	String uid = request.getParameter("uid");
+	String username = request.getParameter("username");
+	String phone = request.getParameter("phone");
+	String locate = request.getParameter("locate");
+	String andate = request.getParameter("andate");
+	String[] producs = request.getParameterValues("product");
+	System.out.println(uid);
 }
 
 %>

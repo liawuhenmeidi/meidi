@@ -125,9 +125,9 @@ function adddetail(src){
 }
 
 function amortization(src){
-	window.open(src, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
-}
-
+	window.open(src, 'abc', 'resizable:yes;dialogWidth:1200px;dialogHeight:1000px;dialogTop:0px;dialogLeft:center;scroll:no');
+} 
+  
 </script>
 
 <div style="position:fixed;width:100%;height:20%;">

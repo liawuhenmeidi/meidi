@@ -36,6 +36,7 @@ public class CategoryManager {
 					pstmt.setString(1, category.getName());
 logger.info(category.getName());
 					pstmt.executeUpdate();
+					CategoryService.flag = true ;
 				} catch (SQLException e) {   
 					e.printStackTrace();
 				} finally {
@@ -75,6 +76,7 @@ logger.info(category.getName());
 				pstmt.setString(1, c.getName()); 
 				pstmt.setString(2, c.getTime());
 				pstmt.executeUpdate();
+				CategoryService.flag = true ;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -89,8 +91,10 @@ logger.info(category.getName());
 			String sql = "update mdcategory set cstatues = "+statues + "  where id = " + id;
 			Connection conn = DB.getConn();
 			Statement stmt = DB.getStatement(conn);
+			
 			try {   
 				flag = stmt.execute(sql);
+				CategoryService.flag = true ;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -225,6 +229,28 @@ logger.info(e);
 			}
 			return categorys;
 		}
+		
+		public static HashMap<String,Category> getCategoryMapStr() {
+			HashMap<String,Category> categorys = new HashMap<String,Category>();
+			Connection conn = DB.getConn();
+			String sql = "select * from mdcategory ";
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) { 
+					Category c = CategoryManager.getCategoryFromRs(rs);
+					categorys.put(c.getId()+"", c);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return categorys;
+		}
+		
 		/**
 		 * 
 		 * @param users
@@ -274,7 +300,7 @@ logger.info(e);
 			String sql = "delete from mdcategory where id in " + ids;
 logger.info(sql);
 			Statement stmt = DB.getStatement(conn);
-
+			CategoryService.flag = true ; 
 			try {
 				DB.executeUpdate(stmt, sql);
 				b = true;
@@ -325,6 +351,7 @@ logger.info(sql);
 				pstmt.setString(2, user.getTime());
 				pstmt.setInt(3, user.getId());
 				pstmt.executeUpdate();
+				CategoryService.flag = true ;
 				flag = true ;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -338,7 +365,7 @@ logger.info(sql);
 		private static Category getCategoryFromRs(ResultSet rs){
 			Category c = new Category();
 			try { 
-				c.setId(rs.getInt("id"));
+				c.setId(rs.getInt("id")); 
 				c.setName(rs.getString("categoryname"));
 				c.setPid(rs.getInt("pid"));
 				c.setTime(rs.getString("time")); 
