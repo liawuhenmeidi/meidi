@@ -1,8 +1,8 @@
-<%@ page language="java" import="java.util.*,orderproduct.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*,orderproduct.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;" pageEncoding="utf-8"%>
 <%
 
 request.setCharacterEncoding("utf-8");
-
+ 
 User user = (User)session.getAttribute("user");
 
 String method = request.getParameter("method");
@@ -512,8 +512,36 @@ if("deleOrder".equals(method)){
 	String phone = request.getParameter("phone");
 	String locate = request.getParameter("locate");
 	String andate = request.getParameter("andate");
-	String[] producs = request.getParameterValues("product");
-	System.out.println(uid);
+	String[] producs = request.getParameterValues("salecate");
+	String message = "{";
+	for(int i=0;i<producs.length;i++){
+		 String id = producs[i];
+		 String price = request.getParameter(id);
+		 message += "\""+id+"\":\""+price+"\",";
+	}
+	
+	message = message.substring(0,message.length()-1)+"}";
+	
+	InstallSale in = new InstallSale();
+	if(!StringUtill.isNull(uid)){
+		in.setUid(Integer.valueOf(uid));
+	}
+	if(!StringUtill.isNull(username)){
+		in.setUid(Integer.valueOf(username));
+	}
+	if(!StringUtill.isNull(uid)){
+		in.setUid(Integer.valueOf(uid));
+	}
+	if(!StringUtill.isNull(uid)){
+		in.setUid(Integer.valueOf(uid));
+	}
+	if(!StringUtill.isNull(uid)){
+		in.setUid(Integer.valueOf(uid));
+	}
+	
+	
+	
+	System.out.println(message);
 }
 
 %>

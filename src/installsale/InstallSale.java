@@ -10,7 +10,8 @@ public class InstallSale {
    private int andate ;
    
   private String message ;
-
+  
+  
 public int getId() {
 	return id;
 }

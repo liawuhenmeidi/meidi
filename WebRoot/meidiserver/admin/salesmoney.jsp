@@ -62,7 +62,7 @@ function initleft(){
 	for(var i=0;i<splits.length;i++){
 		var id = splits[i];
 		var c = map[id];
-		str += '<input type="checkbox"  value="'+c.id+'"  id="categoryname'+c.id+'" ></input>'+
+		str += '<input type="checkbox"  value="'+c.id+'" name="categorynameLeft"  id="categoryname'+c.id+'" ></input>'+
                c.name+'<br/>';
 	} 
 	str += '</td>';
@@ -71,7 +71,7 @@ function initleft(){
 
 function initright(){
 	$("#tableR td").remove(); 
-	var str = '<td align="left" style="white-space:nowrap;" >';
+	var str = '<td align="left" >';
 	for(var i=0;i<merges.length;i++){
 	  var text = "";
 	  var ids=merges[i];
@@ -80,7 +80,7 @@ function initright(){
 		  var c = map[id[j]]; 
 		  text += c.name+"_";
 	  }
-      str += '<input type="radio" value="'+ids+'"  id="categoryname'+ids+'" ></input>'+text+'<br/>';
+      str += '<input type="radio" value="'+ids+'"  name="categorynameRight" id="categoryname'+ids+'" ></input>'+text+'<br/>';
 	}
 	str += '</td>';
 	$("#tableR").append(str);
@@ -93,11 +93,11 @@ function inittotal(){
 		var id = splits[i];
 		var c = map[id];             
 		str +='<tr >';
-		str +='<td>';
-		str +=c.name+'<input type="hidden" name="salecate" value="'+c.id+'"/><input type="hidden" name='+c.id+'name  value="'+c.id+'"/>' ;  
+		str +='<td>'; 
+		str +=c.name+'<input type="hidden" name="salecate" value="'+c.id+'"/>' ;  
 		str +='</td>' ;
 		str +='<td>';
-		str +='<input type="text" id='+c.id+' name='+c.id+'/>';
+		str +='<input type="text" id="'+c.id+'" name="'+c.id+'" />';
 		str +='</td>';
 		str +='</tr>';       
 	}
@@ -112,10 +112,10 @@ function inittotal(){
 		  }
 		    str +='<tr >';
 			str +='<td>';
-			str +=text ; 
-			str +='</td>' ;
-			str +='<td>';
-			str +='<input type="text" id='+ids+' name='+ids+'/>';
+			str +=text +'<input type="hidden" name="salecate" value="'+ids+'"/>' ; 
+			str +='</td>' ; 
+			str +='<td>'; 
+			str +='<input type="text" id="'+ids+'" name="'+ids+'" />';
 			str +='</td>';
 			str +='</tr>';
 		}
@@ -158,12 +158,41 @@ function split(){
 
 function saverule(){ 
 	//$("input[name='uid']:checked").val(); 
-	alert(1);
 	var uid = $("#uid").val();
 	if(uid == null || uid == ""){
 		alert("安装网点不能为空"); 
 		return false ;
 	}
+	 
+	for(var i=0;i<merges.length;i++){
+		  var ids=merges[i];
+		  var value = $("#"+ids).val();
+		  if(null == value || "" == value){
+			  alert("提成标准不能为空");
+			  return false ;
+		  }else {
+			  if(isNaN(value)){
+				  alert("提成标准必须是数字");
+				  return false ;
+			  }
+		  }
+	}
+	
+	for(var i=0;i<splits.length;i++){
+		var ids = splits[i];
+		var value = $("#"+ids).val();
+		 if(null == value || "" == value){
+			  alert("提成标准不能为空");
+			  return false ;
+		  }else { 
+			  if(isNaN(value)){
+				  alert("提成标准必须是数字"); 
+				  return false ;
+			  }
+		  }
+	} 
+	
+	
 	//var username = $("input[name='username']:checked").val();
 	//var phone = $("input[name='phone']:checked").val();
 	//var locate = $("input[name='locate']:checked").val();
@@ -173,7 +202,6 @@ function saverule(){
 	
 }
 </script>
-
 <br/>  
  
 <div id="wrap" style="text-align:center;" >     
