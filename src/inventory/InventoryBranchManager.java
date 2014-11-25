@@ -553,7 +553,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		 while(it.hasNext()){
 			 InventoryBranch in = it.next();
 			 map.put(in.getType(), in);
-		 }
+		 } 
 		 return map;
 	}
 	

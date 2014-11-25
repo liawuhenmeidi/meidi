@@ -102,6 +102,7 @@ public class OrderServiceServlet extends HttpServlet {
     		}else if(Integer.valueOf(statues) == Order.serach){
     			html = OrderService.getHtmlpSearch(user,list);   
     		}else if(Integer.valueOf(statues) == Order.charge){
+    			// 安装
     			html = OrderService.getHtmlpcharge(user,list);   
     		}else if(Integer.valueOf(statues) == Order.chargeall){
     			html = OrderService.getHtmlpchargeall(user,list);   
