@@ -1,12 +1,19 @@
-<%@ page language="java" import="java.util.*,message.*,locate.*,utill.*,category.*,product.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,message.*,locate.*,installsale.*,utill.*,category.*,product.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%      
 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
- 
-List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend);
-  
+List<User> listS = null ; 
+if(UserManager.checkPermissions(user, Group.dealSend)){
+	listS =  UserManager.getUsers(user,Group.sencondDealsend);
+}else {
+	listS = UserManager.getUsers(user,Group.send); 
+}
+HashMap<String,User> usermap = UserService.getmapSencd(listS); 
+
+Map<String,InstallSale>  mapin = InstallSaleManager.getmap();   
+String str = StringUtill.GetJson(mapin);
 HashMap<String,Category> map = CategoryService.getmapstr();
 String mapStr = StringUtill.GetJson(map);   
 Set<String> set = map.keySet();  
@@ -18,9 +25,9 @@ String merge= "[]";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<head> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>文员派工页</title>
+<title>安装网点结款标准页</title>
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <script type="text/javascript" src="../js/calendar.js"></script> 
@@ -42,18 +49,132 @@ position:fixed;
 <!--   头部开始   --> 
 
 <script type="text/javascript">
-var splits = <%=setStr%>;   
-var merges = <%=merge%>;  
+var splitsinit = <%=setStr%>;
+var splits = splitsinit;
+var mergesint = <%=merge%>;
+var merges =  mergesint ;
 var map = <%=mapStr%>; 
+ 
+var mapin = <%=str%>;
 
 $(function () {
+	initbranch(); 
 	init();
 });  
-
+ 
 function init(){
 	initleft();
-	initright();
+	initright(); 
 	inittotal();
+}
+
+function initdate(){
+	var branchid = $("#uid").val();
+	 var InstallSale = mapin[branchid]; 
+	 if(branchid == null || branchid == "" || InstallSale == "" || InstallSale == null){
+		 flag = false ;
+		 $("#isuid").val(""); 
+		 for(var i=0;i<splits.length;i++){
+				var id = splits[i];
+				 $("#"+id).val("");  
+			} 
+		 
+	 }else { 
+		 flag = true ;
+		 message = JSON.parse(InstallSale.message);
+		 $("#isuid").val(InstallSale.id);
+		 uname = InstallSale.uname;
+		 phone = InstallSale.phone;
+		 locate = InstallSale.locate;
+		 andate =InstallSale.andate;
+		 
+		 for(var key in message){
+			 var id = key.split("_");
+			 if(id.length>1){
+				 merges.push(key); 
+				 for(var j=0;j<id.length;j++){
+					  splits.splice($.inArray(id[j],splits),1);
+				  }
+			 }
+			  
+			 
+		 }
+	 }
+	 
+	 if(flag){
+		 for(var key in message){
+			 $("#"+key).val(message[key]);  
+		 } 
+		 $("#"+uname).val(uname); 
+		 $("#"+phone).val(phone);  
+		 $("#"+locate).val(locate); 
+		 $("#"+andate).val(andate); 
+		 
+	 }
+}
+
+function initbranch(){
+     var flag = false ;
+	 $("#uid").change(function(){ 
+		 splits = <%=setStr%>; 
+		 merges =  <%=merge%>; 
+		 var branchid = $("#uid").val();
+		 var InstallSale = mapin[branchid]; 
+		 if(branchid == null || branchid == "" || InstallSale == "" || InstallSale == null){
+			 flag = false ;
+			 $("#isuid").val(""); 
+			 for(var i=0;i<splits.length;i++){
+					var id = splits[i];
+					 $("#"+id).val("");  
+					
+				} 
+			 
+		 }else { 
+			 flag = true ;
+			 
+			 message = JSON.parse(InstallSale.message);
+			 $("#isuid").val(InstallSale.id);
+			 uname = InstallSale.uname;
+			
+			 phone = InstallSale.phone;
+			 locate = InstallSale.locate;
+			 andate =InstallSale.andate;
+			 
+			 for(var key in message){
+				 var id = key.split("_");
+				 if(id.length>1){
+					 merges.push(key); 
+					 for(var j=0;j<id.length;j++){
+						  splits.splice($.inArray(id[j],splits),1);
+					  }
+				 }
+				  
+				 
+			 }
+		 }
+		 init();
+		 
+		 if(flag){
+			 for(var key in message){
+				 $("#"+key).val(message[key]);  
+			 } 
+			 if(1 == uname){ 
+				 $("#username1").attr("checked","checked"); 
+			 }
+             if(1 == phone){
+            	 $("#phone1").attr("checked","checked");
+             } 
+             if(1 == locate){
+            	 $("#locate1").attr("checked","checked");
+             }
+             if(1 == andate ){  
+            	 $("#andate1").attr("checked","checked");
+             }	 
+		 }
+
+	 });
+	 
+	
 }
 
 function initleft(){
@@ -89,8 +210,8 @@ function initright(){
 function inittotal(){
 	$("#tableT tr").remove(); 
 	var str = '';
-	for(var i=0;i<splits.length;i++){
-		var id = splits[i];
+	for(var i=0;i<splitsinit.length;i++){
+		var id = splitsinit[i];
 		var c = map[id];             
 		str +='<tr >';
 		str +='<td>'; 
@@ -119,9 +240,6 @@ function inittotal(){
 			str +='</td>';
 			str +='</tr>';
 		}
-	
-	
-	
 	$("#tableT").append(str);
 }
 
@@ -142,6 +260,7 @@ function merge(){
   s = s.substring(0,s.length-1);
   merges.push(s); 
   init();
+  initdate();
 }
 
 function split(){
@@ -154,6 +273,7 @@ function split(){
 		  } 
 	  });
 	init();
+	initdate();
 }
 
 function saverule(){ 
@@ -204,12 +324,14 @@ function saverule(){
 </script>
 <br/>  
  
-<div id="wrap" style="text-align:center;" >     
+<div id="wrap" style="text-align:center;" >  
+
 <form  action="server.jsp"  name = "myForm" method ="post"  id="form"   onsubmit="return saverule()">
 
 <input type="hidden" name="method" value="savesalecategory"/> 
+<input type="hidden" name="isuid" id="isuid" value=""/>  
 
-<table  cellspacing="1"  id="table"  style="margin:auto;width:90%;"> 
+<table  cellspacing="1"  id="table"  style="margin:auto;width:90%;">
        <tr class="asc">
         <td align="center"  colspan=2>
         <table><tr><td align="left">安装网点</td></tr></table>
@@ -217,12 +339,17 @@ function saverule(){
         <td align="center"  colspan=2 > 
         <table><tr><td align="left"> 
             <select id="uid" name="uid">
-             <option></option>
-          <% for(int i=0;i<listS.size();i++) {
-        	  User u = listS.get(i);
-        	  %>  
+             <option value=""></option>
+             
+          <%   
+          Set<Map.Entry<String,User>> s = usermap.entrySet();
+          Iterator<Map.Entry<String,User>> its = s.iterator();
+          while(its.hasNext()) {
+        	  Map.Entry<String,User> ent = its.next();
+        	  User u = ent.getValue();  
+        	  %>   
         	  <option id="uid" value="<%=u.getId() %>"><%=u.getUsername() %> </option>
-        	  <%
+        	  <%  
           }%>
         </select></td></tr></table>
         

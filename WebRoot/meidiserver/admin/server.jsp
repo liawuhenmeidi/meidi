@@ -507,6 +507,7 @@ if("deleOrder".equals(method)){
     String  type = request.getParameter("type"); 
 	InventoryBranchManager.update(user, branchid, type);
 }else if("savesalecategory".equals(method)){
+	String isuid = request.getParameter("isuid");
 	String uid = request.getParameter("uid");
 	String username = request.getParameter("username");
 	String phone = request.getParameter("phone");
@@ -523,25 +524,35 @@ if("deleOrder".equals(method)){
 	message = message.substring(0,message.length()-1)+"}";
 	
 	InstallSale in = new InstallSale();
+	
 	if(!StringUtill.isNull(uid)){
 		in.setUid(Integer.valueOf(uid));
 	}
 	if(!StringUtill.isNull(username)){
-		in.setUid(Integer.valueOf(username));
+		in.setUname(Integer.valueOf(username));
 	}
-	if(!StringUtill.isNull(uid)){
-		in.setUid(Integer.valueOf(uid));
+	if(!StringUtill.isNull(phone)){
+		in.setPhone(Integer.valueOf(phone));
 	}
-	if(!StringUtill.isNull(uid)){
-		in.setUid(Integer.valueOf(uid));
+	if(!StringUtill.isNull(locate)){
+		in.setLocate(Integer.valueOf(locate));
 	}
-	if(!StringUtill.isNull(uid)){
-		in.setUid(Integer.valueOf(uid));
+	if(!StringUtill.isNull(andate)){
+		in.setAndate(Integer.valueOf(andate));
+	}
+	 
+	in.setMessage(message); 
+	  
+	if(null != isuid && !"".equals(isuid)){
+		in.setId(Integer.valueOf(isuid) ); 
+		InstallSaleManager.update(in);
+	}else { 
+		InstallSaleManager.save(in);
 	}
 	
-	
-	
-	System.out.println(message);
+	response.sendRedirect("../jieguo.jsp?type=updated"); 
+	//
+
 }
 
 %>

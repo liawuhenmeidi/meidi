@@ -177,7 +177,9 @@ function println(){
             	   <tr id="<%=in.getId() %>" class="asc">   
         			  <td align="center"><%=mapc.get(in.getCategoryId()).getName() %> </td>
         			   <td align="center"><%=in.getProductname() %> </td>
-        			 
+        			  <%System.out.println(in.getProductname());
+        			  System.out.println(StringUtill.GetJson(invnetorymap));
+        			  %> 
         			    
         			   <td align="center"><%=invnetorymap.get(in.getProductname()).getPapercount() %> </td>
         			   <td align="center"><%=invnetorymap.get(in.getProductname()).getRealcount() %> </td>

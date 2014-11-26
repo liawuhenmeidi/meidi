@@ -2,12 +2,24 @@ package order;
 
 import group.Group;
 
+import installsale.InstallSale;
+import installsale.InstallSaleManager;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import net.sf.json.JSONObject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.sun.faces.renderkit.AttributeManager.Key;
+
+import category.CategoryService;
 
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
@@ -32,8 +44,313 @@ public class OrderService {
 	}
 	 
 	public static String getHtmlOver(List<Order> list){
+		 
+		int price = 0 ;
+		StringBuffer html = new StringBuffer();  
+		Map<String,Map<String,Map<String,Map<Order,List<OrderProduct>>>>> mapr = new HashMap<String,Map<String,Map<String,Map<Order,List<OrderProduct>>>>>(); 
+		// uid , phone , andate , uname,locate  
+		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = new HashMap<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>>();
 		
-		StringBuffer html = new StringBuffer();
+		Map<String,InstallSale>  mapin = InstallSaleManager.getmap();
+		
+		List<OrderProduct> listopid = new ArrayList<OrderProduct>();
+		 
+		for(int i=0;i<list.size();i++){
+			Order o = list.get(i);
+			InstallSale en = mapin.get(o.getDealsendId()+"");
+			if(null != en){
+				Map<String,Map<String,Map<String,Map<String,List<Order>>>>> umap = orders.get(o.getDealsendId()+"");
+				if(null == umap){
+					umap = new HashMap<String,Map<String,Map<String,Map<String,List<Order>>>>>();
+					orders.put(o.getDealsendId()+"", umap);
+				}
+				 
+				Map<String,Map<String,Map<String,List<Order>>>> phonemap = null ;
+				if(1 == en.getPhone()){
+					phonemap = umap.get(o.getPhone1()) ;
+					if(null == phonemap){
+						phonemap = new HashMap<String,Map<String,Map<String,List<Order>>>>();
+						umap.put(o.getPhone1(), phonemap);
+					}
+				}else { 
+					phonemap = umap.get("same") ;
+					if(null == phonemap){
+						phonemap = new HashMap<String,Map<String,Map<String,List<Order>>>>();
+						umap.put("same", phonemap);
+					}
+					
+				}
+				
+				Map<String,Map<String,List<Order>>> andatemap = null ;
+				
+				if(1 == en.getAndate()){
+					andatemap = phonemap.get(o.getOdate()) ;
+					if(null == andatemap){
+						andatemap = new HashMap<String,Map<String,List<Order>>>();
+						phonemap.put(o.getOdate(), andatemap);
+					}
+				}else {   
+					andatemap = phonemap.get("same");
+					if(null == andatemap){
+						andatemap = new HashMap<String,Map<String,List<Order>>>();
+						phonemap.put("same", andatemap);
+					}  
+					
+				}
+				
+				Map<String,List<Order>> unamemap = null ;
+				if(1 == en.getUname()){
+					unamemap = andatemap.get(o.getUsername()) ;
+					if(null == unamemap){ 
+						unamemap = new HashMap<String,List<Order>>();
+						andatemap.put(o.getUsername(),unamemap);
+					} 
+				}else {   
+					unamemap = andatemap.get("same") ;
+					if(null == unamemap){
+						unamemap = new HashMap<String,List<Order>>();
+						andatemap.put("same", unamemap);
+					}  
+					
+				}
+				
+				List<Order> order = null ;
+				if(1 == en.getLocate()){
+					order = unamemap.get(o.getLocateDetail());
+					if(null == order){
+						order = new ArrayList<Order>();
+						unamemap.put(o.getLocateDetail(), order);
+					}
+					order.add(o);
+				}else { 
+					order = unamemap.get("same");
+					if(null == order){
+						order = new ArrayList<Order>();
+						unamemap.put("same", order);
+					} 
+					order.add(o); 
+				}
+			}
+		} 
+		
+		/*Set<Map.Entry<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>>> sets = orders.entrySet();
+		 Iterator<Map.Entry<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>>> its = sets.iterator();
+		while(its.hasNext()){
+			Map.Entry<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> ents = its.next();
+			Map<String,Map<String,Map<String,Map<String,List<Order>>>>> mas = ents.getValue();
+			logger.info(StringUtill.GetJson(mas)); 
+		}
+		*/ 
+		
+		Set<Map.Entry<String,InstallSale>> set = mapin.entrySet();
+
+		Iterator<Map.Entry<String,InstallSale>> it = set.iterator();
+		
+		while(it.hasNext()){
+			Map.Entry<String,InstallSale> en = it.next();
+			String key = en.getKey();
+			logger.info(key); 
+			InstallSale in = en.getValue();
+			//Map<String,Map<String,Map<String,Map<Order,List<OrderProduct>>>>>
+			Map<String,Map<String,Map<Order,List<OrderProduct>>>> maprr = mapr.get(key);
+			if(null == maprr){  
+				maprr = new HashMap<String,Map<String,Map<Order,List<OrderProduct>>>>();
+				mapr.put(key, maprr);
+				//logger.info(1);
+			} 
+			int x = 0 ;  
+			Map<String,Map<String,Map<String,Map<String,List<Order>>>>> map = orders.get(key);
+			if(null != map){
+				
+			
+		        Set<Map.Entry<String,Map<String,Map<String,Map<String,List<Order>>>>>> enmap =  map.entrySet();
+		        Iterator<Map.Entry<String,Map<String,Map<String,Map<String,List<Order>>>>>> itmap = enmap.iterator();
+			    while(itmap.hasNext()){
+			    	Map.Entry<String,Map<String,Map<String,Map<String,List<Order>>>>> enmapp = itmap.next();
+			    	Map<String,Map<String,Map<String,List<Order>>>> mapp = enmapp.getValue(); 
+			//logger.info(StringUtill.GetJson(mapp));
+			    	Set<Map.Entry<String,Map<String,Map<String,List<Order>>>>> setmapa = mapp.entrySet();
+			    	Iterator<Map.Entry<String,Map<String,Map<String,List<Order>>>>> itmapa = setmapa.iterator();
+			    	while(itmapa.hasNext()){
+			    		Map.Entry<String,Map<String,Map<String,List<Order>>>> enmapa = itmapa.next();
+			    		Map<String,Map<String,List<Order>>> mapa = enmapa.getValue();
+			//logger.info(StringUtill.GetJson(mapa));
+			    		Set<Map.Entry<String,Map<String,List<Order>>>> seta = mapa.entrySet();
+			    		Iterator<Map.Entry<String,Map<String,List<Order>>>> ita = seta.iterator();
+			    		while(ita.hasNext()){
+			    			Map.Entry<String,Map<String,List<Order>>> enitu = ita.next();
+			    			Map<String,List<Order>> mapu = enitu.getValue();
+			  // logger.info(StringUtill.GetJson(mapu));   			
+			    			Set<Map.Entry<String,List<Order>>> setu = mapu.entrySet();
+				    		Iterator<Map.Entry<String,List<Order>>> itu = setu.iterator();
+				    		
+				    		while(itu.hasNext()){
+				    			Map.Entry<String,List<Order>> enitl = itu.next();
+				    			List<Order> listo = enitl.getValue();
+			//logger.info(StringUtill.GetJson(listo));   
+			//logger.info(listo.size());
+				    			if(listo.size()>1){
+				    				x = x +1 ;
+				    				//logger.info(x);
+				    				String message = in.getMessage();
+				    				JSONObject jsObj = JSONObject.fromObject(message); 
+				    				Iterator<String> keys=jsObj.keys();  
+				    				while(keys.hasNext()){
+				    					String ke = keys.next();
+				    					//String valu = jsObj.getString(ke);
+				    					if(ke.contains("_")){
+					    					//logger.info(ke);
+				    						int type = -1;
+				    						for(int i=0;i<listo.size();i++){
+				    							Order o = listo.get(i);
+				    							List<OrderProduct> listop = o.getOrderproduct();
+				    							for(int j=0;j<listop.size();j++){
+				    								OrderProduct op = listop.get(j);
+				    								//int ctype = CategoryService.getmap().get(op.getCategoryId()).getPid();
+				    								//logger.info(op.getCategoryId()); 
+				    								if(ke.contains(op.getCategoryId()+"")){ 
+				    									//Map<String,Map<String,Map<Order,List<OrderProduct>>>>
+				    									Map<String,Map<Order,List<OrderProduct>>> mapopp= maprr.get(ke);
+				    									if(null == mapopp){
+				    										mapopp = new HashMap<String,Map<Order,List<OrderProduct>>>();
+				    										maprr.put(ke, mapopp);
+				    									} 
+				    									
+				    									Map<Order,List<OrderProduct>> mapi = mapopp.get(x+"-"+ke);
+				    									  
+				    									if(null == mapi){
+				    										mapi = new HashMap<Order,List<OrderProduct>>();
+				    										mapopp.put(x+"-"+ke, mapi);
+				    										//logger.info(x);
+				    									}
+				    									
+				    									List<OrderProduct> listopp = mapi.get(o);
+				    									if(null == listopp){
+				    										listopp = new ArrayList<OrderProduct>();
+				    										mapi.put(o, listopp);
+				    									}
+				    									if(op.getCategoryId() != type){
+				    										type = op.getCategoryId();
+				    										listopp.add(op);
+				    									}
+				    									
+				    								}
+				    							}
+				    							
+				    						}
+				    					}
+				    				}
+				    				
+				    			}
+				    			
+				    		}
+			    			
+			    		}
+			    	}
+			    	
+			    }
+			}
+		}
+		// 如果不需要相同。默认为same
+		//logger.info(StringUtill.GetJson(orders));
+		//logger.info(mapr.size());   
+		//logger.info(mapr); 
+		  
+		Set<Map.Entry<String,Map<String,Map<String,Map<Order,List<OrderProduct>>>>>>  setop = mapr.entrySet();
+		Iterator<Map.Entry<String,Map<String,Map<String,Map<Order,List<OrderProduct>>>>>> itop = setop.iterator();
+		while(itop.hasNext()){
+			Map.Entry<String,Map<String,Map<String,Map<Order,List<OrderProduct>>>>> opp = itop.next();
+			Map<String,Map<String,Map<Order,List<OrderProduct>>>> mapop = opp.getValue();
+			//logger.info(mapop);
+			Set<Map.Entry<String,Map<String,Map<Order,List<OrderProduct>>>>> setopp = mapop.entrySet();
+			Iterator<Map.Entry<String,Map<String,Map<Order,List<OrderProduct>>>>> itopp = setopp.iterator();
+			//int x = 0 ;
+			while(itopp.hasNext()){
+				Map.Entry<String,Map<String,Map<Order,List<OrderProduct>>>> listop = itopp.next();
+				Map<String,Map<Order,List<OrderProduct>>> listoo = listop.getValue();
+				//logger.info(listoo);
+				Set<Map.Entry<String,Map<Order,List<OrderProduct>>>> seten =  listoo.entrySet();
+				Iterator<Map.Entry<String,Map<Order,List<OrderProduct>>>> iten =  seten.iterator();
+				while(iten.hasNext()){
+					Map.Entry<String,Map<Order,List<OrderProduct>>> enit = iten.next();
+					String keystr = enit.getKey();
+					String[] keys = keystr.split("-"); 
+					String key = keys[1];  
+					Map<Order,List<OrderProduct>> listo = enit.getValue();
+					int count = getsize(listo);
+					//logger.info("count"+count);
+					Set<Map.Entry<Order,List<OrderProduct>>> setlo = listo.entrySet();
+					Iterator<Map.Entry<Order,List<OrderProduct>>> ito = setlo.iterator();
+					int x = 0 ;
+					while(ito.hasNext()){
+						Map.Entry<Order,List<OrderProduct>> mapo = ito.next();
+						Order o = mapo.getKey(); 
+						List<OrderProduct> listooo = mapo.getValue();
+					   // logger.info(x);
+					    //logger.info(listo);
+					for(int i=0;i<listooo.size();i++){
+						OrderProduct op = listooo.get(i);
+						listopid.add(op);
+						if(op.getStatues() == 0){
+							x++;
+							String tdcol = " bgcolor=\"red\"" ;
+							if(o.getPhoneRemark()!=1){
+								tdcol = ""; 
+
+							}
+				    		
+							html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
+							html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\"  id=\"check_box\" name = "+o.getId()+ "></input></td>");
+							html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+							html.append("<td align=\"center\">"+o.getdealsendName()+"</td>");
+							if(o.getPhoneRemark()!=1){   
+								tdcol = ""; 
+							}
+							html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+"<p><font color=\""+tdcol+"\"> "+o.getPhone1()+"</td>  "); 
+							html.append("<td align=\"center\">"+op.getCategoryName()+"</td> ");
+							html.append("<td align=\"center\" >"+op.getTypeName()+"</td>  ");
+							html.append("<td align=\"center\" >"+ op.getCount()+"</td> ");
+							html.append("<td align=\"center\">"+o.getLocate()+"</td>");
+							html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
+							html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o)+"</td>");
+							html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
+							
+							if(x == 1){
+								InstallSale in = null ;
+								String value = "";
+								 if(null != mapin){
+									 in = mapin.get(o.getDealsendId()+"");
+									 if(null != in){
+										 String message = in.getMessage();
+										 JSONObject jsObj = JSONObject.fromObject(message);
+										// logger.info(key);
+										 value = jsObj.getString(key);
+									 }
+								 } 
+								 if(!StringUtill.isNull(value)){
+									 price += Integer.valueOf(value);
+								 }
+								html.append("<td align=\"center\" id=\""+o.getId()+op.getId()+"\" style=\"background-color:#E8E8D0\" rowspan="+count + "> " +
+				                            "<input type=\"text\" id="+op.getCategoryId()+" value=\""+value+"\"  style=\"border:0; width:80px\"/>"+
+				                            "</td>");
+							}
+							
+			 
+						}
+						
+						
+						
+					 }	
+						//listopid.add(lis)
+					}
+					
+				}
+				
+				
+			}
+		}
+		//logger.info(listopid);
+		
 		/*html.append("<tr id=\"th\"  >");
 		html.append("<td align=\"center\" ><input type=\"checkbox\"  id=\"allselect\" onclick=\"seletall(allselect)\"></input> </td>");
 		html.append("<td align=\"center\">单号</td>");
@@ -58,41 +375,85 @@ public class OrderService {
 				for(int m=0;m<listop.size();m++){
 					OrderProduct op = listop.get(m);
 					
-					if(op.getStatues() == 0){
-						String tdcol = " bgcolor=\"red\"" ;
-						if(o.getPhoneRemark()!=1){
-							tdcol = ""; 
+					boolean found = listopid.contains(op); 
+					if(!found){
+						if(op.getStatues() == 0){
+							String tdcol = " bgcolor=\"red\"" ;
+							if(o.getPhoneRemark()!=1){
+								tdcol = ""; 
 
+							}
+				    		
+							html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
+							html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\"  id=\"check_box\" name = "+o.getId()+ "></input></td>");
+							html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+							html.append("<td align=\"center\">"+o.getdealsendName()+"</td>");
+							if(o.getPhoneRemark()!=1){   
+								tdcol = ""; 
+							}
+							html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+"<p><font color=\""+tdcol+"\"> "+o.getPhone1()+"</td>  "); 
+							html.append("<td align=\"center\">"+op.getCategoryName()+"</td> ");
+							html.append("<td align=\"center\" >"+op.getTypeName()+"</td>  ");
+							html.append("<td align=\"center\" >"+ op.getCount()+"</td> ");
+							html.append("<td align=\"center\">"+o.getLocate()+"</td>");
+							html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
+							html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o)+"</td>");
+							html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
+							
+							InstallSale in = null ;
+							String value = "";
+							 if(null != mapin){
+								 in = mapin.get(o.getDealsendId()+"");
+								 if(null != in){
+									 String message = in.getMessage();
+									 JSONObject jsObj = JSONObject.fromObject(message);
+									 value = jsObj.getString(op.getCategoryId()+"");
+								 }
+							 }
+							 if(!StringUtill.isNull(value)){
+								 price += Integer.valueOf(value);
+							 }
+							 
+							html.append("<td align=\"center\" id=\""+o.getId()+op.getId()+"\" style=\"background-color:#E8E8D0\">"+
+			                            "<input type=\"text\" id="+op.getCategoryId()+" value=\""+value+"\"  style=\"border:0; width:80px\"/>"+
+			                            "</td>");
+			 
 						}
-			    		
-						html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
-						html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\"  id=\"check_box\" name = "+o.getId()+ "></input></td>");
-						html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
-						html.append("<td align=\"center\">"+o.getdealsendName()+"</td>");
-						if(o.getPhoneRemark()!=1){   
-							tdcol = ""; 
-						}
-						html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+"<p><font color=\""+tdcol+"\"> "+o.getPhone1()+"</td>  "); 
-						html.append("<td align=\"center\">"+op.getCategoryName()+"</td> ");
-						html.append("<td align=\"center\" >"+op.getTypeName()+"</td>  ");
-						html.append("<td align=\"center\" >"+ op.getCount()+"</td> ");
-						html.append("<td align=\"center\">"+o.getLocate()+"</td>");
-						html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
-						html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o)+"</td>");
-						html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
-						html.append("<td align=\"center\" id=\""+o.getId()+op.getId()+"\" style=\"background-color:#E8E8D0\">"+
-		                            "<input type=\"text\" id="+op.getCategoryId()+" style=\"border:0; width:80px\"/>"+
-		                            "</td>");
-		
 					}
+				
 				}
 		    }
-		}
+		} 
+		html.append("<tr class=\"asc\">");
+		html.append("<td align=\"center\" colspan=10 ></td> ");
+		html.append("<td align=\"center\" >合计金额</td> ");
+		html.append("<td align=\"center\" >"+price+"</td> ");
+		html.append("<tr/>"); 
 		//logger.info(html.toString());
 		return html.toString();
 		 
 	}
     
+   public static int getsize(Map<Order,List<OrderProduct>> listoo){
+	   int count = 0 ;
+	   //logger.info(listoo);
+	    Set<Map.Entry<Order,List<OrderProduct>>> setlo = listoo.entrySet();
+		Iterator<Map.Entry<Order,List<OrderProduct>>> ito = setlo.iterator();
+		while(ito.hasNext()){
+			Map.Entry<Order,List<OrderProduct>> mapo = ito.next();
+			List<OrderProduct> listo = mapo.getValue();
+			
+		    for(int i=0;i<listo.size();i++){
+		    	OrderProduct op = listo.get(i);
+				if(op.getStatues() == 0){
+					count++;
+				}
+			}
+		}
+		 
+		return count ;
+   }	
+   
    public static String getHtmlSearch(User user ,List<Order> list){
 	    HashMap<Integer,User> usermap = UserService.getMapId();
 	    Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
@@ -146,7 +507,7 @@ public class OrderService {
 				if(flag){
 					html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name = "+o.getId() +"></input></td>");
 				}  
-				
+				 
 				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
 				
 				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");

@@ -5,6 +5,8 @@ import group.Group;
 import java.util.HashMap;
 import java.util.List;
 
+import utill.StringUtill;
+
 public class UserService {
    public static boolean flag = true ;
    public static HashMap<Integer,User>  usermap ;
@@ -14,8 +16,20 @@ public class UserService {
    public static HashMap<String,User>  usermapStr ;
    public static HashMap<String,List<User>>  usermapBranch ;
    
- //获取二次配单元（工队）
-   public static List<User>  list ;  
+  //获取二次配单元（工队）
+   public static List<User>  list ;   
+    
+   public static HashMap<String,User> getmapSencd(List<User> list){
+	   HashMap<String,User> users = new HashMap<String,User>();
+	   if(null !=list){
+		   for(int i =0;i<list.size();i++){
+			   User u = list.get(i); 
+			   users.put(u.getId()+"", u);
+		   } 
+	   }
+	    
+	   return users ; 
+   }
    // 送货员
    public static List<User>  listsend ;  
    
@@ -77,7 +91,7 @@ public static HashMap<String,List<User>> getMapBranchid(){
 	 if(flag){
 		 usermap = UserManager.getMap();
 		 usermapstatues = UserManager.getMapstatues();
-		 usermapStr = UserManager.getMap("");
+		 usermapStr = UserManager.getMap(""); 
 		 usermapBranch = UserManager.getMapBranch();
 		 list = null ;
 		 listsend = null;

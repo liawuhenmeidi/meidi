@@ -31,13 +31,13 @@ width:50px
 }
 
 #table{  
-    width:2000px;
+    width:2100px;
     table-layout:fixed ;
 }
 #th{
     background-color:white;
     position:absolute;
-    width:2000px;
+    width:2100px;
     height:30px;
     top:0;
     left:0; 
@@ -204,6 +204,11 @@ function adddetail(src){
     }
 
 }
+
+function amortization(src){
+	window.open(src, 'abc', 'resizable:yes;dialogWidth:1200px;dialogHeight:1000px;dialogTop:0px;dialogLeft:center;scroll:no');
+} 
+
 </script>
 
 <div style="position:fixed;width:100%;height:20%;">
@@ -220,9 +225,11 @@ function adddetail(src){
 </div>
 
 <div class="btn">
- <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <input type="submit" class="button" value="设置标准" onclick="amortization('../salesmoney.jsp')" ></input> 
 </div>
-
 </div > 
 <div style=" height:130px;">
 </div>
@@ -250,7 +257,7 @@ function adddetail(src){
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
             <td align="center">送货状态</td>
-			
+			 
 			<td align="center">备注</td>
 			<td align="center">送货人员</td>
 			<td align="center">送货时间</td>
@@ -260,7 +267,7 @@ function adddetail(src){
 			
 			<td align="center">先送货后安装</td>
 		    <td align="center">是否已回访</td>
-		     
+		    <td align="center">结款金额</td>
 		</tr>
 	
 
