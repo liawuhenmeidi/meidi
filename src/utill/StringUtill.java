@@ -44,8 +44,8 @@ public class StringUtill {
     	 JSONArray jsonArray = JSONArray.fromObject(list);
     	 //logger.info(list.toString());
        	 return jsonArray.toString();
-    	} 
-    	 return "";
+    	}  
+    	 return "[]"; 
     }
     
     public static String GetJson(Object object){ 

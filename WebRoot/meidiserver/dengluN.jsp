@@ -46,7 +46,7 @@ if(action != null && action.equals("login")) {
 			cookiep.setMaxAge(10*60);
 			response.addCookie(cookie);
 			response.addCookie(cookiep);
- 
+
 			session.setAttribute("user", u);
 			response.sendRedirect("user/welcom.jsp");
 

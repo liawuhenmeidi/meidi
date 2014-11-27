@@ -12,21 +12,7 @@ boolean flag = true ;
 User user = (User)session.getAttribute("user");
 String method = request.getParameter("method");
 System.out.println("*************method"+method);
-if("songhuo".equals(method)){ 
-	String statues = request.getParameter("statues");
-	String id = request.getParameter("id"); 
-	String type = request.getParameter("type");
-	if(type.equals(""+Order.returns)){
-		method = "tuihuo"; 
-	} 
-	int statuesflag = OrderManager.updateStatues(user,method,Integer.valueOf(statues), id);  
-	response.getWriter().write(""+statuesflag);
-	response.getWriter().flush(); 
-	response.getWriter().close(); 
-
-
-
-}else if("dingdaned".equals(method)){  
+if("dingdaned".equals(method)){   
 	String id = request.getParameter("id"); 
 	String oid = request.getParameter("oid");  
 	OrderPrintlnManager.updateOrderStatues(user,Integer.valueOf(id),Integer.valueOf(oid),user.getId(),OrderPrintln.comited);
@@ -34,7 +20,7 @@ if("songhuo".equals(method)){
 	String id = request.getParameter("oid");
 	String pGroupId = request.getParameter("pGroupId");
 	String opstatues = request.getParameter("opstatues");
-	System.out.println("*************"+id+"****"+opstatues);  
+	//System.out.println("*************"+id+"****"+opstatues);  
 	//OrderManager.updateSendstad(user, id);  
 	OrderPrintln  or = new OrderPrintln(); 
 	or.setOrderid(Integer.valueOf(id));
@@ -68,7 +54,7 @@ if("songhuo".equals(method)){
 	response.getWriter().write(""+b);
 	response.getWriter().flush(); 
 	response.getWriter().close(); 
-}else if("tuihuo".equals(method)){   
+}else if("tuihuo".equals(method)){    
 	String oid = request.getParameter("oid"); 
 	OrderManager.delete(user,Integer.valueOf(oid));
 	response.sendRedirect("serch_list.jsp");  

@@ -87,18 +87,7 @@ function initdate(){
 		 phone = InstallSale.phone;
 		 locate = InstallSale.locate;
 		 andate =InstallSale.andate;
-		 
-		 for(var key in message){
-			 var id = key.split("_");
-			 if(id.length>1){
-				 merges.push(key); 
-				 for(var j=0;j<id.length;j++){
-					  splits.splice($.inArray(id[j],splits),1);
-				  }
-			 }
-			  
-			 
-		 }
+
 	 }
 	 
 	 if(flag){
@@ -262,11 +251,13 @@ function merge(){
   init();
   initdate();
 }
-
+   
 function split(){
 	$('input[name="categorynameRight"]:checked').each(function(){
 		  var value = $(this).val();
+		  //alert(value);
 		  merges.splice($.inArray(value,merges),1);
+		  //alert(merges);
 		  var id = value.split("_"); 
 		  for(var j=0;j<id.length;j++){ 
 			  splits.push(id[j]); 

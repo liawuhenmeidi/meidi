@@ -40,22 +40,17 @@ if(!StringUtill.isNull(categoryID)){
 	function winconfirm(){
 		question = confirm("你确认要删除吗？");
 		if (question != "0"){
-			var attract = new Array();
-			var i = 0;
-			$("input[type='checkbox']").each(function(){          
-		   		if($(this).attr("checked")){
-		   				var str = this.name;
-		   	            attract[i] = str;
-		   	            i++;	
-		   		}
-		   	});
-			alert(attract.toString());
+            var value = "";
+			$('input[name="product"]:checked').each(function(){
+				 value = $(this).val();
+			  });
+			//alert(value);
 		  //window.open("http://www.codefans.net")
 			$.ajax({ 
 		        type: "post", 
 		         url: "delete.jsp",
 		         //data:"method=list_pic&page="+pageCount,
-		         data:"method=product&id="+attract.toString(),
+		         data:"method=product&id="+value,
 		         dataType: "", 
 		         success: function (data) {
 		          alert("删除成功");
@@ -68,20 +63,6 @@ if(!StringUtill.isNull(categoryID)){
 		 }
 	}
 	
-	function seletall(all){
-		if($(all).attr("checked")){
-			$("input[type='checkbox']").each(function(){
-				$(this).attr("checked",true);
-	
-		     });
-		}else if(!$(all).attr("checked")){
-			$("input[type='checkbox']").each(function(){
-				$(this).attr("checked",false);
-	
-		     });
-		}
-
-	}
 </script>
 <div class="main">
  <jsp:include flush="true" page="head.jsp">
@@ -104,9 +85,9 @@ if(!StringUtill.isNull(categoryID)){
 	<thead>
 		<tr>
 			<th align="left" width="20">
-			<input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th>
+			<!--<input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th>
 			
-		<!--	<th align="left">产品类别ID</th>  -->
+			<th align="left">产品类别ID</th>  -->
 			<th align="left">产品序号</th>
 			<th align="left">产品型号</th>
 			<th align="left">体积</th>
@@ -117,11 +98,11 @@ if(!StringUtill.isNull(categoryID)){
 <% 
   for(int i =0 ;i<list.size();i++){
 	  Product product = list.get(i) ;
-	  
+	   
 %>
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)">
         
-		<td align="left"><input type="checkbox" value="1" name="<%=product.getId() %>"></input></td>
+		<td align="left"><input type="radio" name="product" value="<%=product.getId() %>"></input></td>
 		
 	<!-- 	<td align="left"><%=product.getId() %></td> -->
 		<td align="left"><%=i+1 %></td> 

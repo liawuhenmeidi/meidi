@@ -326,11 +326,15 @@ public class OrderService {
 										// logger.info(key);
 										 value = jsObj.getString(key);
 									 }
-								 } 
+								 }  
 								 if(!StringUtill.isNull(value)){
 									 price += Integer.valueOf(value);
 								 }
-								html.append("<td align=\"center\" id=\""+o.getId()+op.getId()+"\" style=\"background-color:#E8E8D0\" rowspan="+count + "> " +
+								 String color = "#E8E8D0";
+								 if(count >1){
+									 color = "red"; 
+								 }
+								html.append("<td align=\"center\" id=\""+o.getId()+op.getId()+"\" style=\"background-color:"+color+"\" rowspan="+count + "> " +
 				                            "<input type=\"text\" id="+op.getCategoryId()+" value=\""+value+"\"  style=\"border:0; width:80px\"/>"+
 				                            "</td>");
 							}
