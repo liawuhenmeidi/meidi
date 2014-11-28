@@ -307,9 +307,9 @@ public class XLSReader {
 					uo.setName(name);
 					uo.setShop(sheet0.getCell(1,i).getContents().trim());
 					uo.setType(sheet0.getCell(2,i).getContents().trim());
-					uo.setSaleManName(sheet0.getCell(3,i).getContents().trim());
-					uo.setSalePrice(Double.parseDouble(sheet0.getCell(4,i).getContents().trim()));
-					uo.setNum(Integer.parseInt(sheet0.getCell(5,i).getContents().trim()));
+					//uo.setSaleManName(sheet0.getCell(3,i).getContents().trim());
+					uo.setSalePrice(Double.parseDouble(sheet0.getCell(3,i).getContents().trim()));
+					uo.setNum(Integer.parseInt(sheet0.getCell(4,i).getContents().trim()));
 				}catch(Exception e){
 					e.printStackTrace();
 					UploadOrders = new ArrayList<UploadOrder>();
@@ -321,15 +321,15 @@ public class XLSReader {
 				}
 				
 				try {
-					uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents().trim())));
+					uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(5,i).getContents().trim())));
 				} catch (ParseException e) {
 					s1 = new SimpleDateFormat("MM/dd/yy");
 					try {
-						uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents().trim())));
+						uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(5,i).getContents().trim())));
 					} catch (ParseException e1) {
 						s1 = new SimpleDateFormat("yyyyMMdd");
 						try{
-							uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(6,i).getContents().trim())));
+							uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(5,i).getContents().trim())));
 						}catch(ParseException e2){
 							e.printStackTrace();
 							UploadOrders = new ArrayList<UploadOrder>();
