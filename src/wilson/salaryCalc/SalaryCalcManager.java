@@ -16,7 +16,11 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.poi.util.StringUtil;
 
+import utill.StringUtill;
+import wilson.catergory.CatergoryManager;
+import wilson.catergory.CatergoryMaping;
 import wilson.upload.SalaryModelUpload;
 import wilson.upload.UploadManager;
 import wilson.upload.UploadOrder;
@@ -28,6 +32,83 @@ public class SalaryCalcManager {
 	
 	protected static Log logger = LogFactory.getLog(SalaryCalcManager.class);
 	private static List<UploadOrder> unCalcUploadOrders = new ArrayList<UploadOrder>();
+	
+	public static List<SalaryResult> sortSalaryResult(
+			List<SalaryResult> input,String CatergoryMapingName) {
+		if(input.size() <= 0 ){
+			return input;
+		}
+		List<SalaryResult> result = new ArrayList<SalaryResult>();
+		
+		List<SalaryResult> noMapingList = new ArrayList<SalaryResult>();
+		List<CatergoryMaping> cmMapingList = CatergoryManager.getCatergory(CatergoryMapingName);
+		
+		while(input.size() != 0 ){
+			List<SalaryResult> sameFileNameList = new ArrayList<SalaryResult>();
+			String tempFileName = "";
+			
+			tempFileName = input.get(0).getUploadOrder().getName().trim();
+			sameFileNameList.add(input.get(0));
+			sameFileNameList.remove(0);
+			for(int i = 0; i < input.size() ; i++){
+				if(input.get(i).getUploadOrder().getShop().trim().equals(tempFileName)){
+					sameFileNameList.add(input.get(i));
+					input.remove(i);
+					i --;
+				}
+			}
+			tempFileName = "";
+		
+			String tempName = "";
+			String tempShop = "";
+			List<SalaryResult> sameShopList = new ArrayList<SalaryResult>();
+			
+			
+			while(sameFileNameList.size() != 0){
+				tempShop = sameFileNameList.get(0).getUploadOrder().getShop().trim();
+				sameShopList.add(sameFileNameList.get(0));
+				sameFileNameList.remove(0);
+				for(int i = 0; i < sameFileNameList.size() ; i++){
+					
+					if(sameFileNameList.get(i).getUploadOrder().getShop().trim().equals(tempShop)){
+						sameShopList.add(sameFileNameList.get(i));
+						sameFileNameList.remove(i);
+						
+						i --;
+					}
+				}
+				tempShop = "";
+				
+				while(sameShopList.size() != 0){
+					
+					//正在写
+					tempName = sameShopList.get(0).getSalaryModel().getCatergory().trim();
+					if(StringUtill.isNull(tempName)){
+						noMapingList.add(sameShopList.get(0));
+						continue;
+					}
+					
+					
+					result.add(sameShopList.get(0));
+					sameShopList.remove(0);
+					for(int i = 0 ; i < sameShopList.size() ; i++){
+						if(sameShopList.get(i).getUploadOrder().getSaleManName().trim().equals(tempName)){
+							result.add(sameShopList.get(i));
+							sameShopList.remove(i);
+							
+							i --;
+						}
+					}
+					tempName = "";
+				}
+					
+				
+			
+			}
+
+		}
+		return result;
+	}
 	
 	public static List<SalaryResult> calcSalary(List<UploadOrder> uploadOrders,List<UploadSalaryModel> salaryModels){
 		unCalcUploadOrders = new ArrayList<UploadOrder>();
@@ -352,7 +433,7 @@ public class SalaryCalcManager {
 			}
 			
 			
-			sql = "select * from uploadorder where name = '" + name + "'";
+			sql = "select * from uploadorder where name = '" + name + "' order by shop";
 			//sql += " and checked != -1";
 			logger.info(sql);
 			stmt = DB.getStatement(conn); 
@@ -379,6 +460,8 @@ public class SalaryCalcManager {
 				}else{
 					//千万别改这里
 					tempResult.setSalary(null);
+					
+					tempResult.setUploadSalaryModelid(-1);
 				}
 				tempResult.setUploadOrder(tempOrder);
 				result.add(tempResult);
@@ -391,6 +474,59 @@ public class SalaryCalcManager {
 			e.printStackTrace();
 			result = new ArrayList<SalaryResult>();
 			return result;
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		//初始化salaryModel
+		result = initSalaryModel(result);
+		return result;
+	}
+	
+	public static boolean resetSalaryResultByName(String name) {
+		boolean result =false;
+		String idSTR = "";
+		
+		String sql = "select id from uploadorder where name = '" + name + "' and checked = 2";
+		
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while(rs.next()){
+				idSTR+=rs.getInt("id") + ",";
+			}
+			if(idSTR.endsWith(",")){
+				idSTR = idSTR.substring(0,idSTR.length()-1);
+			}
+			logger.info(sql);
+			
+			boolean autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			
+			sql = "update uploadorder set checked = 1 where id in ( " + idSTR + ")";
+			stmt = DB.getStatement(conn); 
+			stmt.executeUpdate(sql);
+			
+			sql = "delete from salaryresult where uploadorderid in ( " + idSTR + ")";
+			stmt = DB.getStatement(conn); 
+			stmt.executeUpdate(sql);
+			
+			conn.commit();
+			conn.setAutoCommit(autoCommit);
+			
+			
+			
+		} catch (SQLException e) {
+			try {
+				logger.info("回滚!");
+				conn.rollback();
+			} catch (SQLException e1) {
+				logger.info("回滚失败!!请注意!!");
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
 		} finally {
 			DB.close(rs);
 			DB.close(stmt);
@@ -463,7 +599,7 @@ public class SalaryCalcManager {
 		Map<Integer,UploadOrder> orderMap = new HashMap<Integer,UploadOrder>();
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
-		String sql = "select * from uploadorder where uploadtime >= '" + fmt.format(startDate) + "' and uploadtime <= '" + fmt.format(endDate) + "'";
+		String sql = "select * from uploadorder where uploadtime >= '" + fmt.format(startDate) + "' and uploadtime <= '" + fmt.format(endDate) + "' order by name,shop";
 		logger.info(sql);
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn); 
@@ -517,6 +653,7 @@ public class SalaryCalcManager {
 	            Integer key = (Integer) it.next();
 	            tempResult = new SalaryResult();
 				tempResult.setSalary(null);
+				tempResult.setUploadSalaryModelid(-1);
 				tempResult.setUploadOrder(orderMap.get(key));
 				result.add(tempResult);
 	        }
@@ -530,6 +667,8 @@ public class SalaryCalcManager {
 			DB.close(stmt);
 			DB.close(conn);
 		}
+		//初始化salaryModel
+		result = initSalaryModel(result);
 		return result;
 	}
 	

@@ -2,9 +2,12 @@ package wilson.salaryCalc;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import wilson.upload.UploadOrder;
 import wilson.upload.UploadSalaryModel;
+import branchtype.BranchType;
+import branchtype.BranchTypeManager;
 
 public class SalaryResult {
 	private int id;

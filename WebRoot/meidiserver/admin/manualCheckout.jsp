@@ -244,7 +244,7 @@ $(function (){
 				 BranchType lo = listb.get(i); 
 				 if(lo.getId() != 2){ 
 			%>	    
-			<option value="<%=lo.getId()%>" <%if(String.valueOf(lo.getId()).equals(selectBranchType)){ %>selected="selected" <%} %>><%=lo.getName()%></option>
+			<option value="<%=lo.getId()%>" ><%=lo.getName()%></option>
 			<%
 				 }
 			 }

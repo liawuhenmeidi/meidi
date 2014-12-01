@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.jms.Session;
@@ -17,6 +18,8 @@ import org.apache.poi.util.StringUtil;
 
 import user.UserManager;
 import utill.StringUtill;
+import wilson.catergory.CatergoryManager;
+import wilson.catergory.CatergoryMaping;
 import wilson.matchOrder.AfterMatchOrder;
 import wilson.upload.UploadManager;
 import wilson.upload.UploadSalaryModel;
@@ -62,10 +65,10 @@ public class SalaryExportServlet extends HttpServlet {
 			return;
 		}
 	
-        
+        String CatergoryMapingName = (String)request.getSession().getAttribute("CatergoryMapingName");
         
 		//排序
-        lists = sortExcelPrintResultModel(lists);
+        lists = SalaryCalcManager.sortSalaryResult(lists, CatergoryMapingName);
         
         //  打开文件 
         WritableWorkbook book  =  Workbook.createWorkbook(response.getOutputStream());
@@ -184,56 +187,7 @@ public class SalaryExportServlet extends HttpServlet {
 		
     }
 
-	private List<SalaryResult> sortExcelPrintResultModel(
-			List<SalaryResult> lists) {
-		//目测貌似可以用递归搞一下？算了。。。免得以后看不懂
-		
-		String tempName = "";
-		String tempShop = "";
-		List<SalaryResult> sameShopList = new ArrayList<SalaryResult>();
-		List<SalaryResult> result = new ArrayList<SalaryResult>();
-		
-		while(lists.size() != 0){
-			tempShop = lists.get(0).getUploadOrder().getShop().trim();
-			sameShopList.add(lists.get(0));
-			lists.remove(0);
-			for(int i = 0; i < lists.size() ; i++){
-				//断点专用
-//				if(lists.get(i).getUploadOrder().getPosNo().equals("D00003013")){
-//					System.out.println("a");
-//					System.out.println(lists.get(i).getUploadOrder().getShop().trim());
-//					System.out.println(lists.get(i).getUploadOrder().getShop().trim().equals(tempShop));
-//				}
-				
-				if(lists.get(i).getUploadOrder().getShop().trim().equals(tempShop)){
-					sameShopList.add(lists.get(i));
-					lists.remove(i);
-					
-					i --;
-				}
-			}
-			tempShop = "";
-			
-			while(sameShopList.size() != 0){
-				tempName = sameShopList.get(0).getUploadOrder().getSaleManName().trim();
-				result.add(sameShopList.get(0));
-				sameShopList.remove(0);
-				for(int i = 0 ; i < sameShopList.size() ; i++){
-					if(sameShopList.get(i).getUploadOrder().getSaleManName().trim().equals(tempName)){
-						result.add(sameShopList.get(i));
-						sameShopList.remove(i);
-						
-						i --;
-					}
-				}
-				tempName = "";
-			}
-				
-			
-		
-		}
-		return result;
-	}
+	
 
 	//根据时间段，取出对应的ExcelPrintResultModel模型
 	private List<ExcelPrintResultModel> calcSalary(Date startDate, Date endDate) {
