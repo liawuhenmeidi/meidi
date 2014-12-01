@@ -80,17 +80,16 @@ public class OrderManager {
 		return flag ;
 	}  
 	
-	public static int updateMessage(String phone1,String andate,String locations,String oid,String remark) {
+	public static int updateMessage(String phone1,String andate,String locations,String oid) {
 		int flag = -1 ; 
 		Connection conn = DB.getConn(); 
 		//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
-		String sql = "update mdorder set phone1= ? , andate = ?, remark = ? where id = " + oid;
+		String sql = "update mdorder set phone1= ? , andate = ? where id = " + oid;
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		try {   
 			pstmt.setString(1,phone1);    
 			pstmt.setString(2,andate);   
-			pstmt.setString(3,remark);  
-			
+
 			logger.info(pstmt);    
 			flag = pstmt.executeUpdate();
 		} catch (SQLException e) {

@@ -4,6 +4,8 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 
 String categoryID = request.getParameter("categoryID");
+List<String> lists = ProductService.getlist(Integer.valueOf(categoryID));
+String list = StringUtill.GetJson(lists);
 String method = request.getParameter("method");
 String action = request.getParameter("action");
 String productID = request.getParameter("productid");
@@ -41,16 +43,24 @@ if("add".equals(action)){
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <script type="text/javascript">
-
- function check(){
+ 
+ var list = <%=list%>;
+ function check(){ 
 	
 	 var name = $("#name").val();
 	 var size = $("#size").val();
-	 //alert(name);
+	 //alert(name); 
+	 var count = $.inArray(name, list);
+	 //alert(count);
 	 if(name == "" || name == null || name == "null"){
 		 alert("产品型号不能为空"); 
 		 return false;
-	 }
+	 }else {
+		 if(count != -1){
+			 alert("您输入的产品已存在");
+			 return false ;
+		 }
+	 } 
 	 
 	 if(isNaN(size)){
 		 alert("体积输入不正确");
@@ -95,10 +105,6 @@ if("add".equals(action)){
      </div>
 
      </div>
-
-
-
-
 
 </body>
 </html>

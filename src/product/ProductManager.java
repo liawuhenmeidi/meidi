@@ -17,6 +17,7 @@ import category.Category;
 import category.CategoryManager;
 	import database.DB;
 import user.User;
+import utill.DBUtill;
 	
 	public class ProductManager {
 		 protected static Log logger = LogFactory.getLog(ProductManager.class);
@@ -67,14 +68,15 @@ import user.User;
 			}
 		 
 		 public static Product getProductbyname(String name) {
-			    Product p = new Product();
+			    Product p = null;
 				Connection conn = DB.getConn();
 				String sql = "select * from mdproduct where ptype = '"+ name+"'";
 logger.info(sql); 
 				Statement stmt = DB.getStatement(conn);
 				ResultSet rs = DB.getResultSet(stmt, sql);
 				try {
-					while (rs.next()) {  
+					while (rs.next()) { 
+						p = new Product();
 						p.setId(rs.getInt("id"));
 						p.setCategoryID(rs.getInt("categoryID"));
 						p.setType(rs.getString("ptype"));
@@ -289,24 +291,16 @@ logger.info(sql);
 
 		
 		public static void save(String type,String id ,double size){
-			Connection conn = DB.getConn();
+			String sql = ""; 
+			Product p = getProductbyname(type); 
+			if(null == p){
+				sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size) VALUES (null, null,'"+type+"','"+id+"',0,'"+size+"')";
+			}else { 
+				sql = "update mdproduct set pstatues = 0 where id = "+ p.getId();
+			} 
 			//System.out.println("*****"+id);
-			String sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size) VALUES (null, null,?,?,0,?)";
-			PreparedStatement pstmt = DB.prepare(conn, sql);
-			try {
-				pstmt.setString(1, type);
-				pstmt.setDouble(2, size); 
-				pstmt.setString(3, id);  
-				
-				pstmt.executeUpdate(); 
-				ProductService.flag = true ;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				DB.close(pstmt);
-				DB.close(conn);
-			}
-		 
+			DBUtill.sava(sql);
+			ProductService.flag = true ;
 		}
 		
 		public static void update(String type,String id,double size ){

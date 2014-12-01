@@ -89,7 +89,7 @@ function updateOeders(type){
 		if(1 == canupdate){
 			   $.ajax({  
 			        type:"post",  
-			         url:"server.jsp", 
+			         url:"server.jsp",   
 			         //data:"method=list_pic&page="+pageCount,
 			         data:"method=printlnStatues&oid="+id,
 			         dataType: "", 

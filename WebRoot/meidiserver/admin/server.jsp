@@ -473,9 +473,8 @@ if("deleOrder".equals(method)){
     	} 
 	    OrderProductService.flag = true ;
 	}else {    
-		statues = OrderManager.updateMessage(phone1,andate,locations,oid,remark);  
+		statues = OrderManager.updateMessage(phone1,andate,locations,oid);  
 	} 
-	  
 	if(!StringUtill.isNull(message)){
 	    Message  messa = new Message();  
 		messa.setOid(Integer.valueOf(oid)); 
