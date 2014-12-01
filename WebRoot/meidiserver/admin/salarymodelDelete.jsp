@@ -11,7 +11,7 @@ String idSTR = request.getParameter("id");
 String type = request.getParameter("type");
 
 
-if(!StringUtill.isNull(type) && !StringUtill.isNull(idSTR)){
+if(!StringUtill.isNull(type) && !StringUtill.isNull(idSTR) && type.equals("del")){
 	int id = Integer.parseInt(idSTR);
 	UploadManager.deleteSalaryModelById(id);
 	out.print("success");

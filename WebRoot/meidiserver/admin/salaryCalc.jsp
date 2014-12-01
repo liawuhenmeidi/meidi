@@ -78,7 +78,7 @@ function del(id,obj){
         type:"post", 
          url:"salarymodelDelete.jsp",
          //data:"method=list_pic&page="+pageCount,
-         data:"type=delete&id="+id,
+         data:"type=del&id="+id,
          dataType: "",  
          success: function (data) {
         	obj.parent().parent().remove();
