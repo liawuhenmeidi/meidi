@@ -228,9 +228,9 @@ public class MatchOrder {
 		for(int i = 0 ; i < unCheckedUploadOrders.size(); i ++){
 			
 			UploadOrder tempUo = unCheckedUploadOrders.get(i);
-			if(tempUo.getPosNo().equals("D00007012")){
-				System.out.println("1");
-			}
+//			if(tempUo.getPosNo().equals("D00007012")){
+//				System.out.println("1");
+//			}
 			for(int j = 0 ; j < unCheckedDBOrders.size() ; j ++){	
 				Order tempDBO = unCheckedDBOrders.get(j);
 				
@@ -426,8 +426,14 @@ public class MatchOrder {
 			tempPos = uploadOrders.get(i).getPosNo();
 			for(int j = i + 1 ; j < uploadOrders.size() ; j++){
 				if(tempPos.equals(uploadOrders.get(j).getPosNo())){
-					result.add(uploadOrders.get(i));
-					result.add(uploadOrders.get(j));
+					if(!result.contains(uploadOrders.get(i))){
+						result.add(uploadOrders.get(i));
+					}
+					
+					if(!result.contains(uploadOrders.get(j))){
+						result.add(uploadOrders.get(j));
+					}
+					
 					break;
 				}
 			}
@@ -442,8 +448,15 @@ public class MatchOrder {
 			tempPos = DBOrders.get(i).getPos();
 			for(int j = i + 1 ; j < DBOrders.size() ; j++){
 				if(tempPos.equals(DBOrders.get(j).getPos())){
-					result.add(DBOrders.get(i));
-					result.add(DBOrders.get(j));
+					if(!result.contains(DBOrders.get(i))){
+						result.add(DBOrders.get(i));
+					}
+					
+					
+					if(!result.contains(DBOrders.get(j))){
+						result.add(DBOrders.get(j));
+					}
+					
 					break;
 				}
 			}
