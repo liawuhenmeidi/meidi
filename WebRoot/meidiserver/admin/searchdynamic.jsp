@@ -1,10 +1,10 @@
-<%@ page language="java" import="java.util.*,java.net.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,java.net.*,product.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <% 
 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
-
+ 
 //Cookie Cookies[]=request.getCookies();
 
 //String sear = "";
@@ -26,7 +26,7 @@ Map<String,User> usermaps = UserService.getuserIdStr();
 
 String usermapstr = StringUtill.GetJson(usermaps);
 
-// 安装网点
+// 安装网点 
 List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend); //UserService.getsencondDealsend(user);
 
 List<User> listSend = UserManager.getUsers(user,Group.send); //UserService.getsend(user);
@@ -39,5 +39,4 @@ int opstatues = OrderPrintln.releasedispatch;
 
 
 %> 
-
 

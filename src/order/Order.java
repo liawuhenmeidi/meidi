@@ -857,6 +857,22 @@ public String getCategory(int statues,String decollator){
 	}
 	return category; 
 }
+
+public String getCategoryid(int statues,String decollator){   
+	String category = "";  
+
+	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
+	if(lists != null){
+		for(int g = 0 ;g<lists.size();g++){      
+			//String tempType = categorymap.get(Integer.valueOf(lists.get(g).getCategoryId())).getName();
+			if(lists.get(g).getStatues() == statues){
+			   category += decollator + lists.get(g).getCategoryId();
+			} 
+		} 
+	}
+	return category; 
+}
+
 // 是否是顶码
 public String getSendType(){
 	String sendType = "";
@@ -898,6 +914,27 @@ public String getSendType(int statues,String decollator){
 					String tempType = lists.get(g).getSendType(); 
 					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
 					sendType += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);
+				   }
+				}
+			   
+			}
+       }
+	return sendType;
+}
+
+public String getSendTypeID(int statues,String decollator){ 
+	String sendType = ""; 
+
+	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
+	if(lists != null){
+		for(int g = 0 ;g<lists.size();g++){
+			if(lists.get(g).getStatues() == statues){   
+				if(statues == 1){ 
+					String tempType = lists.get(g).getSaleType(); 
+					sendType += decollator + tempType;
+				}else {
+					String tempType = lists.get(g).getSendType(); 
+					sendType += decollator + tempType;
 				   }
 				}
 			   

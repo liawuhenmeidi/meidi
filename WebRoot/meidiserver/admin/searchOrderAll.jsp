@@ -16,6 +16,8 @@ function checkedd(){
 	var list = $("input");
 	var oderStatus = "";
 	var deliveryStatues = "";
+	var sendcategoryname = "";
+	var salecategoryname = "";
 	for(var i=0;i<list.length;i++){
 		var input = list[i];
 		
@@ -46,9 +48,13 @@ function checkedd(){
 					oderStatus += value+",";
 				}else if("deliveryStatues" == name){
 					deliveryStatues += value+"," ;
+				}else if("sendcategoryname" == name){
+					sendcategoryname += value+",";
+				}else if("salecategoryname" == name){
+					salecategoryname += value +",";
 				}
 			}
-		}
+		} 
 	} 
 	 
 	if(oderStatus != null && oderStatus != ""){
@@ -59,7 +65,14 @@ function checkedd(){
 		deliveryStatues = deliveryStatues.substring(0,deliveryStatues.length-1);
 		sear += "&deliveryStatues="+ deliveryStatues;
 	}
-	 
+	if(sendcategoryname != null && sendcategoryname != ""){
+		sendcategoryname = sendcategoryname.substring(0,sendcategoryname.length-1);
+		sear += "&sendcategoryname="+ sendcategoryname;
+	}
+	if(salecategoryname != null && salecategoryname != ""){
+		salecategoryname = salecategoryname.substring(0,salecategoryname.length-1);
+		sear += "&salecategoryname="+ salecategoryname;
+	} 
 	$.cookie("sear", sear);
 	
 	if(sear != null && sear != ""){
@@ -99,7 +112,29 @@ function checkedd(){
  function tuichu(){
 	 $("#wrapsearch").css("display","none"); 
  }
+ //<input type="checkbox"  name="deliveryStatues" value="1"  id="deliveryStatues1" />
+ function intsearch(){
+	 $("#sendcategorynamecd <input>").remove();
+	 $("#salecategorynamecd <input>").remove();
+		if(null != jsonallp ){ 
+			var htmlsend = "";
+			var htmlsale = "";
+			for(var i=0;i<jsonallp.length;i++){
+				var op = jsonallp[i]; 
+				//html += '<option id="'+op.id+'">'+op.type+'</option>';
+				htmlsend += '<input type="checkbox"  name="sendcategoryname" value="'+op.id+'"  id="sendcategoryname'+op.id+'" />'+op.name+"  ";
+				htmlsale += '<input type="checkbox"  name="salecategoryname" value="'+op.id+'"  id="salecategoryname'+op.id+'" />'+op.name+"  ";
+			} 
+			$("#sendcategorynamecd").append(htmlsend);
+			$("#salecategorynamecd").append(htmlsale);
+		}
+		
+		//$("#sendtype").autocomplete({ 
+		//	 source: jsonallp
+		//   });
+	}
 
+ 
 </script>
 
  
@@ -169,24 +204,22 @@ function checkedd(){
 		
 		<tr class="bsc">
 		    <td align="center" >送货名称</td>
-			<td align="center" >
-	        <input type="text"  name="categoryname" id="categoryname" value=""  />
+			<td align="center" id="sendcategorynamecd" colspan=5>
 			</td>
-			<td align="center" >送货型号</td>
+ 
+		</tr> 
+
+		<tr class="bsc">
+		<td align="center" >票面名称</td>
+			<td align="center" colspan=5 id="salecategorynamecd">
+			</td>	
+		
+		</tr>
+		<tr class="bsc">
+		<td align="center" >送货型号</td>
 			<td align="center" >
 	        <input type="text"  name="sendtype" id="sendtype" value=""  />
 			</td> 
-			<td align="center" >是已发提成</td> 
-			<td align="center" >
-	        <input type="text"  name="dealSendid" id="dealSendid" value=""  />
-			</td>	 
-		</tr>
-		
-		<tr class="bsc">
-		<td align="center" >票面名称</td>
-			<td align="center" >
-	        <input type="text"  name="categoryname" id="categoryname" value=""  />
-			</td>	
 		<td align="center" >票面型号</td>
 			<td align="center">
 	        <input type="text"  name="saletype" id="saletype" value=""  />
@@ -228,21 +261,21 @@ function checkedd(){
 		<tr class="bsc">	 
 			<td align="center" >上报状态</td>
 			<td align="center" colspan=5>
-	                         需派送<input type="checkbox"  name="oderStatus"  value="0"  id="oderStatus0"/>
-	                         已自提<input type="checkbox"  name="oderStatus"  value="8"  id="oderStatus8"/>
-	   只安装(门店提货)<input type="checkbox"  name="oderStatus"  value="9"  id="oderStatus9"/>
-	    只安装(顾客已提)<input type="checkbox"  name="oderStatus"  value="10"  id="oderStatus10"/>
-	                          换货单<input type="checkbox"  name="oderStatus"  value="20"  id="oderStatus20"/>
+	                         <input type="checkbox"  name="oderStatus"  value="0"  id="oderStatus0"/>需派送&nbsp;&nbsp;
+	                         <input type="checkbox"  name="oderStatus"  value="8"  id="oderStatus8"/>已自提&nbsp;&nbsp;
+	        <input type="checkbox"  name="oderStatus"  value="9"  id="oderStatus9"/>只安装(门店提货)&nbsp;&nbsp;
+	        <input type="checkbox"  name="oderStatus"  value="10"  id="oderStatus10"/>只安装(顾客已提)&nbsp;&nbsp;
+	                        <input type="checkbox"  name="oderStatus"  value="20"  id="oderStatus20"/>换货单&nbsp;&nbsp;
 	                                
 			</td>
 		</tr>
 		<tr class="bsc">	 
 			<td align="center" >送货状态</td>  
 			<td align="center" colspan=3>
-	                           已送货<input type="checkbox"  name="deliveryStatues" value="1"  id="deliveryStatues1" />
-	                           已安装 <input type="checkbox"  name="deliveryStatues"  value="2" id="deliveryStatues2"/>
-	                          未送货  <input type="checkbox"  name="deliveryStatues"  value="0" id="deliveryStatues0"/>
-	                          已退货<input type="checkbox"  name="deliveryStatues"  value="-1" id="deliveryStatues-1"/>
+                   <input type="checkbox"  name="deliveryStatues" value="1"  id="deliveryStatues1" />已送货&nbsp;&nbsp;
+                 <input type="checkbox"  name="deliveryStatues"  value="2" id="deliveryStatues2"/>已安装 &nbsp;&nbsp;
+                  <input type="checkbox"  name="deliveryStatues"  value="0" id="deliveryStatues0"/>未送货  &nbsp;&nbsp;
+              <input type="checkbox"  name="deliveryStatues"  value="-1" id="deliveryStatues-1"/>已退货&nbsp;&nbsp;
 	                   
 			</td> 
 			<td>备注</td>

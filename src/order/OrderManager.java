@@ -24,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
+import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
  
 import database.DB;
@@ -245,7 +246,8 @@ public class OrderManager {
 				///sql = "update mdorder set statues3 = "+statues+" where id in " + ids;
 				sql = "update mdorder set statuesChargeSale = '" + statues + "' where id in " + ids ;
 			} else if("orderover".equals(method)){ 
-				sql = "update mdorder set statues4 = "+statues+"  , chargeDealsendtime = '"+TimeUtill.gettime()+"' where id in " + ids;
+				//sql = "update mdorder set statues4 = "+statues+"  , chargeDealsendtime = '"+TimeUtill.gettime()+"' where id in " + ids;
+				sql = "update mdorderproduct set chargeDealsendtime = '"+TimeUtill.gettime()+"',chargeDealsendID = "+user.getId()+" where id in " +ids;			
 			}else if("tuihuo".equals(method)){     
 			    sql = "update mdorder set returnstatues = "+statues+" , returntime = '"+time+"'  where id in " + ids;
 			   // List<String> lists = InventoryBranchManager.chage(user, method, statues, id);
@@ -746,8 +748,11 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))    and statues1 = 0  and oderStatus not in (20)  "+search+" order by "+sort+str ;  
 				   }else if(Order.go == statues){ 
 					   sql = "select * from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))    and statues1 = 1 and statues2 = 0   and oderStatus not in (20)  "+search+" order by "+sort+str ;  
-				   }else if(Order.over == statues){  
-					   sql = "select * from  mdorder where  mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and printSatues = 1 and sendId != 0  and deliveryStatues not in (0,3,8,9,10)  and statues4 = 0  "+search+" order by "+sort+str; 
+				   }else if(Order.over == statues){
+					   if(!StringUtill.isNull(search) && search.contains("dealSendid")){
+						   str = "";
+					   }
+					   sql = "select * from  mdorder where  mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and printSatues = 1 and (sendId != 0 or installid != 0 ) and deliveryStatues not in (0,3,8,9,10)  and statues4 = 0  "+search+" order by "+sort+str; 
 				   }else if(Order.serach == statues){     
 						  sql = "select * from  mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  "+search+"  order by "+sort+str;  
 						  //sql = "select * from  mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  "+search+"  or (mdorder.id in (select orderid from mdorderupdateprint where mdtype = 3 and pGroupId = "+ user.getUsertype()+ " ))  order by "+sort+"  desc limit " + ((page-1)*num)+","+ page*num; 
@@ -1249,6 +1254,39 @@ logger.info(sql);
 			return orders;
 	 }
    
+  public static Map<String,Order> getByListOrderProduct(User user ,List<OrderProduct> list){
+	  String id = "";
+	  for(int i=0;i<list.size();i++){
+		  id += list.get(i).getOrderid()+",";
+	  }
+	  if(!StringUtill.isNull(id)){
+		  id = id.substring(0,id.length()-1);
+	  }
+	  Map<String,Order> map = getOrdermapByIds(user ,id);
+	  return map ;
+   }
+   
+public static Map<String,Order> getOrdermapByIds(User user ,String id){
+	Map<String,Order> orders = new HashMap<String,Order>();
+	   String sql = "select * from  mdorder where id in ("+ id+")" ;
+		   logger.info(sql);
+		    Connection conn = DB.getConn();
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try { 
+				while (rs.next()) {
+					Order order = gerOrderFromRs(rs);
+					orders.put(order.getId()+"", order);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(stmt);
+				DB.close(rs);
+				DB.close(conn);
+			 }
+			return orders;
+	 }
    
    public static String getSql(User user ,int type){
 	   

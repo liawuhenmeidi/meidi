@@ -72,8 +72,9 @@ User user = (User)session.getAttribute("user");
            <li >
             <h4 >工资管理</h4>
             <div class="list-item none">
-            <p ><a href="salaryCalc.jsp" target="contentpage">提成计算页</a></p>
+              <p ><a href="salaryCalc.jsp" target="contentpage">提成计算页</a></p>
               <p ><a href="salaryExport.jsp" target="contentpage">提成导出页</a></p>
+              <p ><a href="dealsendExport.jsp" target="contentpage">安装网点结款管理</a></p>
             </div>
           </li>
           <%
@@ -175,6 +176,7 @@ User user = (User)session.getAttribute("user");
             <li > 
              <h4 >费用结算</h4>     
             <div class="list-item none">
+              <p ><a href="dealsendExport.jsp" target="contentpage">安装网点结款管理</a></p>
               <p ><a href="dispatch/dingdan_chargep.jsp"  target="contentpage">送货结款</a></p>
                <p ><a href="dispatch/dingdancallback.jsp"  target="contentpage">客服未回访页</a></p> 
               <p ><a href="dispatch/dingdan_charge.jsp"  target="contentpage">安装结款</a></p> 

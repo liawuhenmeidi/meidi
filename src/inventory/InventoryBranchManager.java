@@ -652,7 +652,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 	public static boolean isEmpty(String bid){
 		
 		boolean flag = true ;
-		String sql = "select from mdinventorybranch where branchid = "+ bid;
+		String sql = "select * from mdinventorybranch where branchid = "+ bid;
 		
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn);

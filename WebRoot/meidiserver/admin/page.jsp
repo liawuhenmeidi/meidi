@@ -1,10 +1,14 @@
-<%@ page language="java"  import="java.util.*,utill.*,order.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,utill.*,order.*,category.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 
 <%
 request.setCharacterEncoding("utf-8");
 int type = Integer.valueOf(request.getParameter("type"));
-String message = ""; 
+String message = "";  
+
+List<Category> listallp = CategoryService.getList();
+String listallpp = StringUtill.GetJson(listallp); 
+
 
 if(Order.orderDispatching == type || Order.neworder == type || Order.release == type || Order.returns == type){
 	message = "文员派工页";
@@ -79,7 +83,9 @@ var page = 1;
 var sort = "submittime desc";
 var sear = ""; 
 var count = ""; 
-var statues = "<%=type%>";  
+var statues = "<%=type%>"; 
+var jsonallp = <%=listallpp%>; 
+
 $(function () { 
 	 
 	$("select[id='numb'] option[value='"+num+"']").attr("selected","selected");
@@ -145,37 +151,40 @@ function initsearchOrder(){
 	if(account != "" && account != null){
 		account = account.substring(1,account.length);
 	}
-	
-	account = account.split("&");
-	
-	for(var i=0;i<account.length;i++){
-		var keyvalue = account[i];
-		keyvalue = keyvalue.split("=");
-		var key = keyvalue[0];
-		var value = keyvalue[1];
-		if("statues1" == key || "statues2" == key  || "statues3" == key || "statues4" == key || "statues" == key || "deliverytype" == key ){
-			if("statues" == key){
-				key = "statues0";
-			}
-			$("#"+key+value).attr("checked","checked");
-		}else if("oderStatus" == key || "deliveryStatues" == key){
-			value = value.split(",");
-			for(var m=0;m<value.length;m++){
-				cvalue = value[m];
-				$("#"+key+cvalue).attr("checked","checked");
-			}
-			
-		}else{
-			$("#"+key).val(value);
-		}
-		
-		 
+	if(null != account && ""!= account){
+		account = account.split("&");
 	}
+
+	if(null != account ){
+		for(var i=0;i<account.length;i++){
+			var keyvalue = account[i];
+			keyvalue = keyvalue.split("=");
+			var key = keyvalue[0];
+			var value = keyvalue[1];
+			if("statues1" == key || "statues2" == key  || "statues3" == key || "statues4" == key || "statues" == key || "deliverytype" == key ){
+				if("statues" == key){
+					key = "statues0";
+				}
+				$("#"+key+value).attr("checked","checked");
+			}else if("oderStatus" == key || "deliveryStatues" == key){
+				value = value.split(",");
+				for(var m=0;m<value.length;m++){
+					cvalue = value[m];
+					$("#"+key+cvalue).attr("checked","checked");
+				}
+				
+			}else{
+				$("#"+key).val(value);
+			}
+		}
+	}
+	
 	
 }
 
 function SearchDiv(){
 	$("#wrapsearch").css("display","block");
+	 intsearch();
 	initsearchOrder();
 } 
 </script>

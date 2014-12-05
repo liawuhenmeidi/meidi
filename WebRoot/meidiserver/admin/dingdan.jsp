@@ -283,7 +283,6 @@ function adddetail(src){
 </script>
 
 
-
 <div id="wrap">
 <table  cellspacing="1" id="table" >
 		<tr id="th">  

@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,orderproduct.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*,orderproduct.*,saledealsend.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;" pageEncoding="utf-8"%>
 <%
 
 request.setCharacterEncoding("utf-8");
@@ -202,6 +202,54 @@ if("deleOrder".equals(method)){
 	response.getWriter().write(str);   
 	response.getWriter().flush(); 
 	response.getWriter().close(); //inventory
+}else if("dealsendcharge".equals(method)){ 
+	boolean flag =false;
+	String name = request.getParameter("name");
+	String dealsendid = request.getParameter("branchid");
+	String id = request.getParameter("id");
+	String said = request.getParameter("said");
+	System.out.println(said );
+	String savetype = request.getParameter("savetype");
+	System.out.println(savetype );
+	String message = request.getParameter("message");
+	List<SaledealsendMessage> list = new ArrayList<SaledealsendMessage>();
+
+	Saledealsend sa = new Saledealsend();
+	if(StringUtill.isNull(said)){ 
+		said = (SaledealsendManager.getmaxid()+1)+"";
+		flag = true ;
+	}
+	 
+	sa.setId(Integer.valueOf(said));
+	
+	if("left".equals(savetype)){
+		sa.setGivestatues(1);
+	}else if("right".equals(savetype)){
+		sa.setReceivestatues(1);
+	} 
+	if(!StringUtill.isNull(dealsendid+"")){
+		sa.setDealsendid(Integer.valueOf(dealsendid));
+	} 
+	
+	if(!StringUtill.isNull(message)){
+		String[] messages = message.split(",");
+		for(int i=0;i<messages.length;i++){
+			String messa = messages[i];
+			String[] messas = messa.split("-");
+			SaledealsendMessage sas = new SaledealsendMessage();
+			sas.setDealsendMessage(messas[2]);
+			sas.setDealsendprice(Integer.valueOf(messas[1]));
+			sas.setSaledealsendID(Integer.valueOf(said));
+			sas.setOrderids(messas[0]);
+			list.add(sas); 
+		}
+	} 
+	sa.setList(list);
+	sa.setMessage(message); 
+	sa.setName(name);  
+	sa.setOrderids(id); 
+    SaledealsendManager.save(user,sa,flag);
+	//System.out.print(name+"**"+branchid+"*"+id+"*"+message);
 }else if("inventoryall".equals(method)){ 
 	String str = "";  
 	String branch = request.getParameter("branch"); 
@@ -471,7 +519,7 @@ if("deleOrder".equals(method)){
     		String sql = OrderProductManager.delete(Integer.valueOf(oid),1);
     		DBUtill.sava(sql); 
     	} 
-	    OrderProductService.flag = true ;
+	    OrderProductService.flag = true ; 
 	}else {    
 		statues = OrderManager.updateMessage(phone1,andate,locations,oid);  
 	} 
@@ -512,17 +560,65 @@ if("deleOrder".equals(method)){
 	String phone = request.getParameter("phone");
 	String locate = request.getParameter("locate");
 	String andate = request.getParameter("andate");
-	String[] producs = request.getParameterValues("salecate");
-	String message = "{";
-	for(int i=0;i<producs.length;i++){
-		 String id = producs[i];
-		 String price = request.getParameter(id);
-		 message += "\""+id+"\":\""+price+"\",";
+	String[] category = request.getParameterValues("salecate");
+	String[] product = null ;
+	
+	try{
+		product = request.getParameterValues("salepro");
+	}catch (Exception e){
+		
 	}
 	
-	message = message.substring(0,message.length()-1)+"}";
+	boolean flag = true;
+	
+	if(null == isuid || "".equals(isuid)){
+		isuid = (InstallSaleManager.getmaxid()+1)+"";
+		if(StringUtill.isNull(isuid)){
+			isuid = 1+"" ; 
+		} 
+		flag = false ;
+	}
+	
+	
+	
+	List<InstallSaleMessage> list = new ArrayList<InstallSaleMessage>();
+	//String message = "{";
+	for(int i=0;i<category.length;i++){
+		 String id = category[i];
+		 String price = request.getParameter("c"+id); 
+		 InstallSaleMessage ins = new InstallSaleMessage();
+		  
+		 ins.setCategoryID(id);
+		 ins.setDealsend(Integer.valueOf(price));
+		 ins.setInstallsaleID(Integer.valueOf(isuid));
+		 list.add(ins);
+		// message += "\""+id+"\":\""+price+"\",";
+	}
+	 
+	if(null != product){
+		for(int i=0;i<product.length;i++){
+			 String id = product[i];
+			 if(!StringUtill.isNull(id)){
+				 String price = request.getParameter("p"+id); 
+				 if(!StringUtill.isNull(price)){
+					 InstallSaleMessage ins = new InstallSaleMessage();
+					 ins.setProductID(Integer.valueOf(id));
+					 ins.setDealsend(Integer.valueOf(price));
+					 ins.setInstallsaleID(Integer.valueOf(isuid));
+					 list.add(ins);
+				 }
+			 }
+			 
+			// message += "\""+id+"\":\""+price+"\",";
+		}
+	}
+	
+	
+	//message = message.substring(0,message.length()-1)+"}";
 	
 	InstallSale in = new InstallSale();
+	
+	in.setId(Integer.valueOf(isuid) ); 
 	
 	if(!StringUtill.isNull(uid)){
 		in.setUid(Integer.valueOf(uid));
@@ -540,10 +636,10 @@ if("deleOrder".equals(method)){
 		in.setAndate(Integer.valueOf(andate));
 	}
 	 
-	in.setMessage(message); 
+	//in.setMessage(message); 
+	  in.setList(list);
 	  
-	if(null != isuid && !"".equals(isuid)){
-		in.setId(Integer.valueOf(isuid) ); 
+	if(flag){
 		InstallSaleManager.update(in);
 	}else { 
 		InstallSaleManager.save(in);
@@ -552,6 +648,8 @@ if("deleOrder".equals(method)){
 	response.sendRedirect("../jieguo.jsp?type=updated"); 
 	//
 
-}
+}else if("".equals(method)){
+	
+} 
 
 %>

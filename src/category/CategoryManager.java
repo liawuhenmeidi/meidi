@@ -248,7 +248,33 @@ logger.info(e);
 				DB.close(stmt);
 				DB.close(conn);
 			}
-			return categorys;
+			return categorys; 
+		}
+		
+		public static HashMap<String,List<Category>> getCategoryMapType() {
+			HashMap<String,List<Category>> map = new HashMap<String,List<Category>>();
+			Connection conn = DB.getConn();
+			String sql = "select * from mdcategory ";
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) { 
+					Category c = CategoryManager.getCategoryFromRs(rs);
+					List<Category> list = map.get(c.getPid()+"");
+					if(null == list){
+						list = new ArrayList<Category>();
+						map.put(c.getPid()+"", list);
+					} 
+					list.add(c); 
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return map;
 		}
 		
 		/**

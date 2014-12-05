@@ -10,6 +10,7 @@ public class ProductService {
    public static Map<String,Product> typemap ;  // 
    public static Map<Integer,Product> idmap ; 
    public static List<String> list ;
+   public static List<Product> listall ;
    public static HashMap<String,ArrayList<String>> typeName;
    
   public static Map<String, Product> gettypemap() {
@@ -36,6 +37,13 @@ public class ProductService {
 		return typeName.get(id+"");
 	}
 	 
+  public static List<Product> getlistall() {
+	   init();
+		 if(listall == null){ 
+			 listall = ProductManager.getProductList();
+		 }  
+		return listall;
+	}
   
 public static Map<Integer, Product> getIDmap() {
 	init();

@@ -107,6 +107,58 @@ public class OrderProductManager {
 	   }
 	   
 	     
+	   
+	   public static List<OrderProduct> getlist(User user ,int type,int statues ,int num,int page,String sort,String search){
+		   String str = "";
+			  if(num != -1){
+				 str = "  limit " + ((page-1)*num)+","+num ; 
+			  }
+			  
+		   List<OrderProduct> products = new ArrayList<OrderProduct>();
+		    
+		   String sql = "select * from mdorderproduct where orderid in (select id from  mdorder where  mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and printSatues = 1 and (sendId != 0 or installid != 0 ) and deliveryStatues not in (0,3,8,9,10)  "+search+") and statues = 0  and chargeDealsendtime is null order by "+sort+str; ;
+		   logger.info(sql); 
+		   Connection conn = DB.getConn();
+			Statement stmt = DB.getStatement(conn);
+		   ResultSet rs = DB.getResultSet(stmt, sql);
+			try {  
+				while (rs.next()) {
+					OrderProduct Order = getOrderStatuesFromRs(rs);
+					products.add(Order);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(stmt);
+				DB.close(rs);
+				DB.close(conn);
+			 }
+			return products;
+	   }
+	   
+	   public static int getlistcount(User user ,int type,int statues ,int num,int page,String sort,String search){
+			  
+		  int count = 0 ;
+		     
+		   String sql = "select count(*) from mdorderproduct where orderid in (select id from  mdorder where  mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and printSatues = 1 and (sendId != 0 or installid != 0 ) and deliveryStatues not in (0,3,8,9,10)  "+search+") and statues = 0  and chargeDealsendtime is null  order by "+sort;
+		   logger.info(sql); 
+		   Connection conn = DB.getConn();
+			Statement stmt = DB.getStatement(conn);
+		   ResultSet rs = DB.getResultSet(stmt, sql);
+			try {  
+				while (rs.next()) {
+					count = rs.getInt(1); 
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally { 
+				DB.close(stmt);
+				DB.close(rs);
+				DB.close(conn);
+			 }
+			return count;
+	   }
+	   
 	   public static List<OrderProduct> getOrderStatues(User user ,int id){
 		   
 		   List<OrderProduct> Orders = new ArrayList<OrderProduct>();
@@ -178,6 +230,8 @@ public class OrderProductManager {
 				 }
 				return Orders;
 		 }
+        
+        
 	   public static OrderProduct getOrderStatuesFromRs(ResultSet rs){
 		   OrderProduct p = null;
 			try {

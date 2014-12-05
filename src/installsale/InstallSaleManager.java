@@ -5,9 +5,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import java.util.Map; 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import utill.DBUtill;
@@ -19,18 +22,60 @@ public class InstallSaleManager {
 	 protected static Log logger = LogFactory.getLog(CompanyManager.class);
 
 	 public static boolean  save(InstallSale  in){
-		String sql = "insert into installSale(id,uid,uname,phone,locate,andate,message) values (null,"+in.getUid()+","+in.getUname()+","+in.getPhone()+","+in.getLocate()+","+in.getAndate()+",'"+in.getMessage()+"')";
+		 List<String> sqls = new ArrayList<String>();
+		String sql = "insert into installSale(id,uid,uname,phone,locate,andate,message) values ("+in.getId()+","+in.getUid()+","+in.getUname()+","+in.getPhone()+","+in.getLocate()+","+in.getAndate()+",'"+in.getMessage()+"')";
 		//logger.info(sql);
-		return DBUtill.sava(sql); 
+		List<InstallSaleMessage> list = in.getList();
+		for(int i=0;i<list.size();i++){
+			InstallSaleMessage ins = list.get(i); 
+			String sql1 = " insert into installsaleMessage (id,installsaleID,categoryID,productID,dealsend) values (null,"+ins.getInstallsaleID()+",'"+ins.getCategoryID()+"',"+ins.getProductID()+","+ins.getDealsend()+")";
+		    sqls.add(sql1);
+		} 
+		sqls.add(sql);  
+		
+		return DBUtill.sava(sqls); 
 	 }  
 	  
 	 public static boolean  update(InstallSale  in){
+		 List<String> sqls = new ArrayList<String>();
 			//String sql = "update installSale(id,uid,uname,phone,locate,andate,message) values ("+in.getId()+","+in.getUid()+","+in.getUname()+","+in.getPhone()+","+in.getLocate()+","+in.getAndate()+",'"+in.getMessage()+"')";
 			String sql = "update installSale set uid = "+in.getUid()+" ,uname ="+in.getUname()+" ,phone ="+in.getPhone()+",locate ="+in.getLocate()+" ,andate ="+in.getAndate()+" ,message = '"+in.getMessage()+"' where id = " +in.getId()  ;
 			//logger.info(sql); 
-			return DBUtill.sava(sql); 
+			String sqld = " delete from installsaleMessage where installsaleID = " + in.getId(); 
+			sqls.add(sqld); 
+			List<InstallSaleMessage> list = in.getList();
+			for(int i=0;i<list.size();i++){
+				InstallSaleMessage ins = list.get(i); 
+				String sql1 = " insert into installsaleMessage (id,installsaleID,categoryID,productID,dealsend) values (null,"+ins.getInstallsaleID()+",'"+ins.getCategoryID()+"',"+ins.getProductID()+","+ins.getDealsend()+")";
+			    sqls.add(sql1);
+			} 
+			
+			sqls.add(sql);  
+			
+			return DBUtill.sava(sqls); 
 		 } 
 	  
+	 public static int getmaxid(){
+		    int count = 0 ; 
+		    Connection conn = DB.getConn();
+			Statement stmt = DB.getStatement(conn);
+		
+			String  sql = "select max(id) as id from installSale" ;
+			ResultSet rs = DB.getResultSet(stmt, sql); 
+			try { 
+				while (rs.next()) {
+					count = rs.getInt("id");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(stmt);
+				DB.close(rs);
+				DB.close(conn);
+			 }
+			return count; 
+	 }
+	 
 	 public static Map<String,InstallSale> getmap(){
 		    HashMap<String,InstallSale> map = new HashMap<String,InstallSale>(); 
 			Connection conn = DB.getConn();    
@@ -84,9 +129,11 @@ public class InstallSaleManager {
 				in.setAndate(rs.getInt("andate"));
 				in.setLocate(rs.getInt("locate"));
 				in.setMessage(rs.getString("message"));
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}	 
+
 			return in ;
 		}
 	 

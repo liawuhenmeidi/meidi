@@ -1,5 +1,7 @@
 package installsale;
 
+import java.util.List;
+
 public class InstallSale {
    private int id ;
    private int uid ;
@@ -8,7 +10,9 @@ public class InstallSale {
    private int phone ;
    private int locate ;
    private int andate ;
-   
+    
+   private List<InstallSaleMessage> list ;
+    
   private String message ;
   
   
@@ -66,6 +70,14 @@ public String getMessage() {
 
 public void setMessage(String message) {
 	this.message = message;
+}
+
+public List<InstallSaleMessage> getList() {
+	return list;
+}
+
+public void setList(List<InstallSaleMessage> list) {
+	this.list = list;
 }
   
   

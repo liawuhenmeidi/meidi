@@ -3,7 +3,10 @@
 <%      
 
 request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
+User user = (User)session.getAttribute("user"); 
+HashMap<String,ArrayList<Product>> mapc = ProductManager.getProductstr();  
+String mapcstr = StringUtill.GetJson(mapc); 
+
 List<User> listS = null ; 
 if(UserManager.checkPermissions(user, Group.dealSend)){
 	listS =  UserManager.getUsers(user,Group.sencondDealsend);
@@ -12,8 +15,12 @@ if(UserManager.checkPermissions(user, Group.dealSend)){
 }
 HashMap<String,User> usermap = UserService.getmapSencd(listS); 
 
-Map<String,InstallSale>  mapin = InstallSaleManager.getmap();   
+Map<String,InstallSale>  mapin = InstallSaleManager.getmap(); 
+Map<String,List<InstallSaleMessage>> mapinsa = InstallSaleMessageManager.getmap();
+   
 String str = StringUtill.GetJson(mapin);
+String strsa = StringUtill.GetJson(mapinsa);
+//System.out.println("______"+strsa);
 HashMap<String,Category> map = CategoryService.getmapstr();
 String mapStr = StringUtill.GetJson(map);   
 Set<String> set = map.keySet();  
@@ -54,8 +61,10 @@ var splits = splitsinit;
 var mergesint = <%=merge%>;
 var merges =  mergesint ;
 var map = <%=mapStr%>; 
- 
+var mapc = <%=mapcstr%>;
 var mapin = <%=str%>;
+var mapinsa = <%=strsa%>; 
+var products = new Array();
 
 $(function () {
 	initbranch(); 
@@ -69,8 +78,13 @@ function init(){
 }
 
 function initdate(){
-	var branchid = $("#uid").val();
+	 var branchid = $("#uid").val();
 	 var InstallSale = mapin[branchid]; 
+	 if(null == InstallSale || "" == InstallSale){
+		 InstallSale = mapin[-1]; 
+	 }else {
+		 $("#isuid").val(InstallSale.id);
+	 } 
 	 if(branchid == null || branchid == "" || InstallSale == "" || InstallSale == null){
 		 flag = false ;
 		 $("#isuid").val(""); 
@@ -81,19 +95,31 @@ function initdate(){
 		 
 	 }else { 
 		 flag = true ;
-		 message = JSON.parse(InstallSale.message);
-		 $("#isuid").val(InstallSale.id);
+		// message = JSON.parse(InstallSale.message);
+		 message = mapinsa[InstallSale.id];
+		 //alert( message);		
 		 uname = InstallSale.uname;
 		 phone = InstallSale.phone;
 		 locate = InstallSale.locate;
 		 andate =InstallSale.andate;
 
 	 }
-	 
+	  
 	 if(flag){
-		 for(var key in message){
-			 $("#"+key).val(message[key]);  
-		 } 
+		 //for(var key in message){
+		//	 $("#"+key).val(message[key]);  
+		// } 
+		 for(var i= 0 ;i<message.length;i++){
+			 var categoryID = message[i].categoryID;
+			 var dealsend = message[i].dealsend;
+			 var product = message[i].productID;
+			 if(null != product && ""!= product && 0!= product){
+				 $("#p"+product).val(dealsend);
+			 }else { 
+				 $("#c"+categoryID).val(dealsend);
+			 }
+		 }
+		 
 		 $("#"+uname).val(uname); 
 		 $("#"+phone).val(phone);  
 		 $("#"+locate).val(locate); 
@@ -108,7 +134,14 @@ function initbranch(){
 		 splits = <%=setStr%>; 
 		 merges =  <%=merge%>; 
 		 var branchid = $("#uid").val();
-		 var InstallSale = mapin[branchid]; 
+		 var InstallSale = mapin[branchid];
+		 //alert(InstallSale);
+		 if(null == InstallSale || "" == InstallSale){
+			 InstallSale = mapin[-1]; 
+		 }else {
+			 $("#isuid").val(InstallSale.id);
+		 }
+		 
 		 if(branchid == null || branchid == "" || InstallSale == "" || InstallSale == null){
 			 flag = false ;
 			 $("#isuid").val(""); 
@@ -117,36 +150,53 @@ function initbranch(){
 					 $("#"+id).val("");  
 					
 				} 
-			 
+			  
 		 }else { 
 			 flag = true ;
-			 
-			 message = JSON.parse(InstallSale.message);
-			 $("#isuid").val(InstallSale.id);
+			  
+			 //message = JSON.parse(InstallSale.message);
+			 message = mapinsa[InstallSale.id];
 			 uname = InstallSale.uname;
 			
 			 phone = InstallSale.phone;
 			 locate = InstallSale.locate;
 			 andate =InstallSale.andate;
 			 
-			 for(var key in message){
-				 var id = key.split("_");
-				 if(id.length>1){
-					 merges.push(key); 
-					 for(var j=0;j<id.length;j++){
-						  splits.splice($.inArray(id[j],splits),1);
-					  }
-				 }
-				  
-				 
-			 }
-		 }
-		 init();
+			 //for(var key in message){
+				// var id = key.split("_");
+				// if(id.length>1){
+				//	 merges.push(key); 
+					 //for(var j=0;j<id.length;j++){
+					//	  splits.splice($.inArray(id[j],splits),1);
+					 // }
+				// }
 		 
+			// }
+			 
+			 for(var i= 0 ;i<message.length;i++){
+				 var categoryID = message[i].categoryID+"";
+				 var id = categoryID.split("_");
+					 if(id.length>1){
+						 merges.push(categoryID); 
+						 //for(var j=0;j<id.length;j++){
+						//	  splits.splice($.inArray(id[j],splits),1);
+						//  }
+					 }  
+			 }
+			 
+		 } 
+		 init();
+		  
 		 if(flag){
-			 for(var key in message){
-				 $("#"+key).val(message[key]);  
-			 } 
+			 //for(var key in message){
+				// $("#"+key).val(message[key]);  
+			 //}
+			 for(var i= 0 ;i<message.length;i++){
+				 var categoryID = message[i].categoryID;
+				 var dealsend = message[i].dealsend;
+				 $("#c"+categoryID).val(dealsend); 
+			 }
+			  
 			 if(1 == uname){ 
 				 $("#username1").attr("checked","checked"); 
 			 }
@@ -204,10 +254,10 @@ function inittotal(){
 		var c = map[id];             
 		str +='<tr >';
 		str +='<td>'; 
-		str +=c.name+'<input type="hidden" name="salecate" value="'+c.id+'"/>' ;  
-		str +='</td>' ;
+		str +='<a href="javascript:void(0)" onclick="addProductSale('+c.id+')">'+c.name+'</a><input type="hidden" name="salecate" value="'+c.id+'"/>' ;  
+		str +='</td>' ; 
 		str +='<td>';
-		str +='<input type="text" id="'+c.id+'" name="'+c.id+'" />';
+		str +='<input type="text" id="c'+c.id+'" name="c'+c.id+'" />';
 		str +='</td>';
 		str +='</tr>';       
 	}
@@ -225,7 +275,7 @@ function inittotal(){
 			str +=text +'<input type="hidden" name="salecate" value="'+ids+'"/>' ; 
 			str +='</td>' ; 
 			str +='<td>'; 
-			str +='<input type="text" id="'+ids+'" name="'+ids+'" />';
+			str +='<input type="text" id="c'+ids+'" name="c'+ids+'" />';
 			str +='</td>';
 			str +='</tr>';
 		}
@@ -237,7 +287,7 @@ function merge(){
   var i= 0 ;
   $('input[name="categorynameLeft"]:checked').each(function(){
 	  var value = $(this).val();
-	  splits.splice($.inArray(value,splits),1);
+	  //splits.splice($.inArray(value,splits),1);
       s+=value+'_';  
       i++;
   }); 
@@ -267,7 +317,45 @@ function split(){
 	initdate();
 }
 
-function saverule(){ 
+function addProductSale(id){
+	var flag = $.inArray(id,products);
+	if(-1 == flag){ 
+		products.push(id);
+		var product = mapc[id]; 
+		var html = '<div id="productsalediv'+id+'" style="text-align:center;"> ';
+		html += '<table id="productsale'+id+'" name="productsale'+id+'" style="margin:auto;width:90%;" >';
+	    html += '<tr>'; 
+		for(var i=0;i<product.length;i++){
+			var pro = product[i];
+			if(i%3== 0){ 
+				html += '</tr>';
+				html += '<tr class="asc">'; 
+				html += '<td>'+pro.type+'</td>';
+				html += '<td><input type="hidden" name="salepro" value="'+pro.id+'"/><input type="text" id="p'+pro.id+'" name="p'+pro.id+'" /></td>';
+			}else{
+				html += '<td>'+pro.type+'</td>'; 
+				html += '<td><input type="hidden" name="salepro" value="'+pro.id+'"/><input type="text" id="p'+pro.id+'" name="p'+pro.id+'" /></td>';
+			}
+		}
+		html+='<tr>';
+		html+='<td colspan=5>';
+		html+='</td>';
+		html+='<td>'; 
+		html+='<input type="button" value="保存"  onclick="saveproduct('+id+')" />';
+		html+='</td>';
+		html+='</tr>';
+		html+='</tr>'; 
+		html+='</table>';
+		html+='</div>';
+		$("#all").append(html);
+	}
+	initdate();
+	$("#productsalediv"+id).css("display","block");
+	$("#mainwap").css("display","none");
+	//$("#productsalediv").css("display","block");
+} 
+ 
+function saverule(){  
 	//$("input[name='uid']:checked").val(); 
 	var uid = $("#uid").val();
 	if(uid == null || uid == ""){
@@ -277,9 +365,9 @@ function saverule(){
 	 
 	for(var i=0;i<merges.length;i++){
 		  var ids=merges[i];
-		  var value = $("#"+ids).val();
+		  var value = $("#c"+ids).val();
 		  if(null == value || "" == value){
-			  alert("提成标准不能为空");
+			  alert("提成标准不能为空"); 
 			  return false ;
 		  }else {
 			  if(isNaN(value)){
@@ -291,7 +379,7 @@ function saverule(){
 	
 	for(var i=0;i<splits.length;i++){
 		var ids = splits[i];
-		var value = $("#"+ids).val();
+		var value = $("#c"+ids).val();
 		 if(null == value || "" == value){
 			  alert("提成标准不能为空");
 			  return false ;
@@ -302,12 +390,58 @@ function saverule(){
 			  }
 		  }
 	} 
-	
-	
+
 	//var username = $("input[name='username']:checked").val();
 	//var phone = $("input[name='phone']:checked").val();
 	//var locate = $("input[name='locate']:checked").val();
 	//var andate = $("input[name='andate']:checked").val();
+}
+
+function saveproduct(id){
+    var flag = true ;
+    var str = ""; 
+    var isuid = $("#isuid").val();
+	$('input[name="salepro"]').each(function(){
+		var key = $(this).val();
+		var value = $("#"+key).val();
+		if(null != value && ""!= value){
+			if(isNaN(value)){ 
+				  alert(value);
+				  alert("提成标准必须是数字"); 
+				  flag = false ;
+				  return false ;
+			  }else {
+				  str+= "&salepro="+key+"&"+key+"="+value;
+			  }
+		}
+	});
+	
+	//alert("method=savesalepro"+str+"&isuid="+isuid);
+	
+	$.ajax({ 
+        type:"post",  
+         url:"server.jsp",  
+         //data:"method=list_pic&page="+pageCount,
+         data:"method=savesalepro"+str+"&isuid="+isuid,
+         dataType: "",   
+         success: function (data) {
+        	 if(flag){
+        			$("#productsalediv"+id).css("display","none");
+        			$("#mainwap").css("display","block");
+        			//$("#productsalediv").css("display","block");
+        		}
+           },   
+          error: function (XMLHttpRequest, textStatus, errorThrown) { 
+        	  return false ;
+            } 
+           });  
+	
+	if(flag){
+		$("#productsalediv"+id).css("display","none");
+		$("#mainwap").css("display","block");
+		//$("#productsalediv").css("display","block");
+	}
+	
 	
 	
 	
@@ -320,8 +454,9 @@ function saverule(){
 <form  action="server.jsp"  name = "myForm" method ="post"  id="form"   onsubmit="return saverule()">
 
 <input type="hidden" name="method" value="savesalecategory"/> 
-<input type="hidden" name="isuid" id="isuid" value=""/>  
-
+<input type="hidden" name="isuid" id="isuid" value=""/>
+<div id="all">
+<div id="mainwap">
 <table  cellspacing="1"  id="table"  style="margin:auto;width:90%;">
        <tr class="asc">
         <td align="center"  colspan=2>
@@ -330,9 +465,10 @@ function saverule(){
         <td align="center"  colspan=2 > 
         <table><tr><td align="left"> 
             <select id="uid" name="uid">
-             <option value=""></option>
+            <option value=""></option>
+             <option value="-1">全部</option>
              
-          <%   
+          <%    
           Set<Map.Entry<String,User>> s = usermap.entrySet();
           Iterator<Map.Entry<String,User>> its = s.iterator();
           while(its.hasNext()) {
@@ -428,9 +564,10 @@ function saverule(){
           </td>
         </tr>
    </table> 
-
-</form>
+   </div>
+  </div>  
+</form >
      </div>
-
+    
 </body>
 </html>

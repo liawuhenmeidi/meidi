@@ -183,7 +183,7 @@ if(list != null){
 </div>
 <div class="btn">  
      
-      区域名称： <input type="text"  id="locate" name="locate" />  
+     门店大类： <input type="text"  id="locate" name="locate" />  
   <input type="button" onclick="changes()"  value="增加"/> </br>   
   <input type="submit" class="button" name="dosubmit" value="删除"  onclick="winconfirm()"></input>
 

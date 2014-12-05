@@ -47,6 +47,31 @@ import utill.DBUtill;
 			return categorys;
 		}
 		
+		 public static List<Product> getProductList() {
+				List<Product> categorys = new ArrayList<Product>();
+				Connection conn = DB.getConn();
+				String sql = "select * from mdproduct where pstatues = 0";
+				Statement stmt = DB.getStatement(conn);
+				ResultSet rs = DB.getResultSet(stmt, sql);
+				try {
+					while (rs.next()) {
+						Product p = new Product();
+						p.setId(rs.getInt("id"));
+						p.setCategoryID(rs.getInt("categoryID"));
+						p.setType(rs.getString("ptype"));
+						p.setName(rs.getString("name"));
+						categorys.add(p);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally {
+					DB.close(rs);
+					DB.close(stmt);
+					DB.close(conn);
+				}
+				return categorys;
+			}
+		 
 		 public static List<String> getProduct(int id) {
 				List<String> categorys = new ArrayList<String>();
 				Connection conn = DB.getConn();
@@ -133,6 +158,37 @@ logger.info(sql);
 					}
 					Product p = new Product();
 					p.setId(rs.getInt("id"));
+					p.setCategoryID(categoryID);
+					p.setType(rs.getString("ptype"));
+					p.setName(rs.getString("name"));
+					list.add(p);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return map;
+		} 
+		
+		public static HashMap<String,ArrayList<Product>> getProductstr() {
+			HashMap<String,ArrayList<Product>> map = new HashMap<String,ArrayList<Product>>();
+			Connection conn = DB.getConn();
+			String sql = "select * from mdproduct where pstatues = 0";
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) {
+					int categoryID = rs.getInt("categoryID");
+					ArrayList<Product> list = map.get(categoryID+"");
+					if(list == null){ 
+						list = new ArrayList<Product>();
+						map.put(categoryID+"", list);
+					}
+					Product p = new Product();
+					p.setId(rs.getInt("id")); 
 					p.setCategoryID(categoryID);
 					p.setType(rs.getString("ptype"));
 					p.setName(rs.getString("name"));
@@ -332,7 +388,7 @@ logger.info(pstmt);
 					p.setType(rs.getString("ptype"));  
 					p.setName(rs.getString("name"));  
 					p.setStatues(rs.getInt("pstatues"));
-					p.setSize(rs.getDouble("size")); 
+					p.setSize(rs.getDouble("size"));
 				} catch (SQLException e) { 
 					e.printStackTrace();
 				}

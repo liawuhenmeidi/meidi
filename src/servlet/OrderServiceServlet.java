@@ -3,6 +3,7 @@ package servlet;
 import group.Group;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ import org.apache.commons.logging.LogFactory;
 import order.Order;
 import order.OrderManager;
 import order.OrderService;
+import orderproduct.OrderProduct;
+import orderproduct.OrderProductManager;
 import user.User;
 import utill.HttpRequestUtill;
 import utill.StringUtill;
@@ -63,17 +66,30 @@ public class OrderServiceServlet extends HttpServlet {
     		//Cookie cookie=new Cookie("sear",search);
 			//cookie.setMaxAge(10*60);  //设置过期之前的最长时间
 			//response.addCookie(cookie); 
-    	//}
+    	//} 
+    	List<Order> list = new  ArrayList<Order>(); 
+    	int count = 0 ; 
+    	List<OrderProduct> listp = new ArrayList<OrderProduct>() ;
+    	/*if(Integer.valueOf(statues) == Order.over){
+    		listp = OrderProductManager.getlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
+    		count = OrderProductManager.getlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
+    	}else {  
+    		list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
+    	    count = OrderManager.getOrderlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
+        	
+    	}  */
     	
-    	List<Order> list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
-    	 
-    	int count = OrderManager.getOrderlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
+    	list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
+	    count = OrderManager.getOrderlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
+    	
+    	logger.info(listp.size());
+    	
     	
     	String html = "";
-    	 
+    	  
     	if(Integer.valueOf(type) == Group.dealSend ){
-    		if(Integer.valueOf(statues) == Order.over){
-    			html = OrderService.getHtmlOver(list);
+    		if(Integer.valueOf(statues) == Order.over){  
+    			html = OrderService.getHtmlOver(user,list);
     		}else if(Integer.valueOf(statues) == Order.serach){
     			long start = System.currentTimeMillis();
     			html = OrderService.getHtmlSearch(user,list);

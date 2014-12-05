@@ -137,6 +137,12 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellValue("票面型号");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
+				if(UserManager.checkPermissions(user, Group.dealSend)){
+					cell.setCellValue("零售价");
+					cell.setCellStyle(style);
+					cell = row.createCell((short) x++);
+					
+				}
 				cell.setCellValue("票面数量");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
@@ -146,6 +152,11 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellValue("送货型号");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
+				if(UserManager.checkPermissions(user, Group.dealSend)){
+					cell.setCellValue("零售价");
+					cell.setCellStyle(style);
+					cell = row.createCell((short) x++);
+				}  
 				cell.setCellValue("送货数量");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
@@ -211,6 +222,7 @@ public class PrintServlet extends HttpServlet {
 				cell = row.createCell((short) x++);
 				cell.setCellValue("备注");
 				cell.setCellStyle(style);
+				
 
 				// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
 
@@ -241,9 +253,17 @@ public class PrintServlet extends HttpServlet {
 							row.createCell((short) y++).setCellValue(order.getPhone1()); 
 							row.createCell((short) y++).setCellValue(order.getCategory(1,"      "));
 							row.createCell((short) y++).setCellValue(order.getSendType(1,"      "));
+							if(UserManager.checkPermissions(user, Group.dealSend)){
+								row.createCell((short) y++).setCellValue(order.getSendprice(1,""));
+							}  
+							 
 							row.createCell((short) y++).setCellValue(order.getSendCount(1,"      "));
 							row.createCell((short) y++).setCellValue(op.getCategoryName());
-							row.createCell((short) y++).setCellValue(op.getTypeName());  
+							row.createCell((short) y++).setCellValue(op.getTypeName());
+							if(UserManager.checkPermissions(user, Group.dealSend)){
+								row.createCell((short) y++).setCellValue(op.getPrice());
+							}
+							
 							row.createCell((short) y++).setCellValue(op.getCount()); 
 							row.createCell((short) y++).setCellValue(order.getGifttype("      "));
 							row.createCell((short) y++).setCellValue(order.getGifcount("      "));
