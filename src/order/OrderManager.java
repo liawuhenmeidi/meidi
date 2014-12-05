@@ -242,12 +242,12 @@ public class OrderManager {
 					if("0".equals(statues)){
 						statues = "";
 					}
-				}
+				} 
 				///sql = "update mdorder set statues3 = "+statues+" where id in " + ids;
 				sql = "update mdorder set statuesChargeSale = '" + statues + "' where id in " + ids ;
 			} else if("orderover".equals(method)){ 
-				//sql = "update mdorder set statues4 = "+statues+"  , chargeDealsendtime = '"+TimeUtill.gettime()+"' where id in " + ids;
-				sql = "update mdorderproduct set chargeDealsendtime = '"+TimeUtill.gettime()+"',chargeDealsendID = "+user.getId()+" where id in " +ids;			
+				sql = "update mdorder set statues4 = "+statues+"  , chargeDealsendtime = '"+TimeUtill.gettime()+"' where id in " + ids;
+				//sql = "update mdorderproduct set chargeDealsendtime = '"+TimeUtill.gettime()+"',chargeDealsendID = "+user.getId()+" where id in " +ids;			
 			}else if("tuihuo".equals(method)){     
 			    sql = "update mdorder set returnstatues = "+statues+" , returntime = '"+time+"'  where id in " + ids;
 			   // List<String> lists = InventoryBranchManager.chage(user, method, statues, id);
