@@ -42,7 +42,7 @@ public class InstallSaleManager {
 			String sql = "update installSale set uid = "+in.getUid()+" ,uname ="+in.getUname()+" ,phone ="+in.getPhone()+",locate ="+in.getLocate()+" ,andate ="+in.getAndate()+" ,message = '"+in.getMessage()+"' where id = " +in.getId()  ;
 			//logger.info(sql); 
 			String sqld = " delete from installsaleMessage where installsaleID = " + in.getId(); 
-			sqls.add(sqld); 
+			sqls.add(sqld);  
 			List<InstallSaleMessage> list = in.getList();
 			for(int i=0;i<list.size();i++){
 				InstallSaleMessage ins = list.get(i); 

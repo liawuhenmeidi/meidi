@@ -80,8 +80,8 @@ public class RegistServlet extends HttpServlet {
 			    boolean flag = UserManager.save(u);
 				// 通过检验signature对请求进行校验，若校验成功则原样返回echostr，表示接入成功，否则接入失败
 			   // System.out.println("RegistServlet"+str);
-				if(flag){
-					request.getSession().setAttribute("message","恭喜您注册成功"); 
+				if(flag){  
+					request.getSession().setAttribute("message","注册成功,请联系管理员激活"); 
 				}else {
 					request.getSession().setAttribute("message","注册失败,存在相同的职员名");  
 				}    

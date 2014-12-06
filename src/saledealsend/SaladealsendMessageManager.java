@@ -1,7 +1,5 @@
 package saledealsend;
 
-import installsale.InstallSaleMessage;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +13,7 @@ public class SaladealsendMessageManager {
    public static List<SaledealsendMessage> getlistByid(Saledealsend sa){
 	   List<SaledealsendMessage> list = null;
 	    Connection conn = DB.getConn();    
-		String sql = "select * from saledealsendMessage where saledealsendID = " + sa.getId() ;  
+		String sql = "select * from saledealsendmessage where saledealsendID = " + sa.getId() ;  
 		Statement stmt = DB.getStatement(conn);
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		try {   
@@ -36,7 +34,7 @@ public class SaladealsendMessageManager {
 		return list ;
    }
    
-   
+    
    private static SaledealsendMessage getSaledealsendMessageFromRs(ResultSet rs){
 	   SaledealsendMessage in = new SaledealsendMessage();
 			try {   

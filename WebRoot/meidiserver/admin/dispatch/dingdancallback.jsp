@@ -134,7 +134,7 @@ function winconfirm(){
 		var attract = new Array();
 		var i = 0;
 		
-		$("input[type='checkbox']").each(function(){          
+		$("input[type='checkbox'][id='check_box']").each(function(){          
 	   		if($(this).attr("checked")){
 	   				var str = this.name;
 	   				if(str != null && str != ""){
@@ -180,19 +180,7 @@ function orderPrint(id,statues){
             } 
            }); 
 }
-
-function seletall(all){
-	if($(all).attr("checked")){
-		$("input[type='checkbox']").each(function(){
-			$(this).attr("checked",true);
-
-	     });
-	}else if(!$(all).attr("checked")){
-		$("input[type='checkbox']").each(function(){
-			$(this).attr("checked",false);
-	     });
-	};
-}  
+ 
 
 function adddetail(src){ 
 	//window.location.href=src ;

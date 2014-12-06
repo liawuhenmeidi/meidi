@@ -80,13 +80,17 @@ body {
 var name = "<%=name%>";
 var dealsendID = "<%=dealsendID%>";
 
-function save(){
+function save(statues,sta){
 	var price = $("#addcount").html();
+	var message = "打印之后不能修改，您确定要打印吗？";
+	if(sta == 0 ){ 
+		message = "安装网点尚未确认,打印之后不能修改，您确定要打印吗？";
+	}
 	//alert(price);
 	//alert(name);
 	//alert(dealsendID);
 	//return false ;
-	var question = confirm("打印之后不能修改，您确定要打印吗？");	
+	var question = confirm(message);	
 	if (question != "0"){
 		var mess = new Array();
 		 var id = $("#said").val();
@@ -109,8 +113,11 @@ function save(){
 		         url: "server.jsp",   
 		         data:"method=dealsendcharge&message="+mess+"&said="+id+"&savetype="+savetype,
 		         dataType: "", 
-		         success: function (data) {
-		        	 window.location.href="printChargeDealsend.jsp?price="+price+"&name="+name+"&dealsendID="+dealsendID;
+		         success: function (data) { 
+		        	 if(statues == 0 ){
+		        		 window.location.href="printChargeDealsend.jsp?price="+price+"&name="+name+"&dealsendID="+dealsendID;
+		        	 }
+		        	
 		           }, 
 		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 		        	 alert("执行失败"); 
@@ -223,13 +230,14 @@ if(unquery){
    if(null != listsa){
 	for(int i = 0 ; i < listsa.size() ; i ++){ 
 		Saledealsend sain  = listsa.get(i);
+		
 	%>
 	<tr class="asc" ondblclick="unconfire('<%=sain.getId()%>')" onclick="updateClass(this)">
 	 <td align="center">
 	 <%=sain.getName() %>
 	 </td>
 	<td align="center">
-	 <%=sain.getName()%>
+	 <%=UserService.getMapId().get(Integer.valueOf(sain.getDealsendid())).getUsername()%>
 	 </td>
 	 <td align="center">
 	 <%=sain.getSubmittime() %>
@@ -256,18 +264,24 @@ if(bsa){
 	if(list.size() > 0 ){
 %>
 	<form>
-    <input type="button" class="button" value="导出" onclick="javascript:window.open('../SalaryExportServlet', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"></input> 
-    <% if(sa.getGivestatues() == 0){	
-    %>
-    <input type="button" class="button" value="打印并保存" onclick="save()" ></input> <br/> 
-    <% } %>
-    <% if(UserManager.checkPermissions(user, Group.dealSend)){
+	<% 
+	  String message = "";
+	 if(UserManager.checkPermissions(user, Group.dealSend)){
+		 if(sa.getGivestatues() == 0){
+         %>
+          <input type="button" class="button" value="打印并保存" onclick="save('0','<%=sa.getReceivestatues() %>')" ></input> <br/> 
+         <%   
+           }
+		 %>
+		  <input type="hidden" name="savetype" id="savetype" value="left"/>
+		 <%
+     }else {
      %>
-     <input type="hidden" name="savetype" id="savetype" value="left"/>
-    <%}else {
-     %>
+      <input type="button" class="button" value="保存" onclick="save('-1','')" ></input> <br/> 
      <input type="hidden" name="savetype" id="savetype" value="right"/>
     <%} %>
+    <input type="button" class="button" value="导出" onclick="javascript:window.open('../SalaryExportServlet', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"></input> 
+    
 	<input type="hidden" name="type" value="save"/> 
 	<input type="hidden" name="said" id="said" value="<%=sa.getId() %>" value="save"/> 
 	

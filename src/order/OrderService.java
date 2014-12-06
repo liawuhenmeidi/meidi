@@ -330,7 +330,7 @@ public class OrderService {
 										 }
 										 if(null != in){ 
 											 List<InstallSaleMessage> lists = mapinsa.get(in.getId()+"");
-											 for(int m=0;m<lists.size();m++){
+											 /*for(int m=0;m<lists.size();m++){
 												 InstallSaleMessage ins = lists.get(m);
 												 if(key.equals(ins.getCategoryID())){
 													 value = ins.getDealsend()+"";
@@ -343,7 +343,8 @@ public class OrderService {
 												 value = jsObj.getString(key);
 											 }catch(Exception e){
 												 value = "";
-											 } 
+											 } */ 
+											 value = InstallSaleMessageManager.getprice(lists, o)+""; 	
 											 
 										 }
 									 }  

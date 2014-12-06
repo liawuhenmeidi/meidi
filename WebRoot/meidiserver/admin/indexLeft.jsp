@@ -52,7 +52,7 @@ User user = (User)session.getAttribute("user");
               <p ><a href="dingdan.jsp" target="contentpage">文员派工页</a></p> 
             <!--    <p ><a href="dingdanpeidan.jsp" target="contentpage">文员打印页</a></p> -->  
               <p ><a href="dingdanprintln.jsp" target="contentpage">查看订单页</a></p>
-               <p ><a href="dingdanover.jsp" target="contentpage">安装网点结款页</a></p>  
+               
                <p ><a href="dingdancallback.jsp"  target="contentpage">客服未回访页</a></p>
               <p ><a href="dingdanTuihuo.jsp" target="contentpage">退货订单</a></p>               
              <!-- <p ><a href="./verifyCode.jsp" target="contentpage">强制消单页</a></p>  --> 
@@ -69,11 +69,12 @@ User user = (User)session.getAttribute("user");
               <p ><a href="manualCheckout.jsp" target="contentpage">结款页</a></p>
             </div>
           </li>
-           <li >
+           <li > 
             <h4 >工资管理</h4>
             <div class="list-item none">
               <p ><a href="salaryCalc.jsp" target="contentpage">提成计算页</a></p>
               <p ><a href="salaryExport.jsp" target="contentpage">提成导出页</a></p>
+              <p ><a href="dingdanover.jsp" target="contentpage">安装网点结款页</a></p>  
               <p ><a href="dealsendExport.jsp" target="contentpage">安装网点结款管理</a></p>
             </div>
           </li>
@@ -172,7 +173,7 @@ User user = (User)session.getAttribute("user");
                <p ><a href="dispatch/dingdanpeidan2anzhuang.jsp"  target="contentpage">安装派工</a></p> 
               <p ><a href="dispatch/dingdanpeidan2s.jsp"  target="contentpage">安装网点查询</a></p>
             </div> 
-            </li>
+            </li> 
             <li > 
              <h4 >费用结算</h4>     
             <div class="list-item none">

@@ -125,5 +125,15 @@ function initOrder(type,statues,num,page,sort,sear){
 	           });
 
 }
-
-
+ 
+function seletall(all){
+	if($(all).attr("checked")){
+		$("input[type='checkbox'][id='check_box']").each(function(){
+			$(this).attr("checked",true);
+	     });
+	}else if(!$(all).attr("checked")){
+		$("input[type='checkbox'][id='check_box']").each(function(){
+			$(this).attr("checked",false);
+	     });
+	};
+}

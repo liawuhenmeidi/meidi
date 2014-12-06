@@ -84,7 +84,7 @@ function winconfirm(){
 		var attract = new Array();
 		var i = 0;
 		
-		$("input[type='checkbox']").each(function(){          
+		$("input[type='checkbox'][id='check_box']").each(function(){          
 	   		if($(this).attr("checked")){
 	   				var str = this.value;
 	   				if(str != null && str != ""){
@@ -116,20 +116,6 @@ function winconfirm(){
 		
 	}
 }
-
-
-function seletall(all){
-	if($(all).attr("checked")){
-		$("input[type='checkbox']").each(function(){
-			$(this).attr("checked",true);
-
-	     });
-	}else if(!$(all).attr("checked")){
-		$("input[type='checkbox']").each(function(){
-			$(this).attr("checked",false);
-	     });
-	};
-}  
 
 function adddetail(src){ 
 	//window.location.href=src ;
@@ -239,7 +225,7 @@ function amortization(src){
 <div id="wrap">
 <table  cellspacing="1" id="table">
 		<tr id="th" >  
-			<td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>
+			<td align="center" width=""><input type="checkbox" name="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>
 			<td align="center">单号</td>
 			<td align="center">安装网点</td>
 			<td align="center">顾客信息</td>

@@ -217,9 +217,6 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellValue("厂送票是否结款");
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
-				cell.setCellValue("是否已调账");
-				cell.setCellStyle(style);
-				cell = row.createCell((short) x++);
 				cell.setCellValue("备注");
 				cell.setCellStyle(style);
 				
@@ -283,14 +280,13 @@ public class PrintServlet extends HttpServlet {
 	
 						    row.createCell((short) y++).setCellValue(order.getinstallName());
 						    row.createCell((short) y++).setCellValue(order.getInstalltime()); 
-						    
+						     
 						    row.createCell((short) y++).setCellValue(order.getdealsendName());
 							
 						    row.createCell((short) y++).setCellValue(order.getStatues4()==0?"否":"是");
 						    row.createCell((short) y++).setCellValue(order.getStatues1()==0?"否":"是");
 						    row.createCell((short) y++).setCellValue(order.getStatues2()==0?"否":"是");
 						    row.createCell((short) y++).setCellValue(order.getStatues3()==0?"否":"是");
-						    row.createCell((short) y++).setCellValue(order.getStatuesDingma()==1?"是":"否");
 						    row.createCell((short) y++).setCellValue(order.getRemark()); 
 					 }
 					}

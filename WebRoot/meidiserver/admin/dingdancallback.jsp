@@ -11,9 +11,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>客服未回访页</title>
+<title>客服未回访页</title> 
 
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
+ <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+
 <style type="text/css">
 .fixedHead { 
 position:fixed;
@@ -81,8 +84,8 @@ width:50px
  
  <%@ include file="searchOrderAll.jsp"%>
  
- <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
+
+
 <script type="text/javascript">
 var type = "<%=Group.dealSend%>";
 var id = "";
@@ -94,9 +97,6 @@ $(function () {
 	fixation();
 	 initOrder(type,statues,num,page,sort,sear); 
 });
-
-
-
 
 function func(str){
     $(id).css("display","none");
@@ -160,7 +160,7 @@ function winconfirm(){
 		var attract = new Array();
 		var i = 0;
 		
-		$("input[type='checkbox']").each(function(){          
+		$("input[type='checkbox'][id='check_box']").each(function(){          
 	   		if($(this).attr("checked")){
 	   				var str = this.name;
 	   				if(str != null && str != ""){
@@ -171,6 +171,8 @@ function winconfirm(){
 	   		}
 	   	}); 
 		
+		alert(attract.toString());
+		return ;
 		$.ajax({ 
 	        type: "post", 
 	         url: "server.jsp", 
@@ -200,7 +202,7 @@ function adddetail(src){
 	       window.location.reload();
     }
 
-}
+} 
 
 function orderPrint(id,statues){
 	$.ajax({ 
@@ -217,18 +219,7 @@ function orderPrint(id,statues){
            }); 
 }
 
-function seletall(all){
-	if($(all).attr("checked")){
-		$("input[type='checkbox']").each(function(){
-			$(this).attr("checked",true);
-
-	     });
-	}else if(!$(all).attr("checked")){
-		$("input[type='checkbox']").each(function(){
-			$(this).attr("checked",false);
-	     });
-	};
-}  
+  
 </script>
 
 

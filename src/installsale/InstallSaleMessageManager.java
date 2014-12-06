@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import common.Logger;
+
 import order.Order;
 import orderproduct.OrderProduct;
 
@@ -67,27 +69,40 @@ public class InstallSaleMessageManager {
 	 public static int getprice(List<InstallSaleMessage> list , Order o ){
 		 int price = 0 ;
 		 List<OrderProduct> listop = o.getOrderproduct();
+		 //System.out.println(listop.size()); 
 		 for(int j=0;j<listop.size();j++){
 			     OrderProduct op = listop.get(j);
-			     int cprice = 0 ;
-			     int pprice = 0 ;
-			     boolean flag = false ;
-				 for(int i=0;i<list.size();i++){ 
-					 InstallSaleMessage in = list.get(i);
-					 if((op.getId()+"").equals(in.getProductID()+"")){
-						 pprice += in.getDealsend();
-						 flag = true ;
-					 }else if((op.getCategoryId()+"").equals(in.getCategoryID())){
-						 cprice += in.getDealsend();
-					 }
+			     if(op.getStatues() == 0 ){
+			    	 int cprice = 0 ;
+				     int pprice = 0 ;
+				     boolean flag = false ;
+				     if(null != list){
+				    	 for(int i=0;i<list.size();i++){ 
+							 InstallSaleMessage in = list.get(i);
+							 if(in.getProductID() != 0){
+								 if((in.getProductID()+"").equals(op.getSendType())){
+									 pprice = in.getDealsend();
+									 flag = true ;
+								 }
+							 }else if((op.getCategoryId()+"").equals(in.getCategoryID())){
+								 cprice = in.getDealsend();
+							 } 
+						}
+				    	 
+				    	 if(flag){
+							 price += pprice ;
+						 }else { 
+							 price += cprice ;
+						 } 
+				     }
+				     //System.out.println(op.getSendType());
 					 
-				}	 
-				  
-				 if(flag){
-					 price += pprice ;
-				 }else {
-					 price += cprice ;
-				 }
+					  //System.out.println(cprice);
+					 // System.out.println(pprice);
+					 
+			     }
+			     
+				 
 		 }
 		 return price ;
 	 } 
