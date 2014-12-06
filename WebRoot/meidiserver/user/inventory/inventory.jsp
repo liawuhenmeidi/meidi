@@ -5,11 +5,11 @@ User user = (User)session.getAttribute("user");
 String branchid = request.getParameter("branchid");
 
 Branch branch = null;   
-if(UserManager.checkPermissions(user, Group.sale)){
+if(UserManager.checkPermissions(user, Group.sale) || UserManager.checkPermissions(user, Group.sencondDealsend)){
 	if(StringUtill.isNull(branchid)){
-		branchid = user.getBranch()+"";   
+		branchid = user.getBranch()+"";    
 	}
-} 
+}
 branch = BranchManager.getLocatebyid(user.getBranch()+"");
 List<Branch> listbranch = BranchService.getList(); 
 

@@ -47,10 +47,7 @@ function clear(){
    <li><a href="inventory/receipts.jsp">调拨单</a><FONT color=#000000 >&nbsp;<%=invetorylist.size() %></FONT></li>
    <li><a href="inventory/inventory.jsp">库存查询</a></li>
    <%    
-     }  else 
-   %>    
-   <%   
-   if(UserManager.checkPermissions(user,Group.send)){ 	 
+     }else if(UserManager.checkPermissions(user,Group.send)){ 	 
    %>
    <li><a href="<%=realPath %>songhuo.jsp">送货单</a></li>
    <li><a href="<%=realPath %>tuihuo.jsp">退货单</a></li> 
@@ -60,7 +57,8 @@ function clear(){
    <%  
    if(UserManager.checkPermissions(user,Group.sencondDealsend)){ 	 
    %>
-   <li><a href="<%=realPath %>peidan.jsp">派工</a></li>
+   <li><a href="inventory/receipts.jsp">调拨单</a><FONT color=#000000 >&nbsp;<%=invetorylist.size() %></FONT></li>
+   <li><a href="inventory/inventory.jsp">库存查询</a></li>
    <%
      }
    %> 

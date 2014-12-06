@@ -197,55 +197,58 @@ public class OrderService {
 				    			if(listo.size()>1){
 				    				x = x +1 ; 
 				    				//logger.info(x);
+				    				//logger.info(StringUtill.GetJson(mapinsa));
+				    				//logger.info(in.getId());
 				    				 List<InstallSaleMessage> lists = mapinsa.get(in.getId()+"");
-				    				 Iterator<InstallSaleMessage> its = lists.iterator(); 
+				    				 if(null != lists){
+				    				   Iterator<InstallSaleMessage> its = lists.iterator(); 
 				    				//String message = in.getMessage();
 				    				//JSONObject jsObj = JSONObject.fromObject(message); 
 				    				//Iterator<String> keys=jsObj.keys();  
-				    				while(its.hasNext()){
-				    					//String ke = keys.next();
-				    					//String valu = jsObj.getString(ke);
-				    					InstallSaleMessage ins = its.next();
-				    					String ke = ins.getCategoryID()+"";
-				    					if(ke.contains("_")){
-					    					//logger.info(ke);
-				    						int type = -1; 
-				    						for(int i=0;i<listo.size();i++){
-				    							Order o = listo.get(i);
-				    							List<OrderProduct> listop = o.getOrderproduct();
-				    							if(listop.size() == 1){
-				    								for(int j=0;j<listop.size();j++){
-					    								OrderProduct op = listop.get(j);
-					    								//int ctype = CategoryService.getmap().get(op.getCategoryId()).getPid();
-					    								//logger.info(op.getCategoryId()); 
-					    								if(ke.contains(op.getCategoryId()+"")){ 
-					    									//Map<String,Map<String,Map<Order,List<OrderProduct>>>>
-					    									Map<String,List<Order>> mapopp= maprr.get(ke);
-					    									if(null == mapopp){
-					    										mapopp = new HashMap<String,List<Order>>();
-					    										maprr.put(ke, mapopp);
-					    									} 
-					    									
-					    									List<Order> mapi = mapopp.get(x+"-"+ke);
-					    									  
-					    									if(null == mapi){
-					    										mapi = new ArrayList<Order>();
-					    										mapopp.put(x+"-"+ke, mapi);
-					    										//logger.info(x);
-					    									}
-					    									
-					    									if(op.getCategoryId() != type){
-					    										type = op.getCategoryId();
-					    										list.remove(i);
-					    										mapi.add(o);   
-					    									}
-					    								}
+					    				while(its.hasNext()){
+					    					//String ke = keys.next();
+					    					//String valu = jsObj.getString(ke);
+					    					InstallSaleMessage ins = its.next();
+					    					String ke = ins.getCategoryID()+"";
+					    					if(ke.contains("_")){
+						    					//logger.info(ke);
+					    						int type = -1; 
+					    						for(int i=0;i<listo.size();i++){
+					    							Order o = listo.get(i);
+					    							List<OrderProduct> listop = o.getOrderproduct();
+					    							if(listop.size() == 1){
+					    								for(int j=0;j<listop.size();j++){
+						    								OrderProduct op = listop.get(j);
+						    								//int ctype = CategoryService.getmap().get(op.getCategoryId()).getPid();
+						    								//logger.info(op.getCategoryId()); 
+						    								if(ke.contains(op.getCategoryId()+"")){ 
+						    									//Map<String,Map<String,Map<Order,List<OrderProduct>>>>
+						    									Map<String,List<Order>> mapopp= maprr.get(ke);
+						    									if(null == mapopp){
+						    										mapopp = new HashMap<String,List<Order>>();
+						    										maprr.put(ke, mapopp);
+						    									} 
+						    									
+						    									List<Order> mapi = mapopp.get(x+"-"+ke);
+						    									  
+						    									if(null == mapi){
+						    										mapi = new ArrayList<Order>();
+						    										mapopp.put(x+"-"+ke, mapi);
+						    										//logger.info(x);
+						    									}
+						    									
+						    									if(op.getCategoryId() != type){
+						    										type = op.getCategoryId();
+						    										list.remove(i);
+						    										mapi.add(o);   
+						    									}
+						    								}
+						    							}
 					    							}
-				    							}
-				    						}
-				    					}
-				    				}
-				    				
+					    						}
+					    					}
+					    				}
+				    			  }
 				    			}
 				    			
 				    		}

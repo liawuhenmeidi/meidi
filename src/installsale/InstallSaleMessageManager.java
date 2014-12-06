@@ -76,16 +76,16 @@ public class InstallSaleMessageManager {
 			    	 int cprice = 0 ;
 				     int pprice = 0 ;
 				     boolean flag = false ;
-				     if(null != list){
+				     if(null != list){ 
 				    	 for(int i=0;i<list.size();i++){ 
 							 InstallSaleMessage in = list.get(i);
 							 if(in.getProductID() != 0){
 								 if((in.getProductID()+"").equals(op.getSendType())){
-									 pprice = in.getDealsend();
+									 pprice = in.getDealsend()*op.getCount();
 									 flag = true ;
-								 }
+								 } 
 							 }else if((op.getCategoryId()+"").equals(in.getCategoryID())){
-								 cprice = in.getDealsend();
+								 cprice = in.getDealsend()*op.getCount();
 							 } 
 						}
 				    	 

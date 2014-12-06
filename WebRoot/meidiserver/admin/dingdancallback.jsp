@@ -170,9 +170,6 @@ function winconfirm(){
 	   	           	
 	   		}
 	   	}); 
-		
-		alert(attract.toString());
-		return ;
 		$.ajax({ 
 	        type: "post", 
 	         url: "server.jsp", 

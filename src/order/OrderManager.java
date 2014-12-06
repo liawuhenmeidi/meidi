@@ -313,9 +313,10 @@ public class OrderManager {
 	public static boolean getName(String method,String c,String branch){
     	boolean flag = false ;
 		Connection conn = DB.getConn(); 
-		String sql = "";
-		if("phone1".equals(method)){ 
-			sql = "select * from mdorder where "+method+"  = '"+ c+ "'  and orderbranch = '"+branch+"' and  (TIMESTAMPDIFF(DAY,saledate,now()) <= 5)";  
+		String sql = "";  
+		if("phone1".equals(method)){  
+			//sql = "select * from mdorder where "+method+"  = '"+ c+ "'  and orderbranch = '"+branch+"' and  (TIMESTAMPDIFF(DAY,saledate,now()) <= 5)";  
+			sql = "select * from mdorder where "+method+"  = '"+ c+ "'  and orderbranch = '"+branch+"'";  
 		}else {
 			sql = "select * from mdorder where "+method+"  = '"+ c+ "'  and orderbranch = '"+branch+"' ";  
 		}
@@ -752,7 +753,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   if(!StringUtill.isNull(search) && search.contains("dealSendid")){
 						   str = "";
 					   }
-					   sql = "select * from  mdorder where  mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and printSatues = 1 and (sendId != 0 or installid != 0 and wenyuancallback = 1  ) and deliveryStatues not in (0,3,8,9,10)  and statues4 = 0  "+search+" order by "+sort+str; 
+					   sql = "select * from  mdorder where  mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and printSatues = 1 and (sendId != 0 and deliverytype = 2 or sendId != 0 and deliverytype = 1 and wenyuancallback = 1 or  installid != 0 and wenyuancallback = 1  ) and deliveryStatues not in (0,3,8,9,10)  and statues4 = 0  "+search+" order by "+sort+str; 
 				   }else if(Order.serach == statues){     
 						  sql = "select * from  mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  "+search+"  order by "+sort+str;  
 						  //sql = "select * from  mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  "+search+"  or (mdorder.id in (select orderid from mdorderupdateprint where mdtype = 3 and pGroupId = "+ user.getUsertype()+ " ))  order by "+sort+"  desc limit " + ((page-1)*num)+","+ page*num; 
@@ -914,7 +915,8 @@ logger.info(sql);
 				   }else if(Order.go == statues){ 
 					   sql = "select count(*) from mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))    and statues1 = 1 and statues2 = 0   "+search;  
 				   }else if(Order.over == statues){  
-					   sql = "select count(*) from  mdorder where  mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and printSatues = 1 and sendId != 0  and deliveryStatues not in (0,3)  and statues4 = 0  "+search; 
+					   sql = "select count(*) from  mdorder where  mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and printSatues = 1 and (sendId != 0 and deliverytype = 2 or sendId != 0 and deliverytype = 1 and wenyuancallback = 1 or  installid != 0 and wenyuancallback = 1  ) and deliveryStatues not in (0,3,8,9,10)  and statues4 = 0  "+search; 
+					   //sql = "select count(*) from  mdorder where  mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))   and printSatues = 1 and sendId != 0  and deliveryStatues not in (0,3)  and statues4 = 0  "+search; 
 				   }else if(Order.serach == statues){    
 						  sql = "select count(*) from  mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  "+search;  
 						  //sql = "select * from  mdorder where mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  "+search+"  or (mdorder.id in (select orderid from mdorderupdateprint where mdtype = 3 and pGroupId = "+ user.getUsertype()+ " ))  order by "+sort+"  desc limit " + ((page-1)*num)+","+ page*num; 

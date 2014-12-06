@@ -48,8 +48,6 @@ if(!StringUtill.isNull(id)){
 	 
 }
  
-
- 
 String  branchmessage = branch.getMessage();
 if(StringUtill.isNull( branchmessage)){ 
 	 branchmessage = "";
