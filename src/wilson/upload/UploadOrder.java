@@ -104,7 +104,7 @@ public class UploadOrder {
 	}
 
 	public Double getSalePrice() {
-		return salePrice;
+		return Math.round(salePrice * 100)/100.0;
 	}
 
 	public void setSalePrice(Double salePrice) {

@@ -7,13 +7,6 @@
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
 	
-	//分组选择
-	String groupName = request.getParameter("groupname");
-	if(StringUtill.isNull(groupName)){
-		groupName = "";
-	}
-	session.setAttribute("groupname", groupName);
-	
 	//重置文件
 	String reset = request.getParameter("reset");
 	if(!StringUtill.isNull(reset) && reset.equals("true")){
@@ -35,10 +28,6 @@
 	
 	String startDateSTR = request.getParameter("startDate");
 	String endDateSTR = request.getParameter("endDate");
-	
-	//取出分组列表
-	Map<String,List<CatergoryMaping>> srcCatergoryMap = CatergoryManager.getCatergoryMap();
-	Set CatergoryMapingSet = srcCatergoryMap.keySet();
 	
 	 
 	//取出所有salaryResult
@@ -89,6 +78,9 @@
 		}else{
 			showResult = SalaryCalcManager.initSalaryModel(SalaryCalcManager.getSalaryResultByDate((Date)request.getSession().getAttribute("startDate"), (Date)request.getSession().getAttribute("endDate")));
 			
+		}
+		if(showResult.size() > 0 ){
+			showResult =  SalaryCalcManager.sortSalaryResult(showResult, showResult.get(0).getUploadOrder().getFileName());
 		}
 		//导出用
 		session.setAttribute("exportSalaryName", name);
@@ -182,21 +174,8 @@ if(showResult.size() > 0 ){
 %>
 
 <a href="../SalaryExportServlet"><button name="exportButton" style="background-color:red;font-size:50px;" >导出</button></a>
-<a href="salaryExport.jsp?reset=true"><button name="resetButton" style="background-color:red;font-size:50px;" >重新计算本文件的提成</button></a>
-<button name="catergoryMapingButton" style="background-color:red;font-size:50px;" onClick="javascript:window.open('./catergoryManage.jsp?groupname=' + $('#groupname').val(), 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')">分组管理</button>
-当前分组:
-<select id="groupname">
-<%Iterator<String> it = CatergoryMapingSet.iterator(); 
-  String itString = "";
-	while(it.hasNext()){
-		itString = it.next();
+<a href="salaryExport.jsp?reset=true"><button name="resetButton" style="background-color:red;font-size:50px;" >清空提成</button></a>
 	
-%>
-	<option value="<%=itString %>"><%=itString %></option>
-<%
-	} 
-%>
-</select>	
 <hr style="border : 1px dashed blue;" />
 	<table border="1px" align="left" >
 		<tr>
@@ -211,7 +190,6 @@ if(showResult.size() > 0 ){
 			<td>数量</td>
 			<td>单价</td>
 			<td>提成</td>
-			<td>总计</td>
 		</tr>
 		<%for(int i = 0 ; i <  showResult.size() ; i ++){ %>
 		<tr>
@@ -225,8 +203,8 @@ if(showResult.size() > 0 ){
 			<td id="<%=showResult.get(i).getId() %>saletype"><%=showResult.get(i).getUploadOrder().getType()  %></td>
 			<td id="<%=showResult.get(i).getId() %>num"><%=showResult.get(i).getUploadOrder().getNum() %></td>
 			<td id="<%=showResult.get(i).getId() %>saleprice"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
+			<%System.out.print(i); %>
 			<td id="<%=showResult.get(i).getId() %>salary"><a href="#" onClick="javascript:window.open('./salaryResultDetail.jsp?id=<%=showResult.get(i).getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" ><%=showResult.get(i).getSalary()==null?"":showResult.get(i).getSalary() %></a></td>
-			<td></td>
 		</tr>
 		<%} %>
 	</table>

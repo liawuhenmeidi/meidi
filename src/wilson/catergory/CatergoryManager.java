@@ -12,6 +12,9 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import utill.TimeUtill;
+import wilson.upload.UploadManager;
+
 import database.DB;
 
 public class CatergoryManager {
@@ -60,6 +63,40 @@ public class CatergoryManager {
 			pstmt.setString(3, cm.getContent());
 			pstmt.setString(4, cm.getModifyTime());
 			pstmt.executeUpdate();
+			logger.info(sql);
+			result = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = false;
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}	
+		return result;
+
+	}
+	
+	public static boolean addCatergoryMaping(String categoryName, String filename){
+
+		boolean result = false;
+		Connection conn = DB.getConn(); 
+		
+		List<String> shopNameList = UploadManager.getShopNameListFromFileName(filename);
+		if(!shopNameList.contains("")){
+			shopNameList.add("");
+		}
+		
+		String sql = "insert into catergorymaping values(null,?,?,?,?)";
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		
+		try {
+			for(int i = 0 ; i < shopNameList.size() ; i ++){
+				pstmt.setString(1, categoryName);
+				pstmt.setString(2, shopNameList.get(i));
+				pstmt.setString(3, "");
+				pstmt.setString(4, TimeUtill.gettime());
+				pstmt.executeUpdate();
+			}	
 			logger.info(sql);
 			result = true;
 		} catch (SQLException e) {

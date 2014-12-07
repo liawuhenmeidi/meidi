@@ -1,9 +1,16 @@
-<%@ page language="java" import="java.util.*,locate.*,utill.*,category.*,product.*,user.*,group.*,branchtype.*,branch.*,wilson.catergory.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@page import="wilson.salaryCalc.SalaryCalcManager"%>
+<%@page import="wilson.upload.UploadManager"%>
+<%@ page language="java" import="java.util.*,locate.*,utill.*,category.*,product.*,user.*,group.*,branchtype.*,branch.*,wilson.catergory.*,wilson.salaryCalc.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%      
 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
+
+//接受参数，初始化变量
+String name = "\"" + request.getParameter("groupname") + "\"";
+String shop = "\"" + request.getParameter("shop") + "\"";
+
 
 //接受本页提交的参数
 String ids = request.getParameter("merges");
@@ -24,6 +31,9 @@ if(!"".equals(request.getParameter("submit"))){
 	
 	CatergoryMaping cm = new CatergoryMaping();
 	for(int i = 0 ; i < ids.split(",").length ; i ++){
+		if(StringUtill.isNull(ids)||ids.equals("")||ids.equals("Na")){
+			break;
+		}
 		paraTempName = ids.split(",")[i];
 		content += paraTempName + ":" + request.getParameter(paraTempName) + ",";
 	}
@@ -39,31 +49,32 @@ if(!"".equals(request.getParameter("submit"))){
 	if(CatergoryManager.updateCatergoryMaping(cm)){
 		//保存成功 
 		out.print("<script>alert('操作成功!!')</script>");
+		name = paraName;
+		shop = paraShopName;
 		//out.print("<script>alert('操作成功!!');window.close()</script>"); 
 		//return;
 	}else{
-		out.print("<script>alert('操作失败，请重试!!')</script>");
-		//out.print("<script>alert('操作失败，请重试!!');window.close()</script>"); 
+		//out.print("<script>alert('操作失败，请重试!!')</script>");
+		out.print("<script>alert('操作失败，请重试!!');window.close()</script>"); 
 		//return;
 	}
 	
 }
 
-//接受参数，初始化变量
-String name = "\'" + request.getParameter("groupname") + "\'";
-String shop = "\'" + request.getParameter("shop") + "\'";
 
 
-
+ArrayList<SalaryResult> salaryResult = (ArrayList<SalaryResult>)request.getSession().getAttribute("calcResult");
+List<String> catergoryList = SalaryCalcManager.getCatergoryFromResult(salaryResult);
+String setStr = StringUtill.GetJson(catergoryList);
 
 //文超写的，不知道啥意思，估计就是取所有的类别
-List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend);
-HashMap<String,Category> map = CategoryService.getmapstr();
-String mapStr = StringUtill.GetJson(map);   
-Set<String> set = map.keySet();
+//List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend);
+//HashMap<String,Category> map = CategoryService.getmapstr();
+//String mapStr = StringUtill.GetJson(map);   
+//Set<String> set = map.keySet();
 String merge= "[]";
 //所有id
-String setStr = StringUtill.GetJson(set);
+//String setStr = StringUtill.GetJson(set);
 
 
 
@@ -103,7 +114,7 @@ position:fixed;
 <script type="text/javascript">
 var splits = <%=setStr%>;
 var merges = <%=merge%>;
-var map = <%=mapStr%>;
+
 
 var cmmapSRC = <%=cmmapSRC %>;
 var cmNow;
@@ -123,6 +134,7 @@ $(function () {
 	reloadData();
 	initAddButton();
 }); 
+
 
 function initAddButton(){
 	 $("#addbtn1").click(function(){
@@ -170,11 +182,13 @@ function addName(){
          data:"target=name&method=add&content=" + newName,
          dataType: "",  
          success: function (data) {
-        	 cmmapSRC[newName]=[];
-        	 $("#name").append("<option value='"+ newName +"'>"+ newName +"</option>");
-        	 $("#name").val(newName);
-        	 initShop();
-        	 selectOnChage();
+        	 //refresh
+        	 location.href = location.origin + location.pathname + "?groupname=" + newName;
+        	 //cmmapSRC[newName]=[];
+        	 //$("#name").append("<option value='"+ newName +"'>"+ newName +"</option>");
+        	// $("#name").val(newName);
+        	 //initShop();
+        	 //selectOnChage();
            },  
           error: function (XMLHttpRequest, textStatus, errorThrown) { 
         	  return false ;
@@ -420,10 +434,9 @@ function initleft(){
 	$("#tableC td").remove();
 	var str = '<td align="left">';
 	for(var i=0;i<splits.length;i++){
-		var id = splits[i];
-		var c = map[id];
-		str += '<input type="checkbox"  value="'+c.id+'" name="categorynameLeft"  id="categoryname'+c.id+'" ></input>'+
-               c.name+'<br/>';
+		var c = splits[i];
+		str += '<input type="checkbox"  value="'+c+'" name="categorynameLeft"  id="categoryname'+c+'" ></input>'+
+               c+'<br/>';
 	} 
 	str += '</td>';
 	$("#tableC").append(str);
@@ -437,8 +450,8 @@ function initright(){
 	  var ids=merges[i];
 	  var id = ids.split("_");
 	  for(var j=0;j<id.length;j++){
-		  var c = map[id[j]]; 
-		  text += c.name+"_";
+		  var c = id[j]; 
+		  text += c+"_";
 	  }
       str += '<input type="radio" value="'+ids+'"  name="categorynameRight" id="categoryname'+ids+'" ></input>'+text+'<br/>';
 	}
@@ -454,8 +467,8 @@ function inittotal(){
 		  var ids=merges[i];
 		  var id = ids.split("_");
 		  for(var j=0;j<id.length;j++){
-			  var c = map[id[j]]; 
-			  text += c.name+"_";
+			  var c = id[j]; 
+			  text += c+"_";
 		  }
 		    str +='<tr >';
 			str +='<td>';
@@ -577,14 +590,16 @@ function saverule(){
 				%>
 			</select>
 			<button id="addbtn1">增加</button>
-			<button id="delbtn1">删除本项</button>
+			<!-- <button id="delbtn1">删除本项</button>  -->
         </td> 
         <td align="center">
         	<select id="shop" name="shop">
         		<option value="all">全部</option> 
        		</select>
+       		<!--  
        		<button id="addbtn2">增加</button>
 			<button id="delbtn2">删除本项</button>
+			-->
         </td>
         <td align="center">导购员</td>
        </tr>

@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.util.StringUtil;
@@ -31,7 +34,19 @@ import database.DB;
 public class SalaryCalcManager {
 	
 	protected static Log logger = LogFactory.getLog(SalaryCalcManager.class);
-	private static List<UploadOrder> unCalcUploadOrders = new ArrayList<UploadOrder>();
+	
+	public static List<String> getCatergoryFromResult(ArrayList<SalaryResult> input){
+		List<String> result = new ArrayList<String>();
+		String tmp = "";
+		for(int i = 0 ; i < input.size() ; i ++){
+			tmp = input.get(i).getSalaryModel().getCatergory();
+			if(!result.contains(tmp)){
+				result.add(tmp);
+			}
+		}
+		return result;
+	}
+	
 	
 	public static List<SalaryResult> sortSalaryResult(
 			List<SalaryResult> input,String CatergoryMapingName) {
@@ -40,8 +55,11 @@ public class SalaryCalcManager {
 		}
 		List<SalaryResult> result = new ArrayList<SalaryResult>();
 		
-		List<SalaryResult> noMapingList = new ArrayList<SalaryResult>();
 		List<CatergoryMaping> cmMapingList = CatergoryManager.getCatergory(CatergoryMapingName);
+		
+		if(cmMapingList.size() <= 0 ){
+			return input;
+		}
 		
 		while(input.size() != 0 ){
 			List<SalaryResult> sameFileNameList = new ArrayList<SalaryResult>();
@@ -51,7 +69,7 @@ public class SalaryCalcManager {
 			sameFileNameList.add(input.get(0));
 			sameFileNameList.remove(0);
 			for(int i = 0; i < input.size() ; i++){
-				if(input.get(i).getUploadOrder().getShop().trim().equals(tempFileName)){
+				if(input.get(i).getUploadOrder().getName().trim().equals(tempFileName)){
 					sameFileNameList.add(input.get(i));
 					input.remove(i);
 					i --;
@@ -62,7 +80,6 @@ public class SalaryCalcManager {
 			String tempName = "";
 			String tempShop = "";
 			List<SalaryResult> sameShopList = new ArrayList<SalaryResult>();
-			
 			
 			while(sameFileNameList.size() != 0){
 				tempShop = sameFileNameList.get(0).getUploadOrder().getShop().trim();
@@ -79,30 +96,128 @@ public class SalaryCalcManager {
 				}
 				tempShop = "";
 				
+				
+				CatergoryMaping tempCatergoryMaping = new CatergoryMaping();
+				CatergoryMaping catergoryMapingtemplate = new CatergoryMaping();
+				SalaryResult sameShopTotal = new SalaryResult();
+				
 				while(sameShopList.size() != 0){
 					
-					//正在写
-					tempName = sameShopList.get(0).getSalaryModel().getCatergory().trim();
-					if(StringUtill.isNull(tempName)){
-						noMapingList.add(sameShopList.get(0));
-						continue;
-					}
-					
-					
-					result.add(sameShopList.get(0));
-					sameShopList.remove(0);
-					for(int i = 0 ; i < sameShopList.size() ; i++){
-						if(sameShopList.get(i).getUploadOrder().getSaleManName().trim().equals(tempName)){
-							result.add(sameShopList.get(i));
-							sameShopList.remove(i);
-							
-							i --;
+					//取得总分组规则
+					boolean hasTemplate = false;
+					for(int i = 0 ; i < cmMapingList.size() ; i ++){
+						if(cmMapingList.get(i).getShop().trim().equals("")){
+							catergoryMapingtemplate = cmMapingList.get(i);
+							if(!catergoryMapingtemplate.getContent().equals("")){
+								hasTemplate = true;
+							}
+							break;
 						}
 					}
-					tempName = "";
-				}
 					
-				
+					//取得对应的catergoryMaping
+					boolean isFind = false;
+					//找对应分组规则
+					for(int i = 0 ; i < cmMapingList.size() ; i ++){
+						if(sameShopList.get(0).getUploadOrder().getShop().trim().equals(cmMapingList.get(i).getShop().trim())){
+							tempCatergoryMaping = cmMapingList.get(i);
+							//保证规则不为空
+							if(!tempCatergoryMaping.getContent().equals("")){
+								isFind = true;
+							}
+							break;
+						}
+					}
+					
+					if(!isFind){
+						if(hasTemplate){
+							//使用总分组规则
+							tempCatergoryMaping = catergoryMapingtemplate;
+							isFind = true;
+						}else{
+							//添加到noMapingList
+							//noMapingList.addAll(sameShopList);
+							//sameShopList.clear();
+						}
+					}
+					
+					if(isFind){
+						//通过对应的分组进行排序
+						String rules[] = tempCatergoryMaping.getContent().split(",");
+						List<String> items = new ArrayList<String>();
+						SalaryResult sameGroupTotal = new SalaryResult();
+						for(int i = 0 ; i < rules.length ; i ++){
+							//初始化items
+							String leftSide = rules[i].split(":")[0];
+							String rightSide = rules[i].split(":")[1];
+							for(int m = 0 ; m < leftSide.split("_").length ; m ++){
+								items.add(leftSide.split("_")[m]);
+							}
+							
+							for(int j = 0 ; j < sameShopList.size() ; j ++){
+								if(items.contains(sameShopList.get(j).getSalaryModel().getCatergory())){
+									sameShopList.get(j).getUploadOrder().setSaleManName(rightSide);
+									
+									sameGroupTotal.setSalary(sameGroupTotal.getSalary() + sameShopList.get(j).getSalary());
+									//设置店名，类别等
+									sameGroupTotal.setStatus(-1);
+									sameGroupTotal.setUploadSalaryModelCatergory(leftSide);
+									sameGroupTotal.setUploadOrderNum(sameGroupTotal.getUploadOrder().getNum() + sameShopList.get(j).getUploadOrder().getNum());
+									sameGroupTotal.setUploadOrderSalePrice(sameGroupTotal.getUploadOrder().getSalePrice() + sameShopList.get(j).getUploadOrder().getSalePrice());
+									sameGroupTotal.setUploadOrderPosNo("");
+									
+									result.add(sameShopList.get(j));
+									sameShopList.remove(j);
+									j--;
+								}
+							}
+							
+							//如果有对应这个分组的数据
+							if(sameGroupTotal.getStatus() == -1){
+								result.add(sameGroupTotal);
+								
+								sameShopTotal.setUploadOrderShop(tempCatergoryMaping.getShop());
+								sameShopTotal.setUploadOrderNum(sameShopTotal.getUploadOrder().getNum() + sameGroupTotal.getUploadOrder().getNum());
+								sameShopTotal.setUploadOrderSalePrice(sameShopTotal.getUploadOrder().getSalePrice() + sameGroupTotal.getUploadOrder().getSalePrice());
+								sameShopTotal.setSalary(sameShopTotal.getSalary() + sameGroupTotal.getSalary());
+								//清空
+								sameGroupTotal = new SalaryResult();
+							}
+							
+						}
+					}
+					
+					
+					//剩余的
+					if(sameShopList.size() > 0){
+						SalaryResult othersTotal = new SalaryResult();
+						for(int i = 0 ; i < sameShopList.size() ; i++){
+							othersTotal.setSalary(othersTotal.getSalary() + sameShopList.get(i).getSalary());
+							othersTotal.setUploadOrderNum(othersTotal.getUploadOrder().getNum() + sameShopList.get(i).getUploadOrder().getNum());
+							othersTotal.setUploadOrderSalePrice(othersTotal.getUploadOrder().getSalePrice() + sameShopList.get(i).getUploadOrder().getSalePrice());
+						}
+						//设置店名，类别等
+						//othersTotal.setUploadOrderShop(sameShopList.get(0).getUploadOrder().getShop());
+						othersTotal.setUploadSalaryModelCatergory("其他");
+						othersTotal.setUploadOrderPosNo("");
+						othersTotal.setStatus(-1);
+						
+						sameShopTotal.setUploadOrderSalePrice(sameShopTotal.getUploadOrder().getSalePrice() + othersTotal.getUploadOrder().getSalePrice());
+						sameShopTotal.setSalary(sameShopTotal.getSalary() + othersTotal.getSalary());
+						sameShopTotal.setUploadOrderNum(sameShopTotal.getUploadOrder().getNum() + othersTotal.getUploadOrder().getNum());
+						
+						result.addAll(sameShopList);
+						result.add(othersTotal);
+						sameShopList.clear();
+					}
+					
+					
+					sameShopTotal.setUploadOrderPosNo("");
+					sameShopTotal.setUploadSalaryModelCatergory("总计");
+					sameShopTotal.setStatus(-1);
+					result.add(sameShopTotal);
+					sameShopTotal = new SalaryResult();
+				}
 			
 			}
 
@@ -110,8 +225,8 @@ public class SalaryCalcManager {
 		return result;
 	}
 	
-	public static List<SalaryResult> calcSalary(List<UploadOrder> uploadOrders,List<UploadSalaryModel> salaryModels){
-		unCalcUploadOrders = new ArrayList<UploadOrder>();
+	public static List<SalaryResult> calcSalary(List<UploadOrder> uploadOrders,List<UploadSalaryModel> salaryModels,HttpServletRequest request){
+		List<UploadOrder> unCalcUploadOrders = new ArrayList<UploadOrder>();
 		if(uploadOrders == null || salaryModels == null ){
 			return new ArrayList<SalaryResult>();
 		}
@@ -216,17 +331,16 @@ public class SalaryCalcManager {
 			}
 			
 		}
+		request.getSession().setAttribute("calcResult", result);
+		request.getSession().setAttribute("unCalcResult", unCalcUploadOrders);
 		return result;
 	}
-
-	public static List<UploadOrder> getUnCalcUploadOrders() {
-		return unCalcUploadOrders;
-	}
 	
-	public static boolean saveSalaryResult(List<SalaryResult> salaryResult){
+	public static boolean saveSalaryResult(List<SalaryResult> salaryResult,String catergoryMapingName){
 		boolean flag = false;
 		Connection conn = DB.getConn();
-		String sql = "update uploadorder set checked = ? where id = ?";
+		//暂时先这样。。。囧
+		String sql = "update uploadorder set checked = ?,filename=?  where id = ?";
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		
 		boolean autoCommit = false;
@@ -237,7 +351,8 @@ public class SalaryCalcManager {
 			conn.setAutoCommit(false);
 			for(int i = 0 ; i < salaryResult.size() ; i ++){
 				pstmt.setInt(1,2);
-				pstmt.setInt(2, salaryResult.get(i).getUploadOrder().getId());
+				pstmt.setString(2, catergoryMapingName);
+				pstmt.setInt(3, salaryResult.get(i).getUploadOrder().getId());
 				pstmt.executeUpdate();
 			}
 			
@@ -248,7 +363,8 @@ public class SalaryCalcManager {
 				pstmt.setInt(2,salaryResult.get(i).getSalaryModel().getId());
 				pstmt.setString(3,salaryResult.get(i).getCalcTime());
 				pstmt.setDouble(4,salaryResult.get(i).getSalary());
-				pstmt.setInt(5,salaryResult.get(i).getStatus());
+				//pstmt.setInt(5,salaryResult.get(i).getStatus());
+				pstmt.setInt(5,0);
 				pstmt.executeUpdate();
 			}
 			conn.commit();
@@ -457,14 +573,16 @@ public class SalaryCalcManager {
 				tempResult = new SalaryResult();
 				if(tempSalaryResultMap.containsKey(tempOrder.getId())){
 					tempResult = tempSalaryResultMap.get(tempOrder.getId());
+					
+					tempResult.setUploadOrder(tempOrder);
+					result.add(tempResult);
 				}else{
 					//千万别改这里
-					tempResult.setSalary(null);
+					//tempResult.setSalary(null);
 					
-					tempResult.setUploadSalaryModelid(-1);
+					//tempResult.setUploadSalaryModelid(-1);
 				}
-				tempResult.setUploadOrder(tempOrder);
-				result.add(tempResult);
+				
 
 			}
 			

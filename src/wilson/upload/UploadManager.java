@@ -474,6 +474,31 @@ public class UploadManager {
 		return checkedUploadOrders;
 	}
 	
+	public static List<String> getCheckedUploadOrdersNames(){
+		List <String> result = new ArrayList<String>();
+
+		Connection conn = DB.getConn(); 
+		String sql = "select distinct name from uploadorder where checked = 0 order by shop";
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		String tmp = "";
+		try {     
+			while (rs.next()) {
+				tmp = rs.getString("name");
+				result.add(tmp);
+				tmp = "";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
+	}
+	
 	public static UploadOrder getUploadOrderById(int id){
 		UploadOrder result = new UploadOrder();
 
@@ -657,6 +682,30 @@ public class UploadManager {
 		return result;
 	}
 	
+	public static List<String> getAllSalaryModelNames(){
+		List<String> result = new ArrayList<String>();
+		String sql = "select distinct name from uploadsalarymodel where status != -1;";
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		String tmp = "";
+		try {
+			while(rs.next()){
+				tmp = rs.getString("name");
+				result.add(tmp);
+				tmp = "";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result.clear();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return result;
+	}
+	
 	//传入uploadorders的list对象，取出名称返回
 	public static List<String> getAllUploadOrderNames(List<UploadOrder> uploadorders){
 		List<String> result = new ArrayList<String>();
@@ -795,7 +844,7 @@ public class UploadManager {
 		List <UploadOrder> result = new ArrayList<UploadOrder>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadorder where name = '" + name + "' and checked = 0";
+		String sql = "select * from uploadorder where name = '" + name + "' and checked = 0 order by name,shop";
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -834,7 +883,54 @@ public class UploadManager {
 		List <UploadSalaryModel> result = new ArrayList<UploadSalaryModel>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadsalarymodel where name = '" + name + "' and status != -1";
+		String sql = "select * from uploadsalarymodel where name = '" + name + "' and status != -1 order by name";
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadSalaryModel usm = new UploadSalaryModel();
+		try {     
+			while (rs.next()) {
+				usm.setId(rs.getInt("id"));
+				usm.setShop(rs.getString("shop"));
+				usm.setName(rs.getString("name"));
+				usm.setStartTime(rs.getString("starttime"));
+				usm.setEndTime(rs.getString("endtime"));
+				usm.setCatergory(rs.getString("catergory"));
+				usm.setType(rs.getString("type"));
+				usm.setContent(rs.getString("content"));
+				usm.setCommitTime(rs.getString("committime"));
+				usm.setFileName(rs.getString("filename"));
+				usm.setStatus(rs.getInt("status"));
+				result.add(usm);
+				usm = new UploadSalaryModel();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
+	}
+	
+	public static List<UploadSalaryModel> getSalaryModelsByName(List<String> names){
+		List <UploadSalaryModel> result = new ArrayList<UploadSalaryModel>();
+		if(names.size()<= 0){
+			return result;
+		}
+		
+		String nameSTR = "";
+		for(int i = 0 ; i < names.size() ; i ++){
+			nameSTR += "\""+ names.get(i) + "\",";
+		}
+		if(nameSTR.endsWith(",")){
+			nameSTR = nameSTR.substring(0,nameSTR.length() -1);
+		}
+		
+
+		Connection conn = DB.getConn(); 
+		String sql = "select * from uploadsalarymodel where name in (" + nameSTR + ") and status != -1 order by name";
 
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -1148,6 +1244,33 @@ public class UploadManager {
 			}
 		}
 		return result;
+	}
+
+	public static List<String> getShopNameListFromFileName(String filename) {
+		List<String> result = new ArrayList<String>();
+		Connection conn = DB.getConn();
+		String sql = "select distinct shop from uploadorder where name = '" + filename + "'";
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(sql);
+			String tmp = "";
+			while(rs.next()){
+				tmp = rs.getString("shop");
+				if(!StringUtill.isNull(tmp) && !result.contains(tmp)){
+					result.add(tmp);
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return result; 
 	}
 	
 }

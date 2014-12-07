@@ -16,8 +16,9 @@ int id = Integer.parseInt(idSTR);
 //接受参数
 String catergory = request.getParameter("catergory");
 String type = request.getParameter("type");
+String filename = request.getParameter("filename");
 salarymodel = (UploadSalaryModel)request.getSession().getAttribute("altSalaryModel");
-
+List<String> selectModelsNameList = (List<String>)request.getSession().getAttribute("selectModelsNameList");
 
 //接受提成标准
 String tempStr = "0";
@@ -61,6 +62,7 @@ if(id ==-1){
 		salarymodel.setType(type);
 		salarymodel.setCommitTime(TimeUtill.gettime());
 		salarymodel.setContent(content);
+		salarymodel.setName(filename);
 		//验证是否符合规范
 		if(salarymodel.checkContent()){
 
@@ -336,10 +338,8 @@ function checkedd(){
 			<td align="center"><input type="text" value="<%=salarymodel.getId() %>" disabled="disabled"/></td>  
 			<td align="center">门店</td>
 			<td align="center" id="shop"><%=salarymodel.getShop() %></td> 
-			<td align="center">名称</td>
-			<td align="center">       		  
-		     <%=salarymodel.getName() %>
-		    </td> 
+			<td align="center">提交时间</td>
+			<td align="center"><%=salarymodel.getCommitTime() %></td> 
 		</tr> 
 		<tr class="asc">	 
 			<td align="center" >类别</td>
@@ -350,8 +350,14 @@ function checkedd(){
 			<td align="center">			
 			    <input type="text" name="type" id="type" value="<%=salarymodel.getType() %>"  /> 
 			</td>
-			<td align="center">提交时间</td>
-			 <td align="center" ><%=salarymodel.getCommitTime() %></td>
+			<td align="center">名称</td>
+			 <td align="center" >
+			 <select name="filename">
+				<%for(int i = 0 ; i < selectModelsNameList.size() ; i ++){ %>
+				<option value="<%=selectModelsNameList.get(i)  %>"><%=selectModelsNameList.get(i) %></option>
+				<%} %>
+			</select>  
+			</td>
 			</tr>
 
 		<tr class="asc" >

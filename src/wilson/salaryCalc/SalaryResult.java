@@ -23,6 +23,21 @@ public class SalaryResult {
 	public SalaryResult() {
 		super();
 	}
+	public void setUploadOrderNum(int num){
+		uploadOrder.setNum(num);
+	}
+	public void setUploadOrderSalePrice(double price){
+		uploadOrder.setSalePrice(price);
+	}
+	public void setUploadOrderShop(String shop){
+		uploadOrder.setShop(shop);
+	}
+	public void setUploadOrderPosNo(String posNo){
+		uploadOrder.setPosNo(posNo);
+	}
+	public void setUploadSalaryModelCatergory(String catergory){
+		salaryModel.setCatergory(catergory);
+	}
 	public SalaryResult(int uploadOrderId, int uploadSalaryModelid) {
 		super();
 		this.uploadOrderId = uploadOrderId;
@@ -70,7 +85,7 @@ public class SalaryResult {
 		this.calcTime = calcTime;
 	}
 	public Double getSalary() {
-		return salary;
+		return Math.round(salary * 100)/100.0;
 	}
 	public void setSalary(Double salary) {
 		this.salary = salary;

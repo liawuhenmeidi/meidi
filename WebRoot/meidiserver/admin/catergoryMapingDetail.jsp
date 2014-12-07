@@ -8,6 +8,9 @@ request.setCharacterEncoding("utf-8");
 
 UploadSalaryModel salarymodel = new UploadSalaryModel();
 
+//filename
+String filename = (String)request.getSession().getAttribute("addName_filename");
+
 //name or shop
 String target = request.getParameter("target");
 
@@ -22,12 +25,9 @@ if(!StringUtill.isNull(target)&&!StringUtill.isNull(method) && !StringUtill.isNu
 		
 		
 		if(method.equals("add")){
-			CatergoryMaping cm = new CatergoryMaping();
-			cm.setModifyTime(TimeUtill.gettime());
-			cm.setContent("");
-			cm.setName(content);
-			cm.setShop("");
-			if(CatergoryManager.addCatergoryMaping(cm)){
+			
+			String catergoryName = content;
+			if(CatergoryManager.addCatergoryMaping(catergoryName,filename)){
 				out.print("success");
 			}else{
 				out.print("fail");
