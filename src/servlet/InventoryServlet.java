@@ -51,7 +51,7 @@ public class InventoryServlet extends HttpServlet {
 		Object object = new Object();
 		   
 		String method = request.getParameter("method");
-		System.out.println("method"+method);  
+		//System.out.println("method"+method);  
 		synchronized(object){
 			if("add".equals(method)){ 
 				saveBranch(request,response);
@@ -72,13 +72,13 @@ public class InventoryServlet extends HttpServlet {
 		}
 	} 
 	 
-	private void saveInventory(HttpServletRequest request, HttpServletResponse response){
+	private synchronized void  saveInventory(HttpServletRequest request, HttpServletResponse response){
 		List<String> sqls = new ArrayList<String>(); 
 		User user  = (User)request.getSession().getAttribute("user");
 		String method = request.getParameter("method");
 		String id = request.getParameter("id");
 		String type = request.getParameter("type");
-System.out.println(type+"type"); 
+//System.out.println(type+"type"); 
 		String sql = ""; 
 		boolean flag =  InventoryManager.check(method,id); 
 		if(method.equals("outbranch")){

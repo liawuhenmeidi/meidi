@@ -58,17 +58,20 @@ public class OrderService {
 		
 		//List<OrderProduct> listopid = new ArrayList<OrderProduct>();
 		List<Order> listopid = new ArrayList<Order>();
-		
+		//logger.info(list.size());
 		for(int i=0;i<list.size();i++){
 			Order o = list.get(i);
 			InstallSale en = mapin.get(o.getDealsendId()+"");
+			if(null == en){
+				en = mapin.get("-1");
+			}
 			if(null != en){
 				Map<String,Map<String,Map<String,Map<String,List<Order>>>>> umap = orders.get(o.getDealsendId()+"");
 				if(null == umap){
 					umap = new HashMap<String,Map<String,Map<String,Map<String,List<Order>>>>>();
 					orders.put(o.getDealsendId()+"", umap);
 				}
-				 
+				//logger.info(orders); 
 				Map<String,Map<String,Map<String,List<Order>>>> phonemap = null ;
 				if(1 == en.getPhone()){
 					phonemap = umap.get(o.getPhone1()) ;
@@ -137,14 +140,138 @@ public class OrderService {
 			}
 		} 
 		
-		/*Set<Map.Entry<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>>> sets = orders.entrySet();
+		//logger.info(orders);
+		 int x = 1 ;
+		 Set<Map.Entry<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>>> sets = orders.entrySet();
 		 Iterator<Map.Entry<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>>> its = sets.iterator();
-		while(its.hasNext()){
+		
+		 while(its.hasNext()){
 			Map.Entry<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> ents = its.next();
-			Map<String,Map<String,Map<String,Map<String,List<Order>>>>> mas = ents.getValue();
-			logger.info(StringUtill.GetJson(mas)); 
-		}*/
-		  
+			String key = ents.getKey();
+			Map<String,Map<String,Map<String,Map<String,List<Order>>>>> map = ents.getValue();
+			Map<String,Map<String,List<Order>>> maprr = mapr.get(key);
+			if(null == maprr){  
+				maprr = new HashMap<String,Map<String,List<Order>>>();
+				mapr.put(key, maprr);
+				//logger.info(1);
+			} 
+			
+			if(null != map){
+				
+		        Set<Map.Entry<String,Map<String,Map<String,Map<String,List<Order>>>>>> enmap =  map.entrySet();
+		        Iterator<Map.Entry<String,Map<String,Map<String,Map<String,List<Order>>>>>> itmap = enmap.iterator();
+			    while(itmap.hasNext()){
+			    	Map.Entry<String,Map<String,Map<String,Map<String,List<Order>>>>> enmapp = itmap.next();
+			    	Map<String,Map<String,Map<String,List<Order>>>> mapp = enmapp.getValue(); 
+			//logger.info(StringUtill.GetJson(mapp));
+			    	Set<Map.Entry<String,Map<String,Map<String,List<Order>>>>> setmapa = mapp.entrySet();
+			    	Iterator<Map.Entry<String,Map<String,Map<String,List<Order>>>>> itmapa = setmapa.iterator();
+			    	while(itmapa.hasNext()){
+			    		Map.Entry<String,Map<String,Map<String,List<Order>>>> enmapa = itmapa.next();
+			    		Map<String,Map<String,List<Order>>> mapa = enmapa.getValue();
+			//logger.info(StringUtill.GetJson(mapa));
+			    		Set<Map.Entry<String,Map<String,List<Order>>>> seta = mapa.entrySet();
+			    		Iterator<Map.Entry<String,Map<String,List<Order>>>> ita = seta.iterator();
+			    		while(ita.hasNext()){
+			    			Map.Entry<String,Map<String,List<Order>>> enitu = ita.next();
+			    			Map<String,List<Order>> mapu = enitu.getValue();
+			  // logger.info(StringUtill.GetJson(mapu));   			
+			    			Set<Map.Entry<String,List<Order>>> setu = mapu.entrySet();
+				    		Iterator<Map.Entry<String,List<Order>>> itu = setu.iterator();
+				    		
+				    		while(itu.hasNext()){
+				    			Map.Entry<String,List<Order>> enitl = itu.next();
+				    			List<Order> listo = enitl.getValue();
+				    		
+			//logger.info(StringUtill.GetJson(listo));   
+			//logger.info(listo.size());
+				    			if(listo.size()>1){
+				    				x = x +1 ; 
+				    				InstallSale sas = mapin.get(key);
+				    				if( null == sas){
+				    					sas = mapin.get("-1");
+				    				} 
+				    				//logger.info(x);
+				    				//logger.info(StringUtill.GetJson(mapinsa));
+				    				//logger.info(key);
+				    				//logger.info(mapinsa);
+				    				 List<InstallSaleMessage> lists = mapinsa.get(sas.getId()+"");
+				    				 //logger.info(lists);
+				    				 if(null != lists){
+				    				   Iterator<InstallSaleMessage> itss = lists.iterator(); 
+				    				//String message = in.getMessage();
+				    				//JSONObject jsObj = JSONObject.fromObject(message); 
+				    				//Iterator<String> keys=jsObj.keys();  
+					    				while(itss.hasNext()){
+					    					//String ke = keys.next(); 
+					    					//String valu = jsObj.getString(ke);
+					    					InstallSaleMessage ins = itss.next();
+					    					String ke = ins.getCategoryID()+"";
+					    					if(ke.contains("_")){
+						    					//logger.info(ke);
+					    						int type = -1; 
+					    						for(int i=0;i<listo.size();i++){
+					    							Order o = listo.get(i);
+					    							List<OrderProduct> listop = o.getOrderproduct();
+					    							if(listop.size() == 1){
+					    								for(int j=0;j<listop.size();j++){
+						    								OrderProduct op = listop.get(j);
+						    								//int ctype = CategoryService.getmap().get(op.getCategoryId()).getPid();
+						    								//logger.info(op.getCategoryId()); 
+						    								if(ke.contains(op.getCategoryId()+"")){ 
+						    									//Map<String,Map<String,Map<Order,List<OrderProduct>>>>
+						    									Map<String,List<Order>> mapopp= maprr.get(ke);
+						    									if(null == mapopp){
+						    										mapopp = new HashMap<String,List<Order>>();
+						    										maprr.put(ke, mapopp);
+						    									} 
+						    									
+						    									List<Order> mapi = mapopp.get(x+"-"+ke);
+						    									  
+						    									if(null == mapi){
+						    										mapi = new ArrayList<Order>();
+						    										mapopp.put(x+"-"+ke, mapi);
+						    										//logger.info(x);
+						    									}
+						    									
+						    									if(op.getCategoryId() != type){
+						    										type = op.getCategoryId();
+						    										//list.remove(i);
+						    										mapi.add(o);   
+						    									}
+						    								}
+						    							}
+					    							}
+					    						}
+					    					}
+					    				}
+				    			  }
+				    			}
+				    			
+				    		}
+			    			
+			    		}
+			    	}
+			    	
+			    }
+			}
+			
+			
+			
+	
+		}
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*logger.info(StringUtill.GetJson(mapin));
 		
 		Set<Map.Entry<String,InstallSale>> set = mapin.entrySet();
 
@@ -200,6 +327,7 @@ public class OrderService {
 				    				//logger.info(StringUtill.GetJson(mapinsa));
 				    				//logger.info(in.getId());
 				    				 List<InstallSaleMessage> lists = mapinsa.get(in.getId()+"");
+				    				 
 				    				 if(null != lists){
 				    				   Iterator<InstallSaleMessage> its = lists.iterator(); 
 				    				//String message = in.getMessage();
@@ -258,7 +386,7 @@ public class OrderService {
 			    	
 			    }
 			}
-		}
+		}*/
 		// 如果不需要相同。默认为same
 		//logger.info(StringUtill.GetJson(orders));
 		//logger.info(mapr.size());   
@@ -273,7 +401,7 @@ public class OrderService {
 			Set<Map.Entry<String,Map<String,List<Order>>>> setopp = mapop.entrySet();
 			Iterator<Map.Entry<String,Map<String,List<Order>>>> itopp = setopp.iterator();
 			//int x = 0 ;
-			while(itopp.hasNext()){
+			while(itopp.hasNext()){ 
 				Map.Entry<String,Map<String,List<Order>>> listop = itopp.next();
 				Map<String,List<Order>> listoo = listop.getValue();
 				//logger.info(listoo);
@@ -281,11 +409,11 @@ public class OrderService {
 				Iterator<Map.Entry<String,List<Order>>> iten =  seten.iterator();
 				while(iten.hasNext()){
 					Map.Entry<String,List<Order>> enit = iten.next();
-					String keystr = enit.getKey();
-					String[] keys = keystr.split("-"); 
-					String key = keys[1];  
+					//String keystr = enit.getKey();
+					//String[] keys = keystr.split("-"); 
+					//String key = keys[1];   
 					List<Order> listo = enit.getValue();
-				    
+				     
 					int count = listo.size();
 					//logger.info("count"+count);
 					String order = "";
@@ -296,12 +424,12 @@ public class OrderService {
 	    				order = order.substring(0,order.length()-1);
 	    			}
 	    			
-					int x = 0 ;
+					int y = 0 ;
 					if(count > 1){  
 						for(int i=0;i<listo.size();i++){
 							Order o = listo.get(i);
 							listopid.add(o);  
-								x++;
+								y++;
 								String tdcol = " bgcolor=\"red\"" ;
 								if(o.getPhoneRemark()!=1){
 									tdcol = ""; 
@@ -323,7 +451,7 @@ public class OrderService {
 								html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o)+"</td>");
 								html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
 								 
-								if(x == 1){
+								if(y == 1){
 									InstallSale in = null ;
 									String value = "";
 									 if(null != mapin){
@@ -446,7 +574,7 @@ public class OrderService {
 		    }
 		}  
 		html.append("</tr>"); 
-		html.append("<tr class=\"asc\" >");
+		html.append("<tr class=\"asc\" >"); 
 		html.append("<td align=\"center\" colspan=10 ></td> ");
 		html.append("<td align=\"center\" >合计金额</td> ");
 		html.append("<td align=\"center\" ><span style=\"color:red;font-size:20px;\" id=\"addcount\">"+price+"</span></td> ");
@@ -1871,11 +1999,12 @@ public class OrderService {
 				   html.append("<td align=\"center\">");     
 				    
 				      if(o.getOstatues().salereleaseo != null){
-				    	  if(o.getOstatues().salereleaseo .getStatues() == 0 ){
+				    	  if(o.getOstatues().salereleaseo.getStatues() == 0 ){
 				   
-				    		  html.append(o.getOstatues().salereleaseo .getMessage()); 
-				    		  html.append("<input type=\"button\" onclick=\"changes('"+o.getId()+"','"+o.getOstatues().salereleaseo .getId() +"','"+OrderPrintln.comited+"','','','"+OrderPrintln.salerelease+"','"+printid+"')\"  value=\"同意\"/>"); 
-				    	      html.append("<input type=\"button\" onclick=\"changes('"+o.getId()+"','"+o.getOstatues().salereleaseo .getId() +"','"+OrderPrintln.uncomited+"','','','"+OrderPrintln.salerelease+"','"+printid +"')\"  value=\"不同意\"/>");
+				    		  html.append(o.getOstatues().salereleaseo.getMessage());
+				    		  logger.info(StringUtill.GetJson(o.getOstatues().salereleaseo));
+				    		  html.append("<input type=\"button\" onclick=\"changes('"+o.getId()+"','"+o.getOstatues().salereleaseo.getId() +"','"+OrderPrintln.comited+"','','','"+OrderPrintln.salerelease+"','"+printid+"')\"  value=\"同意\"/>"); 
+				    	      html.append("<input type=\"button\" onclick=\"changes('"+o.getId()+"','"+o.getOstatues().salereleaseo.getId() +"','"+OrderPrintln.uncomited+"','','','"+OrderPrintln.salerelease+"','"+printid +"')\"  value=\"不同意\"/>");
 				   
 				   } 
 		        }
@@ -1928,7 +2057,7 @@ public class OrderService {
 				   
 				    if(o.getReturnid() == 0){ 
 				 
-				    html.append("<input type=\"button\" onclick=\"changes('"+o.getId()+"','"+o.getOstatues().releasedispatch+"','"+OrderPrintln.uncomited+"','"+statues+"','"+o.getReturnstatuse()+"','"+OrderPrintln.releasedispatch+"','"+o.getSendId()+"')\"  value=\"不同意\"/>");  
+				    html.append("<input type=\"button\" onclick=\"changes('"+o.getId()+"','"+o.getOstatues().releasedispatcho.getId()+"','"+OrderPrintln.uncomited+"','"+statues+"','"+o.getReturnstatuse()+"','"+OrderPrintln.releasedispatch+"','"+o.getSendId()+"')\"  value=\"不同意\"/>");  
 						
 				      }
 					}

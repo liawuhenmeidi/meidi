@@ -87,10 +87,11 @@ public class LogisticsServlet extends HttpServlet {
 			 
 			OrderPrintln op = OrderPrintlnManager.getOrderStatues(Integer.valueOf(opid));
 			  
-			logger.info(op.getType());
-			
+			logger.info(StringUtill.GetJson(op));
+			 
 			if(null != op && op.getStatues() == 0){
 				method = op.getType()+"";
+				logger.info(method);
 				if((OrderPrintln.release+"").equals(method)){
 					statues = release(user,order,opid,method); 
 				}else if((OrderPrintln.salerelease+"").equals(method)){

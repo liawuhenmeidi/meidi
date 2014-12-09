@@ -82,7 +82,7 @@ public class OrderServiceServlet extends HttpServlet {
     	list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
 	    count = OrderManager.getOrderlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
     	
-    	logger.info(listp.size());
+    	//logger.info(listp.size());
     	
     	
     	String html = "";
@@ -108,7 +108,6 @@ public class OrderServiceServlet extends HttpServlet {
     			html = OrderService.getHtmlcharge(user,list); 
     		}    
     	}else if(Integer.valueOf(type) == Group.sencondDealsend){
-    		
     		if(Integer.valueOf(statues) == Order.orderDispatching){
     			html = OrderService.getHtmlSecondorderDispatching(user,list);
     		}else if(Integer.valueOf(statues) == Order.orderquery){

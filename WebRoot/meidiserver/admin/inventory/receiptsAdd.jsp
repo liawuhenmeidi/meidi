@@ -329,11 +329,20 @@ var disable = '<%=isdisabel %>';
 	  if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 ){
    %> 
    <input type="submit" id="button" value="确认提 交"  onclick="checkedd('add')" <%=isdisabel %>/>
-   <input type="button" id="button" value="删除"  onclick="checkedd('del')" <%=isdisabel %>/> 
+   
   <%  
-	  }  
+	  } 
+      if(inventory.getInstatues() == 0 || inventory.getOutstatues() == 0){
+    	  
   %> 
-
+  
+  <input type="button" id="button" value="删除"  onclick="checkedd('del')"/> 
+  
+  <%
+      }
+      
+      
+  %>
   </div>
    
  </form>
