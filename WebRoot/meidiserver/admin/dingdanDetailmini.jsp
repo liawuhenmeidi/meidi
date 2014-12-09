@@ -6,7 +6,8 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 
 String id = request.getParameter("id");
-
+List<String> listallp = ProductManager.getProductlist();
+String listallpp = StringUtill.GetJson(listallp);
 Order o = OrderManager.getOrderID(user,Integer.valueOf(id));
 
 List<Locate> listl = LocateManager.getLocate();
@@ -53,7 +54,7 @@ position:fixed;
 <script type="text/javascript">
 var id = "<%=id%>";
 var jsons = <%=plist%> ; 
-
+var jsonallp =  <%=listallpp%>; 
 $(function () {
 	initproductSerch("#dingmaordercategory","#dingmatype");
 	
@@ -202,14 +203,26 @@ function checkedd(type){
 	$('#<%=o.getId()%>dbposno', window.opener.document).html("<a href=# onClick=\"javascript:window.open('./dingdanDetailmini.jsp?id=<%=o.getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')\"" + ">" + $('#pos').val()) + "</a>";
 	$('#<%=o.getId()%>dbsaletime', window.opener.document).html($('#serviceDate2').val());
 	
-	if($('#dingmatype').val() != ""){
-		$('#<%=o.getId()%>dbtype', window.opener.document).html($('#dingmatype').val());
-	}
+		if(null != $("#dingmatype").val() && "" != $("#dingmatype").val()){
+			
+			var ctype = $("#dingmatype").val();
+			if($.inArray(ctype,jsonallp) == -1){
+					 alert("票面型号不存在，请重新输入");
+					 return false;
+			}
+			if( null == $("#dingmaproductNum").val() || "" == $("#dingmaproductNum").val()){
+				alert("票面数量不能为空");
+				return false ;
+			}
+			
+			$('#<%=o.getId()%>dbtype', window.opener.document).html($('#dingmatype').val());
+		}
+		
 	
 	if($('#dingmaproductNum').val() != ""){
 		$('#<%=o.getId()%>dbcount', window.opener.document).html($('#dingmaproductNum').val());
 	}
-	
+	 
 	 $("#print").val(type);
 	 $("#form").submit();
   
@@ -817,7 +830,7 @@ function checkedd(type){
        
        </td>
           <td></td>
-    <td width="100%" class="center"><input type="submit"  style="background-color:red;font-size:25px;"  value="确认修改" onclick="checkedd('query')" /></td>
+    <td width="100%" class="center"><input type="button"  style="background-color:red;font-size:25px;"  value="确认修改" onclick="checkedd('query')" /></td>
     <td width="100%" class="center">
     <% if(o.getPrintSatues() == 1){ %>
     <input type="button"  style="background-color:red;font-size:25px;"  value="打印" onclick="checkedd('print')"/>

@@ -7,6 +7,9 @@ User user = (User)session.getAttribute("user");
 
 String id = request.getParameter("id");
 
+List<String> listallp = ProductManager.getProductlist();
+String listallpp = StringUtill.GetJson(listallp); 
+
 Order o = OrderManager.getOrderID(user,Integer.valueOf(id));
 
 List<Locate> listl = LocateManager.getLocate();
@@ -53,6 +56,7 @@ position:fixed;
 <script type="text/javascript">
 var id = "<%=id%>";
 var jsons = <%=plist%> ; 
+var jsonallp =  <%=listallpp%>; 
 
 $(function () {
 	initproductSerch("#dingmaordercategory","#dingmatype");
@@ -199,7 +203,15 @@ function checkedd(type){
 	//window.close();
 	//window.oper.reload();
 	// alert(type);
+	
+		 
 	if(null != $("#dingmatype").val() && "" != $("#dingmatype").val()){
+		
+		var ctype = $("#dingmatype").val();
+		if($.inArray(ctype,jsonallp) == -1){
+				 alert("票面型号不存在，请重新输入");
+				 return false;
+		}
 		if( null == $("#dingmaproductNum").val() || "" == $("#dingmaproductNum").val()){
 			alert("票面数量不能为空");
 			return false ;
@@ -208,7 +220,7 @@ function checkedd(type){
 	$("#print").val(type);
 	$("#form").submit();
 	 
-	 window.opener.location.reload();
+	// window.opener.location.reload();
 	// if("print" == type){
 	//	 window.location.href="print.jsp?id="+ id;
 	// }

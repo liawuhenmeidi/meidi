@@ -876,25 +876,29 @@ public String getCategoryid(int statues,String decollator){
 // 是否是顶码
 public String getSendType(){
 	String sendType = "";
+    try{
+    	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
+    	if(null != lists){	
+    		for(int g = 0 ;g<lists.size();g++){
+    				if(lists.get(g).getStatues() == 1){ 
+    					sendType = "";
+    					String tempType = lists.get(g).getSaleType();
+    					//System.out.println(tempType);
+    					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
+    					sendType += ((tempType == null || tempType.equals("null"))?"":tempType) +"|" ;
+    					return sendType;
+    				}else{
+    					String tempType = lists.get(g).getSendType(); 
+    					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
+    					sendType += ((tempType == null || tempType.equals("null"))?"":tempType) +"|"  ;
+    				}
+    				   
+    		}   
+    	} 
+    }catch(Exception e){
+    	return "";
+    }
 	
-	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
-	if(null != lists){	
-		for(int g = 0 ;g<lists.size();g++){
-				if(lists.get(g).getStatues() == 1){ 
-					sendType = "";
-					String tempType = lists.get(g).getSaleType();
-					//System.out.println(tempType);
-					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
-					sendType += ((tempType == null || tempType.equals("null"))?"":tempType) +"|" ;
-					return sendType;
-				}else{
-					String tempType = lists.get(g).getSendType(); 
-					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
-					sendType += ((tempType == null || tempType.equals("null"))?"":tempType) +"|"  ;
-				}
-				   
-		}   
-	}
 	 return sendType;
 }
 	
