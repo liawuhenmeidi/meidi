@@ -623,7 +623,7 @@ public class SalaryCalcManager {
 			boolean autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit(false);
 			
-			sql = "update uploadorder set checked = 0 where id in ( " + idSTR + ")";
+			sql = "update uploadorder set checked = 0 ,filename = '' where id in ( " + idSTR + ")";
 			stmt = DB.getStatement(conn); 
 			stmt.executeUpdate(sql);
 			

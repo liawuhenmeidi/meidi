@@ -20,6 +20,36 @@ import database.DB;
 public class CatergoryManager {
 	protected static Log logger = LogFactory.getLog(CatergoryManager.class);
 	
+	//临时的
+	public static String getCatergoryMapingByUploadOrderName(String uploadorderName){
+		String result = "";
+		Connection conn = DB.getConn(); 
+		String sql = "select distinct filename from uploadorder where name = '" + uploadorderName + "'";
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		logger.info(sql);
+		try {
+			while (rs.next()) {
+				result = rs.getString("filename");
+				if(result.endsWith("xls")){
+					continue;
+				}
+				if(getCatergory(result).size() > 0){
+					return result;
+				}
+			}	
+			result = "";
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
+	}
+	
+	
 	public static boolean  updateCatergoryMaping(CatergoryMaping cm){
 		//判断是否存在
 		CatergoryMaping base = getCatergory(cm.getName(),cm.getShop());

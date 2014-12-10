@@ -73,6 +73,8 @@
 			return;
 	}
 	
+	//是否锁住groupname
+	boolean lockGroupName = false;
 	
 	if(showResult){
 		SalaryCalcManager.calcSalary(showOrders, showSalaryModels,request);
@@ -81,11 +83,18 @@
 		unCalcUploadOrders = (ArrayList<UploadOrder>)request.getSession().getAttribute("unCalcResult");
 
 		if("false".equals(groupname)){
-			Iterator<String> tempIt = CatergoryMapingSet.iterator();  
-			while (tempIt.hasNext()) {  
-				groupname = tempIt.next();
-				break;
-			}  
+			String tempGroupname = CatergoryManager.getCatergoryMapingByUploadOrderName(paraOrderName);
+			if(!"".equals(tempGroupname)){
+				lockGroupName = true;
+				groupname = tempGroupname;
+			}else{
+				Iterator<String> tempIt = CatergoryMapingSet.iterator();  
+				while (tempIt.hasNext()) {  
+					groupname = tempIt.next();
+					break;
+				}  
+			}
+			
 		}
 		salaryResult = SalaryCalcManager.sortSalaryResult(salaryResult, groupname);
 		session.setAttribute("addName_filename", paraOrderName);
@@ -167,13 +176,13 @@ function del(id,obj){
 function reloadSelectModels(){
 	var base = "已选的提成标准: ";
 	for(var i = 0 ; i < selectModelsName.length ; i ++){
-		base += "<br/><button onclick='delModel($(this))'>" + selectModelsName[i] + "</button>";
+		base += "<br/><button onclick='delModel($(this))' style='background:url(../../image/closebutton.png) no-repeat; border:1;width:250px' value='" + selectModelsName[i] + "'>" + selectModelsName[i] + "</button>";
 	}
 	$('#selectModels').html(base);
 }
 
 function delModel(obj){
-	var delItem = obj.text();
+	var delItem = obj.val();
 	for(var i = 0 ; i < selectModelsName.length ; i ++){
 		if(delItem == selectModelsName[i]){
 			selectModelsName.splice(i, 1);
@@ -347,6 +356,7 @@ if(showResult){
 <td colspan="3" align="center">
 <button name="catergoryMapingButton" style="background-color:red;font-size:35px;" onClick="javascript:window.open('./catergoryManage.jsp?groupname=' + $('#groupname').val(), 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')">分组管理</button>
 当前分组:
+<%if(!lockGroupName){ %>
 <select id="groupname" name="groupname">
 <%Iterator<String> it = CatergoryMapingSet.iterator(); 
   String itString = "";
@@ -356,8 +366,12 @@ if(showResult){
 %>
 	<option value="<%=itString %>"><%=itString %></option>
 <%
-	} 
+	}
+}else{
 %>
+<select id="groupname" name="groupname">
+<option value="<%=groupname %>"><%=groupname %></option>
+<%} %>
 </select>
 <button name="groupButton" style="background-color:red;font-size:35px;" onclick="$('#selectGroup').val($('#groupname').val());$('#recalc').val('true');$('#baseForm').submit()" >重新计算</button>
 
@@ -405,7 +419,9 @@ if(showResult){
 			<td align="center"><%=salaryResult.get(i).getSalaryModel().getContent() %></td>
 			<td align="center"><%=salaryResult.get(i).getSalary() %></td>
 			<%if(salaryResult.get(i).getStatus() >= 0){ %>
-			<!-- <td align="center"><a href="#" onClick="javascript:window.open('./salaryResultDetailInSession.jsp?i=<%=i %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" ><button>修改</button></a></td> -->
+			<!-- 
+			<td align="center"><a href="#" onClick="javascript:window.open('./salaryResultDetailInSession.jsp?i=<%=i %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" ><button>修改</button></a></td>
+			 -->
 			<%} %>
 		</tr>	
 		<%
