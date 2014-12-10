@@ -25,6 +25,7 @@
 	boolean showLeft = false;
 	boolean showRight = false;
 	boolean showResult = false;
+	boolean isSave = false;
 	
 	showLeft = "true".equals(request.getParameter("showleft"))?true:false;
 	showRight = "true".equals(request.getParameter("showright"))?true:false;
@@ -32,6 +33,10 @@
 	
 	if("true".equals(request.getParameter("recalc")) || "true".equals(paraSave)){
 		showResult = true;
+	}
+	
+	if("true".equals(paraSave)){
+		isSave = false;
 	}
 	
 	List<UploadOrder> showOrders = new ArrayList<UploadOrder>();
@@ -60,12 +65,21 @@
 	Map<String,List<CatergoryMaping>> srcCatergoryMap = CatergoryManager.getCatergoryMap();
 	Set CatergoryMapingSet = srcCatergoryMap.keySet();
 	
+	if(isSave){
+			salaryResult = (ArrayList<SalaryResult>)request.getSession().getAttribute("calcResult");
+			unCalcUploadOrders = (ArrayList<UploadOrder>)request.getSession().getAttribute("unCalcResult");
+			//SalaryCalcManager.saveSalaryResult(salaryResult,groupname);
+			response.sendRedirect("salaryCalc.jsp");
+			return;
+	}
+	
+	
 	if(showResult){
 		SalaryCalcManager.calcSalary(showOrders, showSalaryModels,request);
-		salaryResult = (ArrayList<SalaryResult>)request.getSession().getAttribute("calcResult");
+		ArrayList<SalaryResult> resultInSession = (ArrayList<SalaryResult>)request.getSession().getAttribute("calcResult");
+		salaryResult = new ArrayList(resultInSession);
 		unCalcUploadOrders = (ArrayList<UploadOrder>)request.getSession().getAttribute("unCalcResult");
-		
-		
+
 		if("false".equals(groupname)){
 			Iterator<String> tempIt = CatergoryMapingSet.iterator();  
 			while (tempIt.hasNext()) {  
@@ -74,9 +88,6 @@
 			}  
 		}
 		salaryResult = SalaryCalcManager.sortSalaryResult(salaryResult, groupname);
-		
-		
-		
 		session.setAttribute("addName_filename", paraOrderName);
 		if(paraSave != null && !paraSave.equals("")){
 			if(showOrders!=null &&showOrders.size() > 0 && showSalaryModels!=null&&showSalaryModels.size()>0){
@@ -441,7 +452,7 @@ if(showResult){
 			<input type="hidden"  id="save_groupname" name="selectGroup" value="" />
 			<input type="hidden" id="save_orders" name="orders" value=""/>
 			<input type="hidden" id="save_selectModelsName" name="selectModelsName" value="" />
-			<input type="submit" value="提交保存"/>
+			<input type="submit" value="提交保存" onclick="return confirm('是否确认?')"/>
 			</form>
 			</td>	
 		</tr>

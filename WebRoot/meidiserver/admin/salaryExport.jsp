@@ -174,7 +174,7 @@ if(showResult.size() > 0 ){
 %>
 
 <a href="../SalaryExportServlet"><button name="exportButton" style="background-color:red;font-size:50px;" >导出</button></a>
-<a href="salaryExport.jsp?reset=true"><button name="resetButton" style="background-color:red;font-size:50px;" >重新计算提成</button></a>
+<a href="salaryExport.jsp?reset=true"><button name="resetButton" style="background-color:red;font-size:50px;" onclick="return confirm('是否确认?')" >重新计算提成</button></a>
 	
 <hr style="border : 1px dashed blue;" />
 	<table border="1px" align="left" >
