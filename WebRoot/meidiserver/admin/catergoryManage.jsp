@@ -49,8 +49,8 @@ if(!"".equals(request.getParameter("submit"))){
 	if(CatergoryManager.updateCatergoryMaping(cm)){
 		//保存成功 
 		out.print("<script>alert('操作成功!!')</script>");
-		name = paraName;
-		shop = paraShopName;
+		name = "\'" + paraName + "\'";
+		shop = "\'" + paraShopName + "\'";
 		//out.print("<script>alert('操作成功!!');window.close()</script>"); 
 		//return;
 	}else{
