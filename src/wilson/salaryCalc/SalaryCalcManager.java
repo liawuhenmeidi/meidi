@@ -53,6 +53,9 @@ public class SalaryCalcManager {
 		if(input.size() <= 0 ){
 			return input;
 		}
+		
+		SalaryResult total = new SalaryResult();
+		
 		List<SalaryResult> result = new ArrayList<SalaryResult>();
 		
 		List<CatergoryMaping> cmMapingList = CatergoryManager.getCatergory(CatergoryMapingName);
@@ -214,14 +217,23 @@ public class SalaryCalcManager {
 					
 					sameShopTotal.setUploadOrderPosNo("");
 					sameShopTotal.setUploadSalaryModelCatergory("总计");
-					sameShopTotal.setStatus(-1);
+					sameShopTotal.setStatus(-1);					
 					result.add(sameShopTotal);
+					
+					total.setUploadOrderPosNo("");
+					total.setUploadSalaryModelCatergory("文件总计");
+					total.setStatus(-1);
+					total.setUploadOrderSalePrice(total.getUploadOrder().getSalePrice() + sameShopTotal.getUploadOrder().getSalePrice());
+					total.setSalary(total.getSalary() + sameShopTotal.getSalary());
+					total.setUploadOrderNum(total.getUploadOrder().getNum() + sameShopTotal.getUploadOrder().getNum());
 					sameShopTotal = new SalaryResult();
 				}
 			
 			}
 
 		}
+		
+		result.add(total);
 		return result;
 	}
 	
