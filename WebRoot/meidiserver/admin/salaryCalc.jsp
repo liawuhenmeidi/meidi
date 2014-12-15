@@ -388,10 +388,11 @@ if(showResult){
 <td colspan="3" align="center">
 	<table border="2px" align="center">
 		<tr>
-			<td align="center" colspan="12"><h3>提成结果</h3></td>
+			<td align="center" colspan="13"><h3>提成结果</h3></td>
 		</tr>
 		<tr>
 			<td align="center">序号</td>
+			<td align="center">文件名</td>
 			<td align="center">销售门店</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
@@ -399,15 +400,33 @@ if(showResult){
 			<td align="center">导购员</td> 
 			<td align="center">票面型号</td> 
 			<td align="center">票面数量</td> 
-			<td align="center">供价</td>
 			<td align="center">提成标准</td>
+			<td align="center">供价</td>	
 			<td align="center">提成</td>
 			<td align="center">修改</td>
 		</tr>
-		<%for(int i = 0 ; i < salaryResult.size() ; i ++){
+		<%
+		boolean total = false;
+		for(int i = 0 ; i < salaryResult.size() ; i ++){
+			if(salaryResult.get(i).getStatus() == -1){
+				total = true;
+			}else{
+				total = false;
+			}
 		%>
 		<tr>
 			<td align="center"><%=i+1 %></td>
+			<%
+			if(i != salaryResult.size()-1){
+			%>
+				<td align="center"><%=total?"总计":salaryResult.get(i).getUploadOrder().getName() %></td>
+			<%
+			}else{
+			%>
+				<td align="center">文件总计</td>
+			<%
+			}
+			%>
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getShop() %></td>
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getPosNo() %></td>
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSaleTime() %></td>
@@ -415,8 +434,8 @@ if(showResult){
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSaleManName() %></td> 
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getType() %></td> 
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getNum() %></td> 
-			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSalePrice() %></td>
 			<td align="center"><%=salaryResult.get(i).getSalaryModel().getContent() %></td>
+			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSalePrice() %></td>
 			<td align="center"><%=salaryResult.get(i).getSalary() %></td>
 			<%if(salaryResult.get(i).getStatus() >= 0){ %>
 			<!-- 
@@ -429,7 +448,7 @@ if(showResult){
 		%>
 		
 		<tr>
-			<td align="center" colspan="12"><h3>无对应提成标准的订单</h3></td>
+			<td align="center" colspan="13"><h3>无对应提成标准的订单</h3></td>
 		</tr>
 		
 		<tr>

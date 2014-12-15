@@ -183,9 +183,9 @@ if(showResult.size() > 0 ){
 			<td>文件名称</td>
 			<td>门店</td>
 			<td>POS单号</td>
-			<td>导购员姓名</td>
 			<td>销售日期</td>
 			<td>品类</td>
+			<td>导购员姓名</td>
 			<td>销售型号</td>
 			<td>数量</td>
 			<td>单价</td>
@@ -197,13 +197,12 @@ if(showResult.size() > 0 ){
 			<td id="<%=showResult.get(i).getId() %>filename"><%=showResult.get(i).getUploadOrder().getName() %></td>
 			<td id="<%=showResult.get(i).getId() %>shop"><%=showResult.get(i).getUploadOrder().getShop() %></td>
 			<td id="<%=showResult.get(i).getId() %>pos"><%=showResult.get(i).getUploadOrder().getPosNo() %></td>
-			<td id="<%=showResult.get(i).getId() %>salemanname"><%=showResult.get(i).getUploadOrder().getSaleManName() %></td>
 			<td id="<%=showResult.get(i).getId() %>saletime"><%=showResult.get(i).getUploadOrder().getSaleTime() %></td>
 			<td id="<%=showResult.get(i).getId() %>catergory"><%=showResult.get(i).getSalaryModel() == null?"":showResult.get(i).getSalaryModel().getCatergory() %></td>
+			<td id="<%=showResult.get(i).getId() %>salemanname"><%=showResult.get(i).getUploadOrder().getSaleManName() %></td>
 			<td id="<%=showResult.get(i).getId() %>saletype"><%=showResult.get(i).getUploadOrder().getType()  %></td>
 			<td id="<%=showResult.get(i).getId() %>num"><%=showResult.get(i).getUploadOrder().getNum() %></td>
 			<td id="<%=showResult.get(i).getId() %>saleprice"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
-			<%System.out.print(i); %>
 			<td id="<%=showResult.get(i).getId() %>salary"><a href="#" onClick="javascript:window.open('./salaryResultDetail.jsp?id=<%=showResult.get(i).getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" ><%=showResult.get(i).getSalary()==null?"":showResult.get(i).getSalary() %></a></td>
 		</tr>
 		<%} %>

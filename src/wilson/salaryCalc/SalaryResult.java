@@ -26,8 +26,14 @@ public class SalaryResult {
 	public void setUploadOrderNum(int num){
 		uploadOrder.setNum(num);
 	}
+	public void setUploadOrderSaleManName(String saleManName){
+		uploadOrder.setSaleManName(saleManName);
+	}
 	public void setUploadOrderSalePrice(double price){
 		uploadOrder.setSalePrice(price);
+	}
+	public void setUploadOrderName(String name){
+		uploadOrder.setName(name);
 	}
 	public void setUploadOrderShop(String shop){
 		uploadOrder.setShop(shop);
