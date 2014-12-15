@@ -495,7 +495,7 @@ function merge(){
       i++;
   }); 
   
-  if(i<2){
+  if(i<1){
 	  alert("不符合合并条件");
 	  return ;
   }
