@@ -1,16 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
-<%@ include file="searchdynamic.jsp"%>
+<%@ include file="searchdynamic.jsp"%> 
       
-<%    
-//list = OrderManager.getOrderlistl(user,Group.sencondDealsend,"",sort); 
-     
-List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.charge,num,Page,sort,sear);  
-session.setAttribute("exportList", list); 
-count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.charge,num,Page,sort,sear);  
-
-
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>

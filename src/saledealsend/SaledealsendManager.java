@@ -183,7 +183,7 @@ public class SaledealsendManager {
 			String sql = "";
 			if(BasicUtill.dealsend == type){
 				if(UserManager.checkPermissions(user, Group.dealSend)){
-					sql = "select * from saledealsend where givestatues = 0  ";   
+					sql = "select * from saledealsend where givestatues = 0 and dealsendid in ( select id from mduser where charge = " +user.getId()+ " ) ";   
 				}else { 
 					sql = "select * from saledealsend where givestatues = 0  and dealsendid = "+user.getId();   
 				}
