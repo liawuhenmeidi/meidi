@@ -189,21 +189,25 @@ public class UploadExportServlet extends HttpServlet {
 			//第二行
 			label0  =   new  Label( 0 ,  1 ,  " 型号 " );
 			sheet.addCell(label0);
-			label0  =   new  Label( 1 ,  1 ,  " 零售价 " );
+			label0  =   new  Label( 1 ,  1 ,  " 型号 " );
 			sheet.addCell(label0);
-			label0  =   new  Label( 2 ,  1 ,  " 提成 " );
+			label0  =   new  Label( 2 ,  1 ,  " 零售价 " );
 			sheet.addCell(label0);
-			label0  =   new  Label( 3 ,  1 ,  " 零售价 " );
+			label0  =   new  Label( 3 ,  1 ,  " 提成 " );
 			sheet.addCell(label0);
-			label0  =   new  Label( 4 ,  1 ,  " 提成 " );
+			label0  =   new  Label( 4 ,  1 ,  " 零售价 " );
+			sheet.addCell(label0);
+			label0  =   new  Label( 5 ,  1 ,  " 提成 " );
 			sheet.addCell(label0);
 			
 			//其他行
         	for(int i = 0 ; i < list.size() ; i ++){
-        		label0  =   new  Label( 0 ,  i+2 ,  list.get(i).getType() );
+        		label0  =   new  Label( 0 ,  i+2 ,  list.get(i).getCatergory() );
+    			sheet.addCell(label0);
+        		label0  =   new  Label( 1 ,  i+2 ,  list.get(i).getType() );
     			sheet.addCell(label0);
         		for(int j = 0 ; j < list.get(i).getExportContent().split(",").length ; j ++){
-        			label0  =   new  Label( j+1 ,  i + 2 ,  list.get(i).getExportContent().split(",")[j] );
+        			label0  =   new  Label( j+2 ,  i + 2 ,  list.get(i).getExportContent().split(",")[j] );
         			sheet.addCell(label0);
         		}
         	}

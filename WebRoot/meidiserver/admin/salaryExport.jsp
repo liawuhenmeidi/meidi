@@ -233,7 +233,7 @@ if(byTime){
 
 <hr style="border : 1px dashed blue;" />
 
-<p onclick="reloadTable()">按文件名导出</p>
+<p>按文件名导出</p>
 
 <form action="" method="post">
 <input type="hidden" name="type" value="byname"/>
