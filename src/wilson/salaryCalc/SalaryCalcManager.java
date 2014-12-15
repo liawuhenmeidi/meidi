@@ -872,7 +872,6 @@ public class SalaryCalcManager {
 				for(int j = 0 ; j < result.size() ; j ++){
 					if(salaryModelList.get(i).getId() == result.get(j).getUploadSalaryModelid()){
 						result.get(j).setSalaryModel(salaryModelList.get(i));
-						break;
 					}		
 				}
 			}
