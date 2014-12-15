@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
-<%      
+<%       
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 boolean searchflag = false ; 
@@ -49,8 +49,9 @@ if("searched".equals(searched)){
 int id = user.getId();   
 
 //  上级管理组ID
-int pgroup = GroupService.getidMap().get(user.getUsertype()).getPid();   
-
+int pgroup = -1 ; 
+//int pgroup = GroupService.getidMap().get(user.getUsertype()).getPid();   
+  
 // 所有用户
 HashMap<Integer,User> usermap = UserService.getMapId();
  

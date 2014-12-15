@@ -243,11 +243,12 @@ function orderPrint(id,statues){
 			<td align="center">送货时间</td>
 			<td align="center">送货员结款</td>
 			
-			<td align="center">安装人员</td>
+			<td align="center">安装员</td>
 			<td align="center">安装时间</td> 
+			<td align="center">安装员结款</td>
 			<td align="center">先送货后安装</td>
 			<td align="center">是否已回访</td>
-            <td align="center">安装结款</td>
+            
            
 		</tr>
 	 

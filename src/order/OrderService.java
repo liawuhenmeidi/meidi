@@ -14,14 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.sun.faces.renderkit.AttributeManager.Key;
-
-import category.CategoryService;
 
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
@@ -29,6 +23,7 @@ import orderproduct.OrderProduct;
 import user.User;
 import user.UserManager;
 import user.UserService;
+import utill.BasicUtill;
 import utill.StringUtill;
 
 import branch.BranchService;
@@ -45,21 +40,10 @@ public class OrderService {
 		}
 	}
 	 
-	public static String getHtmlOver(User user ,List<Order> list){
-		 
-		int price = 0 ; 
-		StringBuffer html = new StringBuffer();  
-		Map<String,Map<String,Map<String,List<Order>>>> mapr = new HashMap<String,Map<String,Map<String,List<Order>>>>(); 
-		// uid , phone , andate , uname,locate  
+	public static Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> getorders(List<Order> list ,Map<String,InstallSale>  mapin){
 		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = new HashMap<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>>();
-		
-		Map<String,InstallSale>  mapin = InstallSaleManager.getmap();
-		Map<String,List<InstallSaleMessage>> mapinsa = InstallSaleMessageManager.getmap();
-		
-		//List<OrderProduct> listopid = new ArrayList<OrderProduct>();
-		List<Order> listopid = new ArrayList<Order>();
-		//logger.info(list.size());
-		for(int i=0;i<list.size();i++){
+	    
+		for(int i=0;i<list.size();i++){ 
 			Order o = list.get(i);
 			InstallSale en = mapin.get(o.getDealsendId()+"");
 			if(null == en){
@@ -139,12 +123,17 @@ public class OrderService {
 				}
 			}
 		} 
+	
+	   return orders ;
+	}
+	
+	public static Map<String,Map<String,Map<String,List<Order>>>> germapr(Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders ,Map<String,InstallSale>  mapin,Map<String,List<InstallSaleMessage>> mapinsa){
+		Map<String,Map<String,Map<String,List<Order>>>> mapr = new HashMap<String,Map<String,Map<String,List<Order>>>>(); 
 		
-		//logger.info(orders);
-		 int x = 1 ;
+		int x = 1 ; 
 		 Set<Map.Entry<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>>> sets = orders.entrySet();
 		 Iterator<Map.Entry<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>>> its = sets.iterator();
-		
+		 
 		 while(its.hasNext()){
 			Map.Entry<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> ents = its.next();
 			String key = ents.getKey();
@@ -255,21 +244,24 @@ public class OrderService {
 			    	
 			    }
 			}
-			
-			
-			
 	
 		}
-
+		return mapr;
+	}
+	public static String getHtmlOver(User user ,List<Order> list){
+		 
+		int price = 0 ; 
+		StringBuffer html = new StringBuffer();  
+		Map<String,InstallSale>  mapin = InstallSaleManager.getmap(BasicUtill.dealsend);
+		// uid , phone , andate , uname,locate 
+		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin);
 		
+		Map<String,List<InstallSaleMessage>> mapinsa = InstallSaleMessageManager.getmap();
 		
-		
-		
-		
-		
-		
-		
-		
+		Map<String,Map<String,Map<String,List<Order>>>> mapr = germapr(orders,mapin,mapinsa);
+        
+		//List<OrderProduct> listopid = new ArrayList<OrderProduct>();
+		List<Order> listopid = new ArrayList<Order>();
 		
 		/*logger.info(StringUtill.GetJson(mapin));
 		
@@ -1464,8 +1456,6 @@ public class OrderService {
 				
 				html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
 				
-				html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
-				
 				html.append("<td align=\"center\">"+o.getOdate() +"</td>");
 				
 				html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
@@ -1481,7 +1471,7 @@ public class OrderService {
 				
 				html.append("<td align=\"center\">"+o.getprint()+"</td>");
 				
-				html.append("<td align=\"center\">"+o.getRemark()+"</td>");
+				
 				
 				html.append("<td align=\"center\">"); 
 				      if(o.getPrintSatuesP() == 1){
@@ -1490,7 +1480,10 @@ public class OrderService {
 			    	  
 			      }
 				   html.append("</td>");
+				   
+				html.append("<td align=\"center\">"+o.getRemark()+"</td>");
 				
+				html.append("<td align=\"center\"> "+ o.getChargeDealsendtime()+" </td>");
 				
 				html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getsendName() +" </td>");
 				
@@ -1500,24 +1493,17 @@ public class OrderService {
 				html.append("</td>");
 				 
 				html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getinstallName() +"</td>");
-
+ 
 				html.append("<td align=\"center\"> "+o.getInstalltime() +"</td>");
-				
+				 
+				html.append("<td align=\"center\"> "+ o.getChargeInstalltime()+" </td>");
+				 
 				html.append("<td align=\"center\">"+(o.getDeliverytype() == 2 ?"是":"否")); 
 				html.append("</td>");
 				html.append("<td align=\"center\">"+(o.getStatuescallback()==0?"否":"是" ));    
 				html.append("</td>"); 
+				 
 				
-				html.append("<td align=\"center\">"); 
-			    String message = "";
-			    if(o.getStatuesinstall()==0){
-			    	message = "否";
-			    }else if(o.getStatuesinstall()==1){
-			    	message = o.getInstalltime()  ;
-			    }else if(o.getStatuesinstall()==2){
-			    	message = "已忽略";
-			    } 
-			    html.append(message+"</td>");
 		    } 
 		}
 		return html.toString();
@@ -1525,272 +1511,860 @@ public class OrderService {
 	} 
    
    public static String getHtmlpcharge(User user ,List<Order> list){
-	    HashMap<Integer,User> usermap = UserService.getMapId();
+	   
+	   HashMap<Integer,User> usermap = UserService.getMapId();
 		StringBuffer html = new StringBuffer();
-		if(null != list){
-			
-		    for(int i = 0;i<list.size();i++){
-		    	Order o = list.get(i);
-		    	String tdcol = " bgcolor=\"red\"" ;
-				
-				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
-				
-				html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name =\""+o.getId() +"\"></input></td>");
-				
-				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
-				
-				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
-				
-				//html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
-				
-				html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
-				
-				if(o.getPhoneRemark()!=1){ 
-					tdcol = ""; 
+		 
+		int price = 0 ; 
+		Map<String,InstallSale>  mapin = InstallSaleManager.getmap(BasicUtill.install);
+		// uid , phone , andate , uname,locate 
+		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin);
+		 
+		Map<String,List<InstallSaleMessage>> mapinsa = InstallSaleMessageManager.getmap();
+		 
+		Map<String,Map<String,Map<String,List<Order>>>> mapr = germapr(orders,mapin,mapinsa);
+       
+		//List<OrderProduct> listopid = new ArrayList<OrderProduct>();
+		List<Order> listopid = new ArrayList<Order>();
+ 
+		Set<Map.Entry<String,Map<String,Map<String,List<Order>>>>>  setop = mapr.entrySet();
+		Iterator<Map.Entry<String,Map<String,Map<String,List<Order>>>>> itop = setop.iterator();
+		while(itop.hasNext()){
+			Map.Entry<String,Map<String,Map<String,List<Order>>>> opp = itop.next();
+			Map<String,Map<String,List<Order>>> mapop = opp.getValue();
+			//logger.info(mapop);
+			Set<Map.Entry<String,Map<String,List<Order>>>> setopp = mapop.entrySet();
+			Iterator<Map.Entry<String,Map<String,List<Order>>>> itopp = setopp.iterator();
+			//int x = 0 ;
+			while(itopp.hasNext()){ 
+				Map.Entry<String,Map<String,List<Order>>> listop = itopp.next();
+				Map<String,List<Order>> listoo = listop.getValue();
+				//logger.info(listoo);
+				Set<Map.Entry<String,List<Order>>> seten =  listoo.entrySet();
+				Iterator<Map.Entry<String,List<Order>>> iten =  seten.iterator();
+				while(iten.hasNext()){
+					Map.Entry<String,List<Order>> enit = iten.next(); 
+					List<Order> listo = enit.getValue();
+				     
+					int count = listo.size();
+					//logger.info("count"+count);
+					String order = "";
+	    			if(count > 1){
+	    				for(int i=0;i<listo.size();i++){
+		    				order += listo.get(i).getId()+"_";
+		    			}
+	    				order = order.substring(0,order.length()-1);
+	    			}
+	    			
+					int y = 0 ;
+					if(count > 1){  
+						for(int i=0;i<listo.size();i++){
+							Order o = listo.get(i);
+							listopid.add(o);  
+								y++;
+								
+								String tdcol = " bgcolor=\"red\"" ;
+								
+								html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
+								
+								html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" name=\"orderid\" value="+o.getId()+ " id=\"check_box\" ></input></td>");
+								
+								html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+								
+								html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
+								
+								//html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
+								
+								html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
+								
+								if(o.getPhoneRemark()!=1){ 
+									tdcol = ""; 
+								}
+								
+								html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
+								"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+								
+								html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+ o.getGifcount("</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
+								
+								//html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
+								
+								html.append("<td align=\"center\">"+o.getOdate() +"</td>");
+								
+								//html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
+								
+								html.append("<td align=\"center\">"+o.getLocate()+"</td>");
+								
+								html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
+								
+								//html.append("<td align=\"center\">"+OrderManager.getOrderStatues(o) +"</td>");
+								
+								html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
+								
+								html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
+								
+								
+								
+								html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getsendName() +" </td>");
+								
+								html.append("<td align=\"center\" >"+o.getSendtime()+"</td>");
+								
+								html.append("<td align=\"center\">"+(o.getStatuesPaigong() == 1 ?"是":"否")); 
+								html.append("</td>");
+								 
+								html.append("<td align=\"center\" style=\"white-space:nowrap;\"><input type=\"hidden\" name=\"dealsendid\"  value=\""+o.getInstallid()+"\"/>"+o.getinstallName() +"</td>");
+
+								html.append("<td align=\"center\"> "+o.getInstalltime() +"</td>");
+								
+								html.append("<td align=\"center\">"+(o.getDeliverytype() == 2 ?"是":"否")); 
+								html.append("</td>");
+								html.append("<td align=\"center\">"+(o.getStatuescallback()==0?"否":"是" ));    
+								html.append("</td>"); 
+								 
+								if(y == 1){
+									InstallSale in = null ;
+									String value = "";
+									 if(null != mapin){
+										 in = mapin.get(o.getInstallid()+"");
+										 if(null == in){    
+											 in = mapin.get(-1+"");
+										 }
+										 if(null != in){ 
+											 List<InstallSaleMessage> lists = mapinsa.get(in.getId()+"");
+											 
+											 value = InstallSaleMessageManager.getprice(lists, o)+""; 	
+											 
+										 }
+									 }  
+									 if(!StringUtill.isNull(value)){
+										 price += Integer.valueOf(value);
+									 }
+									 String color = "#E8E8D0";
+									 if(count >1){
+										 color = "red";
+									 }else { 
+										 order = o.getId()+"";
+									 }
+									html.append("<td align=\"center\"  style=\"background-color:"+color+"\" rowspan="+count + "> " +
+									            "<input type=\"hidden\" name=\"saleresut\"  value=\""+order+"\"/>  "+
+					                            "<input type=\"text\" id="+order+"left value=\""+value+"\"  style=\"border:0; width:80px\"/>"+
+					                            "</td>"); 
+								} 
+						 }
+					}
+						
+						//listopid.add(lis)
 				}
 				
-				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
 				
-				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+ o.getGifcount("</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
-				
-				//html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
-				
-				html.append("<td align=\"center\">"+o.getOdate() +"</td>");
-				
-				//html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
-				
-				html.append("<td align=\"center\">"+o.getLocate()+"</td>");
-				
-				html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
-				
-				//html.append("<td align=\"center\">"+OrderManager.getOrderStatues(o) +"</td>");
-				
-				html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
-				
-				html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
-				
-				//html.append("<td align=\"center\">"+o.getprint()+"</td>");
-				
-				
-				/*html.append("<td align=\"center\">"); 
-				      if(o.getPrintSatuesP() == 1){
-
-				   html.append("<a href=\"javascript:void(0);\" onclick=\"orderPrint('"+o.getId()+"',1)\">[打印]</a>");
-			    	  
-			      }
-				   html.append("</td>");
-			*/	
-				
-				html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getsendName() +" </td>");
-				
-				html.append("<td align=\"center\" >"+o.getSendtime()+"</td>");
-				
-				html.append("<td align=\"center\">"+(o.getStatuesPaigong() == 1 ?"是":"否")); 
-				html.append("</td>");
+			}
+		} 
+		//logger.info(listopid)
+		 
+		if(null != list){ 
+		    for(int i = 0;i<list.size();i++){
+		    	Order o = list.get(i);
+		    	//List<OrderProduct> listop = o.getOrderproduct();
 				 
-				html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getinstallName() +"</td>");
+				//for(int m=0;m<listop.size();m++){
+					//OrderProduct op = listop.get(m);
+					
+					boolean found = listopid.contains(o); 
+					if(!found){
+					//	if(op.getStatues() == 0){
+						String tdcol = " bgcolor=\"red\"" ;
+						
+						html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
+						
+						html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\"  id=\"check_box\" name=\"orderid\" value="+o.getId()+ "></input></td>");
+						
+						html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+						
+						html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
+						
+						//html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
+						
+						html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
+						
+						if(o.getPhoneRemark()!=1){ 
+							tdcol = ""; 
+						}
+						
+						html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
+						"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+						
+						html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
+						
+						html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
+						
+						html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+						
+						html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
+						
+						html.append("<td align=\"center\" >"+ o.getGifcount("</p>")+"</td>");
+						
+						html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
+						
+						//html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
+						
+						html.append("<td align=\"center\">"+o.getOdate() +"</td>");
+						
+						//html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
+						
+						html.append("<td align=\"center\">"+o.getLocate()+"</td>");
+						
+						html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
+						
+						//html.append("<td align=\"center\">"+OrderManager.getOrderStatues(o) +"</td>");
+						
+						html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
+						
+						html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
 
-				html.append("<td align=\"center\"> "+o.getInstalltime() +"</td>");
-				
-				html.append("<td align=\"center\">"+(o.getDeliverytype() == 2 ?"是":"否")); 
-				html.append("</td>");
-				html.append("<td align=\"center\">"+(o.getStatuescallback()==0?"否":"是" ));    
-				html.append("</td>"); 
-				
-		    }  
-		}
+						html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getsendName() +" </td>");
+						
+						html.append("<td align=\"center\" >"+o.getSendtime()+"</td>");
+						
+						html.append("<td align=\"center\">"+(o.getStatuesPaigong() == 1 ?"是":"否")); 
+						html.append("</td>");
+						 
+						html.append("<td align=\"center\" style=\"white-space:nowrap;\"><input type=\"hidden\" name=\"dealsendid\"  value=\""+o.getInstallid()+"\"/>"+o.getinstallName() +"</td>");
+ 
+						html.append("<td align=\"center\"> "+o.getInstalltime() +"</td>");
+						
+						html.append("<td align=\"center\">"+(o.getDeliverytype() == 2 ?"是":"否")); 
+						html.append("</td>");
+						html.append("<td align=\"center\">"+(o.getStatuescallback()==0?"否":"是" ));    
+						html.append("</td>"); 
+							
+							InstallSale in = null ;
+							String value = "";
+							 if(null != mapin){
+								 in = mapin.get(o.getInstallid()+"");
+								 if(null == in){     
+									 in = mapin.get(-1+"");
+								 }
+							
+								 if(null != in){
+									 
+									 List<InstallSaleMessage> lists = mapinsa.get(in.getId()+"");
+									 
+									 value = InstallSaleMessageManager.getprice(lists, o)+""; 
+									 
+								 }
+							 }
+							 if(!StringUtill.isNull(value)){
+								 price += Integer.valueOf(value);
+							 } 
+							  
+							html.append("<td align=\"center\"  style=\"background-color:#E8E8D0\">"+
+									    "<input type=\"hidden\" name=\"saleresut\"  value=\""+o.getId()+"\"/>  "+
+									    "<input type=\"text\" id="+o.getId()+"left value=\""+value+"\"  onBlur=\"addcount()\"  style=\"border:0; width:80px\"/>"+
+			                            "</td>");
+			 
+					 }
+		    }
+		}   
+		html.append("</tr>");  
+		html.append("<tr class=\"asc\" >"); 
+		html.append("<td align=\"center\" colspan=22 ></td> ");
+		html.append("<td align=\"center\" >合计金额</td> ");
+		html.append("<td align=\"center\" ><span style=\"color:red;font-size:20px;\" id=\"addcount\">"+price+"</span></td> ");
+		html.append("</tr>"); 
+  
 		return html.toString();
 		 
 	} 
    
    public static String getHtmlpchargeall(User user ,List<Order> list){
-	    HashMap<Integer,User> usermap = UserService.getMapId();
+	   
+	   HashMap<Integer,User> usermap = UserService.getMapId();
 		StringBuffer html = new StringBuffer();
-		if(null != list){
-			
-		    for(int i = 0;i<list.size();i++){
-		    	Order o = list.get(i);
-		    	String tdcol = " bgcolor=\"red\"" ;
-				
-				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
-				
-				html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name =\""+o.getId() +"\"></input></td>");
-				
-				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
-				
-				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
-				
-				//html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
-				
-				html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
-				
-				if(o.getPhoneRemark()!=1){ 
-					tdcol = ""; 
+		  
+		int price = 0 ; 
+		Map<String,InstallSale>  mapin = InstallSaleManager.getmap(BasicUtill.sendinstall);
+		// uid , phone , andate , uname,locate 
+		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin);
+		 
+		Map<String,List<InstallSaleMessage>> mapinsa = InstallSaleMessageManager.getmap();
+		 
+		Map<String,Map<String,Map<String,List<Order>>>> mapr = germapr(orders,mapin,mapinsa);
+      
+		//List<OrderProduct> listopid = new ArrayList<OrderProduct>();
+		List<Order> listopid = new ArrayList<Order>();
+
+		Set<Map.Entry<String,Map<String,Map<String,List<Order>>>>>  setop = mapr.entrySet();
+		Iterator<Map.Entry<String,Map<String,Map<String,List<Order>>>>> itop = setop.iterator();
+		while(itop.hasNext()){
+			Map.Entry<String,Map<String,Map<String,List<Order>>>> opp = itop.next();
+			Map<String,Map<String,List<Order>>> mapop = opp.getValue();
+			//logger.info(mapop);
+			Set<Map.Entry<String,Map<String,List<Order>>>> setopp = mapop.entrySet();
+			Iterator<Map.Entry<String,Map<String,List<Order>>>> itopp = setopp.iterator();
+			//int x = 0 ;
+			while(itopp.hasNext()){ 
+				Map.Entry<String,Map<String,List<Order>>> listop = itopp.next();
+				Map<String,List<Order>> listoo = listop.getValue();
+				//logger.info(listoo);
+				Set<Map.Entry<String,List<Order>>> seten =  listoo.entrySet();
+				Iterator<Map.Entry<String,List<Order>>> iten =  seten.iterator();
+				while(iten.hasNext()){
+					Map.Entry<String,List<Order>> enit = iten.next();
+					//String keystr = enit.getKey();
+					//String[] keys = keystr.split("-"); 
+					//String key = keys[1];   
+					List<Order> listo = enit.getValue();
+				     
+					int count = listo.size();
+					//logger.info("count"+count);
+					String order = "";
+	    			if(count > 1){
+	    				for(int i=0;i<listo.size();i++){
+		    				order += listo.get(i).getId()+"_";
+		    			}
+	    				order = order.substring(0,order.length()-1);
+	    			}
+	    			
+					int y = 0 ;
+					if(count > 1){  
+						for(int i=0;i<listo.size();i++){
+							Order o = listo.get(i);
+							listopid.add(o);  
+								y++;
+								
+								String tdcol = " bgcolor=\"red\"" ;
+								
+								html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
+								
+								html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\"  id=\"check_box\" name=\"orderid\" value="+o.getId()+ "></input></td>");
+								
+								html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+								
+								html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
+								
+								//html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
+								
+								html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
+								
+								if(o.getPhoneRemark()!=1){ 
+									tdcol = ""; 
+								}
+								
+								html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
+								"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+								
+								html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+ o.getGifcount("</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
+								
+								//html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
+								
+								html.append("<td align=\"center\">"+o.getOdate() +"</td>");
+								
+								//html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
+								
+								html.append("<td align=\"center\">"+o.getLocate()+"</td>");
+								
+								html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
+								
+								//html.append("<td align=\"center\">"+OrderManager.getOrderStatues(o) +"</td>");
+								
+								html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
+								
+								html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
+								
+								//html.append("<td align=\"center\">"+o.getprint()+"</td>");
+								
+								
+								/*html.append("<td align=\"center\">"); 
+								      if(o.getPrintSatuesP() == 1){
+
+								   html.append("<a href=\"javascript:void(0);\" onclick=\"orderPrint('"+o.getId()+"',1)\">[打印]</a>");
+							    	  
+							      }
+								   html.append("</td>");
+							*/	
+								
+								html.append("<td align=\"center\" style=\"white-space:nowrap;\"><input type=\"hidden\" name=\"dealsendid\"  value=\""+o.getSendId()+"\"/>"+o.getsendName() +" </td>");
+								
+								html.append("<td align=\"center\" >"+o.getSendtime()+"</td>");
+								
+								html.append("<td align=\"center\">"+(o.getStatuesPaigong() == 1 ?"是":"否")); 
+								html.append("</td>");
+								 
+								/*html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getinstallName() +"</td>");
+
+								html.append("<td align=\"center\"> "+o.getInstalltime() +"</td>");*/
+								 
+								html.append("<td align=\"center\">"+(o.getDeliverytype() == 2 ?"是":"否")); 
+								html.append("</td>");
+								html.append("<td align=\"center\">"+(o.getStatuescallback()==0?"否":"是" ));    
+								html.append("</td>"); 
+								 
+								if(y == 1){
+									InstallSale in = null ;
+									String value = "";
+									 if(null != mapin){ 
+										 in = mapin.get(o.getSendId()+"");
+										 if(null == in){    
+											 in = mapin.get(-1+"");
+										 }
+										 if(null != in){ 
+											 List<InstallSaleMessage> lists = mapinsa.get(in.getId()+"");
+											 
+											 value = InstallSaleMessageManager.getprice(lists, o)+""; 	
+											 
+										 }
+									 }  
+									 if(!StringUtill.isNull(value)){
+										 price += Integer.valueOf(value);
+									 }
+									 String color = "#E8E8D0";
+									 if(count >1){
+										 color = "red";
+									 }else { 
+										 order = o.getId()+"";
+									 }
+									html.append("<td align=\"center\"  style=\"background-color:"+color+"\" rowspan="+count + "> " +
+									            "<input type=\"hidden\" name=\"saleresut\"  value=\""+order+"\"/>  "+
+					                            "<input type=\"text\" id="+order+"left value=\""+value+"\"  style=\"border:0; width:80px\"/>"+
+					                            "</td>"); 
+								} 
+						 }
+					}
+						
+						//listopid.add(lis)
 				}
 				
-				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
 				
-				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+ o.getGifcount("</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
-				
-				//html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
-				
-				html.append("<td align=\"center\">"+o.getOdate() +"</td>");
-				
-				//html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
-				
-				html.append("<td align=\"center\">"+o.getLocate()+"</td>");
-				
-				html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
-				
-				//html.append("<td align=\"center\">"+OrderManager.getOrderStatues(o) +"</td>");
-				
-				html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
-				
-				html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
-				
-				//html.append("<td align=\"center\">"+o.getprint()+"</td>");
-				
-				
-				/*html.append("<td align=\"center\">"); 
-				      if(o.getPrintSatuesP() == 1){
-
-				   html.append("<a href=\"javascript:void(0);\" onclick=\"orderPrint('"+o.getId()+"',1)\">[打印]</a>");
-			    	  
-			      }
-				   html.append("</td>");
-			*/	
-				
-				html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getsendName() +" </td>");
-				
-				html.append("<td align=\"center\" >"+o.getSendtime()+"</td>");
-				
-				html.append("<td align=\"center\">"+(o.getStatuesPaigong() == 1 ?"是":"否")); 
-				html.append("</td>");
-				 
-				/*html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getinstallName() +"</td>");
-
-				html.append("<td align=\"center\"> "+o.getInstalltime() +"</td>");*/
-				 
-				html.append("<td align=\"center\">"+(o.getDeliverytype() == 2 ?"是":"否")); 
-				html.append("</td>");
-				html.append("<td align=\"center\">"+(o.getStatuescallback()==0?"否":"是" ));    
-				html.append("</td>"); 
-				
-		    }  
-		}
-		return html.toString();
+			}
+		} 
+		//logger.info(listopid)
 		 
+		if(null != list){ 
+		    for(int i = 0;i<list.size();i++){
+		    	Order o = list.get(i);
+		    	//List<OrderProduct> listop = o.getOrderproduct();
+				 
+				//for(int m=0;m<listop.size();m++){
+					//OrderProduct op = listop.get(m);
+					
+					boolean found = listopid.contains(o); 
+					if(!found){
+					//	if(op.getStatues() == 0){
+						String tdcol = " bgcolor=\"red\"" ;
+						
+						html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
+						
+						html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\"  id=\"check_box\" name=\"orderid\" value="+o.getId()+ "></input></td>");
+						
+						html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+						
+						html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
+						
+						//html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
+						
+						html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
+						
+						if(o.getPhoneRemark()!=1){ 
+							tdcol = ""; 
+						}
+						
+						html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
+						"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+						
+						html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
+						
+						html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
+						
+						html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+						
+						html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
+						
+						html.append("<td align=\"center\" >"+ o.getGifcount("</p>")+"</td>");
+						
+						html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
+						
+						//html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
+						
+						html.append("<td align=\"center\">"+o.getOdate() +"</td>");
+						
+						//html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
+						
+						html.append("<td align=\"center\">"+o.getLocate()+"</td>");
+						
+						html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
+						
+						//html.append("<td align=\"center\">"+OrderManager.getOrderStatues(o) +"</td>");
+						
+						html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
+						
+						html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
+						
+						//html.append("<td align=\"center\">"+o.getprint()+"</td>");
+						
+						
+						/*html.append("<td align=\"center\">"); 
+						      if(o.getPrintSatuesP() == 1){
+
+						   html.append("<a href=\"javascript:void(0);\" onclick=\"orderPrint('"+o.getId()+"',1)\">[打印]</a>");
+					    	  
+					      }
+						   html.append("</td>");
+					*/	  
+						
+						html.append("<td align=\"center\" style=\"white-space:nowrap;\"><input type=\"hidden\" name=\"dealsendid\"  value=\""+o.getSendId()+"\"/>"+o.getsendName() +" </td>");
+						
+						html.append("<td align=\"center\" >"+o.getSendtime()+"</td>");
+						
+						html.append("<td align=\"center\">"+(o.getStatuesPaigong() == 1 ?"是":"否")); 
+						html.append("</td>");
+						 
+						/*html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getinstallName() +"</td>");
+
+						html.append("<td align=\"center\"> "+o.getInstalltime() +"</td>");*/
+						 
+						html.append("<td align=\"center\">"+(o.getDeliverytype() == 2 ?"是":"否")); 
+						html.append("</td>");
+						html.append("<td align=\"center\">"+(o.getStatuescallback()==0?"否":"是" ));    
+						html.append("</td>"); 
+							
+							InstallSale in = null ;
+							String value = "";
+							 if(null != mapin){ 
+								 in = mapin.get(o.getSendId()+"");
+								 if(null == in){     
+									 in = mapin.get(-1+"");
+								 }
+							
+								 if(null != in){
+									 
+									 List<InstallSaleMessage> lists = mapinsa.get(in.getId()+"");
+									 
+									 value = InstallSaleMessageManager.getprice(lists, o)+""; 
+									 
+								 }
+							 }
+							 if(!StringUtill.isNull(value)){
+								 price += Integer.valueOf(value);
+							 } 
+							  
+							html.append("<td align=\"center\"  style=\"background-color:#E8E8D0\">"+
+									    "<input type=\"hidden\" name=\"saleresut\"  value=\""+o.getId()+"\"/>  "+
+									    "<input type=\"text\" id="+o.getId()+"left value=\""+value+"\"  onBlur=\"addcount()\"  style=\"border:0; width:80px\"/>"+
+			                            "</td>");
+			 
+					 }
+					
+		    }
+		}  
+		html.append("</tr>");  
+		html.append("<tr class=\"asc\" >"); 
+		html.append("<td align=\"center\" colspan=20 ></td> ");
+		html.append("<td align=\"center\" >合计金额</td> ");
+		html.append("<td align=\"center\" ><span style=\"color:red;font-size:20px;\" id=\"addcount\">"+price+"</span></td> ");
+		html.append("</tr>"); 
+
+		return html.toString();
+
 	} 
    
    public static String getHtmlppcharge(User user ,List<Order> list){
 	    HashMap<Integer,User> usermap = UserService.getMapId();
 		StringBuffer html = new StringBuffer();
-		if(null != list){
-			
-		    for(int i = 0;i<list.size();i++){
-		    	Order o = list.get(i);
-		    	String tdcol = " bgcolor=\"red\"" ;
-				
-				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
-				
-				html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name =\""+o.getId() +"\"></input></td>");
-				
-				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
-				
-				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
-				
-				//html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
-				
-				html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
-				
-				if(o.getPhoneRemark()!=1){ 
-					tdcol = ""; 
+		  
+		int price = 0 ; 
+		Map<String,InstallSale>  mapin = InstallSaleManager.getmap(BasicUtill.send);
+		//logger.info(mapin);
+		// uid , phone , andate , uname,locate 
+		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin);
+		//logger.info(orders);
+		Map<String,List<InstallSaleMessage>> mapinsa = InstallSaleMessageManager.getmap();
+		 
+		Map<String,Map<String,Map<String,List<Order>>>> mapr = germapr(orders,mapin,mapinsa);
+		//logger.info(mapr);
+		//List<OrderProduct> listopid = new ArrayList<OrderProduct>();
+		List<Order> listopid = new ArrayList<Order>();
+  
+		Set<Map.Entry<String,Map<String,Map<String,List<Order>>>>>  setop = mapr.entrySet();
+		Iterator<Map.Entry<String,Map<String,Map<String,List<Order>>>>> itop = setop.iterator();
+		while(itop.hasNext()){
+			Map.Entry<String,Map<String,Map<String,List<Order>>>> opp = itop.next();
+			Map<String,Map<String,List<Order>>> mapop = opp.getValue();
+			//logger.info(mapop);
+			Set<Map.Entry<String,Map<String,List<Order>>>> setopp = mapop.entrySet();
+			Iterator<Map.Entry<String,Map<String,List<Order>>>> itopp = setopp.iterator();
+			//int x = 0 ;
+			while(itopp.hasNext()){ 
+				Map.Entry<String,Map<String,List<Order>>> listop = itopp.next();
+				Map<String,List<Order>> listoo = listop.getValue();
+				//logger.info(listoo);
+				Set<Map.Entry<String,List<Order>>> seten =  listoo.entrySet();
+				Iterator<Map.Entry<String,List<Order>>> iten =  seten.iterator();
+				while(iten.hasNext()){
+					Map.Entry<String,List<Order>> enit = iten.next();
+					//String keystr = enit.getKey();
+					//String[] keys = keystr.split("-"); 
+					//String key = keys[1];   
+					List<Order> listo = enit.getValue();
+				     
+					int count = listo.size();
+					//logger.info("count"+count);
+					String order = "";
+	    			if(count > 1){
+	    				for(int i=0;i<listo.size();i++){
+		    				order += listo.get(i).getId()+"_";
+		    			}
+	    				order = order.substring(0,order.length()-1);
+	    			}
+	    			
+					int y = 0 ;
+					if(count > 1){  
+						for(int i=0;i<listo.size();i++){
+							Order o = listo.get(i);
+							listopid.add(o);  
+								y++;
+								
+								String tdcol = " bgcolor=\"red\"" ;
+								
+								html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
+								
+								html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\"  id=\"check_box\" name=\"orderid\" value="+o.getId()+ "></input></td>");
+								
+								html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+								
+								html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
+								
+								//html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
+								
+								html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
+								
+								if(o.getPhoneRemark()!=1){ 
+									tdcol = ""; 
+								}
+								
+								html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
+								"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+								
+								html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+ o.getGifcount("</p>")+"</td>");
+								
+								html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
+								
+								//html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
+								
+								html.append("<td align=\"center\">"+o.getOdate() +"</td>");
+								
+								//html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
+								
+								html.append("<td align=\"center\">"+o.getLocate()+"</td>");
+								
+								html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
+								
+								//html.append("<td align=\"center\">"+OrderManager.getOrderStatues(o) +"</td>");
+								
+								html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
+								
+								html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
+								 
+								html.append("<td align=\"center\"><input type=\"hidden\" name=\"dealsendid\"  value=\""+o.getSendId()+"\"/>"+o.getsendName() +" </td>");
+								 
+								html.append("<td align=\"center\" >"+o.getSendtime()+"</td>");
+								
+								/*html.append("<td align=\"center\">"+(o.getStatuesPaigong() == 1 ?"是":"否")); 
+								html.append("</td>");*/
+								 
+								html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getinstallName() +"</td>");
+
+								html.append("<td align=\"center\"> "+o.getInstalltime() +"</td>");
+								
+								html.append("<td align=\"center\">"+(o.getDeliverytype() == 2 ?"是":"否")); 
+								html.append("</td>");
+								 
+								if(y == 1){
+									InstallSale in = null ;
+									String value = "";
+									 if(null != mapin){
+										 in = mapin.get(o.getSendId()+"");
+										 if(null == in){    
+											 in = mapin.get(-1+"");
+										 }
+										 if(null != in){ 
+											 List<InstallSaleMessage> lists = mapinsa.get(in.getId()+"");
+											 
+											 value = InstallSaleMessageManager.getprice(lists, o)+""; 	
+											 
+										 }
+									 }  
+									 if(!StringUtill.isNull(value)){
+										 price += Integer.valueOf(value);
+									 }
+									 String color = "#E8E8D0";
+									 if(count >1){
+										 color = "red";
+									 }else { 
+										 order = o.getId()+"";
+									 }
+									html.append("<td align=\"center\"  style=\"background-color:"+color+"\" rowspan="+count + "> " +
+									            "<input type=\"hidden\" name=\"saleresut\"  value=\""+order+"\"/>  "+
+					                            "<input type=\"text\" id="+order+"left value=\""+value+"\"  style=\"border:0; width:80px\"/>"+
+					                            "</td>"); 
+								} 
+						 }
+					}
+						
+						//listopid.add(lis)
 				}
 				
-				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
 				
-				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+ o.getGifcount("</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
-				
-				//html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
-				
-				html.append("<td align=\"center\">"+o.getOdate() +"</td>");
-				
-				//html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
-				
-				html.append("<td align=\"center\">"+o.getLocate()+"</td>");
-				
-				html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
-				
-				//html.append("<td align=\"center\">"+OrderManager.getOrderStatues(o) +"</td>");
-				
-				html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
-				
-				html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
-				
-				//html.append("<td align=\"center\">"+o.getprint()+"</td>");
-				
-				
-				/*html.append("<td align=\"center\">"); 
-				      if(o.getPrintSatuesP() == 1){
-
-				   html.append("<a href=\"javascript:void(0);\" onclick=\"orderPrint('"+o.getId()+"',1)\">[打印]</a>");
-			    	  
-			      }
-				   html.append("</td>");
-			*/	
-				
-				html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getsendName() +" </td>");
-				
-				html.append("<td align=\"center\" >"+o.getSendtime()+"</td>");
-				
-				/*html.append("<td align=\"center\">"+(o.getStatuesPaigong() == 1 ?"是":"否")); 
-				html.append("</td>");*/
+			}
+		} 
+		//logger.info(list);
+		 
+		if(null != list){ 
+		    for(int i = 0;i<list.size();i++){
+		    	Order o = list.get(i);
+		    	//List<OrderProduct> listop = o.getOrderproduct();
 				 
-				html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getinstallName() +"</td>");
+				//for(int m=0;m<listop.size();m++){
+					//OrderProduct op = listop.get(m);
+					boolean found = listopid.contains(o); 
+					if(!found){
+					//	if(op.getStatues() == 0){
+							String tdcol = " bgcolor=\"red\"" ; 
+							
+							html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
+							
+							html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" id=\"check_box\" name=\"orderid\" value="+o.getId()+ "></input></td>");
+							
+							html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+							
+							html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
+							
+							//html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
+							
+							html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
+							
+							if(o.getPhoneRemark()!=1){ 
+								tdcol = ""; 
+							}
+							
+							html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
+							"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+							
+							html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
+							
+							html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
+							
+							html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+							
+							html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
+							
+							html.append("<td align=\"center\" >"+ o.getGifcount("</p>")+"</td>");
+							
+							html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
+							
+							//html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
+							
+							html.append("<td align=\"center\">"+o.getOdate() +"</td>");
+							
+							//html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
+							
+							html.append("<td align=\"center\">"+o.getLocate()+"</td>");
+							
+							html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
+							
+							//html.append("<td align=\"center\">"+OrderManager.getOrderStatues(o) +"</td>");
+							
+							html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
+							
+							html.append("<td align=\"center\">"+o.getRemark() +"</td> ");
+							
+							
+							html.append("<td align=\"center\" style=\"white-space:nowrap;\"><input type=\"hidden\" name=\"dealsendid\"  value=\""+o.getSendId()+"\"/>"+o.getsendName() +" </td>");
+							
+							html.append("<td align=\"center\" >"+o.getSendtime()+"</td>");
+							
+							/*html.append("<td align=\"center\">"+(o.getStatuesPaigong() == 1 ?"是":"否")); 
+							html.append("</td>");*/
+							 
+							html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getinstallName() +"</td>");
 
-				html.append("<td align=\"center\"> "+o.getInstalltime() +"</td>");
+							html.append("<td align=\"center\"> "+o.getInstalltime() +"</td>");
+							
+							html.append("<td align=\"center\">"+(o.getDeliverytype() == 2 ?"是":"否")); 
+							html.append("</td>");
+							
+							InstallSale in = null ;
+							String value = "";
+							 if(null != mapin){
+								 in = mapin.get(o.getSendId()+"");
+								 if(null == in){     
+									 in = mapin.get(-1+"");
+								 }
+							 
+								 if(null != in){
+									 
+									 List<InstallSaleMessage> lists = mapinsa.get(in.getId()+"");
+									 
+									 value = InstallSaleMessageManager.getprice(lists, o)+""; 	 								 /*String message = in.getMessage();
+									 JSONObject jsObj = JSONObject.fromObject(message); 
+									 try{
+										 value = jsObj.getString(o.getCategoryid(0, ""));
+									 }catch(Exception e){
+										 value = "";
+									 }*/
+								 }
+							 }
+							 if(!StringUtill.isNull(value)){
+								 price += Integer.valueOf(value);
+							 } 
+							  
+							html.append("<td align=\"center\"  style=\"background-color:#E8E8D0\">"+
+									    "<input type=\"hidden\" name=\"saleresut\"  value=\""+o.getId()+"\"/>  "+
+									    "<input type=\"text\" id="+o.getId()+"left value=\""+value+"\"  onBlur=\"addcount()\"  style=\"border:0; width:80px\"/>"+
+			                            "</td>");
+			 
+					 }
+					//}
 				
-				html.append("<td align=\"center\">"+(o.getDeliverytype() == 2 ?"是":"否")); 
-				html.append("</td>");
-				
-		    }  
-		}
+				//}
+		    }
+		}  
+		html.append("</tr>");  
+		html.append("<tr class=\"asc\" >"); 
+		html.append("<td align=\"center\" colspan=20 ></td> ");
+		html.append("<td align=\"center\" >合计金额</td> ");
+		html.append("<td align=\"center\" ><span style=\"color:red;font-size:20px;\" id=\"addcount\">"+price+"</span></td> ");
+		html.append("</tr>"); 
+
 		return html.toString();
 		 
-	} 
+	}  
   
    public static String getHtmlpcallback(User user ,List<Order> list){
 	    HashMap<Integer,User> usermap = UserService.getMapId();
@@ -1885,12 +2459,11 @@ public class OrderService {
 	} 
    
    public static String getHtmlSecondorderDispatching(User user ,List<Order> list){
-	   
+	    
 	    HashMap<Integer,User> usermap = UserService.getMapId();
 	    List<User> listSend = UserManager.getUsers(user,Group.send); 
-	    
+	     
 		StringBuffer html = new StringBuffer();
-		 
 		
 		if(null != list){
 			
@@ -2415,44 +2988,25 @@ public class OrderService {
 				
 				html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
 				
-				html.append("<td align=\"center\">"+o.getprintp()+"</td>");
-				
 				html.append(" <td align=\"center\">"); 
-				
-				      if(o.getPrintSatuesP() == 1){
-				    	  html.append("<a href=\"javascript:void(0);\" onclick=\"orderPrint('"+o.getId()+"',1)\">[打印]</a>");
+				if(o.getPrintSatuesP() == 1){
+				  html.append("<a href=\"javascript:void(0);\" onclick=\"orderPrint('"+o.getId()+"',1)\">[打印]</a>");
 				  
-			      }
-				   html.append("</td>");
+			   } 
+				html.append("</td>");
 				
 				html.append("<td align=\"center\"> "+o.getRemark() +"</td>");
 				
-				html.append("<td align=\"center\">"); 
-				html.append(o.getStatuesPaigong() == 1 ?"是":"否");
-				 
-					html.append(" </td>");
 				
 			
-							html.append("<td align=\"center\">"); 
-							html.append(o.getDeliverytype() == 2 ?"是":"否");
+				html.append("<td align=\"center\">"); 
+				html.append(o.getDeliverytype() == 2 ?"是":"否");
 			
-							html.append("</td>");
-							html.append("<td align=\"center\">");    
-							html.append(o.getStatuescallback()==0?"否":"是" ); 
-							html.append("</td>"); 
-							html.append("<td align=\"center\">");  
+				html.append("</td>");
+							
 			
-				    String message = "";
-				    if(o.getStatuesinstall()==0){
-				    	message = "否";
-				    }else if(o.getStatuesinstall()==1){
-				    	message = "是";
-				    }else if(o.getStatuesinstall()==2){
-				    	message = "已忽略";
-				    } 
-
-				    html.append(message);   
-				    html.append("</td>");
+				 
+				html.append("</td>");
 				
 		    }
 		} 

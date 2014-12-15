@@ -137,3 +137,91 @@ function seletall(all){
 	     });
 	};
 }
+
+function addcount(){
+	 var totalcount = 0 ;
+	 $("input[name='saleresut']").each(function(){
+			var id = $(this).val();
+			var price = $("#"+id+"left").val();
+			if(!isNaN(price)){
+				 totalcount += price*1;
+		      } 
+			
+	     });
+	 $("#addcount").html(totalcount);
+}
+ 
+
+function save(method){
+	 var branch = new Array();
+	 var mess = new Array();
+	 var attract = new Array();
+	 var message = "";
+	 var url= "../";
+	 //if(-1 != num){ 
+	//	 alert("请选择行数为所有");
+	//	 return false ;
+	// } 
+	 if("dealsendcharge" == method){
+		 message = "您不能保存，请选择具体安装网点";
+		 url = "";
+	 }else if("sendcharge" == method){
+		 message = "您不能保存，请选择具体送货员";
+	 }else if("installcharge" == method){
+		 message = "您不能保存，请选择具体安装员";
+	 }else if("sendinstallcharge" == method){
+		 message = "您不能保存，请选择具体送货员";
+	 } 
+	 
+	 $("input[name='dealsendid']").each(function(){
+			var dealsend = $(this).val();
+			if($.inArray(dealsend,branch) == -1){
+				branch.push(dealsend);
+			}
+	     }); 
+	 if(branch.length >1){
+		 alert(message);
+		 return ;
+	 }
+	 
+	 $("input[name='saleresut']").each(function(){
+			var id = $(this).val();
+			var price = $("#"+id+"left").val();
+			mess.push(id+"-"+price+"-"+0);
+	 });
+	 
+	// alert(mess);
+	 //jPrompt('请输入keleyi.com或者其他:', 'keleyi.com(预填值)', 'Prompt对话框', function(r) {
+		 //   if( r ) alert('You entered ' + r);
+	//	});
+	 var str = window.prompt("请输入文件名称","") ;
+	 
+	 if(str == null || str == ""){
+		 alert("文件名称不能为空");
+		 return false;
+	 }
+
+		
+	 $("input[name ='orderid']").each(function(){          
+			var str = this.value;
+			if(str != null && str != ""){
+				attract.push(str);
+				}
+	   	}); 
+	  
+	 $.ajax({  
+	        type: "post",  
+	         url: url+"server.jsp",   
+	         data:"method="+method+"&id="+attract.toString()+"&branchid="+branch.toString()+"&name="+str+"&message="+mess,
+	         dataType: "", 
+	         success: function (data) {
+	        	 initOrder(type,statues,num,page,sort,sear);
+	           }, 
+	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	        	 alert("执行失败"); 
+	            } 
+	           });
+	 
+ }
+
+

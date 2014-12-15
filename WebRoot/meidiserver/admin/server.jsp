@@ -200,17 +200,17 @@ if("deleOrder".equals(method)){
 	}
 	String str = StringUtill.GetJson(list); 
 	response.getWriter().write(str);   
-	response.getWriter().flush(); 
+	response.getWriter().flush();  
 	response.getWriter().close(); //inventory
-}else if("dealsendcharge".equals(method)){ 
+}else if("dealsendcharge".equals(method) || "sendcharge".equals(method) || "installcharge".equals(method) || "sendinstallcharge".equals(method)){ 
 	boolean flag =false;
-	String name = request.getParameter("name");
+	String name = request.getParameter("name"); 
 	String dealsendid = request.getParameter("branchid");
 	String id = request.getParameter("id");
 	String said = request.getParameter("said");
 	System.out.println(said );
 	String savetype = request.getParameter("savetype");
-	System.out.println(savetype );
+	//System.out.println(savetype );
 	String message = request.getParameter("message");
 	List<SaledealsendMessage> list = new ArrayList<SaledealsendMessage>();
 
@@ -247,8 +247,8 @@ if("deleOrder".equals(method)){
 	sa.setList(list);
 	sa.setMessage(message); 
 	sa.setName(name);  
-	sa.setOrderids(id); 
-    SaledealsendManager.save(user,sa,flag);
+	sa.setOrderids(id);  
+    SaledealsendManager.save(user,sa,flag,method);
 	//System.out.print(name+"**"+branchid+"*"+id+"*"+message);
 }else if("inventoryall".equals(method)){ 
 	String str = "";  
@@ -554,7 +554,8 @@ if("deleOrder".equals(method)){
     String  type = request.getParameter("type"); 
 	InventoryBranchManager.update(user, branchid, type);
 }else if("savesalecategory".equals(method)){
-	String isuid = request.getParameter("isuid");
+	String isuid = request.getParameter("isuid"); 
+	String chargetype = request.getParameter("chargetype"); 
 	String uid = request.getParameter("uid");
 	String username = request.getParameter("username");
 	String phone = request.getParameter("phone");
@@ -591,7 +592,7 @@ if("deleOrder".equals(method)){
 		 ins.setCategoryID(id);
 		 ins.setDealsend(Integer.valueOf(price));
 		 ins.setInstallsaleID(Integer.valueOf(isuid));
-		 list.add(ins);
+		 list.add(ins); 
 		// message += "\""+id+"\":\""+price+"\",";
 	}
 	 
@@ -635,9 +636,11 @@ if("deleOrder".equals(method)){
 	if(!StringUtill.isNull(andate)){
 		in.setAndate(Integer.valueOf(andate));
 	}
+	  
+	 in.setType(Integer.valueOf(chargetype));
 	 
 	//in.setMessage(message); 
-	  in.setList(list);
+	  in.setList(list); 
 	  
 	if(flag){
 		InstallSaleManager.update(in);

@@ -1,12 +1,12 @@
 <%@page import="utill.StringUtill"%>
 <%@page import="wilson.salaryCalc.SalaryCalcManager"%>
 <%@page import="wilson.salaryCalc.SalaryResult"%>
-<%@ page language="java" import="java.util.*,wilson.upload.*,group.*,orderproduct.*,order.*,saledealsend.*,user.*,wilson.matchOrder.*,user.*,wilson.salaryCalc.*,java.text.SimpleDateFormat;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,wilson.upload.*,group.*,utill.*,orderproduct.*,order.*,saledealsend.*,user.*,wilson.matchOrder.*,user.*,wilson.salaryCalc.*,java.text.SimpleDateFormat;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%
-	request.setCharacterEncoding("utf-8");
-	User user = (User)session.getAttribute("user");
-	List<User> listS = null ; 
+	request.setCharacterEncoding("utf-8"); 
+	User user = (User)session.getAttribute("user");  
+	List<User> listS = null ;  
 	if(UserManager.checkPermissions(user, Group.dealSend)){
 		listS =  UserManager.getUsers(user,Group.sencondDealsend);
 	}else {
@@ -22,18 +22,18 @@
 	boolean unquery = false ;
 	String[] mess = null; 
 	List<SaledealsendMessage> list = null;
-	String  isdisabel = "";
+	String  isdisabel = ""; 
 	String name = "";
 	String dealsendID = "";
 	if(StringUtill.isNull(type)){
-		listsa = SaledealsendManager.getSaledealsendUnquery(user);
+		listsa = SaledealsendManager.getSaledealsendUnquery(user,BasicUtill.dealsend);
 		unquery = true ; 
 	}else if("search".equals(type)){
 	    String startDate = request.getParameter("startDate");
-		String endDate = request.getParameter("endDate");
+		String endDate = request.getParameter("endDate"); 
 		String dealsendid = request.getParameter("dealsendid");
-	    listsa = SaledealsendManager.getList(startDate,endDate,dealsendid);
-	    sera = true ;
+	    listsa = SaledealsendManager.getList(user,startDate,endDate,dealsendid,BasicUtill.dealsend);
+	    sera = true ; 
    }else if("check".equals(type)) {
 	   String id = request.getParameter("said");
 	  // System.out.println(id);
@@ -82,8 +82,13 @@ var dealsendID = "<%=dealsendID%>";
 
 function save(statues,sta){
 	var price = $("#addcount").html();
-	var message = "打印之后不能修改，您确定要打印吗？";
-	if(sta == 0 ){ 
+	var message = "";
+	if(statues == 0 ){
+		 message = "打印之后不能修改，您确定要打印吗？";
+	}else {
+		message = "您确定要保存吗？";
+	} 
+	if(statues == 0 && sta == 0 ){ 
 		message = "安装网点尚未确认,打印之后不能修改，您确定要打印吗？";
 	}
 	//alert(price);
@@ -115,7 +120,9 @@ function save(statues,sta){
 		         dataType: "", 
 		         success: function (data) { 
 		        	 if(statues == 0 ){
-		        		 window.location.href="printChargeDealsend.jsp?price="+price+"&name="+name+"&dealsendID="+dealsendID;
+		        		 window.location.href="printChargeDealsend.jsp?price="+price+"&name="+name+"&dealsendID="+dealsendID+"&type=<%=BasicUtill.dealsend%>";
+		        	 }else{
+		        		 window.location.reload();
 		        	 }
 		        	
 		           }, 
@@ -268,23 +275,26 @@ if(bsa){
 	  String message = "";
 	 if(UserManager.checkPermissions(user, Group.dealSend)){
 		 if(sa.getGivestatues() == 0){
-         %>
-          <input type="button" class="button" value="打印并保存" onclick="save('0','<%=sa.getReceivestatues() %>')" ></input> <br/> 
-         <%   
+         %> 
+          <input type="button" class="button" value="打印并保存" onclick="save('0','<%=sa.getReceivestatues() %>')" ></input>
+          <input type="hidden" name="savetype" id="savetype" value="left"/>
+         <%    
            }
 		 %>
-		  <input type="hidden" name="savetype" id="savetype" value="left"/>
 		 <%
      }else {
+    	 if(sa.getGivestatues() == 0){
      %>
-      <input type="button" class="button" value="保存" onclick="save('-1','')" ></input> <br/> 
+     <input type="button" class="button" value="保存" onclick="save('-1','')" ></input>
      <input type="hidden" name="savetype" id="savetype" value="right"/>
-    <%} %>
+    <%  } 
+         }
+    %>
     <input type="button" class="button" value="导出" onclick="javascript:window.open('../SalaryExportServlet', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"></input> 
     
 	<input type="hidden" name="type" value="save"/> 
 	<input type="hidden" name="said" id="said" value="<%=sa.getId() %>" value="save"/> 
-	
+	<br/>
 	<table border="1px" align="left" >
 		<tr>
 		    <td align="center">序号</td>
@@ -371,8 +381,12 @@ if(bsa){
 						<%  
 							if(j == 0 && count > 1 || count <= 1 ){
 								 String color = "";
+								 String iscolor = "";
 								 if(count >1){
 									 color = "style=\"background-color:red\";";    
+								 }
+								 if(!price2.equals("0")){
+									 iscolor = "style=\"background-color:orange\";";
 								 }
 								 if(UserManager.checkPermissions(user, Group.dealSend)){
 							 %>
@@ -380,7 +394,7 @@ if(bsa){
 			                     <input type="hidden" name="orderidresult" id="orderidresult" value="<%=orderid%>"/>
 			                     <input type="text" id="<%=orderid%>left" value="<%=price1%>" <%=isdisabel %>  onBlur="addcount()"  style="border:0; width:80px"/>
 			                 </td>  
-			                 <td align="center"  <%=color%> rowspan="<%=count %> ">
+			                 <td align="center"  <%=iscolor%> rowspan="<%=count %> ">
 			                    <input type="hidden" id="<%=orderid%>right" value="<%=price2%>" />
 			                       <%=price2 %>
 			                 </td>
@@ -393,8 +407,8 @@ if(bsa){
 			                          <input type="hidden" name="orderidresult" id="orderidresult" value="<%=orderid%>"/>
 			                            <input type="hidden" id="<%=orderid%>left" value="<%=price1%>" />
 			                            <%=price1%>
-			                     </td> 
-			                     <td align="center"  <%=color%> rowspan="<%=count %> ">
+			                     </td>  
+			                     <td align="center"  <%=iscolor%> rowspan="<%=count %> ">
 			                            <input type="text" id="<%=orderid%>right" value="<%=price2 %>" <%=isdisabel %> />
 			                     </td>
 			                	 <%

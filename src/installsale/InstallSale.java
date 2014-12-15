@@ -14,8 +14,17 @@ public class InstallSale {
    private List<InstallSaleMessage> list ;
     
   private String message ;
+  private int type ;    // 1 表示安装网点   2 送货员   3 安装员  4 送货安装员
   
   
+public int getType() {
+	return type;
+}
+
+public void setType(int type) {
+	this.type = type;
+}
+
 public int getId() {
 	return id;
 }

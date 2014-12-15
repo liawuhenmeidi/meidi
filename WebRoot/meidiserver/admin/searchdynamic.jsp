@@ -17,8 +17,8 @@ int id = user.getId();
 String statues = request.getParameter("statues");
   
 //  上级管理组ID
-int pgroup = GroupService.getidMap().get(user.getUsertype()).getPid();   
-
+//int pgroup = GroupService.getidMap().get(user.getUsertype()).getPid();   
+int pgroup = -1;
 // 所有用户
 HashMap<Integer,User> usermap = UserService.getMapId();
  

@@ -24,7 +24,7 @@ import orderproduct.OrderProductManager;
 import user.User;
 import utill.HttpRequestUtill;
 import utill.StringUtill;
-/**
+/** 
  * 核心请求处理类
  * 
  * @author liufeng
@@ -69,16 +69,16 @@ public class OrderServiceServlet extends HttpServlet {
     	//} 
     	List<Order> list = new  ArrayList<Order>(); 
     	int count = 0 ; 
-    	List<OrderProduct> listp = new ArrayList<OrderProduct>() ;
+    	//List<OrderProduct> listp = new ArrayList<OrderProduct>() ;
     	/*if(Integer.valueOf(statues) == Order.over){
     		listp = OrderProductManager.getlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
     		count = OrderProductManager.getlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
     	}else {  
     		list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
     	    count = OrderManager.getOrderlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
-        	
+        	 
     	}  */
-    	
+    	 
     	list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
 	    count = OrderManager.getOrderlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
     	
@@ -116,13 +116,13 @@ public class OrderServiceServlet extends HttpServlet {
     			html = OrderService.getHtmlporderDispatching(user,list);  
     		}else if(Integer.valueOf(statues) == Order.serach){
     			html = OrderService.getHtmlpSearch(user,list);   
-    		}else if(Integer.valueOf(statues) == Order.charge){
-    			// 安装
+    		}else if(Integer.valueOf(statues) == Order.charge){ 
+    			// 安装 
     			html = OrderService.getHtmlpcharge(user,list);   
     		}else if(Integer.valueOf(statues) == Order.chargeall){
     			html = OrderService.getHtmlpchargeall(user,list);   
     		}else if(Integer.valueOf(statues) == Order.pcharge){
-    			html = OrderService.getHtmlppcharge(user,list);    
+    			html = OrderService.getHtmlppcharge(user,list);   // 送货结款   
     		}else if(Integer.valueOf(statues) == Order.callback){
     			html = OrderService.getHtmlpcallback(user,list);    
     		} 

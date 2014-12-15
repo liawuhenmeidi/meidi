@@ -264,17 +264,15 @@ function orderPrint(id,statues){
            <td align="center">文员配单日期</td> 
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
-			<td align="center">打印状态</td>
 			
 			<td align="center">打印</td> 
 			
 			<td align="center">备注</td> 
 			
-			<td align="center">送货是否已结款</td>
+			
 			
 			<td align="center">先送货后安装</td>
-			<td align="center">是否已回访</td>
-            <td align="center">安装是否已结款</td>
+		
 		</tr>
 
 </table>

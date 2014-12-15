@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 
 import user.User;
 import user.UserManager;
+import utill.BasicUtill;
 import utill.DBUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
@@ -26,15 +27,22 @@ import database.DB;
 public class SaledealsendManager {
 	protected static Log logger = LogFactory.getLog(SaledealsendManager.class);
 
-	 public static boolean  save(User user ,Saledealsend  in, boolean flags){
+	 public static boolean  save(User user ,Saledealsend  in, boolean flags,String method){
 		 boolean flag = false ;
 		 List<String> sqls = new ArrayList<String>();
 		if(flags){  
-			
+			String sql = "";
 			//String sql1 = "update mdorderproduct set chargeDealsendtime = '"+TimeUtill.gettime()+"',chargeDealsendID = "+user.getId()+" where id in (" + in.getOrderids()+")";
-			String sql1 = "update mdorder set statues4 = 1 , chargeDealsendtime = '"+TimeUtill.gettime()+"' where id in (" + in.getOrderids()+")";
-			
-			String sql = "insert into saledealsend(id,dealsendid,name,givestatues,receivestatues,submittime,orderids) values ("+in.getId()+","+in.getDealsendid()+",'"+in.getName()+"',"+in.getGivestatues()+","+in.getReceivestatues()+",now(),'"+in.getOrderids()+"')";
+			String sql1 = "insert into saledealsend(id,dealsendid,name,givestatues,receivestatues,submittime,orderids) values ("+in.getId()+","+in.getDealsendid()+",'"+in.getName()+"',"+in.getGivestatues()+","+in.getReceivestatues()+",now(),'"+in.getOrderids()+"')";
+			if("dealsendcharge".equals(method)){
+				sql = "update mdorder set statues4 = 1 , chargeDealsendtime = '"+TimeUtill.gettime()+"' where id in (" + in.getOrderids()+")";
+			}else if("sendcharge".equals(method)){
+				sql = "update mdorder set statuespaigong = 1 , chargeSendtime = '"+TimeUtill.gettime()+"' where id in (" + in.getOrderids()+")";
+			}else if("installcharge".equals(method)){
+				sql = "update mdorder set statuesinstall = 1  , chargeInstalltime = '"+TimeUtill.gettime()+"' where id in (" + in.getOrderids()+")";
+			}else if("sendinstallcharge".equals(method)){
+				sql = "update mdorder set statuesinstall = 2 , chargeInstalltime = '"+TimeUtill.gettime()+"'  where id in (" + in.getOrderids()+")";
+			}			 
 			//logger.info(sql); 
 			sqls.add(sql);  
 			sqls.add(sql1); 
@@ -90,15 +98,26 @@ public class SaledealsendManager {
 
 	 }
 	 
-	 public static List<Saledealsend> getList(String startTime, String endTime ,String dealsendid){
+	 public static List<Saledealsend> getList(User user ,String startTime, String endTime ,String dealsendid,int type){
 		  
-		 List<Saledealsend> list = new ArrayList<Saledealsend>(); 
+		 List<Saledealsend> list = new ArrayList<Saledealsend>();  
 		 String search =  TimeUtill.getsearchtime(startTime,endTime);
-		 if(!StringUtill.isNull(dealsendid)){
-			 search += " and dealsendid = "+ dealsendid;
+		 if(BasicUtill.dealsend == type){
+			 if(!StringUtill.isNull(dealsendid)){
+				 search += " and dealsendid = "+ dealsendid;
+			 }  
+		 }else {
+			 if(!StringUtill.isNull(dealsendid)){
+				 search += " and dealsendid = "+ dealsendid;
+			 }else {
+				 search += " and dealsendid in ( select id from mduser where charge = " +user.getId()+ " ) ";   
+			 }
 		 }
+		 
+		 
 			Connection conn = DB.getConn();    
-			String sql = "select * from saledealsend where 1= 1 "+ search;  
+			String sql = "select * from saledealsend where 1= 1 "+ search; 
+			logger.info(sql);
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {   
@@ -158,15 +177,22 @@ public class SaledealsendManager {
 			return count; 
 	 }
 	 
-	 public static List<Saledealsend> getSaledealsendUnquery(User user){
+	 public static List<Saledealsend> getSaledealsendUnquery(User user,int type){
 		 List<Saledealsend> list = new ArrayList<Saledealsend>();
 			Connection conn = DB.getConn(); 
 			String sql = "";
-			if(UserManager.checkPermissions(user, Group.dealSend)){
-				sql = "select * from saledealsend where givestatues = 0  ";   
-			}else { 
+			if(BasicUtill.dealsend == type){
+				if(UserManager.checkPermissions(user, Group.dealSend)){
+					sql = "select * from saledealsend where givestatues = 0  ";   
+				}else { 
+					sql = "select * from saledealsend where givestatues = 0  and dealsendid = "+user.getId();   
+				}
+			}else if(UserManager.checkPermissions(user, Group.sencondDealsend)){ 
+				sql = "select * from saledealsend where givestatues = 0  and dealsendid in ( select id from mduser where charge = " +user.getId()+ " ) ";   
+			}else if(UserManager.checkPermissions(user, Group.send)){ 
 				sql = "select * from saledealsend where givestatues = 0  and dealsendid = "+user.getId();   
-			}
+			} 
+			
 			
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);

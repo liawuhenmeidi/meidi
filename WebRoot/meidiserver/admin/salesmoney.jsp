@@ -4,6 +4,9 @@
 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
+
+String chargetype = request.getParameter("chargetype");
+
 HashMap<String,ArrayList<Product>> mapc = ProductManager.getProductstr();  
 String mapcstr = StringUtill.GetJson(mapc); 
 
@@ -14,8 +17,8 @@ if(UserManager.checkPermissions(user, Group.dealSend)){
 	listS = UserManager.getUsers(user,Group.send); 
 }
 HashMap<String,User> usermap = UserService.getmapSencd(listS); 
-
-Map<String,InstallSale>  mapin = InstallSaleManager.getmap(); 
+ 
+Map<String,InstallSale>  mapin = InstallSaleManager.getmap(Integer.valueOf(chargetype)); 
 Map<String,List<InstallSaleMessage>> mapinsa = InstallSaleMessageManager.getmap();
    
 String str = StringUtill.GetJson(mapin);
@@ -285,6 +288,12 @@ function inittotal(){
 function merge(){
   var s='';
   var i= 0 ;
+  
+  if(i<2){
+	  alert("不符合合并条件");
+	  return ;
+  }
+  
   $('input[name="categorynameLeft"]:checked').each(function(){
 	  var value = $(this).val();
 	  //splits.splice($.inArray(value,splits),1);
@@ -292,10 +301,7 @@ function merge(){
       i++;
   }); 
   
-  if(i<2){
-	  alert("不符合合并条件");
-	  return ;
-  }
+  
   s = s.substring(0,s.length-1);
   merges.push(s); 
   init();
@@ -452,9 +458,11 @@ function saveproduct(id){
 <div id="wrap" style="text-align:center;" >  
 
 <form  action="server.jsp"  name = "myForm" method ="post"  id="form"   onsubmit="return saverule()">
-
+ 
 <input type="hidden" name="method" value="savesalecategory"/> 
-<input type="hidden" name="isuid" id="isuid" value=""/>
+<input type="hidden" name="isuid" id="isuid" value=""/>   
+<input type="hidden" name="chargetype" id="chargetype" value="<%=chargetype%>"/>
+
 <div id="all">
 <div id="mainwap">
 <table  cellspacing="1"  id="table"  style="margin:auto;width:90%;">
