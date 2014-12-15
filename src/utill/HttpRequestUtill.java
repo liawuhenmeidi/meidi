@@ -103,6 +103,17 @@ public class HttpRequestUtill {
     		        					sear += " and " + sqlstr +  "  < '" + end + "'"; 
     		        				}
     	        				}
+    	        			}else if("statuesChargeSale".equals(str)){
+    	        				String strr = request.getParameter(str);
+    	        				if(strr != "" && strr != null){
+    	        					if(Integer.valueOf(strr) == 1){
+    	        						sear += " and " + str + " is not null";
+    	        					}else {
+    	        						sear += " and " + str + " is  null";
+    	        					}
+      	        				   
+      	        				}
+    	        				
     	        			}else if(!"dealsendTimeend".equals(str) && !"saledateend".equals(str)) {      
     	        				String strr = request.getParameter(str); 
     	        				if(strr != "" && strr != null){

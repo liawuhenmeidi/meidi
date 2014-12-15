@@ -1,16 +1,8 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
 <%@ include file="searchdynamic.jsp"%>
-<%  
-if(searchflag){ 
-	sort= "andate asc";
-}
-//list = OrderManager.getOrderlist(user,Group.sencondDealsend,str,sort);      
-//List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.porderDispatching,num,Page,sort,sear);  
-//session.setAttribute("exportList", list); 
-//count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.porderDispatching,num,Page,sort,sear);  
-
-opstatues = OrderPrintln.release; 
+<%   
+opstatues = OrderPrintln.release;  
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -60,6 +52,31 @@ width:50px
 <!--   头部开始   -->
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
+
+<div style="position:fixed;width:100%;height:20%;">
+  <jsp:include flush="true" page="../head.jsp">
+  <jsp:param name="" value="" />
+  </jsp:include>   
+      
+<jsp:include flush="true" page="../page.jsp"> 
+    <jsp:param name="type" value="<%=Order.pinstall%>"/> 
+</jsp:include> 
+
+<div id="headremind">
+<jsp:include page="headremind.jsp"/>
+</div>
+
+<div class="btn">
+ <input type="submit" class="button" name="dosubmit" value="忽略确认" onclick="wconfirm()"></input>  
+</div>
+
+</div > 
+<div style=" height:130px;">
+</div>
+ 
+<br/> 
+
+
 <script type="text/javascript">
 var id = "";
 sort= "andate asc";
@@ -230,43 +247,9 @@ function adddetail(src){
 
 }
 
-function seletall(all){
-	if($(all).attr("checked")){
-		$("input[type='checkbox']").each(function(){
-			$(this).attr("checked",true);
-
-	     });
-	}else if(!$(all).attr("checked")){
-		$("input[type='checkbox']").each(function(){
-			$(this).attr("checked",false);
-	     });
-	};
-} 
-
 </script>
 
-<div style="position:fixed;width:100%;height:20%;">
-  <jsp:include flush="true" page="../head.jsp">
-  <jsp:param name="" value="" />
-  </jsp:include>   
-      
-<jsp:include flush="true" page="../page.jsp">
-    <jsp:param name="type" value="<%=Order.pinstall%>"/> 
-</jsp:include> 
 
-<div id="headremind">
-<jsp:include page="headremind.jsp"/>
-</div>
-
-<div class="btn">
- <input type="submit" class="button" name="dosubmit" value="忽略确认" onclick="wconfirm()"></input>  
-</div>
-
-</div > 
-<div style=" height:130px;">
-</div>
- 
-<br/> 
 
 <%@ include file="searchOrderAll.jsp"%>  
 

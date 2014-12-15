@@ -285,8 +285,8 @@ public class PrintServlet extends HttpServlet {
 							
 						    row.createCell((short) y++).setCellValue(order.getStatues4()==0?"否":"是");
 						    row.createCell((short) y++).setCellValue(order.getStatues1()==0?"否":"是");
-						    row.createCell((short) y++).setCellValue(order.getStatues2()==0?"否":"是");
-						    row.createCell((short) y++).setCellValue(order.getStatues3()==0?"否":"是");
+						    row.createCell((short) y++).setCellValue(order.getStatues2()==0?"否":"是"); 
+						    row.createCell((short) y++).setCellValue((StringUtill.isNull(order.getStatuesCharge())?"否":order.getStatuesCharge()));
 						    row.createCell((short) y++).setCellValue(order.getRemark()); 
 					 }
 					}

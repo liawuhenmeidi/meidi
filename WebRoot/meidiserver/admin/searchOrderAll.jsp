@@ -298,9 +298,9 @@ function checkedd(){
 			</td>
 			<td align="center" >厂送票是否已结款</td>
 			<td align="center" >
-	                  是<input type="radio"  name="statues3"  value="1"  id="statues31"/>
-	                   否<input type="radio"  name="statues3"  value="0"  id="statues30"/>
-	                   任意<input type="radio"  name="statues3"  value=""  id="statues3"/>
+	                  是<input type="radio"  name="statuesChargeSale"  value="1"  id="statues31"/>
+	                   否<input type="radio"  name="statuesChargeSale"  value="0"  id="statues30"/>
+	                   任意<input type="radio"  name="statuesChargeSale"  value=""  id="statues3"/>
 			</td>	 
 		</tr>
 
