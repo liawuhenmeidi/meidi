@@ -122,16 +122,22 @@ function checkedd(){
 	//window.close();
 	//window.oper.reload();
 	 //window.opener.location.reload();
-
 	$('#<%=sr.getId()%>shop', window.opener.document).text($('#shop').val());
 	$('#<%=sr.getId()%>pos', window.opener.document).text($('#pos').val());
-	$('#<%=sr.getId()%>salemanname', window.opener.document).text($('#salemanname').val());
 	$('#<%=sr.getId()%>saletime', window.opener.document).text($('#saletime').val().replace(/-/g,""));
 
 	$('#<%=sr.getId()%>saletype', window.opener.document).text($('#saletype').val());
+	
 	$('#<%=sr.getId()%>num', window.opener.document).text($('#salenum').val());
+	$('#<%=sr.getId()%>num', window.opener.document).attr('value',$('#salenum').val());
+	
 	$('#<%=sr.getId()%>saleprice', window.opener.document).text($('#saleprice').val());
+	$('#<%=sr.getId()%>saleprice', window.opener.document).attr('value',$('#saleprice').val());
+	
 	$('#<%=sr.getId()%>salary', window.opener.document).html("<a href='#' onClick=\"javascript:window.open('./salaryResultDetail.jsp?id=" + <%=sr.getId()%> + "', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')\"  >" + $('#salary').val() + "</a>");
+	$('#<%=sr.getId()%>salary', window.opener.document).attr('value',$('#salary').val());
+	
+	window.opener.reloadTable();
 }
 
 </script>
@@ -181,7 +187,7 @@ function checkedd(){
 		<tr class="asc">	 
 			<td align="center" >导购员姓名</td>
 			<td align="center" >
-	        <input type="text"  name="salemanname" id="salemanname" value="<%=uo.getSaleManName() %>"  />
+	        <input type="text" readonly="readonly" name="salemanname" id="salemanname" value="<%=uo.getSaleManName() %>"  />
 			</td>
 		</tr>
 		<tr class="asc">	 

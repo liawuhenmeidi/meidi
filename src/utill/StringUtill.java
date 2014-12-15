@@ -5,6 +5,7 @@ import group.Group;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -98,6 +99,21 @@ public class StringUtill {
 		return s;
 		  
     } 
+    
+    public static String UUID(int num){
+    	String s = UUID.randomUUID().toString();
+    	if(num > 36){
+    		num = 36;
+    	}
+    	if(num <= 0){
+    		num = 8;
+    	}
+    	return s.substring(0,num);
+    }
+    
+    public static String shortUUID(){
+    	return UUID(8);
+    }
     
     public static void main(String args[]){
     	String str1 = "MRO201-4（智能型）净水机";

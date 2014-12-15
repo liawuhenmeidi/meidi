@@ -408,7 +408,7 @@ if(showResult){
 		<%
 		boolean total = false;
 		for(int i = 0 ; i < salaryResult.size() ; i ++){
-			if(salaryResult.get(i).getStatus() == -1){
+			if(salaryResult.get(i).getStatus() == SalaryResult.STATUS_TOTAL){
 				total = true;
 			}else{
 				total = false;

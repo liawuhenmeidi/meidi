@@ -163,7 +163,7 @@ public class SalaryCalcManager {
 									
 									sameGroupTotal.setSalary(sameGroupTotal.getSalary() + sameShopList.get(j).getSalary());
 									//设置店名，类别等
-									sameGroupTotal.setStatus(-1);
+									sameGroupTotal.setStatus(SalaryResult.STATUS_TOTAL);
 									sameGroupTotal.setUploadSalaryModelCatergory(leftSide);
 									sameGroupTotal.setUploadOrderNum(sameGroupTotal.getUploadOrder().getNum() + sameShopList.get(j).getUploadOrder().getNum());
 									sameGroupTotal.setUploadOrderSalePrice(sameGroupTotal.getUploadOrder().getSalePrice() + sameShopList.get(j).getUploadOrder().getSalePrice());
@@ -179,7 +179,7 @@ public class SalaryCalcManager {
 							}
 							
 							//如果有对应这个分组的数据
-							if(sameGroupTotal.getStatus() == -1){
+							if(sameGroupTotal.getStatus() == SalaryResult.STATUS_TOTAL){
 								result.add(sameGroupTotal);
 								
 								//sameShopTotal.setUploadOrderShop(tempCatergoryMaping.getShop());
@@ -213,7 +213,7 @@ public class SalaryCalcManager {
 						othersTotal.setUploadOrderName(sameShopList.get(0).getUploadOrder().getName());
 						othersTotal.setUploadOrderShop(sameShopList.get(0).getUploadOrder().getShop());
 						othersTotal.setUploadOrderPosNo("");
-						othersTotal.setStatus(-1);
+						othersTotal.setStatus(SalaryResult.STATUS_TOTAL);
 						
 						total.setUploadOrderSalePrice(total.getUploadOrder().getSalePrice() + othersTotal.getUploadOrder().getSalePrice());
 						total.setSalary(total.getSalary() + othersTotal.getSalary());
@@ -237,7 +237,7 @@ public class SalaryCalcManager {
 					if(result.size() > 0){
 						total.setUploadOrderShop(result.get(result.size() - 1).getUploadOrder().getName());
 					}
-					total.setStatus(-1);
+					total.setStatus(SalaryResult.STATUS_TOTAL);
 //					total.setUploadOrderSalePrice(total.getUploadOrder().getSalePrice() + sameShopTotal.getUploadOrder().getSalePrice());
 //					total.setSalary(total.getSalary() + sameShopTotal.getSalary());
 //					total.setUploadOrderNum(total.getUploadOrder().getNum() + sameShopTotal.getUploadOrder().getNum());

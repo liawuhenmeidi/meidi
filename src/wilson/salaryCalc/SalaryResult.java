@@ -20,6 +20,8 @@ public class SalaryResult {
 	private Double salary = 0.0 ; //提成数字
 	private int status = 0 ; //预留状态位置
 	
+	public static final int STATUS_TOTAL = -1;
+	
 	public SalaryResult() {
 		super();
 	}

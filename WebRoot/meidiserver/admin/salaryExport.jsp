@@ -112,6 +112,88 @@ body {
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/calendar.js"></script> 
+<script type="text/javascript">
+var salary_fileTotal = 0.0;
+var salary_sum = 0.0;
+
+var saleprice_sum=0.0;
+var saleprice_fileTotal = 0.0;
+
+var salenum_sum=0;
+var salenum_fileTotal=0;
+
+function reloadTable(){
+	var cols = $('#basetable tr')[0].cells.length;
+	 $('#basetable tr').each(function () {  
+		 //提成
+		 var id = this.cells[cols-1].id;
+		 var item = $('#'+ id);
+		 if(item.attr('value') == 'total'){
+			 item.text(salary_sum);
+			 salary_fileTotal += salary_sum;
+			 salary_sum = 0;
+		 }else{
+			 if(checkNumber(item.attr('value'))){
+				 salary_sum += item.attr('value')*1.0;
+			 }
+		 }
+		 //售价
+		 var id2 = this.cells[cols-2].id;
+		 var item2 = $('#'+ id2);
+		 if(item2.attr('value') == 'total'){
+			 saleprice_sum = Math.round(saleprice_sum*100)/100; 
+			 item2.text(saleprice_sum);
+			 saleprice_fileTotal += saleprice_sum;
+			 saleprice_sum = 0;
+		 }else{
+			 if(checkNumber(item2.attr('value'))){
+				 saleprice_sum += item2.attr('value')*1.0;
+			 }
+		 }
+		 //个数
+		 var id3 = this.cells[cols-3].id;
+		 var item3 = $('#'+ id3);
+		 if(item3.attr('value') == 'total'){
+			 item3.text(salenum_sum);
+			 salenum_fileTotal += salenum_sum;
+			 salenum_sum = 0;
+		 }else{
+			 if(checkNumber(item3.attr('value'))){
+				 salenum_sum += item3.attr('value')*1.0;
+			 }
+		 }
+     });
+	 
+	 
+	 
+	 $('#filetotalsalary').text(salary_fileTotal);
+	 salary_fileTotal = 0;
+	 
+	 saleprice_fileTotal = Math.round(saleprice_fileTotal*100)/100; 
+	 $('#filetotalsaleprice').text(saleprice_fileTotal);
+	 saleprice_fileTotal = 0;
+	 
+	 $('#filetotalnum').text(salenum_fileTotal);
+	 salenum_fileTotal = 0;
+}
+
+function checkNumber(val){  
+    //var reg = /^-*[0-9]+.[0-9]*$/;  
+    if(val ==""){
+    	return false;
+    }
+   // if(reg.test(val)){  
+  //      return true;  
+  //  }else{
+  //  	return false;
+  //  }
+   if(!isNaN(val)){
+	   return true;
+   }else{
+	   return false;
+   }
+}
+</script>
 <div style="position:fixed;width:100%;height:20px;"></div>
 <div style="position:fixed;width:80%;height:20px;"></div>
   
@@ -151,7 +233,7 @@ if(byTime){
 
 <hr style="border : 1px dashed blue;" />
 
-<p>按文件名导出</p>
+<p onclick="reloadTable()">按文件名导出</p>
 
 <form action="" method="post">
 <input type="hidden" name="type" value="byname"/>
@@ -177,7 +259,7 @@ if(showResult.size() > 0 ){
 <a href="salaryExport.jsp?reset=true"><button name="resetButton" style="background-color:red;font-size:50px;" onclick="return confirm('是否确认?')" >重新计算提成</button></a>
 	
 <hr style="border : 1px dashed blue;" />
-	<table border="1px" align="left" >
+	<table border="1px" align="left" id="basetable" name="basetable">
 		<tr>
 			<td>序号</td>
 			<td>文件名称</td>
@@ -191,19 +273,42 @@ if(showResult.size() > 0 ){
 			<td>单价</td>
 			<td>提成</td>
 		</tr>
-		<%for(int i = 0 ; i <  showResult.size() ; i ++){ %>
+		<%
+		boolean total = false;
+		boolean filetotal = false;
+		for(int i = 0 ; i <  showResult.size() ; i ++){
+			if(showResult.get(i).getStatus() == SalaryResult.STATUS_TOTAL){
+				total = true;
+			}else{
+				total = false;
+				//continue;
+			}
+			if(i == showResult.size() -1 ){
+				filetotal = true;
+			}
+		%>
 		<tr>
 			<td><%= i+1 %></td>
-			<td id="<%=showResult.get(i).getId() %>filename"><%=showResult.get(i).getUploadOrder().getName() %></td>
+			<td id="<%=showResult.get(i).getId() %>filename"><%=total?"总计":salaryResult.get(i).getUploadOrder().getName() %></td>
 			<td id="<%=showResult.get(i).getId() %>shop"><%=showResult.get(i).getUploadOrder().getShop() %></td>
 			<td id="<%=showResult.get(i).getId() %>pos"><%=showResult.get(i).getUploadOrder().getPosNo() %></td>
 			<td id="<%=showResult.get(i).getId() %>saletime"><%=showResult.get(i).getUploadOrder().getSaleTime() %></td>
 			<td id="<%=showResult.get(i).getId() %>catergory"><%=showResult.get(i).getSalaryModel() == null?"":showResult.get(i).getSalaryModel().getCatergory() %></td>
 			<td id="<%=showResult.get(i).getId() %>salemanname"><%=showResult.get(i).getUploadOrder().getSaleManName() %></td>
 			<td id="<%=showResult.get(i).getId() %>saletype"><%=showResult.get(i).getUploadOrder().getType()  %></td>
-			<td id="<%=showResult.get(i).getId() %>num"><%=showResult.get(i).getUploadOrder().getNum() %></td>
-			<td id="<%=showResult.get(i).getId() %>saleprice"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
-			<td id="<%=showResult.get(i).getId() %>salary"><a href="#" onClick="javascript:window.open('./salaryResultDetail.jsp?id=<%=showResult.get(i).getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" ><%=showResult.get(i).getSalary()==null?"":showResult.get(i).getSalary() %></a></td>
+			<%if(!total){%>
+			<td id="<%=showResult.get(i).getId() %>num" value="<%=showResult.get(i).getUploadOrder().getNum() %>"><%=showResult.get(i).getUploadOrder().getNum() %></td>
+			<td id="<%=showResult.get(i).getId() %>saleprice" value="<%=showResult.get(i).getUploadOrder().getSalePrice() %>"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
+			<td id="<%=showResult.get(i).getId() %>salary" value="<%=showResult.get(i).getSalary()==null?"":showResult.get(i).getSalary() %>"><a  href="#" onClick="javascript:window.open('./salaryResultDetail.jsp?id=<%=showResult.get(i).getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" ><%=showResult.get(i).getSalary()==null?"":showResult.get(i).getSalary() %></a></td>
+			<%
+			}else{
+			%>
+			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>num" value="total"><%=showResult.get(i).getUploadOrder().getNum() %></td>
+			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>saleprice" value="total"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
+			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>salary" value="total"><%=showResult.get(i).getSalary()==null?"0":showResult.get(i).getSalary() %></td>
+			<%
+			}
+			%>
 		</tr>
 		<%} %>
 	</table>
