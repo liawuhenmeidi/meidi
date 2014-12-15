@@ -209,14 +209,17 @@ function amortization(src){
 <jsp:include page="headremind.jsp"/>
 </div>
 
-
-<div class="btn">
+ 
+<div class="btn"> 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input> 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- <input type="submit" class="button" value="设置标准" onclick="amortization('../salesmoney.jsp')" ></input> 
+ <input type="submit" class="button" value="设置标准" onclick="amortization('../salesmoney.jsp?chargetype=<%=BasicUtill.sendinstall %>')" ></input> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ <input type="submit" class="button" value="保存" onclick="save('sendinstallcharge')" ></input>  
+ 
 </div>
-
+ 
 </div > 
 <div style=" height:130px;">
 </div>

@@ -1,6 +1,5 @@
 package installsale;
 
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,14 +22,14 @@ public class InstallSaleManager {
 
 	 public static boolean  save(InstallSale  in){
 		 List<String> sqls = new ArrayList<String>();
-		String sql = "insert into installSale(id,uid,uname,phone,locate,andate,message) values ("+in.getId()+","+in.getUid()+","+in.getUname()+","+in.getPhone()+","+in.getLocate()+","+in.getAndate()+",'"+in.getMessage()+"')";
+		String sql = "insert into installSale(id,uid,uname,phone,locate,andate,message,type) values ("+in.getId()+","+in.getUid()+","+in.getUname()+","+in.getPhone()+","+in.getLocate()+","+in.getAndate()+",'"+in.getMessage()+"',"+in.getType()+")";
 		//logger.info(sql);
 		List<InstallSaleMessage> list = in.getList();
 		for(int i=0;i<list.size();i++){
 			InstallSaleMessage ins = list.get(i); 
 			String sql1 = " insert into installsaleMessage (id,installsaleID,categoryID,productID,dealsend) values (null,"+ins.getInstallsaleID()+",'"+ins.getCategoryID()+"',"+ins.getProductID()+","+ins.getDealsend()+")";
 		    sqls.add(sql1);
-		} 
+		}  
 		sqls.add(sql);  
 		
 		return DBUtill.sava(sqls); 
@@ -74,12 +73,12 @@ public class InstallSaleManager {
 				DB.close(conn);
 			 }
 			return count; 
-	 }
+	 } 
 	 
-	 public static Map<String,InstallSale> getmap(){
+	 public static Map<String,InstallSale> getmap(int chargetype){ 
 		    HashMap<String,InstallSale> map = new HashMap<String,InstallSale>(); 
-			Connection conn = DB.getConn();    
-			String sql = "select * from installSale";  
+			Connection conn = DB.getConn();     
+			String sql = "select * from installSale where type = "+chargetype;   
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {   
@@ -97,8 +96,8 @@ public class InstallSaleManager {
 			return map;
 
 	 }
-	 
-	 public static InstallSale getmap(String id){
+	  
+	 public static InstallSale getInstallSale(String id){
 		    InstallSale in = null; 
 			Connection conn = DB.getConn();    
 			String sql = "select * from installSale where id = "+id;  

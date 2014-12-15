@@ -3,11 +3,18 @@
 <%   
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user");
- 
+ String message = "";
 String uid = request.getParameter("dealsendID");
 String name = request.getParameter("name");
 String price = request.getParameter("price");
-
+String type = request.getParameter("type");
+if(!StringUtill.isNull(type)){
+	if(type.equals(BasicUtill.dealsend+"")){
+		message = "安装网点";
+	}else if(type.equals(BasicUtill.send+"")){
+		message = "送货员";
+	}
+}
 %> 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -39,8 +46,8 @@ String price = request.getParameter("price");
 
   <tr>
     <td colspan="2">&nbsp;</td> 
-    <td width="384" rowspan="2" align="center" style="font-size:30px; font-family:"楷体";><strong>安装网点结款</strong></td>
-    <td width="300"></td> 
+    <td width="384" rowspan="2" align="center" style="font-size:30px; font-family:"楷体";><strong><%=message %>结款</strong></td>
+    <td width="300"></td>  
   </tr>
   <tr>  
     <td width="110" style="font-size:25px; font-family:"楷体";>&nbsp;&nbsp;&nbsp;<strong>&nbsp;</strong></td>
@@ -55,9 +62,9 @@ String price = request.getParameter("price");
   <td height="30" colspan="5" align="center" valign="middle" bgcolor="#FFFFFF">
   <table width="1010" width="100%" border="0" cellspacing="0" cellpadding="0"> 
  <tr>  
-
+  
  <td id="d" width="15%" align="center">
-网点名称:<%=UserService.getMapId().get(Integer.valueOf(uid)).getUsername() %>
+<%=message %>:<%=UserService.getMapId().get(Integer.valueOf(uid)).getUsername() %>
  </td>
  <td id="d" width="15%" align="center"> 
 结款明细名:<%=name %>

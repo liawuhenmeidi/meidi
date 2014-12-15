@@ -1,6 +1,7 @@
 package servlet;
 
 
+import group.Group;
 import inventory.InventoryBranchManager;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ import orderPrint.OrderPrintlnManager;
 import orderPrint.OrderPrintlnService;
 
 import user.User;
+import user.UserManager;
 import utill.DBUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
@@ -123,56 +125,58 @@ public class LogisticsServlet extends HttpServlet {
 	/**
 	 * 处理微信服务器发来的消息
 	 */
-	 
+	   
 	public synchronized int dealsend(User user , Order order , String uid,String method){
 		int count = -1 ;
-		
-		if(order.getDealsendId() == 0 ){
-			List<String> listsql = new ArrayList<String>();
+		if(UserManager.checkPermissions(user,Group.dealSend, "w")){
+			if(order.getDealsendId() == 0 ){
+				List<String> listsql = new ArrayList<String>();
 
-			String sql = "update mdorder set dealSendid = "+uid+" , printSatues = 1 , dealsendTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();		
-			
-			List<String> lists = InventoryBranchManager.chage(user, method, Integer.valueOf(uid), order);
-			listsql.add(sql);
-		    listsql.addAll(lists);
-		    if( DBUtill.sava(listsql)){
-		    	count = 1 ;
-		    }
-		}
-		
+				String sql = "update mdorder set dealSendid = "+uid+" , printSatues = 1 , dealsendTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();		
+				
+				List<String> lists = InventoryBranchManager.chage(user, method, Integer.valueOf(uid), order);
+				listsql.add(sql);
+			    listsql.addAll(lists);
+			    if( DBUtill.sava(listsql)){
+			    	count = 1 ;
+			    }
+			}
+		};
 		return count ;
 		 
 	} 
 	
 	public synchronized int send(User user , Order order , String uid,String method){
 		int count = -1 ;
-				
-		if(order.getSendId() == 0 ){
-			List<String> listsql = new ArrayList<String>();
-			String sql = "update mdorder set sendId = "+uid+"  , printSatuesp= 1  where id = " + order.getId() ;
-			List<String> lists = InventoryBranchManager.chage(user, method, Integer.valueOf(uid), order); 
-			listsql.add(sql);
-		    listsql.addAll(lists);
-		    if( DBUtill.sava(listsql)){
-		    	count = 1 ;
-		    }
+		if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){		
+			if(order.getSendId() == 0 ){
+				List<String> listsql = new ArrayList<String>();
+				String sql = "update mdorder set sendId = "+uid+"  , printSatuesp= 1  where id = " + order.getId() ;
+				List<String> lists = InventoryBranchManager.chage(user, method, Integer.valueOf(uid), order); 
+				listsql.add(sql);
+			    listsql.addAll(lists);
+			    if( DBUtill.sava(listsql)){
+			    	count = 1 ;
+			    }
+			}
 		}
-		
 		return count ;
 		 
 	} 
 	
 	public synchronized int Orderreturns(User user , Order order , String uid,String method){
 		    int count = -1 ;
+		    if(UserManager.checkPermissions(user,Group.send, "w")){		
+		    	List<String> listsql = new ArrayList<String>();
+			     
+				String sql =  "update mdorder set returnstatues = 1 , returntime = '"+TimeUtill.gettime()+"'  where id = " + order.getId() ;
 				
-			List<String> listsql = new ArrayList<String>();
-		     
-			String sql =  "update mdorder set returnstatues = 1 , returntime = '"+TimeUtill.gettime()+"'  where id = " + order.getId() ;
+				listsql.add(sql);  
+			    if( DBUtill.sava(listsql)){
+			    	count = 1 ;
+			    }
+		    }	
 			
-			listsql.add(sql);  
-		    if( DBUtill.sava(listsql)){
-		    	count = 1 ;
-		    }
 		
 		
 		return count ;
@@ -181,19 +185,19 @@ public class LogisticsServlet extends HttpServlet {
 	
 	public synchronized int orderreturn(User user , Order order , String uid,String method){
 		int count = -1 ;
-				
-		if(order.getReturnid() == 0 ){
-			List<String> listsql = new ArrayList<String>();
-		    
-			String sql = "update mdorder set returnid = "+uid+" , returnprintstatues = 1  where id = " + order.getId() ;
-			List<String> lists = InventoryBranchManager.chage(user, method, order.getDealsendId(), order);
-			listsql.add(sql);
-		    listsql.addAll(lists);
-		    if( DBUtill.sava(listsql)){
-		    	count = 1 ;
-		    }
+		if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){				
+			if(order.getReturnid() == 0 ){
+				List<String> listsql = new ArrayList<String>();
+			    
+				String sql = "update mdorder set returnid = "+uid+" , returnprintstatues = 1  where id = " + order.getId() ;
+				List<String> lists = InventoryBranchManager.chage(user, method, order.getDealsendId(), order);
+				listsql.add(sql);
+			    listsql.addAll(lists);
+			    if( DBUtill.sava(listsql)){
+			    	count = 1 ;
+			    }
+			}
 		}
-		
 		return count ;
 		 
 	} 
@@ -202,20 +206,21 @@ public class LogisticsServlet extends HttpServlet {
 	// 安装人员释放
 	public synchronized int salereleaseanzhuang(User user , Order order , String uid,String method){
 		int count = -1 ;
+		if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){			
+			if(order.getInstallid() != 0 ){
+				List<String> listsql = new ArrayList<String>();
 				
-		if(order.getInstallid() != 0 ){
-			List<String> listsql = new ArrayList<String>();
-			
-			String sql1 = "delete from mdorderupdateprint where id = " + uid;
-			OrderPrintlnService.flag = true ;
-			String sql = "update mdorder set installid = 0,printSatuesp = 0  where id = " + order.getId() ;
-
-			listsql.add(sql);
-			listsql.add(sql1);
-			
-		    if( DBUtill.sava(listsql)){
-		    	count = 1 ;
-		    }
+				String sql1 = "delete from mdorderupdateprint where id = " + uid;
+				OrderPrintlnService.flag = true ;
+				String sql = "update mdorder set installid = 0,printSatuesp = 0  where id = " + order.getId() ;
+	
+				listsql.add(sql);
+				listsql.add(sql1);
+				
+			    if( DBUtill.sava(listsql)){
+			    	count = 1 ;
+			    }
+			}
 		}
 		return count ;
 		 
@@ -242,22 +247,23 @@ public class LogisticsServlet extends HttpServlet {
 	// 送货员释放
 		public synchronized int salerelease(User user , Order order , String uid,String method){
 			int count = -1 ;
+			if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){			
+				if(order.getSendId() != 0 ){
+					List<String> listsql = new ArrayList<String>();
 					
-			if(order.getSendId() != 0 ){
-				List<String> listsql = new ArrayList<String>();
-				
-				String sql1 = "delete from mdorderupdateprint where id = " + uid;
-				OrderPrintlnService.flag = true ;
-				String sql = "update mdorder set sendId = 0, printSatuesp = 0  where id = " + order.getId();
-				
-				List<String> lists = InventoryBranchManager.chage(user, "salereleasesonghuo", order.getDealsendId(), order);
-				 
-				listsql.add(sql);
-				listsql.add(sql1);
-			    listsql.addAll(lists);
-			    if( DBUtill.sava(listsql)){
-			    	count = 1 ;
-			    }
+					String sql1 = "delete from mdorderupdateprint where id = " + uid;
+					OrderPrintlnService.flag = true ;
+					String sql = "update mdorder set sendId = 0, printSatuesp = 0  where id = " + order.getId();
+					
+					List<String> lists = InventoryBranchManager.chage(user, "salereleasesonghuo", order.getDealsendId(), order);
+					 
+					listsql.add(sql);
+					listsql.add(sql1);
+				    listsql.addAll(lists);
+				    if( DBUtill.sava(listsql)){
+				    	count = 1 ;
+				    }
+				}
 			}
 			return count ;
 			 
@@ -266,22 +272,23 @@ public class LogisticsServlet extends HttpServlet {
 	// 安装网点释放
 	public synchronized int release(User user , Order order , String opid,String method){
 		int count = -1 ;
+		if(UserManager.checkPermissions(user,Group.dealSend, "w")){			
+			if(order.getDealsendId() != 0 ){
+				List<String> listsql = new ArrayList<String>();
 				
-		if(order.getDealsendId() != 0 ){
-			List<String> listsql = new ArrayList<String>();
-			
-			String sql1 = "delete from mdorderupdateprint where id = " + opid;
-			OrderPrintlnService.flag = true ;
-			String sql = "update mdorder set dealSendid = 0  , printSatues = 0  where id = " + order.getId();
-			
-			List<String> lists = InventoryBranchManager.chage(user, "shifang", order.getDealsendId(), order);
-			
-			listsql.add(sql);
-			listsql.add(sql1);
-		    listsql.addAll(lists);
-		    if( DBUtill.sava(listsql)){
-		    	count = 1 ;
-		    }
+				String sql1 = "delete from mdorderupdateprint where id = " + opid;
+				OrderPrintlnService.flag = true ;
+				String sql = "update mdorder set dealSendid = 0  , printSatues = 0  where id = " + order.getId();
+				
+				List<String> lists = InventoryBranchManager.chage(user, "shifang", order.getDealsendId(), order);
+				
+				listsql.add(sql);
+				listsql.add(sql1);
+			    listsql.addAll(lists);
+			    if( DBUtill.sava(listsql)){
+			    	count = 1 ;
+			    }
+			}
 		}
 		return count ;
 		 
@@ -290,23 +297,24 @@ public class LogisticsServlet extends HttpServlet {
 	// 退货员释放
 		public synchronized int salereleasereturn(User user , Order order , String uid,String method){
 			int count = -1 ;
+			if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){			
+				if(order.getReturnid() != 0 ){
+					List<String> listsql = new ArrayList<String>();
 					
-			if(order.getReturnid() != 0 ){
-				List<String> listsql = new ArrayList<String>();
-				
-				String sql1 = "delete from mdorderupdateprint where id = " + uid;
-				OrderPrintlnService.flag = true ;
-				String sql = "update mdorder set returnid = 0, printSatuesp = 0  where id = " +order.getId();
-				
-				List<String> lists = InventoryBranchManager.chage(user, "salereleasereturn", order.getDealsendId(), order);
-				
-				listsql.add(sql);
-				listsql.add(sql1);
-				
-			    listsql.addAll(lists);
-			    if( DBUtill.sava(listsql)){
-			    	count = 1 ;
-			    }
+					String sql1 = "delete from mdorderupdateprint where id = " + uid;
+					OrderPrintlnService.flag = true ;
+					String sql = "update mdorder set returnid = 0, printSatuesp = 0  where id = " +order.getId();
+					
+					List<String> lists = InventoryBranchManager.chage(user, "salereleasereturn", order.getDealsendId(), order);
+					
+					listsql.add(sql);
+					listsql.add(sql1);
+					
+				    listsql.addAll(lists);
+				    if( DBUtill.sava(listsql)){
+				    	count = 1 ;
+				    }
+				}
 			}
 			return count ;
 			 
@@ -315,27 +323,28 @@ public class LogisticsServlet extends HttpServlet {
 		// 导购同意安装网点释放 
 				public synchronized int returns(User user , Order order , String uid,String method){
 					int count = -1 ;
+					if(UserManager.checkPermissions(user,Group.dealSend, "w")){			
+						if(!order.isreturn()){ 
+							List<String> listsql = new ArrayList<String>();
 							
-					if(!order.isreturn()){ 
-						List<String> listsql = new ArrayList<String>();
-						
-						String sql2 = "delete from mdorderupdateprint where id = " + uid;
-						OrderPrintlnService.flag = true ;
-						String sql = "update mdorder set deliveryStatues  = (mdorder.deliveryStatues + 3)  where id = " + order.getId();
-						
-						if(order.getOderStatus().equals(20+"")){ 
-							String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl()+ " and mdtype = 10 ";
-				            listsql.add(sql1);
+							String sql2 = "delete from mdorderupdateprint where id = " + uid;
+							OrderPrintlnService.flag = true ;
+							String sql = "update mdorder set deliveryStatues  = (mdorder.deliveryStatues + 3)  where id = " + order.getId();
+							
+							if(order.getOderStatus().equals(20+"")){ 
+								String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl()+ " and mdtype = 10 ";
+					            listsql.add(sql1);
+							}
+				            
+							List<String> lists = InventoryBranchManager.chage(user,"returns", order.getDealsendId(), order);     
+									
+							listsql.add(sql);
+							listsql.add(sql2);
+						    listsql.addAll(lists);
+						    if( DBUtill.sava(listsql)){
+						    	count = 1 ;
+						    }
 						}
-			            
-						List<String> lists = InventoryBranchManager.chage(user,"returns", order.getDealsendId(), order);     
-								
-						listsql.add(sql);
-						listsql.add(sql2);
-					    listsql.addAll(lists);
-					    if( DBUtill.sava(listsql)){
-					    	count = 1 ;
-					    }
 					}
 					return count ;
 					 
@@ -343,63 +352,64 @@ public class LogisticsServlet extends HttpServlet {
 				
 	public synchronized int install(User user , Order order , String uid,String method){
 		int count = -1 ;
-		
-		if(order.getInstallid() == 0 ){
-			List<String> listsql = new ArrayList<String>();
-			String sql = "update mdorder set installid = "+uid+" , printSatuesp= 1  where id = " + order.getId() ;
-			listsql.add(sql);
-		    if( DBUtill.sava(listsql)){
-		    	count = 1 ;
-		    }
+		if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){	
+			if(order.getInstallid() == 0 ){
+				List<String> listsql = new ArrayList<String>();
+				String sql = "update mdorder set installid = "+uid+" , printSatuesp= 1  where id = " + order.getId() ;
+				listsql.add(sql);
+			    if( DBUtill.sava(listsql)){
+			    	count = 1 ;
+			    }
+			}
 		}
-		
 		return count ;
 		 
 	} 
 	
 	public synchronized int songhuo(User user , Order order , String devstatues,String method){
 		int count = -1 ;
-		String sql = "";
-		int statues = Integer.valueOf(devstatues);
-		List<String> listsql = new ArrayList<String>();
-		
-		if(order.getOderStatus().equals(20+"")){
-			if(order.getDeliveryStatues() != 1 && order.getDeliveryStatues() != 2){
-				if((2 == statues || 1 == statues )){
-					if(2 == statues){
-						sql = "update mdorder set deliveryStatues = "+statues+" , deliverytype = 1 , sendTime = '"+TimeUtill.gettime()+"' , installTime = '"+TimeUtill.gettime()+"' , installid = mdorder.sendId   where id = " + order.getId();
-					}else if(1 == statues){
-						sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 ,  printSatuesp = 0 , sendTime = '"+TimeUtill.gettime()+"'  where id = " +order.getId();
-					}
-			    	String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl();
-			    	OrderPrintlnService.flag = true ;
-			    	List<String> lists = InventoryBranchManager.chage(user, method, order.getDealsendId(), order);
-				    listsql.addAll(lists); 
-			    	listsql.add(sql1);
-			    }
-			}else if(order.getDeliveryStatues() == 1 && statues != 1){
-				statues = 2 ;    
-				sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
-			}
+		if(UserManager.checkPermissions(user,Group.send, "w")){	
+			String sql = "";
+			int statues = Integer.valueOf(devstatues);
+			List<String> listsql = new ArrayList<String>();
 			
-	    }else {
-	    	if(2 == statues){
-				sql = "update mdorder set deliveryStatues = "+statues+" , deliverytype = 1 , sendTime = '"+TimeUtill.gettime()+"' , installTime = '"+TimeUtill.gettime()+"' , installid = mdorder.sendId   where id = " + order.getId();
-			}else if(1 == statues) {  
-				sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 ,  printSatuesp = 0 , sendTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
-			}else if( 4 == statues ||  9 == statues || 10 == statues){
-				statues = 2 ;    
-				sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
-			} 
-	    }  
-		
-		if(!StringUtill.isNull(sql)){
-			listsql.add(sql); 
+			if(order.getOderStatus().equals(20+"")){
+				if(order.getDeliveryStatues() != 1 && order.getDeliveryStatues() != 2){
+					if((2 == statues || 1 == statues )){
+						if(2 == statues){
+							sql = "update mdorder set deliveryStatues = "+statues+" , deliverytype = 1 , sendTime = '"+TimeUtill.gettime()+"' , installTime = '"+TimeUtill.gettime()+"' , installid = mdorder.sendId   where id = " + order.getId();
+						}else if(1 == statues){
+							sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 ,  printSatuesp = 0 , sendTime = '"+TimeUtill.gettime()+"'  where id = " +order.getId();
+						}
+				    	String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl();
+				    	OrderPrintlnService.flag = true ;
+				    	List<String> lists = InventoryBranchManager.chage(user, method, order.getDealsendId(), order);
+					    listsql.addAll(lists); 
+				    	listsql.add(sql1);
+				    }
+				}else if(order.getDeliveryStatues() == 1 && statues != 1){
+					statues = 2 ;    
+					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
+				}
+				
+		    }else {
+		    	if(2 == statues){
+					sql = "update mdorder set deliveryStatues = "+statues+" , deliverytype = 1 , sendTime = '"+TimeUtill.gettime()+"' , installTime = '"+TimeUtill.gettime()+"' , installid = mdorder.sendId   where id = " + order.getId();
+				}else if(1 == statues) {  
+					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 ,  printSatuesp = 0 , sendTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
+				}else if( 4 == statues ||  9 == statues || 10 == statues){
+					statues = 2 ;    
+					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
+				} 
+		    }  
+			
+			if(!StringUtill.isNull(sql)){
+				listsql.add(sql); 
+			}
+			    if( DBUtill.sava(listsql)){
+			    	count = 1 ;
+			    }
 		}
-		    if( DBUtill.sava(listsql)){
-		    	count = 1 ;
-		    }
-		
 		return count ;
 		 
 	} 
@@ -429,7 +439,7 @@ public class LogisticsServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		 
 		// 调用核心业务类接收消息、处理消息
 		doGet(request,response);
 

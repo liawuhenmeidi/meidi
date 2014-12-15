@@ -9,19 +9,27 @@ User user = (User)session.getAttribute("user");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>订单管理</title>
-
+<title>订单管理</title> 
+<base target="_parent"/>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
-<link href="../style/zzsc.css" rel="stylesheet" type="text/css" />
-<script src="../js/showlist.js" type="text/javascript"></script>
+<link href="../style/zzsc.css" rel="stylesheet" type="text/css" />  
+<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../js/showlist.js" ></script>
+
+ <script type = "text/javascript" language = "javascript"> 
  
+function reloadopned(src){   
+	$("#main",window.parent.document).find("#contentpage").attr("src",src);
+		//$("#contentpage").attr("src");
+  }  
+  </script>
 </head>
 
 <body> 
 
 <!--   头部开始   -->
-<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 
+  
 <!--   头部结束   -->
 <div class="main_a">
    <div class="main content">
@@ -29,19 +37,18 @@ User user = (User)session.getAttribute("user");
       <div class="operate">
         <h3> 后台管理 </h3>
         <ul id="J_navlist">
-          <li >   
+          <li >     
             <h4 >个人中心</h4>
             <div class="list-item none"> 
-              <p ><a href="loginN.jsp" target="contentpage">个人中心</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('loginN.jsp')">个人中心</a></p>
               <%
      if(UserManager.checkPermissions(user,Group.Manger)){
      %> 
-    <p ><a href="company.jsp" target="contentpage">公司基本信息</a></p>
+    <p ><a href="javascript:void(0);"  onclick="reloadopned('company.jsp')">公司基本信息</a></p>
     <%
      }
     %>
-              
-            </div>
+   </div>
           </li> 
           <%
            if(UserManager.checkPermissions(user, Group.dealSend)){
@@ -49,33 +56,33 @@ User user = (User)session.getAttribute("user");
           <li>       
             <h4 >订单管理</h4>
             <div class="list-item none"> 
-              <p ><a href="dingdan.jsp" target="contentpage">文员派工页</a></p> 
-            <!--    <p ><a href="dingdanpeidan.jsp" target="contentpage">文员打印页</a></p> -->  
-              <p ><a href="dingdanprintln.jsp" target="contentpage">查看订单页</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdan.jsp')">文员派工页</a></p> 
+            <!--    <p ><a href="dingdanpeidan.jsp" href="javascript:void(0);"  onclick="reloadopned('dingdango.jsp')">文员打印页</a></p> -->  
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanprintln.jsp')">查看订单页</a></p>
                
-               <p ><a href="dingdancallback.jsp"  target="contentpage">客服未回访页</a></p>
-              <p ><a href="dingdanTuihuo.jsp" target="contentpage">退货订单</a></p>               
-             <!-- <p ><a href="./verifyCode.jsp" target="contentpage">强制消单页</a></p>  --> 
+               <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdancallback.jsp')">客服未回访页</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanTuihuo.jsp')">退货订单</a></p>               
+             <!-- <p ><a href="./verifyCode.jsp" href="javascript:void(0);"  onclick="reloadopned('dingdango.jsp')">强制消单页</a></p>  --> 
               
             </div>  
           </li> 
           <li >
             <h4 >厂送单管理</h4>
             <div class="list-item none">
-               <p ><a href="dingdanCome.jsp" target="contentpage">厂送票未回</a></p>
-               <p ><a href="dingdango.jsp" target="contentpage">厂送票未消</a></p>
-               <p ><a href="dingdanCharge.jsp" target="contentpage">厂送票未结款</a></p>
-               <p ><a href="uploadManage.jsp" target="contentpage">上传管理</a></p>
-              <p ><a href="manualCheckout.jsp" target="contentpage">结款页</a></p>
+               <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanCome.jsp')">厂送票未回</a></p>
+               <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdango.jsp')">厂送票未消</a></p>
+               <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanCharge.jsp')">厂送票未结款</a></p>
+               <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadManage.jsp')">上传管理</a></p>
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('manualCheckout.jsp')">结款页</a></p>
             </div>
-          </li>
-           <li > 
-            <h4 >工资管理</h4>
+          </li> 
+           <li >  
+            <h4 >工资管理</h4> 
             <div class="list-item none">
-              <p ><a href="salaryCalc.jsp" target="contentpage">提成计算页</a></p>
-              <p ><a href="salaryExport.jsp" target="contentpage">提成导出页</a></p>
-              <p ><a href="dingdanover.jsp" target="contentpage">安装网点结款页</a></p>  
-              <p ><a href="dealsendExport.jsp" target="contentpage">安装网点结款管理</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('salaryCalc.jsp')">提成计算页</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('salaryExport.jsp')">提成导出页</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanover.jsp')">安装网点结款页</a></p>  
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dealsendExport.jsp')">安装网点结款管理</a></p>
             </div>
           </li>
           <%
@@ -86,7 +93,7 @@ User user = (User)session.getAttribute("user");
           <li >
             <h4 >职工管理</h4>
             <div class="list-item none">
-              <p ><a href="huiyuan.jsp" target="contentpage">职工管理</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('huiyuan.jsp')">职工管理</a></p>
             </div>
           </li>
           <% } 
@@ -95,10 +102,10 @@ User user = (User)session.getAttribute("user");
        <li > 
             <h4 >库存管理</h4>
             <div class="list-item none"> 
-              <p ><a href="inventory/receipts.jsp" target="contentpage">单据管理</a></p>
-              <p ><a href="inventory/inventory.jsp" target="contentpage">库存查询</a></p>
-               <p ><a href="inventory/inventoryAnalyze.jsp" target="contentpage">预约调货</a></p>
-              <p ><a href="inventory/analyzrecepts.jsp" target="contentpage">调货处理</a></p>
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/receipts.jsp')">单据管理</a></p>
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventory.jsp')">库存查询</a></p>
+               <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventoryAnalyze.jsp')">预约调货</a></p>
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/analyzrecepts.jsp')">调货处理</a></p>
             </div>
           </li>  
          <% 
@@ -108,7 +115,7 @@ User user = (User)session.getAttribute("user");
             <li >
             <h4 >职位管理</h4>
             <div class="list-item none">
-              <p ><a href="juesetype.jsp" target="contentpage">职位管理</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('juesetype.jsp')">职位管理</a></p>
             </div>
           </li>
             <%
@@ -120,7 +127,7 @@ User user = (User)session.getAttribute("user");
           <li >
             <h4 >产品管理</h4>
             <div class="list-item none">
-              <p ><a href="category.jsp" target="contentpage">产品管理</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('category.jsp')">产品管理</a></p>
 
             </div>
           </li>
@@ -134,7 +141,7 @@ User user = (User)session.getAttribute("user");
           <li >
             <h4 >门店管理</h4>
             <div class="list-item none">
-              <p ><a href="branch.jsp" target="contentpage">门店管理</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('branch.jsp')">门店管理</a></p>
             </div>
           </li> 
           
@@ -148,7 +155,7 @@ User user = (User)session.getAttribute("user");
           <li > 
             <h4 >地区管理</h4>
             <div class="list-item none">
-              <p ><a href="locate.jsp"  target="contentpage">地区管理</a></p>
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('locate.jsp')">地区管理</a></p>
             </div>
           </li>
           <%
@@ -158,7 +165,7 @@ User user = (User)session.getAttribute("user");
           <li > 
             <h4 >数据备份</h4>   
             <div class="list-item none">
-              <p ><a href="database.jsp"  target="contentpage">数据备份</a></p>
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('database.jsp')">数据备份</a></p>
             </div>     
           </li>
       
@@ -168,20 +175,22 @@ User user = (User)session.getAttribute("user");
         	<li > 
             <h4 >安装网点派工</h4>     
             <div class="list-item none">
-              <p ><a href="dispatch/dingdanpeidan2.jsp"  target="contentpage">安装网点派工</a></p>
-                <p ><a href="dispatch/dingdanquery.jsp"  target="contentpage">送货确认页</a></p> 
-               <p ><a href="dispatch/dingdanpeidan2anzhuang.jsp"  target="contentpage">安装派工</a></p> 
-              <p ><a href="dispatch/dingdanpeidan2s.jsp"  target="contentpage">安装网点查询</a></p>
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdanpeidan2.jsp')">安装网点派工</a></p>
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdanquery.jsp')">送货确认页</a></p> 
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdanpeidan2anzhuang.jsp')">安装派工</a></p> 
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdanpeidan2s.jsp')">安装网点查询</a></p>
             </div> 
             </li> 
             <li > 
              <h4 >费用结算</h4>     
             <div class="list-item none">
-              <p ><a href="dealsendExport.jsp" target="contentpage">安装网点结款管理</a></p>
-              <p ><a href="dispatch/dingdan_chargep.jsp"  target="contentpage">送货结款</a></p>
-               <p ><a href="dispatch/dingdancallback.jsp"  target="contentpage">客服未回访页</a></p> 
-              <p ><a href="dispatch/dingdan_charge.jsp"  target="contentpage">安装结款</a></p> 
-               <p ><a href="dispatch/dingdan_chargeall.jsp"  target="contentpage">送货安装结款</a></p>  
+            
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dealsendExport.jsp')" >安装网点结款管理</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('sendExport.jsp')" >送货结款管理</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdan_chargep.jsp')" >送货结款</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdancallback.jsp')" >客服未回访页</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdan_charge.jsp')" >安装结款</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdan_chargeall.jsp')" >送货安装结款</a></p> 
             </div>        
           </li> 
  	 

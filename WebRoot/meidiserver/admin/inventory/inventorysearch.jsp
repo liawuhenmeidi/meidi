@@ -25,7 +25,7 @@ Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 
 String inventoryid = request.getParameter("id");
 Inventory inventory = null ;
-String invent = ""; 
+String invent = "[]"; 
 String outbranch = "";
 String inbranch = "";
 String remark = "";
@@ -86,24 +86,18 @@ td {
 var disable = '<%=isdisabel %>';
 
  var jsonmap = '<%=mapjosn%>'; 
- var availableTags = '<%=plist%>';
- var jsons =  $.parseJSON(availableTags);
+ var jsons =  <%=plist%>;
  
- var listallp = '<%=listallpp%>';
 //alert(listallp);
- var jsonallp =  $.parseJSON(listallp); 
- 
- var listall = '<%=listall%>';
+ var jsonallp =  <%=listallpp%>; 
   
  //alert(listall);
- var jsonall =  $.parseJSON(listall);
+ var jsonall = <%=listall%>;
  
  var row = 1; 
  var rows = new Array();
-  
- var inventoyr = '<%=invent%>';
  //alert(inventoyr); 
- var jsoninvent =  $.parseJSON(inventoyr);
+ var jsoninvent =  <%=invent%>;
   
  $(function () { 
 	 initproduct();

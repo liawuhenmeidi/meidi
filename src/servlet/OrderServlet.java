@@ -81,7 +81,7 @@ public class OrderServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		String mm = request.getParameter("mm");
 		User user  = (User)request.getSession().getAttribute("user");
-logger.info(id);  
+logger.info(id);   
        
 		String message = request.getParameter("message");
         if(""==id || null == id){
@@ -92,8 +92,8 @@ logger.info(message);
 		or.setOrderid(Integer.valueOf(id));
 		or.setMessage(message);
 		or.setStatues(OrderPrintln.comit);
-		int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
-		or.setpGroupId(pgroup);        
+		//int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
+		//or.setpGroupId(pgroup);        
 		if("tuihuo".equals(mm)){  
 			or.setType(OrderPrintln.returns);   
 		}else if("huanhuo".equals(mm)){

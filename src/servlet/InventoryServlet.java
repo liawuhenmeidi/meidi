@@ -51,25 +51,27 @@ public class InventoryServlet extends HttpServlet {
 		Object object = new Object();
 		   
 		String method = request.getParameter("method");
-		//System.out.println("method"+method);  
-		synchronized(object){
-			if("add".equals(method)){ 
-				saveBranch(request,response);
-				return ;   
-			}else if("del".equals(method)){
-				deleteBranch(request,response);
-				return ;
-			}else if("addsubscribe".equals(method)){
-				savesubscribeBranch(request,response);
-			}else if("updatesubscribe".equals(method)){
-				updatesubscribeBranch(request,response);
-			}else if("outbranch".equals(method) || "inbranch".equals(method)){ 
-				saveInventory(request,response);
-				return ; 
-			}{ 
-			  //save(request,response);
+		User user  = (User)request.getSession().getAttribute("user");
+		if(UserManager.checkPermissions(user,Group.inventoryquery, "w")){
+			synchronized(object){   
+				if("add".equals(method)){ 
+					saveBranch(request,response);
+					return ;   
+				}else if("del".equals(method)){
+					deleteBranch(request,response);
+					return ;
+				}else if("addsubscribe".equals(method)){
+					savesubscribeBranch(request,response);
+				}else if("updatesubscribe".equals(method)){
+					updatesubscribeBranch(request,response);
+				}else if("outbranch".equals(method) || "inbranch".equals(method)){ 
+					saveInventory(request,response);
+					return ; 
+				}
 			}
 		}
+		//System.out.println("method"+method);  
+		
 	} 
 	 
 	private synchronized void  saveInventory(HttpServletRequest request, HttpServletResponse response){

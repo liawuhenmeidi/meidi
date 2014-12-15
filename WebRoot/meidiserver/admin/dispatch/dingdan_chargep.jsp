@@ -215,12 +215,15 @@ function amortization(src){
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input> 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- <input type="submit" class="button" value="设置标准" onclick="amortization('../salesmoney.jsp')" ></input> 
+ <input type="submit" class="button" value="设置标准" onclick="amortization('../salesmoney.jsp?chargetype=<%=BasicUtill.send %>')" ></input> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ <input type="submit" class="button" value="保存" onclick="save('sendcharge')" ></input>
+
 </div>
 
-</div > 
+</div >  
 <div style=" height:130px;">
-</div>
+</div> 
   <%@ include file="searchOrderAll.jsp"%>  
  
 <br/>  

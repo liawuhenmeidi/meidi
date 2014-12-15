@@ -1,8 +1,8 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
 <%@ include file="searchdynamic.jsp"%>
-     
-<%   
+      
+<%    
 //list = OrderManager.getOrderlistl(user,Group.sencondDealsend,"",sort); 
      
 List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.charge,num,Page,sort,sear);  
@@ -67,9 +67,9 @@ var oid ="<%=id%>";
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";
 var type = "<%=Group.sencondDealsend%>";
-
+  
 $(function () { 
-	 fixation();
+	 fixation(); 
 	// alert(type+"*"+statues+"*"+num+"*"+page+"*"+sort+"*"+sear);
 	 initOrder(type,statues,num,page,sort,sear);
 });
@@ -216,7 +216,10 @@ function amortization(src){
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input> 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- <input type="submit" class="button" value="设置标准" onclick="amortization('../salesmoney.jsp')" ></input> 
+ <input type="submit" class="button" value="设置标准" onclick="amortization('../salesmoney.jsp?chargetype=<%=BasicUtill.install %>')" ></input> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ <input type="submit" class="button" value="保存" onclick="save('installcharge')" ></input>  
+
 </div>
 </div > 
 <div style=" height:130px;">
