@@ -742,9 +742,11 @@ public class SalaryCalcManager {
 			Date endDate) {
 		List<SalaryResult> result = new ArrayList<SalaryResult>();
 		Map<Integer,UploadOrder> orderMap = new HashMap<Integer,UploadOrder>();
-		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		
-		String sql = "select * from uploadorder where uploadtime >= '" + fmt.format(startDate) + "' and uploadtime <= '" + fmt.format(endDate) + "' order by name,shop";
+		//SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		//String sql = "select * from uploadorder where uploadtime >= '" + fmt.format(startDate) + "' and uploadtime <= '" + fmt.format(endDate) + "' order by name,shop";
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyyMMdd");
+		String sql = "select * from uploadorder where saletime >= '" + fmt.format(startDate) + "' and saletime <= '" + fmt.format(endDate) + "' order by name,shop";
+	
 		logger.info(sql);
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn); 
