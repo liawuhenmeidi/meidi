@@ -153,7 +153,10 @@ public class SalaryCalcManager {
 						for(int i = 0 ; i < rules.length ; i ++){
 							//初始化items
 							String leftSide = rules[i].split(":")[0];
-							String rightSide = rules[i].split(":")[1];
+							String rightSide = "";
+							if(!rules[i].endsWith(":")){
+								rightSide = rules[i].split(":")[1];
+							}
 							for(int m = 0 ; m < leftSide.split("_").length ; m ++){
 								items.add(leftSide.split("_")[m]);
 							}
