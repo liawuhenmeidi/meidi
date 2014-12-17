@@ -35,7 +35,7 @@ if(!"".equals(request.getParameter("submit"))){
 			break;
 		}
 		paraTempName = ids.split(",")[i];
-		content += paraTempName + ":" + request.getParameter(paraTempName) + ",";
+		content += paraTempName.replace(",", "").replace(":", "") + ":" + request.getParameter(paraTempName).replace(",", "").replace(":", "") + ",";
 	}
 	if(content.endsWith(",")){
 		content = content.substring(0,content.length()-1);
