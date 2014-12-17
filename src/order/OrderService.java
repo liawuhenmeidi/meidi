@@ -3045,7 +3045,7 @@ public class OrderService {
        		
 				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
 			
-			    html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name = "+o.getId() +"></input></td>");
+			   // html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name = "+o.getId() +"></input></td>");
 			
 				
 			    if(UserManager.checkPermissions(user, Group.updateOrderDealsend, "w")){

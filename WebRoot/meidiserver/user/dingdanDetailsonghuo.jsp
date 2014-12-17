@@ -1,7 +1,6 @@
 <%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="detaildynamic.jsp"%> 
 <%  
-int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
 Map<Integer,List<Gift>> gMap = GiftService.getmap(); 
 User sale = UserService.getMapId().get(or.getSaleID());
 request.setAttribute("order", or);
@@ -27,7 +26,6 @@ var id = "<%=id%>";
 var statues = "";
 var oppstatues = "<%=modify%>" ;
 var canupdate = "<%=canupdate%>";
-var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";
 
 function updateOeder(){ 
@@ -102,7 +100,7 @@ function winconfirm(str){
 		        type:"post", 
 		         url:"server.jsp",
 		         //data:"method=list_pic&page="+pageCount,
-		        data:"method=shifang&oid="+id+"&pGroupId="+pgroup+"&opstatues="+opstatues,
+		        data:"method=shifang&oid="+id+"&opstatues="+opstatues,
 		         dataType: "", 
 		         success: function (data) { 
 		          alert("驳回申请已提交成功");    
