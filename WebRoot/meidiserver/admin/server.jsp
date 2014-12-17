@@ -208,18 +208,23 @@ if("deleOrder".equals(method)){
 	String dealsendid = request.getParameter("branchid");
 	String id = request.getParameter("id");
 	String said = request.getParameter("said");
-	System.out.println(said );
+	//System.out.println(said ); 
 	String savetype = request.getParameter("savetype");
 	//System.out.println(savetype );
 	String message = request.getParameter("message");
 	List<SaledealsendMessage> list = new ArrayList<SaledealsendMessage>();
 
 	Saledealsend sa = new Saledealsend();
+	
 	if(StringUtill.isNull(said)){ 
 		said = (SaledealsendManager.getmaxid()+1)+"";
 		flag = true ;
+	}else {
+		Saledealsend sade = SaledealsendManager.getSaledealsend(said);
+		sa.setGivestatues(sade.getGivestatues());
+		sa.setReceivestatues(sade.getReceivestatues());
 	}
-	 
+	  
 	sa.setId(Integer.valueOf(said));
 	
 	if("left".equals(savetype)){

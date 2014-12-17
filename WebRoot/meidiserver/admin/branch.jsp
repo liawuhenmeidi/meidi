@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
     
 List<BranchType> list =BranchTypeManager.getLocate() ;
-
+boolean flag = UserManager.checkPermissions(user, Group.branch,"w");  
 //System.out.println("list.size()"+list.size());
 %>
   
@@ -151,23 +151,37 @@ if(list != null){
 		<td align="left"><%=category.getName() %></td> 
 		
 		<td align="left">
-		<% if(category.getIsSystem() == 0 ){%>
+		<% 
+		  if(flag){
+		  if(category.getIsSystem() == 0 ){%>
 		<a href="branchupdate.jsp?id=<%=category.getId() %>">[修改]</a>
-		<% }%>
+		<% }
+		}%>
 		</td>
 		<td align="left">
 			<a href="branch1.jsp?id=<%=category.getId() %>">[查看]</a>
 		</td>
 		<td align="left">
-		<% if(category.getStatues() ==0){
-             %>
-                                           否<input type="button" onclick="update('<%=category.getId()%>','1')"  value="开启"/>                      
-                                            
-            <%
-            }else {   
-            %>
-                                      是<input type="button" onclick="update('<%=category.getId()%>','0')"  value="关闭"/> 
-            <%}%> 
+		<% 
+		
+		String str = category.getStatues() ==0?"否":"是";
+		
+		if(flag){
+			  if(category.getStatues() ==0){
+	             %>
+	             <%=str %>
+	             <input type="button" onclick="update('<%=category.getId()%>','1')"  value="开启"/>                      
+	                                            
+	            <%
+	            }else {   
+	            %>
+	             <%=str %>
+	              <input type="button" onclick="update('<%=category.getId()%>','0')"  value="关闭"/> 
+	            <%}
+            }else { 
+            %>  
+             <%=str %>
+            <% }%>
             
         </td>
     </tr>   
@@ -181,6 +195,7 @@ if(list != null){
 <!--  <input type="button" class="button" name="dosubmit" value="删除" onclick="winconfirm()"></input>  -->
 
 </div>
+<%if(flag){%>
 <div class="btn">  
      
      门店大类： <input type="text"  id="locate" name="locate" />  
@@ -188,6 +203,7 @@ if(list != null){
   <input type="submit" class="button" name="dosubmit" value="删除"  onclick="winconfirm()"></input>
 
 </div>
+<%}  %>
 </div>
 
 

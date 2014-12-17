@@ -77,8 +77,8 @@ if(list != null && listg != null){
 
     <div class="weizhi_head">现在位置:职位管理</div>     
    <div class="main_r_tianjia">
-     <ul>  
-   <% if(!(type.equals(0+""))) {    
+     <ul>   
+   <% if(!type.equals("0") && !type.equals("2")) {    
    %>  
      <li><a href="Juese_addServlet?ptype=<%=pid%>&type=<%=type%>">添加职位</a></li>
      <%

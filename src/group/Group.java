@@ -1,6 +1,10 @@
 package group;
 
+import java.util.List;
+
 public class Group {
+   //  0  为超级管理员    1 提交报装单         2 送货单   3 管理用户      4 添加产品类别    5 配单    6 抢单    
+	// w 提交   r  查看     q 确认 
    public static int Manger = 0;
    public static int sale = 1;
    public static int send = 2; 
@@ -14,36 +18,66 @@ public class Group {
    public static int branch = 9;   
    public static int locate = 10; 
    public static int println = 11;  
-   public static int inventory = 12;    // 提交调货单权限 
-   public static int inventoryquery = 13;    // 确认调货单权限  
-   public static int tuihuo = 14;  
+   
+   
+   public static int inventoryquery = 12;    // 库存查询 
+   public static int inventory = 13;    // 调货单权限    w
+   public static int inventoryreserve = 28;    // 预约调货单权限    w
+   
+   
+   public static int tuihuo = 14;       // 导购提交退货申请
+   public static int queryOrder = 15;       // 查询手机端导购员报装单
+   public static int huanhuo = 16;       // 提交换货单 
+   public static int updateOrderDealsend = 17;       // 修改导购单据
+   public static int querytuihuo = 18;      // 同意导购退货
+   public static int queryrelease = 19;      // 同意安装网点释放
+   public static int callback = 20;      // 确认已回访
+   public static int come = 21 ;     //确认厂送票已回
+   public static int go = 22 ;	   //确认厂送票已销
+   public static int over = 23;    //确认厂送票已结款
+   public static int sallOrder = 24;    //系统对比单:
+   public static int Commission = 25;    //提成标准:
+   public static int sall = 27;    //销售单:
+   public static int salecharge = 29;   // 与卖场匹配
+   public static int dealsendcharge = 30;   // 给安装网点结款
+   public static int saledcharge = 31;   // 给导购员结款
+   public static int dealsendchargerule = 32;   // 给安装网点结款标准
+   
+   
     //   从 15开始 
    private int id ;  
    private String name;
    private String detail; 
-   private int pid ;
    
    private int ptype; 
    
+// 0 为未启用   1 为启用
+  private int statues ;  
+  
+  private String permissions;
+  
+  private String products;
+  
+  private List<Integer> pid ;
+  
    public int getPtype() {
 	return ptype;
 }
 public void setPtype(int ptype) {
 	this.ptype = ptype;
 }
-public int getPid() {
+
+
+    
+public List<Integer> getPid() {
+	if(null == pid){
+		pid = GroupService.getmappid().get(this.id);
+	}
 	return pid;
 }
-public void setPid(int pid) {
+public void setPid(List<Integer> pid) {
 	this.pid = pid;
 }
-//  0 为未启用   1 为启用
-   private int statues ;  
-   //  0  为超级管理员    1 提交报装单         2 送货单   3 管理用户      4 添加产品类别    5 配单    6 抢单
-   private String permissions;
-   
-   private String products;
-   
 public String getProducts() {
 	return products;
 }

@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
-<%@ include file="searchdynamic.jsp"%>
-
+<%@ include file="searchdynamic.jsp"%> 
+ 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -131,12 +131,18 @@ function adddetail(src){
 <div id="headremind">
 <jsp:include page="headremind.jsp"/>
 </div>
-<div class="btn">
+
+<%
+if(UserManager.checkPermissions(user, Group.go)){
+	%>
+	<div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('1')"></input> 
   &nbsp;&nbsp;&nbsp;&nbsp;
  <input type="submit" class="button" name="dosubmit" value="返回上一级状态" onclick="winconfirm('0')"></input> 
 </div>
+	<%} %>
+
 
 </div > 
 <div style=" height:130px;">

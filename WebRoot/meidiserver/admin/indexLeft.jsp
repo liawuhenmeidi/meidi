@@ -42,47 +42,90 @@ function reloadopned(src){
             <div class="list-item none"> 
               <p ><a href="javascript:void(0);"  onclick="reloadopned('loginN.jsp')">个人中心</a></p>
               <%
-     if(UserManager.checkPermissions(user,Group.Manger)){
-     %> 
-    <p ><a href="javascript:void(0);"  onclick="reloadopned('company.jsp')">公司基本信息</a></p>
-    <%
-     }
-    %>
-   </div>
+              if(UserManager.checkPermissions(user,Group.Manger)){
+			     %> 
+			    <p ><a href="javascript:void(0);"  onclick="reloadopned('company.jsp')">公司基本信息</a></p>
+			    <%
+			     }
+			    %>
+               </div>
           </li> 
-          <%
-           if(UserManager.checkPermissions(user, Group.dealSend)){
-          %> 
+          <%if(UserManager.checkPermissions(user, Group.dealSend) || UserManager.checkPermissions(user, Group.sale,"r") || UserManager.checkPermissions(user, Group.callback)){ %>
           <li>       
             <h4 >订单管理</h4>
             <div class="list-item none"> 
+            <%
+           if(UserManager.checkPermissions(user, Group.dealSend)){
+            %> 
               <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdan.jsp')">文员派工页</a></p> 
-            <!--    <p ><a href="dingdanpeidan.jsp" href="javascript:void(0);"  onclick="reloadopned('dingdango.jsp')">文员打印页</a></p> -->  
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanprintln.jsp')">查看订单页</a></p>
-               
-               <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdancallback.jsp')">客服未回访页</a></p>
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanTuihuo.jsp')">退货订单</a></p>               
-             <!-- <p ><a href="./verifyCode.jsp" href="javascript:void(0);"  onclick="reloadopned('dingdango.jsp')">强制消单页</a></p>  --> 
-              
+           <%}
+            if(UserManager.checkPermissions(user, Group.sale,"r")){
+                %> 
+            <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanprintln.jsp')">查看订单页</a></p>
+            <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanTuihuo.jsp')">退货订单</a></p>                  
+             <%}
+            
+           if(UserManager.checkPermissions(user, Group.callback)){
+            %> 
+                
+             <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdancallback.jsp')">客服未回访页</a></p>
+               <%} 
+           
+           %>
+           
             </div>  
           </li> 
+          <% }
+          if(UserManager.checkPermissions(user, Group.come) || UserManager.checkPermissions(user, Group.go) || UserManager.checkPermissions(user, Group.over) || UserManager.checkPermissions(user, Group.salecharge) ){%>
           <li >
             <h4 >厂送单管理</h4>
             <div class="list-item none">
-               <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanCome.jsp')">厂送票未回</a></p>
-               <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdango.jsp')">厂送票未消</a></p>
-               <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanCharge.jsp')">厂送票未结款</a></p>
-               <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadManage.jsp')">上传管理</a></p>
+            <%
+           if(UserManager.checkPermissions(user, Group.come)){
+            %> 
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanCome.jsp')">厂送票未回</a></p>
+           <%}
+            if(UserManager.checkPermissions(user, Group.go)){
+                %> 
+             <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdango.jsp')">厂送票未消</a></p>
+               <%}
+            if(UserManager.checkPermissions(user, Group.over)){
+                %> 
+             <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanCharge.jsp')">厂送票未结款</a></p>
+               <%}
+            
+            if(UserManager.checkPermissions(user, Group.sallOrder) || UserManager.checkPermissions(user, Group.Commission) || UserManager.checkPermissions(user, Group.sall)){
+                %> 
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadManage.jsp')">上传管理</a></p>
+               <%}
+            if(UserManager.checkPermissions(user, Group.salecharge) ){
+                %> 
               <p ><a  href="javascript:void(0);"  onclick="reloadopned('manualCheckout.jsp')">结款页</a></p>
+               <%}
+            %>
             </div>
           </li> 
+          <% }
+          if(UserManager.checkPermissions(user, Group.saledcharge) || UserManager.checkPermissions(user, Group.dealsendcharge)){%>
            <li >  
             <h4 >工资管理</h4> 
             <div class="list-item none">
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('salaryCalc.jsp')">提成计算页</a></p>
+            <% 
+            if(UserManager.checkPermissions(user, Group.saledcharge)){
+                %> 
+                  <p ><a href="javascript:void(0);"  onclick="reloadopned('salaryCalc.jsp')">提成计算页</a></p>
               <p ><a href="javascript:void(0);"  onclick="reloadopned('salaryExport.jsp')">提成导出页</a></p>
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanover.jsp')">安装网点结款页</a></p>  
+              
+               <%}
+            
+            if(UserManager.checkPermissions(user, Group.dealsendcharge)){
+            %> 
+             <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanover.jsp')">安装网点结款页</a></p>  
               <p ><a href="javascript:void(0);"  onclick="reloadopned('dealsendExport.jsp')">安装网点结款管理</a></p>
+           <%}
+            %>
+            
+             
             </div>
           </li>
           <%
@@ -102,10 +145,32 @@ function reloadopned(src){
        <li > 
             <h4 >库存管理</h4>
             <div class="list-item none"> 
-              <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/receipts.jsp')">单据管理</a></p>
-              <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventory.jsp')">库存查询</a></p>
-               <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventoryAnalyze.jsp')">预约调货</a></p>
-              <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/analyzrecepts.jsp')">调货处理</a></p>
+            <% 
+              if(UserManager.checkPermissions(user, Group.inventory)){
+            %> 
+             <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/receipts.jsp')">单据管理</a></p>
+           <%}
+            if(UserManager.checkPermissions(user, Group.inventoryquery)){
+               %> 
+               <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventory.jsp')">库存查询</a></p>
+               <%}
+            if(UserManager.checkPermissions(user, Group.inventoryreserve)){
+                %> 
+                  <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventoryAnalyze.jsp')">预约调货</a></p>
+               <%}
+            if(UserManager.checkPermissions(user, Group.dealsendcharge)){
+                %> 
+               <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/analyzrecepts.jsp')">调货处理</a></p>   
+               <%}
+            
+            %>
+            
+            
+            
+              
+              
+              
+             
             </div>
           </li>  
          <% 
@@ -166,10 +231,9 @@ function reloadopned(src){
             <h4 >数据备份</h4>   
             <div class="list-item none">
               <p ><a  href="javascript:void(0);"  onclick="reloadopned('database.jsp')">数据备份</a></p>
-            </div>     
-          </li>
-      
-        <%
+            </div>      
+          </li> 
+        <% 
         }if(UserManager.checkPermissions(user, Group.sencondDealsend)){
         	%>
         	<li > 
@@ -179,8 +243,8 @@ function reloadopned(src){
               <p ><a  href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdanquery.jsp')">送货确认页</a></p> 
               <p ><a  href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdanpeidan2anzhuang.jsp')">安装派工</a></p> 
               <p ><a  href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdanpeidan2s.jsp')">安装网点查询</a></p>
-            </div> 
-            </li> 
+            </div>  
+            </li>  
             <li > 
              <h4 >费用结算</h4>     
             <div class="list-item none">
@@ -198,6 +262,19 @@ function reloadopned(src){
         	  
         }
         %>
+        
+        <li>
+        <!--    <p ><a href="dingdanpeidan.jsp" href="javascript:void(0);"  onclick="reloadopned('dingdango.jsp')">文员打印页</a></p> -->  
+              
+              
+           
+             <!-- <p ><a href="./verifyCode.jsp" href="javascript:void(0);"  onclick="reloadopned('dingdango.jsp')">强制消单页</a></p>  --> 
+        
+        
+        </li>
+        
+        
+        
          </ul> 
         <script type="text/javascript" language="javascript">
 			navList(12);

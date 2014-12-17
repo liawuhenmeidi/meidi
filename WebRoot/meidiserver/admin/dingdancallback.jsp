@@ -72,10 +72,13 @@ width:50px
 <div id="headremind">
 <jsp:include page="headremind.jsp"/>
 </div>
-
-<div class="btn">
+<% if(UserManager.checkPermissions(user, Group.callback,"w")){
+ %>
+ <div class="btn">
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input>  
 </div>
+<% 	
+}%>
 
 </div > 
 <div style=" height:130px;">

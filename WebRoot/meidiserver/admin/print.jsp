@@ -4,7 +4,7 @@
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user");
 String message = ""; 
-boolean flagdiagma = false ;
+boolean flagdiagma = false ; 
 String id = request.getParameter("id");
 String type = request.getParameter("type");
 String uid = request.getParameter("uid");

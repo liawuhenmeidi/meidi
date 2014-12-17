@@ -33,8 +33,27 @@ public class OrderPrintln {
   private String message; 
   private int orderid ;
   private int statues ;
+  private int uid ;
+  private int groupid;
   
-  public int getType() {
+  
+  public int getGroupid() {
+	return groupid;
+}
+
+public void setGroupid(int groupid) {
+	this.groupid = groupid;
+}
+
+public int getUid() {
+	return uid;
+}
+
+public void setUid(int uid) {
+	this.uid = uid;
+}
+
+public int getType() {
 		return type;
 	}
 	  

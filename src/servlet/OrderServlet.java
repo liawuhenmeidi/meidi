@@ -66,42 +66,71 @@ public class OrderServlet extends HttpServlet {
 			if("println".equals(method)){
 				savePrintln(request,response);
 				return ; 
+			}else if("shifang".equals(method)){
+				savashifang(request,response);
+				return ; 
 			}else if("huanhuo".equals(method)){ 
 				HuanHuo(request,response);
+				return ; 
 			}else if("savehuanhuo".equals(method)){ 
 				saveHuanhuo(request,response);
+				return ; 
 				// 
 			}else {
 				save(request,response);
+				return ; 
 			}
 		}
+	}
+	
+	private void savashifang(HttpServletRequest request, HttpServletResponse response){
+		User user  = (User)request.getSession().getAttribute("user");  
+		String id = request.getParameter("oid");
+		String opstatues = request.getParameter("opstatues");
+		OrderPrintln  or = new OrderPrintln(); 
+		or.setOrderid(Integer.valueOf(id));
+		if(Integer.valueOf(opstatues) == OrderPrintln.releasedispatch){
+			or.setMessage("文员申请退货");  
+		}else if(Integer.valueOf(opstatues) == OrderPrintln.releasemodfy){
+			or.setMessage("文员申请释放");   
+		}else { //OrderPrintln.releasemodfy
+			or.setMessage("释放");   
+		} 
+		or.setStatues(OrderPrintln.comit);
+		or.setType(Integer.valueOf(opstatues));     
+		or.setUid(user.getId()); 
+		or.setGroupid(user.getUsertype());
+		OrderPrintlnManager.save(or); 
+		
+		
 	}
 	
 	private void savePrintln(HttpServletRequest request, HttpServletResponse response){
 		String id = request.getParameter("id");
 		String mm = request.getParameter("mm");
-		User user  = (User)request.getSession().getAttribute("user");
-logger.info(id);   
+		User user  = (User)request.getSession().getAttribute("user");  
        
 		String message = request.getParameter("message");
         if(""==id || null == id){
         	id = "0";
         }
-logger.info(message);  
+//logger.info(message);  
 		OrderPrintln  or = new OrderPrintln();
 		or.setOrderid(Integer.valueOf(id));
 		or.setMessage(message);
 		or.setStatues(OrderPrintln.comit);
+		or.setUid(user.getId()); 
+		or.setGroupid(user.getUsertype());
 		//int pgroup = GroupManager.getGroup(user.getUsertype()).getPid();
 		//or.setpGroupId(pgroup);        
 		if("tuihuo".equals(mm)){  
 			or.setType(OrderPrintln.returns);   
 		}else if("huanhuo".equals(mm)){
 			or.setType(OrderPrintln.huanhuo);
-		}else {
-			or.setType(OrderPrintln.modify);
-		}  
-			OrderPrintlnManager.save(or);
+		}
+		
+		
+		OrderPrintlnManager.save(or);
 		
 	  try {
 		response.sendRedirect("serch_list.jsp");

@@ -192,7 +192,7 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,types
 				}else {
 				$.ajax({     
 			        type:"post",  
-			         url:"../user/server.jsp",  
+			         url:"../user/OrderServlet",  
 			         //data:"method=list_pic&page="+pageCount,       
 			         data:"method=shifang&oid="+oid+"&pGroupId="+pgroup+"&opstatues="+typesearch,
 			         dataType: "",  

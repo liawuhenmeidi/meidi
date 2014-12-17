@@ -17,7 +17,7 @@ String mapgroupg = StringUtill.GetJson(mapgroup);
    
 HashMap<String,List<User>> mapg = GroupManager.getGroupPidMapUser();
 String mapgg = StringUtill.GetJson(mapg);
- 
+System.out.println(mapgg);  
 List<BranchType> listb = BranchTypeManager.getLocate();
 
 //Map<String,List<String>> map = BranchManager.getLocateMap();  
