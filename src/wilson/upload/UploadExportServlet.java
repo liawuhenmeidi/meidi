@@ -187,7 +187,7 @@ public class UploadExportServlet extends HttpServlet {
 			sheet.addCell(label0);
 			
 			//第二行
-			label0  =   new  Label( 0 ,  1 ,  " 型号 " );
+			label0  =   new  Label( 0 ,  1 ,  " 品类 " );
 			sheet.addCell(label0);
 			label0  =   new  Label( 1 ,  1 ,  " 型号 " );
 			sheet.addCell(label0);
