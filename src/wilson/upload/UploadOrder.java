@@ -22,7 +22,11 @@ public class UploadOrder {
 	
 	private String fileName = ""; //来自的文件名
 	
-	private int checked = 1; //1为没有 check 0 为已经check 2为已经与提成标准匹配好  默认为1
+	private int checked = UNCHECK; //1为没有 check 0 为已经check 2为已经与提成标准匹配好  默认为1
+	
+	public static final int CHECKED = 0;
+	public static final int UNCHECK = 1;
+	public static final int CALCED = 2;
 	
 	private String checkedTime = ""; //check的时间，默认为null
 	

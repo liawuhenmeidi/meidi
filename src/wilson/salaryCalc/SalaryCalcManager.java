@@ -83,6 +83,7 @@ public class SalaryCalcManager {
 			String tempName = "";
 			String tempShop = "";
 			List<SalaryResult> sameShopList = new ArrayList<SalaryResult>();
+			List<SalaryResult> unFinishedList = new ArrayList<SalaryResult>();
 			
 			while(sameFileNameList.size() != 0){
 				tempShop = sameFileNameList.get(0).getUploadOrder().getShop().trim();
@@ -158,6 +159,14 @@ public class SalaryCalcManager {
 							}
 							
 							for(int j = 0 ; j < sameShopList.size() ; j ++){
+								//未完成单据，加入到未完成序列中
+								if(!sameShopList.get(j).isFinished() ){
+									unFinishedList.add(sameShopList.get(j));
+									sameShopList.remove(j);
+									j--;
+									continue;
+								}
+								
 								if(items.contains(sameShopList.get(j).getSalaryModel().getCatergory())){
 									sameShopList.get(j).getUploadOrder().setSaleManName(rightSide);
 									
@@ -201,8 +210,8 @@ public class SalaryCalcManager {
 					
 					
 					//剩余的
+					SalaryResult othersTotal = new SalaryResult();
 					if(sameShopList.size() > 0){
-						SalaryResult othersTotal = new SalaryResult();
 						for(int i = 0 ; i < sameShopList.size() ; i++){
 							
 							othersTotal.setSalary(othersTotal.getSalary() + sameShopList.get(i).getSalary());
@@ -223,8 +232,32 @@ public class SalaryCalcManager {
 						//sameShopTotal.setUploadOrderNum(sameShopTotal.getUploadOrder().getNum() + othersTotal.getUploadOrder().getNum());
 						
 						result.addAll(sameShopList);
-						result.add(othersTotal);
 						sameShopList.clear();
+					}
+					
+					//未完成单据的
+					if(unFinishedList.size() > 0){
+						for(int i = 0 ; i < unFinishedList.size() ; i++){
+							othersTotal.setUploadOrderNum(othersTotal.getUploadOrder().getNum() + unFinishedList.get(i).getUploadOrder().getNum());
+							othersTotal.setUploadOrderSalePrice(othersTotal.getUploadOrder().getSalePrice() + unFinishedList.get(i).getUploadOrder().getSalePrice());
+						}
+						//设置店名，类别等
+						othersTotal.setUploadOrderName(unFinishedList.get(0).getUploadOrder().getName());
+						othersTotal.setUploadOrderShop(unFinishedList.get(0).getUploadOrder().getShop());
+						othersTotal.setUploadOrderPosNo("");
+						othersTotal.setStatus(SalaryResult.STATUS_TOTAL);
+						
+						total.setUploadOrderSalePrice(total.getUploadOrder().getSalePrice() + othersTotal.getUploadOrder().getSalePrice());
+						total.setUploadOrderNum(total.getUploadOrder().getNum() + othersTotal.getUploadOrder().getNum());
+						//sameShopTotal.setUploadOrderSalePrice(sameShopTotal.getUploadOrder().getSalePrice() + othersTotal.getUploadOrder().getSalePrice());
+						//sameShopTotal.setSalary(sameShopTotal.getSalary() + othersTotal.getSalary());
+						//sameShopTotal.setUploadOrderNum(sameShopTotal.getUploadOrder().getNum() + othersTotal.getUploadOrder().getNum());
+						
+						result.addAll(unFinishedList);
+						unFinishedList.clear();
+					}
+					if(othersTotal.getStatus() == SalaryResult.STATUS_TOTAL){
+						result.add(othersTotal);
 					}
 					
 					
@@ -233,11 +266,7 @@ public class SalaryCalcManager {
 					//sameShopTotal.setStatus(-1);					
 					//result.add(sameShopTotal);
 					
-					total.setUploadOrderPosNo("");
-					if(result.size() > 0){
-						total.setUploadOrderShop(result.get(result.size() - 1).getUploadOrder().getName());
-					}
-					total.setStatus(SalaryResult.STATUS_TOTAL);
+					
 //					total.setUploadOrderSalePrice(total.getUploadOrder().getSalePrice() + sameShopTotal.getUploadOrder().getSalePrice());
 //					total.setSalary(total.getSalary() + sameShopTotal.getSalary());
 //					total.setUploadOrderNum(total.getUploadOrder().getNum() + sameShopTotal.getUploadOrder().getNum());
@@ -245,10 +274,16 @@ public class SalaryCalcManager {
 				}
 			
 			}
-
+			//总文件total
+			total.setUploadOrderPosNo("");
+			if(result.size() > 0){
+				total.setUploadOrderShop(result.get(result.size() - 1).getUploadOrder().getName());
+			}
+			total.setStatus(SalaryResult.STATUS_TOTAL);
+			result.add(total);
+			total = new SalaryResult();
 		}
 		
-		result.add(total);
 		return result;
 	}
 	
@@ -602,13 +637,105 @@ public class SalaryCalcManager {
 					tempResult = tempSalaryResultMap.get(tempOrder.getId());
 					
 					tempResult.setUploadOrder(tempOrder);
-					result.add(tempResult);
+					
 				}else{
 					//千万别改这里
-					//tempResult.setSalary(null);
-					
-					//tempResult.setUploadSalaryModelid(-1);
+					tempResult.setSalary(null);
+					if(tempOrder.getChecked() == UploadOrder.UNCHECK){
+						tempResult.setStatus(SalaryResult.STATUS_UNCHECKOUT);
+					}else if(tempOrder.getChecked() == UploadOrder.CHECKED){
+						tempResult.setStatus(SalaryResult.STATUS_UNCALC);
+					}
+					tempResult.setUploadSalaryModelid(-1);
+					tempResult.setUploadOrder(tempOrder);
 				}
+				result.add(tempResult);
+				
+
+			}
+			
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = new ArrayList<SalaryResult>();
+			return result;
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		//初始化salaryModel
+		result = initSalaryModel(result);
+		return result;
+	}
+	
+	//获取计算后的salaryResult
+	public static List<SalaryResult> getCalcedSalaryResultByName(String name) {
+		List<SalaryResult> result = new ArrayList<SalaryResult>();
+		Map<Integer,SalaryResult> tempSalaryResultMap = new HashMap<Integer,SalaryResult>();
+		
+		
+		String sql = "select * from salaryresult where status = 0";
+		
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadOrder tempOrder = new UploadOrder();
+		SalaryResult tempResult = new SalaryResult();
+		try {
+			while(rs.next()){
+				tempResult = new SalaryResult();
+				tempResult.setId(rs.getInt("id"));
+				tempResult.setUploadOrderId(rs.getInt("uploadorderid"));
+				tempResult.setUploadSalaryModelid(rs.getInt("uploadsalarymodelid"));
+				tempResult.setCalcTime(rs.getString("calctime"));
+				tempResult.setSalary(rs.getDouble("salary"));	
+				tempResult.setStatus(rs.getInt("status"));
+				
+				tempSalaryResultMap.put(tempResult.getUploadOrderId(), tempResult);
+			}
+			
+			
+			sql = "select * from uploadorder where name = '" + name + "' order by shop";
+			//sql += " and checked != -1";
+			logger.info(sql);
+			stmt = DB.getStatement(conn); 
+			rs = DB.getResultSet(stmt, sql);
+			while(rs.next()){
+				tempOrder = new UploadOrder();
+				tempOrder.setId(rs.getInt("id"));
+				tempOrder.setName(rs.getString("name"));
+				tempOrder.setSaleManName(rs.getString("salesman"));
+				tempOrder.setShop(rs.getString("shop"));
+				tempOrder.setPosNo(rs.getString("posno"));
+				tempOrder.setSaleTime(rs.getString("saletime"));
+				tempOrder.setType(rs.getString("type"));
+				tempOrder.setNum(rs.getInt("num"));
+				tempOrder.setSalePrice(rs.getDouble("saleprice"));
+				tempOrder.setFileName(rs.getString("filename"));
+				tempOrder.setChecked(rs.getInt("checked"));
+				tempOrder.setCheckedTime(rs.getString("checkedtime"));
+				tempOrder.setCheckOrderId(rs.getInt("checkorderid"));
+				
+				tempResult = new SalaryResult();
+				if(tempSalaryResultMap.containsKey(tempOrder.getId())){
+					tempResult = tempSalaryResultMap.get(tempOrder.getId());
+					
+					tempResult.setUploadOrder(tempOrder);
+					result.add(tempResult);
+				}else{
+//					//千万别改这里
+//					tempResult.setSalary(null);
+//					if(tempOrder.getChecked() == UploadOrder.UNCHECK){
+//						tempResult.setStatus(SalaryResult.STATUS_UNCHECKOUT);
+//					}else if(tempOrder.getChecked() == UploadOrder.CHECKED){
+//						tempResult.setStatus(SalaryResult.STATUS_UNCALC);
+//					}
+//					tempResult.setUploadSalaryModelid(-1);
+//					tempResult.setUploadOrder(tempOrder);
+				}
+				
 				
 
 			}

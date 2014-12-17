@@ -73,6 +73,7 @@
 	if(!StringUtill.isNull(name)){
 		if(!name.equals("all")){
 			showResult = SalaryCalcManager.getSalaryResultByName(name);
+			//showResult = SalaryCalcManager.getCalcedSalaryResultByName(name);
 			showResult = SalaryCalcManager.initSalaryModel(showResult);
 			
 		}else{
@@ -85,6 +86,9 @@
 		//导出用
 		session.setAttribute("exportSalaryName", name);
 	}
+	
+	//下面用到的背景色
+	String backgroundColor ="#B9D3EE";
 	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -275,20 +279,27 @@ if(showResult.size() > 0 ){
 		<%
 		boolean total = false;
 		boolean filetotal = false;
+		boolean editable = true;
 		for(int i = 0 ; i <  showResult.size() ; i ++){
 			if(showResult.get(i).getStatus() == SalaryResult.STATUS_TOTAL){
 				total = true;
 			}else{
 				total = false;
-				//continue;
 			}
+			if(!showResult.get(i).isFinished()){
+				editable = false;
+			}else{
+				editable = true;
+			}
+			
 			if(i == showResult.size() -1 ){
 				filetotal = true;
 			}
+
 		%>
-		<tr>
+		<tr bgcolor='<%=total?backgroundColor:"" %>'>
 			<td><%= i+1 %></td>
-			<td id="<%=showResult.get(i).getId() %>filename"><%=total?"总计":salaryResult.get(i).getUploadOrder().getName() %></td>
+			<td id="<%=showResult.get(i).getId() %>filename"><%=total?"总计":showResult.get(i).getUploadOrder().getName() %></td>
 			<td id="<%=showResult.get(i).getId() %>shop"><%=showResult.get(i).getUploadOrder().getShop() %></td>
 			<td id="<%=showResult.get(i).getId() %>pos"><%=showResult.get(i).getUploadOrder().getPosNo() %></td>
 			<td id="<%=showResult.get(i).getId() %>saletime"><%=showResult.get(i).getUploadOrder().getSaleTime() %></td>
@@ -298,13 +309,13 @@ if(showResult.size() > 0 ){
 			<%if(!total){%>
 			<td id="<%=showResult.get(i).getId() %>num" value="<%=showResult.get(i).getUploadOrder().getNum() %>"><%=showResult.get(i).getUploadOrder().getNum() %></td>
 			<td id="<%=showResult.get(i).getId() %>saleprice" value="<%=showResult.get(i).getUploadOrder().getSalePrice() %>"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
-			<td id="<%=showResult.get(i).getId() %>salary" value="<%=showResult.get(i).getSalary()==null?"":showResult.get(i).getSalary() %>"><a  href="#" onClick="javascript:window.open('./salaryResultDetail.jsp?id=<%=showResult.get(i).getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" ><%=showResult.get(i).getSalary()==null?"":showResult.get(i).getSalary() %></a></td>
+			<td id="<%=showResult.get(i).getId() %>salary" value="<%=showResult.get(i).getPrintSalary() %>"><a  <%if(editable){ %>href="#" onClick="javascript:window.open('./salaryResultDetail.jsp?id=<%=showResult.get(i).getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" <%} %> ><%=showResult.get(i).getPrintSalary() %></a></td>
 			<%
 			}else{
 			%>
 			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>num" value="total"><%=showResult.get(i).getUploadOrder().getNum() %></td>
 			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>saleprice" value="total"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
-			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>salary" value="total"><%=showResult.get(i).getSalary()==null?"0":showResult.get(i).getSalary() %></td>
+			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>salary" value="total"><%=showResult.get(i).getPrintSalary() %></td>
 			<%
 			}
 			%>

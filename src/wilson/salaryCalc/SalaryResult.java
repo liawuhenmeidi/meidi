@@ -20,7 +20,33 @@ public class SalaryResult {
 	private Double salary = 0.0 ; //提成数字
 	private int status = 0 ; //预留状态位置
 	
+	//普通与标记用的分界线
+	public static final int STATUS_NORMAL = -1;
+	
+	//总计用
 	public static final int STATUS_TOTAL = -1;
+	//没结款
+	public static final int STATUS_UNCHECKOUT = -2;
+	//没提成
+	public static final int STATUS_UNCALC=-3;
+	
+	public boolean isFinished(){
+		return this.status >= STATUS_NORMAL;
+	}
+	
+	public String getPrintSalary(){
+		if(isFinished()){
+			return getSalary().toString();
+		}else{
+			if(getStatus() == STATUS_UNCHECKOUT){
+				return "未结款";
+			}else if(getStatus() == STATUS_UNCALC){
+				return "未提成";
+			}else{
+				return "未知状态";
+			}
+		}
+	}
 	
 	public SalaryResult() {
 		super();
