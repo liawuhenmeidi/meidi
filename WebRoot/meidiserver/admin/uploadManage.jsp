@@ -133,7 +133,7 @@ body {
 <p>系统对比/销售单 删除</p>
 <form action="" method="post">
 <input type="hidden" name="type" value="uploadorder"/>
-<select name="name">
+<select name="name" id="uploadorderselect">
 	<option value="" selected="selected"></option>
 	<%
 	for(int i = 0 ; i < orderNames.size() ; i ++){
@@ -144,7 +144,7 @@ body {
 	} 
 	%>
 </select>
-<input name="button" type="submit" value="删除"/>
+<input name="button" type="submit" value="删除" onclick="return confirm('是否确认删除' + $('#uploadorderselect').find('option:selected').text() + '?')"/>
 <input name="button" type="submit" value="导出"/>
 </form>
 
@@ -154,7 +154,7 @@ body {
 <p>提成模板  删除</p>
 <form action="" method="post">
 <input type="hidden" name="type" value="salarymodel"/>
-<select name="name">
+<select name="name" id="salarymodelselect">
 	<option value="" selected="selected"></option>
 	<%
 	for(int i = 0 ; i < salaryModelNames.size() ; i ++){
@@ -165,7 +165,7 @@ body {
 	} 
 	%>
 </select>
-<input name="button" type="submit" value="删除"/>
+<input name="button" type="submit" value="删除" onclick="return confirm('是否确认删除' + $('#salarymodelselect').find('option:selected').text() + '?')"/>
 <input name="button" type="submit" value="导出"/>
 
 </form>
