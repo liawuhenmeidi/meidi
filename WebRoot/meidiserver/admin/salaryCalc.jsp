@@ -90,9 +90,17 @@
 			}else{
 				Iterator<String> tempIt = CatergoryMapingSet.iterator();  
 				while (tempIt.hasNext()) {  
-					groupname = tempIt.next();
-					break;
-				}  
+					String it = tempIt.next();
+					if("空".equals(it)){
+						groupname = it;
+						break;
+					}
+					if(!tempIt.hasNext()){
+						if(!groupname.equals("空")){
+							groupname = it;
+						}
+					}
+				}
 			}
 			
 		}
@@ -146,8 +154,6 @@ $(function () {
 	//初始化
 	reloadSelectModels();
 	initothers();
-	
-	
 }); 
 
 function initothers(){
