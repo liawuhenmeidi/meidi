@@ -215,15 +215,27 @@ public class SalaryCalcManager {
 					//剩余的
 					SalaryResult othersTotal = new SalaryResult();
 					if(sameShopList.size() > 0){
+						
+						//先保留下文件名和店名
+						String fileName = sameShopList.get(0).getUploadOrder().getName();
+						String shopName = sameShopList.get(0).getUploadOrder().getShop();
+						
 						for(int i = 0 ; i < sameShopList.size() ; i++){
+							//未完成单据，加入到未完成序列中
+							if(!sameShopList.get(i).isFinished() ){
+								unFinishedList.add(sameShopList.get(i));
+								sameShopList.remove(i);
+								i--;
+								continue;
+							}
 							
 							othersTotal.setSalary(othersTotal.getSalary() + sameShopList.get(i).getSalary());
 							othersTotal.setUploadOrderNum(othersTotal.getUploadOrder().getNum() + sameShopList.get(i).getUploadOrder().getNum());
 							othersTotal.setUploadOrderSalePrice(othersTotal.getUploadOrder().getSalePrice() + sameShopList.get(i).getUploadOrder().getSalePrice());
 						}
 						//设置店名，类别等
-						othersTotal.setUploadOrderName(sameShopList.get(0).getUploadOrder().getName());
-						othersTotal.setUploadOrderShop(sameShopList.get(0).getUploadOrder().getShop());
+						othersTotal.setUploadOrderName(fileName);
+						othersTotal.setUploadOrderShop(shopName);
 						othersTotal.setUploadOrderPosNo("");
 						othersTotal.setStatus(SalaryResult.STATUS_TOTAL);
 						
