@@ -182,7 +182,7 @@ if("permission".equals(action)){
        <%  	
         }
        int cout = list.size()%4 ;
-       for(int i=0;i<cout;i++){
+       for(int i=0;i<4-cout;i++){
     	   %>
     	   
     	    <td width=25% ></td>
@@ -241,8 +241,8 @@ if("permission".equals(action)){
         <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>库存类权限</td><td></td></tr></table></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >调货单权限:</td><td width=25% >可提交<input type="checkbox" value="13-w" name = "permission" id="p13-w" /></td><td width=25% >可确认<input type="checkbox" value="13-q" name = "permission" id="p13-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="13-r" name = "permission" id="p13-r" /></td></tr>	 	 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >库存权限:</td><td width=25% ></td><td width=25% ></td><td width=25% >可查询<input type="checkbox" value="12-r" name = "permission" id="p12-r" /></td></tr>	 	 
-        <tr class="asc"  onclick="updateClass(this)"><td width=25% >预约调货权限:</td><td width=25% >可提交<input type="checkbox" value="28-w" name = "permission" id="p28-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="28-r" name = "permission" id="p28-r" /></td></tr>	 	 
-             
+        <tr class="asc"  onclick="updateClass(this)"><td width=25% >预约调货权限:</td><td width=25% >可提交<input type="checkbox" value="28-w" name = "permission" id="p28-w" /></td><td width=25% >可确认<input type="checkbox" value="28-q" name = "permission" id="p28-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="28-r" name = "permission" id="p28-r" /></td></tr>	 	 
+              
         <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>人事类权限</td><td></td></tr></table></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >用户权限:</td><td width=25% >管理<input type="checkbox" value="3-w" name = "permission" id="p3-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="3-r" name = "permission" id="p3-r" /></td></tr>
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >门店权限:</td><td width=25% >管理<input type="checkbox" value="9-w" name = "permission" id="p9-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="9-r" name = "permission" id="p9-r" /></td></tr> 
@@ -302,20 +302,20 @@ if("permission".equals(action)){
 	        	%> 
 	        <td width=25% ><input type="checkbox"  name = "pid"  value="<%=listg.get(i).getId() %>"  id="<%=listg.get(i).getId() %>" <%=str %>/>&nbsp;<%=listg.get(i).getName() %></td>
 	       <%  	
-	        }
+	        } 
 	        int coutpid = listg.size()%4 ;
-	        for(int i=0;i<coutpid;i++){
+	        for(int i=0;i<4-coutpid;i++){ 
 	     	   %>
-	     	   
 	     	    <td width=25% ></td>
 	     	   <%
 	        }
        }
        %>
+       </tr>
      </table>
      </div> 
  
-     
+      
    <ul>
      <li><input type="submit" value="提  交" /></li>
      </ul>

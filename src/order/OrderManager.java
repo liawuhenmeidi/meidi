@@ -547,11 +547,11 @@ public static void updateSendstat(int statues,int sid, int oid) {
 			
 		  String printlnid = "";
 		     if(order.getOderStatus().equals(20+"")){ 
-		    	 String sql1 = "insert into  mdorderupdateprint (id, message ,statues , orderid,mdtype ,pGroupId)" +
-	                     "  values ( null, '换货申请', 0,"+order.getImagerUrl()+","+OrderPrintln.huanhuo+","+user.getUsertype()+")";
+		    	 /*String sql1 = "insert into  mdorderupdateprint (id, message ,statues , orderid,mdtype ,pGroupId,uid,groupid)" +
+	                     "  values ( null, '换货申请', 0,"+order.getImagerUrl()+","+OrderPrintln.huanhuo+","+user.getUsertype()+","+user.getId()+","+user.getUsertype()+")";
 		    	 
-		    	 sqls.add(sql1);
-		    	 
+		    	 sqls.add(sql1);*/ 
+		    	  
 		    	 printlnid = "H"+order.getPrintlnid();
 		    	 
 		    	 order.setPrintlnid(printlnid);

@@ -40,7 +40,7 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
   <div class="main_r_tianjia">
    <ul>     
    <% 
-   if(UserManager.checkPermissions(user, Group.inventory)){
+   if(UserManager.checkPermissions(user, Group.inventory,"w")){
    %>                                                                                                    
      <li><a href="receiptsAdd.jsp?">新增单据</a></li>
     <%

@@ -98,7 +98,10 @@ function println(){
 	 window.print();
 
 }
-
+function checkedd(type){
+	$("#add").val(type);
+	$("#form").submit();
+}
 </script>
 <div style="position:fixed;width:100%;height:70px;">
 <div >
@@ -121,17 +124,11 @@ function println(){
 </div>  
  
 <div id="wrap"> 
-    
-<form action="InventoryServlet" method="post" >
+     
+<form action="InventoryServlet" method="post"  id="form">
 <input type="hidden" name="method" value="updatesubscribe"/>
 <input type="hidden" name="id" value="<%=inventoryid%>"/>
-<%if(UserManager.checkPermissions(user, Group.dealSend)){
-	%>
-	<input type="hidden" name="add" value="outbranch" />
-	<%
-} else  {%>
-     <input type="hidden" name="add" value="inbranch" />
-<% } %>
+<input type="hidden" name="add" id="add"  value="" />
 
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
@@ -151,20 +148,20 @@ function println(){
             	// int  Anlycount = (null == in.getAnlycount())?"":in.getAnlycount();
             	// System.out.println(in.getAnlycount()); 
              
-            	
              %>
             	   <tr id="<%=in.getId() %>" class="asc">   
         			  <td align="center"><%=mapc.get(in.getCategoryId()).getName() %> </td>
         			   <td align="center"><%=in.getProductname() %> </td>
-        			  <%System.out.println(in.getProductname());
-        			  System.out.println(StringUtill.GetJson(invnetorymap));
-        			  %> 
-        			    
-        			   <td align="center"><%=invnetorymap.get(in.getProductname()).getPapercount() %> </td>
-        			   <td align="center"><%=invnetorymap.get(in.getProductname()).getRealcount() %> </td>
-        			    <td align="center"><%=listcount.get(in.getProductname())*(-1) %> </td>
+        			  <%
+        			  //System.out.println(in.getProductname());
+        			  //System.out.println(StringUtill.GetJson(invnetorymap));
+        			  %>   
+        			     
+        			   <td align="center"><%=null == invnetorymap.get(in.getProductname())?"0":invnetorymap.get(in.getProductname()).getPapercount() %> </td>
+        			   <td align="center"><%=null == invnetorymap.get(in.getProductname())?"0":invnetorymap.get(in.getProductname()).getRealcount() %> </td>
+        			    <td align="center"><%= null == listcount.get(in.getProductname())?"0":listcount.get(in.getProductname())*(-1) %> </td>
         			   <td align="center"> 
-        			    <input type="hidden" name="product" value="<%=in.getId() %>" />
+        			    <input type="hidden" name="product" value="<%=in.getId() %>" />  
         			    <% if(UserManager.checkPermissions(user, Group.dealSend)) {%>
         			    <input type="text" name="real<%=in.getId() %>"  id="<%=in.getId() %>"  value="<%=in.getRealString() %>"   style="border:0; width:100px" /> 
         			     <%}else{ %>
@@ -184,13 +181,14 @@ function println(){
             <%  }%>
 		       
 	   <tr class="asc" >
-		    <td align="center"  colspan=7> 
+		    <td align="center"  colspan=7>   
 		    <% if(UserManager.checkPermissions(user, Group.dealSend)){ %>
-		    <input type="submit"  style="background-color:;font-size:20px;" value="打印" />
+		    <input type="button"  style="background-color:;font-size:20px;" value="打印" onclick="checkedd('outbranch')"/>
+		    <input type="button"  style="background-color:;font-size:20px;" value="保存修改" onclick="checkedd('branch')"/>
 		    <%
 		    }else {
-		    %>
-		     <input type="submit"  style="background-color:;font-size:20px;" value="调货提交" />
+		    %> 
+		     <input type="button"  style="background-color:;font-size:20px;" value="调货提交" onclick="checkedd('inbrancht')"/>
 		     <%
 		    }
 		     %>

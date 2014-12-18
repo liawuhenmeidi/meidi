@@ -39,7 +39,7 @@ function detail(id){
         <div class="main_r_tianjia">
    <ul>    
    <% 
-   if(UserManager.checkPermissions(user, Group.inventory)){
+   if(UserManager.checkPermissions(user, Group.inventory,"w")){
    %>                                                                                                    
      <li><a href="receiptsAdd.jsp?">新增单据</a></li>
      <li><a href="receiptsold.jsp?">查看已确认单据</a></li> 
@@ -101,7 +101,6 @@ function detail(id){
 			 %>
 			</td>
 			<td align="center">
-			<%= %>
 			</td>
 			<td align="center">
 			<% if(invetory.getInstatues() == 1 && invetory.getOutstatues() == 1){

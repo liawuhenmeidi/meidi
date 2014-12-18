@@ -124,7 +124,7 @@ var jsonall = <%=listall%>;
 var count = "<%=countt%>";
 $(function () { 
 		 $("#branch").autocomplete({ 
-			 source: jsonall
+			 source: jsonall 
 		    });
 		 
 		 $("select[id='counttyepe'] option[value='"+count+"']").attr("selected","selected");
@@ -195,7 +195,7 @@ function checkTime(){
 <div style="height:70px;">
 </div>
 <br/>  
-
+ 
 <div id="wrap">
 <form action="InventoryServlet" method="post" onsubmit="return checkTime()">
 <input type="hidden" name="method" value="addsubscribe"/>

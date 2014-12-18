@@ -158,7 +158,7 @@ function reloadopned(src){
                 %> 
                   <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventoryAnalyze.jsp')">预约调货</a></p>
                <%}
-            if(UserManager.checkPermissions(user, Group.dealsendcharge)){
+            if(UserManager.checkPermissions(user, Group.inventoryreserve)){
                 %> 
                <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/analyzrecepts.jsp')">调货处理</a></p>   
                <%}
