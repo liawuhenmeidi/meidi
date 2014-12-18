@@ -52,7 +52,7 @@ if(!StringUtill.isNull(branchid) && !StringUtill.isNull(starttime)  && !StringUt
 	 maptype = InventoryBranchManager.getBranchTypeObject(user,branchid); 
 }
 
-System.out.println(list);
+//System.out.println(list);
 HashMap<Integer,Category>  mapc = CategoryManager.getCategoryMap();
 Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 Map<Integer,User> usermap = UserService.getMapId(); 
