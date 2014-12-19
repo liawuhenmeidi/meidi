@@ -81,7 +81,14 @@
 			
 		}
 		if(showResult.size() > 0 ){
-			showResult =  SalaryCalcManager.sortSalaryResult(showResult, showResult.get(0).getUploadOrder().getFileName());
+			String catergoryMapingName = "";
+			for(int i = 0 ; i < showResult.size() ; i ++){
+				if(showResult.get(i).isFinished()){
+					catergoryMapingName = showResult.get(i).getUploadOrder().getFileName();
+					break;
+				}
+			}
+			showResult =  SalaryCalcManager.sortSalaryResult(showResult, catergoryMapingName);
 		}
 		//导出用
 		session.setAttribute("exportSalaryName", name);
