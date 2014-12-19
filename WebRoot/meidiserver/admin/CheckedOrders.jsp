@@ -81,7 +81,7 @@
 	
 	//如果是搜索进来的
 	String search = request.getParameter("search");
-	if(!StringUtill.isNull(search) && search.equals("true") && "".equals(startButton)){
+	if(!StringUtill.isNull(search) && search.equals("true")){
 		UploadOrder searchOrder = (UploadOrder)request.getSession().getAttribute("searchUploadOrder");
 		
 
