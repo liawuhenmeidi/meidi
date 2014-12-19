@@ -327,35 +327,40 @@ public class XLSReader {
 					return UploadOrders;
 				}
 				
-				try {
-					uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(SALETIME_POS,i).getContents().trim())));
-				} catch (ParseException e) {
-					s1 = new SimpleDateFormat("MM/dd/yy");
+				if(!"".equals(sheet0.getCell(SALETIME_POS,i).getContents().trim())){
 					try {
 						uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(SALETIME_POS,i).getContents().trim())));
-					} catch (ParseException e1) {
-						s1 = new SimpleDateFormat("yyyyMMdd");
-						try{
+					} catch (ParseException e) {
+						s1 = new SimpleDateFormat("MM/dd/yy");
+						try {
 							uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(SALETIME_POS,i).getContents().trim())));
-						}catch(ParseException e2){
-							e.printStackTrace();
-							UploadOrders = new ArrayList<UploadOrder>();
-							uo = new UploadOrder();
-							uo.setId(-1);
-							uo.setName("第"+ (i+1) + "行附近有问题，请检查");
-							UploadOrders.add(uo);
-							return UploadOrders;
-						}						
+						} catch (ParseException e1) {
+							s1 = new SimpleDateFormat("yyyyMMdd");
+							try{
+								uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(SALETIME_POS,i).getContents().trim())));
+							}catch(ParseException e2){
+								e.printStackTrace();
+								UploadOrders = new ArrayList<UploadOrder>();
+								uo = new UploadOrder();
+								uo.setId(-1);
+								uo.setName("第"+ (i+1) + "行附近有问题，请检查");
+								UploadOrders.add(uo);
+								return UploadOrders;
+							}						
+						}
+					} catch(Exception e){
+						e.printStackTrace();
+						UploadOrders = new ArrayList<UploadOrder>();
+						uo = new UploadOrder();
+						uo.setId(-1);
+						uo.setName("第"+ (i+1) + "行附近有问题，请检查");
+						UploadOrders.add(uo);
+						return UploadOrders;
 					}
-				} catch(Exception e){
-					e.printStackTrace();
-					UploadOrders = new ArrayList<UploadOrder>();
-					uo = new UploadOrder();
-					uo.setId(-1);
-					uo.setName("第"+ (i+1) + "行附近有问题，请检查");
-					UploadOrders.add(uo);
-					return UploadOrders;
+				}else{
+					uo.setSaleTime("");
 				}
+				
 				uo.setFileName(srcFile.getName());
 				uo.setChecked(0);
 				uo.setCheckedTime(fmt.format(new Date()));
