@@ -543,8 +543,8 @@ public static void updateSendstat(int statues,int sid, int oid) {
 			 
 			if(maxid == 0){ 
 				maxid = 1 ;
-			}  
-			
+			}   
+			 
 		  String printlnid = "";
 		     if(order.getOderStatus().equals(20+"")){ 
 		    	 /*String sql1 = "insert into  mdorderupdateprint (id, message ,statues , orderid,mdtype ,pGroupId,uid,groupid)" +

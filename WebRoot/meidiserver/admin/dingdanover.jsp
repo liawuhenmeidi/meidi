@@ -138,19 +138,18 @@ function amortization(src){
  
 <div class="btn">
 <%
-if(UserManager.checkPermissions(user, Group.over)){
+if(UserManager.checkPermissions(user, Group.dealsendcharge,"w")){
 	%>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input> 
-	 
-	<%
-  }
-	%>
-
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
  <input type="submit" class="button" value="设置标准" onclick="amortization('salesmoney.jsp?chargetype=<%=BasicUtill.dealsend%>')" ></input>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
- <input type="submit" class="button" value="保存" onclick="save('dealsendcharge')" ></input>  
+ <input type="submit" class="button" value="保存" onclick="save('dealsendcharge')" ></input> 
+ 
+  	<%
+  }
+	%>
 </div>
 
 </div > 

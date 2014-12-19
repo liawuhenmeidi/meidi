@@ -27,8 +27,8 @@ import database.DB;
 public class GroupManager {
 	protected static Log logger = LogFactory.getLog(GroupManager.class);
 	private static GroupManager instance ;
-	 
-	//private HashMap<Integer,List<Group>> map = new HashMap<Integer,List<Group>>();
+	
+	private HashMap<Integer,List<Group>> map = new HashMap<Integer,List<Group>>();
 	
 	private GroupManager(){
 	}
@@ -42,10 +42,10 @@ public class GroupManager {
 		return instance ;
 	}
 	
-	/*private void init(){
+	private void init(){
 		GroupManager.getInstance().map = new HashMap<Integer,List<Group>>() ;
 	}
-	   
+	  
 	public List<Group> getListGroupFromPemission(int type){
 		List<Group> list = map.get(type);
 		if(list == null ){
@@ -53,7 +53,7 @@ public class GroupManager {
 			map.put(type, list);
 		}
 		return list ;
-	} */ 
+	}  
 	
 
 	public static boolean getName(String c){

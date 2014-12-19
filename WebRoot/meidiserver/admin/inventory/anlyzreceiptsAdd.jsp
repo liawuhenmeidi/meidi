@@ -182,15 +182,18 @@ function checkedd(type){
 		       
 	   <tr class="asc" >
 		    <td align="center"  colspan=7>   
-		    <% if(UserManager.checkPermissions(user, Group.dealSend)){ %>
-		    <input type="button"  style="background-color:;font-size:20px;" value="打印" onclick="checkedd('outbranch')"/>
-		    <input type="button"  style="background-color:;font-size:20px;" value="保存修改" onclick="checkedd('branch')"/>
-		    <%
-		    }else {
-		    %> 
-		     <input type="button"  style="background-color:;font-size:20px;" value="调货提交" onclick="checkedd('inbrancht')"/>
-		     <%
-		    }
+		    <% 
+		   if(UserManager.checkPermissions(user, Group.inventoryreserve,"w")){ 
+			    if(UserManager.checkPermissions(user, Group.dealSend)){ %>
+			    <input type="button"  style="background-color:;font-size:20px;" value="打印" onclick="checkedd('outbranch')"/>
+			    <input type="button"  style="background-color:;font-size:20px;" value="保存修改" onclick="checkedd('branch')"/>
+			    <%  
+			    }else { 
+			    %> 
+			     <input type="button"  style="background-color:;font-size:20px;" value="调货提交" onclick="checkedd('inbrancht')"/>
+			     <%
+			    }
+		   }
 		     %>
 		    </td>
        </tr> 			

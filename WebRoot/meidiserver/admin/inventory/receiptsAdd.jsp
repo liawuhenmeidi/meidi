@@ -325,7 +325,8 @@ var disable = '<%=isdisabel %>';
     <font style="color:blue;font-size:20px;" >合计:<span style="color:red;font-size:20px;" id="addcount"></span></font>
     <br/>
     
-  <% 
+  <%  
+  if(UserManager.checkPermissions(user, Group.inventory,"w")){
 	  if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 ){
    %> 
    <input type="submit" id="button" value="确认提 交"  onclick="checkedd('add')" <%=isdisabel %>/>
@@ -340,7 +341,7 @@ var disable = '<%=isdisabel %>';
   
   <%
       }
-      
+  }
       
   %>
   </div>

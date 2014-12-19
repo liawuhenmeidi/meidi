@@ -324,7 +324,11 @@ function checkTime(){
 		       
 		       <tr class="asc" >
 		      
-		       <td align="center"  colspan=7> <input type="submit"  style="background-color:;font-size:20px;" value="调货申请" /></td>
+		       <td align="center"  colspan=7> 
+		       <%  if(UserManager.checkPermissions(user, Group.inventoryreserve,"w")){ %>
+		       <input type="submit"  style="background-color:;font-size:20px;" value="调货申请" />
+		       <%} %>
+		       </td>
 		       </tr> 			
 		        			 
              <% 

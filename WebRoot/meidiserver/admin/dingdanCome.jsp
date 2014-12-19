@@ -136,7 +136,7 @@ function adddetail(src){
 </div>
 
 <%
-if(UserManager.checkPermissions(user, Group.come)){
+if(UserManager.checkPermissions(user, Group.come,"w")){
 	%>
 	<div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
