@@ -269,7 +269,7 @@ $(function (){
 			%>
 			<input type="button" value="导出" onclick="$('#baseform').attr('action','../MatchOrderExport');$('#baseform').submit()"/>
 			<br/>
-			<input type="submit" id="submitbutton" value="提交"/>
+			<input type="submit" id="submitbutton" value="提交" onclick="return confirm('是否确认?')"/>
 			<%
 			}
 			%>
