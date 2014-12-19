@@ -303,6 +303,7 @@ if(bsa){
 		<tr>
 		    <td align="center">序号</td>
 			<td align="center">单号</td>
+			<td align="center">门店</td>
 			<td align="center">安装网点</td>
 			<td align="center">顾客信息</td>
 
@@ -363,11 +364,13 @@ if(bsa){
 						if(o.getPhoneRemark()!=1){
 							tdcol = ""; 
 						}
+						
 			    		%>
 						<tr id="<%=o.getId()%>"  class="asc"  onclick="updateClass(this)">
 						<!--  <td align="center" width="20"><input type="checkbox"  name="orderid" value="<%=o.getId()%> "></input></td> -->
-						<td align="center" ><%=x%></td>  
+						<td align="center" ><%=x%></td>   
 						<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" ><%=(o.getPrintlnid() == null?"":o.getPrintlnid())%></a></td>
+						<td align="center" ><%=o.getbranchName(o.getBranch())%></td>  
 						<td align="center"><input type="hidden" name="dealsendid"  value="<%=o.getDealsendId()%>"/><%=o.getdealsendName()%></td>
 						<%
 						if(o.getPhoneRemark()!=1){    

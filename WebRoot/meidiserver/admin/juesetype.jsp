@@ -80,7 +80,7 @@ List<Grouptype> list = GrouptypeManager.getGroup(user);
 
 <!--   头部结束   -->
  
-    <div class="weizhi_head">现在位置:职位类别管理</div>     
+    <div class="weizhi_head">现在位置:岗位类别管理</div>     
    <div class="main_r_tianjia">  
    
 
@@ -88,11 +88,10 @@ List<Grouptype> list = GrouptypeManager.getGroup(user);
    <div class="table-list">
 <table width="100%" cellspacing="1" id="table">
 	<thead>
-		<tr>  
-			
+		<tr>   
 		<!-- <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> -->	
 			<th align="left">编号</th>
-			<th align="left">角色类别</th>
+			<th align="left">岗位类别</th>
 			<th align="left">成员管理</th>
 			<th align="left">修改</th>
 			<th align="left">删除</th>
@@ -127,11 +126,12 @@ List<Grouptype> list = GrouptypeManager.getGroup(user);
     
 </tbody>
 </table>
- 
+ <!--  
 <div class="btn"> 
 职位类别名称： <input type="text"  id="locate" name="locate" /> 
       <input type="button" onclick="add()"  value="增加"/> 
 </div> 
+-->
      </div>
 </div> 
 </body>

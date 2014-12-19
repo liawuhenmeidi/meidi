@@ -452,6 +452,7 @@ logger.info(sql);
 				while (rs.next()) {
 					Group g = GroupManager.getGroupFromRs(rs);
 					List<Integer> pid = g.getPid();
+					logger.info(pid);
 					List<User> list = map.get(g.getId()+"");
 					if(null == list){
 						list = new ArrayList<User>();
@@ -461,8 +462,11 @@ logger.info(sql);
 					if(null != pid && pid.size()>0){
 						for(int i=0;i<pid.size();i++){
 							list = map.get(g.getId()+""); 
-							List<User> list2 = mapuser.get(pid.get(i)+""); 
-							list.addAll(list2); 
+							List<User> list2 = mapuser.get(pid.get(i)+"");
+							if(null != list2){
+								list.addAll(list2); 
+							}
+							
 						}
 					}
 					

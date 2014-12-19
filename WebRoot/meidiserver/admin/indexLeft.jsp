@@ -178,9 +178,9 @@ function reloadopned(src){
          if(UserManager.checkPermissions(user, Group.juese)){
          %>
             <li >
-            <h4 >职位管理</h4>
+            <h4 >岗位管理</h4>
             <div class="list-item none">
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('juesetype.jsp')">职位管理</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('juesetype.jsp')">岗位管理</a></p>
             </div>
           </li>
             <%
