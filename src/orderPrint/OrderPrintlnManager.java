@@ -170,8 +170,8 @@ logger.info(pstmt);
 	   public static void save( OrderPrintln order) {
 		         delete(order);
 				Connection conn = DB.getConn();
-				String sql = "insert into  mdorderupdateprint (id, message ,statues , orderid,mdtype ,pGroupId)" +
-	                         "  values ( null, ?, ?, ?,?,?)";
+				String sql = "insert into  mdorderupdateprint (id, message ,statues , orderid,mdtype ,pGroupId,uid,groupid)" +
+	                         "  values ( null, ?, ?, ?,?,?,?,?)";
 				PreparedStatement pstmt = DB.prepare(conn, sql);
 			try {
 				pstmt.setString(1, order.getMessage());
@@ -179,6 +179,8 @@ logger.info(pstmt);
 				pstmt.setInt(3, order.getOrderid());
 				pstmt.setInt(4, order.getType());
 				pstmt.setInt(5, order.getpGroupId());
+				pstmt.setInt(6, order.getUid()); 
+				pstmt.setInt(7, order.getGroupid());
 		logger.info(pstmt);		 
 				pstmt.executeUpdate();
 				OrderPrintlnService.flag = true ;
@@ -385,6 +387,8 @@ logger.info(sql);
 				p.setOrderid(rs.getInt("orderid"));
 				p.setType(rs.getInt("mdtype")); 
 				p.setpGroupId(rs.getInt("pGroupId")); 
+				p.setUid(rs.getInt("uid")); 
+				p.setGroupid(rs.getInt("groupid"));
 			} catch (SQLException e) { 
 				e.printStackTrace();
 			}

@@ -135,11 +135,17 @@ function adddetail(src){
 <jsp:include page="headremind.jsp"/>
 </div>
 
-
-<div class="btn">
+<%
+if(UserManager.checkPermissions(user, Group.come,"w")){
+	%>
+	<div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm()"></input>  
 </div>
+	<%
+}
+%>
+
 
 </div > 
 <div style=" height:130px;">

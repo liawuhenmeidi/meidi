@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*,java.net.*,product.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <% 
-
+ 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
  

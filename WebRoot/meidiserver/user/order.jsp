@@ -1082,11 +1082,14 @@ String[] branlist =  branchmessage.split("_");
     
   </div>
    <table style="width:100%;background-color:orange">
-     <tr >   
+     <tr >
+     <!--     
     <td width="25%" class=" center"><input type="button"  name="" value="增加赠品" onclick="addrowZ(0)" width="100%" <%=isdisabel %>/></td>
     <td width="25%" class="center"></td>
+     --> 
     <td width="25%"><input type="button"  name="" value="再增加商品" onclick="addrow(0)" width="100%" <%=isdisabel %>/></td>
-    <td width="25%" class="center"></td> 
+    <td width="25%" class="center"></td>  
+   
    </tr>
    </table> 
    <div id="disable">

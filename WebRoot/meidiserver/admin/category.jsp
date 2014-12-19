@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 
 List<Category> list =CategoryManager.getCategory(user,Category.sale) ;
-    
+boolean flag = UserManager.checkPermissions(user, Group.addprodoct,"w");    
 %>
   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -132,21 +132,35 @@ List<Category> list =CategoryManager.getCategory(user,Category.sale) ;
 		<td align="left"><%=category.getName() %></td> 
 		<td align="left"><%=category.getTime() %></td>
 		<td align="left">
-		<%
+		<%  
+		   String str = 0 == category.getStatues()?"否":" 是";
+		if(flag){
 		   if(0 == category.getStatues()){
 		 %>
-		 否
+		 <%= str %>
 		 <input type="button" onclick="changes('<%=category.getId()%>',1)"  value="断货"/>
 		 <%
 		   }else {
 		 %>
-		 是
+		<%= str %>
 		 <input type="button" onclick="changes('<%=category.getId()%>',0)"  value="激活"/>
 		 <%
 	   }
+		}else {
+			%>
+			 <%= str %>
+			<%
+		}
 		 %>
 		 </td>
-		<td align="left"><a href="categoryUpdate.jsp?id=<%=category.getId() %>">[修改]</a></td>
+		 
+		 
+		<td align="left">
+		<%if(flag){ %>
+		<a href="categoryUpdate.jsp?id=<%=category.getId() %>">[修改]</a>
+		<%}			
+		 %>
+		</td> 
     </tr>
     <% } %>
 </tbody>

@@ -170,7 +170,7 @@ function winconfirm(statues,uid,oid,opstatues){
 			//alert(attract.toString());
 			$.ajax({    
 		        type:"post", 
-		         url:"../../user/server.jsp",   
+		         url:"../../user/OrderServlet",   
 		         //data:"method=list_pic&page="+pageCount,
 		        data:"method=shifang&oid="+oid+"&pGroupId="+uid+"&opstatues="+statues,
 		         dataType: "",   

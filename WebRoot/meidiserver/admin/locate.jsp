@@ -3,6 +3,8 @@
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 List<Locate> list = LocateManager.getLocate();
+
+boolean flag = UserManager.checkPermissions(user, Group.locate,"w"); 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -117,17 +119,17 @@ function changes(){
     <% } %>
 </tbody>
 </table>
+<% if(flag){ %>
 <div class="btn">
      
       区域名称： <input type="text"  id="locate" name="locate" /> 
       <input type="button" onclick="changes()"  value="增加"/> </br>   
  <input type="submit" class="button" name="dosubmit" value="删除"  onclick="winconfirm()"></input>
-
-
-</div>
-
+ 
+</div> 
+<% }%>
 <div id="pages"></div>
-</div>  
+</div>   
      
      
      </div>

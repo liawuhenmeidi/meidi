@@ -52,25 +52,20 @@ public class InventoryServlet extends HttpServlet {
 		   
 		String method = request.getParameter("method");
 		User user  = (User)request.getSession().getAttribute("user");
-		if(UserManager.checkPermissions(user,Group.inventoryquery, "w")){
 			synchronized(object){   
 				if("add".equals(method)){ 
 					saveBranch(request,response);
-					return ;   
-				}else if("del".equals(method)){
+				}else if("del".equals(method)){ 
 					deleteBranch(request,response);
-					return ;
 				}else if("addsubscribe".equals(method)){
 					savesubscribeBranch(request,response);
 				}else if("updatesubscribe".equals(method)){
 					updatesubscribeBranch(request,response);
 				}else if("outbranch".equals(method) || "inbranch".equals(method)){ 
 					saveInventory(request,response);
-					return ; 
-				}
-			}
-		}
-		//System.out.println("method"+method);  
+				} 
+			} 
+		logger.info("method"+method);  
 		
 	} 
 	 
@@ -211,7 +206,7 @@ public class InventoryServlet extends HttpServlet {
      private void savesubscribeBranch(HttpServletRequest request, HttpServletResponse response){
  		
  		User user  = (User)request.getSession().getAttribute("user");
- 		 
+ 		System.out.println(1); 
  		Inventory inventory = new Inventory();
  		String time = TimeUtill.gettime();
  		int uid = user.getId();
@@ -296,36 +291,45 @@ public class InventoryServlet extends HttpServlet {
      private void updatesubscribeBranch(HttpServletRequest request, HttpServletResponse response){
     	 User user  = (User)request.getSession().getAttribute("user");
     	 
+    	String inventoryid = request.getParameter("id");
   		String[] producs = request.getParameterValues("product"); 
   		
   		String add = request.getParameter("add");
   		List<String> sqls = new ArrayList<String>();
   		
+  		if("inbranch".equals(add)){
+  		
+  		   
+  			String sql1 = "update inventory set instatues = 1 where id = "+inventoryid; 
+ 
+  			 sqls.add(sql1);
+			
+			}else if("outbranch".equals(add)){
+		       String sql1 = "update inventory set outstatues = 1 where id = " +inventoryid; 
+  			   sqls.add(sql1);		
+			} 
+  		
+  		
   		for(int i=0;i<producs.length;i++){      
-  			String type =producs[i];
-  			if("inbranch".equals(add)){
+  			String type =producs[i]; 
+  			if("inbranch".equals(add) ){
 	  			String count = request.getParameter(producs[i]);	
 	  			String sql = "update inventorymessage set paperString = '" + count + "'   where id = " + type ;
-	  		   
-	  			String sql1 = "update inventory set instatues = 1 where id in (select inventoryId from inventorymessage where id = "+type+")"; 
-	  			 sqls.add(sql);
-	  			 sqls.add(sql1);
+ 
+	  			sqls.add(sql);
   			
-  			}else if("outbranch".equals(add)){
+  			}else if("outbranch".equals(add) || "branch".equals(add)){
   				String count = request.getParameter("real"+producs[i]);	
-  				String sql1 = "update inventory set outstatues = 1 where id in (select inventoryId from inventorymessage where id = "+type+")"; 
-	  			 
-  				
+
 	  			String sql = "update inventorymessage set realString = '" + count + "'    where id = " + type ;
-	  			sqls.add(sql1);
 	  			sqls.add(sql); 			
   			} 
   		}
   		
   	   DBUtill.sava(sqls);
-  		
-  		try {
-  			if(UserManager.checkPermissions(user, Group.dealSend)){
+  		 
+  		try { 
+  			if(UserManager.checkPermissions(user, Group.dealSend) && "outbranch".equals(add)){
   				String id = request.getParameter("id");
   				response.sendRedirect("print.jsp?id="+id+"&type=2");
   			}else {

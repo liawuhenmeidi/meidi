@@ -9,25 +9,48 @@ public class GroupService {
      public static HashMap<Integer,Group> idmap ;
      public static List<Group> list ;
      public static boolean flag = false ; 
+     public static Map<Integer,List<Integer>> mappid ; 
       
      public static Map<String,List<Group>> getPidMap(){
-    	 if(map == null || flag == true ){
+    	 init();
+    	 if(map == null ){
     		 map = GroupManager.getLocateMap();
     	 }
     	 return map ;
      }
-     
+      
+     public static Map<Integer,List<Integer>> getmappid(){
+    	 init();
+    	 if(mappid == null){
+    		 mappid = GroupRelateManager.getmap();
+    	 }
+    	 return mappid ;
+     }
+      
+      
      public static HashMap<Integer,Group> getidMap(){
-    	 if(idmap == null || flag == true ){  
+    	 init();
+    	 if(idmap == null ){   
     		 idmap = GroupManager.getGroupMap();
     	 }  
     	 return idmap ; 
      }
      
      public static List<Group> getList(){
-    	 if(list == null || flag == true ){
+    	 init(); 
+    	 if(list == null ){
+    		 list = GroupManager.getGroup();
+    	 } 
+    	 return list ;
+     }
+        
+     public static void init(){
+    	 if(flag == true ){ 
+    		 map = GroupManager.getLocateMap();
+    		 mappid = GroupRelateManager.getmap();
+    		 idmap = GroupManager.getGroupMap();
     		 list = GroupManager.getGroup();
     	 }
-    	 return list ;
+    	 flag = false ;
      }
 }

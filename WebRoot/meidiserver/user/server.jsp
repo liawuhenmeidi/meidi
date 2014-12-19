@@ -16,32 +16,12 @@ if("dingdaned".equals(method)){
 	String id = request.getParameter("id"); 
 	String oid = request.getParameter("oid");  
 	OrderPrintlnManager.updateOrderStatues(user,Integer.valueOf(id),Integer.valueOf(oid),user.getId(),OrderPrintln.comited);
-}else if("shifang".equals(method)){   
-	String id = request.getParameter("oid");
-	String pGroupId = request.getParameter("pGroupId");
-	String opstatues = request.getParameter("opstatues");
-	//System.out.println("*************"+id+"****"+opstatues);  
-	//OrderManager.updateSendstad(user, id);  
-	OrderPrintln  or = new OrderPrintln(); 
-	or.setOrderid(Integer.valueOf(id));
-
-	if(Integer.valueOf(opstatues) == OrderPrintln.releasedispatch){
-		or.setMessage("文员申请退货");  
-	}else if(Integer.valueOf(opstatues) == OrderPrintln.releasemodfy){
-		or.setMessage("文员申请释放");   
-	}else { //OrderPrintln.releasemodfy
-		or.setMessage("释放");   
-	} 
-	or.setStatues(OrderPrintln.comit);
-	or.setType(Integer.valueOf(opstatues));     
-	or.setpGroupId(Integer.valueOf(pGroupId));  
-	OrderPrintlnManager.save(or);  
 }else if("printlnStatues".equals(method)){  
 	String oid = request.getParameter("oid"); 
 	//OrderPrintln  or = new OrderPrintln(); 
 	//or.setOrderid(Integer.valueOf(oid)); 
 	//or.setType(OrderPrintln.unmodify);
-	//OrderPrintlnManager.save(or);   
+	//OrderPrintlnManager.save(or);    
 	 
 	Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));  
 	response.getWriter().write(""+order.getPrintSatues());

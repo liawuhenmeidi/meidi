@@ -195,8 +195,9 @@ function changes(){
         %>
         
             </ul> 
+      <% if(UserManager.checkPermissions(user, Group.branch,"w")){%>      
       <input type="submit" value="提  交" />
-
+      <%}  %>
  </form>
  <%} %>
      </div>

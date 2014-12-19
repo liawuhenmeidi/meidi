@@ -8,7 +8,7 @@ String id = request.getParameter("id");
 BranchType branch = BranchTypeManager.getLocate(Integer.valueOf(id)); 
 
 List<Branch> list =BranchManager.getLocate(id) ;
-
+boolean flag = UserManager.checkPermissions(user, Group.branch,"w"); 
 HashMap<String,List<User>> map = UserManager.getMapBranch(); 
 // System.out.println("list.size()"+list.size());
 %>
@@ -105,12 +105,15 @@ function seletall(all){
     <a href="branch.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>       
    </div>     
      <div class="main_r_tianjia">
-      <%if(Integer.valueOf(id) != 2){  
-                %>
-   <ul>                                                                                                     
-     <li><a href="branch1add.jsp?pid=<%=id%>">添加门店</a></li>
-     </ul>
-    <%} %>
+      <%
+      if(flag){
+	      if(Integer.valueOf(id) != 2 && branch.getIsSystem() != 1){  
+	       %>
+	   <ul>                                                                                                     
+	     <li><a href="branch1add.jsp?pid=<%=id%>">添加门店</a></li>
+	     </ul>
+	    <%} 
+      }%>
    </div>
      
      
@@ -193,9 +196,11 @@ if(list != null){
       门店名称： <input type="text"  id="locate" name="locate" />  
   <input type="button" onclick="changes()"  value="增加"/> </br> 
    -->   
-   <%if(branch.getIsSystem() == 0 ){%>   
+   <%if(flag){
+    if(branch.getIsSystem() == 0 ){%>   
   <input type="submit" class="button" name="dosubmit" value="删除"  onclick="winconfirm()"></input>
-   <%} %>
+   <%} 
+   }%>
 </div>
 </div>
 

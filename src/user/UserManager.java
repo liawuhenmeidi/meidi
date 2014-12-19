@@ -2,6 +2,7 @@ package user;
 
 import group.Group;
 import group.GroupManager;
+import group.GroupService;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
@@ -230,24 +231,63 @@ logger.info(Permissions);
 		}
 		
 	// 验证职工是否有某种权限
-		
-	public static boolean checkPermissions(User user , int permissions){
+		//  w  写全蝎  r 读权限
+	public static boolean checkPermissions(User user , int permissions,String petnissionsType){
 		if(Group.tuihuo == permissions){
 			permissions = Group.send;
 		   }  
-		boolean flag = false ;
+		boolean flag = false ; 
 		Group listg = GroupManager.getGroup(user.getUsertype());
+	
 		String[] pe = null ;
 		if(listg != null){
+			//logger.info(listg.getPermissions());
 			pe = listg.getPermissions().split("_");
 		} 
 		 if(pe != null){
 			 for(int i=0;i<pe.length;i++){
-	
-				// logger.info(permissions+"***"+pe[i]);
-					if(Integer.valueOf(pe[i]) == permissions || Integer.valueOf(pe[i]) == Group.Manger){
-						flag = true ;
+	               String mess = pe[i];
+	               //logger.info(permissions+"***"+pe[i]);
+	               String[] mes = mess.split("-");
+	               String p = mes[0];
+	               String type = mes[1];
+				 
+					if(Integer.valueOf(p) == permissions || Integer.valueOf(p) == Group.Manger){
+						if("w".equals(type) || petnissionsType.equals(type)){
+							flag = true ;
+						}
+						
 					}
+				} 
+		 }
+		  
+		return  flag ;
+	}  
+	
+	//  w  写全蝎  r 读权限
+	public static boolean checkPermissions(User user , int permissions){
+		if(Group.tuihuo == permissions){
+			permissions = Group.send;
+		   }   
+		boolean flag = false ; 
+		Group listg = GroupService.getidMap().get(user.getUsertype());
+		String[] pe = null ;  
+		 
+		if(listg != null){
+			pe = listg.getPermissions().split("_");
+			//System.out.println("pe"+pe);
+		}    
+		 if(pe != null){  
+			 for(int i=0;i<pe.length;i++){
+	               String mess = pe[i];
+	               if(!StringUtill.isNull(mess)){
+	            	   String[] mes = mess.split("-");
+		               String p = mes[0]; 
+					 //logger.info(permissions+"***"+pe[i]+"****"+p);
+						if(Integer.valueOf(p) == permissions || Integer.valueOf(p) == Group.Manger){	
+							flag = true ;
+						}
+	               }
 				} 
 		 }
 		  

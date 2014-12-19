@@ -2,7 +2,6 @@ package group;
 import grouptype.Grouptype;
 import grouptype.GrouptypeManager;
 
-import inventory.InventoryBranch;
 import inventory.InventoryBranchManager;
 
 import java.sql.Connection;
@@ -17,9 +16,6 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import branch.BranchManager;
-import branchtype.BranchTypeManager;
 
 import category.CategoryManager;
 
@@ -54,11 +50,10 @@ public class GroupManager {
 		List<Group> list = map.get(type);
 		if(list == null ){
 			list = GroupManager.getInstance().getGroupPeimission(type);
-			
 			map.put(type, list);
 		}
 		return list ;
-	} 
+	}  
 	
 
 	public static boolean getName(String c){
@@ -81,7 +76,7 @@ public class GroupManager {
     	return flag;
     }
 	
-		public static boolean save(User user,Group group) throws Exception {
+		/*public static boolean save(User user,Group group) throws Exception {
 			
 			if(CategoryManager.getName(group.getName())){
 				return false;
@@ -89,14 +84,14 @@ public class GroupManager {
 			
 			boolean flag = UserManager.checkPermissions(user, Group.Manger);
 			
-			if(flag){
+			if(flag){ 
 				Connection conn = DB.getConn();
-				
+				 
 				//List<PreparedStatement> listsql = new ArrayList<PreparedStatement>();
 				
-				String sql1 = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,pid,ptype) VALUES (null,?,?,?,?,?,?,?)";
+				String sql1 = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,ptype) VALUES (null,?,?,?,?,?,?)";
 
-                logger.info(group.getName()+group.getPermissions()+group.getDetail()+group.getStatues()+group.getProducts());
+                //logger.info(group.getName()+group.getPermissions()+group.getDetail()+group.getStatues()+group.getProducts());
 				
                 PreparedStatement pstmt = DB.prepare(conn, sql1);
                 
@@ -106,11 +101,10 @@ public class GroupManager {
 					pstmt.setInt(3, group.getStatues());
 					pstmt.setString(4, group.getPermissions());
 					pstmt.setString(5, group.getProducts());
-					pstmt.setInt(6, group.getPid()); 
-					pstmt.setInt(7, group.getPtype());  
+					pstmt.setInt(6, group.getPtype());  
 
                  // listsql.add(pstmt); 	
-				Grouptype gtype = GrouptypeManager.getGrouptype(group.getPtype());	
+				  Grouptype gtype = GrouptypeManager.getGrouptype(group.getPtype());	
                   if(gtype.getType() == 8){
                 	    
                   	String sql2 = BranchManager.save();
@@ -122,7 +116,7 @@ public class GroupManager {
 					pstmt1.setInt(3, group.getStatues());
 					pstmt1.setString(4, permissons);
 					pstmt1.setString(5, group.getProducts());
-					pstmt1.setInt(7,type);   
+					pstmt1.setInt(6,type);   
 
 					String sql3 = "insert into mdbranch(id,bname,pid,bmessage,relatebranch) values (null, ?,?,'','')";
 					PreparedStatement pstmt3 = DB.prepare(conn, sql3); 
@@ -147,6 +141,44 @@ public class GroupManager {
 			}
 			return true;
 		}
+		*/
+        public static boolean save(User user,Group group) throws Exception {
+			List<String> sqls = new ArrayList<String>(); 
+			if(CategoryManager.getName(group.getName())){
+				return false;
+			}  
+			 
+			boolean flag = UserManager.checkPermissions(user, Group.Manger);
+			int maxid = GroupManager.getmaxid()+1;
+			if(flag){ 
+				
+				String sql1 = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,ptype) VALUES ("+maxid+",'"+group.getName()+"','"+group.getDetail()+"','"+group.getStatues()+"','"+group.getPermissions()+"','"+group.getProducts()+"','"+group.getPtype()+"')";
+                sqls.add(sql1);
+				List<Integer> list = group.getPid();
+				for(int i=0;i<list.size();i++){
+					String sql = " insert into mdrelategroup (id,groupid,pgroupid) values (null,"+maxid+","+list.get(i)+") ";
+				    sqls.add(sql);
+				}
+                //logger.info(group.getName()+group.getPermissions()+group.getDetail()+group.getStatues()+group.getProducts());
+                
+                 // listsql.add(pstmt); 	
+				  Grouptype gtype = GrouptypeManager.getGrouptype(group.getPtype());	
+                  if(gtype.getType() == 8){
+                	int type = GrouptypeManager.getgrouptype(Group.send);  
+                  	String sql2 = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,ptype) VALUES ("+maxid+1+",'"+group.getName()+"员工','"+group.getDetail()+"','"+group.getStatues()+"','2_','"+group.getProducts()+"','"+type+"')";
+                  	String sql = " insert into mdrelategroup (id,groupid,pgroupid) values (null,"+maxid+1+","+maxid+") ";
+					String sql3 = "insert into mdbranch(id,bname,pid,bmessage,relatebranch) values (null, '"+group.getName()+"',1,'','')";
+					sqls.add(sql2);
+					sqls.add(sql); 
+					sqls.add(sql3);
+                  }	
+
+			} 
+			DBUtill.sava(sqls);
+			 GroupService.flag = true ;
+			return true;
+		}
+
         // 获取所有用户组
 		
 		public static Map<String,List<Group>> getLocateMap() {
@@ -338,8 +370,10 @@ logger.info(sql);
 					Group g = GroupManager.getGroupFromRs(rs);
 					String str = g.getPermissions();
 					String[] strl = str.split("_");
+					
 					for(int i=0;i<strl.length;i++){
-						if(Integer.valueOf(strl[i]) == type){
+						String[] mess = strl[i].split("-");
+						if(Integer.valueOf(mess[0]) == type){
 							//logger.info("匹配成功");
 							list.add(g); 
 						} 
@@ -409,6 +443,7 @@ logger.info(sql);
 		public static HashMap<String,List<User>> getGroupPidMapUser() {
 			HashMap<String,List<User>> map = new HashMap<String,List<User>>();
 		    HashMap<String,List<User>> mapuser = UserManager.getMapPidUser();
+		    //System.out.println(mapuser);
 			Connection conn = DB.getConn();    
 			String sql = "select * from mdgroup";  
 			Statement stmt = DB.getStatement(conn);
@@ -416,12 +451,21 @@ logger.info(sql);
 			try {   
 				while (rs.next()) {
 					Group g = GroupManager.getGroupFromRs(rs);
+					List<Integer> pid = g.getPid();
 					List<User> list = map.get(g.getId()+"");
-					if(list == null){    
-					   // list = UserManager.getUsersregist(g.getPid());
-				 		list = mapuser.get(g.getPid()+""); 
-						map.put(g.getId()+"", list); 
+					if(null == list){
+						list = new ArrayList<User>();
+						map.put(g.getId()+"", list);
+					} 
+					
+					if(null != pid && pid.size()>0){
+						for(int i=0;i<pid.size();i++){
+							list = map.get(g.getId()+""); 
+							List<User> list2 = mapuser.get(pid.get(i)+""); 
+							list.addAll(list2); 
+						}
 					}
+					
 				} 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -449,23 +493,27 @@ logger.info(sql);
 				return -2 ;
 			}
 			int count = 0 ;
-			
+			 
+			Group g = GroupManager.getGroup(Integer.valueOf(id));
 			
 			String sql = "delete from mdgroup where id = " + id;
 			
-			String sql1 = "delete from mdgroup where pid =  " + id;
+			if(g.getPtype() == 4){
+				String sql1 = "delete from mdgroup where id  in  (select groupid from mdrelategroup  where pgroupid = "+id+") ";
+				
+				String sql2 = "delete from mdbranch where bname =  (select groupname  from mdgroup where id = "+id+" )" ;
+				 
+		        sqls.add(sql2);  
+		        
+		       sqls.add(sql1); 
+			}
 			
-			String sql2 = "delete from mdbranch where bname =  (select groupname  from mdgroup where id = "+id+" )" ;
-			
-	        sqls.add(sql2); 
-	        
-	        sqls.add(sql1);
-	           
+	            
             sqls.add(sql);
            
          
            
-           DBUtill.sava(sqls);
+           DBUtill.sava(sqls); 
            
            count ++;
 		  GroupService.flag = true ;
@@ -504,52 +552,39 @@ logger.info(sql);
 		}
 		
 		public static void updatePermisson(User user,Group group) {
-			Connection conn = DB.getConn();
+			List<String> sqls = new ArrayList<String>();
 			//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
-			String sql = "update mdgroup set statues = ?, products = ? , permissions = ? where id = ?";
-
-			PreparedStatement pstmt = DB.prepare(conn, sql);
-			try {
-				pstmt.setInt(1,group.getStatues());
-				pstmt.setString(2, group.getProducts());
-				pstmt.setString(3, group.getPermissions());
-				pstmt.setInt(4, group.getId());
-				if(group.getPtype() == 3){
-					String sql1 = "update mdgroup set statues = ?, products = ? where pid = ?";
-					PreparedStatement pstmt1 = DB.prepare(conn, sql1);
-					pstmt1.setInt(1,group.getStatues());
-					pstmt1.setString(2, group.getProducts());
-					pstmt1.setInt(3, group.getId());
-					pstmt.executeUpdate(); 
-					pstmt1.executeUpdate();
-					GroupService.flag = true ;
-					GroupManager.getInstance().init();
-				}else {
-					pstmt.executeUpdate();
-					GroupService.flag = true ;
-					GroupManager.getInstance().init();
+			String sql = "update mdgroup set statues = "+group.getStatues()+", products = '"+group.getProducts()+"' , permissions = '"+group.getPermissions()+"' where id = "+group.getId();
+			sqls.add(sql);
+			String sqld = " delete from mdrelategroup where groupid = " + group.getId();
+			sqls.add(sqld); 
+			List<Integer> list = group.getPid();
+			if(null != list){
+				for(int i=0;i<list.size();i++){ 
+					String sqla = " insert into mdrelategroup (id,groupid,pgroupid) values (null,"+group.getId()+","+list.get(i)+") ";
+				    sqls.add(sqla);
 				}
-logger.info(pstmt);				
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				DB.close(pstmt);
-				DB.close(conn);
 			}
+			
+			if(group.getPtype() == 3){
+				String sql1 = "update mdgroup set statues = "+group.getStatues()+", products = '"+group.getStatues()+"' where pid = "+ group.getId();
+			    sqls.add(sql1);
+			}  
+	    DBUtill.sava(sqls);		
+		GroupService.flag = true ;	
+		//logger.info(GroupService.flag); 
 		}
 		// 跟新组信息
 		
 		public static void updateName(User user,Group group) {
 			Connection conn = DB.getConn();
 			//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
-			String sql = "update mdgroup set groupname = ?, detail = ? ,pid = ?  where id = ?";
+			String sql = "update mdgroup set groupname = ?, detail = ?  where id = ?";
 			PreparedStatement pstmt = DB.prepare(conn, sql);
 			try {
 				pstmt.setString(1,group.getName());
 				pstmt.setString(2, group.getDetail());
-				pstmt.setInt(3, group.getPid());
-				pstmt.setInt(4, group.getId());
+				pstmt.setInt(3, group.getId());
 				if(group.getPtype() == 3){
 					String sql1 = "update mdgroup set groupname = ?, detail = ?  where pid = ?";
 					PreparedStatement pstmt1 = DB.prepare(conn, sql1);
@@ -570,6 +605,28 @@ logger.info(pstmt);
 			}
 		}
 		 
+		 public static int getmaxid(){
+			    int count = 0 ; 
+			    Connection conn = DB.getConn();
+				Statement stmt = DB.getStatement(conn);
+			
+				String  sql = "select max(id) as id from mdgroup" ;
+				ResultSet rs = DB.getResultSet(stmt, sql); 
+				try { 
+					while (rs.next()) {
+						count = rs.getInt("id");
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally {
+					DB.close(stmt);
+					DB.close(rs);
+					DB.close(conn);
+				 }
+				return count; 
+		 } 
+		 
+		 
 		private static Group getGroupFromRs(ResultSet rs){
 			Group g = new Group();
 			try {  
@@ -579,7 +636,6 @@ logger.info(pstmt);
 				g.setPermissions(rs.getString("permissions"));
 				g.setStatues(rs.getInt("statues"));
 				g.setProducts(rs.getString("products"));
-				g.setPid(rs.getInt("pid")); 
 				g.setPtype(rs.getInt("ptype"));
 			} catch (SQLException e) {
 				e.printStackTrace();

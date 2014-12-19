@@ -9,18 +9,18 @@
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 
 </head>
-
+ 
 <body>
 
 <% 
 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
-
+ 
 
 Map<String,List<Group>> map = GroupService.getPidMap();
 
-List<Group>  listg = GroupManager.getGroup() ;
+
 
 String ptype = request.getParameter("ptype"); 
 String id = request.getParameter("id");
@@ -28,26 +28,25 @@ String action = request.getParameter("action");
 Group groups = null;
 String name = "";
 String detail = "";
-int pid = -1;
+
 if(!StringUtill.isNull(id)){
 	HashMap<Integer,Group> maps =GroupManager.getGroupMap();
 	groups = maps.get(Integer.valueOf(id));
 	name = groups.getName(); 
 	detail = groups.getDetail().trim();
-	pid = groups.getPid();
+	
 }
-
 if("add".equals(action)){
 	String ids = request.getParameter("id");
 	String named = request.getParameter("name");
     String detaild = request.getParameter("detail");
-    String ppid = request.getParameter("pid");
+   
     Group group = new Group();
     group.setId(Integer.valueOf(ids));
     group.setDetail(detaild);
-    group.setName(named); 
+    group.setName(named);  
     group.setPtype(groups.getPtype());
-    group.setPid(Integer.valueOf(ppid));
+     
     GroupManager.updateName(user, group); 
     response.sendRedirect("juese.jsp?ptype="+ptype);
     return ;
@@ -57,9 +56,8 @@ if("add".equals(action)){
 <script type="text/javascript">
 var name = '<%=name %>';
 var detail = '<%=detail%>';
-var pid = '<%=pid%>';
 
-$(function(){
+$(function(){ 
 	$("#name").val(name);
 	$("#detail").val(detail);
 	$("#"+pid).attr("checked","checked");
@@ -77,7 +75,7 @@ $(function(){
 		 alert("详细信息不能为空");
 		 return false;
 	 }
-	 
+	  
 	 return true ;
  }
  
@@ -90,7 +88,7 @@ $(function(){
 
 <div class="main">
  
-     
+      
  <!--       -->    
      <div class="">
  <div class="weizhi_head">角色编号<%=id %></div> 
@@ -108,23 +106,7 @@ $(function(){
        <div class="juese_head"></div>
        <br/>
        
-       <div class="juese_head">添加上级管理组:
-       </div>
-     
-      <ul class="juese_add">
-       <%
-       if(null != listg){ 
-	        for(int i=0;i<listg.size();i++){
-	        	%> 
-	        
-	        <li><input type="radio"  name = "pid"  value="<%=listg.get(i).getId() %>"  id="<%=listg.get(i).getId() %>" />&nbsp;<%=listg.get(i).getName() %></li>
-	        	
-	       <%  	
-	        }
-       }
-       %>
-     </ul>  
- 
+      
    <ul>
      <li><input type="submit" value="提  交" /></li>
      </ul>

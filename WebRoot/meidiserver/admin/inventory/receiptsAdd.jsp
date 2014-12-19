@@ -258,20 +258,20 @@ var disable = '<%=isdisabel %>';
    <div class="main_r_tianjia">
    <ul>                                                                                                          
      <li><a href="javascript:history.go(-1);">返回</a></li>
-      <%  
-      //System.out.println("aa"+user.getBranch()+inventory.getOutstatues()+UserManager.checkPermissions(user, Group.inventoryquery));
-      if(user.getBranch().equals(outbranch.getId()+"") && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || outbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend) && inventory.getOutstatues() == 0 ){ 
-      %>    
-      <li><a href="InventoryServlet?method=outbranch&id=<%=inventory.getId() %>&token=<%=token%>">出库方确认</a></li>
       <%
-      }   
-      %>
-     <% if(user.getBranch().equals(inbranch.getId()+"") && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || inbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend) && inventory.getInstatues() == 0){ 
-      %>   
-      <li><a href="InventoryServlet?method=inbranch&id=<%=inventory.getId() %>&token=<%=token%>">入库方确认</a></li>
-      <% 
-      } 
-     
+      if(UserManager.checkPermissions(user, Group.inventory,"q")){
+      //System.out.println("aa"+user.getBranch()+inventory.getOutstatues()+UserManager.checkPermissions(user, Group.inventoryquery));
+	      if(user.getBranch().equals(outbranch.getId()+"") && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || outbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend) && inventory.getOutstatues() == 0 ){ 
+	      %>    
+	      <li><a href="InventoryServlet?method=outbranch&id=<%=inventory.getId() %>&token=<%=token%>">出库方确认</a></li>
+	      <%
+	      }   
+	       if(user.getBranch().equals(inbranch.getId()+"") && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || inbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend) && inventory.getInstatues() == 0){ 
+	      %>   
+	      <li><a href="InventoryServlet?method=inbranch&id=<%=inventory.getId() %>&token=<%=token%>">入库方确认</a></li>
+	      <% 
+	      } 
+      }
       if(inventory.getInstatues() == 1 && inventory.getOutstatues() == 1){
       %> 
       <li><a href="print.jsp?id=<%=inventoryid%>">打印</a></li> 
@@ -325,7 +325,8 @@ var disable = '<%=isdisabel %>';
     <font style="color:blue;font-size:20px;" >合计:<span style="color:red;font-size:20px;" id="addcount"></span></font>
     <br/>
     
-  <% 
+  <%  
+  if(UserManager.checkPermissions(user, Group.inventory,"w")){
 	  if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 ){
    %> 
    <input type="submit" id="button" value="确认提 交"  onclick="checkedd('add')" <%=isdisabel %>/>
@@ -340,7 +341,7 @@ var disable = '<%=isdisabel %>';
   
   <%
       }
-      
+  }
       
   %>
   </div>

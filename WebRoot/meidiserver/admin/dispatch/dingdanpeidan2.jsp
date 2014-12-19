@@ -237,7 +237,7 @@ function winconfirm(str,str2,sendid){
 
 		$.ajax({    
 	        type:"post",  
-	         url:"../../user/server.jsp",
+	         url:"../../user/OrderServlet",
 	         //data:"method=list_pic&page="+pageCount,      
 	         data:"method=shifang&oid="+str+"&pGroupId="+pgroup+"&opstatues="+opstatues,
 	         dataType: "",  

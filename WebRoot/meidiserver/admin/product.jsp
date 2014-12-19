@@ -6,6 +6,7 @@ User user = (User)session.getAttribute("user");
 String categoryID = request.getParameter("categoryID");
 String categoryName = request.getParameter("categoryName");
 
+boolean flag = UserManager.checkPermissions(user, Group.addprodoct,"w");
 
 List<Product> list = new ArrayList<Product>();
 Category category = null; 
@@ -75,8 +76,10 @@ if(!StringUtill.isNull(categoryID)){
    <div class="weizhi_head">现在位置,类别：<%= category.getName()%></div>     
    <div class="main_r_tianjia">
    
-   <ul>                                                                                                 
-     <li><a href="productAdd.jsp?categoryID=<%=categoryID%>&method=add">添加产品</a></li>
+   <ul>  
+      <% if(flag){ %>                                                                                               
+      <li><a href="productAdd.jsp?categoryID=<%=categoryID%>&method=add">添加产品</a></li>
+      <% }%>
       <li><a href="category.jsp">返回</a></li>
      </ul>
    </div> 
@@ -108,14 +111,20 @@ if(!StringUtill.isNull(categoryID)){
 		<td align="left"><%=i+1 %></td> 
 		<td align="left"><%=product.getType() %></td> 
 		<td align="left"><%=product.getSize() %></td> 
-		<td align="left"><a href="productAdd.jsp?productid=<%=product.getId() %>&method=update&categoryID=<%=categoryID%>">[修改]</a></td> 
+		<td align="left">
+		<%if(flag){ %>
+		<a href="productAdd.jsp?productid=<%=product.getId() %>&method=update&categoryID=<%=categoryID%>">[修改]</a>
+		<%} %>
+		</td> 
     </tr>
     <% } %> 
 </tbody>
 </table>
+<% if(flag){ %>
 <div class="btn">
   <input type="submit" class="button" name="dosubmit" value="删除" onclick="winconfirm()"></input>   
 </div>
+<% }%>
 <div id="pages"></div>
 </div>  
      

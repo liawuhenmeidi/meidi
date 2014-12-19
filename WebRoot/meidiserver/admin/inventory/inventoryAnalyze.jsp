@@ -34,7 +34,7 @@ if(UserManager.checkPermissions(user, Group.dealSend)){
 	}else {
 		branchName = "";
 	}  
-}else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale)){
+}else if(UserManager.checkPermissions(user, Group.sencondDealsend)){
 	branchid = user.getBranch()+"";   
 	b = BranchManager.getLocatebyid(branchid); 
 	submittype = "outbranch";
@@ -52,7 +52,7 @@ if(!StringUtill.isNull(branchid) && !StringUtill.isNull(starttime)  && !StringUt
 	 maptype = InventoryBranchManager.getBranchTypeObject(user,branchid); 
 }
 
-
+//System.out.println(list);
 HashMap<Integer,Category>  mapc = CategoryManager.getCategoryMap();
 Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 Map<Integer,User> usermap = UserService.getMapId(); 
@@ -124,7 +124,7 @@ var jsonall = <%=listall%>;
 var count = "<%=countt%>";
 $(function () { 
 		 $("#branch").autocomplete({ 
-			 source: jsonall
+			 source: jsonall 
 		    });
 		 
 		 $("select[id='counttyepe'] option[value='"+count+"']").attr("selected","selected");
@@ -164,7 +164,7 @@ function checkTime(){
   <jsp:param name="" value="" />
   </jsp:include>     
 </div > 
-<form action="" id="inventory" onsubmit="return checkTime()"> 
+<form action="" id="inventory" onsubmit="return checkTime()">  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <% if(UserManager.checkPermissions(user, Group.dealSend)){ %>
  选择安装网点：<input type="text" name="branch" id="branch" value="<%=branchName %>"   />
@@ -195,7 +195,7 @@ function checkTime(){
 <div style="height:70px;">
 </div>
 <br/>  
-
+ 
 <div id="wrap">
 <form action="InventoryServlet" method="post" onsubmit="return checkTime()">
 <input type="hidden" name="method" value="addsubscribe"/>
@@ -268,9 +268,9 @@ function checkTime(){
         			  <td align="center"><%=mapc.get(in.getInventoryid()).getName() %></td>    
         			  <td align="center"><%=in.getType() %> </td>   
         			  <td align="center"><%=in.getPapercount() %> </td>   
-        			  <td align="center"><%=in.getRealcount() %> </td>   
-        			  <td align="center"><%=list.get(in.getType())*(-1) %> </td> 
-        			  <td align="center"><%=branchtypeStr %> </td>  
+        			  <td align="center"><%=in.getRealcount() %> </td> 
+        			  <td align="center"><%=null == list.get(in.getType()) ? "0":list.get(in.getType())*(-1) %> </td> 
+        			  <td align="center"><%=branchtypeStr %> </td>   
         			  <td align="center"> 
         			  <input type="hidden" name="product" value="<%=in.getTypeid() %>"/>
         			  <input type="text" name="<%=in.getTypeid() %>" id="<%=in.getTypeid() %>" value=""  /> 
@@ -324,7 +324,11 @@ function checkTime(){
 		       
 		       <tr class="asc" >
 		      
-		       <td align="center"  colspan=7> <input type="submit"  style="background-color:;font-size:20px;" value="调货申请" /></td>
+		       <td align="center"  colspan=7> 
+		       <%  if(UserManager.checkPermissions(user, Group.inventoryreserve,"w")){ %>
+		       <input type="submit"  style="background-color:;font-size:20px;" value="调货申请" />
+		       <%} %>
+		       </td>
 		       </tr> 			
 		        			 
              <% 
