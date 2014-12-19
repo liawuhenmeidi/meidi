@@ -256,6 +256,13 @@ public class XLSReader {
 				return null;
 			}
 			
+			final int SHOP_POS = 0;
+			final int SALETIME_POS = 1;
+			final int TYPE_POS = 2;
+			final int NUM_POS = 3;
+			final int SALEPRICE_POS = 4;
+			
+			
 			
 			String filepath = path.replace("\\", "/");
 			List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
@@ -301,15 +308,15 @@ public class XLSReader {
 			for(int i = 2 ; i < sheet0.getRows(); i ++){
 				
 				try{
-					if(sheet0.getCell(0,i).getContents().trim().equals("")){
+					if(sheet0.getCell(SHOP_POS,i).getContents().trim().equals("")){
 						continue;
 					}
 					uo.setName(name);
-					uo.setShop(sheet0.getCell(1,i).getContents().trim());
-					uo.setType(sheet0.getCell(2,i).getContents().trim());
+					uo.setShop(sheet0.getCell(SHOP_POS,i).getContents().trim());
+					uo.setType(sheet0.getCell(TYPE_POS,i).getContents().trim());
 					//uo.setSaleManName(sheet0.getCell(3,i).getContents().trim());
-					uo.setSalePrice(Double.parseDouble(sheet0.getCell(3,i).getContents().trim()));
-					uo.setNum(Integer.parseInt(sheet0.getCell(4,i).getContents().trim()));
+					uo.setSalePrice(Double.parseDouble(sheet0.getCell(SALEPRICE_POS,i).getContents().trim()));
+					uo.setNum(Integer.parseInt(sheet0.getCell(NUM_POS,i).getContents().trim()));
 				}catch(Exception e){
 					e.printStackTrace();
 					UploadOrders = new ArrayList<UploadOrder>();
@@ -321,15 +328,15 @@ public class XLSReader {
 				}
 				
 				try {
-					uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(1,i).getContents().trim())));
+					uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(SALETIME_POS,i).getContents().trim())));
 				} catch (ParseException e) {
 					s1 = new SimpleDateFormat("MM/dd/yy");
 					try {
-						uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(1,i).getContents().trim())));
+						uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(SALETIME_POS,i).getContents().trim())));
 					} catch (ParseException e1) {
 						s1 = new SimpleDateFormat("yyyyMMdd");
 						try{
-							uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(1,i).getContents().trim())));
+							uo.setSaleTime(s2.format(s1.parse(sheet0.getCell(SALETIME_POS,i).getContents().trim())));
 						}catch(ParseException e2){
 							e.printStackTrace();
 							UploadOrders = new ArrayList<UploadOrder>();
