@@ -80,9 +80,10 @@ body {
 
 <body>
  
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+  <script src="../js/jquery-1.7.2.min.js"></script>
+  <!--  <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>-->
   <link rel="stylesheet" href="../css/jquery-ui.css">
+  <script src="../js/jquery-ui.js"></script>
  <%
 	if(fileName != null && fileName != "" && !fileName.equals("")){	
 		String temp = "上传失败";
