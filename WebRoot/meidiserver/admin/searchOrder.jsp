@@ -99,13 +99,34 @@ function checkedd(){
 	//window.close();
 	//window.oper.reload();
 	 //window.opener.location.reload();
-	<%if(fromUnCheckedPage){ %>
-	 
 	
-	window.opener.location.href="manualCheckout.jsp?search=true&branchtype=<%=selectBranchType %>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>";
-	<% }else{%>
-	window.opener.location.href="CheckedOrders.jsp?search=true&branchtype=<%=selectBranchType %>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>";
-	<%}%>
+	var temp = window.opener.document.createElement("form");
+	temp.action = "";      
+    temp.method = "post";
+    temp.style.display = "none";
+       
+        var opt1 = document.createElement("input");      
+        opt1.name = 'search';      
+        opt1.value = 'true';            
+        temp.appendChild(opt1);  
+        
+        var opt2 = document.createElement("input");  
+        opt2.name = 'branchtype';      
+        opt2.value = '<%=selectBranchType %>';            
+        temp.appendChild(opt2);  
+        
+        var opt3 = document.createElement("input");  
+        opt3.name = 'branch';      
+        opt3.value = '<%=selectBranch %>';            
+        temp.appendChild(opt3);  
+        
+        var opt4 = document.createElement("input");  
+        opt4.name = 'uploadorder';      
+        opt4.value = '<%=selectOrderName %>';            
+        temp.appendChild(opt4);  
+          
+    window.opener.document.body.appendChild(temp);      
+    temp.submit();
 }
 
 </script>

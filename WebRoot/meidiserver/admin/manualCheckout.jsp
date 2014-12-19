@@ -1,3 +1,4 @@
+<%@page import="com.sun.net.httpserver.HttpContext"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,order.*,orderproduct.*,branchtype.*,branch.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
@@ -12,6 +13,8 @@
 	String[] uploadSide = request.getParameterValues("uploadside");
 	String selectOrderName = request.getParameter("uploadorder");
 	
+	//接受选定的对比参数
+	String checkBoxStatus = request.getParameter("checkBoxStatus");
 
 	//显示内容的开关
 	boolean showContent = false;
@@ -87,7 +90,7 @@
 	
 	//如果是搜索进来的
 	String search = request.getParameter("search");
-	if(!StringUtill.isNull(search) && search.equals("true") && "".equals(startButton)){
+	if(!StringUtill.isNull(search) && search.equals("true")){
 		UploadOrder searchOrder = (UploadOrder)request.getSession().getAttribute("searchUploadOrder");
 		
 
@@ -104,6 +107,7 @@
 		}
 		//去自动匹配好的Order
 		afterMatchOrders = mo.getMatchedOrders();
+		
 	}
 	
 	//导出用
@@ -150,8 +154,64 @@ tr strong,tr td {white-space:normal}
 <script type="text/javascript" src="../js/calendar.js"></script> 
 <script type="text/javascript">
 
-var jsonmap = '<%=mapjosn%>';   
- 
+var jsonmap = '<%=mapjosn%>';
+var checkBoxStatus = '<%=checkBoxStatus%>';
+$(function () {
+	initCheckBox();
+	$('#branchtype').val('<%=selectBranchType%>');
+});
+
+function initCheckBox(){
+	if(checkBoxStatus.charAt(0) == "0"){
+		$('#checkbox_compareshop').attr("checked",false);
+	}
+	if(checkBoxStatus.charAt(1) == "0"){
+		$('#checkbox_comparepos').attr("checked",false);
+	}
+	if(checkBoxStatus.charAt(2) == "0"){
+		$('#checkbox_comparesaletime').attr("checked",false);
+	}
+	if(checkBoxStatus.charAt(3) == "0"){
+		$('#checkbox_comparetype').attr("checked",false);
+	}
+	if(checkBoxStatus.charAt(4) == "0"){
+		$('#checkbox_comparenum').attr("checked",false);
+	}
+
+}
+
+function getCheckBox(){
+	var result = '';
+	
+	if($('#checkbox_compareshop').attr("checked") == 'checked'){
+		result = result + "1";
+	}else{
+		result = result + "0";
+	}
+	if($('#checkbox_comparepos').attr("checked") == 'checked'){
+		result = result + "1";
+	}else{
+		result = result + "0";
+	}
+	if($('#checkbox_comparesaletime').attr("checked") == 'checked'){
+		result = result + "1";
+	}else{
+		result = result + "0";
+	}
+	if($('#checkbox_comparetype').attr("checked") == 'checked'){
+		result = result + "1";
+	}else{
+		result = result + "0";
+	}
+	if($('#checkbox_comparenum').attr("checked") == 'checked'){
+		result = result + "1";
+	}else{
+		result = result + "0";
+	}
+	
+	return result;
+}
+
 $(function () {
     var opt = { }; 
     opt.date = {preset : 'date'};	  
@@ -226,6 +286,26 @@ $(function (){
 		</td>
 		<td><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp?unchecked=true&branchtype=<%=selectBranchType%>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
 	</tr>
+	<tr>
+		<td colspan="2" align="left">
+		对比的项目为:
+		<input type="checkbox" id="checkbox_compareshop" checked="checked">
+		销售门店
+		</input>
+		<input type="checkbox" id="checkbox_comparepos" checked="checked">
+		pos(厂送)单号
+		</input>
+		<input type="checkbox" id="checkbox_comparesaletime" checked="checked">
+		销售日期
+		</input>
+		<input type="checkbox" id="checkbox_comparetype" checked="checked">
+		票面型号
+		</input>
+		<input type="checkbox" id="checkbox_comparenum" checked="checked">
+		票面数量
+		</input>
+		</td>
+	</tr>
 </table>
 
 <form name="baseform" id="baseform" method="post">
@@ -260,7 +340,8 @@ $(function (){
 			
 			<td align="center">
 
-			<input type="submit" id="startbutton" name="startbutton" value="对比" onmousedown="$('#baseform').attr('action','');$('#startbutton').val('正在对比')"/>
+			<input type="submit" id="startbutton" name="startbutton" value="对比" onmousedown="$('#baseform').attr('action','');$('#startbutton').val('正在对比');$('#checkBoxStatus').val(getCheckBox())"/>
+			<input type="hidden" id="checkBoxStatus" name="checkBoxStatus" value=""/>
 			<br/>
 			
 			
@@ -361,7 +442,7 @@ $(function (){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadcount"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		
-		<%
+		<%	
 			
 		}
 		%>
