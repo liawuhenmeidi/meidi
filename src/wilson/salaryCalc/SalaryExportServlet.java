@@ -115,7 +115,7 @@ public class SalaryExportServlet extends HttpServlet {
         	label6 = new Label(6,i+1,lists.get(i).getUploadOrder().getType());
         	label7 = new Label(7,i+1,String.valueOf(lists.get(i).getUploadOrder().getNum()));
         	label8 = new Label(8,i+1,String.valueOf(lists.get(i).getUploadOrder().getSalePrice()));
-        	label9 = new Label(9,i+1,String.valueOf(lists.get(i).getSalary()));
+        	label9 = new Label(9,i+1,String.valueOf(lists.get(i).getPrintSalary()));
   	
         	sheet.addCell(label0);
             sheet.addCell(label1);
