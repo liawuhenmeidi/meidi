@@ -192,13 +192,14 @@ public class OrderManager {
 		
 		
 	}
-	
+	  
 	//by wilsonlee
-	public static int updateStatues(String method ,String statues,String id) {
+	/*public static int updateStatues(String method ,String statues,String id) {
 		return updateStatues(new User(),method,statues,id);
-	}
-	 // 确认厂送票已回
-		public static int updateStatues(User user ,String method ,String statues,String id) {
+	}*/
+	 // 确认厂送票已回 
+	public static int updateStatues(User user ,String method ,String statues,String id) {
+	
 			List<String> listsql = new ArrayList<String>();  
 			String[] listt = id.split(",");
 			if(listt.length <2){  
@@ -222,29 +223,28 @@ public class OrderManager {
 			//logger.info(1);
 			
 			int flag = -1 ;
-			Date date1 = new Date();
-			String time= df2.format(date1); 
+
 			if(id.startsWith(",")){
 				id = id.substring(1); 
 			}
 			String ids = "(" + id + ")";
 			String sql = ""; 
 			
+			//logger.info("orderCharge".equals(method));
+			//logger.info(UserManager.checkPermissions(user, Group.dealSend,"w"));
+			//logger.info(StringUtill.GetJson(user));
 			if(UserManager.checkPermissions(user, Group.dealSend,"w")){
-				if("orderCome".equals(method)){
-					sql = "update mdorder set statues1 = "+statues+" where id in " + ids;
-				}else if("orderDingma".equals(method)){
-					sql = "update mdorder set statuesdingma = "+statues+" where id in " + ids;
-				}else if("orderGo".equals(method)){ 
-					sql = "update mdorder set statues2 = "+statues+" where id in " + ids;
-				}else if("orderCharge".equals(method)){
+				//logger.info(statues);
+				//logger.info(method);  
+				if("orderCharge".equals(method)){
+					
 					if(StringUtill.isNull(statues)){
 						statues = TimeUtill.getdateString();  
 					}else {
 						if("0".equals(statues)){
 							statues = "";
-						}
-					} 
+						} 
+					}  
 					///sql = "update mdorder set statues3 = "+statues+" where id in " + ids;
 					sql = "update mdorder set statuesChargeSale = '" + statues + "' where id in " + ids ;
 				} else if("orderover".equals(method)){ 
@@ -253,11 +253,12 @@ public class OrderManager {
 				}else if("wenyuancallback".equals(method)){ 
 					sql = "update mdorder set wenyuancallback = "+statues+" where id in " + ids;
 				} 
-	
-			}else if(UserManager.checkPermissions(user, Group.send,"w")){
-				if("print4".equals(method)){   
-					sql = "update mdorder set returnwenyuan = "+statues+" where id in " + ids;
-				}    
+			}else if(UserManager.checkPermissions(user, Group.come,"w") && "orderCome".equals(method)){
+				sql = "update mdorder set statues1 = "+statues+" where id in " + ids;
+			}else if(UserManager.checkPermissions(user, Group.go,"w") && "orderGo".equals(method)){
+					sql = "update mdorder set statues2 = "+statues+" where id in " + ids; 
+			}else if(UserManager.checkPermissions(user, Group.send,"w") || "print4".equals(method)){
+					sql = "update mdorder set returnwenyuan = "+statues+" where id in " + ids;   
 			}else if(UserManager.checkPermissions(user, Group.sencondDealsend,"w")){
 				if("statuescallback".equals(method)){ 
 					sql = "update mdorder set statuescallback = "+statues+" where id in " + ids;

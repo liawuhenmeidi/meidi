@@ -270,6 +270,9 @@ if("permission".equals(action)){
         	listg = maplist.get(2+"");
         	//sencondDealsend = "checked=\"checked\" onClick=\"return false\""; 
         	%>
+        	<tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>基础信息类权限</td><td></td></tr></table></td></tr> 
+            <tr class="asc"  onclick="updateClass(this)"><td width=25% >用户:</td><td width=25% >管理<input type="checkbox" value="3-w" name = "permission" id="p3-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="3-r" name = "permission" id="p3-r" /></td></tr>
+        
         	 <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>报装单类权限</td><td></td></tr></table></td></tr> 	
         	 <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装网点配工:</td><td width=25% >可配工<input type="checkbox" value="8-w" name = "permission" id="p8-w" <%= sencondDealsend%>/></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="8-r" name = "permission" id="p8-r" /></td></tr> 
              <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装网点释放申请:</td><td width=25% >可提交<input type="checkbox" value="19-w" name = "permission" id="p19-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="19-r" name = "permission" id="p19-r" /></td></tr> 
@@ -300,10 +303,10 @@ if("permission".equals(action)){
          %>     
                
         <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>基础信息类权限</td><td></td></tr></table></td></tr> 
-        <tr class="asc"  onclick="updateClass(this)"><td width=25% >用户权限:</td><td width=25% >管理<input type="checkbox" value="3-w" name = "permission" id="p3-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="3-r" name = "permission" id="p3-r" /></td></tr>
-        <tr class="asc"  onclick="updateClass(this)"><td width=25% >门店权限:</td><td width=25% >管理<input type="checkbox" value="9-w" name = "permission" id="p9-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="9-r" name = "permission" id="p9-r" /></td></tr> 
-        <tr class="asc"  onclick="updateClass(this)"><td width=25% >地区权限:</td><td width=25% >管理<input type="checkbox" value="10-w" name = "permission" id="p10-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="10-r" name = "permission" id="p10-r" /></td></tr> 
-        <tr class="asc"  onclick="updateClass(this)"><td width=25% >产品权限:</td><td width=25% >可管理<input type="checkbox" value="4-w" name = "permission" id="p4-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="4-r" name = "permission" id="p4-r" /></td></tr> 
+        <tr class="asc"  onclick="updateClass(this)"><td width=25% >用户:</td><td width=25% >管理<input type="checkbox" value="3-w" name = "permission" id="p3-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="3-r" name = "permission" id="p3-r" /></td></tr>
+        <tr class="asc"  onclick="updateClass(this)"><td width=25% >门店:</td><td width=25% >管理<input type="checkbox" value="9-w" name = "permission" id="p9-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="9-r" name = "permission" id="p9-r" /></td></tr> 
+        <tr class="asc"  onclick="updateClass(this)"><td width=25% >地区:</td><td width=25% >管理<input type="checkbox" value="10-w" name = "permission" id="p10-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="10-r" name = "permission" id="p10-r" /></td></tr> 
+        <tr class="asc"  onclick="updateClass(this)"><td width=25% >产品:</td><td width=25% >可管理<input type="checkbox" value="4-w" name = "permission" id="p4-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="4-r" name = "permission" id="p4-r" /></td></tr> 
                   
         <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>报装单类权限</td><td></td></tr></table></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >报装单:</td><td width=25% >可提交(导购上报)<input type="checkbox" value="1-w" name = "permission" id="p1-w" <%=sale %> /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="1-r" name = "permission" id="p1-r" /></td></tr>

@@ -237,17 +237,18 @@ logger.info(Permissions);
 			permissions = Group.send;
 		   }  
 		boolean flag = false ; 
+		//logger.info(user.getUsertype());
 		Group listg = GroupManager.getGroup(user.getUsertype());
-	
+	   // logger.info(listg);
 		String[] pe = null ;
-		if(listg != null){
-			//logger.info(listg.getPermissions());
+		if(listg != null){ 
+		//	logger.info(listg.getPermissions());
 			pe = listg.getPermissions().split("_");
 		} 
-		 if(pe != null){
+		 if(pe != null){ 
 			 for(int i=0;i<pe.length;i++){
 	               String mess = pe[i];
-	               //logger.info(permissions+"***"+pe[i]);
+	              // logger.info(permissions+"***"+pe[i]);
 	               String[] mes = mess.split("-");
 	               String p = mes[0];
 	               String type = mes[1];
@@ -397,8 +398,10 @@ logger.info(Permissions);
 					if(UserManager.checkPermissions(user, Group.Manger)){
 						sql = "select * from  mduser where statues != 2 order by id desc";
 					}else {
-						sql = "select * from  mduser where statues != 2 and usertype in (select id from mdgroup where pid = "+user.getUsertype()+") order by id desc";
-					}
+						// select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"'
+						//sql = "select * from  mduser where statues != 2 and usertype in (select id from mdgroup where pid = "+user.getUsertype()+") order by id desc";
+						sql = "select * from  mduser where statues != 2 and usertype in (select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"') order by id desc";
+					} 
 					//  select id from mdgroup where pid = user.get
 					Statement stmt = DB.getStatement(conn);
 					ResultSet rs = DB.getResultSet(stmt, sql);

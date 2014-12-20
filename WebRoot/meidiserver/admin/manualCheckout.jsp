@@ -19,10 +19,10 @@
 	//显示内容的开关
 	boolean showContent = false;
 	String startButton = request.getParameter("startbutton");
-	
+	 
 	if(startButton == null){
 		if(dbSide != null && dbSide.length >0){
-			MatchOrderManager.checkDBOrderList(dbSide,selectOrderName);
+			MatchOrderManager.checkDBOrderList(user,dbSide,selectOrderName);
 		}
 		if(uploadSide != null && uploadSide.length > 0){
 			MatchOrderManager.checkUploadOrderList(uploadSide); 
@@ -352,7 +352,7 @@ $(function (){
 			<br/>
 			<input type="submit" id="submitbutton" value="提交" onclick="return confirm('是否确认?')"/>
 			<%
-			}
+			} 
 			%>
 			</td>
 			
