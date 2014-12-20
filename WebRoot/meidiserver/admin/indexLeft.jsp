@@ -138,13 +138,13 @@ function reloadopned(src){
             <div class="list-item none">
               <p ><a href="javascript:void(0);"  onclick="reloadopned('huiyuan.jsp')">职工管理</a></p>
             </div>
-          </li>
+          </li> 
           <% } 
-         if(UserManager.checkPermissions(user,Group.inventoryquery)){
+         if(UserManager.checkPermissions(user,Group.inventory) || UserManager.checkPermissions(user, Group.inventoryquery) || UserManager.checkPermissions(user, Group.inventoryreserve)){
          %>
        <li > 
-            <h4 >库存管理</h4>
-            <div class="list-item none"> 
+            <h4 >库存管理</h4>  
+            <div class="list-item none">  
             <% 
               if(UserManager.checkPermissions(user, Group.inventory)){
             %> 

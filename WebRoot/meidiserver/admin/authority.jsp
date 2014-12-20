@@ -114,19 +114,6 @@ if("permission".equals(action)){
  });
  
  function check(){
-	 var name = $("#name").val();
-	 var detail = $("#detail").val();
-
-	 if(name == "" || name == null || name == "null"){
-		 alert("角色名称不能为空");
-		 return false;
-	 }
-	 
-	 if(detail == "" || detail == null || detail == "null"){
-		 alert("详细信息不能为空");
-		 return false;
-	 }
-	 
 	 var m = "";
 	 var p = "";
 	 var pe ="";
@@ -286,6 +273,7 @@ if("permission".equals(action)){
         	 <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>报装单类权限</td><td></td></tr></table></td></tr> 	
         	 <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装网点配工:</td><td width=25% >可配工<input type="checkbox" value="8-w" name = "permission" id="p8-w" <%= sencondDealsend%>/></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="8-r" name = "permission" id="p8-r" /></td></tr> 
              <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装网点释放申请:</td><td width=25% >可提交<input type="checkbox" value="19-w" name = "permission" id="p19-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="19-r" name = "permission" id="p19-r" /></td></tr> 
+             <tr class="asc"  onclick="updateClass(this)"><td width=25% >待送货单据:</td><td width=25% >可送货<input type="checkbox" value="2-w" name = "permission" id="p2-w" <%= send%>/></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="2-r" name = "permission" id="p2-r" /></td></tr>
         	<tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>库存类权限</td><td></td></tr></table></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >调货单权限:</td><td width=25% ></td><td width=25% >可确认<input type="checkbox" value="13-q" name = "permission" id="p13-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="13-r" name = "permission" id="p13-r" /></td></tr>	 	 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >库存权限:</td><td width=25% ></td><td width=25% ></td><td width=25% >可查询<input type="checkbox" value="12-r" name = "permission" id="p12-r" /></td></tr>	 	 

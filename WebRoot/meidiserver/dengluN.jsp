@@ -7,7 +7,7 @@ User user = (User)session.getAttribute("user");
 if(null != user){
 	flag = true ;
 }
-
+ 
 
 String action = request.getParameter("action");
 

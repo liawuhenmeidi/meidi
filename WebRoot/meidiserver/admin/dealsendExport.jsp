@@ -294,7 +294,7 @@ if(bsa){
     <%  } 
          }
     %>
-    <input type="button" class="button" value="导出" onclick="javascript:window.open('../SalaryExportServlet', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"></input> 
+    <input type="button" class="button" value="导出" onclick="javascript:window.location.href='ChargeExportServlet?said=<%=sa.getId() %>'"></input> 
     
 	<input type="hidden" name="type" value="save"/> 
 	<input type="hidden" name="said" id="said" value="<%=sa.getId() %>" value="save"/> 

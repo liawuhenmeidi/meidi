@@ -639,7 +639,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 			  }else if(Order.orderPrint == statues){   
 				  sql = "select * from  mdorder  where  dealSendid != 0   and sendId = 0 and printSatues = 0  and deliveryStatues != 3    "+search+"  order by "+sort+str ;  
 			  }else if(Order.serach == statues){ 
-				  sql = "select * from  mdorder  where 1 =1 "+search+" order by "+sort ;
+				  sql = "select * from  mdorder  where 1 =1 "+search+" order by "+sort+str  ;
 			  }else if(Order.charge == statues){ 
 				  sql = "select * from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0  "+search+" order by "+sort+str ;
 			  }else if(Order.callback == statues){ 

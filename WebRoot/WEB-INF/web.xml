@@ -154,7 +154,21 @@
 	        <servlet-name>PrintServlet</servlet-name>  
 	        <url-pattern>/meidiserver/Print</url-pattern>  
 	    </servlet-mapping> 
-	       
+	  
+	  
+	  <servlet>  
+	        <servlet-name>ChargeExportServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.ChargeExportServlet
+	        </servlet-class>  
+   </servlet>  
+          
+	    <servlet-mapping>  
+	        <servlet-name>ChargeExportServlet</servlet-name>  
+	        <url-pattern>/meidiserver/admin/ChargeExportServlet</url-pattern>  
+	    </servlet-mapping> 
+	    
+	         
 	   
 	    <servlet>  
 	        <servlet-name>UpdateServlet</servlet-name>  
