@@ -86,6 +86,8 @@
 		//去自动匹配好的Order
 		afterMatchOrders = mo.getMatchedOrders();
 	}
+	//计算下本轮的计算的个数
+	int calcNum = MatchOrder.getRequeredLevel(checkBoxStatus);
 	
 	
 	//如果是搜索进来的
@@ -102,7 +104,7 @@
 		unCheckedUploadOrders = MatchOrderManager.searchUploadOrderList(unCheckedUploadOrders, searchOrder);
 		
 		showContent = true;
-		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders)){
+		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders,checkBoxStatus)){
 			return;
 		}
 		//去自动匹配好的Order
@@ -410,10 +412,10 @@ $(function (){
 			isChecked = false;
 			dbsideDisabled =false;
 			uploadsideDisabled=false;
-			if(afterMatchOrders.get(i).getUploadSideOrderId() == -2){
+			if(afterMatchOrders.get(i).getUploadSideOrderId() == MatchOrder.SAME_POS_ID){
 				showColor = true;
 			}	
-			if(afterMatchOrders.get(i).getCompareLevel() == 5){
+			if(afterMatchOrders.get(i).getCompareLevel() == calcNum){
 				isChecked = true;
 			}
 			

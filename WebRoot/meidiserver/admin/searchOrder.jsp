@@ -124,6 +124,11 @@ function checkedd(){
         opt4.name = 'uploadorder';      
         opt4.value = '<%=selectOrderName %>';            
         temp.appendChild(opt4);  
+        
+        var opt5 = document.createElement("input");  
+        opt5.name = 'checkBoxStatus';      
+        opt5.value = window.opener.getCheckBox();            
+        temp.appendChild(opt5); 
           
     window.opener.document.body.appendChild(temp);      
     temp.submit();

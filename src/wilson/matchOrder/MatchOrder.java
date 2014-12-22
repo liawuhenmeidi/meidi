@@ -11,10 +11,29 @@ import wilson.upload.UploadOrder;
 public class MatchOrder {
 	
 	//店名匹配等级
-	public static Double SHOPNAME_DISTANCE = 0.19999;
+	public static final Double SHOPNAME_DISTANCE = 0.19999;
 	
 	//匹配的总个数
-	public static int MATCH_NUM = 5;
+	public static final int MATCH_NUM = 5;
+	
+	//POS单号一样的时候的order的id
+	public static final int SAME_POS_ID = -2;
+	
+	//这次匹配的个数
+	private int MATCH_NUM_THISTIME = 5;
+	
+	//传入的MatchPara中各个位代表的意义
+	//销售门店
+	public static final int MATCHPARA_SHOP = 0;
+	//pos(厂送)单号	
+	public static final int MATCHPARA_POS = 1;
+	//销售日期
+	public static final int MATCHPARA_SALETIME = 2;
+	//票面型号
+	public static final int MATCHPARA_TYPE = 3;
+	//票面数量	
+	public static final int MATCHPARA_NUM = 4;
+	
 	
 	//来自上传的匹配失败列表
 	List<UploadOrder> unMatchedUploadOrders = new ArrayList<UploadOrder>();
@@ -32,9 +51,11 @@ public class MatchOrder {
 		unMatchedUploadOrders = new ArrayList<UploadOrder>();
 		unMatchedDBOrders = new ArrayList<Order>();
 		matchedOrders = new ArrayList<AfterMatchOrder>();
-		
+		MATCH_NUM_THISTIME = getRequeredLevel(matchPara);
 		
 		boolean flag = false;
+
+		
 		try{
 	
 			//取两个源数据中,店名相似度最高的位置i。如14,23
@@ -226,91 +247,91 @@ public class MatchOrder {
 		Double tempDouble = 0.0;
 		int tempInt = 0 ;
 		
-		//先过滤掉大多数posNo相等的
-		for(int i = 0 ; i < unCheckedUploadOrders.size(); i ++){
-			
-			UploadOrder tempUo = unCheckedUploadOrders.get(i);
-
-			for(int j = 0 ; j < unCheckedDBOrders.size() ; j ++){	
-				Order tempDBO = unCheckedDBOrders.get(j);
+		if(matchPara.charAt(MATCHPARA_POS) == '1'){
+			//先过滤掉大多数posNo相等的
+			for(int i = 0 ; i < unCheckedUploadOrders.size(); i ++){
 				
-				if(tempUo.getPosNo().toUpperCase().trim().equals(tempDBO.getPos().toUpperCase().trim())){
-					
-					//对比双方都没有重复posno的情况
-					if(!samePosDBOrders.contains(tempDBO)){
-						amo = new AfterMatchOrder(tempUo,tempDBO);
-						if(amo.calcLevel() == 5){
-							matchedOrders.add(amo);
-							
-							unCheckedUploadOrders.remove(tempUo);
-							unCheckedDBOrders.remove(tempDBO);
-							unMatchedUploadOrders.remove(tempUo);
-							unMatchedDBOrders.remove(tempDBO);
-							
-							i --;
-						}
-						break;
-						
-						
-					//左侧有重复的posno，右侧没有
-					}else if(samePosDBOrders.contains(tempDBO)){
-						
-						List<Order> tempList = getSamePosDBOrdersFromList(samePosDBOrders, tempDBO.getPos());		
-						tempDouble = 0.0;
-						
-						//取出comparelevel最大的一对作为第一对
-						int maxCompareLevelIterator = 0 ;
+				UploadOrder tempUo = unCheckedUploadOrders.get(i);
 
-						for(int m = 0 ; m <tempList.size() ; m++){
-							amo = new AfterMatchOrder(tempUo,tempList.get(m));
-							if(amo.calcLevel()>tempDouble){
-								tempDouble = amo.calcLevel();
-								maxCompareLevelIterator = m;
+				for(int j = 0 ; j < unCheckedDBOrders.size() ; j ++){	
+					Order tempDBO = unCheckedDBOrders.get(j);
+					
+					if(tempUo.getPosNo().toUpperCase().trim().equals(tempDBO.getPos().toUpperCase().trim())){
+						
+						//对比双方都没有重复posno的情况
+						if(!samePosDBOrders.contains(tempDBO)){
+							amo = new AfterMatchOrder(tempUo,tempDBO);
+							if(amo.calcLevel(matchPara) == MATCH_NUM_THISTIME){
+								matchedOrders.add(amo);
+								
+								unCheckedUploadOrders.remove(tempUo);
+								unCheckedDBOrders.remove(tempDBO);
+								unMatchedUploadOrders.remove(tempUo);
+								unMatchedDBOrders.remove(tempDBO);
+								
+								i --;
 							}
-						}
-						
-						//第一单
-						amo = new AfterMatchOrder(tempUo,tempList.get(maxCompareLevelIterator));
-						tempDouble = amo.calcLevel();
-						//为了让前台不勾选这个
-						amo.setCompareLevel(0.0);
-						matchedOrders.add(amo);
-						
-						unMatchedUploadOrders.remove(tempUo);
-						unMatchedDBOrders.remove(tempList.get(maxCompareLevelIterator));
-						unCheckedUploadOrders.remove(tempUo);
-						unCheckedDBOrders.remove(tempList.get(maxCompareLevelIterator));
-						
-						tempList.remove(maxCompareLevelIterator);
-						
-						//其他对
-						for(int k = 0 ; k < tempList.size() ; k ++){							
+							break;
 							
-							//其他单据
-							//对应处设置一个新单据与他对应，ID为-2
-							UploadOrder o = new UploadOrder();
-							o.setId(-2);
-							amo = new AfterMatchOrder(o,tempList.get(k));
-							//amo.setCompareLevel(tempDouble);
+							
+						//左侧有重复的posno，右侧没有
+						}else if(samePosDBOrders.contains(tempDBO)){
+							
+							List<Order> tempList = getSamePosDBOrdersFromList(samePosDBOrders, tempDBO.getPos());		
+							tempDouble = 0.0;
+							
+							//取出comparelevel最大的一对作为第一对
+							int maxCompareLevelIterator = 0 ;
+
+							for(int m = 0 ; m <tempList.size() ; m++){
+								amo = new AfterMatchOrder(tempUo,tempList.get(m));
+								if(amo.calcLevel(matchPara)>tempDouble){
+									tempDouble = amo.calcLevel(matchPara);
+									maxCompareLevelIterator = m;
+								}
+							}
+							
+							//第一单
+							amo = new AfterMatchOrder(tempUo,tempList.get(maxCompareLevelIterator));
+							tempDouble = amo.calcLevel(matchPara);
+							//为了让前台不勾选这个
+							amo.setCompareLevel(0.0);
 							matchedOrders.add(amo);
 							
-							unMatchedDBOrders.remove(tempList.get(k));
-							unCheckedDBOrders.remove(tempList.get(k));
+							unMatchedUploadOrders.remove(tempUo);
+							unMatchedDBOrders.remove(tempList.get(maxCompareLevelIterator));
+							unCheckedUploadOrders.remove(tempUo);
+							unCheckedDBOrders.remove(tempList.get(maxCompareLevelIterator));
+							
+							tempList.remove(maxCompareLevelIterator);
+							
+							//其他对
+							for(int k = 0 ; k < tempList.size() ; k ++){							
+								
+								//其他单据
+								//对应处设置一个新单据与他对应，ID为-2
+								UploadOrder o = new UploadOrder();
+								o.setId(MatchOrder.SAME_POS_ID);
+								amo = new AfterMatchOrder(o,tempList.get(k));
+								//amo.setCompareLevel(tempDouble);
+								matchedOrders.add(amo);
+								
+								unMatchedDBOrders.remove(tempList.get(k));
+								unCheckedDBOrders.remove(tempList.get(k));
+							}
+							i --;
+							break;					
+							
 						}
-						i --;
-						break;					
 						
 					}
-					
 				}
 			}
-			
-			
-			
 		}
 		
+		
 		//最高对比等级
-		int requeredLevel = getRequeredLevel(matchPara);
+		int requeredLevel = MATCH_NUM_THISTIME;
 		//最低对比等级
 		int minRequeredLevel = 1;
 		
@@ -333,12 +354,12 @@ public class MatchOrder {
 				Order tempDBO = unCheckedDBOrders.get(j);		
 				
 				
-				int level = fuzzyCompare(tempUo,tempDBO);
-
+				int level = fuzzyCompare(tempUo,tempDBO,matchPara);
+				
 				if(level == requeredLevel ){				
 					find = true;
 					amo = new AfterMatchOrder(tempUo,tempDBO);
-					amo.calcLevel();
+					amo.calcLevel(matchPara);
 					if(amo.getCompareResult() > tempInt){
 						tempAfterMatchOrder = amo;
 						tempInt = amo.getCompareResult();
@@ -399,7 +420,7 @@ public class MatchOrder {
 		}
 	}
 	
-	private int getRequeredLevel(String matchPara) {
+	public  static int getRequeredLevel(String matchPara) {
 		int result = MatchOrder.MATCH_NUM; 
 		if(StringUtill.isNull(matchPara)){
 			return result;
@@ -421,11 +442,11 @@ public class MatchOrder {
 	}
 
 	//模糊对比，如果认为对比成功则返回true，否则返回false
-	private int fuzzyCompare(UploadOrder tempUo, Order tempDBO) {
+	private int fuzzyCompare(UploadOrder tempUo, Order tempDBO,String matchPara) {
 		
 		AfterMatchOrder tempAfterMatchOrder = new AfterMatchOrder(tempUo,tempDBO);
 		
-		return tempAfterMatchOrder.simpleCompare();
+		return tempAfterMatchOrder.simpleCompare(matchPara);
 	}
 
 	public List<UploadOrder> getUnMatchedUploadOrders() {

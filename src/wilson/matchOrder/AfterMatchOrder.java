@@ -1,6 +1,7 @@
 package wilson.matchOrder;
 
 import order.Order;
+import utill.StringUtill;
 import wilson.upload.UploadOrder;
 
 public class AfterMatchOrder {
@@ -255,115 +256,123 @@ public class AfterMatchOrder {
 	
 	
 	//计算相似度
-	public Double calcLevel(){
+	public Double calcLevel(String matchPara){
 		//清空
 		this.setCompareLevel(0.0);
 		String key = "";
 		
+		if(StringUtill.isNull(matchPara)){
+			return 0.0;
+		}
 		
-		//对比posNo
 		
-		if(comparePosNo(this.getDBOrder().getPos(), this.getUploadOrder().getPosNo())){
+		if(matchPara.charAt(MatchOrder.MATCHPARA_SHOP) == '1'){
+			//对比门店名称		
 			
-			this.setCompareLevel(this.getCompareLevel() + 1.0);
-			this.setCompareResult(AfterMatchOrder.POSNO, true);
-			
-			this.setDBSidePosNo(HighLighter(this.getDBSidePosNo()));
-			this.setUploadSidePosNo(HighLighter(this.getUploadSidePosNo()));
-			
-		}else{
-		//模糊对比posNo
-			
-//			int start = 0;
-//			int end = 0 ;
-//			String startPoint = "";
-//			String endPoint = "";
-//			boolean combo = false;
-//			for(int i = 0 ; i < tempUpLoad.length(); i ++ ){
-//				if(tempDB.charAt(i) == tempUpLoad.charAt(i)){
-//					if(combo == false){
-//						start = i;
-//					}
-//					combo=true;
+			if(compareShop(dbOrder.getShopNameForCompare(), this.getUploadOrder().getShop()) > MatchOrder.SHOPNAME_DISTANCE){
+				
+				this.setCompareLevel(this.getCompareLevel() + 1.0);
+				this.setCompareResult(AfterMatchOrder.SHOP, true);
+				
+				this.setDBSideShop(HighLighter(this.getDBSideShop()));
+				this.setUploadSideShop(HighLighter(this.getUploadSideShop()));
+				
+//				//精准对比
+//				if(tempUpLoad.equals(tempDB)){
+//					this.setDBSideShop(HighLighter(tempDB));
+//					this.setUploadSideShop(HighLighter(tempUpLoad));
 //				}else{
-//					if(combo == true){
-//						end = i;
-//						startPoint += "," + start;
-//						endPoint += "," + end;
-//					}
-//					combo=false;
+//				//模糊对比
+//					this.setDBSideShop(HighLighter(tempDB,tempDB.indexOf(key),tempDB.indexOf(key) + key.length()));
+//					this.setUploadSideShop(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()));
 //				}
-//				if(i == tempUpLoad.length()-1){
-//					if(combo == true){
-//						end = tempUpLoad.length();
-//						startPoint += "," + start;
-//						endPoint += "," + end ;	
+			}
+			
+		}
+		if(matchPara.charAt(MatchOrder.MATCHPARA_POS) == '1'){
+			//对比posNo
+			
+			if(comparePosNo(this.getDBOrder().getPos(), this.getUploadOrder().getPosNo())){
+				
+				this.setCompareLevel(this.getCompareLevel() + 1.0);
+				this.setCompareResult(AfterMatchOrder.POSNO, true);
+				
+				this.setDBSidePosNo(HighLighter(this.getDBSidePosNo()));
+				this.setUploadSidePosNo(HighLighter(this.getUploadSidePosNo()));
+				
+			}else{
+			//模糊对比posNo
+				
+//				int start = 0;
+//				int end = 0 ;
+//				String startPoint = "";
+//				String endPoint = "";
+//				boolean combo = false;
+//				for(int i = 0 ; i < tempUpLoad.length(); i ++ ){
+//					if(tempDB.charAt(i) == tempUpLoad.charAt(i)){
+//						if(combo == false){
+//							start = i;
+//						}
+//						combo=true;
+//					}else{
+//						if(combo == true){
+//							end = i;
+//							startPoint += "," + start;
+//							endPoint += "," + end;
+//						}
+//						combo=false;
+//					}
+//					if(i == tempUpLoad.length()-1){
+//						if(combo == true){
+//							end = tempUpLoad.length();
+//							startPoint += "," + start;
+//							endPoint += "," + end ;	
+//						}
 //					}
 //				}
-//			}
-//		
-//			this.setDBSidePosNo(HighLighter(tempDB,startPoint,endPoint));
-//			this.setUploadSidePosNo(HighLighter(tempUpLoad,startPoint,endPoint));
+//			
+//				this.setDBSidePosNo(HighLighter(tempDB,startPoint,endPoint));
+//				this.setUploadSidePosNo(HighLighter(tempUpLoad,startPoint,endPoint));
+				
+			}
 			
 		}
-		
-		//对比saleTime
+		if(matchPara.charAt(MatchOrder.MATCHPARA_SALETIME) == '1'){
+			//对比saleTime
 
-		if(compareSaleTime(this.getDBSideSaleTime(), this.getUploadSideSaleTime())){	
-			this.setCompareLevel(this.getCompareLevel() + 1.0);
-			this.setCompareResult(AfterMatchOrder.SALETIME, true);
-			
-			this.setDBSideSaleTime(HighLighter(this.getDBSideSaleTime()));
-			this.setUploadSideSaleTime(HighLighter(this.getUploadSideSaleTime()));
-		}else{
-		//无模糊对比
+			if(compareSaleTime(this.getDBSideSaleTime(), this.getUploadSideSaleTime())){	
+				this.setCompareLevel(this.getCompareLevel() + 1.0);
+				this.setCompareResult(AfterMatchOrder.SALETIME, true);
+				
+				this.setDBSideSaleTime(HighLighter(this.getDBSideSaleTime()));
+				this.setUploadSideSaleTime(HighLighter(this.getUploadSideSaleTime()));
+			}else{
+			//无模糊对比
+			}
 		}
-		
-		//对比票面数量
+		if(matchPara.charAt(MatchOrder.MATCHPARA_TYPE) == '1'){
+			//对比型号
+			
+			if(compareType(this.getDBOrder().getSendType(), this.getUploadSideType(), true)){
+				
+				this.setCompareLevel(this.getCompareLevel() + 1.0);
+				this.setCompareResult(AfterMatchOrder.TYPE, true);
+			}	
+		}
+		if(matchPara.charAt(MatchOrder.MATCHPARA_NUM) == '1'){
+			//对比票面数量
 
-		if(compareNum(this.getDBSideCount(), this.getUploadSideCount())){
-			
-			this.setCompareLevel(this.getCompareLevel() + 1.0);
-			this.setCompareResult(AfterMatchOrder.NUM, true);
-			
-			this.setDBSideCount(HighLighter(this.getDBSideCount()));
-			this.setUploadSideCount(HighLighter(this.getUploadSideCount()));
-		}else{
-		//无模糊对比
-		}
-			
-		//对比门店名称		
-		
-		if(compareShop(dbOrder.getShopNameForCompare(), this.getUploadOrder().getShop()) > MatchOrder.SHOPNAME_DISTANCE){
-			
-			this.setCompareLevel(this.getCompareLevel() + 1.0);
-			this.setCompareResult(AfterMatchOrder.SHOP, true);
-			
-			this.setDBSideShop(HighLighter(this.getDBSideShop()));
-			this.setUploadSideShop(HighLighter(this.getUploadSideShop()));
-			
-//			//精准对比
-//			if(tempUpLoad.equals(tempDB)){
-//				this.setDBSideShop(HighLighter(tempDB));
-//				this.setUploadSideShop(HighLighter(tempUpLoad));
-//			}else{
-//			//模糊对比
-//				this.setDBSideShop(HighLighter(tempDB,tempDB.indexOf(key),tempDB.indexOf(key) + key.length()));
-//				this.setUploadSideShop(HighLighter(tempUpLoad,tempUpLoad.indexOf(key),tempUpLoad.indexOf(key) + key.length()));
-//			}
-		}
-		
-		//对比型号
-		
-		if(compareType(this.getDBOrder().getSendType(), this.getUploadSideType(), true)){
-			
-			this.setCompareLevel(this.getCompareLevel() + 1.0);
-			this.setCompareResult(AfterMatchOrder.TYPE, true);
-		}	
-		
-		
-		
-					
+			if(compareNum(this.getDBSideCount(), this.getUploadSideCount())){
+				
+				this.setCompareLevel(this.getCompareLevel() + 1.0);
+				this.setCompareResult(AfterMatchOrder.NUM, true);
+				
+				this.setDBSideCount(HighLighter(this.getDBSideCount()));
+				this.setUploadSideCount(HighLighter(this.getUploadSideCount()));
+			}else{
+			//无模糊对比
+			}
+		}			
 		
 		return this.getCompareLevel();	
 	}
@@ -375,33 +384,48 @@ public class AfterMatchOrder {
 	
 	//以下为对比用工具方法
 	
-	public int simpleCompare(){
+	public int simpleCompare(String comparePara){
 		int result = 0 ;
-		//pos单号
-		if(comparePosNo(this.getDBSidePosNo(), this.getUploadSidePosNo())){
-			result += 1;
+		
+		if(StringUtill.isNull(comparePara)){
+			return 0;
 		}
-				
-		//销售时间
-		if(compareSaleTime(this.getDBSideSaleTime(), this.getUploadSideSaleTime())){
-			result += 1;
-		}
+		try{
+			if(comparePara.charAt(MatchOrder.MATCHPARA_SHOP) == '1'){
+				//销售门店
+				if(compareShop(this.getDBSideShop(), this.getUploadSideShop()) >= MatchOrder.SHOPNAME_DISTANCE){
+					result += 1;
+				}
+			}
+			if(comparePara.charAt(MatchOrder.MATCHPARA_POS) == '1'){
+				//pos单号
+				if(comparePosNo(this.getDBSidePosNo(), this.getUploadSidePosNo())){
+					result += 1;
+				}
+			}
+			if(comparePara.charAt(MatchOrder.MATCHPARA_SALETIME) == '1'){
+				//销售时间
+				if(compareSaleTime(this.getDBSideSaleTime(), this.getUploadSideSaleTime())){
+					result += 1;
+				}
+			}
+			if(comparePara.charAt(MatchOrder.MATCHPARA_TYPE) == '1'){
+				//型号
+				if(compareType(this.getDBSideType(), this.getUploadSideType(), false)){
+					result += 1;
+				}
+			}
+			if(comparePara.charAt(MatchOrder.MATCHPARA_NUM) == '1'){
+				//票面数量
+				if(compareNum(this.getDBSideCount(), this.getUploadSideCount())){
+					result += 1;
+				}
+			}
 
-		//票面数量
-		if(compareNum(this.getDBSideCount(), this.getUploadSideCount())){
-			result += 1;
+		}catch(Exception e){
+			e.printStackTrace();
+			return result;
 		}
-		
-		//销售门店
-		if(compareShop(this.getDBSideShop(), this.getUploadSideShop()) >= MatchOrder.SHOPNAME_DISTANCE){
-			result += 1;
-		}
-			
-		//型号
-		if(compareType(this.getDBSideType(), this.getUploadSideType(), false)){
-			result += 1;
-		}
-		
 		return result;
 	}
 	
