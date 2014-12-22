@@ -247,6 +247,10 @@ public class MatchOrder {
 		Double tempDouble = 0.0;
 		int tempInt = 0 ;
 		
+		if(StringUtill.isNull(matchPara)){
+			matchPara = "11111";
+		}
+		
 		if(matchPara.charAt(MATCHPARA_POS) == '1'){
 			//先过滤掉大多数posNo相等的
 			for(int i = 0 ; i < unCheckedUploadOrders.size(); i ++){

@@ -1,14 +1,20 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,order.*,orderproduct.*,branchtype.*,branch.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
+
 <%
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
+	
+	
 	long startTime = System.currentTimeMillis();
 	//接受两边的id
 	String[] dbSide = request.getParameterValues("dbside");
 	String[] uploadSide = request.getParameterValues("uploadside");
 
+	//接受选定的对比参数
+	String checkBoxStatus = request.getParameter("checkBoxStatus");
+	
 	//显示内容的开关
 	boolean showContent = false;
 	String startButton = request.getParameter("startbutton");
@@ -72,12 +78,14 @@
 		session.setAttribute("selectBranch", selectBranch);
 		session.setAttribute("selectOrderName", selectOrderName);
 		session.setAttribute("deadline", deadline);
-		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders)){
+		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders,checkBoxStatus)){
 			return;
 		}
 		//去自动匹配好的Order
 		afterMatchOrders = mo.getMatchedOrders();
 	}
+	//计算本轮的计算的个数
+	int calcNum = MatchOrder.getRequeredLevel(checkBoxStatus);
 	
 	//如果是搜索进来的
 	String search = request.getParameter("search");
@@ -93,7 +101,7 @@
 		unCheckedUploadOrders = MatchOrderManager.searchUploadOrderList(unCheckedUploadOrders, searchOrder);
 		
 		showContent = true;
-		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders)){
+		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders,checkBoxStatus)){
 			return;
 		}
 		//去自动匹配好的Order
@@ -148,7 +156,63 @@ tr strong,tr td {white-space:normal}
 <script type="text/javascript">
 
 var jsonmap = '<%=mapjosn%>';   
- 
+var checkBoxStatus = '<%=checkBoxStatus%>';
+$(function () {
+	initCheckBox();
+	$('#branchtype').val('<%=selectBranchType%>');
+});
+
+function initCheckBox(){
+	if(checkBoxStatus.charAt(0) == "0"){
+		$('#checkbox_compareshop').attr("checked",false);
+	}
+	if(checkBoxStatus.charAt(1) == "0"){
+		$('#checkbox_comparepos').attr("checked",false);
+	}
+	if(checkBoxStatus.charAt(2) == "0"){
+		$('#checkbox_comparesaletime').attr("checked",false);
+	}
+	if(checkBoxStatus.charAt(3) == "0"){
+		$('#checkbox_comparetype').attr("checked",false);
+	}
+	if(checkBoxStatus.charAt(4) == "0"){
+		$('#checkbox_comparenum').attr("checked",false);
+	}
+
+}
+
+function getCheckBox(){
+	var result = '';
+	
+	if($('#checkbox_compareshop').attr("checked") == 'checked'){
+		result = result + "1";
+	}else{
+		result = result + "0";
+	}
+	if($('#checkbox_comparepos').attr("checked") == 'checked'){
+		result = result + "1";
+	}else{
+		result = result + "0";
+	}
+	if($('#checkbox_comparesaletime').attr("checked") == 'checked'){
+		result = result + "1";
+	}else{
+		result = result + "0";
+	}
+	if($('#checkbox_comparetype').attr("checked") == 'checked'){
+		result = result + "1";
+	}else{
+		result = result + "0";
+	}
+	if($('#checkbox_comparenum').attr("checked") == 'checked'){
+		result = result + "1";
+	}else{
+		result = result + "0";
+	}
+	
+	return result;
+}
+
 $(function () {
     var opt = { }; 
     opt.date = {preset : 'date'};	  
@@ -222,6 +286,26 @@ $(function (){
 		</td>
 		<td ><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp?unchecked=false&branchtype=<%=selectBranchType%>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
 	</tr>
+	<tr>
+		<td colspan="2" align="left">
+		对比的项目为:
+		<input type="checkbox" id="checkbox_compareshop" checked="checked">
+		销售门店
+		</input>
+		<input type="checkbox" id="checkbox_comparepos" checked="checked">
+		pos(厂送)单号
+		</input>
+		<input type="checkbox" id="checkbox_comparesaletime" checked="checked">
+		销售日期
+		</input>
+		<input type="checkbox" id="checkbox_comparetype" checked="checked">
+		票面型号
+		</input>
+		<input type="checkbox" id="checkbox_comparenum" checked="checked">
+		票面数量
+		</input>
+		</td>
+	</tr>
 </table>
 <form name="baseform" id="baseform" method="post">
 <table width="100%" height="100%" align="center" border=0>
@@ -254,7 +338,8 @@ $(function (){
 			
 			<td align="center">
 
-			<input type="submit" id="startbutton" name="startbutton" value="对比" onmousedown="$('#baseform').attr('action','');$('#startbutton').val('正在对比')"/>
+			<input type="submit" id="startbutton" name="startbutton" value="对比" onmousedown="$('#baseform').attr('action','');$('#startbutton').val('正在对比');$('#checkBoxStatus').val(getCheckBox())"/>
+			<input type="hidden" id="checkBoxStatus" name="checkBoxStatus" value=""/>
 			<br/>
 			
 			
@@ -263,7 +348,7 @@ $(function (){
 			%>
 			<input type="button" value="导出" onclick="$('#baseform').attr('action','../MatchOrderExport');$('#baseform').submit()"/>
 			<br/>
-			<input type="submit" id="submitbutton" value="提交"/>
+			<input type="submit" id="submitbutton" value="提交"  onclick="return confirm('是否确认?')"/>
 			<%
 			}
 			%>
@@ -324,10 +409,10 @@ $(function (){
 			isChecked = false;
 			dbsideDisabled =false;
 			uploadsideDisabled=false;
-			if(afterMatchOrders.get(i).getUploadSideOrderId() == -2){
+			if(afterMatchOrders.get(i).getUploadSideOrderId() == MatchOrder.SAME_POS_ID){
 				showColor = true;
 			}	
-			if(afterMatchOrders.get(i).getCompareLevel() == 5){
+			if(afterMatchOrders.get(i).getCompareLevel() == calcNum){
 				isChecked = true;
 			}
 			

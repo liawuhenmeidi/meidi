@@ -86,7 +86,7 @@
 		//去自动匹配好的Order
 		afterMatchOrders = mo.getMatchedOrders();
 	}
-	//计算下本轮的计算的个数
+	//计算本轮的计算的个数
 	int calcNum = MatchOrder.getRequeredLevel(checkBoxStatus);
 	
 	
