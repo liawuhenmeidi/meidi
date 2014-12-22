@@ -94,9 +94,10 @@
 		session.setAttribute("exportSalaryName", name);
 	}
 	
-	//下面用到的背景色
+	//下面用到的背景色(总计用到)
 	String backgroundColor ="#B9D3EE";
-	
+	//下面用到的字体色(负数提成或者未提成时候用到)
+	String fontColor = "#EE3B3B";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -287,6 +288,8 @@ if(showResult.size() > 0 ){
 		boolean total = false;
 		boolean filetotal = false;
 		boolean editable = true;
+		boolean ifFontColor = false;
+		
 		for(int i = 0 ; i <  showResult.size() ; i ++){
 			if(showResult.get(i).getStatus() == SalaryResult.STATUS_TOTAL){
 				total = true;
@@ -297,6 +300,12 @@ if(showResult.size() > 0 ){
 				editable = false;
 			}else{
 				editable = true;
+			}
+			
+			if(!editable || showResult.get(i).getSalary() < 0){
+				ifFontColor = true;
+			}else{
+				ifFontColor = false;
 			}
 			
 			if(i == showResult.size() -1 ){
@@ -316,13 +325,13 @@ if(showResult.size() > 0 ){
 			<%if(!total){%>
 			<td id="<%=showResult.get(i).getId() %>num" value="<%=showResult.get(i).getUploadOrder().getNum() %>"><%=showResult.get(i).getUploadOrder().getNum() %></td>
 			<td id="<%=showResult.get(i).getId() %>saleprice" value="<%=showResult.get(i).getUploadOrder().getSalePrice() %>"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
-			<td id="<%=showResult.get(i).getId() %>salary" value="<%=showResult.get(i).getPrintSalary() %>"><a  <%if(editable){ %>href="#" onClick="javascript:window.open('./salaryResultDetail.jsp?id=<%=showResult.get(i).getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" <%} %> ><%=showResult.get(i).getPrintSalary() %></a></td>
+			<td id="<%=showResult.get(i).getId() %>salary" value="<%=showResult.get(i).getPrintSalary() %>" <%if(ifFontColor){ %> style="background:<%=fontColor %>" <%} %>><a  <%if(editable){ %>href="#" onClick="javascript:window.open('./salaryResultDetail.jsp?id=<%=showResult.get(i).getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" <%} %> ><%=showResult.get(i).getPrintSalary() %></a></td>
 			<%
 			}else{
 			%>
 			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>num" value="total"><%=showResult.get(i).getUploadOrder().getNum() %></td>
 			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>saleprice" value="total"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
-			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>salary" value="total"><%=showResult.get(i).getPrintSalary() %></td>
+			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>salary" value="total" <%if(ifFontColor){ %> style="background:<%=fontColor %>" <%} %>><%=showResult.get(i).getPrintSalary() %></td>
 			<%
 			}
 			%>
