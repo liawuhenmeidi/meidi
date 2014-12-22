@@ -161,6 +161,7 @@ function initothers(){
 	$('#save_selectModelsName').val(selectModelsName);
 	$('#save_orders').val('<%=paraOrderName%>');
 	$('#save_groupname').val('<%=groupname%>');
+	$('#models').val(selectModelsName[selectModelsName.length - 1]);
 }
 
 function del(id,obj){
