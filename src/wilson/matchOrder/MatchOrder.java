@@ -13,6 +13,8 @@ public class MatchOrder {
 	//店名匹配等级
 	public static Double SHOPNAME_DISTANCE = 0.19999;
 	
+	//匹配的总个数
+	public static int MATCH_NUM = 5;
 	
 	//来自上传的匹配失败列表
 	List<UploadOrder> unMatchedUploadOrders = new ArrayList<UploadOrder>();
@@ -26,7 +28,7 @@ public class MatchOrder {
 	//拥有重复posNo的db单据列表
 	List<Order> samePosDBOrders = new ArrayList<Order>();
 	
-	public boolean startMatch(List<Order> dbOrders,List<UploadOrder> uploadOrders){
+	public boolean startMatch(List<Order> dbOrders,List<UploadOrder> uploadOrders,String matchPara){
 		unMatchedUploadOrders = new ArrayList<UploadOrder>();
 		unMatchedDBOrders = new ArrayList<Order>();
 		matchedOrders = new ArrayList<AfterMatchOrder>();
@@ -71,7 +73,7 @@ public class MatchOrder {
 				//如果开启则右侧也会处理相同POS单号的情况
 				//samePosUploadOrders = getSamePosUploadOrdersList(unMatchedUploadOrders);
 				samePosDBOrders = getSamePosDBOrdersList(unMatchedDBOrders);
-				matchOrder(unMatchedUploadOrders,unMatchedDBOrders);
+				matchOrder(unMatchedUploadOrders,unMatchedDBOrders,matchPara);
 			}
 			
 			while(uploadOrders.size() > 0 ){
@@ -219,7 +221,7 @@ public class MatchOrder {
 		return result;
 	}
 
-	private void matchOrder(List <UploadOrder> unCheckedUploadOrders,List <Order> unCheckedDBOrders) {
+	private void matchOrder(List <UploadOrder> unCheckedUploadOrders,List <Order> unCheckedDBOrders,String matchPara) {
 		AfterMatchOrder amo ;
 		Double tempDouble = 0.0;
 		int tempInt = 0 ;
@@ -228,9 +230,7 @@ public class MatchOrder {
 		for(int i = 0 ; i < unCheckedUploadOrders.size(); i ++){
 			
 			UploadOrder tempUo = unCheckedUploadOrders.get(i);
-//			if(tempUo.getPosNo().equals("D00007012")){
-//				System.out.println("1");
-//			}
+
 			for(int j = 0 ; j < unCheckedDBOrders.size() ; j ++){	
 				Order tempDBO = unCheckedDBOrders.get(j);
 				
@@ -310,7 +310,7 @@ public class MatchOrder {
 		}
 		
 		//最高对比等级
-		int requeredLevel = 4;
+		int requeredLevel = getRequeredLevel(matchPara);
 		//最低对比等级
 		int minRequeredLevel = 1;
 		
@@ -321,7 +321,7 @@ public class MatchOrder {
 			
 			UploadOrder tempUo = unCheckedUploadOrders.get(i);
 			
-			//权重
+			//最优compareLevel
 			tempInt = 0;
 			//最优结果
 			AfterMatchOrder tempAfterMatchOrder = new AfterMatchOrder();
@@ -399,6 +399,27 @@ public class MatchOrder {
 		}
 	}
 	
+	private int getRequeredLevel(String matchPara) {
+		int result = MatchOrder.MATCH_NUM; 
+		if(StringUtill.isNull(matchPara)){
+			return result;
+		}
+		try{
+			int t = 0 ; 
+			for(int i = 0 ; i < 5 ; i ++){
+				if(matchPara.charAt(i) == '1'){
+					t++;
+				}
+			}
+			result = t;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result = MatchOrder.MATCH_NUM;
+		}
+		return result;
+	}
+
 	//模糊对比，如果认为对比成功则返回true，否则返回false
 	private int fuzzyCompare(UploadOrder tempUo, Order tempDBO) {
 		

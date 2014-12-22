@@ -80,7 +80,7 @@
 		session.setAttribute("selectOrderName", selectOrderName);
 		session.setAttribute("deadline", deadline);
 		
-		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders)){
+		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders,checkBoxStatus)){
 			return;
 		}
 		//去自动匹配好的Order
