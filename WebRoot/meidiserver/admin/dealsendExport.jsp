@@ -294,7 +294,7 @@ if(bsa){
     <%  } 
          }
     %>
-    <input type="button" class="button" value="导出" onclick="javascript:window.open('../SalaryExportServlet', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"></input> 
+    <input type="button" class="button" value="导出" onclick="javascript:window.location.href='ChargeExportServlet?said=<%=sa.getId() %>'"></input> 
     
 	<input type="hidden" name="type" value="save"/> 
 	<input type="hidden" name="said" id="said" value="<%=sa.getId() %>" value="save"/> 
@@ -303,6 +303,7 @@ if(bsa){
 		<tr>
 		    <td align="center">序号</td>
 			<td align="center">单号</td>
+			<td align="center">门店</td>
 			<td align="center">安装网点</td>
 			<td align="center">顾客信息</td>
 
@@ -363,11 +364,13 @@ if(bsa){
 						if(o.getPhoneRemark()!=1){
 							tdcol = ""; 
 						}
+						
 			    		%>
 						<tr id="<%=o.getId()%>"  class="asc"  onclick="updateClass(this)">
 						<!--  <td align="center" width="20"><input type="checkbox"  name="orderid" value="<%=o.getId()%> "></input></td> -->
-						<td align="center" ><%=x%></td>  
+						<td align="center" ><%=x%></td>   
 						<td align="center"><a href="javascript:void(0)" onclick="adddetail('dingdanDetail.jsp?id=<%=o.getId()%>')" ><%=(o.getPrintlnid() == null?"":o.getPrintlnid())%></a></td>
+						<td align="center" ><%=o.getbranchName(o.getBranch())%></td>  
 						<td align="center"><input type="hidden" name="dealsendid"  value="<%=o.getDealsendId()%>"/><%=o.getdealsendName()%></td>
 						<%
 						if(o.getPhoneRemark()!=1){    

@@ -11,18 +11,20 @@ public class BranchService {
     public static List<String> listStr = null;
    
 	public static Map<Integer, Branch> getMap() {
+		init();
 		if(map == null){
 			map = BranchManager.getIdMap();
 		}
-		init();
+		
 		return map ;
 	}
     
 	public static Map<String, Branch> getNameMap() {
+		init();
 		if(nameMap == null){
 			nameMap = BranchManager.getNameMap();
 		}
-		init();
+		
 		return nameMap ;
 	}
 	
@@ -31,18 +33,20 @@ public class BranchService {
 	} 
 	
 	public static List<Branch> getList() {
+		init();
 		if(list == null){ 
 			list = BranchManager.getLocate(); 
 		}
-		init();
+		
 		return list ;
 	}
   
 	public static List<String> getListStr() {
+		init();
 		if(listStr == null){ 
 			listStr = BranchManager.getLocateAllIsable( ); 
 		}
-		init();
+		
 		return listStr ;
 	}
 	

@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 
 import order.Order;
 import order.OrderManager;
+import user.User;
 import utill.StringUtill;
 import wilson.matchOrder.AfterMatchOrder;
 
@@ -60,9 +61,9 @@ public class UploadManager {
 		}
 	}
 	
-	public static boolean checkDBOrder(int dbOrderId,String checkName){
+	public static boolean checkDBOrder(User user ,int dbOrderId,String checkName){
 		
-		if(OrderManager.updateStatues("orderCharge",checkName, String.valueOf(dbOrderId)) != 1){
+		if(OrderManager.updateStatues(user,"orderCharge",checkName, String.valueOf(dbOrderId)) != 1){
 				return true;
 		} else{
 			return false;
@@ -94,9 +95,9 @@ public class UploadManager {
 		
 	}
 	
-	public static boolean checkDBOrderStrList(String dbOrderIdStrList,String checkName){
+	public static boolean checkDBOrderStrList(User user,String dbOrderIdStrList,String checkName){
 		
-		if(OrderManager.updateStatues("orderCharge",checkName, dbOrderIdStrList) == 1){
+		if(OrderManager.updateStatues(user ,"orderCharge",checkName, dbOrderIdStrList) == 1){
 				return true;
 		} else{
 			return false;
@@ -128,7 +129,7 @@ public class UploadManager {
 		
 	}
 	
-	public static boolean checkOrder(int uploadOrderId,int dbOrderId,String checkName){
+	public static boolean checkOrder(User user ,int uploadOrderId,int dbOrderId,String checkName){
 		boolean flag = false;
 		Connection conn = DB.getConn();
 		String sql = "update uploadorder set checked = ? ,checkedtime = ? ,checkorderid= ? where id = " + uploadOrderId;
@@ -142,7 +143,7 @@ public class UploadManager {
 			pstmt.setString(2, fmt.format(new Date()));
 			pstmt.setInt(3, dbOrderId);
 			pstmt.executeUpdate();
-			if(OrderManager.updateStatues("orderCharge",checkName, String.valueOf(dbOrderId)) != 1){
+			if(OrderManager.updateStatues(user,"orderCharge",checkName, String.valueOf(dbOrderId)) != 1){
 				throw new SQLException();
 			}
 			conn.commit();   // 提交给数据库处理   
@@ -163,9 +164,9 @@ public class UploadManager {
 		}
 		return flag ;  
 		
-	}
+	} 
 	
-	public static boolean checkOrder(String[] idString,String checkName){
+	public static boolean checkOrder(User user,String[] idString,String checkName){
 		//接受{"1,2","2,3"}类型的ID输入,前一个是DB的Order，后一个是upload的Order哦~
 		if(idString == null || idString.length <1){
 			return false;
@@ -208,7 +209,7 @@ public class UploadManager {
 				pstmt.executeUpdate();
 				logger.info(sql);
 			}
-			if(OrderManager.updateStatues("orderCharge",checkName, dbIdString) != 1){
+			if(OrderManager.updateStatues(user,"orderCharge",checkName, dbIdString) != 1){
 				throw new SQLException();
 			}
 			conn.commit();
