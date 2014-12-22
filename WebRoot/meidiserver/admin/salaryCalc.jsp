@@ -35,9 +35,9 @@
 		showResult = true;
 	}
 	
-	if("true".equals(paraSave)){
-		isSave = false;
-	}
+	//if("true".equals(paraSave)){
+	//	isSave = false;
+	//}
 	
 	List<UploadOrder> showOrders = new ArrayList<UploadOrder>();
 	List<UploadSalaryModel> showSalaryModels = new ArrayList<UploadSalaryModel>();
@@ -65,13 +65,13 @@
 	Map<String,List<CatergoryMaping>> srcCatergoryMap = CatergoryManager.getCatergoryMap();
 	Set CatergoryMapingSet = srcCatergoryMap.keySet();
 	
-	if(isSave){
-			salaryResult = (ArrayList<SalaryResult>)request.getSession().getAttribute("calcResult");
-			unCalcUploadOrders = (ArrayList<UploadOrder>)request.getSession().getAttribute("unCalcResult");
-			//SalaryCalcManager.saveSalaryResult(salaryResult,groupname);
-			response.sendRedirect("salaryCalc.jsp");
-			return;
-	}
+	//if(isSave){
+	//		salaryResult = (ArrayList<SalaryResult>)request.getSession().getAttribute("calcResult");
+	//		unCalcUploadOrders = (ArrayList<UploadOrder>)request.getSession().getAttribute("unCalcResult");
+	//		//SalaryCalcManager.saveSalaryResult(salaryResult,groupname);
+	//		response.sendRedirect("salaryCalc.jsp");
+	//		return;
+	//}
 	
 	//是否锁住groupname
 	boolean lockGroupName = false;
@@ -82,7 +82,7 @@
 		salaryResult = new ArrayList(resultInSession);
 		unCalcUploadOrders = (ArrayList<UploadOrder>)request.getSession().getAttribute("unCalcResult");
 
-		if("false".equals(groupname)){
+		//if("false".equals(groupname)){
 			String tempGroupname = CatergoryManager.getCatergoryMapingByUploadOrderName(paraOrderName);
 			if(!"".equals(tempGroupname)){
 				lockGroupName = true;
@@ -103,7 +103,7 @@
 				}
 			}
 			
-		}
+		//}
 		salaryResult = SalaryCalcManager.sortSalaryResult(salaryResult, groupname);
 		session.setAttribute("addName_filename", paraOrderName);
 		if(paraSave != null && !paraSave.equals("")){
@@ -246,8 +246,8 @@ function beforSubmit(){
 				%>
 				&nbsp;&nbsp;
 				<input type="hidden" name="showleft" value="<%=showLeft %>" id="showleft"/>
-				<!-- <input type="submit" value="显示" onclick="if($('#showleft').val()=='false'){$('#showleft').val('true');}else{$('#showleft').val('false');}"/> -->
-				<input type="submit" value="显示" onclick="$('#showleft').val('true')"/>
+				<input type="submit" value="<%=showLeft?"隐藏":"显示" %>" id="showleftbutton" onclick="$('#selectGroup').val($('#groupname').val());$('#recalc').val('<%=showResult %>');if($('#showleft').val()=='false'){$('#showleft').val('true');$('showleftbutton').val('隐藏');}else{$('#showleft').val('false');$('showleftbutton').val('显示');}"/> 
+				<!-- <input type="submit" value="显示" onclick="$('#showleft').val('true')"/>-->
 				</td>
 				
 			</tr>
@@ -306,8 +306,8 @@ function beforSubmit(){
 				&nbsp;&nbsp;
 				<input type="hidden" name="showright" value="<%=showRight %>" id="showright"/>
 				<button type="button" onclick="addModel()">添加</button>
-				<!-- <input type="submit" value="显示" onclick="if($('#showright').val()=='false'){$('#showright').val('true');}else{$('#showright').val('false');}"/> -->
-				<input type="submit" value="显示" onclick="$('#showright').val('true')"/>
+				<input type="submit" value="<%=showRight?"隐藏":"显示" %>" id="showrightbutton" onclick="$('#selectGroup').val($('#groupname').val());$('#recalc').val('<%=showResult %>');if($('#showright').val()=='false'){$('#showright').val('true');$('showrightbutton').val('隐藏');}else{$('#showright').val('false');$('showrightbutton').val('显示');}"/> 
+				<!-- <input type="submit" value="显示" onclick="$('#showright').val('true')"/>-->
 				</td>
 				</form>
 			</tr>
