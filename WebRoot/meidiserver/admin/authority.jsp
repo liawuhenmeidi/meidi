@@ -74,7 +74,7 @@ if("permission".equals(action)){
         	l.add(Integer.valueOf(ppid[i])); 
         }
     }   
-    
+     
     String ids = request.getParameter("id");
     Group group = new Group();
     group.setId(Integer.valueOf(ids));

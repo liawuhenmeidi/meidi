@@ -45,15 +45,16 @@ public class OrderService {
 	    
 		for(int i=0;i<list.size();i++){ 
 			Order o = list.get(i);
-			InstallSale en = mapin.get(o.getDealsendId()+"");
+			InstallSale en = mapin.get(o.getSendId()+"");
+			
 			if(null == en){
 				en = mapin.get("-1");
 			}
 			if(null != en){
-				Map<String,Map<String,Map<String,Map<String,List<Order>>>>> umap = orders.get(o.getDealsendId()+"");
+				Map<String,Map<String,Map<String,Map<String,List<Order>>>>> umap = orders.get(o.getSendId()+"");
 				if(null == umap){
 					umap = new HashMap<String,Map<String,Map<String,Map<String,List<Order>>>>>();
-					orders.put(o.getDealsendId()+"", umap);
+					orders.put(o.getSendId()+"", umap);
 				}
 				//logger.info(orders); 
 				Map<String,Map<String,Map<String,List<Order>>>> phonemap = null ;
@@ -1808,8 +1809,9 @@ public class OrderService {
 		int price = 0 ; 
 		Map<String,InstallSale>  mapin = InstallSaleManager.getmap(BasicUtill.sendinstall);
 		// uid , phone , andate , uname,locate 
+		//logger.info(mapin);
 		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin);
-		 
+		// logger.info(orders);
 		Map<String,List<InstallSaleMessage>> mapinsa = InstallSaleMessageManager.getmap();
 		 
 		Map<String,Map<String,Map<String,List<Order>>>> mapr = germapr(orders,mapin,mapinsa);

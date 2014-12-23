@@ -5,12 +5,12 @@
  
  String typeStr = request.getParameter("type");
  int type = Integer.valueOf(typeStr);
- if(type == 1){
+ if(type == 10){
 	 message = "请先维护产品信息";
  }else if(type ==  Group.send){
 	 message = "请先维护安装网点";
  }else if(type == Group.sencondDealsend || type == Group.sale){
-	 message = "请先维护文员(派单员)";
+	 message = "请先在销售支持中维护文员(派单员)";
  }
  
 %>

@@ -23,6 +23,8 @@ boolean flag = UserManager.checkPermissions(user, Group.ManagerUser,"w");
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 var timer1 ;
+var flag = "<%=flag%>";
+
 function changes(id,name,statues){
 	if(statues == 2){
 	question = confirm("确定要删除"+name+"吗？");
@@ -50,7 +52,10 @@ function update(uid,phone){
 	$("#fresh").val("");
 	
 	$("#phone").val("");
-	
+	 
+	if("false" == flag){
+		return ;
+	}
 
 	 winPar = window.open("updateUserPhone.jsp?uid="+uid,"phone","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
 	 timer1 = setInterval("startRequest('"+uid+"')",500);
@@ -133,10 +138,9 @@ function startRequest(uid){
 	</thead>
 <tbody> 
 <% 
+if(null != list){
   for(int i =0 ;i<list.size();i++){
 	 User u = list.get(i) ;
-	 
-	 
 %> 
     <tr  id="<%=u.getId() %>" class="asc"  onclick="updateClass(this)" ondblclick="update('<%=u.getId()%>','<%=u.getPhone() %>')">    
 
@@ -182,7 +186,8 @@ function startRequest(uid){
 		</td>
 		 -->
     </tr>
-    <% } %>
+    <% } 
+    }%>
     
     <% 
      if(listg != null ){

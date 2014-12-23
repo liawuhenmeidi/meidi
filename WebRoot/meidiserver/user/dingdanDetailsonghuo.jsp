@@ -98,7 +98,7 @@ function winconfirm(str){
 			//alert(attract.toString());
 			$.ajax({   
 		        type:"post", 
-		         url:"server.jsp",
+		         url:"OrderServlet",
 		         //data:"method=list_pic&page="+pageCount,
 		        data:"method=shifang&oid="+id+"&opstatues="+opstatues,
 		         dataType: "", 

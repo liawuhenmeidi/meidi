@@ -10,7 +10,7 @@ String ptype = request.getParameter("ptype");
 String typeStr = request.getParameter("type"); 
 int type = Integer.valueOf(typeStr);
 
-GroupService.flag = true ;
+//GroupService.flag = true ;
 Map<String,List<Group>> map = GroupService.getPidMap();
 List<Category> list =CategoryManager.getCategory(Category.sale) ;
 

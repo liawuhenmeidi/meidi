@@ -233,8 +233,8 @@ function checkedd(){
 		</tr>
 		 <tr class="bsc">
 		    <td align="center" >赠品</td>
-			<td align="center" >
-	        <input type="text"  name="username" id="username" value=""  />
+			<td align="center" > 
+	        <input type="text"  name="giftName" id="giftName" value=""  />
 			</td>
 			<td align="center" >赠品是否已自提</td>
 			<td align="center" >
