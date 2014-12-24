@@ -351,7 +351,7 @@ function beforSubmit(){
 				if(showSalaryModels.size() > 0 ){		
 			%>
 				<tr>
-					<td align="center" colspan="9"><a href="#" onClick="javascript:window.open('salarymodelDetail.jsp?id=-1', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"><input type="button" value="新增一行"/></a></td>
+					<td align="center" colspan="9"><a href="#" onClick="javascript:window.open('salarymodelDetail.jsp?id=-1', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no,height=320,width=850')"><input type="button" value="新增一行"/></a></td>
 					
 				</tr> 
 			<%
