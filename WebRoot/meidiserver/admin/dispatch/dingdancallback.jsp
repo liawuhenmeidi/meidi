@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
 <%@ include file="searchdynamic.jsp"%>
-  
+   
 <%  
 
 //List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.callback,num,Page,sort,sear);  
@@ -95,39 +95,7 @@ function funcc(str,str2){
            });
 }
  
-function changes(str1){
-	$.ajax({ 
-        type: "post", 
-         url: "../server.jsp",
-         data:"method=dingdaned&id="+str1,
-         dataType: "", 
-         success: function (data) {
-           window.location.href="dingdanpeidan2.jsp";
-           }, 
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-        // alert(errorThrown); 
-            } 
-           });
-}
 
-function change(str1,str2){
-	var uid = $("#"+str1).val();
-	$.ajax({ 
-        type: "post",    
-         url: "../../user/server.jsp",
-         data:"method=peidan&id="+str2+"&uid="+uid,
-         dataType: "", 
-         success: function (data) {
-           alert("设置成功");  
-           window.location.href="dingdanpeidan2.jsp";
-           }, 
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-        // alert(errorThrown); 
-            } 
-           });
-
-}
- 
 function winconfirm(){
 	var question = confirm("你确认要执行此操作吗？");	
 	if (question != "0"){

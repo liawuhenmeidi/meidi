@@ -337,6 +337,7 @@ logger.info(sql);
 			ProductService.flag = true ;
 			try {
 				DB.executeUpdate(stmt, sql);
+				ProductService.flag = true ;
 				b = true;
 			} finally {
 				DB.close(stmt);
@@ -379,7 +380,7 @@ logger.info(pstmt);
 			}
 		 
 		}
-		
+		 
 		 public static Product getOrderStatuesFromRs(ResultSet rs){
 			 Product p = new Product();  
 				try { 

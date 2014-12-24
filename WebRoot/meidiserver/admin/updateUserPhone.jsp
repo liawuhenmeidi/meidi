@@ -2,6 +2,10 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
+
+if(!UserManager.checkPermissions(user, Group.ManagerUser,"w")){
+	return ; 
+}
 List<BranchType> listb = BranchTypeManager.getLocate();
 Map<String,List<Branch>> map = BranchManager.getLocateMapBranch(); 
 String mapjosn = StringUtill.GetJson(map);

@@ -30,7 +30,7 @@ public class UserManager {
     	boolean flag = false ; 
 		Connection conn = DB.getConn();
 		String sql = "select * from mduser where statues != 2 and username = '"+ c+ "'";
-logger.info(sql);   
+        //logger.info(sql);    
 		Statement stmt = DB.getStatement(conn);
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		try { 
@@ -52,7 +52,7 @@ logger.info(sql);
 		   boolean flag = false ;
 		   if(0 == id ){
 			   return flag ;
-		   }
+		   } 
 		    Connection conn = DB.getConn();
 			Statement stmt = DB.getStatement(conn);
 			String  sql = "select id from mduser where id = " + id ;
@@ -137,7 +137,7 @@ logger.info(sql);
 			pstmt.setInt(10, user.getStatues());
 			pstmt.setInt(11, user.getChargeid()); 
 			pstmt.setString(12, user.getLocation());   
-logger.info(sql);  
+            logger.info(sql);  
 			int count = pstmt.executeUpdate();
 			if(count > 0){
 				flag = true ;
@@ -213,7 +213,7 @@ logger.info(pstmt);
 			
 			String sql = "select products from mdgroup where  id = '" + user.getUsertype()+"';";
 			
-	logger.info(sql);
+	//logger.info(sql);
 			Connection conn = DB.getConn();
 			String[] Permissions = null ;
 			Statement stmt = DB.getStatement(conn);
@@ -402,6 +402,7 @@ logger.info(Permissions);
 						//sql = "select * from  mduser where statues != 2 and usertype in (select id from mdgroup where pid = "+user.getUsertype()+") order by id desc";
 						sql = "select * from  mduser where statues != 2 and usertype in (select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"') order by id desc";
 					} 
+					logger.info(sql); 
 					//  select id from mdgroup where pid = user.get
 					Statement stmt = DB.getStatement(conn);
 					ResultSet rs = DB.getResultSet(stmt, sql);
@@ -429,7 +430,7 @@ logger.info(Permissions);
 					if(UserManager.checkPermissions(user, Group.Manger)){
 						sql = "select * from  mduser where statues = 0";
 					}else {
-						sql = "select * from  mduser where statues = 0 and usertype in (select id from mdgroup where pid = "+user.getUsertype()+")";
+						sql = "select * from  mduser where statues = 0 and usertype in (select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"')";
 					}
 					//  select id from mdgroup where pid = user.get
 					Statement stmt = DB.getStatement(conn);
@@ -459,8 +460,8 @@ logger.info(Permissions);
 					List<User> users = new ArrayList<User>();
 					Connection conn = DB.getConn();
 					
-					String str1 = "(select id from mdgroup where pid = "+user.getUsertype()+") "; 
-					String str = " (select id from mdgroup where pid in " ;
+					String str1 = "(select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"') "; 
+					String str = " (select groupid from  mdrelategroup where  pgroupid in " ;
 					
 					for(int i = 0 ;i < count ;i ++ ){
 						str +=  str1 +")";
@@ -486,7 +487,7 @@ logger.info(Permissions);
 					}
 					return users;
 				}    			
-				
+				 
 	// type 2 为售货员
 	public static List<User> getUsers(int type) {
 		
@@ -529,7 +530,7 @@ logger.info(sql);
 			 if(UserManager.checkPermissions(user, Group.Manger)){
 				 sql = "select * from  mduser where statues = 1  and  usertype in " + str ;
 			 }else {
-				 sql = "select * from  mduser where statues = 1  and usertype in (select id from mdgroup where pid = "+user.getUsertype()+") and  usertype in " + str ;
+				 sql = "select * from  mduser where statues = 1  and usertype in (select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"') and  usertype in " + str ;
 			 }
 			
 		logger.info(sql);	
@@ -967,7 +968,7 @@ logger.info(sql);
 		List<String> sqls = new ArrayList<String>();
 		if(statues != 0){
 			if(!check(user)){
-				String str1 = "(select id from mdgroup where pid = "+user.getUsertype()+") ";  
+				String str1 = "(select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"') ";  
 				 
 				String sql1 = "update mduser set statues = "+statues + "  where  usertype in "+str1 ;
 

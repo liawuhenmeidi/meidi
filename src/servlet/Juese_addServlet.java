@@ -56,7 +56,7 @@ public class Juese_addServlet extends HttpServlet {
 			 List<Group>  listg = null ;
 			 Map<String,List<Group>> map = GroupService.getPidMap();
 			 List<Category> list =CategoryManager.getCategory(Category.sale) ;   
-              
+             
 			 if(type == Group.Manger && null != map){
 	        	 listg = map.get(1+"");
 			 }else if(type == Group.dealSend && null != map){
@@ -70,16 +70,19 @@ public class Juese_addServlet extends HttpServlet {
 			 }else {
 				 listg = GroupService.getList();
 			 }
+			 //logger.info(list);
 			try {
 				if(null == list){
-
-					response.sendRedirect("../remindme.jsp?type=1");
+					//logger.info(list);
+					response.sendRedirect("../remindme.jsp?type=10");
 					return ;
 				}
 				if(null == listg){
+					//logger.info(list);
 					response.sendRedirect("../remindme.jsp?type="+type); 
 					return ;
 				}
+				//logger.info(list);
 				response.sendRedirect("juese_add.jsp?ptype="+ptype+"&type="+type);
 				return ;
 				

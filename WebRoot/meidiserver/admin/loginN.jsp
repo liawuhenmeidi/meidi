@@ -157,24 +157,24 @@ function checkedd(){
   <tr class="asc">
     
     <td>1</td>
-    <td>产品管理注册产品</td>
+    <td>产品管理维护产品</td>
   </tr>
   <tr class="asc">
     
     <td>2</td> 
-    <td>职位管理注册职位</td>
+    <td>岗位管理维护所有岗位及权限</td>
   </tr>
   <tr class="asc">
   
      <td>3</td>
-    <td>门店管理增加门店</td>
+    <td>门店管理维护门店</td>
     
   </tr>
    <tr class="asc">
   
    
      <td>4</td>
-    <td>增加区域</td>
+    <td>地区管理维护区域名称</td>
     
    
   </tr>
@@ -182,9 +182,8 @@ function checkedd(){
   
    
      <td>5</td>
-    <td>手机端注册</td>
-    
-   
+    <td>手机端注册所有用户</td>
+     
   </tr>
   </table>
 	 <br/>

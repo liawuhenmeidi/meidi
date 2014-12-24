@@ -5,7 +5,7 @@ User user = (User)session.getAttribute("user");
 
 List<User> ulist = UserManager.getUserszhuce(user);
 HashMap<Integer,Group> map = GroupManager.getGroupMap();
-
+boolean flag = UserManager.checkPermissions(user, Group.ManagerUser,"w");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -78,22 +78,33 @@ function changes(id,name,statues){
 		<td align="left"><%=u.getChargeName()%></td>
 		<td align="left"><%=u.getBranchName() %></td>
 		<td align="left">
-		 <%
-		   if(0 == u.getStatues()){
+		
+		<% 
+		   if(!UserManager.checkPermissions(u, Group.Manger)){
+			   String str = 0 == u.getStatues()?"否":"是";
+		  
+			   if(flag){
+					if(0 == u.getStatues()){  
+					 %> 
+					<%=str %>
+					   
+					   <input type="button" onclick="changes('<%=u.getId()%>','',1)"  value="激活"/>
+					   <input type="button" onclick="changes('<%=u.getId()%>','<%=u.getUsername() %>',2)"  value="删除"/>
+					 <%
+					   }else { 
+					 %> 
+					<%=str %>
+					   <input type="button" onclick="changes('<%=u.getId()%>','',0)"  value="关闭"/>
+					  <input type="button" onclick="changes('<%=u.getId()%>','<%=u.getUsername() %>',2)"  value="删除"/>
+					 <%
+				   }
+			   }else {
+				  %> 
+				  <%
+			   }
+		   }
 		 %>
-		 否
-		 <input type="button" onclick="changes('<%=u.getId()%>','',1)"  value="激活"/>
-		   <input type="button" onclick="changes('<%=u.getId()%>','<%=u.getUsername() %>',2)"  value="删除"/>
-		 <%
-		   }else {
-		 %> 
-		 是
-		 <input type="button" onclick="changes('<%=u.getId()%>','',0)"  value="关闭"/>
-		  <input type="button" onclick="changes('<%=u.getId()%>','<%=u.getUsername() %>',2)"  value="删除"/>
-		 <%
-	   }
-		 %>
-		 
+
 		 </td>       
 
     </tr>

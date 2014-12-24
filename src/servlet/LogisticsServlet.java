@@ -206,7 +206,7 @@ public class LogisticsServlet extends HttpServlet {
 	// 安装人员释放
 	public synchronized int salereleaseanzhuang(User user , Order order , String uid,String method){
 		int count = -1 ;
-		if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){			
+		//if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){			
 			if(order.getInstallid() != 0 ){
 				List<String> listsql = new ArrayList<String>();
 				
@@ -221,7 +221,7 @@ public class LogisticsServlet extends HttpServlet {
 			    	count = 1 ;
 			    }
 			}
-		}
+		//}
 		return count ;
 		 
 	} 

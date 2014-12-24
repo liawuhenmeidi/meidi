@@ -58,6 +58,7 @@ public static Map<Integer, Product> getIDmap() {
 			typemap = ProductManager.getProductType();
 			typeName = ProductManager.getProductName();
 			idmap = ProductManager.getProductID();
+			listall = ProductManager.getProductList();
 		}
 		flag = false ;
 	}

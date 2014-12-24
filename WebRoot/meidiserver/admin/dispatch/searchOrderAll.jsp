@@ -9,11 +9,14 @@
 <script type="text/javascript" src="../../js/cookie/jquery.cookie.js"></script>
 <script type="text/javascript">
  
+ 
+ 
 function checkedd(){ 
 	sear = ""; 
 	var list = $("input");
 	var oderStatus = "";
 	var deliveryStatues = "";
+	var sendcategoryname = "";
 	for(var i=0;i<list.length;i++){
 		var input = list[i];
 		
@@ -44,6 +47,8 @@ function checkedd(){
 					oderStatus += value+",";
 				}else if("deliveryStatues" == name){
 					deliveryStatues += value+"," ;
+				}else if("sendcategoryname" == name){
+					sendcategoryname += value+",";
 				}
 			}
 		}
@@ -57,7 +62,10 @@ function checkedd(){
 		deliveryStatues = deliveryStatues.substring(0,deliveryStatues.length-1);
 		sear += "&deliveryStatues="+ deliveryStatues;
 	}
-	 
+	if(sendcategoryname != null && sendcategoryname != ""){
+		sendcategoryname = sendcategoryname.substring(0,sendcategoryname.length-1);
+		sear += "&sendcategoryname="+ sendcategoryname;
+	} 
 	$.cookie("sear", sear);
 	
 	if(sear != null && sear != ""){
@@ -70,6 +78,28 @@ function checkedd(){
 	//window.opener.location.href="manualCheckout.jsp?search=true";
 }
  
+function intsearch(){
+	 $("#sendcategorynamecd <input>").remove();
+	 $("#salecategorynamecd <input>").remove();
+		if(null != jsonallp ){ 
+			var htmlsend = "";
+			var htmlsale = "";
+			for(var i=0;i<jsonallp.length;i++){
+				var op = jsonallp[i]; 
+				//html += '<option id="'+op.id+'">'+op.type+'</option>';
+				htmlsend += '<input type="checkbox"  name="sendcategoryname" value="'+op.id+'"  id="sendcategoryname'+op.id+'" />'+op.name+"  ";
+				htmlsale += '<input type="checkbox"  name="salecategoryname" value="'+op.id+'"  id="salecategoryname'+op.id+'" />'+op.name+"  ";
+			} 
+			$("#sendcategorynamecd").append(htmlsend);
+			$("#salecategorynamecd").append(htmlsale);
+		}
+		
+		//$("#sendtype").autocomplete({ 
+		//	 source: jsonallp
+		//   });
+	}
+
+
  function checkinit(){
 	 var list = $("input");
 		for(var i=0;i<list.length;i++){
@@ -134,6 +164,12 @@ function checkedd(){
 	        <input type="text"  name="sendId" id="sendId" value=""  />
 			</td>	 
 		</tr>
+		<tr class="bsc">
+		    <td align="center" >送货名称</td>
+			<td align="center" id="sendcategorynamecd" colspan=5>
+			</td>
+ 
+		</tr> 
 		
 		<tr class="bsc">
 		<td align="center" >开票日期</td>
@@ -166,9 +202,11 @@ function checkedd(){
 		</tr>
 		
 		<tr class="bsc">
-		<td align="center" >票面品类</td>
-			<td align="center" >
-	        <input type="text"  name="categoryname" id="categoryname" value=""  />
+		<td align="center" >是否收到公司安装费用</td>
+			<td align="center"  >
+			   是<input type="radio"  name="statues4"  value="1"  id="statues41" />
+	                           否<input type="radio"  name="statues4"  value="0"  id="statues40"/>
+	                           任意<input type="radio"  name="statues4"  value=""  id="statues4"/>
 			</td>	
 		<td align="center" >票面型号</td>
 			<td align="center">
