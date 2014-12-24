@@ -178,7 +178,7 @@ function firstItem(){
 }
 	
 function newItem(){
-	var newCol = "<tr class='asc'><td align='center' colspan='3'><input name='contentstart" + rows + "' id='contentstart" + rows + "' type='text' readonly='readonly'  /> - <input name='contentend" + rows + "'  id='contentend" + rows + "' onchange='itemOnchange($(this),"+ rows + ")' type='text' value=''/></td><td align='center' colspan='2'><input name='contentvalue" + rows + "' id='contentvalue" + rows + "' type='text' value='0' onchange='changelast($(this)," + rows + ")'/></td></tr>"
+	var newCol = "<tr class='asc'><td align='center' colspan='3'><input name='contentstart" + rows + "' id='contentstart" + rows + "' type='text' readonly='readonly'  /> - <input name='contentend" + rows + "'  id='contentend" + rows + "' onchange='itemOnchange($(this),"+ rows + ")' type='text' value=''/></td><td align='center' colspan='2'><input name='contentvalue" + rows + "' id='contentvalue" + rows + "' type='text' value='' onchange='changelast($(this)," + rows + ")'/></td></tr>"
 	$('#addTarget').before(newCol);
 	$('#left').attr("rowspan",Number($('#left').attr("rowspan")) + 1);
 	var target1 = "contentend" + (Number(rows)-1);
