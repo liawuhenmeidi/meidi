@@ -453,10 +453,12 @@ if(showResult){
 			<td align="center"><%=salaryResult.get(i).getSalaryModel().getContent() %></td>
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSalePrice() %></td>
 			<td align="center"><%=salaryResult.get(i).getSalary() %></td>
+			<!--  
 			<%if(salaryResult.get(i).getStatus() >= 0){ %>
 			<td align="center"><a href="#" onClick="javascript:window.open('./salaryResultDetailInSession.jsp?id=<%=salaryResult.get(i).getUploadOrder().getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" ><button>修改</button></a></td>
 			 
 			<%} %>
+			-->
 		</tr>	
 		<%
 		}
