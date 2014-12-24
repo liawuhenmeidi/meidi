@@ -132,6 +132,10 @@
 	String tempString = "";
 	//下面用到的背景色
     String backgroundColor ="#B9D3EE";
+	
+	//修改页面里面用到
+	ArrayList<SalaryResult> modifiedSalaryResult = new ArrayList<SalaryResult>();
+	session.setAttribute("modifiedSalaryResult", modifiedSalaryResult);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -447,9 +451,8 @@ if(showResult){
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSalePrice() %></td>
 			<td align="center"><%=salaryResult.get(i).getSalary() %></td>
 			<%if(salaryResult.get(i).getStatus() >= 0){ %>
-			<!-- 
-			<td align="center"><a href="#" onClick="javascript:window.open('./salaryResultDetailInSession.jsp?i=<%=i %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" ><button>修改</button></a></td>
-			 -->
+			<td align="center"><a href="#" onClick="javascript:window.open('./salaryResultDetailInSession.jsp?id=<%=salaryResult.get(i).getUploadOrder().getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" ><button>修改</button></a></td>
+			 
 			<%} %>
 		</tr>	
 		<%

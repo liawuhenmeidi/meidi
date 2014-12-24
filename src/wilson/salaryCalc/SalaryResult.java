@@ -132,6 +132,14 @@ public class SalaryResult {
 	}
 	
 	public boolean calc(){
+		
+		int nagtive = 1;
+		if(this.uploadOrder.getNum() < 0){
+			nagtive = -1;
+			this.setUploadOrderNum(this.uploadOrder.getNum() * nagtive);
+			this.setUploadOrderSalePrice(this.uploadOrder.getSalePrice() * nagtive);
+		}
+		
 		if(this.uploadOrder == null || this.salaryModel == null){
 			return false;
 		}
@@ -171,6 +179,8 @@ public class SalaryResult {
 					break;
 				}
 			}
+			this.setUploadOrderSalePrice(this.uploadOrder.getSalePrice() * nagtive);
+			this.setUploadOrderNum(this.uploadOrder.getNum() * nagtive);
 			this.setSalary(this.getSalary() * this.getUploadOrder().getNum());
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			this.setCalcTime(sdf.format(new Date()));
