@@ -82,7 +82,7 @@
 		salaryResult = new ArrayList(resultInSession);
 		unCalcUploadOrders = (ArrayList<UploadOrder>)request.getSession().getAttribute("unCalcResult");
 
-		//if("false".equals(groupname)){
+		if("false".equals(groupname)){
 			String tempGroupname = CatergoryManager.getCatergoryMapingByUploadOrderName(paraOrderName);
 			if(!"".equals(tempGroupname)){
 				lockGroupName = true;
@@ -103,7 +103,7 @@
 				}
 			}
 			
-		//}
+		}
 		salaryResult = SalaryCalcManager.sortSalaryResult(salaryResult, groupname);
 		session.setAttribute("addName_filename", paraOrderName);
 		if(paraSave != null && !paraSave.equals("")){
@@ -456,7 +456,6 @@ if(showResult){
 			<!--  
 			<%if(salaryResult.get(i).getStatus() >= 0){ %>
 			<td align="center"><a href="#" onClick="javascript:window.open('./salaryResultDetailInSession.jsp?id=<%=salaryResult.get(i).getUploadOrder().getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" ><button>修改</button></a></td>
-			 
 			<%} %>
 			-->
 		</tr>	
