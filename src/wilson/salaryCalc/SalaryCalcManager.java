@@ -328,6 +328,7 @@ public class SalaryCalcManager {
 			
 			
 			tempOrder = uploadOrders.get(i);
+
 			tempOrder.setType(tempOrder.getType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")","").replace("）", "").replace("（", ""));
 			//如果type是空，直接放到人工归类列表里面
 			if(tempOrder.getType()==""||tempOrder.getType()==null||tempOrder.getType().equals("")){
@@ -337,6 +338,7 @@ public class SalaryCalcManager {
 			
 			//在salaryModels中，寻找对应的model
 			for(int j = 0 ; j < salaryModels.size() ; j ++){
+
 				tempSalaryModel = salaryModels.get(j);
 				tempSalaryModel.setType(tempSalaryModel.getType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")","").replace("）", "").replace("（", ""));
 				//如果为空，直接跳过
@@ -348,7 +350,7 @@ public class SalaryCalcManager {
 				
 				//System.out.println("tempOrder =" + tempOrder.getType().trim() + " = tempSalaryModel " + tempSalaryModel.getType() + " ?  " + tempOrder.getType().trim().contains(tempSalaryModel.getType().trim()));
 				
-				if(tempOrder.getType().trim().toUpperCase().equals(tempSalaryModel.getType().trim().toUpperCase())){
+				if(tempOrder.getType().trim().toUpperCase().replaceAll(" ","").equals(tempSalaryModel.getType().trim().toUpperCase().replaceAll(" ",""))){
 					matched = true;
 					matchedSalaryModels.add(tempSalaryModel);
 				}
