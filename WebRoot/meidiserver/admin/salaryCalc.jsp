@@ -192,6 +192,12 @@ function reloadSelectModels(){
 		base += "<br/><button onclick='delModel($(this))' style='background:url(../../image/closebutton.png) no-repeat; border:1;width:250px' value='" + selectModelsName[i] + "'>" + selectModelsName[i] + "</button>";
 	}
 	$('#selectModels').html(base);
+
+	 $('#models option').each(function(){
+	   if(selectModelsName.indexOf($(this).val()) >= 0 ){
+	    $(this).remove();
+	   }
+	  });
 }
 
 function delModel(obj){
@@ -199,6 +205,7 @@ function delModel(obj){
 	for(var i = 0 ; i < selectModelsName.length ; i ++){
 		if(delItem == selectModelsName[i]){
 			selectModelsName.splice(i, 1);
+			$('#models').append("<option value='" + delItem  + "'>"+ delItem + "</option>");
 		}
 	}
 	reloadSelectModels();
@@ -207,14 +214,19 @@ function delModel(obj){
 
 function addModel(){
 	var addedItem = $('#models').val();
-	for(var i = 0 ; i < selectModelsName.length ; i ++){
-		if(addedItem == selectModelsName[i]){
-			return false;
+	if(addedItem != ""){
+		for(var i = 0 ; i < selectModelsName.length ; i ++){
+			if(addedItem == selectModelsName[i]){
+				return false;
+			}
 		}
+		selectModelsName.push(addedItem);
+		reloadSelectModels();
+		return true;
+	}else{
+		return false;
 	}
-	selectModelsName.push(addedItem);
-	reloadSelectModels();
-	return true;
+	
 }
 
 function beforSubmit(){
@@ -298,7 +310,8 @@ function beforSubmit(){
 				&nbsp;&nbsp;
 				<label id="selectModels" for="noid">已选的提成标准:</label>
 				<br/>
-				<select id="models" name="models"/>
+				<select id="models" name="models">
+				<option value="" selected="selected"></option>
 				<%
 				for(int i = 0 ; i < salaryModelsNames.size() ; i ++){
 					tempString = salaryModelsNames.get(i);
@@ -307,6 +320,8 @@ function beforSubmit(){
 				<%
 				}
 				%>
+				
+				</select>
 				&nbsp;&nbsp;
 				<input type="hidden" name="showright" value="<%=showRight %>" id="showright"/>
 				<button type="button" onclick="addModel()">添加</button>
