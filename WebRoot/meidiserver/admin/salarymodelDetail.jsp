@@ -57,7 +57,7 @@ content += "}";
 //id为-1是新建
 if(id ==-1){
 	//如果是提交的
-	if(button!= null && button.equals("确认修改")){	
+	if(button!= null && button.equals("正在修改")){	
 		salarymodel.setCatergory(catergory);
 		salarymodel.setType(type);
 		salarymodel.setCommitTime(TimeUtill.gettime());
@@ -94,7 +94,7 @@ if(id ==-1){
 	salarymodel = UploadManager.getSalaryModelsById(id);
 	
 	//如果是提交的
-	if(button!= null && button.equals("确认修改")){
+	if(button!= null && button.equals("正在修改")){
 		salarymodel.setContent(content);
 		salarymodel.setCatergory(catergory);
 		salarymodel.setType(type);
@@ -309,7 +309,10 @@ function checkedd(){
 	if(!checkContent()){
 		return false;
 	}
- 
+	if($('#submitbutton').val() == '正在修改'){
+		return false;
+	}
+	$('#submitbutton').val('正在修改');
 }
 </script>
 <div style="position:fixed;width:100%;height:100px;">
@@ -411,7 +414,9 @@ function checkedd(){
 		
 		
 		<tr class="asc">
-			<td width="100%" align="center" colspan="6"><input name="button" type="submit"  style="background-color:red;font-size:25px;"  value="确认修改" /></td>
+			<td width="100%" align="center" colspan="6">
+			<input id="submitbutton" name="button" type="submit"  style="background-color:red;font-size:25px;"  value="确认修改" />
+			</td>
 		</tr>
 </table> 
 </form>
