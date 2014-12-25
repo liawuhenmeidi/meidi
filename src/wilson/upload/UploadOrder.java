@@ -20,6 +20,8 @@ public class UploadOrder {
 	
 	private Double salePrice = 0.0; //供价
 	
+	private Double backPoint = 0.0;//扣点
+	
 	private String fileName = ""; //来自的文件名
 	
 	private int checked = UNCHECK; //1为没有 check 0 为已经check 2为已经与提成标准匹配好  默认为1
@@ -172,6 +174,14 @@ public class UploadOrder {
 		this.checked = 1; //1为没有 check 0 为已经check 2为已经与提成标准匹配好  默认为1	
 		this.checkedTime = ""; //check的时间，默认为null	
 		this.checkOrderId = 0; //check后对应的orderID
+	}
+
+	public Double getBackPoint() {
+		return backPoint;
+	}
+
+	public void setBackPoint(Double backPoint) {
+		this.backPoint = backPoint;
 	}
 
 	

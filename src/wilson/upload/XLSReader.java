@@ -12,6 +12,8 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import utill.StringUtill;
+
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
@@ -29,6 +31,15 @@ public class XLSReader {
 		if(fileName == null || path == null){
 			return null;
 		}
+		
+		final int SHOP_POS = 0;
+		final int POSNO_POS = 1;
+		final int SALETIME_POS = 2;
+		final int TYPE_POS = 3;
+		final int NUM_POS = 4;
+		final int SALEPRICE_POS = 5;
+		final int BACKPOINT_POS = 6;
+
 		
 		String filepath = path.replace("\\", "/");
 		List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
@@ -56,12 +67,15 @@ public class XLSReader {
 					continue;
 				}
 				uo.setName(name);
-				uo.setShop(sheet0.getCell(0,i).getContents().trim());
-				uo.setPosNo(sheet0.getCell(1,i).getContents().trim());
-				uo.setSaleTime(sheet0.getCell(2,i).getContents().replace("-", "").replace("/", "").trim());
-				uo.setType(sheet0.getCell(3,i).getContents().trim());
-				uo.setNum(Integer.parseInt(sheet0.getCell(4,i).getContents().replace(",", "").trim()));
-				uo.setSalePrice(Double.parseDouble(sheet0.getCell(5,i).getContents().replace(",", "").trim()));
+				uo.setShop(sheet0.getCell(SHOP_POS,i).getContents().trim());
+				uo.setPosNo(sheet0.getCell(POSNO_POS,i).getContents().trim());
+				uo.setSaleTime(sheet0.getCell(SALETIME_POS,i).getContents().replace("-", "").replace("/", "").trim());
+				uo.setType(sheet0.getCell(TYPE_POS,i).getContents().trim());
+				uo.setNum(Integer.parseInt(sheet0.getCell(NUM_POS,i).getContents().replace(",", "").trim()));
+				uo.setSalePrice(Double.parseDouble(sheet0.getCell(SALEPRICE_POS,i).getContents().replace(",", "").trim()));
+				if(!StringUtill.isNull(sheet0.getCell(BACKPOINT_POS,i).getContents())){
+					uo.setBackPoint(Double.parseDouble(sheet0.getCell(BACKPOINT_POS,i).getContents().trim()));
+				}
 				uo.setFileName(srcFile.getName());
 				UploadOrders.add(uo);
 				uo = new UploadOrder();
@@ -261,6 +275,7 @@ public class XLSReader {
 			final int TYPE_POS = 2;
 			final int NUM_POS = 3;
 			final int SALEPRICE_POS = 4;
+			final int BACKPOINT_POS = 5;
 			
 			
 			
@@ -317,6 +332,9 @@ public class XLSReader {
 					//uo.setSaleManName(sheet0.getCell(3,i).getContents().trim());
 					uo.setSalePrice(Double.parseDouble(sheet0.getCell(SALEPRICE_POS,i).getContents().trim()));
 					uo.setNum(Integer.parseInt(sheet0.getCell(NUM_POS,i).getContents().trim()));
+					if(!StringUtill.isNull(sheet0.getCell(BACKPOINT_POS,i).getContents())){
+						uo.setBackPoint(Double.parseDouble(sheet0.getCell(BACKPOINT_POS,i).getContents().trim()));
+					}
 				}catch(Exception e){
 					e.printStackTrace();
 					UploadOrders = new ArrayList<UploadOrder>();
