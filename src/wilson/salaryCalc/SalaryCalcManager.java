@@ -348,7 +348,7 @@ public class SalaryCalcManager {
 				
 				//System.out.println("tempOrder =" + tempOrder.getType().trim() + " = tempSalaryModel " + tempSalaryModel.getType() + " ?  " + tempOrder.getType().trim().contains(tempSalaryModel.getType().trim()));
 				
-				if(tempOrder.getType().trim().equals(tempSalaryModel.getType().trim())){
+				if(tempOrder.getType().trim().toUpperCase().equals(tempSalaryModel.getType().trim().toUpperCase())){
 					matched = true;
 					matchedSalaryModels.add(tempSalaryModel);
 				}
