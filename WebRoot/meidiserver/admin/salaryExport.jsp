@@ -147,19 +147,6 @@ function reloadTable(){
 				 salary_sum += item.attr('value')*1.0;
 			 }
 		 }
-		 //售价
-		 var id2 = this.cells[cols-2].id;
-		 var item2 = $('#'+ id2);
-		 if(item2.attr('value') == 'total'){
-			 saleprice_sum = Math.round(saleprice_sum*100)/100; 
-			 item2.text(saleprice_sum);
-			 saleprice_fileTotal += saleprice_sum;
-			 saleprice_sum = 0;
-		 }else{
-			 if(checkNumber(item2.attr('value'))){
-				 saleprice_sum += item2.attr('value')*1.0;
-			 }
-		 }
 		 //个数
 		 var id3 = this.cells[cols-3].id;
 		 var item3 = $('#'+ id3);
@@ -170,6 +157,19 @@ function reloadTable(){
 		 }else{
 			 if(checkNumber(item3.attr('value'))){
 				 salenum_sum += item3.attr('value')*1.0;
+			 }
+		 }
+		//售价
+		 var id2 = this.cells[cols-2].id;
+		 var item2 = $('#'+ id2);
+		 if(item2.attr('value') == 'total'){
+			 saleprice_sum = Math.round(saleprice_sum*100)/100; 
+			 item2.text(saleprice_sum);
+			 saleprice_fileTotal += saleprice_sum;
+			 saleprice_sum = 0;
+		 }else{
+			 if(checkNumber(item2.attr('value'))){
+				 saleprice_sum += item2.attr('value')*1.0*item3.attr('value');
 			 }
 		 }
      });
@@ -282,7 +282,7 @@ if(showResult.size() > 0 ){
 			<td>销售型号</td>
 			<td>数量</td>
 			<td>单价</td>
-			<td>提成</td>
+			<td>合计提成</td>
 		</tr>
 		<%
 		boolean total = false;

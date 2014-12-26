@@ -432,8 +432,8 @@ if(showResult){
 			<td align="center">票面型号</td> 
 			<td align="center">票面数量</td> 
 			<td align="center">提成标准</td>
-			<td align="center">供价</td>	
-			<td align="center">提成</td>
+			<td align="center">单价</td>	
+			<td align="center">合计提成</td>
 			<td align="center">修改</td>
 		</tr>
 		<%
@@ -447,6 +447,7 @@ if(showResult){
 		%>
 		<tr bgcolor='<%=total?backgroundColor:"" %>'>
 			<td align="center"><%=i+1 %></td>
+			<!-- 比较麻烦，但是不这样取不出来 -->
 			<%
 			if(i != salaryResult.size()-1){
 			%>

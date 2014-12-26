@@ -293,6 +293,13 @@ function selectOnChage(){
 	name = $("#name").find("option:selected").val(); 
 	shop = $("#shop").find("option:selected").val();
 	
+	if(name == "空"){
+		$('#mergebutton').attr('disabled',true);
+		$('#splitbutton').attr('disabled',true);
+	}else{
+		$('#mergebutton').attr('disabled',false);
+		$('#splitbutton').attr('disabled',false);
+	}
 	if(shop == "all"){
 		shop = "";
 	}
@@ -399,6 +406,13 @@ function initName(){
 	}); 
 	//设置branch
 	$("#name").val(name); 
+	if(name == "空"){
+		$('#mergebutton').attr('disabled',true);
+		$('#splitbutton').attr('disabled',true);
+	}else{
+		$('#mergebutton').attr('disabled',false);
+		$('#splitbutton').attr('disabled',false);
+	}
 	initShop();
 	$("#shop").val(shop); 
 }
@@ -611,7 +625,7 @@ function saverule(){
                 </tr>
                 <tr>
                     <td align="right">
-                    <input type="button" value="合并" onclick="merge()"/>
+                    <input id="mergebutton" type="button" value="合并" onclick="merge()"/>
                     </td>
                 
                 </tr>
@@ -627,7 +641,7 @@ function saverule(){
  
 		              <tr>
                     <td align="right">
-                    <input type="button" value="拆分" onclick="split()"/>
+                    <input id="splitbutton" type="button" value="拆分" onclick="split()"/>
                     </td>
                 
                 </tr>

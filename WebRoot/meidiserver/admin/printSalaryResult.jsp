@@ -70,7 +70,7 @@ if(showResult.size() > 0 ){
 			<td>导购员姓名</td>
 			<td>销售型号</td>
 			<td>数量</td>
-			<td>单价</td>
+			<td>金额</td>
 			<td>提成</td>
 		</tr>
 		<%

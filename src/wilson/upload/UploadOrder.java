@@ -34,6 +34,10 @@ public class UploadOrder {
 	
 	private int checkOrderId = 0; //check后对应的orderID
 
+	public Double getTotal(){
+		return getSalePrice() * getNum();
+	}
+	
 	public String getShop() {
 		return shop;
 	}

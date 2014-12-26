@@ -34,6 +34,7 @@ public class SalaryResult {
 		return this.status >= STATUS_NORMAL;
 	}
 	
+	
 	public String getPrintSalary(){
 		if(isFinished()){
 			return getSalary().toString();
