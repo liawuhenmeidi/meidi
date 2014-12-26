@@ -40,22 +40,44 @@ public class OrderService {
 		}
 	}
 	 
-	public static Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> getorders(List<Order> list ,Map<String,InstallSale>  mapin){
+	public static Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> getorders(List<Order> list ,Map<String,InstallSale>  mapin,int type){
 		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = new HashMap<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>>();
 	    
 		for(int i=0;i<list.size();i++){ 
 			Order o = list.get(i);
-			InstallSale en = mapin.get(o.getSendId()+"");
-			
+			InstallSale en = null ;
+			if(type == BasicUtill.dealsend){
+				en = mapin.get(o.getDealsendId()+"");
+			}else if(type == BasicUtill.install){
+				en = mapin.get(o.getInstallid()+"");
+			}else if(type == BasicUtill.send || type ==  BasicUtill.sendinstall){
+			    en = mapin.get(o.getSendId()+"");
+			}
+
 			if(null == en){
 				en = mapin.get("-1");
 			}
 			if(null != en){
-				Map<String,Map<String,Map<String,Map<String,List<Order>>>>> umap = orders.get(o.getSendId()+"");
+				Map<String,Map<String,Map<String,Map<String,List<Order>>>>> umap = null;
+				
+				if(type == BasicUtill.dealsend){
+					 umap = orders.get(o.getDealsendId()+"");
+				}else if(type == BasicUtill.install){
+					umap = orders.get(o.getInstallid()+"");
+				}else if(type == BasicUtill.send || type ==  BasicUtill.sendinstall){
+					umap = orders.get(o.getSendId()+""); 
+				}
+				
 				if(null == umap){
 					umap = new HashMap<String,Map<String,Map<String,Map<String,List<Order>>>>>();
-					orders.put(o.getSendId()+"", umap);
-				}
+					if(type == BasicUtill.dealsend){
+						orders.put(o.getDealsendId()+"", umap);
+					}else if(type == BasicUtill.install){
+						orders.put(o.getInstallid()+"", umap);
+					}else if(type == BasicUtill.send || type ==  BasicUtill.sendinstall){
+						orders.put(o.getSendId()+"", umap);
+					}
+				} 
 				//logger.info(orders); 
 				Map<String,Map<String,Map<String,List<Order>>>> phonemap = null ;
 				if(1 == en.getPhone()){
@@ -124,7 +146,6 @@ public class OrderService {
 				}
 			}
 		} 
-	
 	   return orders ;
 	}
 	
@@ -255,7 +276,7 @@ public class OrderService {
 		StringBuffer html = new StringBuffer();  
 		Map<String,InstallSale>  mapin = InstallSaleManager.getmap(BasicUtill.dealsend);
 		// uid , phone , andate , uname,locate 
-		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin);
+		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin,BasicUtill.dealsend);
 		
 		Map<String,List<InstallSaleMessage>> mapinsa = InstallSaleMessageManager.getmap();
 		
@@ -1534,7 +1555,7 @@ public class OrderService {
 		int price = 0 ; 
 		Map<String,InstallSale>  mapin = InstallSaleManager.getmap(BasicUtill.install);
 		// uid , phone , andate , uname,locate 
-		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin);
+		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin,BasicUtill.install);
 		 
 		Map<String,List<InstallSaleMessage>> mapinsa = InstallSaleMessageManager.getmap();
 		 
@@ -1810,7 +1831,7 @@ public class OrderService {
 		Map<String,InstallSale>  mapin = InstallSaleManager.getmap(BasicUtill.sendinstall);
 		// uid , phone , andate , uname,locate 
 		//logger.info(mapin);
-		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin);
+		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin,BasicUtill.sendinstall);
 		// logger.info(orders);
 		Map<String,List<InstallSaleMessage>> mapinsa = InstallSaleMessageManager.getmap();
 		 
@@ -2111,7 +2132,7 @@ public class OrderService {
 		Map<String,InstallSale>  mapin = InstallSaleManager.getmap(BasicUtill.send);
 		//logger.info(mapin);
 		// uid , phone , andate , uname,locate 
-		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin);
+		Map<String,Map<String,Map<String,Map<String,Map<String,List<Order>>>>>> orders = getorders(list,mapin,BasicUtill.send);
 		//logger.info(orders);
 		Map<String,List<InstallSaleMessage>> mapinsa = InstallSaleMessageManager.getmap();
 		 

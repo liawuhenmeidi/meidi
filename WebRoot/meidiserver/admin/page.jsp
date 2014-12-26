@@ -138,9 +138,9 @@ function pagelast(){
 
 function exportServelet(){
 	if(8 == type){
-		window.location.href="../../Print?type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+sear;
+		window.location.href="../../Print?method=exportall&type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+sear;
 	}else {
-		window.location.href="../Print?type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+sear;
+		window.location.href="../Print?method=exportall&type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+sear;
 	}
 	//alert(1);  
 	

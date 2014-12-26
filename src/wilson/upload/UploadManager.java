@@ -8,13 +8,16 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import order.Order;
 import order.OrderManager;
+import uploadtotal.UploadTotal;
 import user.User;
 import utill.StringUtill;
 import wilson.matchOrder.AfterMatchOrder;
@@ -419,6 +422,7 @@ public class UploadManager {
 		uo.setChecked(rs.getInt("checked"));
 		uo.setCheckedTime(rs.getString("checkedtime"));
 		uo.setCheckOrderId(rs.getInt("checkorderid"));
+		uo.setBackPoint(rs.getDouble("backpoint"));
 		return uo;
 		
 	}
@@ -496,6 +500,89 @@ public class UploadManager {
 			DB.close(conn);
 		}	
 		return result;
+	}
+	 
+	public static List<String> getUnTotalUploadOrdersNames(){
+		List <String> result = new ArrayList<String>();
+
+		Connection conn = DB.getConn(); 
+		String sql = "select distinct name from uploadorder where dealtime is null order by shop";
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		String tmp = "";
+		try {     
+			while (rs.next()) {
+				tmp = rs.getString("name");
+				result.add(tmp);
+				tmp = "";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
+	}
+	
+	public static List<UploadOrder> getTotalUploadOrders(String id){
+		List <UploadOrder> checkedUploadOrders = new ArrayList<UploadOrder>();
+ 
+		Connection conn = DB.getConn();  
+		String sql = "select * from uploadorder where dealtime is null and name = '"+id+"' order by shop";
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadOrder uo = new UploadOrder();
+		try {     
+			while (rs.next()) {
+				uo = getUploadOrderFromRS(rs);
+				checkedUploadOrders.add(uo);
+				uo = new UploadOrder();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return checkedUploadOrders;
+	}
+	
+	public static Map<String, HashMap<String, UploadTotal>> getTotalOrders(String id){
+		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id); 
+		Map<String, HashMap<String, UploadTotal>> map = new HashMap<String,HashMap<String,UploadTotal>>();
+		if(null != list && list.size() >0){
+			for(int i=0;i<list.size();i++){
+				UploadOrder up = list.get(i);
+				HashMap<String, UploadTotal> branchname= map.get(up.getShop());
+				if(null == branchname){
+					branchname = new HashMap<String, UploadTotal>();
+					map.put(up.getShop(), branchname);
+				}
+				
+				UploadTotal upt = branchname.get(up.getType());
+				if(null == upt){
+					upt = new UploadTotal();
+					upt.setBranchname(up.getShop());
+					upt.setCount(up.getNum());
+					upt.setName(up.getName());
+					upt.setType(up.getType());
+					upt.setTotalcount(Math.abs(up.getSalePrice())*up.getNum());
+					upt.setTatalbreakcount(Math.abs(up.getSalePrice())*up.getNum()*(1-up.getBackPoint()/100));
+					branchname.put(up.getType(),upt);
+				}else {
+					upt.setCount(upt.getCount()+up.getNum());
+					upt.setTotalcount(upt.getTotalcount()+Math.abs(up.getSalePrice())*up.getNum());
+					upt.setTatalbreakcount(upt.getTatalbreakcount()+Math.abs(up.getSalePrice())*up.getNum()*(1-up.getBackPoint()/100));
+				}
+				
+			}
+		}
+		return map;
 	}
 	
 	public static UploadOrder getUploadOrderById(int id){

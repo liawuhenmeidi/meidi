@@ -195,6 +195,7 @@ var disable = '<%=isdisabel %>';
  }
  
  function checkedd(buttontype){
+	var flag = true ;
 	var outbranch = $("#outbranch").val();
 	var inbranch = $("#inbranch").val();
 	
@@ -202,27 +203,27 @@ var disable = '<%=isdisabel %>';
 	 
 	if(outbranch == "" || outbranch == null){ 
 		alert("请选择出库单位"); 
-		return false ;
+		flag =  false ;
 	}else {
 		if($.inArray(outbranch, jsonall) == -1){
 			alert("出库单位不存在"); 
-			return false ;
+			flag =  false ;
 		}
 	}
 	
 	if(inbranch == "" || inbranch == null){ 
 		alert("请选择入库单位"); 
-		return false ;
+		flag =  false ;
 	}else{
 		if($.inArray(inbranch, jsonall) == -1){
 			alert("入库单位不存在"); 
-			return false ;
+			flag =  false ;
 		}
 	}
 
 	if(rows.length <1){
 		alert("没有记录可以提交"); 
-		return false ;
+		flag =  false ;
 	}
 	 
 	for(var i=0;i<rows.length;i++){
@@ -230,15 +231,16 @@ var disable = '<%=isdisabel %>';
 		
 		if(isNaN(count)){
 			alert("产品数量必须是数字");
-			return false ;
+			flag =  false ;
 	      } 
 	}
 	
-	$("#form").submit();
-	
-	 $("#submit").css("display","none");
-	 
-	 return true ;
+	if(flag){
+		$("#form").submit();
+		
+		 $("#submit").css("display","none");
+	}
+
  }
  
 
@@ -329,7 +331,7 @@ var disable = '<%=isdisabel %>';
   if(UserManager.checkPermissions(user, Group.inventory,"w")){
 	  if(inventory.getInstatues() == 0 && inventory.getOutstatues() == 0 ){
    %> 
-   <input type="submit" id="button" value="确认提 交"  onclick="checkedd('add')" <%=isdisabel %>/>
+   <input type="button" id="button" value="确认提 交"  onclick="checkedd('add')" <%=isdisabel %>/>
    
   <%  
 	  } 

@@ -11,8 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,10 +30,13 @@ import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
 import orderproduct.OrderProductService;
 
+import uploadtotal.UploadTotal;
 import user.User;
 import user.UserManager;
+import utill.DoubleUtill;
 import utill.HttpRequestUtill;
 import utill.StringUtill;
+import wilson.upload.UploadManager;
 
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -68,24 +73,147 @@ public class PrintServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8"); 
 		response.setCharacterEncoding("UTF-8");
 		 
-		User user = (User)request.getSession().getAttribute("user");
-		 SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMddHH");
-         Date date1 = new Date();
+		String method = request.getParameter("method");
+		if("exportall".equals(method)){
+			exportOrders( request,response);
+		}else if("totalExport".equals(method)){
+			exporttotalExport(request,response);
+		}
+		
+		
+	
+    }
+	/**
+	 * 处理微信服务器发来的消息
+	 */ 
+	 
+	public void exporttotalExport(HttpServletRequest request, HttpServletResponse response){
+		String id = request.getParameter("said");
+		SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMddHH");
+        Date date1 = new Date();
 		String printlntime = df2.format(date1); 
 		
-		request.setCharacterEncoding("utf-8");
+		Map<String, HashMap<String, UploadTotal>> map = UploadManager.getTotalOrders(id);
+		
+		// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("报装单");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+		// 第四步，创建单元格，并设置值表头 设置表头居中
+		HSSFCellStyle style = wb.createCellStyle();
+		
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+		int x = 0 ; 
+		HSSFCell cell = row.createCell((short) x++);
+		
+		cell.setCellValue("序号");
+		cell.setCellStyle(style);  
+		cell = row.createCell((short) x++);
+		cell.setCellValue("门店");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("型号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("数量");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("销售总价");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("扣点后总价");
+		cell.setCellStyle(style);
+		
+		 int count = 0 ;
+		  int idcount = 0 ;
+		 //Map<String, HashMap<String, UploadTotal>> 
+		   Set<Map.Entry<String, HashMap<String, UploadTotal>>> setmap = map.entrySet();
+		   Iterator<Map.Entry<String, HashMap<String, UploadTotal>>> itmap = setmap.iterator();
+		   while(itmap.hasNext()){
+			   Map.Entry<String, HashMap<String, UploadTotal>> enmap = itmap.next();
+			   HashMap<String, UploadTotal> maptype = enmap.getValue();
+			   Set<Map.Entry<String, UploadTotal>> setmaptype =  maptype.entrySet();
+			   Iterator<Map.Entry<String, UploadTotal>> itmaptype = setmaptype.iterator();
+			   double Totalcount = 0 ;
+			   int Count = 0 ;
+			   double Tatalbreakcount = 0 ;
+			   String branchname = "";
+			   while(itmaptype.hasNext()){
+				   Map.Entry<String, UploadTotal> enmaptype = itmaptype.next();
+				   UploadTotal up = enmaptype.getValue();
+				   branchname = up.getBranchname();
+				   Totalcount += up.getTotalcount();
+				   Count += up.getCount();
+				   Tatalbreakcount += up.getTatalbreakcount();
+				  
+				    row = sheet.createRow((int) count + 1);
+				    count++;
+					int y = 0 ;   
+					idcount ++;
+					// 第四步，创建单元格，并设置值
+					row.createCell((short) y++).setCellValue(idcount );
+					row.createCell((short) y++).setCellValue(up.getBranchname());
+					row.createCell((short) y++).setCellValue(up.getType());
+					row.createCell((short) y++).setCellValue(up.getCount());
+					row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount())); 
+					row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount())); 
+			   }
+			   
+			   row = sheet.createRow((int) count + 1);
+			   count++;
+				int y = 0 ;   
+				// 第四步，创建单元格，并设置值
+				row.createCell((short) y++).setCellValue("");
+				row.createCell((short) y++).setCellValue(branchname);
+				row.createCell((short) y++).setCellValue("");
+				row.createCell((short) y++).setCellValue(Count);
+				row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(Totalcount)); 
+				row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(Tatalbreakcount)); 
+
+		   }
+
+		//System.out.println(count);
+		// 第六步，将文件存到指定位置
+		try    
+		{    
+			response.setContentType("APPLICATION/OCTET-STREAM");
+			response.setHeader("Content-Disposition", "attachment; filename=\""+ printlntime + ".xls\"");
+			//FileOutputStream fout = new FileOutputStream("E:/报装单"+printlntime+".xls");
+			wb.write(response.getOutputStream());
+			response.getOutputStream().close();
+	
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+	}
+
+	public void exportOrders(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("user");
+		SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMddHH");
+        Date date1 = new Date();
+		String printlntime = df2.format(date1); 
+		
+		
 		String type = request.getParameter("type");
-    	String statues = request.getParameter("statues");
-    	String num = request.getParameter("num");
-    	String page = request.getParameter("page");
-    	String sort = request.getParameter("sort");
-    	String search = request.getParameter("searched");
-    	String sear = "";
-    	if(!StringUtill.isNull(search)){ 
-    		sear = HttpRequestUtill.getSearch(request);
-    	} 
-    	 
-    	List<Order> list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
+   	    String statues = request.getParameter("statues");
+      	String num = request.getParameter("num");
+   	    String page = request.getParameter("page");
+	   	String sort = request.getParameter("sort");
+	   	String search = request.getParameter("searched");
+	   	String sear = "";
+	   	if(!StringUtill.isNull(search)){ 
+	   		sear = HttpRequestUtill.getSearch(request);
+	   	} 
+   	 
+	   	List<Order> list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
 		       
 		
 		
@@ -223,11 +351,11 @@ public class PrintServlet extends HttpServlet {
 
 				// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
 
-                  int count = 0 ;
+                 int count = 0 ;
 				for (int i = 0; i < list.size(); i++){
 					
 					Order order = list.get(i);
-                    
+                   
 					List<OrderProduct> listop = order.getOrderproduct();
 					
 					for(int m=0;m<listop.size();m++){
@@ -307,12 +435,9 @@ public class PrintServlet extends HttpServlet {
 				{
 					e.printStackTrace();
 				}
+	}
 	
-    }
-	/**
-	 * 处理微信服务器发来的消息
-	 */
-	 
+	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 将请求、响应的编码均设置为UTF-8（防止中文乱码）

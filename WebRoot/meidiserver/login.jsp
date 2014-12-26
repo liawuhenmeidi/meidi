@@ -118,7 +118,7 @@ function clear(){
 
      </form>
     </div>
-    <div class="cr">CopyRight  <a href="" target="_blank">智历软件科技有限公司</a> </div>
+    <div class="cr">CopyRight  天津市智历宝软件科技有限公司 </div>
 </div>
 </body>
 </html>
