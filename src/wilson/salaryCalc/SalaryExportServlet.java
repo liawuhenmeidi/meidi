@@ -27,6 +27,8 @@ import wilson.upload.UploadSalaryModel;
 import jxl.Workbook;
 import jxl.format.Colour;
 import jxl.write.Label;
+import jxl.write.NumberFormat;
+import jxl.write.NumberFormats;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -74,7 +76,8 @@ public class SalaryExportServlet extends HttpServlet {
         WritableSheet sheet  =  book.createSheet( " 第一页 " ,  0 );
         //  在Label对象的构造子中指名单元格位置是第一列第一行(0,0)
         //  以及单元格内容为test 
-        
+        NumberFormat nf = new NumberFormat("#.##");
+        WritableCellFormat numberFormat = new WritableCellFormat(nf);
         
         //设置颜色
         Colour red = Colour.RED;
@@ -104,6 +107,9 @@ public class SalaryExportServlet extends HttpServlet {
         sheet.addCell(label8);
         sheet.addCell(label9);
         
+        jxl.write.Number num1;
+        jxl.write.Number num2;
+        jxl.write.Number num3;
         
         for(int i = 0 ; i < lists.size() ; i ++ ){
         	label0 = new Label(0,i+1,lists.get(i).getUploadOrder().getName());
@@ -113,9 +119,17 @@ public class SalaryExportServlet extends HttpServlet {
         	label4 = new Label(4,i+1,lists.get(i).getUploadOrder().getSaleTime());
         	label5 = new Label(5,i+1,lists.get(i).getSalaryModel().getCatergory());
         	label6 = new Label(6,i+1,lists.get(i).getUploadOrder().getType());
-        	label7 = new Label(7,i+1,String.valueOf(lists.get(i).getUploadOrder().getNum()));
-        	label8 = new Label(8,i+1,String.valueOf(lists.get(i).getUploadOrder().getSalePrice()));
-        	label9 = new Label(9,i+1,String.valueOf(lists.get(i).getPrintSalary()));
+        	num1 = new jxl.write.Number(7, i+1,lists.get(i).getUploadOrder().getNum()); 
+        	num2 = new jxl.write.Number(8, i+1,lists.get(i).getUploadOrder().getSalePrice()); 
+        	if(lists.get(i).isFinished()){
+        		num3 = new jxl.write.Number(9, i+1,lists.get(i).getSalary()); 
+        		sheet.addCell(num3);
+        	}else{
+        		label9 = new Label(9,i+1,lists.get(i).getPrintSalary());
+        		sheet.addCell(label9);
+        	}
+        	
+        	
   	
         	sheet.addCell(label0);
             sheet.addCell(label1);
@@ -124,9 +138,9 @@ public class SalaryExportServlet extends HttpServlet {
             sheet.addCell(label4);	
             sheet.addCell(label5);	
             sheet.addCell(label6);	
-            sheet.addCell(label7);	
-            sheet.addCell(label8);	
-            sheet.addCell(label9);
+            sheet.addCell(num1);	
+            sheet.addCell(num2);	
+            
             
 //            if((i+1) < lists.size() && !lists.get(i+1).getUploadOrder().getShop().equals(lists.get(i).getUploadOrder().getShop())){
 //            	tempSumBlank ++ ;

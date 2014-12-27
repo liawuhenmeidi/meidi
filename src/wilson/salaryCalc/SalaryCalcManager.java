@@ -207,17 +207,17 @@ public class SalaryCalcManager {
 									t.setUploadOrderSalePrice(t.getUploadOrder().getSalePrice() + sameGroupTotal.getUploadOrder().getSalePrice());
 									t.setSalary(t.getSalary() + sameGroupTotal.getSalary());
 									t.setUploadOrderNum(t.getUploadOrder().getNum() + sameGroupTotal.getUploadOrder().getNum());
-									catergoryTotal.put(t.getSalaryModel().getCatergory(), t);
+									catergoryTotal.put(sameGroupTotal.getSalaryModel().getCatergory(), t);
 								}else{
 									SalaryResult t = new SalaryResult();
 									t.setStatus(SalaryResult.STATUS_TOTAL);
-									t.setUploadSalaryModelCatergory(sameGroupTotal.getSalaryModel().getCatergory());
+									
 									t.setUploadOrderPosNo("");
-									t.setUploadOrderShop("品类总计");
+									t.setUploadOrderShop(sameGroupTotal.getSalaryModel().getCatergory() + "-品类总计");
 									t.setUploadOrderSalePrice(sameGroupTotal.getUploadOrder().getSalePrice());
 									t.setSalary( sameGroupTotal.getSalary());
 									t.setUploadOrderNum(sameGroupTotal.getUploadOrder().getNum());
-									catergoryTotal.put(t.getSalaryModel().getCatergory(), t);
+									catergoryTotal.put(sameGroupTotal.getSalaryModel().getCatergory(), t);
 								}						
 								//类别总计结束
 								
@@ -267,17 +267,17 @@ public class SalaryCalcManager {
 							t.setUploadOrderSalePrice(t.getUploadOrder().getSalePrice() + othersTotal.getUploadOrder().getSalePrice());
 							t.setSalary(t.getSalary() + othersTotal.getSalary());
 							t.setUploadOrderNum(t.getUploadOrder().getNum() + othersTotal.getUploadOrder().getNum());
-							catergoryTotal.put(t.getSalaryModel().getCatergory(), t);
+							catergoryTotal.put("其他", t);
 						}else{
 							SalaryResult t = new SalaryResult();
 							t.setStatus(SalaryResult.STATUS_TOTAL);
-							t.setUploadSalaryModelCatergory("其他");
+							
 							t.setUploadOrderPosNo("");
-							t.setUploadOrderShop("品类总计");
+							t.setUploadOrderShop("其他-品类总计");
 							t.setUploadOrderSalePrice(othersTotal.getUploadOrder().getSalePrice());
 							t.setSalary( othersTotal.getSalary());
 							t.setUploadOrderNum(othersTotal.getUploadOrder().getNum());
-							catergoryTotal.put(t.getSalaryModel().getCatergory(), t);
+							catergoryTotal.put("其他", t);
 						}						
 						//类别总计结束
 						
@@ -310,17 +310,17 @@ public class SalaryCalcManager {
 							t.setUploadOrderSalePrice(t.getUploadOrder().getSalePrice() + othersTotal.getUploadOrder().getSalePrice());
 							//t.setSalary(t.getSalary() + othersTotal.getSalary());
 							t.setUploadOrderNum(t.getUploadOrder().getNum() + othersTotal.getUploadOrder().getNum());
-							catergoryTotal.put(t.getSalaryModel().getCatergory(), t);
+							catergoryTotal.put("其他", t);
 						}else{
 							SalaryResult t = new SalaryResult();
 							t.setStatus(SalaryResult.STATUS_TOTAL);
-							t.setUploadSalaryModelCatergory("其他");
+
 							t.setUploadOrderPosNo("");
-							t.setUploadOrderShop("品类总计");
+							t.setUploadOrderShop("其他-品类总计");
 							t.setUploadOrderSalePrice(othersTotal.getUploadOrder().getSalePrice());
 							//t.setSalary( othersTotal.getSalary());
 							t.setUploadOrderNum(othersTotal.getUploadOrder().getNum());
-							catergoryTotal.put(t.getSalaryModel().getCatergory(), t);
+							catergoryTotal.put("其他", t);
 						}						
 						//类别总计结束
 						
