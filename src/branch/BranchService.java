@@ -56,6 +56,7 @@ public class BranchService {
 		   map = BranchManager.getIdMap(); 
 		   list = BranchManager.getLocate();
 		   nameMap = BranchManager.getNameMap();
+		   listStr = BranchManager.getLocateAllIsable( ); 
 	   }
 	   flag = false ;
    }

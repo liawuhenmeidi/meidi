@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,orderproduct.*,saledealsend.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*,orderproduct.*,saledealsend.*,uploadtotalgroup.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;" pageEncoding="utf-8"%>
 <%
 
 request.setCharacterEncoding("utf-8");
@@ -656,8 +656,25 @@ if("deleOrder".equals(method)){
 	response.sendRedirect("../jieguo.jsp?type=updated"); 
 	//
 
-}else if("".equals(method)){
+}else if("savesalecategorytotal".equals(method)){
+	String isuid = request.getParameter("isuid"); 
+	String[] category = request.getParameterValues("salecate");
+	String message = "{";
+	for(int i=0;i<category.length;i++){
+		 String id = category[i];
+		 String price = request.getParameter("c"+id); 
+		 message += "\""+id+"\":\""+price+"\",";
+	}
+    
+	message = message.substring(0, message.length()-1)+"}";
 	
+	UploadTotalGroup up = new UploadTotalGroup();
+	
+	up.setCategoryname(message);
+	UploadTotalGroupManager.save(up);
+	System.out.println(message);
+	response.sendRedirect("../jieguo.jsp?type=updated"); 
+	//
 } 
 
 %>

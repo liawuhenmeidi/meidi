@@ -263,7 +263,6 @@ function delShop(){
 }
 
 
-
 function reloadData(){
 	//从branch拿到对应的catergoryMaping
 	getCatergoryMaping(name,shop);

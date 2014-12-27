@@ -88,7 +88,7 @@ public class StringUtill {
     	JSONObject jsObj = JSONObject.fromObject(map);  
    	 return jsObj.toString();
    }
-    
+    // 获取字母不包含汉子
     public static String getStringNocn(String str){
     	 String regEx = "[\\u4e00-\\u9fa5]"; 
 

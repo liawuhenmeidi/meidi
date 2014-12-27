@@ -128,6 +128,10 @@ public class PrintServlet extends HttpServlet {
 		
 		 int count = 0 ;
 		  int idcount = 0 ;
+		  double AllTotalcount = 0 ;
+		   int AllCount = 0 ;
+		   double AllTatalbreakcount = 0 ;
+		   
 		 //Map<String, HashMap<String, UploadTotal>> 
 		   Set<Map.Entry<String, HashMap<String, UploadTotal>>> setmap = map.entrySet();
 		   Iterator<Map.Entry<String, HashMap<String, UploadTotal>>> itmap = setmap.iterator();
@@ -147,7 +151,9 @@ public class PrintServlet extends HttpServlet {
 				   Totalcount += up.getTotalcount();
 				   Count += up.getCount();
 				   Tatalbreakcount += up.getTatalbreakcount();
-				  
+				   AllTotalcount += up.getTotalcount();
+				   AllCount += up.getCount();
+				   AllTatalbreakcount += up.getTatalbreakcount();
 				    row = sheet.createRow((int) count + 1);
 				    count++;
 					int y = 0 ;   
@@ -173,7 +179,17 @@ public class PrintServlet extends HttpServlet {
 				row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(Tatalbreakcount)); 
 
 		   }
-
+         
+		   row = sheet.createRow((int) count + 1);
+		   count++;
+			int y = 0 ;   
+			// 第四步，创建单元格，并设置值
+			row.createCell((short) y++).setCellValue("");
+			row.createCell((short) y++).setCellValue("总价");
+			row.createCell((short) y++).setCellValue("");
+			row.createCell((short) y++).setCellValue(AllCount);
+			row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(AllTotalcount)); 
+			row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(AllTatalbreakcount)); 
 		//System.out.println(count);
 		// 第六步，将文件存到指定位置
 		try    

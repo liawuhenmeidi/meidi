@@ -1,27 +1,19 @@
 <%@page import="java.net.URLEncoder"%>
 
-<%@ page language="java" import="java.util.*,wilson.upload.*,net.sf.json.JSONObject,uploadtotalgroup.*,utill.*,wilson.matchOrder.*,uploadtotal.*,user.*,wilson.salaryCalc.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,wilson.upload.*,utill.*,wilson.matchOrder.*,uploadtotal.*,user.*,wilson.salaryCalc.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
-	 
+	
 	List<String> orderNames = UploadManager.getUnTotalUploadOrdersNames();
 	Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
-	String message = "";
-	UploadTotalGroup upt = UploadTotalGroupManager.getUploadTotalGroup();
-	if(upt != null){
-	   message = upt.getCategoryname();
-	}
-	
-	
 	String type = request.getParameter("type");
 	String id = request.getParameter("said");
-	
+
 	boolean check = false ;
 	boolean total = false ;
-	Map<String,Map<String,List<UploadTotal>>> mapt = null ;
-	//Map<String, HashMap<String, UploadTotal>> map = null;
+	Map<String, HashMap<String, UploadTotal>> map = null;
 	HashMap<String, UploadTotal> maptypeinit = null;
 	List<UploadOrder> list = null ;  
 	if("check".equals(type)){
@@ -29,9 +21,9 @@
 		 check = true ;
 	}else if("total".equals(type)){
 		total = true ;
-		mapt = UploadManager.getTotalOrdersGroup(id);
+		map = UploadManager.getTotalOrders(id);
 	}else if("typetotal".equals(type)){
-		total = true ;   
+		total = true ;  
 		maptypeinit = UploadManager.getTotalOrders(id,"type");
 	}
 	
@@ -150,67 +142,68 @@ if(total){ %>
 
  <% 
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
    int idcount = 0 ;
    double AllTotalcount = 0 ;
    int AllCount = 0 ;
    double AllTatalbreakcount = 0 ;
-   if(null != mapt){ 
+   if(null != map){
    //Map<String, HashMap<String, UploadTotal>> 
-   Set<Map.Entry<String,Map<String,List<UploadTotal>>>> setmap = mapt.entrySet();
-   Iterator<Map.Entry<String,Map<String,List<UploadTotal>>>> itmap = setmap.iterator();
+   Set<Map.Entry<String, HashMap<String, UploadTotal>>> setmap = map.entrySet();
+   Iterator<Map.Entry<String, HashMap<String, UploadTotal>>> itmap = setmap.iterator();
    while(itmap.hasNext()){
-	   Map.Entry<String,Map<String,List<UploadTotal>>> enmap = itmap.next();
-	   Map<String,List<UploadTotal>> maptype = enmap.getValue();
-	   Set<Map.Entry<String,List<UploadTotal>>> setmaptype =  maptype.entrySet();
-	   Iterator<Map.Entry<String,List<UploadTotal>>> itmaptype = setmaptype.iterator();
+	   Map.Entry<String, HashMap<String, UploadTotal>> enmap = itmap.next();
+	   HashMap<String, UploadTotal> maptype = enmap.getValue();
+	   Set<Map.Entry<String, UploadTotal>> setmaptype =  maptype.entrySet();
+	   Iterator<Map.Entry<String, UploadTotal>> itmaptype = setmaptype.iterator();
 	   double Totalcount = 0 ;
 	   int Count = 0 ;
 	   double Tatalbreakcount = 0 ;
 	   String branchname = "";
 	   while(itmaptype.hasNext()){
-		   Map.Entry<String,List<UploadTotal>> enmaptype = itmaptype.next();
-		   String key = enmaptype.getKey();
-		   if(!StringUtill.isNull(message)){
-				JSONObject jsObj = JSONObject.fromObject(message);
-				Iterator<String> it = jsObj.keys();
-				while(it.hasNext()){ 
-					String t = it.next();
-					if(key.equals(t)){ 
-						key = jsObj.getString(key);
-					}
+		   Map.Entry<String, UploadTotal> enmaptype = itmaptype.next();
+		   UploadTotal up = enmaptype.getValue();
+		   branchname = up.getBranchname();
+		   Totalcount += up.getTotalcount();
+		   Count += up.getCount();
+		   Tatalbreakcount += up.getTatalbreakcount();
+		   AllTotalcount += up.getTotalcount();
+		   AllCount += up.getCount();
+		   AllTatalbreakcount += up.getTatalbreakcount();
+		   idcount ++;
+		   
+		   String tpe = "";
+			if(null != mapus){
+				UploadSalaryModel ups = mapus.get(StringUtill.getStringNocn(up.getType()));
+				if(null != ups){
+					tpe = ups.getCatergory(); 
 				}
 			}
 		   
 		   
-		   List<UploadTotal> listup = enmaptype.getValue();
-		   double initTotalcount = 0 ;
-		   int initCount = 0 ;
-		   double initTatalbreakcount = 0 ;
-		   if(null != listup){
-			   for(int i=0;i<listup.size();i++){
-				   UploadTotal up = listup.get(i);
-				   branchname = up.getBranchname();
-				   Totalcount += up.getTotalcount();
-				   Count += up.getCount();
-				   Tatalbreakcount += up.getTatalbreakcount();
-				   AllTotalcount += up.getTotalcount();
-				   AllCount += up.getCount();
-				   AllTatalbreakcount += up.getTatalbreakcount();
-				   initTotalcount += up.getTotalcount();
-				   initCount += up.getCount();
-				   initTatalbreakcount += up.getTatalbreakcount();
-				   idcount ++;
-				   
-				   String tpe = "";
-					if(null != mapus){
-						UploadSalaryModel ups = mapus.get(StringUtill.getStringNocn(up.getType()));
-						if(null != ups){
-							tpe = ups.getCatergory(); 
-						}
-					}
+		   
+		   
 		  %>  
 		  
-		   <tr class="asc"  ondblclick="unconfire('<%=up.getId()%>')" onclick="updateClass(this)"> 
+		  <tr class="asc"  ondblclick="unconfire('<%=up.getId()%>')" onclick="updateClass(this)"> 
 					<td align="center"><%=idcount %></td>
 					<td align="center"><%=up.getBranchname() %></td>
 					<td align="center"><%=tpe%></td>
@@ -218,25 +211,10 @@ if(total){ %>
 					<td align="center"><%=up.getCount() %></td>
 					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()) %></td> 
 					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()) %></td> 
-	       </tr>
+	</tr>
 		   
 		 <%  
-			   } 
-			   
-		   }
-      %>
-      
-        <tr class="asc"  style="color:orange"  onclick="updateClass(this)"> 
-					<td align="center"></td>
-					<td align="center"><%=branchname %></td>
-					<td align="center"><%=key%></td>
-					<td align="center"></td>
-					<td align="center"><%=initCount %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(initTotalcount) %></td> 
-					<td align="center"><%=DoubleUtill.getdoubleTwo(initTatalbreakcount) %></td> 
-	     </tr>
-      
-      <%
+		   
 	   }
 	   
 	   %>
@@ -244,7 +222,6 @@ if(total){ %>
 					<td align="center"></td>
 					<td align="center"><%=branchname %></td>
 					<td align="center">总计</td>
-					<td align="center"></td>
 					<td align="center"><%=Count %></td>
 					<td align="center"><%=DoubleUtill.getdoubleTwo(Totalcount) %></td> 
 					<td align="center"><%=DoubleUtill.getdoubleTwo(Tatalbreakcount) %></td> 
@@ -296,13 +273,10 @@ if(total){ %>
 
    }
 	%>
-	
-	
 	 <tr class="asc" style="color:red"  onclick="updateClass(this)"> 
 					<td align="center"></td>
 					<td align="center">总计</td>
 					<td align="center">总计</td>
-					
 					<td align="center"><%=AllCount %></td>
 					<td align="center"><%=DoubleUtill.getdoubleTwo(AllTotalcount) %></td> 
 					<td align="center"><%=DoubleUtill.getdoubleTwo(AllTatalbreakcount) %></td> 
