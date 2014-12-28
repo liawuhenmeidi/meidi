@@ -93,7 +93,7 @@ public class PrintServlet extends HttpServlet {
         Date date1 = new Date();
 		String printlntime = df2.format(date1); 
 		
-		Map<String, HashMap<String, UploadTotal>> map = UploadManager.getTotalOrders(id);
+		Map<String, HashMap<String, UploadTotal>> map = UploadManager.getTotalOrdersShop(id);
 		
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();

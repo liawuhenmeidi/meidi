@@ -128,6 +128,13 @@ function reloadopned(src){
              
             </div>
           </li>
+           <li >
+            <h4 >销售统计</h4>
+            <div class="list-item none">
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadSaleCount.jsp')">销售统计</a></p>
+            </div>
+          </li> 
+          
           <%
           }
          if(UserManager.checkPermissions(user, Group.ManagerUser)){
