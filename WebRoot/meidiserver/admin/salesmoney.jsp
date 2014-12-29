@@ -288,20 +288,18 @@ function inittotal(){
 function merge(){
   var s='';
   var i= 0 ;
-  
-  if(i<2){
-	  alert("不符合合并条件");
-	  return ;
-  }
-  
+
   $('input[name="categorynameLeft"]:checked').each(function(){
 	  var value = $(this).val();
 	  //splits.splice($.inArray(value,splits),1);
       s+=value+'_';  
       i++;
   }); 
-  
-  
+   
+  if(i<2){
+	  alert("不符合合并条件");
+	  return ;
+  }
   s = s.substring(0,s.length-1);
   merges.push(s); 
   init();

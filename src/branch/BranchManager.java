@@ -1,5 +1,7 @@
 package branch;
 
+import group.GroupService;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,6 +56,7 @@ public class BranchManager {
 	 
 	 public static String save(){
 		 String sql = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,pid,ptype) VALUES (null,?,?,?,?,?,?,?)";
+		 GroupService.flag = true ;
 		 return sql ;
 	 }
 	 
@@ -126,8 +129,8 @@ public class BranchManager {
 		public static List<String> getLocateAll( ) {
 			List<String> users = new ArrayList<String>();
 			Connection conn = DB.getConn();   
-			String sql = "select * from mdbranch " ;
-			Statement stmt = DB.getStatement(conn); 
+			String sql = "select * from mdbranch where disable = 0 " ;
+			Statement stmt = DB.getStatement(conn);  
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {    
 				while (rs.next()) {  

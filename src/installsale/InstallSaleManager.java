@@ -22,12 +22,12 @@ public class InstallSaleManager {
 
 	 public static boolean  save(InstallSale  in){
 		 List<String> sqls = new ArrayList<String>();
-		String sql = "insert into installSale(id,uid,uname,phone,locate,andate,message,type) values ("+in.getId()+","+in.getUid()+","+in.getUname()+","+in.getPhone()+","+in.getLocate()+","+in.getAndate()+",'"+in.getMessage()+"',"+in.getType()+")";
+		String sql = "insert into installsale(id,uid,uname,phone,locate,andate,message,type) values ("+in.getId()+","+in.getUid()+","+in.getUname()+","+in.getPhone()+","+in.getLocate()+","+in.getAndate()+",'"+in.getMessage()+"',"+in.getType()+")";
 		//logger.info(sql);
 		List<InstallSaleMessage> list = in.getList();
 		for(int i=0;i<list.size();i++){
 			InstallSaleMessage ins = list.get(i); 
-			String sql1 = " insert into installsaleMessage (id,installsaleID,categoryID,productID,dealsend) values (null,"+ins.getInstallsaleID()+",'"+ins.getCategoryID()+"',"+ins.getProductID()+","+ins.getDealsend()+")";
+			String sql1 = " insert into installsalemessage (id,installsaleID,categoryID,productID,dealsend) values (null,"+ins.getInstallsaleID()+",'"+ins.getCategoryID()+"',"+ins.getProductID()+","+ins.getDealsend()+")";
 		    sqls.add(sql1);
 		}  
 		sqls.add(sql);  
@@ -40,12 +40,12 @@ public class InstallSaleManager {
 			//String sql = "update installSale(id,uid,uname,phone,locate,andate,message) values ("+in.getId()+","+in.getUid()+","+in.getUname()+","+in.getPhone()+","+in.getLocate()+","+in.getAndate()+",'"+in.getMessage()+"')";
 			String sql = "update installSale set uid = "+in.getUid()+" ,uname ="+in.getUname()+" ,phone ="+in.getPhone()+",locate ="+in.getLocate()+" ,andate ="+in.getAndate()+" ,message = '"+in.getMessage()+"' where id = " +in.getId()  ;
 			//logger.info(sql); 
-			String sqld = " delete from installsaleMessage where installsaleID = " + in.getId(); 
+			String sqld = " delete from installsalemessage where installsaleID = " + in.getId(); 
 			sqls.add(sqld);  
 			List<InstallSaleMessage> list = in.getList();
 			for(int i=0;i<list.size();i++){
 				InstallSaleMessage ins = list.get(i); 
-				String sql1 = " insert into installsaleMessage (id,installsaleID,categoryID,productID,dealsend) values (null,"+ins.getInstallsaleID()+",'"+ins.getCategoryID()+"',"+ins.getProductID()+","+ins.getDealsend()+")";
+				String sql1 = " insert into installsalemessage (id,installsaleID,categoryID,productID,dealsend) values (null,"+ins.getInstallsaleID()+",'"+ins.getCategoryID()+"',"+ins.getProductID()+","+ins.getDealsend()+")";
 			    sqls.add(sql1);
 			} 
 			
@@ -59,7 +59,7 @@ public class InstallSaleManager {
 		    Connection conn = DB.getConn();
 			Statement stmt = DB.getStatement(conn);
 		
-			String  sql = "select max(id) as id from installSale" ;
+			String  sql = "select max(id) as id from installsale" ;
 			ResultSet rs = DB.getResultSet(stmt, sql); 
 			try { 
 				while (rs.next()) {
@@ -78,7 +78,7 @@ public class InstallSaleManager {
 	 public static Map<String,InstallSale> getmap(int chargetype){ 
 		    HashMap<String,InstallSale> map = new HashMap<String,InstallSale>(); 
 			Connection conn = DB.getConn();     
-			String sql = "select * from installSale where type = "+chargetype;   
+			String sql = "select * from installsale where type = "+chargetype;   
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {   
@@ -100,7 +100,7 @@ public class InstallSaleManager {
 	 public static InstallSale getInstallSale(String id){
 		    InstallSale in = null; 
 			Connection conn = DB.getConn();    
-			String sql = "select * from installSale where id = "+id;  
+			String sql = "select * from installsale where id = "+id;  
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {   

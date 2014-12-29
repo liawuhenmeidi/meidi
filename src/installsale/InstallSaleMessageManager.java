@@ -22,7 +22,7 @@ public class InstallSaleMessageManager {
 		    HashMap<String,List<InstallSaleMessage>> map = new HashMap<String,List<InstallSaleMessage>>(); 
 		    List<InstallSaleMessage> list = null;
 			Connection conn = DB.getConn();    
-			String sql = "select * from installsaleMessage" ;  
+			String sql = "select * from installsalemessage" ;  
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {   
@@ -105,7 +105,7 @@ public class InstallSaleMessageManager {
 				 
 		 }
 		 return price ;
-	 } 
+	 }  
 	 private static InstallSaleMessage getInstallSaleFromRs(ResultSet rs){
 		 InstallSaleMessage in = new InstallSaleMessage();
 			try {   
