@@ -16,6 +16,11 @@
 		}
 	}
 
+	//selectModelsNameList中是否有参数?
+	boolean hasSelectModelName = false;
+	if(selectModelsNameList.size() > 0){
+		hasSelectModelName = true;
+	}
 	
 	//左侧参数接受
 	String paraOrderName = request.getParameter("orders");
@@ -327,9 +332,9 @@ function beforSubmit(){
 				<button type="button" onclick="addModel()">添加</button>
 				<input type="submit" value="<%=showRight?"隐藏":"显示" %>" id="showrightbutton" onclick="$('#selectGroup').val($('#groupname').val());$('#recalc').val('<%=showResult %>');if($('#showright').val()=='false'){$('#showright').val('true');$('showrightbutton').val('隐藏');}else{$('#showright').val('false');$('showrightbutton').val('显示');}"/> 
 				<!-- <input type="submit" value="显示" onclick="$('#showright').val('true')"/>-->
-				<!--  
+				<%if(hasSelectModelName){ %>  
 				<a href="#" onClick="javascript:window.open('salarymodelDetail.jsp?id=-1', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"><input type="button" value="新增一行"/></a>
-				-->
+				<%} %>
 				</td>
 				</form>
 			</tr>

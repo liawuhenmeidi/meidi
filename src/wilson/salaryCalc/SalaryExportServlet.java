@@ -56,19 +56,28 @@ public class SalaryExportServlet extends HttpServlet {
         
 		
 		String name = (String)request.getSession().getAttribute("exportSalaryName");
-				
-		if(!StringUtill.isNull(name)){
-			if(!name.equals("all")){
-				lists = SalaryCalcManager.getSalaryResultByName(name);
-			}else{
-				lists = SalaryCalcManager.getSalaryResultByDate((Date)request.getSession().getAttribute("startDate"), (Date)request.getSession().getAttribute("endDate"));
-			}
+		
+		String exportType = (String)request.getSession().getAttribute("exportType");
+		
+		if(!StringUtill.isNull(exportType)&&exportType.equals("input")){
+			//避免影响下次
+			request.getSession().setAttribute("exportType", "null");
+			lists = (ArrayList<SalaryResult>)request.getSession().getAttribute("exportList");
 		}else{
-			return;
+			if(!StringUtill.isNull(name)){
+				if(!name.equals("all")){
+					lists = SalaryCalcManager.getSalaryResultByName(name);
+				}else{
+					lists = SalaryCalcManager.getSalaryResultByDate((Date)request.getSession().getAttribute("startDate"), (Date)request.getSession().getAttribute("endDate"));
+				}
+			}else{
+				return;
+			}
+	        
+			//排序
+	        lists = SalaryCalcManager.sortSalaryResult(lists);
 		}
-        
-		//排序
-        lists = SalaryCalcManager.sortSalaryResult(lists, lists.get(0).getUploadOrder().getFileName());
+		
         
         //  打开文件 
         WritableWorkbook book  =  Workbook.createWorkbook(response.getOutputStream());

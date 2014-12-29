@@ -88,7 +88,7 @@
 					break;
 				}
 			}
-			showResult =  SalaryCalcManager.sortSalaryResult(showResult, catergoryMapingName);
+			showResult =  SalaryCalcManager.sortSalaryResult(showResult);
 		}
 		//导出用
 		session.setAttribute("exportSalaryName", name);

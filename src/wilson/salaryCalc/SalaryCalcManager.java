@@ -47,6 +47,15 @@ public class SalaryCalcManager {
 		return result;
 	}
 	
+	public static List<SalaryResult> sortSalaryResult(
+			List<SalaryResult> input) {
+		if(input.size() <= 0 ){
+			return input;
+		}
+		String CatergoryMapingName = "";
+		CatergoryMapingName = CatergoryManager.getCatergoryMapingByUploadOrderName(input.get(0).getUploadOrder().getName());
+		return sortSalaryResult(input,CatergoryMapingName);
+	}
 	
 	public static List<SalaryResult> sortSalaryResult(
 			List<SalaryResult> input,String CatergoryMapingName) {

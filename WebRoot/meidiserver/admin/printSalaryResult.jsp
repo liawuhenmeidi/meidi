@@ -16,8 +16,18 @@
 		
 	}
 	if(showResult.size() > 0){
-		showResult = SalaryCalcManager.sortSalaryResult(showResult, showResult.get(0).getUploadOrder().getFileName());
+		showResult = SalaryCalcManager.sortSalaryResult(showResult);
 	}
+	
+	for(int i = 0 ; i < showResult.size() ; i ++){
+		if(showResult.get(i).getStatus() != SalaryResult.STATUS_TOTAL){
+			showResult.remove(i);
+			i --;
+		}
+	}
+	
+	session.setAttribute("exportType", "input");
+	session.setAttribute("exportList", showResult);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -58,6 +68,9 @@ window.onload = function() {
 <%
 if(showResult.size() > 0 ){
 %>
+<!--  导出按钮
+<a href="../SalaryExportServlet"><button name="exportButton" style="background-color:red;font-size:50px;" >导出</button></a>
+ -->
 <hr style="border : 1px dashed blue;" />
 	<table border="1px" align="left" id="basetable" name="basetable">
 		<tr>
@@ -74,23 +87,17 @@ if(showResult.size() > 0 ){
 			<td>提成</td>
 		</tr>
 		<%
-		boolean total = false;
 		boolean filetotal = false;
 		int b = 1;
 		for(int i = 0 ; i <  showResult.size() ; i ++){
-			if(showResult.get(i).getStatus() == SalaryResult.STATUS_TOTAL){
-				total = true;
-			}else{
-				total = false;
-				continue;
-			}
+			
 			if(i == showResult.size() -1 ){
 				filetotal = true;
 			}
 		%>
 		<tr>
 			<td><%= b++ %></td>
-			<td id="<%=showResult.get(i).getId() %>filename"><%=total?"总计":name %></td>
+			<td id="<%=showResult.get(i).getId() %>filename">总计</td>
 			<td id="<%=showResult.get(i).getId() %>shop"><%=showResult.get(i).getUploadOrder().getShop() %></td>
 			<td id="<%=showResult.get(i).getId() %>pos"><%=showResult.get(i).getUploadOrder().getPosNo() %></td>
 			<td id="<%=showResult.get(i).getId() %>saletime"><%=showResult.get(i).getUploadOrder().getSaleTime() %></td>
