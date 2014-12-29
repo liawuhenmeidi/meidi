@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
 import order.Order;
 import order.OrderManager;
 import order.OrderStatues;
@@ -31,12 +32,15 @@ import orderproduct.OrderProductManager;
 import orderproduct.OrderProductService;
 
 import uploadtotal.UploadTotal;
+import uploadtotalgroup.UploadTotalGroup;
+import uploadtotalgroup.UploadTotalGroupManager;
 import user.User;
 import user.UserManager;
 import utill.DoubleUtill;
 import utill.HttpRequestUtill;
 import utill.StringUtill;
 import wilson.upload.UploadManager;
+import wilson.upload.UploadSalaryModel;
 
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -50,6 +54,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 
 import category.Category;
 import category.CategoryManager;
@@ -76,12 +81,9 @@ public class PrintServlet extends HttpServlet {
 		String method = request.getParameter("method");
 		if("exportall".equals(method)){
 			exportOrders( request,response);
-		}else if("totalExport".equals(method)){
+		}else if("total".equals(method) || "totalcategory".equals(method) || "typetotal".equals(method) ){
 			exporttotalExport(request,response);
 		}
-		
-		
-	
     }
 	/**
 	 * 处理微信服务器发来的消息
@@ -90,15 +92,34 @@ public class PrintServlet extends HttpServlet {
 	public void exporttotalExport(HttpServletRequest request, HttpServletResponse response){
 		String id = request.getParameter("said");
 		SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMddHH");
-        Date date1 = new Date();
+        Date date1 = new Date(); 
 		String printlntime = df2.format(date1); 
+        String method = request.getParameter("method");
+		Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
 		
-		Map<String, HashMap<String, UploadTotal>> map = UploadManager.getTotalOrdersShop(id);
+		Map<String,Map<String,List<UploadTotal>>> mapt = null ;
+		Map<String,Map<String,List<UploadTotal>>> mapc = null ;
+		HashMap<String, List<UploadTotal>> maptypeinit = null;
 		
+		if("total".equals(method)){
+			mapt = UploadManager.getTotalOrdersGroup(id);
+		}else if("typetotal".equals(method)){   
+			maptypeinit = UploadManager.getTotalOrdersGroup(id,"type");
+		}else if("totalcategory".equals(method)){ 
+			mapc = UploadManager.getTotalOrdersCategoryGroup(id);
+		}
+		
+		
+		String message = "";
+		 
+		UploadTotalGroup upt = UploadTotalGroupManager.getUploadTotalGroup();
+		if(upt != null){
+		   message = upt.getCategoryname();
+		}
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
-		HSSFSheet sheet = wb.createSheet("报装单");
+		HSSFSheet sheet = wb.createSheet("销售统计表");
 		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
 		HSSFRow row = sheet.createRow((int) 0);
 		// 第四步，创建单元格，并设置值表头 设置表头居中
@@ -107,93 +128,419 @@ public class PrintServlet extends HttpServlet {
 		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
 		int x = 0 ; 
 		HSSFCell cell = row.createCell((short) x++);
-		
 		cell.setCellValue("序号");
 		cell.setCellStyle(style);  
 		cell = row.createCell((short) x++);
 		cell.setCellValue("门店");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) x++);
+		cell.setCellValue("品类");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
 		cell.setCellValue("型号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("单价");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) x++);
 		cell.setCellValue("数量");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) x++);
-		cell.setCellValue("销售总价");
+		cell.setCellValue("销售金额");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("扣点后单价");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) x++);
 		cell.setCellValue("扣点后总价");
 		cell.setCellStyle(style);
 		
-		 int count = 0 ;
-		  int idcount = 0 ;
-		  double AllTotalcount = 0 ;
-		   int AllCount = 0 ;
-		   double AllTatalbreakcount = 0 ;
+		
+		int count = 0 ;
+		int idcount = 0 ;
+		double AllTotalcount = 0 ;
+		int AllCount = 0 ;
+		double AllTatalbreakcount = 0 ;
 		   
-		 //Map<String, HashMap<String, UploadTotal>> 
-		   Set<Map.Entry<String, HashMap<String, UploadTotal>>> setmap = map.entrySet();
-		   Iterator<Map.Entry<String, HashMap<String, UploadTotal>>> itmap = setmap.iterator();
-		   while(itmap.hasNext()){
-			   Map.Entry<String, HashMap<String, UploadTotal>> enmap = itmap.next();
-			   HashMap<String, UploadTotal> maptype = enmap.getValue();
-			   Set<Map.Entry<String, UploadTotal>> setmaptype =  maptype.entrySet();
-			   Iterator<Map.Entry<String, UploadTotal>> itmaptype = setmaptype.iterator();
+		if(null != mapt){  
+		Set<Map.Entry<String,Map<String,List<UploadTotal>>>> setmap = mapt.entrySet();
+		Iterator<Map.Entry<String,Map<String,List<UploadTotal>>>> itmap = setmap.iterator();
+	    while(itmap.hasNext()){
+		   Map.Entry<String,Map<String,List<UploadTotal>>> enmap = itmap.next();
+		   Map<String,List<UploadTotal>> maptype = enmap.getValue();
+		   Set<Map.Entry<String,List<UploadTotal>>> setmaptype =  maptype.entrySet();
+		   Iterator<Map.Entry<String,List<UploadTotal>>> itmaptype = setmaptype.iterator();
+		   double Totalcount = 0 ;
+		   int Count = 0 ;
+		   double Tatalbreakcount = 0 ;
+		   String branchname = "";
+		   while(itmaptype.hasNext()){ 
+			   Map.Entry<String,List<UploadTotal>> enmaptype = itmaptype.next();
+			   String key = enmaptype.getKey();
+			   if(!StringUtill.isNull(message)){
+					JSONObject jsObj = JSONObject.fromObject(message);
+					Iterator<String> it = jsObj.keys();
+					while(it.hasNext()){ 
+						String t = it.next();
+						if(key.equals(t)){ 
+							key = jsObj.getString(key);
+						}
+					}
+				}
+			   List<UploadTotal> listup = enmaptype.getValue();
+			   double initTotalcount = 0 ;
+			   int initCount = 0 ;
+			   double initTatalbreakcount = 0 ;
+			   
+			   if(null != listup){
+				   for(int i=0;i<listup.size();i++){
+					   UploadTotal up = listup.get(i);
+					   branchname = up.getBranchname();
+					   Totalcount += up.getTotalcount();
+					   Count += up.getCount();
+					   Tatalbreakcount += up.getTatalbreakcount();
+					   AllTotalcount += up.getTotalcount();
+					   AllCount += up.getCount();
+					   AllTatalbreakcount += up.getTatalbreakcount();
+					   initTotalcount += up.getTotalcount();
+					   initCount += up.getCount();
+					   initTatalbreakcount += up.getTatalbreakcount();
+					   idcount ++;
+					   
+					   String tpe = "";
+						if(null != mapus){
+							UploadSalaryModel ups = mapus.get(StringUtill.getStringNocn(up.getType()));
+							if(null != ups){
+								tpe = ups.getCatergory(); 
+							}
+						}
+							
+							
+					    row = sheet.createRow((int) count + 1);
+					    count++;
+						int y = 0 ;   
+						idcount ++;
+						// 第四步，创建单元格，并设置值
+						row.createCell((short) y++).setCellValue(idcount );
+						row.createCell((short) y++).setCellValue(up.getBranchname());
+						row.createCell((short) y++).setCellValue(tpe);
+						row.createCell((short) y++).setCellValue(up.getType());
+						row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount())); 
+						row.createCell((short) y++).setCellValue(up.getCount());
+						row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount())); 
+						row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount())); 
+						row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount())); 
+			         }
+				 }
+			  
+			    row = sheet.createRow((int) count + 1);
+			    count++; 
+				int y = 0 ;  
+				
+				HSSFCellStyle cellStyle = wb.createCellStyle();    //创建一个样式
+				cellStyle.setFillForegroundColor(HSSFColor.ORANGE.index);    //设置颜色为红色
+		        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+				// 第四步，创建单元格，并设置值
+				cell = row.createCell((short) y++);
+				cell.setCellValue("");
+				cell.setCellStyle(cellStyle);
+				cell = row.createCell((short) y++);
+				cell.setCellValue(branchname);
+				cell.setCellStyle(cellStyle);
+				cell = row.createCell((short) y++);
+				cell.setCellValue(key);
+				cell.setCellStyle(cellStyle);
+				cell = row.createCell((short) y++);
+				cell.setCellValue("");
+				cell.setCellStyle(cellStyle);
+				cell = row.createCell((short) y++);
+				cell.setCellValue("");
+				cell.setCellStyle(cellStyle);
+				cell = row.createCell((short) y++);
+				cell.setCellValue(initCount);
+				cell.setCellStyle(cellStyle);
+				cell = row.createCell((short) y++);
+				cell.setCellValue(DoubleUtill.getdoubleTwo(initTotalcount));
+				cell.setCellStyle(cellStyle);
+				cell = row.createCell((short) y++);
+				cell.setCellValue("");
+				cell.setCellStyle(cellStyle);
+				cell = row.createCell((short) y++);
+				cell.setCellValue(DoubleUtill.getdoubleTwo(initTatalbreakcount)); 
+				cell.setCellStyle(cellStyle);
+				
+   
+		     } 
+		   row = sheet.createRow((int) count + 1);
+		   count++;
+		   int y = 0 ; 
+		   HSSFCellStyle cellStyle = wb.createCellStyle();    //创建一个样式
+			cellStyle.setFillForegroundColor(HSSFColor.RED.index);    //设置颜色为红色
+	        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+			// 第四步，创建单元格，并设置值
+			cell = row.createCell((short) y++);
+			cell.setCellValue("");
+			cell.setCellStyle(cellStyle);
+			cell = row.createCell((short) y++);
+			cell.setCellValue(branchname);
+			cell.setCellStyle(cellStyle);
+			cell = row.createCell((short) y++);
+			cell.setCellValue("总计");
+			cell.setCellStyle(cellStyle);
+			cell = row.createCell((short) y++);
+			cell.setCellValue("");
+			cell.setCellStyle(cellStyle);
+			cell = row.createCell((short) y++);
+			cell.setCellValue("");
+			cell.setCellStyle(cellStyle);
+			cell = row.createCell((short) y++);
+			cell.setCellValue(Count);
+			cell.setCellStyle(cellStyle);
+			cell = row.createCell((short) y++);
+			cell.setCellValue(DoubleUtill.getdoubleTwo(Totalcount));
+			cell.setCellStyle(cellStyle);
+			cell = row.createCell((short) y++);
+			cell.setCellValue("");
+			cell.setCellStyle(cellStyle);
+			cell = row.createCell((short) y++);
+			cell.setCellValue(DoubleUtill.getdoubleTwo(Tatalbreakcount)); 
+			cell.setCellStyle(cellStyle);
+			  
+		   }
+		}
+		 
+		
+		if(null != mapc){ 
+			   Set<Map.Entry<String,Map<String,List<UploadTotal>>>> setmap = mapc.entrySet();
+			   Iterator<Map.Entry<String,Map<String,List<UploadTotal>>>> itmap = setmap.iterator();
+			   while(itmap.hasNext()){
+				   Map.Entry<String,Map<String,List<UploadTotal>>> enmap = itmap.next();
+				   String key = enmap.getKey();
+				   
+				   if(!StringUtill.isNull(message)){
+						JSONObject jsObj = JSONObject.fromObject(message);
+						Iterator<String> it = jsObj.keys();
+						while(it.hasNext()){ 
+							String t = it.next();
+							if(key.equals(t)){ 
+								key = jsObj.getString(key);
+							}
+						}
+					}
+				   
+				   Map<String,List<UploadTotal>> maptype = enmap.getValue();
+				   Set<Map.Entry<String,List<UploadTotal>>> setmaptype =  maptype.entrySet();
+				   Iterator<Map.Entry<String,List<UploadTotal>>> itmaptype = setmaptype.iterator();
+				   double Totalcount = 0 ;
+				   int Count = 0 ;
+				   double Tatalbreakcount = 0 ;
+				   while(itmaptype.hasNext()){
+					   Map.Entry<String,List<UploadTotal>> enmaptype = itmaptype.next();
+					   List<UploadTotal> listup = enmaptype.getValue();
+					   String branchname = enmaptype.getKey();
+					   double initTotalcount = 0 ;
+					   int initCount = 0 ;
+					   double initTatalbreakcount = 0 ;
+					   if(null != listup){
+						   for(int i=0;i<listup.size();i++){
+							   UploadTotal up = listup.get(i);
+							   Totalcount += up.getTotalcount();
+							   Count += up.getCount();
+							   Tatalbreakcount += up.getTatalbreakcount();
+							   AllTotalcount += up.getTotalcount();
+							   AllCount += up.getCount();
+							   AllTatalbreakcount += up.getTatalbreakcount();
+							   initTotalcount += up.getTotalcount();
+							   initCount += up.getCount();
+							   initTatalbreakcount += up.getTatalbreakcount();
+							   idcount ++;
+							   
+							   String tpe = "";
+								if(null != mapus){
+									UploadSalaryModel ups = mapus.get(StringUtill.getStringNocn(up.getType()));
+									if(null != ups){
+										tpe = ups.getCatergory(); 
+									}
+								}
+				  
+								row = sheet.createRow((int) count + 1);
+							    count++;
+								int y = 0 ;   
+								idcount ++;
+								// 第四步，创建单元格，并设置值
+								row.createCell((short) y++).setCellValue(idcount );
+								row.createCell((short) y++).setCellValue(up.getBranchname());
+								row.createCell((short) y++).setCellValue(tpe);
+								row.createCell((short) y++).setCellValue(up.getType());
+								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount())); 
+								row.createCell((short) y++).setCellValue(up.getCount());
+								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount())); 
+								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount())); 
+								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount())); 
+
+					   } 
+					   
+				   }
+		      
+					   row = sheet.createRow((int) count + 1);
+					    count++;
+						int y = 0 ;   
+						// 第四步，创建单元格，并设置值
+						HSSFCellStyle cellStyle = wb.createCellStyle();    //创建一个样式
+						cellStyle.setFillForegroundColor(HSSFColor.ORANGE.index);    //设置颜色为红色
+				        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+						// 第四步，创建单元格，并设置值
+						cell = row.createCell((short) y++);
+						cell.setCellValue("");
+						cell.setCellStyle(cellStyle);
+						cell = row.createCell((short) y++);
+						cell.setCellValue(branchname);
+						cell.setCellStyle(cellStyle);
+						cell = row.createCell((short) y++);
+						cell.setCellValue(key);
+						cell.setCellStyle(cellStyle);
+						cell = row.createCell((short) y++);
+						cell.setCellValue("");
+						cell.setCellStyle(cellStyle);
+						cell = row.createCell((short) y++);
+						cell.setCellValue("");
+						cell.setCellStyle(cellStyle);
+						cell = row.createCell((short) y++);
+						cell.setCellValue(initCount);
+						cell.setCellStyle(cellStyle);
+						cell = row.createCell((short) y++);
+						cell.setCellValue(DoubleUtill.getdoubleTwo(initTotalcount));
+						cell.setCellStyle(cellStyle);
+						cell = row.createCell((short) y++);
+						cell.setCellValue("");
+						cell.setCellStyle(cellStyle);
+						cell = row.createCell((short) y++);
+						cell.setCellValue(DoubleUtill.getdoubleTwo(initTatalbreakcount)); 
+						cell.setCellStyle(cellStyle);
+						
+			   }
+
+				   row = sheet.createRow((int) count + 1);
+				   count++;
+				   int y = 0 ; 
+				   HSSFCellStyle cellStyle = wb.createCellStyle();    //创建一个样式
+					cellStyle.setFillForegroundColor(HSSFColor.RED.index);    //设置颜色为红色
+			        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+					// 第四步，创建单元格，并设置值
+					cell = row.createCell((short) y++);
+					cell.setCellValue("");
+					cell.setCellStyle(cellStyle);
+					cell = row.createCell((short) y++);
+					cell.setCellValue("");
+					cell.setCellStyle(cellStyle);
+					cell = row.createCell((short) y++);
+					cell.setCellValue("总计");
+					cell.setCellStyle(cellStyle);
+					cell = row.createCell((short) y++);
+					cell.setCellValue("");
+					cell.setCellStyle(cellStyle);
+					cell = row.createCell((short) y++);
+					cell.setCellValue("");
+					cell.setCellStyle(cellStyle);
+					cell = row.createCell((short) y++);
+					cell.setCellValue(Count);
+					cell.setCellStyle(cellStyle);
+					cell = row.createCell((short) y++);
+					cell.setCellValue(DoubleUtill.getdoubleTwo(Totalcount));
+					cell.setCellStyle(cellStyle);
+					cell = row.createCell((short) y++);
+					cell.setCellValue("");
+					cell.setCellStyle(cellStyle);
+					cell = row.createCell((short) y++);
+					cell.setCellValue(DoubleUtill.getdoubleTwo(Tatalbreakcount)); 
+					cell.setCellStyle(cellStyle);
+				  
+		      } 
+		  } 
+		
+		
+		if(null != maptypeinit){
+			   Set<Map.Entry<String, List<UploadTotal>>> setmaptype =  maptypeinit.entrySet();
+			   Iterator<Map.Entry<String, List<UploadTotal>>> itmaptype = setmaptype.iterator();
 			   double Totalcount = 0 ;
 			   int Count = 0 ;
 			   double Tatalbreakcount = 0 ;
 			   String branchname = "";
 			   while(itmaptype.hasNext()){
-				   Map.Entry<String, UploadTotal> enmaptype = itmaptype.next();
-				   UploadTotal up = enmaptype.getValue();
-				   branchname = up.getBranchname();
-				   Totalcount += up.getTotalcount();
-				   Count += up.getCount();
-				   Tatalbreakcount += up.getTatalbreakcount();
-				   AllTotalcount += up.getTotalcount();
-				   AllCount += up.getCount();
-				   AllTatalbreakcount += up.getTatalbreakcount();
-				    row = sheet.createRow((int) count + 1);
-				    count++;
-					int y = 0 ;   
-					idcount ++;
-					// 第四步，创建单元格，并设置值
-					row.createCell((short) y++).setCellValue(idcount );
-					row.createCell((short) y++).setCellValue(up.getBranchname());
-					row.createCell((short) y++).setCellValue(up.getType());
-					row.createCell((short) y++).setCellValue(up.getCount());
-					row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount())); 
-					row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount())); 
-			   }
-			   
-			   row = sheet.createRow((int) count + 1);
-			   count++;
-				int y = 0 ;   
-				// 第四步，创建单元格，并设置值
-				row.createCell((short) y++).setCellValue("");
-				row.createCell((short) y++).setCellValue(branchname);
-				row.createCell((short) y++).setCellValue("");
-				row.createCell((short) y++).setCellValue(Count);
-				row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(Totalcount)); 
-				row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(Tatalbreakcount)); 
-
-		   }
-         
-		   row = sheet.createRow((int) count + 1);
-		   count++;
-			int y = 0 ;   
-			// 第四步，创建单元格，并设置值
-			row.createCell((short) y++).setCellValue("");
-			row.createCell((short) y++).setCellValue("总价");
-			row.createCell((short) y++).setCellValue("");
-			row.createCell((short) y++).setCellValue(AllCount);
-			row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(AllTotalcount)); 
-			row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(AllTatalbreakcount)); 
+				   Map.Entry<String, List<UploadTotal>> enmaptype = itmaptype.next();
+				   String key = enmaptype.getKey();
+				   if(!StringUtill.isNull(message)){
+						JSONObject jsObj = JSONObject.fromObject(message);
+						Iterator<String> it = jsObj.keys();
+						while(it.hasNext()){ 
+							String t = it.next();
+							if(key.equals(t)){ 
+								key = jsObj.getString(key);
+							}
+						}
+					}
+				   
+				   List<UploadTotal> uplist = enmaptype.getValue();
+				   double initTotalcount = 0 ;
+				   int initCount = 0 ;
+				   double initTatalbreakcount = 0 ;
+				   
+				   if(null != uplist){
+					   Iterator<UploadTotal> it = uplist.iterator();
+					   while(it.hasNext()){
+						   UploadTotal up = it.next();
+						   Totalcount += up.getTotalcount();
+						   Count += up.getCount();
+						   Tatalbreakcount += up.getTatalbreakcount();
+						   AllTotalcount += up.getTotalcount();
+						   AllCount += up.getCount();
+						   AllTatalbreakcount += up.getTatalbreakcount();
+						   initTotalcount += up.getTotalcount();
+						   initCount += up.getCount();
+						   initTatalbreakcount += up.getTatalbreakcount();
+						   idcount ++; 
+						   
+						   String tpe = "";
+							if(null != mapus){
+								UploadSalaryModel ups = mapus.get(StringUtill.getStringNocn(up.getType()));
+								if(null != ups){
+									tpe = ups.getCatergory(); 
+								}
+							}
+                            
+							
+							   row = sheet.createRow((int) count + 1);
+							   count++;
+							   int y = 0 ; 
+							   row.createCell((short) y++).setCellValue(idcount);
+								row.createCell((short) y++).setCellValue("");
+								row.createCell((short) y++).setCellValue(tpe);
+								row.createCell((short) y++).setCellValue(up.getType());
+								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
+								row.createCell((short) y++).setCellValue(Count);
+								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(Totalcount));
+								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()));
+								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(Tatalbreakcount)); 
+						   } 
+					   } 
+			   } 
+		} 
+	   row = sheet.createRow((int) count + 1);
+	   count++;
+		int y = 0 ;   
+		// 第四步，创建单元格，并设置值
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue("总计");
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue(AllCount);
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(AllTotalcount)); 
+		row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(AllTatalbreakcount)); 
 		//System.out.println(count);
 		// 第六步，将文件存到指定位置
-		try    
-		{    
+		try{    
 			response.setContentType("APPLICATION/OCTET-STREAM");
 			response.setHeader("Content-Disposition", "attachment; filename=\""+ printlntime + ".xls\"");
 			//FileOutputStream fout = new FileOutputStream("E:/报装单"+printlntime+".xls");
@@ -201,13 +548,10 @@ public class PrintServlet extends HttpServlet {
 			response.getOutputStream().close();
 	
 		}
-		catch (Exception e)
-		{
+		catch (Exception e){
 			e.printStackTrace();
 		}
-		
-		
-		
+
 		
 	}
 
@@ -216,8 +560,6 @@ public class PrintServlet extends HttpServlet {
 		SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMddHH");
         Date date1 = new Date();
 		String printlntime = df2.format(date1); 
-		
-		
 		String type = request.getParameter("type");
    	    String statues = request.getParameter("statues");
       	String num = request.getParameter("num");

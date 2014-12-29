@@ -17,16 +17,16 @@
 	
 	String type = request.getParameter("type");
 	String id = request.getParameter("said");
-	
+	 
 	boolean check = false ;
 	boolean total = false ;
 	Map<String,Map<String,List<UploadTotal>>> mapt = null ;
 	Map<String,Map<String,List<UploadTotal>>> mapc = null ;
-	//Map<String, HashMap<String, UploadTotal>> map = null;
+	//Map<String, HashMap<String, UploadTotal>> map = null; 
 	//HashMap<String, UploadTotal> maptypeinit = null;
 	HashMap<String, List<UploadTotal>> maptypeinit = null;
 	List<UploadOrder> list = null ;   
-	if("check".equals(type)){
+	if("check".equals(type)){ 
 		 list = UploadManager.getTotalUploadOrders(id); 
 		 check = true ;
 	}else if("total".equals(type)){
@@ -56,6 +56,10 @@ function amortization(src){
 	window.open(src, 'abc', 'resizable:yes;dialogWidth:1200px;dialogHeight:1000px;dialogTop:0px;dialogLeft:center;scroll:no');
 } 
 
+function detail(src){
+	window.open(src, 'abc', 'resizable:yes;dialogWidth:1200px;dialogHeight:1000px;dialogTop:0px;dialogLeft:center;scroll:no');
+}
+
 </script>
 </head> 
 
@@ -80,18 +84,18 @@ function amortization(src){
 	} 
 	%>
 </select>
-<input type="submit" value="查看"/>
-
+<input type="submit" value="查看" onclick="$('#post').attr('action','')"/>
+ 
 <% if(check){ %>
 <input type="button" class="button" value="设置标准" onclick="amortization('saleCountGroup.jsp')" ></input>
 <input type="submit" value="品类门店统计" onclick="$('#type').val('totalcategory')"/>
 <input type="submit" value="门店品类统计" onclick="$('#type').val('total')"/>
 <input type="submit" value="型号统计" onclick="$('#type').val('typetotal')"/>
 <%} 
-if(total){ %>
-<input type="hidden" name="method" id="type" value="totalExport"/>
-<input type="submit" value="导出" onclick="$('#type').val('totalExport');$('#post').attr('action','../Print')"/>
-<%} 
+if(total){ %> 
+<input type="hidden" name="method" id="method" value=""/>
+<input type="submit" value="导出" onclick="$('#method').val('<%=type %>');$('#post').attr('action','../Print')"/>
+<%}  
 %>
 
 </form>
@@ -132,7 +136,7 @@ if(total){ %>
 		 bpmoneycount += sain.getSalePrice()*(1-sain.getBackPoint()/100);
 		
 	%>
-	<tr class="asc" ondblclick="unconfire('<%=sain.getId()%>')" onclick="updateClass(this)"> 
+	<tr class="asc"  onclick="updateClass(this)"> 
 					<td align="center"><%=i+1 %></td>
 					<td align="center"><%=sain.getShop() %></td>
 					<td align="center"><%=sain.getSaleTime() %></td>
@@ -150,7 +154,7 @@ if(total){ %>
    }
 	%>
  
- <tr class="asc"  style="color:red"  onclick="updateClass(this)"> 
+ <tr class="asc"  style="background:#ff7575"  onclick="updateClass(this)"> 
 					<td align="center"></td>
 					<td align="center"></td> 
 					<td align="center"></td>
@@ -159,6 +163,7 @@ if(total){ %>
 					<td align="center"></td> 
 					<td align="center"><%=count %></td> 
 					<td align="center"><%=DoubleUtill.getdoubleTwo(moneycount)%></td>
+					<td align="center"></td>
 					<td align="center"></td>
 					<td align="center"><%=DoubleUtill.getdoubleTwo(bpmoneycount)%></td>
 	</tr>
@@ -177,9 +182,9 @@ if(total){ %>
 				<td align="center">型号</td> 
 				<td align="center">单价</td> 
 				<td align="center">数量</td> 
-				<td align="center">销售总价</td>
+				<td align="center">销售金额</td>
 				<td align="center">扣点后单价</td>
-				<td align="center">扣点后总价</td>
+				<td align="center">扣点后金额</td>
 		</tr>
 
  <% 
@@ -216,7 +221,6 @@ if(total){ %>
 					}
 				}
 			   
-		   
 			   List<UploadTotal> listup = enmaptype.getValue();
 			   double initTotalcount = 0 ;
 			   int initCount = 0 ;
@@ -245,7 +249,7 @@ if(total){ %>
 						}
 		  %>  
 		  
-		   <tr class="asc"  ondblclick="unconfire('<%=up.getId()%>')" onclick="updateClass(this)"> 
+		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>')" onclick="updateClass(this)"> 
 					<td align="center"><%=idcount %></td>
 					<td align="center"><%=up.getBranchname() %></td>
 					<td align="center"><%=tpe%></td>
@@ -263,7 +267,7 @@ if(total){ %>
 		   }
       %>
       
-        <tr class="asc"  style="color:orange"  onclick="updateClass(this)"> 
+        <tr class="asc"  style="background:orange"  onclick="updateClass(this)"> 
 					<td align="center"></td>
 					<td align="center"><%=branchname %></td>
 					<td align="center"><%=key%></td>
@@ -279,7 +283,7 @@ if(total){ %>
 	   }
 	   
 	   %>
-	   <tr class="asc" style="color:red" ondblclick="unconfire('<%=branchname%>')" onclick="updateClass(this)"> 
+	   <tr class="asc" style="background:#ff7575" ondblclick="unconfire('<%=branchname%>')" onclick="updateClass(this)"> 
 					<td align="center"></td>
 					<td align="center"><%=branchname %></td>
 					<td align="center">总计</td>
@@ -350,7 +354,7 @@ if(total){ %>
 						}
 		  %>  
 		  
-		   <tr class="asc"  ondblclick="unconfire('<%=up.getId()%>')" onclick="updateClass(this)"> 
+		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>')" onclick="updateClass(this)"> 
 					<td align="center"><%=idcount %></td>
 					<td align="center"><%=up.getBranchname() %></td>
 					<td align="center"><%=tpe%></td>
@@ -368,7 +372,7 @@ if(total){ %>
 		   }
       %>
       
-        <tr class="asc"  style="color:orange"  onclick="updateClass(this)"> 
+        <tr class="asc"  style="background:orange"  onclick="updateClass(this)"> 
 					<td align="center"></td>
 					<td align="center"><%=branchname %></td>
 					<td align="center"><%=key%></td>
@@ -384,7 +388,7 @@ if(total){ %>
 	   }
 	   
 	   %>
-	   <tr class="asc" style="color:red"  onclick="updateClass(this)"> 
+	   <tr class="asc" style="background:#ff7575"  onclick="updateClass(this)"> 
 					<td align="center"></td>
 					<td align="center"></td>
 					<td align="center">总计</td>
@@ -468,7 +472,7 @@ if(total){ %>
 			   } 
 		  // branchname = up.getBranchname();
 		  %>  	  
-		  <tr class="asc" style="color:orange"  onclick="updateClass(this)"> 
+		  <tr class="asc" style="background:#ff7575"  onclick="updateClass(this)"> 
 					<td align="center"></td>
 					<td align="center"></td>
 					<td align="center"><%=key%></td>
@@ -487,7 +491,7 @@ if(total){ %>
 	%>
 	
 	
-	 <tr class="asc" style="color:red"  onclick="updateClass(this)"> 
+	 <tr class="asc" style="background:#ff7575"  onclick="updateClass(this)"> 
 					<td align="center"></td>
 					<td align="center">总计</td>
 					<td align="center">总计</td>
