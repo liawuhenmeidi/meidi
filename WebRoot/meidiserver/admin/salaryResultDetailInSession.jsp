@@ -11,7 +11,7 @@ User user = (User)session.getAttribute("user");
 
 String submit = request.getParameter("submit");
 
-ArrayList<SalaryResult> salaryResult = (ArrayList<SalaryResult>)request.getSession().getAttribute("calcResult");
+ArrayList<SalaryResult> modifiedSalaryResult = (ArrayList<SalaryResult>)request.getSession().getAttribute("modifiedSalaryResult");
 
 SalaryResult sr = new SalaryResult();
 UploadOrder uo = sr.getUploadOrder();
@@ -22,7 +22,7 @@ SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
 
 
 try{
-	String idSTR = request.getParameter("i");
+	String idSTR = request.getParameter("id");
 	String uoidSTR = request.getParameter("uoid");
 	
 	if(StringUtill.isNull(idSTR)){
@@ -79,7 +79,7 @@ try{
 	
 	
 	
-	sr = salaryResult.get(id);
+	sr = UploadManager.getUploadOrderById(id);
 	uo = sr.getUploadOrder();
 	
 	uo.setSaleTime(sdf2.format(sdf1.parse(uo.getSaleTime().replace("-", "").replace("/", "").trim())));
@@ -135,7 +135,7 @@ function checkedd(){
 	$('#<%=sr.getId()%>saletype', window.opener.document).text($('#saletype').val());
 	$('#<%=sr.getId()%>num', window.opener.document).text($('#salenum').val());
 	$('#<%=sr.getId()%>saleprice', window.opener.document).text($('#saleprice').val());
-	$('#<%=sr.getId()%>salary', window.opener.document).html("<a href='#' onClick=\"javascript:window.open('./salaryResultDetail.jsp?id=" + <%=sr.getId()%> + "', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')\"  >" + $('#salary').val() + "</a>");
+	$('#<%=sr.getId()%>salary', window.opener.document).html("<a href='#' onClick=\"javascript:window.open('./salaryResultDetailInSession.jsp?id=" + <%=sr.getId()%> + "', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')\"  >" + $('#salary').val() + "</a>");
 }
 
 </script>
@@ -159,7 +159,7 @@ function checkedd(){
 <div id="wrap" style="text-align:center;">  
 <form  action=""  method ="post"  name="baseForm" id="baseForm" onsubmit="return checkedd()">
 <input type="hidden" name="submit" id="submit" value="true"/>
-<input type="hidden" name="i" value="<%=sr.getId() %>"/>
+<input type="hidden" name="id" value="<%=sr.getId() %>"/>
 <input type="hidden" name="uoid" value="<%=uo.getId() %>"/>
  
 <table  cellspacing="1"  id="table" style="margin:auto; width:80%;"> 

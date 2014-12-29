@@ -997,7 +997,29 @@ public class UploadManager {
 		return result;
 	}
 	
-	
+	public static List<UploadOrder> getOrdersByStatus(int under_status){
+		List<UploadOrder> result = new ArrayList<UploadOrder>();
+		Connection conn = DB.getConn(); 
+		String sql = "select * from uploadorder where name not in (select DISTINCT name from uploadorder where checked >=  " + under_status + " )";
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadOrder uo = new UploadOrder();
+		try {     
+			while (rs.next()) {
+				uo = getUploadOrderFromRS(rs);
+				result.add(uo);
+				uo = new UploadOrder();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
+	}
 	
 	public static List<UploadOrder> getAllUploadOrders(){
 		List<UploadOrder> result = new ArrayList<UploadOrder>();

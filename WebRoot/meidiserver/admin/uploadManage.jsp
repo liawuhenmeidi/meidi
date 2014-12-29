@@ -51,7 +51,7 @@
 	}
 	
 	//销售单,苏宁单
-	List<UploadOrder> allOrders = UploadManager.getAllUploadOrders();
+	List<UploadOrder> allOrders = UploadManager.getOrdersByStatus(UploadOrder.CALCED);
 	List<String> orderNames = UploadManager.getAllUploadOrderNames(allOrders);
 	
 	//提成标准
