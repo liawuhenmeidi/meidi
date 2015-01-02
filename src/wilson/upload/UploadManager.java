@@ -1037,7 +1037,7 @@ public class UploadManager {
 		List <UploadOrder> result = new ArrayList<UploadOrder>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadorder where name = '" + name + "'";
+		String sql = "select * from uploadorder where name = '" + name + "' order by id";
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
