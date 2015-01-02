@@ -11,9 +11,9 @@ String realPath = "http://" + request.getServerName() + ":" + request.getServerP
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="initial-scale=1, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="viewport" content="initial-scale=1, minimum-scale=0.5, maximum-scale=2.0,user-scalable=yes"/>
   <title>欢迎使用微网站办公系统</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
  
 <link rel="stylesheet" href="../css/songhuo.css">
  
