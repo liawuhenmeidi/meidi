@@ -1,5 +1,11 @@
 package wilson.salaryCalc;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +18,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +32,7 @@ import org.apache.poi.util.StringUtil;
 import utill.StringUtill;
 import wilson.catergory.CatergoryManager;
 import wilson.catergory.CatergoryMaping;
+import wilson.download.ExcelGenerator;
 import wilson.upload.SalaryModelUpload;
 import wilson.upload.UploadManager;
 import wilson.upload.UploadOrder;
@@ -34,6 +43,52 @@ import database.DB;
 public class SalaryCalcManager {
 	
 	protected static Log logger = LogFactory.getLog(SalaryCalcManager.class);
+	
+	public static boolean transferFile(String name,HttpServletRequest req) throws IOException{
+		boolean result = false;
+
+		//确认目录存在，不存在的时候创建目录
+		String hiddenFilePath = req.getSession().getServletContext().getRealPath("/") + "data" + File.separator + "hiddenFile"; 
+		File hiddenFileDIR = new File(hiddenFilePath);
+		if(!hiddenFileDIR.exists()){
+			hiddenFileDIR.mkdirs();
+		}
+		
+		//确认index.properties文件存在，不存在时候，创建
+		File indexFile = new File(hiddenFilePath + "/index.properties");
+		if(!indexFile.exists()){
+			indexFile.createNewFile();
+		}
+		//是否有重名问题，有重名问题，返回false
+		InputStream fis = new FileInputStream(indexFile);
+		
+		Properties props = new Properties();
+		props.load(fis);
+		boolean isContain = false;
+		isContain = props.contains(name);
+		
+		if(isContain){
+			return false;
+		}
+		//数据库中文件取出
+		List<SalaryResult> lists = new ArrayList<SalaryResult>();
+		lists = SalaryCalcManager.getSalaryResultByName(name);
+		
+		//生成excel,写文件
+		String randomName = UUID.randomUUID().toString() + ".xls";
+		if(!ExcelGenerator.generateExcel(hiddenFilePath,randomName, lists)){
+			return false;
+		}
+		props.setProperty(randomName,name);
+		
+		//写properties
+		OutputStream out = new FileOutputStream(indexFile);
+		props.store(out, "Update " + "1");
+		//清数据库
+		//result = UploadManager.deleteUploadOrderByName(name);
+		result = true;
+		return result;
+	}
 	
 	public static List<String> getCatergoryFromResult(ArrayList<SalaryResult> input){
 		List<String> result = new ArrayList<String>();

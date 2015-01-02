@@ -24,9 +24,18 @@
 		response.sendRedirect("salaryCalc.jsp");
 	}
 	
+	//隐藏文件
+	String hide = request.getParameter("hide_button");
+	if(!StringUtill.isNull(hide) && hide.equals("true")){
+		String hideName = request.getParameter("name");
+		SalaryCalcManager.transferFile(hideName,request);
+		response.sendRedirect("salaryExport.jsp");
+		return;
+	}
 	
 	
-	String startDateSTR = request.getParameter("startDate");
+	
+		String startDateSTR = request.getParameter("startDate");
 	String endDateSTR = request.getParameter("endDate");
 	
 	 
@@ -98,6 +107,7 @@
 	String backgroundColor ="#B9D3EE";
 	//下面用到的字体色(负数提成或者未提成时候用到)
 	String fontColor = "#EE3B3B";
+	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -131,6 +141,8 @@ var saleprice_fileTotal = 0.0;
 
 var salenum_sum=0;
 var salenum_fileTotal=0;
+
+var catergoryTotalDetail = {};
 
 function reloadTable(){
 	var cols = $('#basetable tr')[0].cells.length;
@@ -172,6 +184,55 @@ function reloadTable(){
 				 saleprice_sum += item2.attr('value')*1.0*item3.attr('value');
 			 }
 		 }
+		 
+		 //品类
+		 var id4 = this.cells[cols-6].id;
+		 var item4 = $('#' + id4);
+		 	//非总计
+		 if(id4 != '0catergory'){
+			 var new_category = {};
+			 
+			 if(catergoryTotalDetail[item4.text()] == undefined){
+				 //如果是新的catergory
+				 new_category["catergory"] = item4.text();
+
+				 if(checkNumber(item2.attr('value'))){
+					 new_category["price"] = item2.attr('value')*1.0*item3.attr('value');
+				 }
+				 if(checkNumber(item3.attr('value'))){
+					 new_category["num"] = item3.attr('value')*1.0;
+				 }
+				 if(checkNumber(item.attr('value'))){
+					 new_category["salary"] = item.attr('value')*1.0;
+				 }
+				 
+				 catergoryTotalDetail[item4.text()] = new_category;
+				 
+			 }else{
+				 new_category = catergoryTotalDetail[item4.text()];
+				 
+				 if(checkNumber(item2.attr('value'))){
+					 new_category["price"] += item2.attr('value')*1.0*item3.attr('value');
+				 }
+				 if(checkNumber(item3.attr('value'))){
+					 new_category["num"] += item3.attr('value')*1.0;
+				 }
+				 if(checkNumber(item.attr('value'))){
+					 new_category["salary"] += item.attr('value')*1.0;
+				 }
+				 catergoryTotalDetail[item4.text()] = new_category;
+				 
+			 }
+			 
+		 }else if($('#' + this.cells[cols-9].id).text().indexOf('-品类总计')>=0){
+			 var tmp_catergory = catergoryTotalDetail[item4.text()];
+			 
+			 item.text(tmp_catergory["salary"]);
+			 item2.text(tmp_catergory["price"]);
+			 item3.text(tmp_catergory["num"]);
+		 }
+		 
+		 
      });
 	 
 	 
@@ -258,7 +319,9 @@ if(byTime){
 	} 
 	%>
 </select>
-<input type="submit" value="查看"/>
+<input id="hide_button" name="hide_button" type="hidden" value="false"/> 
+<button type="submit">查看</button>
+<button type="submit" onclick="$('#hide_button').val('true')">隐藏</button>
 </form>
 <hr style="border : 1px dashed blue;" />
 <%
