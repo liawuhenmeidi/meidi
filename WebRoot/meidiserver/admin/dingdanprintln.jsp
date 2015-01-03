@@ -178,8 +178,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 <br/>  
 
  <%@ include file="searchOrderAll.jsp"%>
- 
- 
+  
 <div id="wrap">
 <table  cellspacing="1" id="table" >
 		<tr id="th">  

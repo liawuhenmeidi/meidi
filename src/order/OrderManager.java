@@ -570,12 +570,12 @@ public static void updateSendstat(int statues,int sid, int oid) {
 	     
 	     sqls.addAll(sqlp);
 	     sqls.addAll(sqlg);
-	     
+	      
 	   
 	    String sql = "insert into  mdorder ( id ,andate , saledate ,pos, username, locates" +
 				", locateDetail, saleID , printSatues ,oderStatus,sailId,checked,phone1,phone2,remark,"+
 	    		"deliveryStatues,orderbranch,sendId,statues1,statues2,statues3,dealSendid,submittime,printlnid,dayremark,dayID,phoneRemark,sailIdremark,checkedremark,posRemark,imagerUrl) values "+  
-				"( "+maxid+", '"+order.getOdate()+"', '"+order.getSaleTime()+"', '"+order.getPos()+"', '"+order.getUsername()+"', '" 
+				"( "+maxid+", "+order.getOdate()+", '"+order.getSaleTime()+"', '"+order.getPos()+"', '"+order.getUsername()+"', '" 
 	    		+order.getLocate()+"', '"+order.getLocateDetail()+"',"+order.getSaleID()+", "+order.getPrintSatues()    
 	    		+", "+order.getOderStatus()+", '"+order.getSailId()+"', '"+order.getCheck()+"', '"+order.getPhone1()+"','"+order.getPhone2()+"','"+order.getRemark()+"',"+order.getDeliveryStatues()+",'"+order.getBranch()+"',0,0,0,0,"+order.getDealsendId()+",'"+order.getSubmitTime()+"','"+order.getPrintlnid()+"',"+daymark+","+dayID+","+order.getPhoneRemark()+","+order.getSailidrecked()+","+order.getReckedremark()+","+order.getPosremark()+","+order.getImagerUrl()+")";   
 	   
@@ -621,7 +621,10 @@ public static void updateSendstat(int statues,int sid, int oid) {
 		   }else if(Group.dealSend == type){ 
 			  if(Order.orderDispatching == statues){    
 				 // sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5)  and  ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search+"  order by  "+sort+"  limit " + ((page-1)*num)+","+ page*num ;  
-				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13) or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4,10) ))  "+search+"  order by  "+sort+str ;  
+				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and andate is not null  and deliveryStatues not in (3,4,5,11,12,13) or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4,10) ))  "+search+"  order by  "+sort+str ;  
+			  }if(Order.repareorderDispatching == statues){    
+				 // sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5)  and  ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search+"  order by  "+sort+"  limit " + ((page-1)*num)+","+ page*num ;  
+				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and andate is null  and deliveryStatues not in (3,4,5,11,12,13) or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4,10) ))  "+search+"  order by  "+sort+str ;  
 			  }else if(Order.neworder == statues){
 				  sql = "select * from  mdorder  where  dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13)  and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))   "+search+"  order by "+sort+" ";   
 			  }else if(Order.motify == statues){
@@ -722,8 +725,12 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   String sqlstr = " 1 = 1 and mdorder.saleID in (select id from mduser where mduser.usertype in (select groupid from mdrelategroup where pgroupid = "+user.getUsertype()+"))";
 				   String sqlop = "select orderid from mdorderupdateprint where  groupid in ( select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"') and statues = 0  and mdtype in (0 ,1,2,4,10) ";
 				   String sqlopp = "select orderid from mdorderupdateprint where  groupid in ( select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"')";
+				  
+				   
 				   if(Order.orderDispatching == statues){     
-					   sql = "select * from mdorder where   ( "+sqlstr+"  and  dealSendid = 0   and sendId = 0  and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in ("+sqlop+"))  "+search+" order by  "+sort+str;  
+					   sql = "select * from mdorder where   ( "+sqlstr+"  and  dealSendid = 0   and sendId = 0   and andate is not null  and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in ("+sqlop+"))  "+search+" order by  "+sort+str;  
+				   }else if(Order.repareorderDispatching == statues){     
+					   sql = "select * from mdorder where   ( "+sqlstr+"  and  dealSendid = 0   and sendId = 0    and andate is null  and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in ("+sqlop+"))  "+search+" order by  "+sort+str;  
 				   }else if(Order.neworder == statues){    
 					   sql = "select * from mdorder where   "+sqlstr+"  and  dealSendid = 0   and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)   and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))  "+search+" order by  "+sort+str ;
 				   }else if(Order.motify == statues){   
@@ -825,8 +832,11 @@ logger.info(sql);
   	       
   	if(f){ 
 		  if(Group.dealSend == type){  
+			  
 			  if(Order.orderDispatching == statues){
-				  sql = "select count(*) from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13)  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))   or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search  ;  
+				  sql = "select count(*) from  mdorder  where  (dealSendid = 0   and andate is not null  and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13)  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))   or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search  ;  
+			  }else if(Order.repareorderDispatching == statues){
+				  sql = "select count(*) from  mdorder  where  (dealSendid = 0   and andate is null  and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13)  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))   or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search  ;  
 			  }else if(Order.neworder == statues){
 				  sql = "select count(*) from  mdorder  where  dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13)  and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))  "+search;    
 			  }else if(Order.motify == statues){
@@ -894,9 +904,11 @@ logger.info(sql);
 				   
 				   String sqlop = "select orderid from mdorderupdateprint where  groupid in ( select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"') and statues = 0  and mdtype in (0 ,1,2,4,10) ";
 				   String sqlopp = "select orderid from mdorderupdateprint where  groupid in ( select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"')";
-				   
+				     
 				   if(Order.orderDispatching == statues){     
-					   sql = "select count(*) from mdorder where   (  "+sqlstr+"   and  dealSendid = 0   and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)  and sendId = 0   and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))   or id in ("+sqlop+" ))  "+search;  
+					   sql = "select count(*) from mdorder where   (  "+sqlstr+"   and andate is not null  and  dealSendid = 0   and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)  and sendId = 0   and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))   or id in ("+sqlop+" ))  "+search;  
+				   }else if(Order.repareorderDispatching == statues){     
+					   sql = "select count(*) from mdorder where   (  "+sqlstr+"   and andate is null  and  dealSendid = 0   and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)  and sendId = 0   and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))   or id in ("+sqlop+" ))  "+search;  
 				   }else if(Order.neworder == statues){     
 					   sql = "select count(*) from mdorder where    mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+") )  and  dealSendid = 0   and printSatues = 0  and  deliveryStatues not in (3,4,5,11,12,13)  and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))  "+search  ;  
 				   }else if(Order.motify == statues){     

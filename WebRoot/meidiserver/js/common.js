@@ -60,9 +60,6 @@ window.onload =function () {
     obj_th=document.getElementById("th");
 };
 
-
-
-
 function changecss(){
 	 $(".fixedHead ").css({ 
 		 "position":"fixed"
@@ -98,13 +95,15 @@ function changecss(){
 
 
 function initOrder(type,statues,num,page,sort,sear){
+	
 	 $("#page").val(page);
 	 $("#table .asc").remove();  
 	 $("#table .asc_enable").remove();
 	 var str = "";
 	 if("8" == type){
 		 str = "../";
-	 }
+	 } 
+	 $("#dateadd").css("display","block"); 
 	 $.ajax({  
 	        type: "post", 
 	         url: str+"OrderServiceServlet",    
@@ -118,12 +117,12 @@ function initOrder(type,statues,num,page,sort,sear){
                
 	        	 $("#table").append(html);
 	        	 $("#count").html(count);
-	        	
+	        	 $("#dateadd").css("display","none"); 
 	           },   
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	        	 
 	            } 
-	           });
-
+	           }); 
 }
  
 function seletall(all){

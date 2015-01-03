@@ -2,12 +2,9 @@ package servlet;
 
 import gift.Gift;
 import group.Group;
-import group.GroupManager;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList; 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +26,6 @@ import order.OrderManager;
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
-import orderproduct.OrderProductManager;
 import orderproduct.OrderProductService;
 import product.Product;
 import product.ProductService;
@@ -40,8 +36,6 @@ import utill.StringUtill;
 import utill.TimeUtill;
 import utill.TokenGen;
 
-
- 
 /**
  * 核心请求处理类
  * 
@@ -163,9 +157,7 @@ public class OrderServlet extends HttpServlet {
 				String saledate = request.getParameter("saledate");
 				String andate = request.getParameter("andate"); //安装日期
 				 
-				if(StringUtill.isNull(andate)){
-					andate = TimeUtill.gettime(); 
-				}
+				
 				String POS = request.getParameter("POS");
 				if(StringUtill.isNull(POS)){
 					POS = "空";
@@ -316,10 +308,12 @@ public class OrderServlet extends HttpServlet {
 				String remark = request.getParameter("remark");
 				 
 				order.setId(Integer.valueOf(id));
-				order.setSaleTime(saledate);
-		        order.setOdate(andate);
+				order.setSaleTime(saledate);  
+				if(!StringUtill.isNull(andate)){
+					 order.setOdate("'"+andate+"'");
+				} 
+		       
 		        order.setPos(POS);
-	logger.info(user.getId());
 		        order.setSaleID(user.getId()); 
 		        order.setBranch(Integer.valueOf(user.getBranch())); 
 		        order.setSailId(sailId);

@@ -225,10 +225,10 @@ public class PrintServlet extends HttpServlet {
 						row.createCell((short) y++).setCellValue(up.getBranchname());
 						row.createCell((short) y++).setCellValue(tpe);
 						row.createCell((short) y++).setCellValue(up.getType());
-						row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount())); 
+						row.createCell((short) y++).setCellValue(0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount())); 
 						row.createCell((short) y++).setCellValue(up.getCount());
 						row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount())); 
-						row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount())); 
+						row.createCell((short) y++).setCellValue(0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount())); 
 						row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount())); 
 			         }
 				 }
@@ -372,10 +372,10 @@ public class PrintServlet extends HttpServlet {
 								row.createCell((short) y++).setCellValue(up.getBranchname());
 								row.createCell((short) y++).setCellValue(tpe);
 								row.createCell((short) y++).setCellValue(up.getType());
-								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount())); 
+								row.createCell((short) y++).setCellValue(0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount())); 
 								row.createCell((short) y++).setCellValue(up.getCount());
 								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount())); 
-								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount())); 
+								row.createCell((short) y++).setCellValue(0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount())); 
 								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount())); 
 
 					   } 
@@ -516,10 +516,10 @@ public class PrintServlet extends HttpServlet {
 								row.createCell((short) y++).setCellValue("");
 								row.createCell((short) y++).setCellValue(tpe);
 								row.createCell((short) y++).setCellValue(up.getType());
-								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
+								row.createCell((short) y++).setCellValue(0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
 								row.createCell((short) y++).setCellValue(Count);
 								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(Totalcount));
-								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()));
+								row.createCell((short) y++).setCellValue(0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()));
 								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(Tatalbreakcount)); 
 						   } 
 					   } 

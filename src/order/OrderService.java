@@ -3672,6 +3672,85 @@ public class OrderService {
 		 
 	}
 
-   
+   public static String getHtmlrepareDispatching(User user ,List<Order> list){ 
+	    HashMap<Integer,User> usermap = UserService.getMapId();
+	     
+	    List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend);
+	    
+		StringBuffer html = new StringBuffer(); 
+		
+
+		if(null != list){
+
+		    for(int i = 0;i<list.size();i++){
+		    	Order o = list.get(i);
+		    	String tdcol = " bgcolor=\"red\"" ;
+		    	
+				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
+				  
+				if(UserManager.checkPermissions(user, Group.updateOrderDealsend, "w")){
+					html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
+				}else {
+					html.append("<td align=\"center\">"+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</td>");
+				} 
+				
+				
+				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
+				
+				html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
+				
+				html.append("<td align=\"center\" "+(o.getPosremark()==1?tdcol:"") +">"+o.getPos() +"</td>");
+				
+				html.append("<td align=\"center\" "+(o.getSailidrecked()==1?tdcol:"") +">"+o.getSailId() +"</td>");
+				 
+				html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
+				if(o.getPhoneRemark()!=1){ 
+					tdcol = ""; 
+				}
+				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				
+				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSendprice(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSize(0,"</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getGifcount("</p>")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getGifStatues("</p>")+"</td>");
+				
+				html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
+				
+				html.append("<td align=\"center\">"+o.getOdate() +"</td>");
+				
+				//html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
+				
+				html.append("<td align=\"center\">"+o.getLocate()+"</td>");
+				
+				html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
+				
+				html.append("<td align=\"center\">"+OrderManager.getOrderStatues(o) +"</td>");
+				
+				html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
+				
+				html.append("<td align=\"center\"> "+o.getRemark() +"</td>");
+				
+				 
+				 html.append("<td align=\"center\"> "+
+				              "<a href=\"javascript:void(0);\"  onclick=\"searchlocate('"+o.getId() +"')\">[查看位置]</a> "+
+				               "</td>"); 
+				   				      		
+		    }
+		}
+		return html.toString();
+		 
+	}
 	
 }
