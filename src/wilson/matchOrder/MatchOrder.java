@@ -57,54 +57,59 @@ public class MatchOrder {
 
 		
 		try{
-	
-			//取两个源数据中,店名相似度最高的位置i。如14,23
-			String position = "";
-			
-			//临时使用的匹配用列表容器
-			List<Order> tempDBOrderList = new ArrayList<Order>();
-			List<UploadOrder> tempUploadOrderList = new ArrayList<UploadOrder>();
-					
-			while(dbOrders.size()> 0 ){
-				//循环前，清空变量
-				position = "";
-				tempDBOrderList = new ArrayList<Order>();
-				tempUploadOrderList = new ArrayList<UploadOrder>();
-				
-				
+			if(matchPara.charAt(MATCHPARA_SHOP) == '1'){
 				//取两个源数据中,店名相似度最高的位置i。如14,23
-				position = getSimilarPosFromList(dbOrders,uploadOrders);
+				String position = "";
 				
-				
-				//出问题了!!
-				if(position.equals("")){
-					break;
+				//临时使用的匹配用列表容器
+				List<Order> tempDBOrderList = new ArrayList<Order>();
+				List<UploadOrder> tempUploadOrderList = new ArrayList<UploadOrder>();
+						
+				while(dbOrders.size()> 0 ){
+					//循环前，清空变量
+					position = "";
+					tempDBOrderList = new ArrayList<Order>();
+					tempUploadOrderList = new ArrayList<UploadOrder>();
+					
+					
+					//取两个源数据中,店名相似度最高的位置i。如14,23
+					position = getSimilarPosFromList(dbOrders,uploadOrders);
+					
+					
+					//出问题了!!
+					if(position.equals("")){
+						break;
+					}
+					
+					
+					//根据位置取出对应要匹配的列表
+					
+					tempDBOrderList = getSameShopNameSubListFromdbOrders(dbOrders,position.split(",")[0]);   
+					tempUploadOrderList = getSameShopNameSubListFromUploadOrders(uploadOrders,position.split(",")[1]);
+					
+					//赋值本轮需要进行匹配的双方列表
+					unMatchedUploadOrders = tempUploadOrderList;
+					unMatchedDBOrders = tempDBOrderList;
+					//取相同pos的列表
+					//如果开启则右侧也会处理相同POS单号的情况
+					//samePosUploadOrders = getSamePosUploadOrdersList(unMatchedUploadOrders);
+					samePosDBOrders = getSamePosDBOrdersList(unMatchedDBOrders);
+					matchOrder(unMatchedUploadOrders,unMatchedDBOrders,matchPara);
 				}
 				
-				
-				//根据位置取出对应要匹配的列表
-				
-				tempDBOrderList = getSameShopNameSubListFromdbOrders(dbOrders,position.split(",")[0]);   
-				tempUploadOrderList = getSameShopNameSubListFromUploadOrders(uploadOrders,position.split(",")[1]);
-				
-				//赋值本轮需要进行匹配的双方列表
-				unMatchedUploadOrders = tempUploadOrderList;
-				unMatchedDBOrders = tempDBOrderList;
-				//取相同pos的列表
-				//如果开启则右侧也会处理相同POS单号的情况
-				//samePosUploadOrders = getSamePosUploadOrdersList(unMatchedUploadOrders);
-				samePosDBOrders = getSamePosDBOrdersList(unMatchedDBOrders);
-				matchOrder(unMatchedUploadOrders,unMatchedDBOrders,matchPara);
-			}
+				while(uploadOrders.size() > 0 ){
+					Order o = new Order();
+					o.setId(-1);
+					AfterMatchOrder tempAmo = new AfterMatchOrder(uploadOrders.get(0),o);
+					matchedOrders.add(tempAmo);
+					uploadOrders.remove(0);
+				}
+				flag = true;
 			
-			while(uploadOrders.size() > 0 ){
-				Order o = new Order();
-				o.setId(-1);
-				AfterMatchOrder tempAmo = new AfterMatchOrder(uploadOrders.get(0),o);
-				matchedOrders.add(tempAmo);
-				uploadOrders.remove(0);
+			}else{
+				matchOrder(uploadOrders,dbOrders,matchPara);
+				flag = true;
 			}
-			flag = true;
 		}catch(Exception e){
 			e.printStackTrace();
 		}
