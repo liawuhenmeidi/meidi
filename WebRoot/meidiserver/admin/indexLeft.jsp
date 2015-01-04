@@ -57,7 +57,8 @@ function reloadopned(src){
             <%
            if(UserManager.checkPermissions(user, Group.dealSend)){
             %> 
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdan.jsp')">文员派工页</a></p> 
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdan.jsp')">文员派工页</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanrepare.jsp')">预约派工页</a></p> 
            <%}
             if(UserManager.checkPermissions(user, Group.sale,"r")){
                 %> 

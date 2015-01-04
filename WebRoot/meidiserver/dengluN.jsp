@@ -115,41 +115,33 @@ function regist(){
 <!--  头 单种类  -->
 <div class="s_main_tit">用户登陆<span class="qiangdan"><a href="javascript:void(0)" onclick="regist()" >注册</a></span></div>
  
- 
-<!--  订单详情  -->
-<div class="s_main_box">
   
   <form action="dengluN.jsp" method="post">
 	<input type="hidden" name="action" value="login"/>
-	<table width="100%" class="s_main_table">
-   
-  <tr>
-   <td width="10%"></td>
-    <td width="30%">职工姓名</td>
-    <td width="50%"><input type="text" size="10" value="<%=username==null?"":username %>" name="username"/></td>
-    <td width="10%"></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>密码</td>
-    <td><input type="password" size="10" value="<%=password==null?"":password %>" name="password"/></td>
-  </tr>
-  </table>
-  
-  <table> 
- <tr> 
-   <td width="20%"></td>
-   <td width="60%"><input type="submit" style="font-size:20px;width:200px"   value="登陆"/></td>
-   <td width="20%"></td>
+	<table width="100%">
+
+  <tr> 
+    <td align="center"><input type="text" placeholder="职工姓名" style="font-size:20px;width:80%"  value="<%=username==null?"":username %>" name="username"/></td>
   </tr> 
+  <tr>
+  <td></td>
+  </tr>
+  <tr>  
+    <td align="center"><input type="password" placeholder="密码"  style="font-size:20px;width:80%" value="<%=password==null?"":password %>" name="password"/></td>
+  </tr>
+  <tr>
+  <td></td>
+  </tr>
+ <tr>  
+   <td align="center"><input type="submit" style="font-size:20px;background-color:orange;width:80%"   value="登陆"/></td>
+  </tr>  
  
 </table>
-
+ 
     </form>
 	 <br/>
 
 <br/>
-	 </div>
 	 </div>
 </body>
 </html>

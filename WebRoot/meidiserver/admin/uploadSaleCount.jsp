@@ -49,17 +49,35 @@
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>  
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
-
+<style media=print type="text/css">   
+.noprint{visibility:hidden}   
+</style>
 <script type="text/javascript">
 
 function amortization(src){
-	window.open(src, 'abc', 'resizable:yes;dialogWidth:1200px;dialogHeight:1000px;dialogTop:0px;dialogLeft:center;scroll:no');
+	window.open(src, 'abc', 'resizable:yes;dialogWidth:1200px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 } 
 
 function detail(src){
-	window.open(src, 'abc', 'resizable:yes;dialogWidth:1200px;dialogHeight:1000px;dialogTop:0px;dialogLeft:center;scroll:no');
+	window.open(src, 'abc', 'resizable:yes;dialogWidth:1200px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
 
+function println(){
+	$("#wrapsearch").css("display","block");
+	// window.print();
+} 
+
+function changeprintln(){
+	 
+    $('input[name="oderStatus"]').not("input:checked").each(function(){
+    	//alert($(".noprinln"+$(this).val()));
+    	// $(".noprinln"+$(this).val()).attr("class","noprint");
+    	$(".noprinln"+$(this).val()).css("display","none");
+        
+    }); 
+	$("#wrapsearch").css("display","none");
+	 window.print();
+}
 </script>
 </head> 
 
@@ -84,7 +102,7 @@ function detail(src){
 	} 
 	%>
 </select>
-<input type="submit" value="查看" onclick="$('#post').attr('action','')"/>
+<input type="submit" value="查看" class="noprint" onclick="$('#post').attr('action','')"/>
  
 <% if(check){ %>
 <input type="button" class="button" value="设置标准" onclick="amortization('saleCountGroup.jsp')" ></input>
@@ -94,11 +112,50 @@ function detail(src){
 <%} 
 if(total){ %> 
 <input type="hidden" name="method" id="method" value=""/>
-<input type="submit" value="导出" onclick="$('#method').val('<%=type %>');$('#post').attr('action','../Print')"/>
+<input type="submit" class="noprint"  value="导出" onclick="$('#method').val('<%=type %>');$('#post').attr('action','../Print')"/>
+<input type="button" class="noprint"  value="打印" onclick="println()" ></input>
 <%}  
 %>
 
 </form>
+ 
+ <div id="wrapsearch" style="position:fixed;text-align:center; top:50%;background-color:white; left:30%; margin:-20% 0 0 -20%; height:50%; width:50%; z-index:999;display:none"> 
+<div >
+<table  cellspacing="1" style="margin:auto;background-color:black; width:80%;height:80%;">  
+		   
+		<tr class="bsc">
+			<td align="center">
+			请选择需要打印的信息
+			</td>
+ 
+		</tr> 
+ 
+		<tr class="bsc">
+		<td align="center" id="salecategorynamecd">
+		    <input type="checkbox"  name="oderStatus"  value="1"  />序号&nbsp;&nbsp;<br/>
+		    <input type="checkbox"  name="oderStatus"  value="2"  />门店&nbsp;&nbsp;<br/>
+		    <input type="checkbox"  name="oderStatus"  value="3" />品类&nbsp;&nbsp;<br/>
+		    <input type="checkbox"  name="oderStatus"  value="4" />型号&nbsp;&nbsp;<br/>
+		    <input type="checkbox"  name="oderStatus"  value="5"  />单价&nbsp;&nbsp;<br/>
+		    <input type="checkbox"  name="oderStatus"  value="6"  />数量&nbsp;&nbsp;<br/>
+		    <input type="checkbox"  name="oderStatus"  value="7"  />销售金额&nbsp;&nbsp;<br/>
+		    <input type="checkbox"  name="oderStatus"  value="8"  />扣点后单价&nbsp;&nbsp;<br/>
+		    <input type="checkbox"  name="oderStatus"  value="9"  />扣点后金额&nbsp;&nbsp;<br/>
+		</td>	
+		
+		</tr> 
+		
+		
+		
+		
+		<tr class="bsc">
+			<td class="center" ><input type="button" onclick="changeprintln()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="确定" /></td>
+		</tr>
+	
+</table> 
+</div>
+</div>
+ 
  
 <% if(check){ %>
 <table border="1px" align="left" width="100%">
@@ -176,15 +233,15 @@ if(total){ %>
 <% if(total){ %>
 <table border="1px" align="left" width="100%">
        <tr>
-		        <td align="center">序号</td>
-				<td align="center">门店</td>
-				<td align="center">品类</td> 
-				<td align="center">型号</td> 
-				<td align="center">单价</td> 
-				<td align="center">数量</td> 
-				<td align="center">销售金额</td>
-				<td align="center">扣点后单价</td>
-				<td align="center">扣点后金额</td>
+		        <td align="center" class="noprinln1">序号</td>
+				<td align="center" class="noprinln2">门店</td>
+				<td align="center" class="noprinln3">品类</td> 
+				<td align="center" class="noprinln4">型号</td> 
+				<td align="center" class="noprinln5">单价</td> 
+				<td align="center" class="noprinln6">数量</td> 
+				<td align="center" class="noprinln7">销售金额</td>
+				<td align="center" class="noprinln8">扣点后单价</td>
+				<td align="center" class="noprinln9">扣点后金额</td>
 		</tr>
 
  <% 
@@ -250,15 +307,15 @@ if(total){ %>
 		  %>  
 		  
 		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>')" onclick="updateClass(this)"> 
-					<td align="center"><%=idcount %></td>
-					<td align="center"><%=up.getBranchname() %></td>
-					<td align="center"><%=tpe%></td>
-					<td align="center"><%=up.getType()%></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td>
-					<td align="center"><%=up.getCount() %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()) %></td>  
-					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()) %></td> 
-					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()) %></td> 
+					<td align="center" class="noprinln1"><%=idcount %></td>
+					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
+					<td align="center" class="noprinln3"><%=tpe%></td>
+					<td align="center" class="noprinln4"><%=up.getType()%></td>
+					<td align="center" class="noprinln5"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td>
+					<td align="center" class="noprinln6"><%=up.getCount() %></td>
+					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()) %></td>  
+					<td align="center" class="noprinln8"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()) %></td> 
+					<td align="center" class="noprinln9" ><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()) %></td> 
 	       </tr>
 		   
 		 <%  
@@ -268,15 +325,15 @@ if(total){ %>
       %>
       
         <tr class="asc"  style="background:orange"  onclick="updateClass(this)"> 
-					<td align="center"></td>
-					<td align="center"><%=branchname %></td>
-					<td align="center"><%=key%></td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"><%=initCount %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(initTotalcount) %></td> 
-					<td align="center"></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(initTatalbreakcount) %></td> 
+					<td align="center" class="noprinln1"></td>
+					<td align="center" class="noprinln2"><%=branchname %></td>
+					<td align="center" class="noprinln3"><%=key%></td>
+					<td align="center" class="noprinln4"></td>
+					<td align="center" class="noprinln5"></td>
+					<td align="center" class="noprinln6"><%=initCount %></td>
+					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(initTotalcount) %></td> 
+					<td align="center" class="noprinln8"></td>
+					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(initTatalbreakcount) %></td> 
 	     </tr>
       
       <%
@@ -284,15 +341,15 @@ if(total){ %>
 	   
 	   %>
 	   <tr class="asc" style="background:#ff7575" ondblclick="unconfire('<%=branchname%>')" onclick="updateClass(this)"> 
-					<td align="center"></td>
-					<td align="center"><%=branchname %></td>
-					<td align="center">总计</td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"><%=Count %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(Totalcount) %></td> 
-					<td align="center"></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(Tatalbreakcount) %></td> 
+					<td align="center" class="noprinln1"></td>
+					<td align="center" class="noprinln2"><%=branchname %></td>
+					<td align="center" class="noprinln3">总计</td>
+					<td align="center" class="noprinln4"></td>
+					<td align="center" class="noprinln5"></td>
+					<td align="center" class="noprinln6"><%=Count %></td>
+					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(Totalcount) %></td> 
+					<td align="center" class="noprinln8"></td>
+					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(Tatalbreakcount) %></td> 
 	    </tr>
 	   
 	   
@@ -355,15 +412,15 @@ if(total){ %>
 		  %>  
 		  
 		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>')" onclick="updateClass(this)"> 
-					<td align="center"><%=idcount %></td>
-					<td align="center"><%=up.getBranchname() %></td>
-					<td align="center"><%=tpe%></td>
-					<td align="center"><%=up.getType()%></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td>
-					<td align="center"><%=up.getCount() %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()) %></td>  
-					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()) %></td> 
-					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()) %></td> 
+					<td align="center" class="noprinln1"><%=idcount %></td>
+					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
+					<td align="center" class="noprinln3"><%=tpe%></td>
+					<td align="center" class="noprinln4"><%=up.getType()%></td>
+					<td align="center" class="noprinln5"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td>
+					<td align="center" class="noprinln6"><%=up.getCount() %></td>
+					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()) %></td>  
+					<td align="center" class="noprinln8"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()) %></td> 
+					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()) %></td> 
 	       </tr>
 		   
 		 <%  
@@ -373,15 +430,15 @@ if(total){ %>
       %>
       
         <tr class="asc"  style="background:orange"  onclick="updateClass(this)"> 
-					<td align="center"></td>
-					<td align="center"><%=branchname %></td>
-					<td align="center"><%=key%></td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"><%=initCount %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(initTotalcount) %></td> 
-					<td align="center"></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(initTatalbreakcount) %></td> 
+					<td align="center" class="noprinln1"></td>
+					<td align="center" class="noprinln2"><%=branchname %></td>
+					<td align="center" class="noprinln3"><%=key%></td>
+					<td align="center" class="noprinln4"></td>
+					<td align="center" class="noprinln5"></td>
+					<td align="center" class="noprinln6"><%=initCount %></td>
+					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(initTotalcount) %></td> 
+					<td align="center" class="noprinln8"></td>
+					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(initTatalbreakcount) %></td> 
 	     </tr>
       
       <%
@@ -389,15 +446,15 @@ if(total){ %>
 	   
 	   %>
 	   <tr class="asc" style="background:#ff7575"  onclick="updateClass(this)"> 
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center">总计</td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"><%=Count %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(Totalcount) %></td> 
-					<td align="center"></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(Tatalbreakcount) %></td> 
+					<td align="center" class="noprinln1"></td>
+					<td align="center" class="noprinln2"></td>
+					<td align="center" class="noprinln3">总计</td>
+					<td align="center" class="noprinln4"></td>
+					<td align="center" class="noprinln5"></td>
+					<td align="center" class="noprinln6"><%=Count %></td>
+					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(Totalcount) %></td> 
+					<td align="center" class="noprinln8"></td>
+					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(Tatalbreakcount) %></td> 
 	    </tr>
 	   
 	   
@@ -455,16 +512,16 @@ if(total){ %>
 					}
 				   
 				  %> 
-				  <tr class="asc"  ondblclick="unconfire('<%=up.getId()%>')" onclick="updateClass(this)"> 
-					<td align="center"><%=idcount %></td>
-					<td align="center"></td>
-					<td align="center"><%=tpe%></td>
-					<td align="center"><%=up.getType()%></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td> 
-					<td align="center"><%=up.getCount() %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()) %></td> 
-					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()) %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()) %></td> 
+				  <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?type=<%=up.getType() %>&said=<%=id %>')" onclick="updateClass(this)"> 
+					<td align="center" class="noprinln1"><%=idcount %></td>
+					<td align="center" class="noprinln2"></td>
+					<td align="center" class="noprinln3"><%=tpe%></td>
+					<td align="center" class="noprinln4"><%=up.getType()%></td>
+					<td align="center" class="noprinln5"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td> 
+					<td align="center" class="noprinln6"><%=up.getCount() %></td>
+					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()) %></td> 
+					<td align="center" class="noprinln8"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()) %></td>
+					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()) %></td> 
 	           </tr>   
 				  
 				  <%
@@ -473,15 +530,15 @@ if(total){ %>
 		  // branchname = up.getBranchname();
 		  %>  	  
 		  <tr class="asc" style="background:#ff7575"  onclick="updateClass(this)"> 
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"><%=key%></td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"><%=initCount %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(initTotalcount) %></td> 
-					<td align="center"></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(initTatalbreakcount) %></td> 
+					<td align="center" class="noprinln1"></td>
+					<td align="center" class="noprinln2"></td>
+					<td align="center" class="noprinln3"><%=key%></td>
+					<td align="center" class="noprinln4"></td>
+					<td align="center" class="noprinln5"></td>
+					<td align="center" class="noprinln6"><%=initCount %></td>
+					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(initTotalcount) %></td> 
+					<td align="center" class="noprinln8"></td>
+					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(initTatalbreakcount) %></td> 
 	</tr>   
 		 <%  
 		   
@@ -492,15 +549,15 @@ if(total){ %>
 	
 	
 	 <tr class="asc" style="background:#ff7575"  onclick="updateClass(this)"> 
-					<td align="center"></td>
-					<td align="center">总计</td>
-					<td align="center">总计</td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"><%=AllCount %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(AllTotalcount) %></td> 
-					<td align="center"></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(AllTatalbreakcount) %></td> 
+					<td align="center" class="noprinln1"></td>
+					<td align="center" class="noprinln2">总计</td>
+					<td align="center" class="noprinln3">总计</td>
+					<td align="center" class="noprinln4"></td>
+					<td align="center" class="noprinln5"></td>
+					<td align="center" class="noprinln6"><%=AllCount %></td>
+					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(AllTotalcount) %></td> 
+					<td align="center" class="noprinln8"></td>
+					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(AllTatalbreakcount) %></td> 
 	    </tr>
 </table>
 <%} %>

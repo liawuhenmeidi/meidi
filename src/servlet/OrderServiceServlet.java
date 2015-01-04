@@ -96,6 +96,8 @@ public class OrderServiceServlet extends HttpServlet {
     			logger.info(System.currentTimeMillis() - start); 
     		}else if(Integer.valueOf(statues) == Order.orderDispatching || Integer.valueOf(statues) == Order.returns || Integer.valueOf(statues) == Order.neworder || Integer.valueOf(statues) == Order.release){
     			html = OrderService.getHtmlDispatching(user,list);
+    		}else if(Integer.valueOf(statues) == Order.repareorderDispatching){
+    			html = OrderService.getHtmlrepareDispatching(user,list); 
     		}else if(Integer.valueOf(statues) == Order.callback){
     			html = OrderService.getHtmlcallback(user,list);
     		}else if(Integer.valueOf(statues) == Order.deliveryStatuesTuihuo){
