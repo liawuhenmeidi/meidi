@@ -79,6 +79,53 @@ public class UploadManager {
 		}
 	}
 	
+	//更改uploadorder店名(仅提供给manualCheckout.jsp使用)
+	//input :     id,name;id,name
+	public static boolean transferShopName(String input){
+		boolean result = false;
+		
+		if(StringUtill.isNull(input)){
+			return true;
+		}
+		
+		if(input.endsWith("_")){
+			input = input.substring(0,input.length()-1);
+		}
+		
+		Connection conn = DB.getConn();
+		String sql = "update uploadorder set shop = ? where id = ?";
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		try {
+			boolean autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			for(int i = 0 ; i < input.split("_").length; i ++){
+				pstmt.setString(1, input.split("_")[i].split(",")[1]);
+				pstmt.setInt(2, Integer.parseInt(input.split("_")[i].split(",")[0]));
+				pstmt.executeUpdate();
+			}	
+			
+			
+			conn.commit();
+			conn.setAutoCommit(autoCommit);
+			result = true ;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			logger.info("修改店名异常，回滚！");
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				logger.info("回滚失败！！！请注意");
+				e1.printStackTrace();
+			}
+			result =false;
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return result;
+	}
+	
 	public static boolean checkUploadOrder(int uploadOrderId){
 		boolean flag = false;
 		Connection conn = DB.getConn();
