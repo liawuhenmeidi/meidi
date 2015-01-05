@@ -106,34 +106,38 @@ function regist(){
   
 <!--   头部开始   -->
 <div class="s_main">
-
+ <div style="height:20px;">
+   
+</div>
 <jsp:include flush="true" page="head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>
 
 
 <!--  头 单种类  -->
-<div class="s_main_tit">用户登陆<span class="qiangdan"><a href="javascript:void(0)" onclick="regist()" >注册</a></span></div>
- 
+<div class="s_main_tit"><span class="qiangdan"><a href="javascript:void(0)" onclick="regist()" >注册</a></span></div>
+  <div style="height:50px;">
+   
+  </div>
   
   <form action="dengluN.jsp" method="post">
 	<input type="hidden" name="action" value="login"/>
 	<table width="100%">
 
   <tr> 
-    <td align="center"><input type="text" placeholder="职工姓名" style="font-size:20px;width:80%"  value="<%=username==null?"":username %>" name="username"/></td>
+    <td align="center"><input type="text" placeholder="职工姓名" style="font-size:25px;width:80%"  value="<%=username==null?"":username %>" name="username"/></td>
   </tr> 
   <tr>
   <td></td>
   </tr>
   <tr>  
-    <td align="center"><input type="password" placeholder="密码"  style="font-size:20px;width:80%" value="<%=password==null?"":password %>" name="password"/></td>
+    <td align="center"><input type="password" placeholder="密码"  style="font-size:25px;width:80%" value="<%=password==null?"":password %>" name="password"/></td>
   </tr>
   <tr>
   <td></td>
   </tr>
- <tr>  
-   <td align="center"><input type="submit" style="font-size:20px;background-color:orange;width:80%"   value="登陆"/></td>
+ <tr>    
+   <td align="center"><input type="submit" style="font-size:20px;background-color:orange;width:90%"   value="登陆"/></td>
   </tr>  
  
 </table>

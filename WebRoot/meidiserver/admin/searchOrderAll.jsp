@@ -314,13 +314,11 @@ function checkedd(){
 </div>
 <div id="dateadd" style="position:fixed;text-align:center; top:50%;background-color:#ACD6FF; left:30%; margin:-10% 0 0 -20%; height:5%; width:80%; z-index:999;display:none"> 
 <div >
-<table  cellspacing="1" style="margin:auto;background-color:black; width:95%;heigth:95%;">  
+<table  cellspacing="1" style="margin:auto;background-color:black; width:95%;heigth:95%;"> 
+ 
 		<tr class="bsc"> 
 		    <td align="center" >数据加载中......,请等待</td>
 		</tr> 
-
-		
-	
 </table> 
 </div>
 

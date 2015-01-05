@@ -129,9 +129,11 @@ function intsearch(){
  }
 
 </script>
-
  
 <div id="wrapsearch" style="position:fixed;text-align:center; top:50%;background-color:#ACD6FF; left:30%; margin:-250px 0 0 -250px; height:500px; width:1000px; z-index:999;display:none"> 
+
+
+
 <div >
 <table  cellspacing="1" style="margin:auto;background-color:black; width:95%;height:450px;">  
 		   

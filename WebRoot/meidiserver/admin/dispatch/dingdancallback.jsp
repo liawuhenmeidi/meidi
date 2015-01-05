@@ -181,6 +181,7 @@ function adddetail(src){
 <br/> 
 
 <div id="wrap">
+ <%@ include file="remind.jsp"%>
 <table  cellspacing="1" id="table">
 		<tr id="th">  
 			

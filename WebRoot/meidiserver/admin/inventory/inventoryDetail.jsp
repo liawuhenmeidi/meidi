@@ -87,19 +87,14 @@ position:fixed;
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
- 
-$(function () { 
-	
-
-}); 
 
 function inventory(inventory,type){
 	 if(type == 0 || type == 1 || type == 3){
-		 window.location.href='inventorysearch.jsp?id='+inventory;
-		 //window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+		 //window.location.href='inventorysearch.jsp?id='+inventory;
+		 window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }else {
-		 window.location.href='dingdanDetail.jsp?id='+inventory;
-		 //window.open('dingdanDetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+		// window.location.href='dingdanDetail.jsp?id='+inventory;
+		 window.open('dingdanDetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }
 } 
 
@@ -185,7 +180,7 @@ function inventory(inventory,type){
 		        		 if(type == 10){
 		        			 %>
 		        			
-		        			 <tr id="<%=in.getInventoryid() %>"  class="asc"  onclick="updateClass(tdis)">   
+		        			 <tr id="<%=in.getInventoryid() %>"  class="asc"  onclick="updateClass(this)">   
 			        			  <td align="center"><%=usermap.get(in.getSendUser()).getBranchName()%>"已盘点" </td>   
 			        			  <td align="center"><%=in.getTime()%></td>  
 			        			  <td align="center"><%=in.getType()%></td>    
@@ -201,7 +196,7 @@ function inventory(inventory,type){
 		        			 
 		        		%>
 		        	
-		        		   <tr id="<%=in.getInventoryid() %>" class="asc" ondblclick="inventory('<%=in.getInventoryid() %>','<%=type%>')">   
+		        		   <tr id="<%=in.getInventoryid() %>" class="asc" onclick="updateClass(this)" ondblclick="inventory('<%=in.getInventoryid() %>','<%=type%>')">   
 		        		      <td align="center"><%=in.getInventoryString()%></td>   
 		        		      <td align="center"><%=in.getTime()%></td>     
 		        		      <td align="center"><%=in.getType()%></td>    
