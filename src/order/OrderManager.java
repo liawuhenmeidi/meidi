@@ -62,8 +62,14 @@ public class OrderManager {
 	public static int updateMessage(String phone1,String andate,String locations,String POS,String sailId,String check,String oid,String remark,String saledate,String diqu) {
 		int flag = -1 ;  
 		List<String> sqls = new ArrayList<String>();
+		
+		if(StringUtill.isNull(andate)){
+			andate = null;
+		}else {
+			andate = "'"+andate+"'";
+		}   
 		//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
-		String sql = "update mdorder set phone1= '"+phone1+"' , andate = '"+andate+"' , locateDetail = '"+locations+"', pos = '"+POS+"', sailId = '"+sailId+"' ,checked ='"+check+"' , remark = '"+remark+"' ,saledate = '"+saledate+"' ,locates = '"+diqu+"' where id = " + oid;
+		String sql = "update mdorder set phone1= '"+phone1+"' , andate = "+andate+" , locateDetail = '"+locations+"', pos = '"+POS+"', sailId = '"+sailId+"' ,checked ='"+check+"' , remark = '"+remark+"' ,saledate = '"+saledate+"' ,locates = '"+diqu+"' where id = " + oid;
         
 		String sql1 = "update mdorder set posRemark = 0 where pos != '" + POS +"' and id = " + oid ;  
 		
@@ -84,6 +90,11 @@ public class OrderManager {
 	public static int updateMessage(String phone1,String andate,String locations,String oid) {
 		int flag = -1 ; 
 		Connection conn = DB.getConn(); 
+		if(StringUtill.isNull(andate)){
+			andate = null;
+		}else { 
+			andate = "'"+andate+"'";
+		}  
 		//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
 		String sql = "update mdorder set phone1= ? , andate = ? where id = " + oid;
 		PreparedStatement pstmt = DB.prepare(conn, sql);
