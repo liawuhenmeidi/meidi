@@ -661,7 +661,7 @@ String[] branlist =  branchmessage.split("_");
  
   
  function setMessage(str){
-	 var andate = $("#serviceDate2").attr("placeholder",str);
+	// var andate = $("#serviceDate2").attr("placeholder",str);
 	 var username = $("#username").attr("placeholder",str);
 	 var phone1 = $("#phone1").attr("placeholder",str);
 	 var locations = $("#locations").attr("placeholder",str);
@@ -830,8 +830,8 @@ String[] branlist =  branchmessage.split("_");
 	 if(messageflag){
 		 
 		 if(andate == "" || andate == null || andate == "null"){
-			 alert("预约安装时间不能为空");
-			 return false;
+			 //alert("预约安装时间不能为空");
+			// return false;
 		 }else {
 			 var timeold = 0;
 			 for(var i=0;i<rows.length;i++){
@@ -1096,7 +1096,7 @@ String[] branlist =  branchmessage.split("_");
    <table style="width:100% ">
    <tr>  
     <td width="25%" class="center">预约日期<span style="color:red">*</span></td>
-    <td width="45%" class=""><input class="date2" type="text" name="andate" id ="serviceDate2" onclick="new Calendar().show(this);"  placeholder="必填"  readonly="readonly" style="width:90% "></input>   </td>
+    <td width="45%" class=""><input class="date2" type="text" name="andate" id ="serviceDate2" onclick="new Calendar().show(this);"  placeholder="不填表示另约"  readonly="readonly" style="width:90% "></input>   </td>
     <td width="25%" class="center" id="andates"></td> 
     <td width="5%"></td> 
    </tr> 

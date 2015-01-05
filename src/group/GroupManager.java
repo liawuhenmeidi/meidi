@@ -506,7 +506,7 @@ logger.info(sql);
 				
 				String sql1 = "delete from mdgroup where id  in  (select groupid from mdrelategroup  where pgroupid = "+id+") ";
 				
-				String sql3 = "update mduser set statues 2 where usertype in (select groupid from mdrelategroup  where pgroupid = "+id+")";
+				String sql3 = "update mduser set statues = 2 where usertype in (select groupid from mdrelategroup  where pgroupid = "+id+")";
 						
 				String sql2 = "update mdbranch set disable = 1 where bname =  (select groupname  from mdgroup where id = "+id+" )" ;
 				 

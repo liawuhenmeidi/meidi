@@ -635,7 +635,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and andate is not null  and deliveryStatues not in (3,4,5,11,12,13) or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4,10) ))  "+search+"  order by  "+sort+str ;  
 			  }if(Order.repareorderDispatching == statues){    
 				 // sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5)  and  ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search+"  order by  "+sort+"  limit " + ((page-1)*num)+","+ page*num ;  
-				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and andate is null  and deliveryStatues not in (3,4,5,11,12,13) or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4,10) ))  "+search+"  order by  "+sort+str ;  
+				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and andate is null  and deliveryStatues not in (3,4,5,11,12,13))  "+search+"  order by  "+sort+str ;  
 			  }else if(Order.neworder == statues){
 				  sql = "select * from  mdorder  where  dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13)  and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))   "+search+"  order by "+sort+" ";   
 			  }else if(Order.motify == statues){
@@ -741,7 +741,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   if(Order.orderDispatching == statues){     
 					   sql = "select * from mdorder where   ( "+sqlstr+"  and  dealSendid = 0   and sendId = 0   and andate is not null  and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in ("+sqlop+"))  "+search+" order by  "+sort+str;  
 				   }else if(Order.repareorderDispatching == statues){     
-					   sql = "select * from mdorder where   ( "+sqlstr+"  and  dealSendid = 0   and sendId = 0    and andate is null  and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in ("+sqlop+"))  "+search+" order by  "+sort+str;  
+					   sql = "select * from mdorder where   ( "+sqlstr+"  and  dealSendid = 0   and sendId = 0    and andate is null  and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))))  "+search+" order by  "+sort+str;  
 				   }else if(Order.neworder == statues){    
 					   sql = "select * from mdorder where   "+sqlstr+"  and  dealSendid = 0   and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)   and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))  "+search+" order by  "+sort+str ;
 				   }else if(Order.motify == statues){   
@@ -847,7 +847,7 @@ logger.info(sql);
 			  if(Order.orderDispatching == statues){
 				  sql = "select count(*) from  mdorder  where  (dealSendid = 0   and andate is not null  and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13)  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))   or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search  ;  
 			  }else if(Order.repareorderDispatching == statues){
-				  sql = "select count(*) from  mdorder  where  (dealSendid = 0   and andate is null  and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13)  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))   or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search  ;  
+				  sql = "select count(*) from  mdorder  where  (dealSendid = 0   and andate is null  and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13)  and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))))  "+search  ;  
 			  }else if(Order.neworder == statues){
 				  sql = "select count(*) from  mdorder  where  dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13)  and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))  "+search;    
 			  }else if(Order.motify == statues){
@@ -918,8 +918,8 @@ logger.info(sql);
 				     
 				   if(Order.orderDispatching == statues){     
 					   sql = "select count(*) from mdorder where   (  "+sqlstr+"   and andate is not null  and  dealSendid = 0   and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)  and sendId = 0   and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))   or id in ("+sqlop+" ))  "+search;  
-				   }else if(Order.repareorderDispatching == statues){     
-					   sql = "select count(*) from mdorder where   (  "+sqlstr+"   and andate is null  and  dealSendid = 0   and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)  and sendId = 0   and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))   or id in ("+sqlop+" ))  "+search;  
+				   }else if(Order.repareorderDispatching == statues){      
+					   sql = "select count(*) from mdorder where   (  "+sqlstr+"   and andate is null  and  dealSendid = 0   and printSatues = 0 and deliveryStatues not in (3,4,5,11,12,13)  and sendId = 0   and ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))))  "+search;  
 				   }else if(Order.neworder == statues){     
 					   sql = "select count(*) from mdorder where    mdorder.saleID in (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+") )  and  dealSendid = 0   and printSatues = 0  and  deliveryStatues not in (3,4,5,11,12,13)  and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))  "+search  ;  
 				   }else if(Order.motify == statues){     
