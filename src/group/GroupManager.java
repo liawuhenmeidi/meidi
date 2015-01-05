@@ -501,22 +501,24 @@ logger.info(sql);
 			Group g = GroupManager.getGroup(Integer.valueOf(id));
 			
 			String sql = "delete from mdgroup where id = " + id;
-			
-			if(g.getPtype() == 4){
+			 
+			if(g.getPtype() == 4){  
+				
 				String sql1 = "delete from mdgroup where id  in  (select groupid from mdrelategroup  where pgroupid = "+id+") ";
 				
-				String sql2 = "delete from mdbranch where bname =  (select groupname  from mdgroup where id = "+id+" )" ;
+				String sql3 = "update mduser set statues 2 where usertype in (select groupid from mdrelategroup  where pgroupid = "+id+")";
+						
+				String sql2 = "update mdbranch set disable = 1 where bname =  (select groupname  from mdgroup where id = "+id+" )" ;
 				 
-		        sqls.add(sql2);  
+		        sqls.add(sql2);   
 		        
-		       sqls.add(sql1); 
+		        sqls.add(sql1); 
+		       
+		        sqls.add(sql3); 
 			}
-			
-	            
+			           
             sqls.add(sql);
-           
-         
-           
+
            DBUtill.sava(sqls); 
            
            count ++;

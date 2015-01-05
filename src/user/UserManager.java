@@ -608,7 +608,7 @@ logger.info(sql);
 	public static List<User> getUsers(String id) { 
 		List<User> users = new ArrayList<User>();
 		Connection conn = DB.getConn(); 
-		String sql = "select * from  mduser where usertype in " +id +" and statues = 1 ";
+		String sql = "select * from  mduser where usertype in " +id +" and statues != 2 ";
 		Statement stmt = DB.getStatement(conn);
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		try { 

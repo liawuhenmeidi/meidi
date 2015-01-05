@@ -64,8 +64,8 @@ String[] branlist =  branchmessage.split("_");
 <meta name="apple-mobile-web-app-capable" content="yes" />
 
 <title>报装单提交页面</title>
-<meta name="viewport" content="initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0,user-scalable=yes"/> 
-
+ 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script src="../js/mobiscroll.core-2.6.2.js" type="text/javascript"></script>
 <script src="../js/mobiscroll.core-2.6.2-zh.js" type="text/javascript"></script>
@@ -75,9 +75,10 @@ String[] branlist =  branchmessage.split("_");
  <link href="../css/mobiscroll.android-ics-2.6.2.css" rel="stylesheet" type="text/css" />
  
 <script type="text/javascript" src="../js/calendar.js"></script> 
-<link rel="stylesheet" href="../css/jquery-ui.css">
+<link rel="stylesheet" href="../css/songhuo.css">
+
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<script src="../js/jquery-ui.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   
 <script type="text/javascript">
 
@@ -657,10 +658,10 @@ String[] branlist =  branchmessage.split("_");
 	//	 $("#disable").css("display","block");
 	 }
  }
-  
+ 
   
  function setMessage(str){
-	 //var andate = $("#serviceDate2").attr("placeholder",str);
+	 var andate = $("#serviceDate2").attr("placeholder",str);
 	 var username = $("#username").attr("placeholder",str);
 	 var phone1 = $("#phone1").attr("placeholder",str);
 	 var locations = $("#locations").attr("placeholder",str);
@@ -829,8 +830,8 @@ String[] branlist =  branchmessage.split("_");
 	 if(messageflag){
 		 
 		 if(andate == "" || andate == null || andate == "null"){
-			 //alert("预约安装时间不能为空");
-			 //return false; 
+			 alert("预约安装时间不能为空");
+			 return false;
 		 }else {
 			 var timeold = 0;
 			 for(var i=0;i<rows.length;i++){
@@ -1082,10 +1083,10 @@ String[] branlist =  branchmessage.split("_");
   </div>
    <table style="width:100%;background-color:orange">
      <tr >
-   <!--      
+        
     <td width="25%" class=" center"><input type="button"  name="" value="增加赠品" onclick="addrowZ(0)" width="100%" <%=isdisabel %>/></td>
     <td width="25%" class="center"></td>
-    -->
+   
     <td width="25%"><input type="button"  name="" value="再增加商品" onclick="addrow(0)" width="100%" <%=isdisabel %>/></td>
     <td width="25%" class="center"></td>  
    
@@ -1093,9 +1094,9 @@ String[] branlist =  branchmessage.split("_");
    </table> 
    <div id="disable">
    <table style="width:100% ">
-   <tr>    
+   <tr>  
     <td width="25%" class="center">预约日期<span style="color:red">*</span></td>
-    <td width="45%" class=""><input class="date2" type="text" name="andate" id ="serviceDate2" onclick="new Calendar().show(this);"  placeholder="不填表示另约"  readonly="readonly" style="width:90% "></input>   </td>
+    <td width="45%" class=""><input class="date2" type="text" name="andate" id ="serviceDate2" onclick="new Calendar().show(this);"  placeholder="必填"  readonly="readonly" style="width:90% "></input>   </td>
     <td width="25%" class="center" id="andates"></td> 
     <td width="5%"></td> 
    </tr> 
