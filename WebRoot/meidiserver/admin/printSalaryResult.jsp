@@ -68,9 +68,9 @@ window.onload = function() {
 <%
 if(showResult.size() > 0 ){
 %>
-<!--  导出按钮
-<a href="../SalaryExportServlet"><button name="exportButton" style="background-color:red;font-size:50px;" >导出</button></a>
- -->
+
+<a href="../SalaryExportServlet"><button name="exportButton" style="background-color:red;font-size:20px;" >导出</button></a>
+
 <hr style="border : 1px dashed blue;" />
 	<table border="1px" align="left" id="basetable" name="basetable">
 		<tr>
