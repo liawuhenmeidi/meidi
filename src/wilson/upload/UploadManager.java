@@ -1355,8 +1355,8 @@ public class UploadManager {
 	public static List<UploadOrder> getOrdersByStatus(int under_status){
 		List<UploadOrder> result = new ArrayList<UploadOrder>();
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadorder where name not in (select DISTINCT name from uploadorder where checked >=  " + under_status + " )";
-
+		String sql = "select * from uploadorder where checked < " + under_status;
+		
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		UploadOrder uo = new UploadOrder();

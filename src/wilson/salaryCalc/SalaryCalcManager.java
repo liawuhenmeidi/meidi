@@ -85,8 +85,8 @@ public class SalaryCalcManager {
 		OutputStream out = new FileOutputStream(indexFile);
 		props.store(out, "Update " + "1");
 		//清数据库
-		//result = UploadManager.deleteUploadOrderByName(name);
-		result = true;
+		result = UploadManager.deleteUploadOrderByName(name);
+		//result = true;
 		return result;
 	}
 	
