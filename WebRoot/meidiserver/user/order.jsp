@@ -64,8 +64,8 @@ String[] branlist =  branchmessage.split("_");
 <meta name="apple-mobile-web-app-capable" content="yes" />
 
 <title>报装单提交页面</title>
- 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0,user-scalable=yes"/> 
+
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script src="../js/mobiscroll.core-2.6.2.js" type="text/javascript"></script>
 <script src="../js/mobiscroll.core-2.6.2-zh.js" type="text/javascript"></script>
@@ -75,10 +75,9 @@ String[] branlist =  branchmessage.split("_");
  <link href="../css/mobiscroll.android-ics-2.6.2.css" rel="stylesheet" type="text/css" />
  
 <script type="text/javascript" src="../js/calendar.js"></script> 
-<link rel="stylesheet" href="../css/songhuo.css">
-
+<link rel="stylesheet" href="../css/jquery-ui.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="../js/jquery-ui.js"></script>
   
 <script type="text/javascript">
 

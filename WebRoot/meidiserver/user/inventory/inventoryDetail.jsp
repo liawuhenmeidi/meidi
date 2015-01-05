@@ -75,14 +75,14 @@ position:fixed;
     height:50px;
 }
 </style>
-
+<meta name="viewport" content="initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0,user-scalable=yes"/> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/map.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="../../js/jquery-ui.js"></script>
 
 <script type="text/javascript">
 
