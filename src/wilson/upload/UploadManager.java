@@ -1352,20 +1352,35 @@ public class UploadManager {
 		return result;
 	}
 	
-	public static List<UploadOrder> getOrdersByStatus(int under_status){
-		List<UploadOrder> result = new ArrayList<UploadOrder>();
+	public static List<String> getOrderNamesByStatus(int under_status){
+		List<String> result = new ArrayList<String>();
+		
+		List<String> temp = new ArrayList<String>();
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadorder where checked < " + under_status;
+		String sql = "select DISTINCT name from uploadorder where checked >= " + under_status;
 		
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
-		UploadOrder uo = new UploadOrder();
 		try {     
 			while (rs.next()) {
-				uo = getUploadOrderFromRS(rs);
-				result.add(uo);
-				uo = new UploadOrder();
+				temp.add(rs.getString("name"));
 			}
+			
+			String names = "";
+			for(int i = 0 ; i < temp.size() ; i ++){
+				names += "\"" + temp.get(i) + "\"" + ",";
+			}
+			if(names.endsWith(",")){
+				names = names.substring(0,names.length() -1);
+			}
+			
+			sql = "select DISTINCT name from uploadorder where name not in (" + names + ")";
+			rs = DB.getResultSet(stmt, sql);
+			while(rs.next()){
+				result.add(rs.getString("name"));
+			}
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -1375,6 +1390,8 @@ public class UploadManager {
 		}	
 		return result;
 	}
+	
+	
 	
 	public static List<UploadOrder> getAllUploadOrders(){
 		List<UploadOrder> result = new ArrayList<UploadOrder>();

@@ -51,12 +51,10 @@
 	}
 	
 	//销售单,苏宁单
-	List<UploadOrder> allOrders = UploadManager.getOrdersByStatus(UploadOrder.CALCED);
-	List<String> orderNames = UploadManager.getAllUploadOrderNames(allOrders);
+	List<String> orderNames = UploadManager.getOrderNamesByStatus(UploadOrder.CALCED);
 	
 	//提成标准
-	List<UploadSalaryModel> allSalaryModels = UploadManager.getAllSalaryModel();
-	List<String> salaryModelNames = UploadManager.getAllSalaryModelNames(allSalaryModels);
+	List<String> salaryModelNames = UploadManager.getAllSalaryModelNames();
 	
 	//下面用到的临时变量
 	String tempName = "";
