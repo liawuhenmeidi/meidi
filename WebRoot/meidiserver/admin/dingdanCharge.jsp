@@ -156,6 +156,7 @@ function adddetail(src){
 <br/>  
  <%@ include file="searchOrderAll.jsp"%>
 <div id="wrap">
+<%@ include file="remind.jsp"%> 
 <table  cellspacing="1" id="table">
 		<tr id="th">   
 			<td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>

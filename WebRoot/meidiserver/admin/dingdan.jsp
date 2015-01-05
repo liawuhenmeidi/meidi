@@ -5,7 +5,7 @@
  if(StringUtill.isNull(statues)){
 	 statues = Order.orderDispatching +"";
  }
- 
+  
 %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -20,7 +20,7 @@
 <style type="text/css">
 .fixedHead {  
 position:fixed;
-}  
+}   
  
 *{
     margin:0;
@@ -281,8 +281,9 @@ function adddetail(src){
 
 </script>
 
-
+ 
 <div id="wrap">
+ <%@ include file="remind.jsp"%> 
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->

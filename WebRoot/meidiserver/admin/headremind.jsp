@@ -7,6 +7,8 @@
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 
 <script type="text/javascript"> 
+var inventorycount = 0 ;
+
 $(document).ready(function () {  
 	  init();
 	  //setInterval("startRequest()",5000);
@@ -31,6 +33,10 @@ $(document).ready(function () {
     	          // $("#huanhuo").html(json.hcount); 
     	           $("#inventory").html(json.inventory); 
     	           $("#analyInventory").html(json.analyInventory);
+    	            
+    	           if(json.inventory != 0 ){
+    	        	   initbook("inventory");
+    	           }
     	           },  
     	         error: function (XMLHttpRequest, textStatus, errorThrown) {
     	            } 

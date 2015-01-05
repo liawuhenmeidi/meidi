@@ -160,6 +160,7 @@ if(UserManager.checkPermissions(user, Group.dealsendcharge,"w")){
  
   
 <div id="wrap">
+<%@ include file="remind.jsp"%> 
 <table  cellspacing="1" id="table">
 		<tr id="th" >  
 			<td align="center" width=""><input type="checkbox" name="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>
