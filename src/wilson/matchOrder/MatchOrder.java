@@ -107,7 +107,9 @@ public class MatchOrder {
 				flag = true;
 			
 			}else{
-				matchOrder(uploadOrders,dbOrders,matchPara);
+				unMatchedUploadOrders = uploadOrders;
+				unMatchedDBOrders = dbOrders;
+				matchOrder(unMatchedUploadOrders,unMatchedDBOrders,matchPara);
 				flag = true;
 			}
 		}catch(Exception e){
