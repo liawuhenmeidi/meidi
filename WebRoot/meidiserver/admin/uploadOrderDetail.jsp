@@ -57,8 +57,11 @@ try{
 	
 	uo = UploadManager.getUploadOrderById(id);
 	
-	uo.setSaleTime(sdf2.format(sdf1.parse(uo.getSaleTime().replace("-", "").replace("/", "").trim())));
+	if(!StringUtill.isNull(uo.getSaleTime())){
+		uo.setSaleTime(sdf2.format(sdf1.parse(uo.getSaleTime().replace("-", "").replace("/", "").trim())));
+	}
 }catch( Exception e){
+	e.printStackTrace();
 	out.print("<script>alert('操作失败！填写参数格式错误');window.close()</script>"); 
 	return;
 }
