@@ -396,6 +396,12 @@ public class OrderServlet extends HttpServlet {
 				
 				String andate = request.getParameter("andate"); //安装日期
 				
+				if(!StringUtill.isNull(andate)){
+					andate  = "'"+andate+"'";
+				}else {
+					andate = null;
+				} 
+				 
 				String username = request.getParameter("username");
 				
 				String diqu = request.getParameter("diqu");
@@ -411,6 +417,9 @@ public class OrderServlet extends HttpServlet {
 				order.setId(0);
 				
 				order.setSaleTime(oldOrder.getSaleTime());
+				
+				
+				
 		        order.setOdate(andate);
 
 		        order.setPos(oldOrder.getPos());

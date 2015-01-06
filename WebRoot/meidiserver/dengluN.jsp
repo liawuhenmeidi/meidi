@@ -74,7 +74,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta name="baidu-tc-verification" content="7dc8d94b8710852faced5a7e5289a7af" />
 <title>欢迎使用微网站办公系统</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="viewport" content="initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0,user-scalable=yes"/> 
+
 
 <link rel="stylesheet" href="css/songhuo.css"/>
 

@@ -374,9 +374,10 @@ if(!StringUtill.isNull(id)){
 </head>
 <body>
 <div class="s_main">
+
 <jsp:include flush="true" page="../head.jsp">
   <jsp:param name="dmsn" value="" />
-  </jsp:include>
+</jsp:include>
 
 
 
