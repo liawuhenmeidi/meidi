@@ -45,9 +45,11 @@ public class XLSReader {
 		List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
 		UploadOrder uo = new UploadOrder();
 		int i = 0;
+		
+		Workbook wb = null;
 		try{
 			File srcFile = new File(filepath,fileName); 
-			Workbook wb = Workbook.getWorkbook(srcFile);
+			wb = Workbook.getWorkbook(srcFile);
 			Sheet sheet0 = wb.getSheet(0);
 			
 			String name = sheet0.getCell(1,0).getContents();
@@ -80,7 +82,7 @@ public class XLSReader {
 				UploadOrders.add(uo);
 				uo = new UploadOrder();
 			}
-	        wb.close();
+	        
 		}catch (Exception e){
 			e.printStackTrace();
 			UploadOrders = new ArrayList<UploadOrder>();
@@ -89,6 +91,8 @@ public class XLSReader {
 			uo.setName("第"+ (i+1) + "行附近有问题，请检查");
 			UploadOrders.add(uo);
 			return UploadOrders;
+		}finally{
+			wb.close();
 		}
 		return UploadOrders;
 	}
@@ -105,9 +109,10 @@ public class XLSReader {
 			
 			int i = 0;
 			int j = 0;
+			Workbook wb = null;
 			try{
 				File srcFile = new File(filepath,fileName); 
-				Workbook wb = Workbook.getWorkbook(srcFile);
+				wb = Workbook.getWorkbook(srcFile);
 				Sheet sheet0 = wb.getSheet(0);
 				String tempString = "{";
 				Double tempDouble = 0.0;
@@ -250,7 +255,6 @@ public class XLSReader {
 					tempDouble = 0.0;
 					tempString = "{";
 				}
-		        wb.close();
 			}catch (Exception e){
 				e.printStackTrace();
 				uploadSalaryModelList = new ArrayList<UploadSalaryModel>();
@@ -259,6 +263,8 @@ public class XLSReader {
 				usm.setName("第"+ (i+1) + "行第"+ (j+1) + "列附近有问题，请检查");
 				uploadSalaryModelList.add(usm);
 				return uploadSalaryModelList;
+			}finally{
+				wb.close();
 			}
 			return uploadSalaryModelList;
 		}

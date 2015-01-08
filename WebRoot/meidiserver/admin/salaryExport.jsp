@@ -28,7 +28,7 @@
 	String hide = request.getParameter("hide_button");
 	if(!StringUtill.isNull(hide) && hide.equals("true")){
 		String hideName = request.getParameter("name");
-		SalaryCalcManager.transferFile(hideName,request);
+		HiddenFileManager.transferFile(hideName);
 		response.sendRedirect("salaryExport.jsp");
 		return;
 	}
@@ -323,6 +323,9 @@ if(byTime){
 <button type="submit">查看</button>
 <button type="submit" onclick="if(confirm('是否确认?隐藏后，文件将不可修改')){$('#hide_button').val('true');}else{return false;}">隐藏</button>
 </form>
+<hr style="border : 1px dashed blue;" />
+<a href="#" onClick="javascript:window.open('./hiddenSalaryResult.jsp', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" ><button type="button">查看已隐藏文件</button></a>
+
 <hr style="border : 1px dashed blue;" />
 <%
 if(showResult.size() > 0 ){

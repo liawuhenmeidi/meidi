@@ -318,10 +318,25 @@
 	    <servlet-name>LoginServlet</servlet-name>
 	    <servlet-class>wilson.android.support.LoginServlet</servlet-class>
  	 </servlet>
+  
+
 	 <servlet-mapping>
 	   <servlet-name>LoginServlet</servlet-name>
 	   <url-pattern>/servlet/LoginServlet</url-pattern>
-	 </servlet-mapping> 
+	 </servlet-mapping>
+	 
+	  <!-- 路径servlet -->
+	<servlet>
+    	<description>路径初始化用servlet</description>
+    	<display-name>pathServlet</display-name>
+    	<servlet-name>PathUtill</servlet-name>
+    	<servlet-class>utill.PathUtill</servlet-class>
+    	<load-on-startup>1</load-on-startup>
+	</servlet>
+  <servlet-mapping>
+    <servlet-name>PathUtill</servlet-name>
+    <url-pattern>/servlet/PathUtill</url-pattern>
+  </servlet-mapping> 
 	      
 	       
 	    <filter>
