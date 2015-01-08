@@ -6,7 +6,7 @@
 
 </head> 
  
-<%
+<% 
 request.setCharacterEncoding("utf-8");
 boolean flag = true ;
 User user = (User)session.getAttribute("user");

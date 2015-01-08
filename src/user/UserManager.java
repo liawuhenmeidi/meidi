@@ -137,7 +137,7 @@ public class UserManager {
 			pstmt.setInt(10, user.getStatues());
 			pstmt.setInt(11, user.getChargeid()); 
 			pstmt.setString(12, user.getLocation());   
-            logger.info(sql);  
+            logger.info(pstmt);  
 			int count = pstmt.executeUpdate();
 			if(count > 0){
 				flag = true ;

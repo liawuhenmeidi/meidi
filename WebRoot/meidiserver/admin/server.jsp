@@ -167,7 +167,7 @@ if("deleOrder".equals(method)){
 	int icount = OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.installonly,0,0,"id","");   
 	//int ncount = OrderManager.getOrderlistcount(user,Group.dealSend,Order.neworder,0,0,"id",""); 
 	List<User> ulist = UserManager.getUserszhuce(user);
-	int hcount = 0 ;     
+	int hcount = 0 ;       
 	if(ulist != null){   
 		hcount = UserManager.getUserszhuce(user).size(); 
 	} 

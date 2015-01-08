@@ -21,7 +21,7 @@ if("category".equals(method)){
 	CategoryManager.delete(str);
 }else if("product".equals(method)){
 	String str = request.getParameter("id");
-	//System.out.println(str);
+	//System.out.println(str); 
 	ProductManager.delete(str);
 }else if("juese".equals(method)){ //juesetype
 	String str = request.getParameter("id");

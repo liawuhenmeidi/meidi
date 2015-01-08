@@ -17,6 +17,8 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import branch.BranchService;
+
 import category.CategoryManager;
 
 import user.User;
@@ -168,6 +170,9 @@ public class GroupManager {
                   	String sql2 = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,ptype) VALUES ("+maxid+1+",'"+group.getName()+"员工','"+group.getDetail()+"','"+group.getStatues()+"','2-w_','"+group.getProducts()+"','"+type+"')";
                   	String sql = " insert into mdrelategroup (id,groupid,pgroupid) values (null,"+maxid+1+","+maxid+") "; 
 					String sql3 = "insert into mdbranch(id,bname,pid,bmessage,relatebranch) values (null, '"+group.getName()+"',1,'','')";
+					 
+					BranchService.flag = true ;
+					
 					sqls.add(sql2);
 					sqls.add(sql); 
 					sqls.add(sql3);
@@ -452,7 +457,7 @@ logger.info(sql);
 				while (rs.next()) {
 					Group g = GroupManager.getGroupFromRs(rs);
 					List<Integer> pid = g.getPid();
-					logger.info(pid);
+					//logger.info(pid);
 					List<User> list = map.get(g.getId()+"");
 					if(null == list){
 						list = new ArrayList<User>();
