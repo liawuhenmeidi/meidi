@@ -1374,7 +1374,11 @@ public class UploadManager {
 				names = names.substring(0,names.length() -1);
 			}
 			
+			
 			sql = "select DISTINCT name from uploadorder where name not in (" + names + ")";
+			if(StringUtill.isNull(names)){
+				sql = "select DISTINCT name from uploadorder";
+			}
 			rs = DB.getResultSet(stmt, sql);
 			while(rs.next()){
 				result.add(rs.getString("name"));
