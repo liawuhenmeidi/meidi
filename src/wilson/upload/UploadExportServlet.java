@@ -98,42 +98,35 @@ public class UploadExportServlet extends HttpServlet {
 			if(UploadManager.isSalesOrder(list)){
 				//销售单
 				//第二行
-				label0  =   new  Label( 0 ,  1 ,  " 序号 " );
+				label0  =   new  Label( 0 ,  1 ,  " 门店 " );
 				sheet.addCell(label0);
-				label0  =   new  Label( 1 ,  1 ,  " 门店 " );
+				label0  =   new  Label( 1 ,  1 ,  " 销售时间 " );
 				sheet.addCell(label0);
 				label0  =   new  Label( 2 ,  1 ,  " 型号 " );
 				sheet.addCell(label0);
-				label0  =   new  Label( 3 ,  1 ,  " 销售员姓名 " );
+				label0  =   new  Label( 3 ,  1 ,  " 数量 " );
 				sheet.addCell(label0);
 				label0  =   new  Label( 4 ,  1 ,  " 零售价 " ); 
 				sheet.addCell(label0);
-				label0  =   new  Label( 5 ,  1 ,  " 数量 " );
-				sheet.addCell(label0);
-				label0  =   new  Label( 6 ,  1 ,  " 销售时间 " );
-				sheet.addCell(label0);
-				label0  =   new  Label( 7 ,  1 ,  " 扣点 " );
+				label0  =   new  Label( 5 ,  1 ,  " 扣点  " );
 				sheet.addCell(label0);
 				
 				//其他行
 				for(int i = 0 ; i < list.size() ; i ++){
 					temp = list.get(i);
-					label0  =   new  Label( 0 ,  i + 2 ,  String.valueOf(i+1) );
+					label0  =   new  Label( 0 ,  i + 2 ,  temp.getShop() );
 					sheet.addCell(label0);
-					label0  =   new  Label( 1 ,  i + 2 ,  temp.getShop() );
+					label0  =   new  Label( 1 ,  i + 2 ,  temp.getSaleTime() );
 					sheet.addCell(label0);
 					label0  =   new  Label( 2 ,  i + 2 ,  temp.getType() );
 					sheet.addCell(label0);
-					label0  =   new  Label( 3 ,  i + 2 ,  temp.getSaleManName() );
+					label0  =   new  Label( 3 ,  i + 2 ,  String.valueOf(temp.getNum()) );
 					sheet.addCell(label0);
 					label0  =   new  Label( 4 ,  i + 2 ,  String.valueOf(temp.getSalePrice()) ); 
 					sheet.addCell(label0);
-					label0  =   new  Label( 5 ,  i + 2 ,  String.valueOf(temp.getNum()) );
+					label0  =   new  Label( 5 ,  i + 2 ,   String.valueOf(temp.getBackPoint()) );
 					sheet.addCell(label0);
-					label0  =   new  Label( 6 ,  i + 2 ,  temp.getSaleTime() );
-					sheet.addCell(label0);
-					label0  =   new  Label( 7 ,  i + 2 ,   String.valueOf(temp.getBackPoint()) );
-					sheet.addCell(label0);
+
 				}
 			}else{
 				//系统对比单据
