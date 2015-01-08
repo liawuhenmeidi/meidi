@@ -53,10 +53,10 @@
 	double moneycount = 0 ;
 	double bpmoneycount = 0 ;
 	  
-   if(null != list){  
+   if(null != list){   
 	 for(int i = 0 ; i < list.size() ; i ++){ 
 		UploadOrder sain  = list.get(i);
-		if(branch.equals(sain.getShop()) && type.equals(sain.getType())){
+		if((branch.equals(sain.getShop()) || StringUtill.isNull(branch) ) && type.equals(sain.getType())){
 		String tpe = ""; 
 		if(null != mapus){
 			UploadSalaryModel up = mapus.get(StringUtill.getStringNocn(sain.getType()));

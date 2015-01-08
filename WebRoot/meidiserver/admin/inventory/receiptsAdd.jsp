@@ -6,14 +6,14 @@ String message = "调拨单";
 String type = request.getParameter("type");
 
 if(!StringUtill.isNull(type)){
-	if(Integer.valueOf(type) == 3){ 
+	if(Integer.valueOf(type) == 3){  
 		message = "调账面库存单据";
-	}
-}
+	} 
+} 
 
 
 String inventoryid = request.getParameter("id");
-
+ 
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
 List<Branch> listbranch = BranchService.getList();
    
@@ -288,8 +288,9 @@ var disable = '<%=isdisabel %>';
       <input type="hidden" name="method" id="method" value=""/> 
       <input type="hidden" name="type" value="<%=type%>"/>  
       <input type="hidden" name="id" value="<%=inventoryid %>"/>
-                     
-  <div > 
+      <input type="hidden" name="token" value="<%=token%>"/>  
+                       
+  <div >   
    <center><div id="branchmessage"><font style="color:red;font-size:20px;" ><%=message %></font></div></center>
    <br/>
      <font style="color:red;font-size:20px;" > 单号：<%=inventoryid %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><br/>

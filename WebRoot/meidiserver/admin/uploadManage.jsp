@@ -7,12 +7,6 @@
 	User user = (User)session.getAttribute("user");
 	String fileName = request.getParameter("fileName");
 	
-	
-	
-	
-	
-	/////////////////////////////////////////////////////////////////////
-	
 	String type = request.getParameter("type");
 	String name =request.getParameter("name");
 	String button = request.getParameter("button");
@@ -66,6 +60,10 @@
 <title>上传管理页面</title>
   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
+<link rel="stylesheet" href="../css/jquery-ui.css"></link>
+<script src="../js/jquery-1.7.2.min.js"></script>
+<script src="../js/jquery-ui.js"></script>
+  
 <style type="text/css">
 body {
 	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
@@ -73,15 +71,11 @@ body {
 }
 </style>
 
-</style>
 </head>
 
 <body>
  
-  <script src="../js/jquery-1.7.2.min.js"></script>
-  <!--  <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>-->
-  <link rel="stylesheet" href="../css/jquery-ui.css">
-  <script src="../js/jquery-ui.js"></script>
+
  <%
 	if(fileName != null && fileName != "" && !fileName.equals("")){	
 		String temp = "上传失败";
@@ -94,27 +88,27 @@ body {
 
 	}
 %>
-<div style="position:fixed;width:100%;height:200px;">
-<div style="position:fixed;width:80%;height:200px;">
   
   <jsp:include flush="true" page="head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include> 
   
   
-      <div > 
+      <div >  
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
   <a href="../DownloadServlet?name=suningmuban&type=model"><font style="color:red;font-size:20px;" >系统比对模板</font> </a><br />
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
   <a href="../DownloadServlet?name=tichengmuban&type=model"><font style="color:red;font-size:20px;" >提成标准模板</font> </a><br />
  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-  <a href="../DownloadServlet?name=xiaoshoudanmuban&type=model"><font style="color:red;font-size:20px;" >销售单模板</font> </a>
+  <a href="../DownloadServlet?name=xiaoshoudanmuban&type=model"><font style="color:red;font-size:20px;">销售单模板</font> </a>
   
 
   <form action="../ExcelUpload" method="post" enctype ="multipart/form-data" runat="server"> 
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
       <font style="color:red;font-size:20px;" >导入数据 : </font>
       <input id="File1" runat="server" name="UpLoadFile" type="file" /> 
+      
+      
       类型：<select name="uploadType">
       <option value="1">系统比对单上传</option>   
         <option value="2">提成标准上传</option>   
