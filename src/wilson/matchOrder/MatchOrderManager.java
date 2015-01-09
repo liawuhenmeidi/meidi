@@ -39,27 +39,27 @@ public class MatchOrderManager {
 	
 	//根据条件取order(仅提供给manualCheckout.jsp使用)
 	public static List<Order> getUnConfirmedDBOrders(String selectBranchType,String selectBranch,String deadline){
-		List<Order> unCheckedDBOrders = new ArrayList<Order>();
+		List<Order> unConfirmedDBOrders = new ArrayList<Order>();
 		
 		//查询条件提交后，左侧侧显示内容
 		if(selectBranchType != null && !selectBranchType.equals("") ){
 			//第一级选择的是否是all
 			if(selectBranchType.equals("all")){
-				unCheckedDBOrders = MatchOrderManager.getUnCheckedDBOrders(deadline);
+				unConfirmedDBOrders = MatchOrderManager.getUnConfirmedDBOrders(deadline);
 			}else{
 				
 				if(selectBranch != null && !selectBranch.equals("")){
 					//第二级选择的是否是all
 					if(selectBranch.equals("all")){ 
-						unCheckedDBOrders = OrderManager.getUnConfirmedDBOrdersbyBranchType(selectBranchType,deadline);
+						unConfirmedDBOrders = OrderManager.getUnConfirmedDBOrdersbyBranchType(selectBranchType,deadline);
 					}else{
-						unCheckedDBOrders = OrderManager.getUnConfirmedDBOrdersbyBranch(selectBranch,deadline);
+						unConfirmedDBOrders = OrderManager.getUnConfirmedDBOrdersbyBranch(selectBranch,deadline);
 					}
 				}
 				
 			}
 		}
-		return unCheckedDBOrders;
+		return unConfirmedDBOrders;
 	}
 	//根据条件取Uploadorder(仅提供给manualCheckout.jsp使用)
 	public static List<UploadOrder> getUnCheckedUploadOrders(String selectOrderName){
@@ -292,6 +292,16 @@ public class MatchOrderManager {
 		}
 	}
 	
+	public static List<Order> getUnConfirmedDBOrders(String time){
+		List <Order> unConfirmedDBOrders = new ArrayList<Order>();
+		unConfirmedDBOrders = OrderManager.getUnConfirmedDBOrders(time);
+		if(unConfirmedDBOrders != null && unConfirmedDBOrders.size() >= 0){
+			return unConfirmedDBOrders;
+		}else{
+			return null;
+		}
+	}
+	
 	public static boolean checkOrder(User user ,int DBOrderID,int UploadOrderID,String checkName){
 		//消除DB中的Order
 		//a.b();
@@ -344,6 +354,20 @@ public class MatchOrderManager {
 		idList = idList.substring(0,idList.length()-1);
 		 
 		if(UploadManager.checkDBOrderStrList(user,idList,checkName)){
+			return true;
+		}
+
+		return false;
+	}
+	
+	public static boolean confirmDBOrderList(User user ,String[] dbOrderIdStrList){
+		String idList = "";
+		for(int i = 0 ; i < dbOrderIdStrList.length ; i ++ ){
+			idList += dbOrderIdStrList[i] + ",";
+		}
+		idList = idList.substring(0,idList.length()-1);
+		 
+		if(UploadManager.confirmDBOrderStrList(user,idList,"1")){
 			return true;
 		}
 

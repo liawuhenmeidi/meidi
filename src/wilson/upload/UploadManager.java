@@ -160,6 +160,15 @@ public class UploadManager {
 		}
 	}
 	
+	public static boolean confirmDBOrderStrList(User user,String dbOrderIdStrList,String statues){
+
+		if(OrderManager.updateStatues(user ,"orderGo",statues, dbOrderIdStrList) == 1){
+				return true;
+		} else{
+			return false;
+		}
+	}
+	
 	public static boolean checkUploadOrderStrList(String uploadOrderIdStrList){
 		boolean flag = false;
 		Connection conn = DB.getConn();

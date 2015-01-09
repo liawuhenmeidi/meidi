@@ -1005,6 +1005,38 @@ logger.info(sql);
   			return count;
   	 }
     
+ 	//wrote by wilsonlee 2014-11-21
+    //未消单的Order
+    public static List<Order> getUnConfirmedDBOrders(String time){
+    	  
+    	
+    	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
+    	//flag = true;
+    	List<Order> Orders = new ArrayList<Order>();
+                  
+    	String sql = "select * from  mdorder  where statues1 = 1 and statues2 = 0 and statuesChargeSale is null and oderStatus not in (20)  and saledate <= '"+time+"'  order by orderbranch";                  
+    	
+    	if(true){
+    		Connection conn = DB.getConn();
+            Statement stmt = DB.getStatement(conn);
+            ResultSet rs = DB.getResultSet(stmt, sql);
+
+ 			try { 
+ 				while (rs.next()) {
+ 					Order p = gerOrderFromRs(rs);
+  					Orders.add(p);
+ 				}
+ 			} catch (SQLException e) {
+ 				e.printStackTrace();
+ 			} finally {
+ 				DB.close(stmt);
+ 				DB.close(rs);
+ 				DB.close(conn);
+ 			}   
+    	}
+    	return Orders; 
+    	   
+    }
     
     //wrote by wilsonlee 2014-11-21
     //未结款的Order

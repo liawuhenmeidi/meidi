@@ -26,9 +26,11 @@
 			if(dbSide != null && dbSide.length >0){
 				MatchOrderManager.checkDBOrderList(user,dbSide,selectOrderName);
 			}
+			/**
 			if(uploadSide != null && uploadSide.length > 0){
 				MatchOrderManager.checkUploadOrderList(uploadSide); 
 			}
+			**/
 		}
 	}
 	
@@ -69,7 +71,7 @@
 	
 	
 	//查询条件提交后，左侧侧显示内容
-	unCheckedDBOrders = MatchOrderManager.getUnCoDBOrders(selectBranchType, selectBranch, deadline);
+	unCheckedDBOrders = MatchOrderManager.getUnConfirmedDBOrders(selectBranchType, selectBranch, deadline);
 	
 	
 	//查询条件提交后，右侧显示内容
@@ -133,7 +135,7 @@
 	
 	//是否禁用
 	boolean dbsideDisabled =false;
-	boolean uploadsideDisabled=false;
+	boolean uploadsideDisabled=true;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -455,17 +457,18 @@ $(function (){
 			showColor = false;
 			isChecked = false;
 			dbsideDisabled =false;
-			uploadsideDisabled=false;
+			//uploadsideDisabled=false;
 			if(afterMatchOrders.get(i).getUploadSideOrderId() == MatchOrder.SAME_POS_ID){
 				showColor = true;
 			}	
 			if(afterMatchOrders.get(i).getCompareLevel() == calcNum){
 				isChecked = true;
 			}
-			
+			/**
 			if(afterMatchOrders.get(i).getUploadSideOrderId() < 0){
 				uploadsideDisabled = true;
 			}
+			**/
 			if(afterMatchOrders.get(i).getDBSideOrderId() < 0){
 				dbsideDisabled = true;
 			}
