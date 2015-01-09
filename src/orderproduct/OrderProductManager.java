@@ -253,7 +253,9 @@ public class OrderProductManager {
 				p.setCategoryName(rs.getString("categoryname"));
 				p.setSalestatues(rs.getInt("salestatues")); 
 				p.setSubtime(rs.getString("subtime")); 
-				p.setPrice(rs.getDouble("price"));
+				p.setPrice(rs.getDouble("price")); 
+				p.setBarcode(rs.getString("Barcode"));
+				p.setBatchNumber(rs.getString("batchNumber"));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

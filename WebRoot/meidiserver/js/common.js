@@ -114,8 +114,16 @@ function initOrder(type,statues,num,page,sort,sear){
 	        	  var html = json.html;
 	        	 
 	        	  count = json.count;
-               
+                  var date = json.date ;
+                  
+                  if("" != date && null != date){
+                	 date =  aftersalerepare(date);
+                	 $("#table").append(date);
+                	// alert(date);
+                  }
+                  
 	        	 $("#table").append(html);
+	        	
 	        	 $("#count").html(count);
 	        	 $("#dateadd").css("display","none"); 
 	           },   
@@ -125,6 +133,31 @@ function initOrder(type,statues,num,page,sort,sear){
 	           }); 
 }
  
+function aftersalerepare(date){
+	var html = '';
+	var jsonlist =  $.parseJSON(date);
+	for(var i=0;i<jsonlist.length;i++){
+		var json = jsonlist[i];
+		//String tdcol = 'bgcolor="red"' ;
+		html += '<tr id='+json.id+'  class="asc"  onclick="updateClass(this)">';
+		html += '<td align="center" width="20"><input type="checkbox"  id="check_box" name ='+json.id+'></input></td>';
+		html += '<td align="center">'+json.printlnid+'</td>';
+		html += '<td align="center">'+json.username+'<p>'+json.phone1+'</td>';
+		html += '<td align="center">'+json.category+'</td>';
+		html += '<td align="center">'+json.sendType+'</td>';
+		html += '<td align="center">'+json.sendCount+'</td>';
+		html += '<td align="center">'+json.name+'</td>';
+		html += '<td align="center">'+json.name+'</td>';
+		
+		html += '<td align="center">'+json.locateDetail+'</td>';
+		html += '<td align="center">'+json.branchname+'</td>';
+		html += '<td align="center">'+json.saleTime+'</td>';
+		html += '<td align="center">'+json.odate+'</td>'; 
+		html += '</tr>';
+	}
+	return html;
+}
+
 function seletall(all){
 	if($(all).attr("checked")){
 		$("input[type='checkbox'][id='check_box']").each(function(){

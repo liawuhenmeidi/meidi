@@ -271,15 +271,13 @@ function reloadopned(src){
         }
         %>
         
-        <li>
-        <!--    <p ><a href="dingdanpeidan.jsp" href="javascript:void(0);"  onclick="reloadopned('dingdango.jsp')">文员打印页</a></p> -->  
-              
-              
-           
-             <!-- <p ><a href="./verifyCode.jsp" href="javascript:void(0);"  onclick="reloadopned('dingdango.jsp')">强制消单页</a></p>  --> 
-        
-        
-        </li>
+       <li > 
+             <h4 >售后服务</h4>     
+            <div class="list-item none">
+            
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanAfterSalerepare.jsp')" >售后待处理</a></p>
+            </div>        
+          </li> 
         
         
         

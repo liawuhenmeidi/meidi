@@ -3389,6 +3389,33 @@ public class OrderService {
 		 
 	}
    
+   public static String getHtmlaftersalerepare(User user ,List<Order> list){
+	   	   
+		String html = "";
+          
+		if(null != list){
+			for(int i=0;i<list.size();i++){
+				Order or = list.get(i);
+				List<OrderProduct> listop = or.getOrderproduct();
+				if(null != listop){
+					for(int j=0;j<listop.size();j++){
+						OrderProduct op = listop.get(j);
+						
+						
+					}
+				}
+			}
+			
+			
+			
+			
+			
+			html = StringUtill.GetJson(list);
+		}
+		return html.toString();
+		 
+	}
+   
    public static String getHtmlcallback(User user ,List<Order> list){
 	    HashMap<Integer,User> usermap = UserService.getMapId();
 	     

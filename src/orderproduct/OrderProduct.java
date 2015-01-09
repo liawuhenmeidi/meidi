@@ -24,9 +24,28 @@ public class OrderProduct {
     
     private double price ;
     
+    private  String batchNumber;  //批号
     
+    private  String Barcode;  // 条码
+    
+	public String getBatchNumber() {
+		return batchNumber;
+	}
+
+	public void setBatchNumber(String batchNumber) {
+		this.batchNumber = batchNumber;
+	}
+
+	public String getBarcode() {
+		return Barcode;
+	}
+
+	public void setBarcode(String barcode) {
+		Barcode = barcode;
+	}
+
 	public double getPrice() {
-		return price;
+		return price; 
 	}
 
 	public void setPrice(double price) {
