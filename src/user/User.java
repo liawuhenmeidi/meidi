@@ -46,7 +46,8 @@ public void setChargeid(int chargeid) {
 	public String getChargeName() {
 		if(StringUtill.isNull(charge)){
 			return "";
-		}else {
+		}else { 
+			//System.out.println(UserService.getMapId().get(Integer.valueOf(charge)));
 			return UserService.getMapId().get(Integer.valueOf(charge)).getUsername();
 		}
 		

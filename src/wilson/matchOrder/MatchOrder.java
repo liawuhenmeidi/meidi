@@ -55,7 +55,6 @@ public class MatchOrder {
 		
 		boolean flag = false;
 
-		
 		try{
 			if(matchPara.charAt(MATCHPARA_SHOP) == '1'){
 				//取两个源数据中,店名相似度最高的位置i。如14,23
@@ -70,8 +69,7 @@ public class MatchOrder {
 					position = "";
 					tempDBOrderList = new ArrayList<Order>();
 					tempUploadOrderList = new ArrayList<UploadOrder>();
-					
-					
+										
 					//取两个源数据中,店名相似度最高的位置i。如14,23
 					position = getSimilarPosFromList(dbOrders,uploadOrders);
 					

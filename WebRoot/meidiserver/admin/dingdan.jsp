@@ -2,7 +2,7 @@
 
 <%@ include file="searchdynamic.jsp"%>       
  <%  
- if(StringUtill.isNull(statues)){
+ if(StringUtill.isNull(statues)){ 
 	 statues = Order.orderDispatching +"";
  }
   

@@ -55,6 +55,9 @@ public class Order {
  public static int huanhuo = 26 ;
  public static int tuihuo = 27 ;
  public static int repareorderDispatching = 28 ;
+ public static int aftersalerepare = 29;
+ public static int aftersale = 30; 
+ public static int aftersalesearch = 31;
  
  
  public static int orderpeisong= 1;  
