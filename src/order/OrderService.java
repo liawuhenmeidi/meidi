@@ -26,6 +26,7 @@ import user.UserService;
 import utill.BasicUtill;
 import utill.StringUtill;
 
+import aftersale.AfterSale;
 import branch.BranchService;
 
 public class OrderService {
@@ -3390,7 +3391,7 @@ public class OrderService {
 	}
    
    public static String getHtmlaftersalerepare(User user ,List<Order> list){
-	   	   
+	   	List<AfterSale> listas = new ArrayList<AfterSale>();   
 		String html = "";
           
 		if(null != list){
@@ -3400,17 +3401,26 @@ public class OrderService {
 				if(null != listop){
 					for(int j=0;j<listop.size();j++){
 						OrderProduct op = listop.get(j);
-						
-						
+						if(op.getStatues() == 0 ){
+							AfterSale as = new AfterSale();
+							as.setAndate(or.getOdate());
+							as.setBarcode(op.getBarcode());
+							as.setBatchNumber(op.getBatchNumber());
+							as.setBranch(or.getBranch());
+							as.setBranchName(or.getbranchName(or.getBranch()));
+							as.setCid(op.getCategoryId());
+							as.setLocation(or.getLocateDetail());
+							as.setPhone(or.getPhone1());
+							as.setSaledate(or.getSaleTime());
+							as.setTid(Integer.valueOf(op.getSendType()));
+							as.setUname(or.getUsername());
+							listas.add(as); 
+						}
 					}
 				}
-			}
-			
-			
-			
-			
-			
-			html = StringUtill.GetJson(list);
+			} 
+
+			html = StringUtill.GetJson(listas);
 		}
 		return html.toString();
 		 

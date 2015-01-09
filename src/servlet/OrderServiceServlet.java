@@ -82,7 +82,7 @@ public class OrderServiceServlet extends HttpServlet {
     	list = OrderManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
 	    count = OrderManager.getOrderlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
     	
-    	//logger.info(listp.size());
+    	//logger.info(list.size());
     	
     	
     	String html = "";
@@ -128,11 +128,11 @@ public class OrderServiceServlet extends HttpServlet {
     			html = OrderService.getHtmlppcharge(user,list);   // 送货结款   
     		}else if(Integer.valueOf(statues) == Order.callback){
     			html = OrderService.getHtmlpcallback(user,list);    
-    		}  
+    		}   
     	}else if(Integer.valueOf(type) == Group.aftersalerepare){
     	      if(Integer.valueOf(statues) == Order.aftersalerepare){ 
     			date = OrderService.getHtmlaftersalerepare(user,list); 
-    			//logger.info(date);
+    			logger.info(date);
     		}
     	}
     	//Order.serach

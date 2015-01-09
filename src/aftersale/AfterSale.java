@@ -10,9 +10,23 @@ public class AfterSale {
    private String batchNumber;  //批号
    private String Barcode;  // 条码
    private String location ; //
-   private String branch ; 
+   private int branch ; 
    private String type;  // 单据类型
    private String saledate;
+   private String branchName;
+   
+public int getBranch() {
+	return branch;
+}
+public void setBranch(int branch) {
+	this.branch = branch;
+}
+public String getBranchName() {
+	return branchName;
+}
+public void setBranchName(String branchName) {
+	this.branchName = branchName;
+}
 public int getId() {
 	return id;
 }
@@ -67,12 +81,7 @@ public String getLocation() {
 public void setLocation(String location) {
 	this.location = location;
 }
-public String getBranch() {
-	return branch;
-}
-public void setBranch(String branch) {
-	this.branch = branch;
-}
+
 public String getType() {
 	return type;
 }
