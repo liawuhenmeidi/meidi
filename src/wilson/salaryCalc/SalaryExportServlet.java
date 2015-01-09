@@ -75,7 +75,7 @@ public class SalaryExportServlet extends HttpServlet {
 			}
 	        
 			//排序
-	        lists = SalaryCalcManager.sortSalaryResult(lists);
+	        lists = SalaryCalcManager.sortSalaryResult(lists,true);
 		}
 		
         

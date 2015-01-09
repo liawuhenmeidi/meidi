@@ -529,6 +529,31 @@ public class UploadManager {
 		return checkedUploadOrders;
 	}
 	
+	public static List<String> getCalcedUploadOrdersNames(){
+		List <String> result = new ArrayList<String>();
+
+		Connection conn = DB.getConn(); 
+		String sql = "select distinct name from uploadorder where checked = 2 order by shop";
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		String tmp = "";
+		try {     
+			while (rs.next()) {
+				tmp = rs.getString("name");
+				result.add(tmp);
+				tmp = "";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
+	}
+	
 	public static List<String> getCheckedUploadOrdersNames(){
 		List <String> result = new ArrayList<String>();
 

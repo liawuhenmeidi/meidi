@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import wilson.catergory.HiddenCatergoryMapingManager;
 import wilson.salaryCalc.HiddenFileManager;
 
 public class PathUtill extends HttpServlet {
@@ -94,6 +95,7 @@ public class PathUtill extends HttpServlet {
 		
 		String realPath = getServletContext().getRealPath("/");
 		HiddenFileManager.initPath(realPath);
+		HiddenCatergoryMapingManager.initPath(realPath);
 	}
 
 }

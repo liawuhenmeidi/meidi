@@ -63,6 +63,9 @@
 	
 	//取出其中的名称
 	List<String> orderNames = UploadManager.getCheckedUploadOrdersNames();
+	orderNames.removeAll(UploadManager.getCalcedUploadOrdersNames());
+
+	
 	List<String> salaryModelsNames = UploadManager.getAllSalaryModelNames();
 	String groupname = request.getParameter("selectGroup");
 	

@@ -15,6 +15,7 @@
 		if(!StringUtill.isNull(name)){
 			if(!name.equals("all")){
 				SalaryCalcManager.resetSalaryResultByName(name);
+				HiddenCatergoryMapingManager.delCatergoryMaping(name);
 			}else{
 				//lists = SalaryCalcManager.getSalaryResultByDate((Date)request.getSession().getAttribute("startDate"), (Date)request.getSession().getAttribute("endDate"));
 			}
@@ -90,14 +91,7 @@
 			
 		}
 		if(showResult.size() > 0 ){
-			String catergoryMapingName = "";
-			for(int i = 0 ; i < showResult.size() ; i ++){
-				if(showResult.get(i).isFinished()){
-					catergoryMapingName = showResult.get(i).getUploadOrder().getFileName();
-					break;
-				}
-			}
-			showResult =  SalaryCalcManager.sortSalaryResult(showResult);
+			showResult =  SalaryCalcManager.sortSalaryResult(showResult,true);
 		}
 		//导出用
 		session.setAttribute("exportSalaryName", name);

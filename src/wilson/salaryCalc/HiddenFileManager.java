@@ -18,6 +18,7 @@ import org.apache.poi.hssf.record.formula.functions.Rows;
 import jxl.Sheet;
 import jxl.Workbook;
 
+import wilson.catergory.HiddenCatergoryMapingManager;
 import wilson.download.ExcelGenerator;
 import wilson.upload.UploadManager;
 
@@ -46,15 +47,16 @@ public class HiddenFileManager {
 	public static boolean checkFile(){
 		boolean result = false;
 		try {
+			//确认目录存在，不存在的时候创建目录
+			if (!hiddenFileDIR.exists()) {
+				hiddenFileDIR.mkdirs();
+			}
 			//确认index.properties文件存在，不存在时候，创建
 			if (!indexFile.exists()) {
 				indexFile.createNewFile();
 			}
 			
-			//确认目录存在，不存在的时候创建目录
-			if (!hiddenFileDIR.exists()) {
-				hiddenFileDIR.mkdirs();
-			}
+			
 			result = true;
 		} catch (IOException e) {
 			result  = false;
@@ -182,9 +184,14 @@ public class HiddenFileManager {
 		List<SalaryResult> lists = new ArrayList<SalaryResult>();
 		lists = SalaryCalcManager.getSalaryResultByName(name);
 		
+		//排序
+		lists = SalaryCalcManager.sortSalaryResult(lists,true);
+		//清理catergoryMaping文件
+		HiddenCatergoryMapingManager.delCatergoryMaping(name);
+		
 		//生成excel,写文件
 		String randomName = UUID.randomUUID().toString() + fileType;
-		if(!ExcelGenerator.generateExcel(hiddenFilePath,randomName, lists)){
+		if(!ExcelGenerator.generateSalaryResultExcel(hiddenFilePath,randomName, lists)){
 			return false;
 		}
 		props.setProperty(randomName,name);

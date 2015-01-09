@@ -32,6 +32,7 @@ import org.apache.poi.util.StringUtil;
 import utill.StringUtill;
 import wilson.catergory.CatergoryManager;
 import wilson.catergory.CatergoryMaping;
+import wilson.catergory.HiddenCatergoryMapingManager;
 import wilson.download.ExcelGenerator;
 import wilson.upload.SalaryModelUpload;
 import wilson.upload.UploadManager;
@@ -60,17 +61,32 @@ public class SalaryCalcManager {
 	}
 	
 	public static List<SalaryResult> sortSalaryResult(
+			List<SalaryResult> input,boolean isLocalCatergoryMaping) {
+		if(input.size() <= 0 ){
+			return input;
+		}
+		String CatergoryMapingName = "";
+		CatergoryMapingName = CatergoryManager.getCatergoryMapingByUploadOrderName(input.get(0).getUploadOrder().getName());
+		return sortSalaryResult(input,CatergoryMapingName,isLocalCatergoryMaping);
+	}
+	
+	public static List<SalaryResult> sortSalaryResult(
 			List<SalaryResult> input) {
 		if(input.size() <= 0 ){
 			return input;
 		}
 		String CatergoryMapingName = "";
 		CatergoryMapingName = CatergoryManager.getCatergoryMapingByUploadOrderName(input.get(0).getUploadOrder().getName());
-		return sortSalaryResult(input,CatergoryMapingName);
+		return sortSalaryResult(input,false);
 	}
 	
 	public static List<SalaryResult> sortSalaryResult(
 			List<SalaryResult> input,String CatergoryMapingName) {
+		return sortSalaryResult(input,CatergoryMapingName,false);
+	}
+	
+	public static List<SalaryResult> sortSalaryResult(
+			List<SalaryResult> input,String CatergoryMapingName,boolean isLocalCatergoryMaping) {
 		if(input.size() <= 0 ){
 			return input;
 		}
@@ -79,8 +95,18 @@ public class SalaryCalcManager {
 		
 		List<SalaryResult> result = new ArrayList<SalaryResult>();
 		
-		List<CatergoryMaping> cmMapingList = CatergoryManager.getCatergory(CatergoryMapingName);
+		List<CatergoryMaping> cmMapingList = new ArrayList<CatergoryMaping>();
 		
+		if(isLocalCatergoryMaping){
+			String tmp_filename = input.get(0).getUploadOrder().getName();
+			cmMapingList = HiddenCatergoryMapingManager.getCatergoryMapings(tmp_filename);
+			if(cmMapingList.size() <= 0 ){
+				cmMapingList = CatergoryManager.getCatergory(CatergoryMapingName);
+			}
+		}else{
+			cmMapingList = CatergoryManager.getCatergory(CatergoryMapingName);
+		}
+
 		if(cmMapingList.size() <= 0 ){
 			return input;
 		}
@@ -514,6 +540,14 @@ public class SalaryCalcManager {
 	
 	public static boolean saveSalaryResult(List<SalaryResult> salaryResult,String catergoryMapingName){
 		boolean flag = false;
+		if(salaryResult == null || salaryResult.size() <= 0){
+			return false;
+		}
+		//存catergorymaping
+		if(!HiddenCatergoryMapingManager.saveCatergoryMaping(salaryResult.get(0).getUploadOrder().getName(), catergoryMapingName)){
+			return false;
+		}
+		
 		Connection conn = DB.getConn();
 		//暂时先这样。。。囧
 		String sql = "update uploadorder set checked = ?,filename=?  where id = ?";
@@ -523,6 +557,7 @@ public class SalaryCalcManager {
 		try {
 			//事务开始
 			logger.info("事务开始");
+			
 			autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit(false);
 			for(int i = 0 ; i < salaryResult.size() ; i ++){

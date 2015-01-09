@@ -13,10 +13,11 @@ import jxl.write.NumberFormat;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
+import wilson.catergory.CatergoryMaping;
 import wilson.salaryCalc.SalaryResult;
 
 public class ExcelGenerator {
-	public static boolean generateExcel(String path,String fileName,List<SalaryResult> lists){
+	public static boolean generateSalaryResultExcel(String path,String fileName,List<SalaryResult> lists){
 		boolean result = false;
 		OutputStream out = null;
 		try{  
@@ -92,6 +93,67 @@ public class ExcelGenerator {
 	            sheet.addCell(label6);	
 	            sheet.addCell(num1);	
 	            sheet.addCell(num2);	
+	        }    
+	        
+			// 将文件存到指定位置
+
+			book.write();
+			book.close();
+			result = true;
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}finally{
+				try {
+					out.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		return result;
+	}
+	
+	public static boolean generateCatergoryMapingExcel(String path,String fileName,List<CatergoryMaping> lists){
+		boolean result = false;
+		OutputStream out = null;
+		try{  
+			File outputFile = new File(path+File.separator+fileName);
+			out = new FileOutputStream(outputFile);
+	        //  打开文件 
+	        WritableWorkbook book  =  Workbook.createWorkbook(out);
+	        //  生成名为“第一页”的工作表，参数0表示这是第一页 
+	        WritableSheet sheet  =  book.createSheet( " 第一页 " ,  0 );
+	        //  在Label对象的构造子中指名单元格位置是第一列第一行(0,0)
+	        //  以及单元格内容为test 
+	      
+	        
+	        Label label0  =   new  Label( 0 ,  0 ,  " ID " );
+	        Label label1  =   new  Label( 1 ,  0 ,  " NAME " );
+	        Label label2  =   new  Label( 2 ,  0 ,  " SHOP ");
+	        Label label3  =   new  Label( 3 ,  0 ,  " CONTENT " );
+	        Label label4  =   new  Label( 4 ,  0 ,  " MODIFYTIME " );
+
+	        //  将定义好的单元格添加到工作表中 
+	        sheet.addCell(label0);
+	        sheet.addCell(label1);
+	        sheet.addCell(label2);
+	        sheet.addCell(label3);
+	        sheet.addCell(label4);
+	        
+	        for(int i = 0 ; i < lists.size() ; i ++ ){
+	        	label0 = new Label(0,i+1,String.valueOf(lists.get(i).getId()));
+	        	label1 = new Label(1,i+1,lists.get(i).getName());
+	        	label2 = new Label(2,i+1,lists.get(i).getShop());
+	        	label3 = new Label(3,i+1,lists.get(i).getContent());
+	        	label4 = new Label(4,i+1,lists.get(i).getModifyTime());
+
+	        	sheet.addCell(label0);
+	            sheet.addCell(label1);
+	            sheet.addCell(label2);
+	            sheet.addCell(label3);
+	            sheet.addCell(label4);	
 	        }    
 	        
 			// 将文件存到指定位置
