@@ -163,8 +163,22 @@ var jsonmap = '<%=mapjosn%>';
 var checkBoxStatus = '<%=checkBoxStatus%>';
 $(function () {
 	initCheckBox();
+	initPageChange();
 	$('#branchtype').val('<%=selectBranchType%>');
 });
+
+function initPageChange(){
+	$('#pagechange').change(function (){
+		if($('#pagechange').val() == '1'){
+			location.href='manualCheckout.jsp';
+		}else if($('#pagechange').val() == '2'){
+			location.href='CheckedOrders.jsp';
+		}else if($('#pagechange').val() == '3'){
+			location.href='unConfirmedOrders.jsp';
+		}
+
+	});
+}
 
 function transferShopName(){
 	var output = '';
@@ -307,11 +321,12 @@ $(function (){
 <table width="100%">
 	<tr>
 		<td width="15%">
-		本页显示为 
-		<select onchange="location.href='CheckedOrders.jsp'">
+		<h3>本页显示为 
+		<select id="pagechange">
 			<option value="1" selected="selected">对比未结款单据</option>
 			<option value="2" >对比已结款单据</option>
-		</select>
+			<option value="3" >对比未消单据</option>
+		</select></h3>	
 		</td>
 		<td><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp?unchecked=true&branchtype=<%=selectBranchType%>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
 	</tr>

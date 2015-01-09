@@ -36,6 +36,31 @@ public class MatchOrderManager {
 		}
 		return unCheckedDBOrders;
 	}
+	
+	//根据条件取order(仅提供给manualCheckout.jsp使用)
+	public static List<Order> getUnConfirmedDBOrders(String selectBranchType,String selectBranch,String deadline){
+		List<Order> unCheckedDBOrders = new ArrayList<Order>();
+		
+		//查询条件提交后，左侧侧显示内容
+		if(selectBranchType != null && !selectBranchType.equals("") ){
+			//第一级选择的是否是all
+			if(selectBranchType.equals("all")){
+				unCheckedDBOrders = MatchOrderManager.getUnCheckedDBOrders(deadline);
+			}else{
+				
+				if(selectBranch != null && !selectBranch.equals("")){
+					//第二级选择的是否是all
+					if(selectBranch.equals("all")){ 
+						unCheckedDBOrders = OrderManager.getUnConfirmedDBOrdersbyBranchType(selectBranchType,deadline);
+					}else{
+						unCheckedDBOrders = OrderManager.getUnConfirmedDBOrdersbyBranch(selectBranch,deadline);
+					}
+				}
+				
+			}
+		}
+		return unCheckedDBOrders;
+	}
 	//根据条件取Uploadorder(仅提供给manualCheckout.jsp使用)
 	public static List<UploadOrder> getUnCheckedUploadOrders(String selectOrderName){
 		List<UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();

@@ -1,6 +1,6 @@
+<%@page import="com.sun.net.httpserver.HttpContext"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,order.*,orderproduct.*,branchtype.*,branch.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-
 
 <%
 	request.setCharacterEncoding("utf-8");
@@ -11,17 +11,21 @@
 	//接受两边的id
 	String[] dbSide = request.getParameterValues("dbside");
 	String[] uploadSide = request.getParameterValues("uploadside");
-
+	String selectOrderName = request.getParameter("uploadorder");
+	
 	//接受选定的对比参数
 	String checkBoxStatus = request.getParameter("checkBoxStatus");
-	
+
 	//显示内容的开关
 	boolean showContent = false;
 	String startButton = request.getParameter("startbutton");
-	String selectOrderName = request.getParameter("uploadorder");
+	 
 	if(startButton == null){
 		String transferShop = request.getParameter("transferShop");
 		if(UploadManager.transferShopName(transferShop)){
+			if(dbSide != null && dbSide.length >0){
+				MatchOrderManager.checkDBOrderList(user,dbSide,selectOrderName);
+			}
 			if(uploadSide != null && uploadSide.length > 0){
 				MatchOrderManager.checkUploadOrderList(uploadSide); 
 			}
@@ -65,9 +69,9 @@
 	
 	
 	//查询条件提交后，左侧侧显示内容
-	unCheckedDBOrders = MatchOrderManager.getCheckedDBOrders(selectBranchType, selectBranch, deadline);
-		
-		
+	unCheckedDBOrders = MatchOrderManager.getUnCoDBOrders(selectBranchType, selectBranch, deadline);
+	
+	
 	//查询条件提交后，右侧显示内容
 	unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders(selectOrderName);
 	
@@ -78,6 +82,7 @@
 		session.setAttribute("selectBranch", selectBranch);
 		session.setAttribute("selectOrderName", selectOrderName);
 		session.setAttribute("deadline", deadline);
+		
 		if(!mo.startMatch(unCheckedDBOrders, unCheckedUploadOrders,checkBoxStatus)){
 			return;
 		}
@@ -87,13 +92,14 @@
 	//计算本轮的计算的个数
 	int calcNum = MatchOrder.getRequeredLevel(checkBoxStatus);
 	
+	
 	//如果是搜索进来的
 	String search = request.getParameter("search");
 	if(!StringUtill.isNull(search) && search.equals("true")){
 		UploadOrder searchOrder = (UploadOrder)request.getSession().getAttribute("searchUploadOrder");
 		
 
-		unCheckedDBOrders = MatchOrderManager.getCheckedDBOrders((String)request.getSession().getAttribute("selectBranchType"), (String)request.getSession().getAttribute("selectBranch"), (String)request.getSession().getAttribute("deadline"));
+		unCheckedDBOrders = MatchOrderManager.getUnCheckedDBOrders((String)request.getSession().getAttribute("selectBranchType"), (String)request.getSession().getAttribute("selectBranch"), (String)request.getSession().getAttribute("deadline"));
 		unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders((String)request.getSession().getAttribute("selectOrderName"));
 		
 		
@@ -106,17 +112,15 @@
 		}
 		//去自动匹配好的Order
 		afterMatchOrders = mo.getMatchedOrders();
+		
 	}
-	
-	
 	
 	//导出用
 	session.setAttribute("afterMatchOrders", afterMatchOrders);
 	
 	
-	int inter = 1;
 	
-
+	int inter = 1;
 	System.out.println("自动对比页面总执行时间(毫秒) = " + (System.currentTimeMillis() - startTime));
 	
 	
@@ -135,7 +139,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>手动结款页</title>
+<title>结款页</title>
   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 	<style>
@@ -155,7 +159,7 @@ tr strong,tr td {white-space:normal}
 <script type="text/javascript" src="../js/calendar.js"></script> 
 <script type="text/javascript">
 
-var jsonmap = '<%=mapjosn%>';   
+var jsonmap = '<%=mapjosn%>';
 var checkBoxStatus = '<%=checkBoxStatus%>';
 $(function () {
 	initCheckBox();
@@ -178,9 +182,9 @@ function initPageChange(){
 
 function transferShopName(){
 	var output = '';
-	var id1col = 15;
+	var id1col = 14;
 	var id2col = 6;
-	var shop1col = 14;
+	var shop1col = 13;
 	var shop2col = 5;
 	if($('#baseTable tr').length > 0){
 		var cols = $('#baseTable tr')[0].cells.length;
@@ -312,6 +316,7 @@ $(function (){
 <jsp:include flush="true" page="head.jsp">
 <jsp:param name="dmsn" value="" />
 </jsp:include>
+    
 
 <table width="100%">
 	<tr>
@@ -319,11 +324,11 @@ $(function (){
 		<h3>本页显示为 
 		<select id="pagechange">
 			<option value="1" >对比未结款单据</option>
-			<option value="2" selected="selected">对比已结款单据</option>
-			<option value="3" >对比未消单据</option>
-		</select></h3>
+			<option value="2" >对比已结款单据</option>
+			<option value="3" selected="selected">对比未消单据</option>
+		</select></h3>	
 		</td>
-		<td ><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp?unchecked=false&branchtype=<%=selectBranchType%>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
+		<td><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp?unchecked=true&branchtype=<%=selectBranchType%>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
 	</tr>
 	<tr>
 		<td colspan="2" align="left">
@@ -346,14 +351,16 @@ $(function (){
 		</td>
 	</tr>
 </table>
+
 <form name="baseform" id="baseform" method="post">
+<input type="hidden" name="search" value="false"/>
 <table width="100%" height="100%" align="center" border=0>
        <tr>
        <table  width="100%"  border=1>
        <tr>
-			<td colspan="8" align="center">
+			<td colspan="7" align="center">
 			&nbsp;&nbsp;&nbsp;&nbsp;
-			<h3>本地记录的订单(截至时间<input class="date2" type="text" name="deadline" id ="serviceDate2" onclick="new Calendar().show(this);"  readonly="readonly" value="<%=deadline %>" style="width:20% "></input>)</h3>
+			<h3>本地记录的订单(截至时间<input class="date2" type="text" name="deadline" id ="serviceDate2" onclick="new Calendar().show(this);"  readonly="readonly" style="width:20% " value="<%=deadline %>"></input>)</h3>
 			<select name="branchtype" id="branchtype" >
           	<option value="all">全部</option> 
           	<%
@@ -361,7 +368,7 @@ $(function (){
 				 BranchType lo = listb.get(i); 
 				 if(lo.getId() != 2){ 
 			%>	    
-			<option value="<%=lo.getId()%>" <%if(String.valueOf(lo.getId()).equals(selectBranchType)){ %>selected="selected" <%} %>><%=lo.getName()%></option>
+			<option value="<%=lo.getId()%>" ><%=lo.getName()%></option>
 			<%
 				 }
 			 }
@@ -387,9 +394,9 @@ $(function (){
 			%>
 			<input type="button" value="导出" onclick="$('#baseform').attr('action','../MatchOrderExport');$('#baseform').submit()"/>
 			<br/>
-			<input type="submit" id="submitbutton" value="提交"  onclick="return confirm('是否确认?')"/>
+			<input type="submit" id="submitbutton" value="提交" onclick="return confirm('是否确认?')"/>
 			<%
-			}
+			} 
 			%>
 			</td>
 			
@@ -421,9 +428,8 @@ $(function (){
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
 			<td align="center">票面型号</td> 
-			<td align="center">票面数量</td>
-			<td align="center">送货状态</td>
-			<td align="center">是否结款</td>
+			<td align="center">票面数量</td> 
+			<td align="center">送货状态</td> 
 			<td align="center">序号</td> 
 			<td align="center">选中</td>
 			<td align="center">销售门店</td>
@@ -439,7 +445,7 @@ $(function (){
    <td align="center" width="100%">
     <div style="overflow-y:auto; width:100%;height:500px">
 
-<table id="baseTable"  align="center" width="100%" cellspacing="1" border="2px" >
+<table id="baseTable" align="center" width="100%" cellspacing="1" border="2px" >
 		
 		
 		
@@ -466,16 +472,15 @@ $(function (){
 			
 		%>
 		<tr>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId()%>db"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(true) {%>disabled="disabled"<% }%> name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"  /></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId()%>db"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(dbsideDisabled) {%>disabled="disabled"<% }%> name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"  /></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="#" onClick="javascript:window.open('./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbstatus"><%= dbsideDisabled?"":OrderManager.getDeliveryStatues(afterMatchOrders.get(i).getDBOrder()) %></td>
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbfilename"><%= dbsideDisabled?"":((StringUtill.isNull(afterMatchOrders.get(i).getDBOrder().getStatuesCharge())?"否":afterMatchOrders.get(i).getDBOrder().getStatuesCharge())) %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbstatus"><%= dbsideDisabled?"":OrderManager.getDeliveryStatues(afterMatchOrders.get(i).getDBOrder()) %></td> 
 			<td align="center" id=""><%=inter++ %></td> 
-			<td align="center" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(uploadsideDisabled) {%>disabled="disabled"<% }%> name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
+			<td align="center" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>upload"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(uploadsideDisabled) {%>disabled="disabled"<% }%> name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadshop"><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadposno"><a href="#" onClick="javascript:window.open('./uploadOrderDetail.jsp?id=<%=afterMatchOrders.get(i).getUploadOrder().getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></a></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadsaletime"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
@@ -483,7 +488,7 @@ $(function (){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadcount"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		<input type="hidden" value="" id="transferShop" name="transferShop"/>
-		<%
+		<%	
 			
 		}
 		%>
