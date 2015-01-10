@@ -99,10 +99,11 @@ public class SalaryExportServlet extends HttpServlet {
         Label label3  =   new  Label( 3 ,  0 ,  " 导购员姓名 " );
         Label label4  =   new  Label( 4 ,  0 ,  " 销售日期 " );
         Label label5  =   new  Label( 5 ,  0 ,  " 品类  " );
-        Label label6  =   new  Label( 6 ,  0 ,  " 销售型号  " );
-        Label label7  =   new  Label( 7 ,  0 ,  " 数量  " );
-        Label label8  =   new  Label( 8 ,  0 ,  " 单价 " );
-        Label label9  =   new  Label( 9 ,  0 ,  " 提成 " );
+        Label label6  =   new  Label( 6 ,  0 ,  " 票面型号  " );
+        Label label7  =   new  Label( 7 ,  0 ,  " 销售型号  " );
+        Label label8  =   new  Label( 8 ,  0 ,  " 数量  " );
+        Label label9  =   new  Label( 9 ,  0 ,  " 单价 " );
+        Label label10  =   new  Label( 10 ,  0 ,  " 提成 " );
 
         //  将定义好的单元格添加到工作表中 
         sheet.addCell(label0);
@@ -115,6 +116,7 @@ public class SalaryExportServlet extends HttpServlet {
         sheet.addCell(label7);
         sheet.addCell(label8);
         sheet.addCell(label9);
+        sheet.addCell(label10);
         
         jxl.write.Number num1;
         jxl.write.Number num2;
@@ -128,13 +130,14 @@ public class SalaryExportServlet extends HttpServlet {
         	label4 = new Label(4,i+1,lists.get(i).getUploadOrder().getSaleTime());
         	label5 = new Label(5,i+1,lists.get(i).getSalaryModel().getCatergory());
         	label6 = new Label(6,i+1,lists.get(i).getUploadOrder().getType());
-        	num1 = new jxl.write.Number(7, i+1,lists.get(i).getUploadOrder().getNum()); 
-        	num2 = new jxl.write.Number(8, i+1,lists.get(i).getUploadOrder().getSalePrice()); 
+        	label7 = new Label(7,i+1,lists.get(i).getUploadOrder().getSaleManName());
+        	num1 = new jxl.write.Number(8, i+1,lists.get(i).getUploadOrder().getNum()); 
+        	num2 = new jxl.write.Number(9, i+1,lists.get(i).getUploadOrder().getSalePrice()); 
         	if(lists.get(i).isFinished()){
-        		num3 = new jxl.write.Number(9, i+1,lists.get(i).getSalary()); 
+        		num3 = new jxl.write.Number(10, i+1,lists.get(i).getSalary()); 
         		sheet.addCell(num3);
         	}else{
-        		label9 = new Label(9,i+1,lists.get(i).getPrintSalary());
+        		label9 = new Label(10,i+1,lists.get(i).getPrintSalary());
         		sheet.addCell(label9);
         	}
         	
@@ -147,6 +150,7 @@ public class SalaryExportServlet extends HttpServlet {
             sheet.addCell(label4);	
             sheet.addCell(label5);	
             sheet.addCell(label6);	
+            sheet.addCell(label7);
             sheet.addCell(num1);	
             sheet.addCell(num2);	
             

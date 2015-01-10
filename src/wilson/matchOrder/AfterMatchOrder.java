@@ -11,6 +11,7 @@ public class AfterMatchOrder {
 	private String DBSideSaleTime = "";
 	private String DBSideType = "";
 	private String DBSideCount = "";
+	private String DBSideType_trans = "";
 	private int DBSideOrderId = 0;
 	
 	private UploadOrder uploadOrder = new UploadOrder();
@@ -29,6 +30,10 @@ public class AfterMatchOrder {
 		DBSidePosNo = dbOrder.getPos();
 		DBSideSaleTime = dbOrder.getSaleTime();
 		DBSideType = dbOrder.getSendType();
+		DBSideType_trans = dbOrder.getSendType(0,"^");
+		if(DBSideType_trans.startsWith("^")){
+			DBSideType_trans = DBSideType_trans.substring(1,DBSideType_trans.length());
+		}
 		DBSideCount = String.valueOf(dbOrder.getSendCount());
 		DBSideOrderId = dbOrder.getId();
 	}
@@ -75,6 +80,10 @@ public class AfterMatchOrder {
 			DBSidePosNo = dbOrder.getPos();
 			DBSideSaleTime = dbOrder.getSaleTime();
 			DBSideType = dbOrder.getSendType();
+			DBSideType_trans = dbOrder.getSendType(0,"^");
+			if(DBSideType_trans.startsWith("^")){
+				DBSideType_trans = DBSideType_trans.substring(1,DBSideType_trans.length());
+			}
 			DBSideCount = String.valueOf(dbOrder.getSendCount());
 			DBSideOrderId = dbOrder.getId();
 		}else{
@@ -83,6 +92,7 @@ public class AfterMatchOrder {
 			DBSidePosNo = "";
 			DBSideSaleTime = "";
 			DBSideType = "";
+			DBSideType_trans = "";
 			DBSideCount = "";
 			DBSideOrderId = dbOrder.getId();
 			
@@ -608,6 +618,14 @@ public class AfterMatchOrder {
 		}
 		return result;
 
+	}
+
+	public String getDBSideType_trans() {
+		return DBSideType_trans;
+	}
+
+	public void setDBSideType_trans(String dBSideType_trans) {
+		DBSideType_trans = dBSideType_trans;
 	}
 	
 }

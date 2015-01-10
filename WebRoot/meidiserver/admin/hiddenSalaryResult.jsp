@@ -56,8 +56,9 @@ if(StringUtill.isNull(actiontype)){
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 
 <link rel="stylesheet" href="../css/jquery-ui.css"/>
-<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script src="../js/jquery-ui.js"></script>
+<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+
 
 <!-- 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">

@@ -2,12 +2,9 @@ package wilson.salaryCalc;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import wilson.upload.UploadOrder;
 import wilson.upload.UploadSalaryModel;
-import branchtype.BranchType;
-import branchtype.BranchTypeManager;
 
 public class SalaryResult {
 	private int id;
@@ -19,6 +16,9 @@ public class SalaryResult {
 	private String calcTime = ""; //计算提成的时间
 	private Double salary = 0.0 ; //提成数字
 	private int status = 0 ; //预留状态位置
+	
+	private String saleManName = "";
+
 	
 	//普通与标记用的分界线
 	public static final int STATUS_NORMAL = -1;
@@ -187,8 +187,19 @@ public class SalaryResult {
 			this.setCalcTime(sdf.format(new Date()));
 			return true;
 		}catch(Exception e){
+			e.printStackTrace();
 			return false;
 		}
 		
+	}
+
+
+	public String getSaleManName() {
+		return saleManName;
+	}
+
+
+	public void setSaleManName(String saleManName) {
+		this.saleManName = saleManName;
 	}
 }

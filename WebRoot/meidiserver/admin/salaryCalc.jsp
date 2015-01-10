@@ -280,7 +280,7 @@ function beforSubmit(){
 				<td align="center">销售门店</td>
 				<td align="center">pos(厂送)单号</td>
 				<td align="center">销售日期</td>
-				<td align="center">票面型号</td> 
+				<td align="center">型号</td> 
 				<td align="center">票面数量</td> 
 				<td align="center">供价</td>
 				
@@ -294,7 +294,7 @@ function beforSubmit(){
 					<td align="center"><%=showOrders.get(i).getShop() %></td>
 					<td align="center"><%=showOrders.get(i).getPosNo()%></td>
 					<td align="center"><%=showOrders.get(i).getSaleTime() %></td>
-					<td align="center"><%=showOrders.get(i).getType() %></td> 
+					<td align="center"><%=showOrders.get(i).getTypeForCalc() %></td> 
 					<td align="center"><%=showOrders.get(i).getNum() %></td> 
 					<td align="center"><%=showOrders.get(i).getSalePrice() %></td>
 					
@@ -471,8 +471,8 @@ if(showResult){
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getPosNo() %></td>
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSaleTime() %></td>
 			<td align="center"><%=salaryResult.get(i).getSalaryModel().getCatergory() %></td> 
-			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSaleManName() %></td> 
-			<td align="center"><%=salaryResult.get(i).getUploadOrder().getType() %></td> 
+			<td align="center"><%=salaryResult.get(i).getSaleManName() %></td> 
+			<td align="center"><%=salaryResult.get(i).getUploadOrder().getTypeForCalc() %></td> 
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getNum() %></td> 
 			<td align="center"><%=salaryResult.get(i).getSalaryModel().getContent() %></td>
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSalePrice() %></td>
@@ -496,7 +496,7 @@ if(showResult){
 			<td align="center">销售门店</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
-			<td align="center">票面型号</td> 
+			<td align="center">型号</td> 
 			<td align="center">票面数量</td> 
 			<td align="center">供价</td>
 		</tr>
@@ -509,7 +509,7 @@ if(showResult){
 			<td align="center"><%=unCalcUploadOrders.get(i).getShop() %></td>
 			<td align="center"><%=unCalcUploadOrders.get(i).getPosNo() %></td>
 			<td align="center"><%=unCalcUploadOrders.get(i).getSaleTime() %></td>
-			<td align="center"><%=unCalcUploadOrders.get(i).getType() %></td> 
+			<td align="center"><%=unCalcUploadOrders.get(i).getTypeForCalc() %></td> 
 			<td align="center"><%=unCalcUploadOrders.get(i).getNum() %></td> 
 			<td align="center"><%=unCalcUploadOrders.get(i).getSalePrice() %></td>
 		</tr>

@@ -220,7 +220,8 @@ public class SalaryCalcManager {
 								}
 								
 								if(items.contains(sameShopList.get(j).getSalaryModel().getCatergory())){
-									sameShopList.get(j).getUploadOrder().setSaleManName(rightSide);
+									sameShopList.get(j).setSaleManName(rightSide);
+									
 									
 									sameGroupTotal.setSalary(sameGroupTotal.getSalary() + sameShopList.get(j).getSalary());
 									//设置店名，类别等
@@ -231,7 +232,7 @@ public class SalaryCalcManager {
 									sameGroupTotal.setUploadOrderPosNo("");
 									sameGroupTotal.setUploadOrderShop(sameShopList.get(j).getUploadOrder().getShop());
 									sameGroupTotal.setUploadOrderName(sameShopList.get(j).getUploadOrder().getName());
-									sameGroupTotal.setUploadOrderSaleManName(rightSide);
+									sameGroupTotal.setSaleManName(rightSide);
 									
 									result.add(sameShopList.get(j));
 									sameShopList.remove(j);
@@ -452,9 +453,9 @@ public class SalaryCalcManager {
 			
 			tempOrder = uploadOrders.get(i);
 
-			tempOrder.setType(tempOrder.getType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")","").replace("）", "").replace("（", ""));
+			tempOrder.removeCharecterFromType();
 			//如果type是空，直接放到人工归类列表里面
-			if(tempOrder.getType()==""||tempOrder.getType()==null||tempOrder.getType().equals("")){
+			if(tempOrder.getTypeForCalc()==""||tempOrder.getTypeForCalc()==null||tempOrder.getTypeForCalc().equals("")){
 				unCalcUploadOrders.add(tempOrder);
 				continue;
 			}
@@ -473,7 +474,7 @@ public class SalaryCalcManager {
 				
 				//System.out.println("tempOrder =" + tempOrder.getType().trim() + " = tempSalaryModel " + tempSalaryModel.getType() + " ?  " + tempOrder.getType().trim().contains(tempSalaryModel.getType().trim()));
 				
-				if(tempOrder.getType().trim().toUpperCase().replaceAll(" ","").equals(tempSalaryModel.getType().trim().toUpperCase().replaceAll(" ",""))){
+				if(tempOrder.getTypeForCalc().trim().toUpperCase().replaceAll(" ","").equals(tempSalaryModel.getType().trim().toUpperCase().replaceAll(" ",""))){
 					matched = true;
 					matchedSalaryModels.add(tempSalaryModel);
 				}
@@ -503,6 +504,7 @@ public class SalaryCalcManager {
 							Date tempTime = new Date();
 							if(k == 0){
 								tempTime = commitTime;
+								latestSalaryModel = matchedSalaryModels.get(k);
 							}
 							
 							if(commitTime.after(tempTime)){

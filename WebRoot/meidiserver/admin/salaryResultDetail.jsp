@@ -96,9 +96,8 @@ try{
 <script type="text/javascript" src="../js/calendar.js"></script> 
 <script type="text/javascript" src="../js/common.js"></script>
 
-  
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="../css/jquery-ui.css"/>
+<script src="../js/jquery-ui.js"></script>
 
 <style type="text/css">
 .fixedHead { 
@@ -185,7 +184,7 @@ function checkedd(){
 			</td>
 		</tr>
 		<tr class="asc">	 
-			<td align="center" >导购员姓名</td>
+			<td align="center" >送货型号</td>
 			<td align="center" >
 	        <input type="text" readonly="readonly" name="salemanname" id="salemanname" value="<%=uo.getSaleManName() %>"  />
 			</td>

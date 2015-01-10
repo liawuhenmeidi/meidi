@@ -1,5 +1,7 @@
 package wilson.upload;
 
+import utill.StringUtill;
+
 public class UploadOrder {
 	
 	private int id = -1; //id
@@ -141,6 +143,14 @@ public class UploadOrder {
 	public String getSaleManName() {
 		return saleManName;
 	}
+	
+	public String getTypeForCalc(){
+		if(StringUtill.isNull(this.saleManName)){
+			return this.type;
+		}else{
+			return this.saleManName;
+		}
+	}
 
 	public void setSaleManName(String saleManName) {
 		this.saleManName = saleManName;
@@ -186,5 +196,10 @@ public class UploadOrder {
 		this.backPoint = backPoint;
 	}
 
-	
+	public void removeCharecterFromType(){
+		if(!StringUtill.isNull(saleManName)){
+			setSaleManName(getSaleManName().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")","").replace("）", "").replace("（", ""));
+		}
+		setType(getType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")","").replace("）", "").replace("（", ""));
+	}
 }

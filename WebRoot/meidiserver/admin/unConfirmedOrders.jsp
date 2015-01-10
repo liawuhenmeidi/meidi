@@ -22,7 +22,8 @@
 	 
 	if(startButton == null){
 		String transferShop = request.getParameter("transferShop");
-		if(UploadManager.transferShopName(transferShop)){
+		String transferType = request.getParameter("transferType");
+		if(UploadManager.transferShopName(transferShop) && UploadManager.transferType(transferType)){
 			if(dbSide != null && dbSide.length >0){
 				MatchOrderManager.checkDBOrderList(user,dbSide,selectOrderName);
 			}
@@ -164,11 +165,21 @@ tr strong,tr td {white-space:normal}
 var jsonmap = '<%=mapjosn%>';
 var checkBoxStatus = '<%=checkBoxStatus%>';
 $(function () {
+	initButton();
 	initCheckBox();
 	initPageChange();
 	$('#branchtype').val('<%=selectBranchType%>');
 	initcheck();
 });
+
+function initButton(){
+	$('#transferbutton').click(function (){
+		transferShopName();
+	});
+	$('#transfertypebutton').click(function (){
+		transferType();
+	});
+}
 
 function initPageChange(){
 	$('#pagechange').change(function (){
@@ -185,10 +196,10 @@ function initPageChange(){
 
 function transferShopName(){
 	var output = '';
-	var id1col = 14;
-	var id2col = 6;
-	var shop1col = 13;
-	var shop2col = 5;
+	var id1col = 15;
+	var id2col = 7;
+	var shop1col = 14;
+	var shop2col = 6;
 	if($('#baseTable tr').length > 0){
 		var cols = $('#baseTable tr')[0].cells.length;
 		 $('#baseTable tr').each(function () { 
@@ -205,6 +216,28 @@ function transferShopName(){
 		 });
 	}
 	$('#transferShop').val(output);
+}
+
+function transferType(){
+	var output = '';
+	var id1col = 15;
+	var id2col = 7;
+	var shop2col = 6;
+	if($('#baseTable tr').length > 0){
+		var cols = $('#baseTable tr')[0].cells.length;
+		 $('#baseTable tr').each(function () { 
+			 var checkbox1 = $('#'+ this.cells[cols-id1col].id);
+			 var checkbox2 = $('#'+ this.cells[cols-id2col].id);
+			 var shop2 = $('#'+  this.cells[cols-shop2col].id);
+			 var transType2 = $('#'+  this.cells[cols-transType2col].id);
+			 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked'){
+				output += checkbox2.find("input").val() + "," + transType2.attr('bak') + "_";
+				transType2.text(transType2.attr('bak'));
+			 }
+			 
+		 });
+	}
+	$('#transferType').val(output);
 }
 
 function initCheckBox(){
@@ -447,8 +480,9 @@ function initrightcount(obj){
 			<td  align="center">
 			 <label id="rightcount"></label>
 			</td>
-			<td colspan="4" align="center">
+			<td colspan="5" align="center">
 			<button id="transferbutton" type="button" onclick="transferShopName()">店名转换</button>
+			<button id="transfertypebutton" type="button" onclick="transferType()">送货型号转换</button>
 			
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<h3>上传单据</h3>
@@ -481,7 +515,8 @@ function initrightcount(obj){
 			<td align="center">销售门店</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">销售日期</td>
-			<td align="center">票面型号</td> 
+			<td align="center">票面型号</td>
+			<td align="center">送货型号</td>
 			<td align="center">票面数量</td> 
 	
 		</tr> 
@@ -532,9 +567,11 @@ function initrightcount(obj){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadposno"><a href="#" onClick="javascript:window.open('./uploadOrderDetail.jsp?id=<%=afterMatchOrders.get(i).getUploadOrder().getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></a></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadsaletime"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadtype"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadtype_trans" bak="<%= afterMatchOrders.get(i).getDBSideType_trans() %>"></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadcount"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		<input type="hidden" value="" id="transferShop" name="transferShop"/>
+		<input type="hidden" value="" id="transferType" name="transferType" />
 		<%	
 			
 		}

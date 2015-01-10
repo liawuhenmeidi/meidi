@@ -339,7 +339,8 @@ if(showResult.size() > 0 ){
 			<td>销售日期</td>
 			<td>品类</td>
 			<td>导购员姓名</td>
-			<td>销售型号</td>
+			<td>票面型号</td>
+			<td>送货型号</td>
 			<td>数量</td>
 			<td>单价</td>
 			<td>合计提成</td>
@@ -380,8 +381,9 @@ if(showResult.size() > 0 ){
 			<td id="<%=showResult.get(i).getId() %>pos"><%=showResult.get(i).getUploadOrder().getPosNo() %></td>
 			<td id="<%=showResult.get(i).getId() %>saletime"><%=showResult.get(i).getUploadOrder().getSaleTime() %></td>
 			<td id="<%=showResult.get(i).getId() %>catergory"><%=showResult.get(i).getSalaryModel() == null?"":showResult.get(i).getSalaryModel().getCatergory() %></td>
-			<td id="<%=showResult.get(i).getId() %>salemanname"><%=showResult.get(i).getUploadOrder().getSaleManName() %></td>
+			<td id="<%=showResult.get(i).getId() %>salemanname"><%=showResult.get(i).getSaleManName() %></td>
 			<td id="<%=showResult.get(i).getId() %>saletype"><%=showResult.get(i).getUploadOrder().getType()  %></td>
+			<td id="<%=showResult.get(i).getId() %>saletype_trans"><%=showResult.get(i).getUploadOrder().getSaleManName()  %></td>
 			<%if(!total){%>
 			<td id="<%=showResult.get(i).getId() %>num" value="<%=showResult.get(i).getUploadOrder().getNum() %>"><%=showResult.get(i).getUploadOrder().getNum() %></td>
 			<td id="<%=showResult.get(i).getId() %>saleprice" value="<%=showResult.get(i).getUploadOrder().getSalePrice() %>"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
