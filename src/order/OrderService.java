@@ -17,15 +17,21 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import category.Category;
+import category.CategoryService;
+
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
+import product.Product;
+import product.ProductService;
 import user.User;
 import user.UserManager;
 import user.UserService;
 import utill.BasicUtill;
 import utill.StringUtill;
 
+import aftersale.AfterSale;
 import branch.BranchService;
 
 public class OrderService {
@@ -3386,6 +3392,50 @@ public class OrderService {
 		    }
 		}
 		return html.toString();
+		 
+	}
+   
+   public static String getHtmlaftersalerepare(User user ,List<Order> list){
+	   	List<AfterSale> listas = new ArrayList<AfterSale>(); 
+	   	HashMap<Integer,Category> categorymap = CategoryService.getmap();
+	   	Map<Integer, Product> pmap = ProductService.getIDmap();
+		String html = "";
+           
+		if(null != list){
+			for(int i=0;i<list.size();i++){
+				Order or = list.get(i);
+				List<OrderProduct> listop = or.getOrderproduct();
+				if(null != listop){
+					for(int j=0;j<listop.size();j++){
+						OrderProduct op = listop.get(j);
+						if(op.getStatues() == 0 ){
+							AfterSale as = new AfterSale();
+							as.setPrintid(or.getPrintlnid());
+							as.setAndate(StringUtill.isNull(or.getInstalltime())==true?or.getSendtime():or.getInstalltime());
+							as.setBarcode(op.getBarcode());
+							as.setBatchNumber(op.getBatchNumber());
+							as.setBranch(or.getBranch());
+							as.setBranchName(or.getbranchName(or.getBranch()));
+							as.setCid(op.getCategoryId());
+							as.setPcount(op.getCount());
+							as.setcName(categorymap.get(op.getCategoryId()).getName());
+							as.setLocation(or.getLocateDetail());
+							as.setPhone(or.getPhone1());
+							as.setSaledate(or.getSaleTime());
+							as.setTid(Integer.valueOf(op.getSendType())); 
+							as.settName(pmap.get(Integer.valueOf(op.getSendType())).getType());
+							//System.out.println(pmap.get(Integer.valueOf(op.getSendType())).getName());
+							as.setUname(or.getUsername());
+							listas.add(as); 
+						}
+					}
+				}
+			} 
+
+			html = StringUtill.GetJson(listas);
+			//logger.info(html); 
+		}
+		return html;
 		 
 	}
    

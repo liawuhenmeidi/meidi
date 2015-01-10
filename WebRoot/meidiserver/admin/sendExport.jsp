@@ -237,7 +237,7 @@ if(unquery){
 		Saledealsend sain  = listsa.get(i);
 		
 	%>
-	<tr class="asc" ondblclick="unconfire('<%=sain.getId()%>')" onclick="updateClass(this)">
+	<tr class="asc" onclick="unconfire('<%=sain.getId()%>')" ">
 	 <td align="center">
 	 <%=sain.getName() %>
 	 </td>

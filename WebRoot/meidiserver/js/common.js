@@ -114,8 +114,15 @@ function initOrder(type,statues,num,page,sort,sear){
 	        	  var html = json.html;
 	        	 
 	        	  count = json.count;
-               
+                  var date = json.date ;
+                  if("" != date && null != date){
+                	 date =  aftersalerepare(date);
+                	 $("#table").append(date);
+                	// alert(date);
+                  }
+                  
 	        	 $("#table").append(html);
+	        	
 	        	 $("#count").html(count);
 	        	 $("#dateadd").css("display","none"); 
 	           },   
@@ -125,6 +132,31 @@ function initOrder(type,statues,num,page,sort,sear){
 	           }); 
 }
  
+function aftersalerepare(date){
+	var html = '';
+	var jsonlist =  $.parseJSON(date);
+	for(var i=0;i<jsonlist.length;i++){
+		var json = jsonlist[i]; 
+		//String tdcol = 'bgcolor="red"' ; 
+		html += '<tr id='+json.printid+'  class="asc"  onclick="updateClass(this)">';
+		html += '<td align="center" width="20"><input type="checkbox"  id="check_box" name ='+json.printid+'></input></td>';
+		html += '<td align="center">'+json.printid+'</td>';
+		html += '<td align="center">'+json.uname+'<p>'+json.phone+'</td>';
+		html += '<td align="center">'+json.cName+'</td>';
+		html += '<td align="center">'+json.tName+'</td>';
+		html += '<td align="center">'+json.pcount+'</td>';
+		html += '<td align="center">'+json.batchNumber+'</td>';
+		html += '<td align="center">'+json.barcode+'</td>';
+		
+		html += '<td align="center">'+json.location+'</td>';
+		html += '<td align="center">'+json.branchName+'</td>';
+		html += '<td align="center">'+json.saledate+'</td>';
+		html += '<td align="center">'+json.andate+'</td>'; 
+		html += '</tr>';
+	}
+	return html;
+}
+
 function seletall(all){
 	if($(all).attr("checked")){
 		$("input[type='checkbox'][id='check_box']").each(function(){

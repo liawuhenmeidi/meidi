@@ -92,9 +92,7 @@ public class OrderManager {
 		Connection conn = DB.getConn(); 
 		if(StringUtill.isNull(andate)){
 			andate = null;
-		}else { 
-			andate = "'"+andate+"'";
-		}  
+		} 
 		//insert into  mdgroup( id ,groupname, detail,statues, permissions, products) VALUES (null,?,?,?,?,?)";
 		String sql = "update mdorder set phone1= ? , andate = ? where id = " + oid;
 		PreparedStatement pstmt = DB.prepare(conn, sql);
@@ -803,6 +801,10 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   }else if(Order.orderquery == statues){  
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )      "+search+"  order by "+sort+str;    
 				   }        
+			   }else if(Group.aftersalerepare == type){
+				   if(Order.aftersalerepare == statues){ 
+					   sql = "select * from mdorder where deliveryStatues in (2) "+search+"  order by "+sort+str;
+				   }
 			   }                    
 	    }      
 	    
@@ -980,7 +982,11 @@ logger.info(sql);
 				   }else if(Order.orderquery == statues){  
 					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+"  and (deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )  and printSatuesp = 1    "+search ; 
 				   }    
-			   }                    
+			   }else if(Group.aftersalerepare == type){
+				   if(Order.aftersalerepare == statues){
+					   sql = "select count(*) from mdorder where deliveryStatues in (2) ";
+				   }
+			   }                      
 	    }       
   	  if("".equals(sql)){ 
   		   count =  0; 

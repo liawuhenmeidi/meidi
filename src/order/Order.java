@@ -184,7 +184,28 @@ public class Order {
   
   private String statuesCharge;
   
-  public String getStatuesCharge() {
+  private String branchname;
+  
+  public String getbranchName(int branchid){
+		return OrderService.getBranchName(branchid);
+	} 
+	
+  public String getBranchname() {
+	  if(StringUtill.isNull(branchname)){
+		  return OrderService.getBranchName(branch);
+	  }else { 
+		  return branchname;
+	  }
+	 
+}
+
+
+public void setBranchname(String branchname) {
+	this.branchname = branchname;
+}
+
+
+public String getStatuesCharge() {
 	return statuesCharge;
 }
 
@@ -994,9 +1015,7 @@ public String getSendCount(){
 	return sendCount;
 }
  
-public String getbranchName(int branchid){
-	return OrderService.getBranchName(branchid);
-} 
+
 
 public String getSendCount(int statues,String decollator){
 	String sendCount = "";

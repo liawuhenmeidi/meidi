@@ -105,6 +105,8 @@ public class SaledealsendManager {
 		 if(BasicUtill.dealsend == type){
 			 if(!StringUtill.isNull(dealsendid)){
 				 search += " and dealsendid = "+ dealsendid;
+			 }else { 
+				 search += " and dealsendid in ( select id from mduser where charge = " +user.getId()+ " ) ";   
 			 }  
 		 }else {
 			 if(!StringUtill.isNull(dealsendid)){

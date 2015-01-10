@@ -38,7 +38,7 @@ public class UploadOrder {
 		return getSalePrice() * getNum();
 	}
 	
-	public String getShop() {
+	public String getShop(){
 		return shop;
 	}
 
@@ -54,7 +54,7 @@ public class UploadOrder {
 		this.posNo = posNo;
 	}
 
-	public String getSaleTime() {
+	public String getSaleTime(){
 		return saleTime;
 	}
 
@@ -137,8 +137,6 @@ public class UploadOrder {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-
 
 	public String getSaleManName() {
 		return saleManName;
