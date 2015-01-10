@@ -122,7 +122,7 @@
 	
 	
 	//下面用到的背景色
-	String backgroundColor ="#B9D3EE";
+	String backgroundColor ="";
 	boolean showColor = false;
 	
 	//下面用到的是否check
@@ -526,6 +526,7 @@ function initrightcount(obj){
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
 			
 			showColor = false;
+			backgroundColor ="#B9D3EE";
 			isChecked = false;
 			dbsideDisabled =false;
 			uploadsideDisabled=false;
@@ -541,6 +542,10 @@ function initrightcount(obj){
 			}
 			if(afterMatchOrders.get(i).getDBSideOrderId() < 0){
 				dbsideDisabled = true;
+			}
+			if(afterMatchOrders.get(i).getDBOrder().isDiangma()){
+				backgroundColor = "#7CCD7C";
+				showColor = true;
 			}
 			
 		%>

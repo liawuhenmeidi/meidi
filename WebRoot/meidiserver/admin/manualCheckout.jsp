@@ -126,7 +126,7 @@
 	
 	
 	//下面用到的背景色
-	String backgroundColor ="#B9D3EE";
+	String backgroundColor ="";
 	boolean showColor = false;
 	
 	//下面用到的是否check
@@ -534,6 +534,7 @@ function initrightcount(obj){
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
 			
 			showColor = false;
+			backgroundColor ="#B9D3EE";
 			isChecked = false;
 			dbsideDisabled =false;
 			uploadsideDisabled=false;
@@ -550,7 +551,12 @@ function initrightcount(obj){
 			if(afterMatchOrders.get(i).getDBSideOrderId() < 0){
 				dbsideDisabled = true;
 			}
+			if(afterMatchOrders.get(i).getDBOrder().isDiangma()){
+				backgroundColor = "#7CCD7C";
+				showColor = true;
+			}
 				
+			
 		%>
 		<tr>
 			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId()%>db"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(dbsideDisabled) {%>disabled="disabled"<% }%> name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"  onclick="initleftcount(this)" /></td>
