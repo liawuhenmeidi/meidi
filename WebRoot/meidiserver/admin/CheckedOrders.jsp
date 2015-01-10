@@ -161,6 +161,7 @@ $(function () {
 	initCheckBox();
 	initPageChange();
 	$('#branchtype').val('<%=selectBranchType%>');
+	initcheck();
 });
 
 function initPageChange(){
@@ -306,6 +307,44 @@ $(function (){
 <%
 }
 %>
+
+var leftcount = 0  ;
+var rightcount = 0 ;
+function initcheck(){
+	
+	$("[name='dbside'][checked]").each(function(){
+		 leftcount++;
+	    });
+
+	 $("[name='uploadside'][checked]").each(function(){
+		 rightcount++;
+	    });
+	 
+	 $("#leftcount").text("匹配数量"+leftcount);
+	$("#rightcount").text("匹配数量"+rightcount);
+	
+}
+
+function initleftcount(obj){
+	if($(obj).is(':checked')){
+		leftcount++;
+	}else {
+		leftcount--;
+	}
+	$("#leftcount").text("匹配数量"+leftcount);
+
+}
+
+function initrightcount(obj){
+	if($(obj).is(':checked')){
+		rightcount++;
+	}else {
+		rightcount--;
+	}
+	$("#rightcount").text("匹配数量"+rightcount);
+}
+
+
 </script>
 
   
@@ -351,7 +390,7 @@ $(function (){
        <tr>
        <table  width="100%"  border=1>
        <tr>
-			<td colspan="8" align="center">
+			<td colspan="7" align="center">
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<h3>本地记录的订单(截至时间<input class="date2" type="text" name="deadline" id ="serviceDate2" onclick="new Calendar().show(this);"  readonly="readonly" value="<%=deadline %>" style="width:20% "></input>)</h3>
 			<select name="branchtype" id="branchtype" >
@@ -373,7 +412,10 @@ $(function (){
       		</select>
 			</td>
 			
+			<td  align="center">
+			<label id="leftcount"></label>
 			
+			</td>
 			
 			<td align="center">
 
@@ -393,8 +435,10 @@ $(function (){
 			%>
 			</td>
 			
-			
-			<td colspan="6" align="center">
+			<td  align="center">
+			 <label id="rightcount"></label>
+			</td>
+			<td colspan="5" align="center">
 			<button id="transferbutton" type="button" onclick="transferShopName()">店名转换</button>
 			
 			&nbsp;&nbsp;&nbsp;&nbsp;
@@ -466,7 +510,7 @@ $(function (){
 			
 		%>
 		<tr>
-			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId()%>db"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(true) {%>disabled="disabled"<% }%> name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>"  /></td>
+			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId()%>db"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(true) {%>disabled="disabled"<% }%> name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>" onclick="initleftcount(this)" /></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbshop"><%= afterMatchOrders.get(i).getDBSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbposno"><a href="#" onClick="javascript:window.open('./dingdanDetailmini.jsp?id=<%=afterMatchOrders.get(i).getDBOrder().getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"><%= afterMatchOrders.get(i).getDBSidePosNo() %></a></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
@@ -475,7 +519,7 @@ $(function (){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbstatus"><%= dbsideDisabled?"":OrderManager.getDeliveryStatues(afterMatchOrders.get(i).getDBOrder()) %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbfilename"><%= dbsideDisabled?"":((StringUtill.isNull(afterMatchOrders.get(i).getDBOrder().getStatuesCharge())?"否":afterMatchOrders.get(i).getDBOrder().getStatuesCharge())) %></td>
 			<td align="center" id=""><%=inter++ %></td> 
-			<td align="center" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(uploadsideDisabled) {%>disabled="disabled"<% }%> name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"/></td>		
+			<td align="center" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(uploadsideDisabled) {%>disabled="disabled"<% }%> name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>" onclick="initrightcount(this)"/></td>		
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadshop"><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadposno"><a href="#" onClick="javascript:window.open('./uploadOrderDetail.jsp?id=<%=afterMatchOrders.get(i).getUploadOrder().getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></a></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadsaletime"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>

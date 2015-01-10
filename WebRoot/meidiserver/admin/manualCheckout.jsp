@@ -163,9 +163,23 @@ var jsonmap = '<%=mapjosn%>';
 var checkBoxStatus = '<%=checkBoxStatus%>';
 $(function () {
 	initCheckBox();
+	initPageChange();
 	$('#branchtype').val('<%=selectBranchType%>');
 	initcheck();
 });
+
+function initPageChange(){
+	$('#pagechange').change(function (){
+		if($('#pagechange').val() == '1'){
+			location.href='manualCheckout.jsp';
+		}else if($('#pagechange').val() == '2'){
+			location.href='CheckedOrders.jsp';
+		}else if($('#pagechange').val() == '3'){
+			location.href='unConfirmedOrders.jsp';
+		}
+
+	});
+}
 
 function transferShopName(){
 	var output = '';
@@ -347,7 +361,7 @@ function initrightcount(obj){
 	<tr>
 		<td width="15%">
 		本页显示为 
-		<select onchange="location.href='CheckedOrders.jsp'">
+		<select id="pagechange">
 			<option value="1" selected="selected">对比未结款单据</option>
 			<option value="2">对比已结款单据</option>
 			<option value="3">对比未消单据</option>
