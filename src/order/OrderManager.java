@@ -1503,16 +1503,6 @@ public static Map<String,Order> getOrdermapByIds(User user ,String id){
 		}
 		return b;
 	}
-   
-   public static boolean idDiangma(Order or){
-	   boolean flag = false ;
-	   String str = or.getSendType(1, "");
-	   if(!StringUtill.isNull(str)){
-		   flag = true ;
-	   }
-	   
-	   return flag ;
-   }
     
    public static int getShifangStatues(Order or){
 	   

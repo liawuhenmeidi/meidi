@@ -1103,6 +1103,15 @@ public  String getprintp(){
 	
 }
 
+public boolean isDiangma(){
+	   boolean flag = false ;
+	   String str = this.getSendType(1, "");
+	   if(!StringUtill.isNull(str)){
+		   flag = true ;
+	   }
+	   return flag ;
+}
+
 public boolean isreturn(){
 	boolean flag = false ;
 	if(this.getDeliveryStatues() == 3 || this.getDeliveryStatues() == 4 || this.getDeliveryStatues() == 5 || this.getDeliveryStatues() == 11 || this.getDeliveryStatues() == 12 || this.getDeliveryStatues() == 13){
