@@ -126,7 +126,7 @@ function adddetail(src){
 			<td align="center" >条码</td>
 			<td align="center">地址</td> 
 			<td align="center">单据类型</td>
-            <td align="center">开票日期</td>
+            <td align="center">安装日期</td>
             <td align="center">预约日期</td>
 		</tr>
 		 

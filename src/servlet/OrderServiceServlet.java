@@ -132,7 +132,7 @@ public class OrderServiceServlet extends HttpServlet {
     	}else if(Integer.valueOf(type) == Group.aftersalerepare){
     	      if(Integer.valueOf(statues) == Order.aftersalerepare){ 
     			date = OrderService.getHtmlaftersalerepare(user,list); 
-    			logger.info(date);
+    			//logger.info(date);
     		}
     	}
     	//Order.serach

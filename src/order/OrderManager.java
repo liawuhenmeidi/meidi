@@ -802,8 +802,8 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )      "+search+"  order by "+sort+str;    
 				   }        
 			   }else if(Group.aftersalerepare == type){
-				   if(Order.aftersalerepare == statues){
-					   sql = "select * from mdorder where deliveryStatues in (2) ";
+				   if(Order.aftersalerepare == statues){ 
+					   sql = "select * from mdorder where deliveryStatues in (2) "+search+"  order by "+sort+str;
 				   }
 			   }                    
 	    }      
