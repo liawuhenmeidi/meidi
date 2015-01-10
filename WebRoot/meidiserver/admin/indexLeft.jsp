@@ -172,13 +172,7 @@ function reloadopned(src){
                <%}
             
             %>
-            
-            
-            
-              
-              
-              
-             
+
             </div>
           </li>  
          <% 
@@ -274,8 +268,8 @@ function reloadopned(src){
        <li > 
              <h4 >售后服务</h4>     
             <div class="list-item none">
-            
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanAfterSalerepare.jsp')" >售后待处理</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmit.jsp')" >售后报单</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalerepare.jsp')" >售后待处理</a></p>
             </div>        
           </li> 
         

@@ -763,7 +763,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   }else if(Order.over == statues){ 
 					   if(!StringUtill.isNull(search) && search.contains("dealSendid")){
 						   str = "";
-					   }  
+					   }   
 					   sql = "select * from  mdorder where  "+sqlstr+"   and printSatues = 1 and (sendId != 0 and deliverytype = 2 or sendId != 0 and deliverytype = 1 and wenyuancallback = 1 or  installid != 0 and wenyuancallback = 1  ) and deliveryStatues not in (0,3,8,9,10)  and statues4 = 0  "+search+" order by "+sort+str; 
 				   }else if(Order.serach == statues){     
 						  sql = "select * from  mdorder where "+sqlstr+"  "+search+"  order by "+sort+str;  
@@ -800,7 +800,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and   deliveryStatues in (1,2,4,5)  and deliverytype = 2  and statuespaigong  = 0  "+search+"  order by "+sort+str ; 
 				   }else if(Order.orderquery == statues){  
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )      "+search+"  order by "+sort+str;    
-				   }        
+				   }         
 			   }else if(Group.aftersalerepare == type){
 				   if(Order.aftersalerepare == statues){ 
 					   sql = "select * from mdorder where deliveryStatues in (2) "+search+"  order by "+sort+str;
@@ -1504,6 +1504,16 @@ public static Map<String,Order> getOrdermapByIds(User user ,String id){
 		return b;
 	}
    
+   public static boolean idDiangma(Order or){
+	   boolean flag = false ;
+	   String str = or.getSendType(1, "");
+	   if(!StringUtill.isNull(str)){
+		   flag = true ;
+	   }
+	   
+	   return flag ;
+   }
+    
    public static int getShifangStatues(Order or){
 	   
 	   int opstatues = -1;  

@@ -190,7 +190,7 @@ function checkedd(type){
 			    <%  
 			    }else { 
 			    %> 
-			     <input type="button"  style="background-color:;font-size:20px;" value="调货提交" onclick="checkedd('inbrancht')"/>
+			     <input type="button"  style="background-color:;font-size:20px;" value="调货提交" onclick="checkedd('inbranch')"/>
 			     <%
 			    }
 		   }

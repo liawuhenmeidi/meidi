@@ -293,8 +293,11 @@ public class InventoryServlet extends HttpServlet {
     	 
     	String inventoryid = request.getParameter("id");
   		String[] producs = request.getParameterValues("product"); 
-  		
+  		//logger.info(inventoryid);
+  		//logger.info(producs);
   		String add = request.getParameter("add");
+  		//logger.info(add); 
+  		//logger.info("inbranch".equals(add));
   		List<String> sqls = new ArrayList<String>();
   		
   		if("inbranch".equals(add)){
@@ -303,7 +306,7 @@ public class InventoryServlet extends HttpServlet {
   			String sql1 = "update inventory set instatues = 1 where id = "+inventoryid; 
  
   			 sqls.add(sql1);
-			
+			//logger.info(sqls);
 			}else if("outbranch".equals(add)){
 		       String sql1 = "update inventory set outstatues = 1 where id = " +inventoryid; 
   			   sqls.add(sql1);		
@@ -325,7 +328,7 @@ public class InventoryServlet extends HttpServlet {
 	  			sqls.add(sql); 			
   			} 
   		}
-  		
+  	logger.info(sqls);	
   	   DBUtill.sava(sqls);
   		 
   		try { 

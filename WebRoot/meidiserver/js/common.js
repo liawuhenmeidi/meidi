@@ -100,9 +100,9 @@ function initOrder(type,statues,num,page,sort,sear){
 	 $("#table .asc").remove();  
 	 $("#table .asc_enable").remove();
 	 var str = "";
-	 if("8" == type){
+	 if("8" == type || "33" == type){
 		 str = "../";
-	 } 
+	 }  
 	 $("#dateadd").css("display","block"); 
 	 $.ajax({  
 	        type: "post", 

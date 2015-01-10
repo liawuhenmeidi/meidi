@@ -3,7 +3,7 @@ package aftersale;
 public class AfterSale {
    private String printid;
    
-private int id ;
+   private int id ;
    private int tid; // 产品型号id
    private String tName; // 产品型号
    private int cid; // 产品类别id
@@ -12,17 +12,24 @@ private int id ;
    
    private String uname;
    private String phone;
-   private String andate ;
+   private String andate;
    private String batchNumber;  //批号
    private String barcode;  // 条码
    
-private String location ; //
+   private String location ; //
    private int branch ; 
    private String type;  // 单据类型
    private String saledate;
    private String branchName;
+   private String detail ;
    
-   public String getPrintid() {
+   public String getDetail() {
+	return detail;
+}
+public void setDetail(String detail) {
+	this.detail = detail;
+}
+public String getPrintid() {
 		return printid;
 	}
 	public void setPrintid(String printid) {
