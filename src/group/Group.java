@@ -42,6 +42,7 @@ public class Group {
    public static int dealsendcharge = 30;   // 给安装网点结款
    public static int saledcharge = 31;   // 给导购员结款
    public static int dealsendchargerule = 32;   // 给安装网点结款标准
+   public static int aftersalerepare= 33;    // 预约售后处理
    
    
     //   从 15开始 
