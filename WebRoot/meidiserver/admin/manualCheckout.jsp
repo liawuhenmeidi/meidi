@@ -324,8 +324,8 @@ $(function (){
 		<h3>本页显示为 
 		<select id="pagechange">
 			<option value="1" selected="selected">对比未结款单据</option>
-			<option value="2" >对比已结款单据</option>
-			<option value="3" >对比未消单据</option>
+			<option value="2">对比已结款单据</option>
+			<option value="3">对比未消单据</option>
 		</select></h3>	
 		</td>
 		<td><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp?unchecked=true&branchtype=<%=selectBranchType%>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>
