@@ -55,15 +55,16 @@ if(StringUtill.isNull(actiontype)){
 
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 
-<link rel="stylesheet" href="../css/jquery-ui.css"/>
-<script src="../js/jquery-ui.js"></script>
+
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 
+<link rel="stylesheet" href="../css/jquery-ui.css"/>
+<script src="../js/jquery-ui.js"></script>
 
 <!-- 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
  -->
 
   
@@ -89,14 +90,8 @@ var inputType = '<%=inputType %>';
 
 
 $(function () {  
-	$("#nameinput").autocomplete(namelist,{
-		width: 320, 
-		max: 4, 
-		highlight: false, 
-		multiple: true, 
-		multipleSeparator: "", 
-		scroll: true, 
-		scrollHeight: 300 
+	$("#nameinput").autocomplete({
+		source: namelist
 	});  
 	
 	if(inputType == 'nameselect'){
