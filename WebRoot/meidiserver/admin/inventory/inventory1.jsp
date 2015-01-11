@@ -125,8 +125,9 @@ td {
 <script type="text/javascript" src="../../js/common.js"></script>
 
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
- <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/> 
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="../../css/jquery-ui.css"/>
+<script type="text/javascript" src="../../js/jquery-ui.js"></script>
+
 <script type="text/javascript">
 var disable = '<%=isdisabel %>';
 var jsonall = <%=listall%>;

@@ -30,14 +30,14 @@
 		 list = UploadManager.getTotalUploadOrders(id); 
 		 check = true ;
 	}else if("total".equals(type)){
-		total = true ; 
-		mapt = UploadManager.getTotalOrdersGroup(id);
+		total = true ;    
+		mapt = UploadManager.getTotalOrdersGroup(id,BasicUtill.sale);
 	}else if("typetotal".equals(type)){
 		total = true ;     
-		maptypeinit = UploadManager.getTotalOrdersGroup(id,"type");
+		maptypeinit = UploadManager.getTotalOrdersGroup(id,"type",BasicUtill.sale);
 	}else if("totalcategory".equals(type)){
-		total = true ;  
-		mapc = UploadManager.getTotalOrdersCategoryGroup(id);
+		total = true ;   
+		mapc = UploadManager.getTotalOrdersCategoryGroup(id,BasicUtill.send);
 	}
 	
 %>

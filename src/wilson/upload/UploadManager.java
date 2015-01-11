@@ -25,6 +25,7 @@ import uploadtotal.UploadTotal;
 import uploadtotalgroup.UploadTotalGroup;
 import uploadtotalgroup.UploadTotalGroupManager;
 import user.User;
+import utill.BasicUtill;
 import utill.StringUtill;
 import wilson.matchOrder.AfterMatchOrder;
 
@@ -685,7 +686,7 @@ public class UploadManager {
 		return checkedUploadOrders;
 	}
 	
-	public static Map<String,Map<String,List<UploadTotal>>> getTotalOrdersGroup(String id){
+	public static Map<String,Map<String,List<UploadTotal>>> getTotalOrdersGroup(String id,int totaltype){
 		Map<String,Map<String,List<UploadTotal>>> map = new HashMap<String,Map<String,List<UploadTotal>>>();
 		Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
 		
@@ -696,7 +697,7 @@ public class UploadManager {
 		}
 		
 		
-		Map<String, HashMap<String, UploadTotal>> maps = UploadManager.getTotalOrdersShop(id);
+		Map<String, HashMap<String, UploadTotal>> maps = UploadManager.getTotalOrdersShop(id,totaltype);
 		Set<Map.Entry<String, HashMap<String, UploadTotal>>> setmap = maps.entrySet();
 		Iterator<Map.Entry<String, HashMap<String, UploadTotal>>> itmap = setmap.iterator();
 		while(itmap.hasNext()){
@@ -749,7 +750,7 @@ public class UploadManager {
 		
 	}
 	
-	public static Map<String,Map<String,List<UploadTotal>>> getTotalOrdersCategoryGroup(String id){
+	public static Map<String,Map<String,List<UploadTotal>>> getTotalOrdersCategoryGroup(String id,int totaltype){
 		Map<String,Map<String,List<UploadTotal>>> map = new HashMap<String,Map<String,List<UploadTotal>>>();
 		Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
 		
@@ -760,7 +761,7 @@ public class UploadManager {
 		}
 		
 		
-		Map<String, HashMap<String, UploadTotal>> maps = UploadManager.getTotalOrdersCategory(id);
+		Map<String, HashMap<String, UploadTotal>> maps = UploadManager.getTotalOrdersCategory(id,totaltype );
 		Set<Map.Entry<String, HashMap<String, UploadTotal>>> setmap = maps.entrySet();
 		Iterator<Map.Entry<String, HashMap<String, UploadTotal>>> itmap = setmap.iterator();
 		while(itmap.hasNext()){
@@ -812,8 +813,8 @@ public class UploadManager {
 		
 		
 	}
-	
-	public static Map<String, HashMap<String, UploadTotal>> getTotalOrdersShop(String id){
+	 
+	public static Map<String, HashMap<String, UploadTotal>> getTotalOrdersShop(String id,int totaltype){
 		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id);
 		//logger.info(list.size());
 		//Map<String,UploadSalaryModel> listSM = getSalaryModelsAll();  
@@ -825,15 +826,20 @@ public class UploadManager {
 				if(null == branchname){
 					branchname = new HashMap<String, UploadTotal>();
 					map.put(up.getShop(), branchname);
-				}
-				
-				UploadTotal upt = branchname.get(up.getType());
+				} 
+			    String relatype = "";
+			    if(BasicUtill.sale == totaltype){
+			    	relatype = up.getType();
+			    }else if(BasicUtill.send == totaltype){
+			    	relatype = up.getTypeForCalc();
+			    }
+				UploadTotal upt = branchname.get(relatype);
 				if(null == upt){
 					upt = new UploadTotal();
 					upt.setBranchname(up.getShop());
 					upt.setCount(up.getNum());
 					upt.setName(up.getName());
-					upt.setType(up.getType());
+					upt.setType(relatype);
 					upt.setTotalcount(up.getSalePrice());
 					upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
 					branchname.put(up.getType(),upt);
@@ -848,7 +854,7 @@ public class UploadManager {
 		return map;
 	}
 	 
-	public static Map<String, HashMap<String, UploadTotal>> getTotalOrdersCategory(String id){
+	public static Map<String, HashMap<String, UploadTotal>> getTotalOrdersCategory(String id,int totaltype){
 		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id);
 		//logger.info(list.size());
 		//Map<String,UploadSalaryModel> listSM = getSalaryModelsAll();  
@@ -856,7 +862,13 @@ public class UploadManager {
 		if(null != list && list.size() >0){
 			for(int i=0;i<list.size();i++){
 				UploadOrder up = list.get(i);
-				HashMap<String, UploadTotal> branchname= map.get(up.getType());
+				String relatype = "";
+			    if(BasicUtill.sale == totaltype){
+			    	relatype = up.getType();
+			    }else if(BasicUtill.send == totaltype){
+			    	relatype = up.getTypeForCalc();
+			    }
+				HashMap<String, UploadTotal> branchname= map.get(relatype);
 				if(null == branchname){
 					branchname = new HashMap<String, UploadTotal>();
 					map.put(up.getType(), branchname);
@@ -868,7 +880,7 @@ public class UploadManager {
 					upt.setBranchname(up.getShop());
 					upt.setCount(up.getNum());
 					upt.setName(up.getName());
-					upt.setType(up.getType());
+					upt.setType(relatype);
 					upt.setTotalcount(up.getSalePrice());
 					upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
 					branchname.put(up.getShop(),upt);  
@@ -883,7 +895,7 @@ public class UploadManager {
 		return map;
 	}
 	
-	public static HashMap<String, List<UploadTotal>> getTotalOrdersGroup(String id,String type){
+	public static HashMap<String, List<UploadTotal>> getTotalOrdersGroup(String id,String type,int totaltype){
 		HashMap<String, List<UploadTotal>> map = new HashMap<String, List<UploadTotal>>();
         Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
 		
@@ -893,7 +905,7 @@ public class UploadManager {
 		   message = upt.getCategoryname();
 		}
 		
-		HashMap<String, UploadTotal> maptypeinit = UploadManager.getTotalOrders(id,"type");
+		HashMap<String, UploadTotal> maptypeinit = UploadManager.getTotalOrders(id,"type",totaltype);
 		
 		Set<Map.Entry<String, UploadTotal>> setmaiinit = maptypeinit.entrySet();
 		Iterator<Map.Entry<String, UploadTotal>> itmapinit = setmaiinit.iterator();
@@ -936,19 +948,25 @@ public class UploadManager {
 		return map;
 	}
 	
-	public static HashMap<String, UploadTotal> getTotalOrders(String id,String type){
+	public static HashMap<String, UploadTotal> getTotalOrders(String id,String type,int totaltype){
 		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id); 
 		HashMap<String, UploadTotal> map = new HashMap<String,UploadTotal>();
 		if(null != list && list.size() >0){
 			for(int i=0;i<list.size();i++){
 				UploadOrder up = list.get(i);
-				UploadTotal upt = map.get(up.getType());
+				String relatype = "";
+			    if(BasicUtill.sale == totaltype){
+			    	relatype = up.getType();
+			    }else if(BasicUtill.send == totaltype){
+			    	relatype = up.getTypeForCalc();
+			    }
+				UploadTotal upt = map.get(relatype);
 				if(null == upt){
 					upt = new UploadTotal(); 
 					upt.setBranchname(up.getShop());
 					upt.setCount(up.getNum());
 					upt.setName(up.getName());
-					upt.setType(up.getType());
+					upt.setType(relatype);
 					upt.setTotalcount(up.getSalePrice());
 					upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
 					map.put(up.getType(),upt); 

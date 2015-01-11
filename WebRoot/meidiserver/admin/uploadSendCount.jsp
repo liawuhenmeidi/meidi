@@ -29,16 +29,16 @@
 	List<UploadOrder> list = null ;   
 	if("check".equals(type)){ 
 		 list = UploadManager.getTotalUploadOrders(id); 
-		 check = true ;
+		 check = true ; 
 	}else if("total".equals(type)){
-		total = true ; 
-		mapt = UploadManager.getTotalOrdersGroup(id);
-	}else if("typetotal".equals(type)){
+		total = true ;   
+		mapt = UploadManager.getTotalOrdersGroup(id,BasicUtill.send); 
+	}else if("typetotal".equals(type)){ 
 		total = true ;     
-		maptypeinit = UploadManager.getTotalOrdersGroup(id,"type");
+		maptypeinit = UploadManager.getTotalOrdersGroup(id,"type",BasicUtill.send);
 	}else if("totalcategory".equals(type)){
 		total = true ;  
-		mapc = UploadManager.getTotalOrdersCategoryGroup(id);
+		mapc = UploadManager.getTotalOrdersCategoryGroup(id,BasicUtill.send);
 	}
 	
 %>
