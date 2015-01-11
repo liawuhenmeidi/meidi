@@ -76,6 +76,7 @@
 	//查询条件提交后，右侧显示内容
 	unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders(selectOrderName);
 	
+	System.out.println("自动对比页面取数据时间(毫秒) = " + (System.currentTimeMillis() - startTime));
 	
 	if(startButton != null && startButton.equals("正在对比")){
 		showContent = true;
@@ -382,7 +383,16 @@ function initrightcount(obj){
 	$("#rightcount").text("匹配数量"+rightcount);
 }
 
-
+var startClick = 0 ;
+function baseFormSubmit(){
+	if(startClick == 0){
+		startClick = 1;
+		return true;
+	}else{
+		$('#startbutton').attr('disabled','disabled');
+		return false;
+	}
+}
 </script>
 
   
@@ -425,7 +435,7 @@ function initrightcount(obj){
 	</tr>
 </table>
 
-<form name="baseform" id="baseform" method="post">
+<form name="baseform" id="baseform" method="post" onsubmit="return baseFormSubmit()">
 <input type="hidden" name="search" value="false"/>
 <table width="100%" height="100%" align="center" border=0>
        <tr>

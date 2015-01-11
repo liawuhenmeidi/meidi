@@ -383,6 +383,16 @@ function initrightcount(obj){
 	$("#rightcount").text("匹配数量"+rightcount);
 }
 
+var startClick = 0 ;
+function baseFormSubmit(){
+	if(startClick == 0){
+		startClick = 1;
+		return true;
+	}else{
+		$('#startbutton').attr('disabled','disabled');
+		return false;
+	}
+}
 
 </script>
 
@@ -426,7 +436,7 @@ function initrightcount(obj){
 	</tr>
 </table>
 
-<form name="baseform" id="baseform" method="post">
+<form name="baseform" id="baseform" method="post" onsubmit="return baseFormSubmit()">
 <input type="hidden" name="search" value="false"/>
 <table width="100%" height="100%" align="center" border=0>
        <tr>
