@@ -379,6 +379,11 @@ function initrightcount(obj){
 
 var startClick = 0 ;
 function baseFormSubmit(){
+	if(getCheckBox() == '00000'){
+		alert('请至少选择一个对比项');
+		$('#startbutton').val('对比');
+		return false;
+	}
 	if(startClick == 0){
 		startClick = 1;
 		return true;
