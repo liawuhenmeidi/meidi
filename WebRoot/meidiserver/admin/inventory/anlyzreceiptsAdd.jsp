@@ -30,7 +30,9 @@ Map<String,InventoryBranch> invnetorymap = InventoryBranchManager.getmapType(inv
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>文员派工页</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/> 
+<link rel="stylesheet" href="../../css/jquery-ui.css"/>
+<script type="text/javascript" src="../../js/jquery-ui.js"></script>
+ 
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <style type="text/css">
 .fixedHead { 
@@ -80,7 +82,6 @@ width:200px;
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript" src="../../js/calendar.js"></script> 
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript">
 
 function inventory(inventory,type){

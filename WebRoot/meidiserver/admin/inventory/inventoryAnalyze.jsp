@@ -68,7 +68,8 @@ String listall = StringUtill.GetJson(listbranchp);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>预约调货</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/> 
+<link rel="stylesheet" href="../../css/jquery-ui.css"/>
+ 
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <style type="text/css">
 .fixedHead { 
@@ -118,7 +119,9 @@ width:150px;
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript" src="../../js/calendar.js"></script> 
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<script type="text/javascript" src="../../js/jquery-ui.js"></script>
+
 <script type="text/javascript">
 var jsonall = <%=listall%>;
 var count = "<%=countt%>";

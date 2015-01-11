@@ -74,13 +74,12 @@ String[] branlist =  branchmessage.split("_");
 <script src="../js/mobiscroll.datetime-2.6.2.js" type="text/javascript"></script>
 <script src="../js/mobiscroll.android-ics-2.6.2.js" type="text/javascript"></script>
  <link href="../css/mobiscroll.android-ics-2.6.2.css" rel="stylesheet" type="text/css" />
- 
+
 <script type="text/javascript" src="../js/calendar.js"></script> 
 <link rel="stylesheet" href="../css/songhuo.css">
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-  
+<link rel="stylesheet" href="../../css/jquery-ui.css"/>
+<script type="text/javascript" src="../../js/jquery-ui.js"></script> 
 <script type="text/javascript">
 
    var messageflag = false;  // 是否需要填写顾客信息
