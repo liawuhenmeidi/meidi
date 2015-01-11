@@ -71,7 +71,12 @@ public class XLSReader {
 				uo.setName(name);
 				uo.setShop(sheet0.getCell(SHOP_POS,i).getContents().trim());
 				uo.setPosNo(sheet0.getCell(POSNO_POS,i).getContents().trim());
-				uo.setSaleTime(sheet0.getCell(SALETIME_POS,i).getContents().replace("-", "").replace("/", "").trim());
+				
+				String tmpDate = sheet0.getCell(SALETIME_POS,i).getContents().replace("-", "").replace("/", "").trim();
+				if(tmpDate.length() == 7){
+					tmpDate = tmpDate.substring(0,4) + "0" + tmpDate.substring(4,tmpDate.length());
+				}
+				uo.setSaleTime(tmpDate);
 				uo.setType(sheet0.getCell(TYPE_POS,i).getContents().trim());
 				uo.setNum(Integer.parseInt(sheet0.getCell(NUM_POS,i).getContents().replace(",", "").trim()));
 				uo.setSalePrice(Double.parseDouble(sheet0.getCell(SALEPRICE_POS,i).getContents().replace(",", "").trim()));
