@@ -242,7 +242,9 @@ public class HiddenFileManager {
 			result = new ExcelShowModel();
 			return result;
 		}finally{
-			wb.close();
+			if(wb != null){
+				wb.close();
+			}
 		}
 		
 		return result;

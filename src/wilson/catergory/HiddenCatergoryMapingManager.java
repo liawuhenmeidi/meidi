@@ -217,7 +217,9 @@ public class HiddenCatergoryMapingManager {
 			e.printStackTrace();
 			result.clear();
 		}finally{
-			wb.close();
+			if(wb != null){
+				wb.close();
+			}
 		}
 		
 		return result;
