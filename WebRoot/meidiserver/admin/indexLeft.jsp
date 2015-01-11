@@ -132,7 +132,8 @@ function reloadopned(src){
            <li >
             <h4 >销售统计</h4>
             <div class="list-item none">
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadSaleCount.jsp')">销售统计</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadSaleCount.jsp')">票面销售统计</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadSendCount.jsp')">送货销售统计</a></p>
             </div>
           </li> 
           
