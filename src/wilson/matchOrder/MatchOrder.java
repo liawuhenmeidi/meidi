@@ -145,12 +145,25 @@ public class MatchOrder {
 		List<Order> result = new ArrayList<Order>();
 		int i = Integer.parseInt(index);
 		if(i >= 0 ){
-			String shopName = dbOrders.get(i).getShopNameForCompare();
-			while(dbOrders.get(i).getShopNameForCompare().equals(shopName)){
+			String shopName = "";
+			if(dbOrders.get(i).isFromUploadOrder()){
+				shopName = dbOrders.get(i).getShopname_upload();
+			}else{
+				shopName = dbOrders.get(i).getShopNameForCompare();
+			}
+			
+			String nowName = shopName;
+			
+			while(nowName.equals(shopName)){
 				result.add(dbOrders.get(i));
 				dbOrders.remove(dbOrders.get(i));
 				if(i >= dbOrders.size()){
 					break;
+				}
+				if(dbOrders.get(i).isFromUploadOrder()){
+					nowName = dbOrders.get(i).getShopname_upload();
+				}else{
+					nowName = dbOrders.get(i).getShopNameForCompare();
 				}
 			}
 		}else{
