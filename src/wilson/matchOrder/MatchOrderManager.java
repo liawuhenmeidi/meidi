@@ -12,6 +12,24 @@ import wilson.upload.UploadManager;
 
 public class MatchOrderManager {
 	
+	//将uploadOrder临时转换为Order，仅供uploadCheckout.jsp使用
+	public static List<Order> transferUploadOrder(List<UploadOrder> input){
+		List<Order> result = new ArrayList<Order>();
+		Order tmp = new Order();
+		for(int i = 0 ; i < input.size() ; i ++){
+			tmp = new Order();
+			tmp.setFromUploadOrder(true);
+			tmp.setId(input.get(i).getId());
+			tmp.setShopname_upload(input.get(i).getShop());
+			tmp.setPos(input.get(i).getPosNo());
+			tmp.setSaleTime(input.get(i).getSaleTime());
+			tmp.setSalenum_upload(input.get(i).getNum());
+			tmp.setSaleType_upload(input.get(i).getType());
+			result.add(tmp);
+		}
+		return result;
+	}
+	
 	//根据条件取order(仅提供给manualCheckout.jsp使用)
 	public static List<Order> getUnCheckedDBOrders(String selectBranchType,String selectBranch,String deadline){
 		List<Order> unCheckedDBOrders = new ArrayList<Order>();
@@ -197,11 +215,17 @@ public class MatchOrderManager {
 		if(target == null){
 			return null;
 		}
+		String tmp = "";
 		//店名
 		String tempName = target.getShop();
 		if(!StringUtill.isNull(tempName)){
 			for(int i = 0 ; i < orders.size() ; i ++){
-				if(!orders.get(i).getShopNameForCompare().contains(tempName)){
+				if(orders.get(i).isFromUploadOrder()){
+					tmp = orders.get(i).getShopname_upload();
+				}else{
+					tmp = orders.get(i).getShopNameForCompare();
+				}
+				if(!tmp.contains(tempName)){
 					orders.remove(i);
 					i --;
 				}
@@ -244,7 +268,12 @@ public class MatchOrderManager {
 		tempName = target.getType();
 		if(!StringUtill.isNull(tempName)){
 			for(int i = 0 ; i < orders.size() ; i ++){
-				if(!orders.get(i).getSendType().contains(tempName)){
+				if(orders.get(i).isFromUploadOrder()){
+					tmp = orders.get(i).getSaleType_upload();					
+				}else{
+					tmp = orders.get(i).getSendType();
+				}
+				if(!tmp.contains(tempName)){
 					orders.remove(i);
 					i --;
 				}
@@ -259,7 +288,13 @@ public class MatchOrderManager {
 		int tempInt = target.getNum();
 		if(tempInt > 0){
 			for(int i = 0 ; i < orders.size() ; i ++){
-				if(!orders.get(i).getSendCount().replace("|", "").trim().equals(String.valueOf(tempInt))){
+				if(orders.get(i).isFromUploadOrder()){
+					tmp = String.valueOf(orders.get(i).getSalenum_upload());
+				}else{
+					tmp = orders.get(i).getSendCount().replace("|", "").trim();
+				}
+				
+				if(!tmp.equals(String.valueOf(tempInt))){
 					orders.remove(i);
 					i --;
 				}

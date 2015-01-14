@@ -191,7 +191,13 @@ public class MatchOrder {
 		
 		//找出这个组合对应在DBList中的开始位置
 		for(int i = 0 ; i < dbOrders.size() ; i ++){
-			if(dbOrders.get(i).getShopNameForCompare().equals(resultDBShopName)){
+			String tmp = "";
+			if(dbOrders.get(i).isFromUploadOrder()){
+				tmp = dbOrders.get(i).getShopname_upload();
+			}else{
+				tmp = dbOrders.get(i).getShopNameForCompare();
+			}
+			if(tmp.equals(resultDBShopName)){
 				result += String.valueOf(i) + ",";
 				break;
 			}
@@ -238,9 +244,16 @@ public class MatchOrder {
 	private List<String> getShopNamesFromdbOrderList(List<Order> dbOrders) {
 		List<String> result = new ArrayList<String>();
 		String tempName = "";
+		String shopName = "";
 		for(int i = 0  ; i < dbOrders.size() ; i ++){
-			if(!dbOrders.get(i).getShopNameForCompare().equals(tempName)){
-				tempName = dbOrders.get(i).getShopNameForCompare();
+			if(dbOrders.get(i).isFromUploadOrder()){
+				shopName = dbOrders.get(i).getShopname_upload();
+			}else{
+				shopName = dbOrders.get(i).getShopNameForCompare();
+			}
+				
+			if(!shopName.equals(tempName)){
+				tempName = shopName;
 				result.add(tempName);
 			}
 		}

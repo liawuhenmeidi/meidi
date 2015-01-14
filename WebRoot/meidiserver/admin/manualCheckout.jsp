@@ -188,6 +188,8 @@ function initPageChange(){
 			location.href='CheckedOrders.jsp';
 		}else if($('#pagechange').val() == '3'){
 			location.href='unConfirmedOrders.jsp';
+		}else if($('#pagechange').val() == '4'){
+			location.href='uploadCheckout.jsp';
 		}
 
 	});
@@ -414,6 +416,7 @@ function baseFormSubmit(){
 			<option value="1" selected="selected">对比未结款单据</option>
 			<option value="2">对比已结款单据</option>
 			<option value="3">对比未消单据</option>
+			<option value="4">对比上传单据</option>
 		</select></h3>	
 		</td>
 		<td><h3><a href="#" onClick="javascript:window.open('./searchOrder.jsp?unchecked=true&branchtype=<%=selectBranchType%>&branch=<%=selectBranch %>&uploadorder=<%=selectOrderName %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" >搜索</a></h3></td>

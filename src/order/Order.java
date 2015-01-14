@@ -1058,7 +1058,7 @@ private String sendCountForCompare = null;
 private String shopNameForCompare = null;
 
 
-public String getSendTypeForCompareWithOutCharactar() {
+public String getSendTypeForCompareWidthOutCharactar() {
 	if(sendTypeForCompare == null){
 		sendTypeForCompare = getSendType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")", "").replace("（", "").replace("）", "");;
 	}
@@ -1078,6 +1078,45 @@ public String getShopNameForCompare() {
 	}
 	return shopNameForCompare;
 }
+
+//uploadOrder 向Order转换时候使用
+private boolean fromUploadOrder = false;
+private String shopname_upload = "";
+private int salenum_upload;
+private String saleType_upload = "";
+
+public boolean isFromUploadOrder() {
+	return fromUploadOrder;
+}
+
+public void setFromUploadOrder(boolean fromUploadOrder) {
+	this.fromUploadOrder = fromUploadOrder;
+}
+
+public String getShopname_upload() {
+	return shopname_upload;
+}
+
+public void setShopname_upload(String shopname_upload) {
+	this.shopname_upload = shopname_upload;
+}
+
+public int getSalenum_upload() {
+	return salenum_upload;
+}
+
+public void setSalenum_upload(int salenum) {
+	this.salenum_upload = salenum;
+}
+
+public String getSaleType_upload() {
+	return saleType_upload;
+}
+
+public void setSaleType_upload(String saleType) {
+	this.saleType_upload = saleType;
+}
+
 
 public  String getprint(){
 	//打印状态     0  未打印   1 打印
@@ -1120,4 +1159,9 @@ public boolean isreturn(){
 	return flag ;
 	
 }
+
+
+
+
+
 }

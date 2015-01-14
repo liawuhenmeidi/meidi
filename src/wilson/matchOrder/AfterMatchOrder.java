@@ -26,16 +26,26 @@ public class AfterMatchOrder {
 	public void initDBSideOrder(Order dbOrder){
 		setDBOrder(dbOrder);
 		this.dbOrder = dbOrder;
-		DBSideShop = dbOrder.getbranchName(dbOrder.getBranch()); 
-		DBSidePosNo = dbOrder.getPos();
-		DBSideSaleTime = dbOrder.getSaleTime();
-		DBSideType = dbOrder.getSendType();
-		DBSideType_trans = dbOrder.getSendType(0,"^");
-		if(DBSideType_trans.startsWith("^")){
-			DBSideType_trans = DBSideType_trans.substring(1,DBSideType_trans.length());
+		if(dbOrder.isFromUploadOrder()){
+			DBSideShop = dbOrder.getShopname_upload();
+			DBSidePosNo = dbOrder.getPos();
+			DBSideSaleTime = dbOrder.getSaleTime();
+			DBSideType = dbOrder.getSaleType_upload();
+			DBSideCount = String.valueOf(dbOrder.getSalenum_upload());
+			DBSideOrderId = dbOrder.getId();
+		}else{
+			DBSideShop = dbOrder.getbranchName(dbOrder.getBranch()); 
+			DBSidePosNo = dbOrder.getPos();
+			DBSideSaleTime = dbOrder.getSaleTime();
+			DBSideType = dbOrder.getSendType();
+			DBSideType_trans = dbOrder.getSendType(0,"^");
+			if(DBSideType_trans.startsWith("^")){
+				DBSideType_trans = DBSideType_trans.substring(1,DBSideType_trans.length());
+			}
+			DBSideCount = String.valueOf(dbOrder.getSendCount());
+			DBSideOrderId = dbOrder.getId();
 		}
-		DBSideCount = String.valueOf(dbOrder.getSendCount());
-		DBSideOrderId = dbOrder.getId();
+		
 	}
 	
 	public void initUploadSideOrder(UploadOrder uploadOrder){
@@ -76,16 +86,26 @@ public class AfterMatchOrder {
 		
 		if(dbOrder.getId() > 0){
 			this.dbOrder = dbOrder;
-			DBSideShop = dbOrder.getbranchName(dbOrder.getBranch());
-			DBSidePosNo = dbOrder.getPos();
-			DBSideSaleTime = dbOrder.getSaleTime();
-			DBSideType = dbOrder.getSendType();
-			DBSideType_trans = dbOrder.getSendType(0,"^");
-			if(DBSideType_trans.startsWith("^")){
-				DBSideType_trans = DBSideType_trans.substring(1,DBSideType_trans.length());
+			if(dbOrder.isFromUploadOrder()){
+				DBSideShop = dbOrder.getShopname_upload();
+				DBSidePosNo = dbOrder.getPos();
+				DBSideSaleTime = dbOrder.getSaleTime();
+				DBSideType = dbOrder.getSaleType_upload();
+				DBSideCount = String.valueOf(dbOrder.getSalenum_upload());
+				DBSideOrderId = dbOrder.getId();
+			}else{
+				DBSideShop = dbOrder.getbranchName(dbOrder.getBranch());
+				DBSidePosNo = dbOrder.getPos();
+				DBSideSaleTime = dbOrder.getSaleTime();
+				DBSideType = dbOrder.getSendType();
+				DBSideType_trans = dbOrder.getSendType(0,"^");
+				if(DBSideType_trans.startsWith("^")){
+					DBSideType_trans = DBSideType_trans.substring(1,DBSideType_trans.length());
+				}
+				DBSideCount = String.valueOf(dbOrder.getSendCount());
+				DBSideOrderId = dbOrder.getId();
 			}
-			DBSideCount = String.valueOf(dbOrder.getSendCount());
-			DBSideOrderId = dbOrder.getId();
+			
 		}else{
 			this.dbOrder = dbOrder;
 			DBSideShop = "";
@@ -279,7 +299,7 @@ public class AfterMatchOrder {
 		if(matchPara.charAt(MatchOrder.MATCHPARA_SHOP) == '1'){
 			//对比门店名称		
 			
-			if(compareShop(dbOrder.getShopNameForCompare(), this.getUploadOrder().getShop()) > MatchOrder.SHOPNAME_DISTANCE){
+			if(compareShop(this.getDBSideShop(), this.getUploadSideShop()) > MatchOrder.SHOPNAME_DISTANCE){
 				
 				this.setCompareLevel(this.getCompareLevel() + 1.0);
 				this.setCompareResult(AfterMatchOrder.SHOP, true);
@@ -302,7 +322,7 @@ public class AfterMatchOrder {
 		if(matchPara.charAt(MatchOrder.MATCHPARA_POS) == '1'){
 			//对比posNo
 			
-			if(comparePosNo(this.getDBOrder().getPos(), this.getUploadOrder().getPosNo())){
+			if(comparePosNo(this.getDBSidePosNo(), this.getUploadSidePosNo())){
 				
 				this.setCompareLevel(this.getCompareLevel() + 1.0);
 				this.setCompareResult(AfterMatchOrder.POSNO, true);
@@ -363,7 +383,7 @@ public class AfterMatchOrder {
 		if(matchPara.charAt(MatchOrder.MATCHPARA_TYPE) == '1'){
 			//对比型号
 			
-			if(compareType(this.getDBOrder().getSendType(), this.getUploadSideType(), true)){
+			if(compareType(this.getDBSideType(), this.getUploadSideType(), true)){
 				
 				this.setCompareLevel(this.getCompareLevel() + 1.0);
 				this.setCompareResult(AfterMatchOrder.TYPE, true);
