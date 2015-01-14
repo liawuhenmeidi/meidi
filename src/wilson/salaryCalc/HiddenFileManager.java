@@ -18,6 +18,7 @@ import org.apache.poi.hssf.record.formula.functions.Rows;
 import jxl.Sheet;
 import jxl.Workbook;
 
+import utill.StringUtill;
 import wilson.catergory.HiddenCatergoryMapingManager;
 import wilson.download.ExcelGenerator;
 import wilson.upload.UploadManager;
@@ -165,6 +166,10 @@ public class HiddenFileManager {
 	
 	public static boolean transferFile(String name) throws IOException{
 		boolean result = false;
+		
+		if(StringUtill.isNull(name) || name.trim().equals("")){
+			return result;
+		}
 		
 		//判断存在性
 		if(!checkFile()){
