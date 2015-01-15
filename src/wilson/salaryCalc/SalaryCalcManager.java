@@ -450,8 +450,8 @@ public class SalaryCalcManager {
 			matched = false;
 			
 			
-			
 			tempOrder = uploadOrders.get(i);
+			
 
 			tempOrder.removeCharecterFromType();
 			//如果type是空，直接放到人工归类列表里面

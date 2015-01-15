@@ -135,10 +135,9 @@ public class SalaryResult {
 	public boolean calc(){
 		
 		int nagtive = 1;
-		if(this.uploadOrder.getNum() < 0){
+		Double price_ABS = Math.abs(this.uploadOrder.getSalePrice());
+		if(this.uploadOrder.getNum() < 0 || this.uploadOrder.getSalePrice() < 0){
 			nagtive = -1;
-			this.setUploadOrderNum(this.uploadOrder.getNum() * nagtive);
-			this.setUploadOrderSalePrice(this.uploadOrder.getSalePrice() * nagtive);
 		}
 		
 		if(this.uploadOrder == null || this.salaryModel == null){
@@ -151,14 +150,14 @@ public class SalaryResult {
 				Double startPrice = Double.parseDouble(content.split(",")[i].split(":")[0].replace("\"", "").split("-")[0]);
 				//如果是199-/的形式
 				if(content.split(",")[i].split(":")[0].replace("\"", "").split("-")[1].equals("/")){
-					if(this.uploadOrder.getSalePrice() >= startPrice){
+					if(price_ABS >= startPrice){
 						//非百分比形式
 						if(!content.split(",")[i].split(":")[1].replace("\"", "").contains("%")){
 							this.setSalary(Double.parseDouble(content.split(",")[i].split(":")[1].replace("\"", "")));
 						}
 						//百分比形式
 						else{
-							this.setSalary(Double.parseDouble(content.split(",")[i].split(":")[1].replace("\"", "").replace("%", "")) * this.getUploadOrder().getSalePrice() * 0.01);
+							this.setSalary(Double.parseDouble(content.split(",")[i].split(":")[1].replace("\"", "").replace("%", "")) * price_ABS * 0.01);
 						}
 						break;
 					}else{
@@ -167,22 +166,20 @@ public class SalaryResult {
 				}
 				Double endPrice = Double.parseDouble(content.split(",")[i].split(":")[0].replace("\"", "").split("-")[1]);
 				//如果是199-299形式
-				if(this.uploadOrder.getSalePrice() >= startPrice && this.uploadOrder.getSalePrice() < endPrice){
+				if(price_ABS >= startPrice && price_ABS < endPrice){
 					//非百分比形式
 					if(!content.split(",")[i].split(":")[1].replace("\"", "").contains("%")){
 						this.setSalary(Double.parseDouble(content.split(",")[i].split(":")[1].replace("\"", "")));
 					}
 					//百分比形式
 					else{
-						this.setSalary(Double.parseDouble(content.split(",")[i].split(":")[1].replace("\"", "").replace("%", "")) * this.getUploadOrder().getSalePrice() * 0.01);
+						this.setSalary(Double.parseDouble(content.split(",")[i].split(":")[1].replace("\"", "").replace("%", "")) * price_ABS * 0.01);
 					}
 					
 					break;
 				}
 			}
-			this.setUploadOrderSalePrice(this.uploadOrder.getSalePrice() * nagtive);
-			this.setUploadOrderNum(this.uploadOrder.getNum() * nagtive);
-			this.setSalary(this.getSalary() * this.getUploadOrder().getNum());
+			this.setSalary(Math.abs(this.getSalary() * this.getUploadOrder().getNum()) * nagtive); 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			this.setCalcTime(sdf.format(new Date()));
 			return true;
