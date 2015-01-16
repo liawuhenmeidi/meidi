@@ -179,7 +179,11 @@ public class SalaryResult {
 					break;
 				}
 			}
-			this.setSalary(Math.abs(this.getSalary() * this.getUploadOrder().getNum()) * nagtive); 
+			if(nagtive < 0 && this.getSalary()< 0 ){
+				nagtive = 1;
+			}
+			
+			this.setSalary(this.getSalary() * Math.abs(this.getUploadOrder().getNum()) * nagtive); 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			this.setCalcTime(sdf.format(new Date()));
 			return true;
