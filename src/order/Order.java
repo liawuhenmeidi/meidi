@@ -172,7 +172,7 @@ public class Order {
   
   private String imagerUrl ; 
   
-  private String oderStatus ;//  初始送货状态
+  private String oderStatus ;//  初始送货状态      20 表示换货      30 表示退货
   
   private String chargeDealsendtime ;
   

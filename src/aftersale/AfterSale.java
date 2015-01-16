@@ -1,8 +1,11 @@
 package aftersale;
 
 public class AfterSale {
-   private String printid;
+   public static int typeupdate = 1 ;
+   public static int typesale = 0 ;
    
+   private String printid;
+    
    private int id ;
    private int tid; // 产品型号id
    private String tName; // 产品型号
@@ -18,7 +21,7 @@ public class AfterSale {
    
    private String location ; //
    private int branch ; 
-   private String type;  // 单据类型
+   private int type;  // 单据类型      0 表示自己销售   1 网点上报
    private String saledate;
    private String branchName;
    private String detail ;
@@ -117,10 +120,10 @@ public void setLocation(String location) {
 	this.location = location;
 }
 
-public String getType() {
+public int getType() {
 	return type;
 }
-public void setType(String type) {
+public void setType(int type) {
 	this.type = type;
 }
 public String getSaledate() {

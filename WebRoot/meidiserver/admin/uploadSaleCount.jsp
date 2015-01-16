@@ -31,13 +31,13 @@
 		 check = true ;
 	}else if("total".equals(type)){
 		total = true ;    
-		mapt = UploadManager.getTotalOrdersGroup(id,BasicUtill.sale);
+		mapt = UploadManager.getTotalOrdersGroup(id,BasicUtill.sale,"");
 	}else if("typetotal".equals(type)){
 		total = true ;     
-		maptypeinit = UploadManager.getTotalOrdersGroup(id,"type",BasicUtill.sale);
-	}else if("totalcategory".equals(type)){
+		maptypeinit = UploadManager.getTotalOrdersGroup(id,"type",BasicUtill.sale,"");
+	}else if("totalcategory".equals(type)){ 
 		total = true ;   
-		mapc = UploadManager.getTotalOrdersCategoryGroup(id,BasicUtill.send);
+		mapc = UploadManager.getTotalOrdersCategoryGroup(id,BasicUtill.send,"");
 	}
 	
 %>
@@ -78,9 +78,13 @@ function changeprintln(){
 	$("#wrapsearch").css("display","none");
 	 window.print();
 }
+
+function checkedd(){
+	 
+}
 </script>
 </head> 
-
+ 
 <body>
    <form action="" method="post" id="post" onsubmit="return checkedd()">
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名称:
@@ -112,7 +116,7 @@ function changeprintln(){
 <%} 
 if(total){ %> 
 <input type="hidden" name="method" id="method" value=""/>
-<input type="submit" class="noprint"  value="导出" onclick="$('#method').val('<%=type %>');$('#post').attr('action','../Print')"/>
+<input type="submit" class="noprint"  value="导出" onclick="$('#method').val('<%=type %>');$('#post').attr('action','../Print?type=<%=BasicUtill.sale%>')"/>
 <input type="button" class="noprint"  value="打印" onclick="println()" ></input>
 <%}  
 %>
@@ -120,7 +124,6 @@ if(total){ %>
 </form>
  
  <div id="wrapsearch" style="position:fixed;text-align:center; top:50%;background-color:white; left:30%; margin:-20% 0 0 -20%; height:50%; width:50%; z-index:999;display:none"> 
-<div >
 <table  cellspacing="1" style="margin:auto;background-color:black; width:80%;height:80%;">  
 		   
 		<tr class="bsc">
@@ -153,7 +156,6 @@ if(total){ %>
 		</tr>
 	
 </table> 
-</div>
 </div>
  
  

@@ -18,7 +18,7 @@
 	
 	String type = request.getParameter("type");
 	String id = request.getParameter("said");
-	 
+	String checkedStatus = "";
 	boolean check = false ;
 	boolean total = false ;
 	Map<String,Map<String,List<UploadTotal>>> mapt = null ;
@@ -27,18 +27,22 @@
 	//HashMap<String, UploadTotal> maptypeinit = null;
 	HashMap<String, List<UploadTotal>> maptypeinit = null;
 	List<UploadOrder> list = null ;   
-	if("check".equals(type)){ 
-		 list = UploadManager.getTotalUploadOrders(id); 
+	if("check".equals(type)){  
+		 checkedStatus = request.getParameter("checkedStatus");
+		 list = UploadManager.getTotalUploadOrders(id,checkedStatus); 
 		 check = true ; 
 	}else if("total".equals(type)){
 		total = true ;   
-		mapt = UploadManager.getTotalOrdersGroup(id,BasicUtill.send); 
-	}else if("typetotal".equals(type)){ 
-		total = true ;     
-		maptypeinit = UploadManager.getTotalOrdersGroup(id,"type",BasicUtill.send);
+		checkedStatus = request.getParameter("realcheckedStatus");
+		mapt = UploadManager.getTotalOrdersGroup(id,BasicUtill.send,checkedStatus);  
+	}else if("typetotal".equals(type)){  
+		total = true ;   
+		checkedStatus = request.getParameter("realcheckedStatus");
+		maptypeinit = UploadManager.getTotalOrdersGroup(id,"type",BasicUtill.send,checkedStatus);
 	}else if("totalcategory".equals(type)){
 		total = true ;  
-		mapc = UploadManager.getTotalOrdersCategoryGroup(id,BasicUtill.send);
+		checkedStatus = request.getParameter("realcheckedStatus");
+		mapc = UploadManager.getTotalOrdersCategoryGroup(id,BasicUtill.send,checkedStatus);
 	}
 	
 %>
@@ -65,9 +69,14 @@ function detail(src){
 
 function println(){
 	$("#wrapsearch").css("display","block");
-	// window.print();
 } 
 
+function checkedorder(){
+	 
+	$("#wrapsearch").css("display","block");
+	$("#tablechecked").css("display","block");
+}   
+ 
 function changeprintln(){
 	 
     $('input[name="oderStatus"]').not("input:checked").each(function(){
@@ -79,12 +88,23 @@ function changeprintln(){
 	$("#wrapsearch").css("display","none");
 	 window.print();
 }
+
+function changechecked(){
+	$('#post').attr('action',''); 
+	$("#wrapchecked").css("display","none");
+	
+	$("#post").submit();
+} 
+
+function checkedd(){
+	
+}
 </script>
 </head> 
 
 <body>
    <form action="" method="post" id="post" onsubmit="return checkedd()">
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名称:
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名称: 
    <input type="hidden" name="type" id="type" value="check"/>
    <select name="said" id="said">
 	<option ></option>
@@ -103,26 +123,26 @@ function changeprintln(){
 	} 
 	%>
 </select>
-<input type="submit" value="查看" class="noprint" onclick="$('#post').attr('action','')"/>
+<input type="hidden" name="realcheckedStatus" id="realcheckedStatus" value=""/>
+<input type="button" value="查看" class="noprint" onclick="checkedorder()"/>
  
 <% if(check){ %>
+
 <input type="button" class="button" value="设置标准" onclick="amortization('saleCountGroup.jsp')" ></input>
-<input type="submit" value="品类门店统计" onclick="$('#type').val('totalcategory')"/>
-<input type="submit" value="门店品类统计" onclick="$('#type').val('total')"/>
-<input type="submit" value="型号统计" onclick="$('#type').val('typetotal')"/>
+<input type="submit" value="品类门店统计" onclick="$('#type').val('totalcategory');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
+<input type="submit" value="门店品类统计" onclick="$('#type').val('total');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
+<input type="submit" value="型号统计" onclick="$('#type').val('typetotal');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
 <%} 
 if(total){ %> 
-<input type="hidden" name="method" id="method" value=""/>
-<input type="submit" class="noprint"  value="导出" onclick="$('#method').val('<%=type %>');$('#post').attr('action','../Print')"/>
+<input type="hidden" name="method" id="method" value=""/> 
+<input type="submit" class="noprint"  value="导出" onclick="$('#method').val('<%=type %>');$('#post').attr('action','../Print?type=<%=BasicUtill.send%>')"/>
 <input type="button" class="noprint"  value="打印" onclick="println()" ></input>
 <%}  
 %>
 
-</form>
- 
  <div id="wrapsearch" style="position:fixed;text-align:center; top:50%;background-color:white; left:30%; margin:-20% 0 0 -20%; height:50%; width:50%; z-index:999;display:none"> 
-<div >
-<table  cellspacing="1" style="margin:auto;background-color:black; width:80%;height:80%;">  
+ <div id="tablesearch" style="display:none">
+ <table  cellspacing="1" style="margin:auto;background-color:black; width:80%;height:80%;">  
 		   
 		<tr class="bsc">
 			<td align="center">
@@ -145,19 +165,40 @@ if(total){ %>
 		</td>	
 		
 		</tr> 
-		
-		
-		
-		
 		<tr class="bsc">
 			<td class="center" ><input type="button" onclick="changeprintln()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="确定" /></td>
 		</tr>
 	
 </table> 
-</div>
-</div>
+ </div>
+<div id="tablechecked" style="display:none">
+<table   cellspacing="1" style="margin:auto;background-color:black; width:80%;height:80%;">  
+		    
+		<tr class="bsc">
+			<td align="center">
+			请选择显示上传销售单与上报销售单的对比结果
+			</td>
+		</tr> 
  
- 
+		<tr class="bsc">
+		<td align="center" id="salecategorynamecd">
+		    <input type="radio"  name="checkedStatus"  value="0"  />已对比&nbsp;&nbsp;<br/>
+		    <input type="radio"  name="checkedStatus"  value="1"  />未对比&nbsp;&nbsp;<br/>
+		    <input type="radio"  name="checkedStatus"  value="-1" />全部类&nbsp;&nbsp;<br/>
+		</td>	
+		
+		</tr> 
+		<tr class="bsc">
+			<td class="center" ><input type="button" onclick="changechecked()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="确定" /></td>
+		</tr>
+	
+</table> 
+
+</div>
+
+
+</div>
+ </form>
 <% if(check){ %>
 <table border="1px" align="left" width="100%">
        <tr>
@@ -457,8 +498,6 @@ if(total){ %>
 					<td align="center" class="noprinln8"></td>
 					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(Tatalbreakcount) %></td> 
 	    </tr>
-	   
-	   
 	   <%
       } 
   } 
@@ -544,7 +583,6 @@ if(total){ %>
 		 <%  
 		   
 	   }
-
    }
 	%>
 	

@@ -129,6 +129,7 @@ public class LogisticsServlet extends HttpServlet {
 	public synchronized int dealsend(User user , Order order , String uid,String method){
 		int count = -1 ;
 		if(UserManager.checkPermissions(user,Group.dealSend, "w")){
+			order = OrderManager.getOrderID(user, order.getId());
 			if(order.getDealsendId() == 0 ){
 				List<String> listsql = new ArrayList<String>();
 
@@ -148,7 +149,8 @@ public class LogisticsServlet extends HttpServlet {
 	
 	public synchronized int send(User user , Order order , String uid,String method){
 		int count = -1 ;
-		if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){		
+		if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){
+			order = OrderManager.getOrderID(user, order.getId());
 			if(order.getSendId() == 0 ){
 				List<String> listsql = new ArrayList<String>();
 				String sql = "update mdorder set sendId = "+uid+"  , printSatuesp= 1  where id = " + order.getId() ;
@@ -166,7 +168,8 @@ public class LogisticsServlet extends HttpServlet {
 	
 	public synchronized int Orderreturns(User user , Order order , String uid,String method){
 		    int count = -1 ;
-		    if(UserManager.checkPermissions(user,Group.send, "w")){		
+		    if(UserManager.checkPermissions(user,Group.send, "w")){	
+		    	order = OrderManager.getOrderID(user, order.getId());
 		    	List<String> listsql = new ArrayList<String>();
 			     
 				String sql =  "update mdorder set returnstatues = 1 , returntime = '"+TimeUtill.gettime()+"'  where id = " + order.getId() ;
@@ -185,7 +188,8 @@ public class LogisticsServlet extends HttpServlet {
 	
 	public synchronized int orderreturn(User user , Order order , String uid,String method){
 		int count = -1 ;
-		if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){				
+		if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){
+			order = OrderManager.getOrderID(user, order.getId());
 			if(order.getReturnid() == 0 ){
 				List<String> listsql = new ArrayList<String>();
 			    
@@ -206,6 +210,7 @@ public class LogisticsServlet extends HttpServlet {
 	// 安装人员释放
 	public synchronized int salereleaseanzhuang(User user , Order order , String uid,String method){
 		int count = -1 ;
+		order = OrderManager.getOrderID(user, order.getId());
 		//if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){			
 			if(order.getInstallid() != 0 ){
 				List<String> listsql = new ArrayList<String>();
@@ -247,8 +252,11 @@ public class LogisticsServlet extends HttpServlet {
 	// 送货员释放
 		public synchronized int salerelease(User user , Order order , String uid,String method){
 			int count = -1 ;
-			if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){			
-				if(order.getSendId() != 0 ){
+			if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){
+				logger.info(order.getSendId()); 
+				order = OrderManager.getOrderID(user, order.getId());
+				logger.info(order.getSendId());  
+				if(order.getSendId() != 0 ){ 
 					List<String> listsql = new ArrayList<String>();
 					
 					String sql1 = "delete from mdorderupdateprint where id = " + uid;
@@ -272,7 +280,8 @@ public class LogisticsServlet extends HttpServlet {
 	// 安装网点释放
 	public synchronized int release(User user , Order order , String opid,String method){
 		int count = -1 ;
-		if(UserManager.checkPermissions(user,Group.dealSend, "w")){			
+		if(UserManager.checkPermissions(user,Group.dealSend, "w")){	
+			order = OrderManager.getOrderID(user, order.getId());
 			if(order.getDealsendId() != 0 ){
 				List<String> listsql = new ArrayList<String>();
 				
@@ -297,7 +306,8 @@ public class LogisticsServlet extends HttpServlet {
 	// 退货员释放
 		public synchronized int salereleasereturn(User user , Order order , String uid,String method){
 			int count = -1 ;
-			if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){			
+			if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){	
+				order = OrderManager.getOrderID(user, order.getId());
 				if(order.getReturnid() != 0 ){
 					List<String> listsql = new ArrayList<String>();
 					
@@ -323,7 +333,8 @@ public class LogisticsServlet extends HttpServlet {
 		// 导购同意安装网点释放 
 				public synchronized int returns(User user , Order order , String uid,String method){
 					int count = -1 ;
-					if(UserManager.checkPermissions(user,Group.dealSend, "w")){			
+					if(UserManager.checkPermissions(user,Group.dealSend, "w")){	
+						order = OrderManager.getOrderID(user, order.getId());
 						if(!order.isreturn()){ 
 							List<String> listsql = new ArrayList<String>();
 							
@@ -352,7 +363,8 @@ public class LogisticsServlet extends HttpServlet {
 				
 	public synchronized int install(User user , Order order , String uid,String method){
 		int count = -1 ;
-		if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){	
+		if(UserManager.checkPermissions(user,Group.sencondDealsend, "w")){
+			order = OrderManager.getOrderID(user, order.getId());
 			if(order.getInstallid() == 0 ){
 				List<String> listsql = new ArrayList<String>();
 				String sql = "update mdorder set installid = "+uid+" , printSatuesp= 1  where id = " + order.getId() ;
@@ -369,6 +381,7 @@ public class LogisticsServlet extends HttpServlet {
 	public synchronized int songhuo(User user , Order order , String devstatues,String method){
 		int count = -1 ;
 		if(UserManager.checkPermissions(user,Group.send, "w")){	
+			order = OrderManager.getOrderID(user, order.getId());
 			String sql = "";
 			int statues = Integer.valueOf(devstatues);
 			List<String> listsql = new ArrayList<String>();
@@ -425,7 +438,7 @@ public class LogisticsServlet extends HttpServlet {
 			}else if(o.getType() == OrderPrintln.returns && o.getStatues() != 4){  
 				count =  20 ;     
 			} 
-		}
+		} 
 		return count ;
 	}
 	

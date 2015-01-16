@@ -36,6 +36,7 @@ import uploadtotalgroup.UploadTotalGroup;
 import uploadtotalgroup.UploadTotalGroupManager;
 import user.User;
 import user.UserManager;
+import utill.BasicUtill;
 import utill.DoubleUtill;
 import utill.HttpRequestUtill;
 import utill.StringUtill;
@@ -58,7 +59,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 
 import category.Category;
 import category.CategoryManager;
-
+ 
 
 /**
  * 核心请求处理类
@@ -95,6 +96,8 @@ public class PrintServlet extends HttpServlet {
         Date date1 = new Date(); 
 		String printlntime = df2.format(date1); 
         String method = request.getParameter("method");
+        String type = request.getParameter("type");
+        int statues = Integer.valueOf(type);
 		Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
 		
 		Map<String,Map<String,List<UploadTotal>>> mapt = null ;
@@ -102,12 +105,12 @@ public class PrintServlet extends HttpServlet {
 		HashMap<String, List<UploadTotal>> maptypeinit = null;
 		
 		if("total".equals(method)){
-			mapt = UploadManager.getTotalOrdersGroup(id);
+			mapt = UploadManager.getTotalOrdersGroup(id,statues,"");
 		}else if("typetotal".equals(method)){   
-			maptypeinit = UploadManager.getTotalOrdersGroup(id,"type");
-		}else if("totalcategory".equals(method)){ 
-			mapc = UploadManager.getTotalOrdersCategoryGroup(id);
-		}
+			maptypeinit = UploadManager.getTotalOrdersGroup(id,"type",statues,"");
+		}else if("totalcategory".equals(method)){  
+			mapc = UploadManager.getTotalOrdersCategoryGroup(id,statues,"");
+		} 
 		
 		
 		String message = "";

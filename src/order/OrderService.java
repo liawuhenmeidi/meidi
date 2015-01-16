@@ -3075,8 +3075,6 @@ public class OrderService {
 				html.append("<tr id="+o.getId()+"  class=\"asc\"  onclick=\"updateClass(this)\">");
 			
 			   // html.append("<td align=\"center\" width=\"20\"><input type=\"checkbox\" value=\"\" id=\"check_box\" name = "+o.getId() +"></input></td>");
-			
-				
 			    if(UserManager.checkPermissions(user, Group.updateOrderDealsend, "w")){
 					html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
 				}else {
@@ -3087,10 +3085,8 @@ public class OrderService {
 				
 				html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
 				
-				
-				
-				html.append("<td align=\"center\" "+(o.getPosremark()==1?tdcol:"") +">"+o.getPos() +"</td>");
-				
+				html.append("<td align=\"center\"><lable style=\"color:red\" onclick=\"AddPOS('"+(o.getPrintlnid() == null?"":o.getPrintlnid())+"','"+o.getId()+"')\">点击添加</lable></td>"); 
+				 
 				html.append("<td align=\"center\" "+(o.getSailidrecked()==1?tdcol:"") +">"+o.getSailId() +"</td>");
 				
 				html.append("<td align=\"center\" "+(o.getReckedremark()==1?tdcol:"") +">"+o.getCheck() +"</td>");
@@ -3101,7 +3097,6 @@ public class OrderService {
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
 				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
-				
 				
 				html.append("<td align=\"center\">"+ o.getCategory(1,"</p>")+"</td>");
 				
@@ -3123,26 +3118,12 @@ public class OrderService {
 				
 				html.append("<td align=\"center\">"+o.getSaleTime() +"</td>");
 				
-				html.append("<td align=\"center\">"+o.getOdate() +"</td>");
-				
-				html.append("<td align=\"center\">"+o.getDealSendTime() +"</td>");
-				
 				html.append("<td align=\"center\">"+o.getLocate()+"</td>");
 				
 				html.append("<td align=\"center\">"+o.getLocateDetail() +"</td>");
 				
-				
-				html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
-				
-				html.append("<td align=\"center\" style=\"white-space:nowrap;\">"+o.getsendName() +" </td>");
-				
 				html.append("<td align=\"center\"> "+o.getRemark() +"</td>");
 				
-				html.append("<td align=\"center\">"+o.getprint()+"</td>");
-				
-				
-				
-       		
 		    }
 		}
 		return html.toString();

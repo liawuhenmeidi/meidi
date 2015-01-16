@@ -558,20 +558,15 @@ public static void updateSendstat(int statues,int sid, int oid) {
 		    	 printlnid = "H"+order.getPrintlnid();
 		    	 
 		    	 order.setPrintlnid(printlnid);
-		     }else {
+		     }else if(order.getOderStatus().equals(30+"")){ 
+		    	
+    	        printlnid = "T"+order.getPrintlnid();
+    	 
+    	        order.setPrintlnid(printlnid);
+             }else {
 		    	 order.setPrintlnid(order.getPrintlnid()+"-"+daymarkk);
 		     }
 		 }
-		 
-	/*	 if(isflag){   
-			 maxid = order.getId(); 
-			 daymark = order.getDayremark();
-			 OrderManager.delete(maxid);
-		 }else {   
-			 maxid = OrderManager.getMaxid();
-		 }  */
-		   
-	 
 		
 		List<String> sqlp = OrderProductManager.save(maxid, order);
 	    List<String> sqlg = GiftManager.save(maxid, order);
@@ -580,14 +575,20 @@ public static void updateSendstat(int statues,int sid, int oid) {
 	     sqls.addAll(sqlp);
 	     sqls.addAll(sqlg);
 	      
+	     if(!StringUtill.isNull(order.getOdate())){
+	    	     order.setOdate("'"+order.getOdate()+"'");
+			}else {
+				 order.setOdate(null);
+			} 
+	     
 	   
 	    String sql = "insert into  mdorder ( id ,andate , saledate ,pos, username, locates" +
 				", locateDetail, saleID , printSatues ,oderStatus,sailId,checked,phone1,phone2,remark,"+
 	    		"deliveryStatues,orderbranch,sendId,statues1,statues2,statues3,dealSendid,submittime,printlnid,dayremark,dayID,phoneRemark,sailIdremark,checkedremark,posRemark,imagerUrl) values "+  
 				"( "+maxid+", "+order.getOdate()+", '"+order.getSaleTime()+"', '"+order.getPos()+"', '"+order.getUsername()+"', '" 
 	    		+order.getLocate()+"', '"+order.getLocateDetail()+"',"+order.getSaleID()+", "+order.getPrintSatues()    
-	    		+", "+order.getOderStatus()+", '"+order.getSailId()+"', '"+order.getCheck()+"', '"+order.getPhone1()+"','"+order.getPhone2()+"','"+order.getRemark()+"',"+order.getDeliveryStatues()+",'"+order.getBranch()+"',0,0,0,0,"+order.getDealsendId()+",'"+order.getSubmitTime()+"','"+order.getPrintlnid()+"',"+daymark+","+dayID+","+order.getPhoneRemark()+","+order.getSailidrecked()+","+order.getReckedremark()+","+order.getPosremark()+","+order.getImagerUrl()+")";   
-	   
+	    		+", "+order.getOderStatus()+", '"+order.getSailId()+"', '"+order.getCheck()+"', '"+order.getPhone1()+"','"+order.getPhone2()+"','"+order.getRemark()+"',"+order.getDeliveryStatues()+",'"+order.getBranch()+"',0,"+order.getStatues1()+","+order.getStatues2()+","+order.getStatues3()+","+order.getDealsendId()+",'"+order.getSubmitTime()+"','"+order.getPrintlnid()+"',"+daymark+","+dayID+","+order.getPhoneRemark()+","+order.getSailidrecked()+","+order.getReckedremark()+","+order.getPosremark()+","+order.getImagerUrl()+")";   
+	    
 	    sqls.add(sql);
 	    logger.info(sql);       
 	    
@@ -655,11 +656,11 @@ public static void updateSendstat(int statues,int sid, int oid) {
 			  }else if(Order.go == statues){ 
 				  sql = "select * from  mdorder  where  statues1 = 1 and statues2 = 0  "+search+" order by "+sort+str ;
 			  }else if(Order.over == statues){  
-				  sql = "select * from  mdorder  where dealSendid != 0   and printSatues = 1  and deliveryStatues not in (0,3)  and statues4 = 0  "+search+"  order by "+sort+str;
+				  sql = "select * from  mdorder  where dealSendid != 0   and printSatues = 1  and deliveryStatues not in (0,3)  and statues4 = 0  and oderStatus not in (30) "+search+"  order by "+sort+str;
 			  }else if(Order.dingma == statues){ 
 				  sql = "select * from  mdorder  where  id  in (select orderid from mdorderproduct where statues = 1 ) and statuesdingma = 0  "+search+"  order by "+sort+str ;
 			  }else if(Order.deliveryStatuesTuihuo == statues){ 
-				   sql = "select * from  mdorder where  deliveryStatues in (3,4,5,11,12,13)  "+search+"  order by  "+sort+str;
+				   sql = "select * from  mdorder where  deliveryStatues in (3,4,5,11,12,13) and statues1 = 1 and statues2 = 1 and categoryID is null  "+search+"  order by  "+sort+str;
 			   }         
 		  }else if(Group.sencondDealsend == type){ 
 				   if(Order.orderDispatching == statues){  
@@ -674,18 +675,18 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   sql = "select * from  mdorder where  dealSendid != 0   and printSatues = 1    and  installid = 0 and  deliveryStatues in (1,10)  and statuesinstall = 0  "+search+" order by "+sort+str; 
 				   }else if(Order.orderPrint == statues){ 
 					   sql = "select * from  mdorder where  sendId != 0  and  deliveryStatues = 0  and printSatuesp = 0  or  returnid != 0 and  returnprintstatues = 0  "+search+" order by "+sort+str;
-				   }else if(Order.porderPrint == statues){
+				   }else if(Order.porderPrint == statues){ 
 					   sql = "select * from  mdorder where  installid != 0 and  deliveryStatues = 1   and printSatuesp = 0  and returnstatues = 0 "+search+"  order by "+sort+str;
-				   }else if(Order.serach == statues){   
+				   }else if(Order.serach == statues){    
 					   sql = "select * from  mdorder where  dealSendid != 0  and printSatues = 1  "+search+"  order by "+sort+str;
-				   }else if(Order.callback == statues){ 
+				   }else if(Order.callback == statues){  
 					   sql = "select * from  mdorder where  deliveryStatues in (2)  and statuescallback = 0 "+search+" order by "+sort+str;
-				   }else if(Order.charge== statues){    
-					   sql = "select * from  mdorder where  deliveryStatues in (2,5) and  statuesinstall = 0   and statuescallback = 1  and deliverytype = 2  and  statuesinstall = 0 "+search+" order by "+sort+str; 
+				   }else if(Order.charge== statues){     
+					   sql = "select * from  mdorder where  deliveryStatues in (2,5) and  statuesinstall = 0   and statuescallback = 1  and deliverytype = 2  and  statuesinstall = 0 and oderStatus not in (30) "+search+" order by "+sort+str; 
 				   }else if(Order.chargeall== statues){   
-					   sql = "select * from  mdorder where  deliveryStatues in (2,5) and  statuesinstall = 0   and statuescallback = 1   and deliverytype = 1  and statuesinstall  = 0 "+search+" order by "+sort+str; 
+					   sql = "select * from  mdorder where  deliveryStatues in (2,5) and  statuesinstall = 0   and statuescallback = 1   and deliverytype = 1  and statuesinstall  = 0 and oderStatus not in (30) "+search+" order by "+sort+str; 
 				   }else if(Order.pcharge == statues){
-					   sql = "select * from  mdorder where  deliverytype = 2  and  deliveryStatues in (1,2,4,5)  and statuespaigong  = 0  "+search+" order by "+sort+str; 
+					   sql = "select * from  mdorder where  deliverytype = 2  and  deliveryStatues in (1,2,4,5)  and statuespaigong  = 0  and oderStatus not in (30) "+search+" order by "+sort+str; 
 				   }else if(Order.orderquery == statues){ 
 					   sql = "select * from  mdorder where  ( deliveryStatues in (0,9,10) and sendid != 0  or  installid  != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0 ) and printSatuesp = 1   order by " + sort+str;
 					   //returnid = "+user.getId() + " and returnstatues =0  and returnprintstatues = 1 
@@ -764,15 +765,15 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   if(!StringUtill.isNull(search) && search.contains("dealSendid")){
 						   str = "";
 					   }   
-					   sql = "select * from  mdorder where  "+sqlstr+"   and printSatues = 1 and (sendId != 0 and deliverytype = 2 or sendId != 0 and deliverytype = 1 and wenyuancallback = 1 or  installid != 0 and wenyuancallback = 1  ) and deliveryStatues not in (0,3,8,9,10)  and statues4 = 0  "+search+" order by "+sort+str; 
+					   sql = "select * from  mdorder where  "+sqlstr+"   and printSatues = 1 and (sendId != 0 and deliverytype = 2 or sendId != 0 and deliverytype = 1 and wenyuancallback = 1 or  installid != 0 and wenyuancallback = 1  ) and deliveryStatues not in (0,3,8,9,10)  and statues4 = 0  and oderStatus not in (30) "+search+" order by "+sort+str; 
 				   }else if(Order.serach == statues){     
 						  sql = "select * from  mdorder where "+sqlstr+"  "+search+"  order by "+sort+str;  
 						  //sql = "select * from  mdorder where "+sqlstr+"  "+search+"  or (mdorder.id in (select orderid from mdorderupdateprint where mdtype = 3 and pGroupId = "+ user.getUsertype()+ " ))  order by "+sort+"  desc limit " + ((page-1)*num)+","+ page*num; 
 				   }else if(Order.dingma == statues){ 
 						  sql = "select * from  mdorder  where   "+sqlstr+"   and id  in (select orderid from mdorderproduct where statues = 1 )  and statuesdingma = 0 "+search+"  order by "+sort+str;
 				   }else if(Order.deliveryStatuesTuihuo == statues){
-						   sql = "select * from  mdorder where  deliveryStatues in (3,4,5,11,12,13) "+search+"  order by "+sort+str;
-					}   // dispatch 
+						   sql = "select * from  mdorder where  deliveryStatues in (3,4,5,11,12,13) and statues1 = 1 and statues2 = 1 and categoryID is null "+search+"  order by "+sort+str;
+					}   // dispatch    
 			   }else if(Group.sencondDealsend == type){   
 				   if(Order.orderDispatching == statues){  
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and  ( printSatues = 1 and printSatuesp = 0  and sendId = 0  and  deliveryStatues in (0,9) and mdorder.id not in (select orderid from mdorderupdateprint where statues = 2 and mdtype = 6 )  or (mdorder.id in (select orderid from mdorderupdateprint where mdtype in (3,6,7,8)  and statues = 0 )) )  "+search+" order by "+sort+str; 
@@ -781,10 +782,10 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   }else if(Order.dispatch == statues){ 
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and printSatues = 1 and printSatuesp = 0  and sendId = 0  and  deliveryStatues in (0,9)  and mdorder.id not in (select orderid from mdorderupdateprint where statues = 2 and mdtype = 6 )  "+search+" order by "+sort+str; 
 				   }else if(Order.porderDispatching == statues){ 
-					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( printSatues = 1 and printSatuesp = 0    and installid = 0 and  deliveryStatues in (1,10)  and statuesinstall = 0  and returnid = 0  or (mdorder.id in (select orderid from mdorderupdateprint where mdtype in (3,4,5) and pGroupId = "+ user.getUsertype()+ "  and statues = 0 )) )"  + " order by "+sort+str; 
+					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( printSatues = 1 and printSatuesp = 0    and installid = 0 and  deliveryStatues in (1,10)  and statuesinstall = 0  and returnid = 0  or (mdorder.id in (select orderid from mdorderupdateprint where mdtype in (3,4,5) and (pGroupId = "+ user.getUsertype()+ "  or groupid = "+user.getUsertype()+"  )and statues = 0 )) )"  + " order by "+sort+str; 
 				   }else if(Order.installonly == statues){ 
-					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and printSatues = 1 and printSatuesp = 0    and installid = 0 and  deliveryStatues in (1,10)  and statuesinstall = 0  "  + " order by "+sort+str; 
-				   }else if(Order.orderPrint == statues){  
+					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and printSatues = 1 and printSatuesp = 0    and installid = 0 and  deliveryStatues in (1,10)  and statuesinstall = 0  "  + " order by "+sort+str;  
+				   }else if(Order.orderPrint == statues){   
 					   sql = "select * from  mdorder where  (sendId != 0  and printSatuesp = 0   and  deliveryStatues = 0  or  returnid != 0 and  returnprintstatues = 0 ) and  dealSendid = "+user.getId()+"  "+search+"  order by "+sort+str;
 				   }else if(Order.porderPrint == statues){ 
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and  installid != 0 and  deliveryStatues = 1  and printSatuesp = 0  and returnstatues = 0 "+search+"  order by "+sort+str;
@@ -793,11 +794,11 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   }else if(Order.callback == statues){ 
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and  deliveryStatues in (2,5)  and statuescallback = 0 "+search+" order by "+sort+  str; 
 				   }else if(Order.charge == statues){ //and deliverytype = 1  
-					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and   deliveryStatues in (2,5)  and statuescallback = 1  and deliverytype = 2  and  statuesinstall = 0  "+search+"  order by "+sort+str; 
+					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and   deliveryStatues in (2,5)  and statuescallback = 1  and deliverytype = 2  and  statuesinstall = 0  and oderStatus not in (30) "+search+"  order by "+sort+str; 
 				   }else if(Order.chargeall == statues){ // 
-					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and   deliveryStatues in (2,5)  and statuescallback = 1  and deliverytype = 1  and statuesinstall  = 0   "+search+"  order by "+sort+str; 
+					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and   deliveryStatues in (2,5)  and statuescallback = 1  and deliverytype = 1  and statuesinstall  = 0 and oderStatus not in (30)   "+search+"  order by "+sort+str; 
 				   }else if(Order.pcharge == statues){ 
-					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and   deliveryStatues in (1,2,4,5)  and deliverytype = 2  and statuespaigong  = 0  "+search+"  order by "+sort+str ; 
+					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and   deliveryStatues in (1,2,4,5)  and deliverytype = 2  and statuespaigong  = 0 and oderStatus not in (30) "+search+"  order by "+sort+str ; 
 				   }else if(Order.orderquery == statues){  
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )      "+search+"  order by "+sort+str;    
 				   }         
@@ -871,11 +872,11 @@ logger.info(sql);
 			  }else if(Order.go == statues){ 
 				  sql = "select count(*) from  mdorder  where  statues1 = 1 and statues2 = 0  "+search ;
 			  }else if(Order.over == statues){ 
-				  sql = "select count(*) from  mdorder  where dealSendid != 0   and printSatues = 1  and deliveryStatues not in (0,3)  and statues4 = 0  "+search ;
+				  sql = "select count(*) from  mdorder  where dealSendid != 0   and printSatues = 1  and deliveryStatues not in (0,3) and oderStatus not in (30)  and statues4 = 0  "+search ;
 			  }else if(Order.dingma == statues){ 
 				  sql = "select count(*) from  mdorder  where id  in (select orderid from mdorderproduct where statues = 1 )  and statuesdingma = 0  "+search;
 			  }else if(Order.deliveryStatuesTuihuo == statues){  
-				   sql = "select count(*) from  mdorder where  deliveryStatues in (3,4,5,11,12,13)  "+search ;
+				   sql = "select count(*) from  mdorder where  deliveryStatues in (3,4,5,11,12,13)  and statues1 = 1 and statues2 = 1 and categoryID is null "+search ;
 			   }          
 		  }else if(Group.sencondDealsend == type){  
 				   if(Order.orderDispatching == statues){ 
@@ -898,11 +899,11 @@ logger.info(sql);
 				   }else if(Order.callback == statues){ 
 					   sql = "select count(*) from  mdorder where  deliveryStatues in (2)  and statuescallback = 0 "+search ; 
 				   }else if(Order.charge== statues){ //and deliverytype = 1 
-					   sql = "select count(*) from  mdorder where  deliveryStatues in (2,5)  and statuescallback = 1   and deliverytype = 2  and  statuesinstall = 0  "+search; 
+					   sql = "select count(*) from  mdorder where  deliveryStatues in (2,5)  and statuescallback = 1   and deliverytype = 2  and  statuesinstall = 0 and oderStatus not in (30) "+search; 
 				   }else if(Order.chargeall== statues){ //and deliverytype = 1 
-					   sql = "select count(*) from  mdorder where  deliveryStatues in (2,5)  and statuescallback = 1   and deliverytype = 1  and  statuesinstall = 0  "+search; 
+					   sql = "select count(*) from  mdorder where  deliveryStatues in (2,5)  and statuescallback = 1   and deliverytype = 1  and  statuesinstall = 0 and oderStatus not in (30) "+search; 
 				   }else if(Order.pcharge== statues){
-					   sql = "select count(*) from  mdorder where  deliveryStatues in (1,2,4,5)  and deliverytype = 2   and statuespaigong  = 0  "+search;  
+					   sql = "select count(*) from  mdorder where  deliveryStatues in (1,2,4,5)  and deliverytype = 2   and statuespaigong  = 0 and oderStatus not in (30) "+search;  
 				   }else if(Order.orderquery == statues){ 
 					   sql = "select count(*) from  mdorder where  ( deliveryStatues in (0,9,10)   and sendid != 0   or  installid != 0 and deliveryStatues in (1,10,9) or returnid != 0  and returnstatues =0 ) and printSatuesp = 1  ";
 				   }           
@@ -943,7 +944,7 @@ logger.info(sql);
 				   }else if(Order.go == statues){ 
 					   sql = "select count(*) from mdorder where  "+sqlstr+"     and statues1 = 1 and statues2 = 0   "+search;  
 				   }else if(Order.over == statues){  
-					   sql = "select count(*) from  mdorder where   "+sqlstr+"    and printSatues = 1 and (sendId != 0 and deliverytype = 2 or sendId != 0 and deliverytype = 1 and wenyuancallback = 1 or  installid != 0 and wenyuancallback = 1  ) and deliveryStatues not in (0,3,8,9,10)  and statues4 = 0  "+search; 
+					   sql = "select count(*) from  mdorder where   "+sqlstr+"    and printSatues = 1 and (sendId != 0 and deliverytype = 2 or sendId != 0 and deliverytype = 1 and wenyuancallback = 1 or  installid != 0 and wenyuancallback = 1  ) and deliveryStatues not in (0,3,8,9,10)  and statues4 = 0 and oderStatus not in (30) "+search; 
 					   //sql = "select count(*) from  mdorder where   "+sqlstr+"    and printSatues = 1 and sendId != 0  and deliveryStatues not in (0,3)  and statues4 = 0  "+search; 
 				   }else if(Order.serach == statues){    
 						  sql = "select count(*) from  mdorder where  "+sqlstr+"   "+search;  
@@ -951,7 +952,7 @@ logger.info(sql);
 				   }else if(Order.dingma == statues){    
 						  sql = "select count(*) from  mdorder  where  mdorder.saleID in  (select id from mduser where mduser.usertype in (select id from mdgroup where pid = "+user.getUsertype()+"))  and id  in (select orderid from mdorderproduct where statues = 1 )  and statuesdingma = 0 "+search;
 				   }else if(Order.deliveryStatuesTuihuo == statues){ 
-						   sql = "select count(*) from  mdorder where  deliveryStatues in (3,4,5,11,12,13) "+search;
+						   sql = "select count(*) from  mdorder where  deliveryStatues in (3,4,5,11,12,13) and statues1 = 1 and statues2 = 1 and categoryID is null "+search;
 					}    
 			   }else if(Group.sencondDealsend == type){   
 				   if(Order.orderDispatching == statues){  
@@ -974,11 +975,11 @@ logger.info(sql);
 				   }else if(Order.callback == statues){  
 					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+" and  deliveryStatues in (2)  and statuescallback = 0 "+search;  
 				   }else if(Order.charge == statues){ 
-					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+" and  deliveryStatues in (2,5)  and statuescallback = 1   and deliverytype = 2  and  statuesinstall = 0 "+search ; 
+					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+" and  deliveryStatues in (2,5)  and statuescallback = 1   and deliverytype = 2  and  statuesinstall = 0 and oderStatus not in (30) "+search ; 
 				   }else if(Order.chargeall == statues){   
-					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+" and  deliveryStatues in (2,5)  and statuescallback = 1   and deliverytype = 1  and  statuesinstall = 0 "+search ; 
+					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+" and  deliveryStatues in (2,5)  and statuescallback = 1   and deliverytype = 1  and  statuesinstall = 0 and oderStatus not in (30) "+search ; 
 				   } else if(Order.pcharge == statues){  
-					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+" and  deliveryStatues in (1,2,4,5)  and deliverytype = 2   and statuespaigong  = 0  "+search ; 
+					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+" and  deliveryStatues in (1,2,4,5)  and deliverytype = 2   and statuespaigong  = 0  and oderStatus not in (30) "+search ; 
 				   }else if(Order.orderquery == statues){  
 					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+"  and (deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )  and printSatuesp = 1    "+search ; 
 				   }    
@@ -1486,6 +1487,15 @@ public static Map<String,Order> getOrdermapByIds(User user ,String id){
        listsqls.add(sqlop);
        listsqls.add(sql); 
 		return listsqls ;
+	}
+   
+   // 添加H单号后更新状态
+   
+   public static void updateHPOS(String ids) {
+		
+      String sql = "update mdorder set categoryID = 0 where id in " + ids;
+ 
+      DBUtill.sava(sql); 
 	}
    
    public static boolean deleteed(int id) {

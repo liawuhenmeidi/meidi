@@ -10,53 +10,10 @@ List<Category> listallp = CategoryService.getList();
 String listallpp = StringUtill.GetJson(listallp); 
 
 
-if(Order.orderDispatching == type || Order.neworder == type || Order.release == type || Order.returns == type){
-	message = "文员派工页";
-}else if(Order.charge == type){
-	message = "厂送票未结款";
-}else if(Order.come == type){
-	message = "厂送票未回";
-}else if(Order.go == type){
-	message = "厂送票未消";
-}else if(Order.dingma == type){ 
-	message = "调账确认页";
-}else if(Order.over == type){
-	message = "安装网点结款页";
-}else if(Order.orderPrint == type){
-	message = "文员打印页";
-}else if(Order.serach == type){
-	message = "查看订单页";  
-}else if( Order.porderDispatching== type){ 
-	type = Order.orderDispatching;
-	message = "网点派工"; 
-}else if( Order.pinstall== type){
-	type = Order.porderDispatching;
-	message = "安装派工"; 
-}else if( Order.pinstallprintln== type){ 
-	message = "安装打印"; 
-}else if(Order.pserach == type){
-	message = "网点查询"; 
-	type = Order.serach;
-}else if(Order.porderPrint == type){
-	message = "网点打印";  
-}else if(Order.callback == type){
-	message = "客户回访";  
-}else if(Order.pcharge == type){
-	type = Order.charge;
-	message = "安装结款";   
-}else if(Order.pchargepaisong == type){
-	type = Order.pcharge;
-	message = "送货结款"; 
-}else if(Order.deliveryStatuesTuihuo == type){
-	message = "退货订单页"; 
-}else if(Order.chargeall == type){
-	message = "送货安装结款"; 
-}else if(Order.orderquery == type){
-	message = "送货确认页"; 
-}else if(Order.aftersalerepare == type){
-	message = "";
+if(Order.aftersalerepare == type){
+	message = "售后待处理";
 }
-
+ 
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/meidiserver/";
  

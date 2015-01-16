@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import aftersale.AfterSale;
+import aftersale.AfterSaleManager;
+
 import category.Category;
 import category.CategoryManager;
 
@@ -55,24 +58,22 @@ public class OrderServlet extends HttpServlet {
 		Object object = new Object();
 		  
 		String method = request.getParameter("method");
-	
+	    logger.info(method);  
 		synchronized(object){
 			if("println".equals(method)){
 				savePrintln(request,response);
-				return ; 
 			}else if("shifang".equals(method)){
 				savashifang(request,response);
-				return ; 
 			}else if("huanhuo".equals(method)){ 
 				HuanHuo(request,response);
-				return ; 
 			}else if("savehuanhuo".equals(method)){ 
 				saveHuanhuo(request,response);
-				return ; 
-				// 
+			}else if("saveTuihuo".equals(method)){ 
+				saveTuihuo(request,response);
+			}else if("aftersale".equals(method)){ 
+				saveaftersale(request,response);
 			}else {
 				save(request,response);
-				return ; 
 			}
 		}
 	}
@@ -309,10 +310,8 @@ public class OrderServlet extends HttpServlet {
 				 
 				order.setId(Integer.valueOf(id));
 				order.setSaleTime(saledate);  
-				if(!StringUtill.isNull(andate)){
-					 order.setOdate("'"+andate+"'");
-				} 
-		       
+				
+				order.setOdate(andate);
 		        order.setPos(POS);
 		        order.setSaleID(user.getId()); 
 		        order.setBranch(Integer.valueOf(user.getBranch())); 
@@ -380,7 +379,6 @@ public class OrderServlet extends HttpServlet {
 				    // 送货状态   
 				for(int i=0;i<producs.length;i++){	
 					int opid = Integer.valueOf(producs[i]);
-					logger.info(opid);
 				    for(int j=0;j<list.size();j++){
 				    	OrderProduct or = list.get(j);
 				    	if(or.getStatues() == 0 && opid == or.getId()){
@@ -396,11 +394,7 @@ public class OrderServlet extends HttpServlet {
 				
 				String andate = request.getParameter("andate"); //安装日期
 				
-				if(!StringUtill.isNull(andate)){
-					andate  = "'"+andate+"'";
-				}else {
-					andate = null;
-				} 
+				
 				 
 				String username = request.getParameter("username");
 				
@@ -421,7 +415,7 @@ public class OrderServlet extends HttpServlet {
 				
 				
 		        order.setOdate(andate);
-
+ 
 		        order.setPos(oldOrder.getPos());
 			     
 		        order.setSaleID(oldOrder.getSaleID()); 
@@ -461,8 +455,84 @@ public class OrderServlet extends HttpServlet {
     	}
     }
     
+    private void saveTuihuo(HttpServletRequest request, HttpServletResponse response){
+    	try{
+	    	      //处理请求，并执行resetToken方法，将session中的token去除
+    	        User user  = (User)request.getSession().getAttribute("user");
+		        String oid = request.getParameter("orderid");
+		        String realpos = request.getParameter("realpos");
+		    	Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
+		    	
+                order.setPos(realpos); 
+			    order.setOderStatus(30+"");
+                
+				order.setImagerUrl(order.getId()+"");
+				 
+				order.setOrderproduct(order.getOrderproduct());
+				
+				order.setOrdergift(order.getOrdergift());
+				
+				order.setId(0);
+				
+				int flag = OrderManager.save(user, order); 
+				
+				String ids = "("+flag+","+oid+")"; 
+				
+				OrderManager.updateHPOS(ids);  
+				
+    	}catch(Exception e){  
+    		e.printStackTrace();
+    		logger.info(e);
+    	}
+    }
     
-    
+    private void saveaftersale(HttpServletRequest request, HttpServletResponse response){
+    	try{ 
+    	
+	    	      //处理请求，并执行resetToken方法，将session中的token去除
+    	        User user  = (User)request.getSession().getAttribute("user");
+		        String oid = request.getParameter("orderid");
+		        
+		        String uname = request.getParameter("uname");
+		        String phone = request.getParameter("phone");
+		        String cid = request.getParameter("ordercategory");
+		        String tname = request.getParameter("ordertype");
+		        String batchNumber = request.getParameter("orderbatchNumber");
+		        String barcode = request.getParameter("orderbarcode");
+		        String andate = request.getParameter("andate");
+		        String saledate = request.getParameter("saledate");
+		        String location = request.getParameter("locations");
+		        String remark = request.getParameter("remark");
+		        
+		        AfterSale af = new AfterSale();
+		        if(!StringUtill.isNull(oid)){
+		        	af.setId(Integer.valueOf(oid));
+		        }
+		        af.setUname(uname);
+		        af.setPhone(phone);
+		        af.setCid(Integer.valueOf(cid));
+		        af.settName(tname);
+		        af.setBarcode(barcode);
+		        af.setBatchNumber(batchNumber);
+		        af.setAndate(andate);
+		        af.setSaledate(saledate);
+		        af.setLocation(location);
+		        af.setDetail(remark);
+		        af.setType(AfterSale.typeupdate);
+		        af.setBranch(Integer.valueOf(user.getBranch())); 
+		        af.setPcount(1); 
+		        AfterSaleManager.save(user, af);  
+		        try {   
+					response.sendRedirect("../admin/afterSale/dingdansubmit.jsp");
+				} catch (IOException e) { 
+					e.printStackTrace(); 
+				} 
+		        
+    	}catch(Exception e){  
+    		e.printStackTrace();
+    		logger.info(e);
+    	}
+    }
     private void HuanHuo(HttpServletRequest request, HttpServletResponse response){
     	String id = request.getParameter("id");
     	try {

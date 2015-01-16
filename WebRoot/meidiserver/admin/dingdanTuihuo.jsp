@@ -22,13 +22,13 @@ width:50px
 }
 
 #table{  
-    width:2500px;
+    width:2000px;
      table-layout:fixed ;
 }
 #th{
     background-color:white;
     position:absolute;
-    width:2500px; 
+    width:2000px; 
     height:30px;
     top:0;
     left:0;
@@ -53,7 +53,7 @@ width:50px
 <script type="text/javascript">
 var id = "";
 var type = "<%=Group.dealSend%>";
-   
+var realoid;   
 function serch(){
 	 var search = $("#search").val();
 	 var serchProperty = $("#serchProperty").val();
@@ -69,91 +69,21 @@ $(function () {
 });
 
 
-function funcc(str,str2){
-    $(id).css("display","none");
-	$("#"+str).css("display","block");
-	id = "#"+str ;
-	$.ajax({ 
+function saveAddPOD(){
+	 $("#addpos").css("display","none");
+    var realpos = $("#realpos").val();
+	$.ajax({  
         type: "post", 
-         url: "server.jsp",
-         data:"method=dingdan&id="+str2,
+         url: "../user/OrderServlet",
+         data:"method=saveTuihuo&orderid="+realoid+"&realpos="+realpos,
          dataType: "", 
          success: function (data) {
-           //window.location.href="dingdan.jsp";
+        	 
+        	 initOrder(type,statues,num,page,sort,sear);	 
            }, 
          error: function (XMLHttpRequest, textStatus, errorThrown) { 
         // alert(errorThrown); 
             }
-           });
-}
-
-function changepeidan(str1,str2){
-	var uid = $("#"+str1).val();
-	$.ajax({ 
-        type: "post", 
-         url: "server.jsp",
-         data:"method=peidan&id="+str2+"&uid="+uid,
-         dataType: "", 
-         success: function (data) {
-          if(data = 0) {
-        	 alert("订单已打印，不能配单");  
-          }	 
-           alert("设置成功"); 
-           window.location.href="dingdan.jsp";
-           }, 
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-        // alert(errorThrown); 
-            } 
-           });
-
-}
-
-
-function change(str1,str2){
-	var uid = $("#"+str1).val();
-	$.ajax({ 
-        type: "post", 
-         url: "server.jsp",
-         data:"method=songhuo&id="+str2+"&uid="+uid,
-         dataType: "", 
-         success: function (data) {
-           alert("设置成功"); 
-           window.location.href="dingdan.jsp";
-           }, 
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-        // alert(errorThrown); 
-            } 
-           });
-
-}
-
-function changes(str1){
-	$.ajax({ 
-        type: "post", 
-         url: "server.jsp",
-         data:"method=dingdaned&id="+str1,
-         dataType: "", 
-         success: function (data) {
-           window.location.href="dingdan.jsp";
-           }, 
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-        // alert(errorThrown); 
-            } 
-           });
-}
-
-function orderPrint(id,statues,type){
-	$.ajax({ 
-        type: "post", 
-         url: "server.jsp",
-         data:"method=print4&id="+id+"&statues="+statues,
-         dataType: "",    
-         success: function (data) {           
-           window.location.href="print.jsp?id="+id+"&type="+type;
-           },   
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-        // alert(errorThrown); 
-            } 
            });
 }
 
@@ -164,8 +94,13 @@ function adddetail(src){
 	if(winPar == "refresh"){
 	       window.location.reload();
     }
+} 
 
-}
+function AddPOS(printid,oid){
+	realoid = oid ;
+	$("#addprintid").text("单号:"+printid);
+	$("#addpos").css("display","block");
+}   
 </script>
  
  
@@ -189,6 +124,9 @@ function adddetail(src){
 <br/>  
 <%@ include file="searchOrderAll.jsp"%>
 
+
+
+
 <div id="wrap">
 <table  cellspacing="1" id="table">
 		<tr id="th">  
@@ -210,19 +148,37 @@ function adddetail(src){
 			<td align="center">赠品数量</td>
 			<td align="center">赠品状态</td> 
             <td align="center">开票日期</td>  
-            <td align="center">预约日期</td>
             <td align="center">送货地区</td>
             <td align="center">送货地址</td>
-            <td align="center">送货状态</td>
-			<td align="center">打印状态</td>
-			
-			<td align="center">送货人员</td>
 			<td align="center">备注</td>
-			<td align="center">打印</td>
 		</tr>
 </table>
 </div> 
 
+<div id="addpos" style="display:none"> 
+<div style="position:fixed;text-align:center; top:65%;background-color:white; left:30%; margin:-20% 0 0 -20%; height:30%; width:50%; z-index:999;">
+<br/>
+<table   cellspacing="1" style="margin:auto;background-color:black; width:80%;height:80%;">  
+        <tr class="bsc">
+		<td align="center" colspan=2>
+		  <label id="addprintid"></label>
+		</td>	
+		</tr>
+		<tr class="bsc">
+		<td align="center" colspan=2>
+		   <input type="text" id="realpos"/>
+		</td>	 
+		</tr> 
+		<tr class="bsc">
+		
+		    <td class="center" ><input type="button" onclick="$('#addpos').css('display','none');"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="取消" /></td>
+		
+			<td class="center" ><input type="button" onclick="saveAddPOD()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="确定" /></td>
+		</tr>
+	
+</table> 
+</div>
+</div>
  
 </body>
 </html>

@@ -5,38 +5,20 @@
 List<Category> list = CategoryManager.getCategory(user,Category.sale); 
 String clist = StringUtill.GetJson(list);
  
-HashMap<Integer,ArrayList<Product>> map = ProductManager.getProduct();
-List<Locate> listl = LocateManager.getLocate();
- 
 HashMap<String,ArrayList<String>> listt = ProductService.gettypeName();
-
+ 
 String plist = StringUtill.GetJson(listt);
 
-Branch branch = BranchService.getMap().get(Integer.valueOf(user.getBranch())); 
-  
-
 String id = request.getParameter("id");
-// 为空表示正常修改     不为空表示导购报送相同顾客单据
-String statues = request.getParameter("statues");
+
 
 Order order = null ; 
-String listopp = "";
 String strorder= null;
-String isdisabel = "";
 
 if(!StringUtill.isNull(id)){
 	order = OrderManager.getOrderID(user,Integer.valueOf(id));
 	strorder = StringUtill.GetJson(order);
-	
-	if(StringUtill.isNull(statues)){
-		List<OrderProduct> listop = OrderProductManager.getOrderStatues(user, Integer.valueOf(id));
-		listopp = StringUtill.GetJson(listop);
-		isdisabel = " disabled=\"disabled\" "; 
-		
-	}else {
-		id = "";
-	}
-	 
+
 }
  
 %> 
@@ -52,9 +34,9 @@ if(!StringUtill.isNull(id)){
  <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/calendar.js"></script> 
-
-<link rel="stylesheet" href="../css/jquery-ui.css">
-<script type="text/javascript" src="../js/jquery-ui.js"></script>
+ 
+<link rel="stylesheet" href="../../css/jquery-ui.css">
+<script type="text/javascript" src="../../js/jquery-ui.js"></script>
 
 <style type="text/css"> 
 
@@ -78,16 +60,14 @@ if(!StringUtill.isNull(id)){
    var json = <%=clist%>;
    var listop =  null;
    // statues 表示是否是相同顾客报装
-   var statues = '<%=statues%>' ;
    
    var order = <%=strorder%>;
 
    
    
    $(document).ready(function(){
-	initphone();
-	init();   
-	setMessage("必填");
+	//initphone();
+	//init();   
 	initproductSerch("#ordercategory","#ordertype");
    });
    
@@ -149,9 +129,7 @@ if(!StringUtill.isNull(id)){
 			    });
 			}) ;
        } 
-   
 
-  
     
  function initphone(){ 
 	   $("#phone1").focus(function(){
@@ -188,139 +166,92 @@ if(!StringUtill.isNull(id)){
 		           });  
 		  });  
   }
-
-  
- function checkMessage(str,message){ 
-	 var filter = /^1[3|4|5|7|8][0-9]\d{9}$/;
-	 //var fiter = /^(((13[0-9]{1})|159|153)+\d{8})$/ ;
-	 if(filter.test(message)){
-		 return true;
-	 }else{
-		 alert("请填写正确的手机号码");
-		 $(str).focus();
-		 return false;
-	 }
- }
- 
- 
- 
-  
- function setMessage(str){
-	// var andate = $("#serviceDate2").attr("placeholder",str);
-	 var username = $("#username").attr("placeholder",str);
-	 var phone1 = $("#phone1").attr("placeholder",str);
-	 var locations = $("#locations").attr("placeholder",str);
- }
- 
  
  function checkedd(){
      
+	 var uname = $("#uname").val();
+	 var phone = $("#phone").val();
+	 var juese = $("#ordercategory").val();
+	 var str = $("#ordertype").val();
 	 
-	 var saledate = $("#serviceDate").val();
-	 var andate = $("#serviceDate2").val();
-	 var pos = $("#pos").val();
-	 var sailId = $("#sailId").val();
-	 var check = $("#checked").val();
-	 var username = $("#username").val();
-	 var phone1 = $("#phone1").val();
-	 var phone2 = $("#phone2").val();
-	 var locate = $("#quyu").val();
+	 
+	 var orderbatchNumber = $("#orderbatchNumber").val();
+	 var orderbarcode = $("#orderbarcode").val();
+	 var andate = $("#andate").val();
+	 var saledate = $("#saledate").val();
+	 
 	 var locations = $("#locations").val();
-	 var remark = $("#remark").val();
-	 var radio = $('input:radio[name="Statues"]:checked').val();
-	
-
 	 
-     if(saledate == "" || saledate == null || saledate == "null"){
-		 alert("开票日期不能为空");
+	 
+	 
+	 if(uname == "" || uname == null || uname == "null"){
+		 alert("顾客姓名不能为空");
 		 return false;
 	 }
 	 
-     if($.inArray("pos", branch) != -1){
-		 if(pos == "" || pos == null || pos == "null"){
-			 alert("pos(厂送)单号不能为空");
-			 return false;
-		 }
-     } 
-     
-     if($.inArray("sailId", branch) != -1){
-		 if(sailId == "" || sailId == null || sailId == "null"){
-			 alert("OMS订单号不能为空");
-			 return false;
-		 }
-     }
-       
-     if($.inArray("checked", branch) != -1){
-		 if(check == "" || check == null || check == "null"){
-			 alert("校验码不能为空");
-			 return false;
-		 } 
-     }
-     
-	 
-	 
-	    
-	 for(var i=0;i<rows.length;i++){
-		 var str = $("#ordertype"+rows[i]).val();
-		 var juese = $("#ordercategory"+rows[i]).val();
-		 var statues = $("#productsta"+rows[i]).val();
-		 
-		 
-		 if(str == "" || str == null || str == "null"){
-			 alert("送货型号不能为空");
-			 return false; 
-		 }else {
-			 var flag = true ;
-	         	  var array = jsons[juese];
-	         	  //alert(array); 
-	         	  if(array != "" && array != null &&  array != "null" && array != undefined && array != "undefined"){
-		         	   for(var k=0;k<array.length;k++){
-		         		   
-		         		   if(str == array[k]){
-		         			   flag = false  ;
-		         		   }
-		         	   }
-		         	   }
-			
-			 if(flag){
-				 alert("系统不存在此型号"+str);
-				 return false ;
-			 }
-		 }
-		  
-		
-		
+	 if(phone == "" || phone == null || phone == "null"){
+		 alert("电话不能为空");
+		 return false;
 	 }
-
+	 else {
+	    var filter = /^1[3|4|5|7|8][0-9]\d{8}$/;  
+	    var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+		 if(!filter.test(phone) && !isPhone.test(phone)){
+			 alert("请填写正确的手机号码或电话");     
+			 return false;  
+		 }
+	 }  
+	 
+	 
+	 if(str == "" || str == null || str == "null"){
+		 alert("产品型号不能为空");
+		 return false; 
+	 }else {
+		 var flag = true ;
+         	  var array = jsons[juese];
+         	  //alert(array); 
+         	  if(array != "" && array != null &&  array != "null" && array != undefined && array != "undefined"){
+	         	   for(var k=0;k<array.length;k++){
+	         		   if(str == array[k]){
+	         			   flag = false  ;
+	         		   }
+	         	   }
+	         	   }
+		
+		 if(flag){
+			 alert("系统不存在此型号"+str);
+			 return false ;
+		 }
+	 }
+	  
+	 
+	 if(orderbatchNumber == "" || orderbatchNumber == null || orderbatchNumber == "null"){
+		 alert("批号不能为空");
+		 return false;
+	 }
+     
+    
+	 if(orderbarcode == "" || orderbarcode == null || orderbarcode == "null"){
+		 alert("条码不能为空");
+		 return false;
+	 }
+	 
+     if(andate == "" || andate == null || andate == "null"){
+		 alert("安装日期不能为空");
+		 return false;
+	 }
+	 
+     if(saledate == "" || saledate == null || saledate == "null"){
+		 alert("购买日期不能为空");
+		 return false;
+	 }
 		 
-		 if(username == "" || username == null || username == "null"){
-			 alert("顾客姓名不能为空");
-			 return false;
-		 }
-		 
-		 if(phone1 == "" || phone1 == null || phone1 == "null"){
-			 alert("电话不能为空");
-			 return false;
-		 }
-		 else {
-		    var filter = /^1[3|4|5|7|8][0-9]\d{8}$/;  
-		    var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
-			 if(!filter.test(phone1) && !isPhone.test(phone1)){
-				 alert("请填写正确的手机号码或电话");     
-				 return false;  
-			 }
-		 }  
-	     
-		 if(locate == "" || locate == null || locate == "null"){
-			 alert("所属区域不能为空");
-			 return false;
-		 }
-		 
-		 if(locations == "" || locations == null || locations == "null"){
-			 alert("详细地址不能为空");
-			 return false;
-		 }
-	   
+	 if(locations == "" || locations == null || locations == "null"){
+		 alert("详细地址不能为空");
+		 return false;
+	 }
+	 
+	 
 	 $("#submit").css("display","none"); 
 	 return true ; 
  }
@@ -340,16 +271,15 @@ if(!StringUtill.isNull(id)){
 <div style="height:70px;">
 </div>
   
-<form action="OrderServlet"  method ="post"  id="form"   onsubmit="return checkedd()"  > 
+<form action="../../user/OrderServlet"  method ="post"  id="form"   onsubmit="return checkedd()"  > 
 <!--  头 单种类  -->  
 
-<input type="hidden" name="product" value="0"/>  
-<input type="hidden" id="phoneremark" name="phoneRemark" value="0"/>
 <input type="hidden" name="orderid" value="<%=id %>"/>
-<input type="hidden" name="token" value="<%=token%>"/> 
+<input type="hidden" name="method" value="aftersale"/>
+<input type="hidden" name="token" value="<%=token%>"/>  
 
 <div class="s_main_tit">上报单位:<span class="qian"><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %></span></div>  
-<!--  订单详情  -->  
+<!--  订单详情  -->   
   
  <div id="wrap"> 
   <table  cellspacing="1" id="table" style="width:90%">
@@ -380,7 +310,7 @@ if(!StringUtill.isNull(id)){
   </select>   
   </td>
    <td  >产品型号<span style="color:red">*</span></td> 
-   <td  >
+   <td  > 
    <input type="text" name="ordertype" id="ordertype"   placeholder="必填" /> 
     </td> 
     
@@ -398,10 +328,10 @@ if(!StringUtill.isNull(id)){
     <tr class="asc"> 
     
     <td  >安装日期<span style="color:red">*</span></td>
-    <td  ><input class="date2" type="text" name="andate" id ="serviceDate2" onclick="new Calendar().show(this);"  placeholder="必填"  readonly="readonly" ></input>   </td>
+    <td  ><input class="date2" type="text" name="andate" id ="andate" onclick="new Calendar().show(this);"  placeholder="必填"  readonly="readonly" ></input>   </td>
    
     <td  >购买日期<span style="color:red">*</span></td>
-    <td  ><input class="date2" type="text" name="andate" id ="serviceDate2" onclick="new Calendar().show(this);"  placeholder="必填"  readonly="readonly" ></input>   </td>
+    <td  ><input class="date2" type="text" name="saledate" id ="saledate" onclick="new Calendar().show(this);"  placeholder="必填"  readonly="readonly" ></input>   </td>
 
  </tr>
    <tr class="asc"> 
