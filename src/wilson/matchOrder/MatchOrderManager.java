@@ -93,6 +93,16 @@ public class MatchOrderManager {
 		return unCheckedUploadOrders;
 	}
 	
+	//根据条件取Uploadorder(仅提供给unConfirmedOrders.jsp使用)
+	public static List<UploadOrder> getUnConfirmedUploadOrders(String selectOrderName){
+		List<UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
+		//查询条件提交后，右侧显示内容
+		if(selectOrderName != null && !selectOrderName.equals("")){
+			unCheckedUploadOrders = UploadManager.getUnComfirmedUploadOrdersByName(selectOrderName);
+		}
+		return unCheckedUploadOrders;
+	}
+	
 	//根据条件取order(仅提供给manualCheckout.jsp使用)
 	public static List<Order> getCheckedDBOrders(String selectBranchType,String selectBranch,String deadline){
 		List<Order> unCheckedDBOrders = new ArrayList<Order>();
@@ -416,6 +426,19 @@ public class MatchOrderManager {
 		}
 		idList = idList.substring(0,idList.length()-1);
 		if(UploadManager.checkUploadOrderStrList(idList)){
+			return true;
+		}
+
+		return false;
+	}
+	
+	public static boolean confirmUploadOrderList(String[] uploadOrderIdStrList){
+		String idList = "";
+		for(int i = 0 ; i < uploadOrderIdStrList.length ; i ++ ){
+			idList += uploadOrderIdStrList[i] + ",";
+		}
+		idList = idList.substring(0,idList.length()-1);
+		if(UploadManager.confirmUploadOrderStrList(idList)){
 			return true;
 		}
 

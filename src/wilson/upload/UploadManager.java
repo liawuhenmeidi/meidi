@@ -217,6 +217,29 @@ public class UploadManager {
 		}
 	}
 	
+	public static boolean confirmUploadOrderStrList(String uploadOrderIdStrList){
+		boolean flag = false;
+		Connection conn = DB.getConn();
+		String sql = "update uploadorder set checked = ? where id in (" + uploadOrderIdStrList + ")" ;
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+
+			pstmt.setInt(1,UploadOrder.COMFIRMED);
+			pstmt.executeUpdate();
+			logger.info(sql);
+			flag = true ;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return flag ;  
+		
+	}
+	
 	public static boolean checkUploadOrderStrList(String uploadOrderIdStrList){
 		boolean flag = false;
 		Connection conn = DB.getConn();
@@ -536,11 +559,46 @@ public class UploadManager {
 		
 	}
 
+	public static List<String> getUnconfirmedUploadOrderNames(){
+		List <String> unConfirmedUploadOrderNames = new ArrayList<String>();
+
+		Connection conn = DB.getConn(); 
+		String sql = "select DISTINCT name from uploadorder where checked = " + UploadOrder.COMPARE_DEFAULT;
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		String tmp = "";
+		try {     
+			while (rs.next()) {
+				tmp = "";
+				tmp = rs.getString("name");
+				unConfirmedUploadOrderNames.add(tmp);
+			}
+			
+			//
+			sql = "select DISTINCT name from uploadorder where checked = " + UploadOrder.CALCED + " or checked = " + UploadOrder.CHECKED;
+			rs = DB.getResultSet(stmt, sql);
+			while(rs.next()){
+				tmp = "";
+				tmp = rs.getString("name");
+				unConfirmedUploadOrderNames.remove(tmp);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return unConfirmedUploadOrderNames;
+	}
+	
 	public static List<UploadOrder> getUnCheckedUploadOrders(){
 		List <UploadOrder> unCheckedUploadOrders = new ArrayList<UploadOrder>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadorder where checked = 1 order by shop";
+		String sql = "select * from uploadorder where checked = " + UploadOrder.UNCHECK +  " or checked = " + UploadOrder.COMFIRMED + " order by shop";
 
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -1204,11 +1262,36 @@ public class UploadManager {
 		return result;
 	}
 	
+	public static List<UploadOrder> getUnComfirmedUploadOrdersByName(String name){
+		List <UploadOrder> result = new ArrayList<UploadOrder>();
+
+		Connection conn = DB.getConn(); 
+		String sql = "select * from uploadorder where checked != " + UploadOrder.COMFIRMED + " and name = '" + name + "' order by shop" ;
+		logger.info(sql);
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadOrder uo = new UploadOrder();
+		try {     
+			while (rs.next()) {
+				uo = getUploadOrderFromRS(rs);
+				result.add(uo);
+				uo = new UploadOrder();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
+	}
+	
 	public static List<UploadOrder> getUnCheckedUploadOrdersByName(String name){
 		List <UploadOrder> result = new ArrayList<UploadOrder>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadorder where checked = 1 and name = '" + name + "' order by shop" ;
+		String sql = "select * from uploadorder where (checked = " + UploadOrder.UNCHECK + " or checked = " + UploadOrder.COMFIRMED + " )and name = '" + name + "' order by shop" ;
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -1456,7 +1539,7 @@ public class UploadManager {
 		
 		List<String> temp = new ArrayList<String>();
 		Connection conn = DB.getConn(); 
-		String sql = "select DISTINCT name from uploadorder where checked >= " + under_status;
+		String sql = "select DISTINCT name from uploadorder where checked = " + under_status;
 		
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);

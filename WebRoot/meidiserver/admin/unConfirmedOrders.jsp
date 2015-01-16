@@ -25,13 +25,11 @@
 		String transferType = request.getParameter("transferType");
 		if(UploadManager.transferShopName(transferShop) && UploadManager.transferType(transferType)){
 			if(dbSide != null && dbSide.length >0){
-				MatchOrderManager.checkDBOrderList(user,dbSide,selectOrderName);
+				MatchOrderManager.confirmDBOrderList(user,dbSide);
 			}
-			/**
 			if(uploadSide != null && uploadSide.length > 0){
-				MatchOrderManager.checkUploadOrderList(uploadSide); 
+				MatchOrderManager.confirmUploadOrderList(uploadSide); 
 			}
-			**/
 		}
 	}
 	
@@ -49,8 +47,7 @@
 	String mapjosn = StringUtill.GetJson(map);
 	
 	//右侧select里面的内容
-	List<UploadOrder> uploadOrders = UploadManager.getUnCheckedUploadOrders();
-	List<String> orderNames = UploadManager.getAllUploadOrderNames(uploadOrders);
+	List<String> orderNames = UploadManager.getUnconfirmedUploadOrderNames();
 	
 	
 	//接受查询条件的提交
@@ -76,7 +73,7 @@
 	
 	
 	//查询条件提交后，右侧显示内容
-	unCheckedUploadOrders = MatchOrderManager.getUnCheckedUploadOrders(selectOrderName);
+	unCheckedUploadOrders = MatchOrderManager.getUnConfirmedUploadOrders(selectOrderName);
 	
 	
 	if(startButton != null && startButton.equals("正在对比")){
@@ -136,7 +133,7 @@
 	
 	//是否禁用
 	boolean dbsideDisabled =false;
-	boolean uploadsideDisabled=true;
+	boolean uploadsideDisabled=false;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -555,18 +552,16 @@ function baseFormSubmit(){
 			backgroundColor ="#B9D3EE";
 			isChecked = false;
 			dbsideDisabled =false;
-			//uploadsideDisabled=false;
+			uploadsideDisabled=false;
 			if(afterMatchOrders.get(i).getUploadSideOrderId() == MatchOrder.SAME_POS_ID){
 				showColor = true;
 			}
 			if(afterMatchOrders.get(i).getCompareLevel() == calcNum){
 				isChecked = true;
 			}
-			/**
 			if(afterMatchOrders.get(i).getUploadSideOrderId() < 0){
 				uploadsideDisabled = true;
 			}
-			**/
 			if(afterMatchOrders.get(i).getDBSideOrderId() < 0){
 				dbsideDisabled = true;
 			}
