@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import order.Order;
+import order.OrderManager;
 import utill.StringCompare;
 import utill.StringUtill;
 import wilson.upload.UploadOrder;
@@ -319,6 +320,10 @@ public class MatchOrder {
 							int maxCompareLevelIterator = 0 ;
 
 							for(int m = 0 ; m <tempList.size() ; m++){
+								
+								if(OrderManager.getDeliveryStatues(tempList.get(m)) != null && OrderManager.getDeliveryStatues(tempList.get(m)).contains("退")){
+									continue;
+								}
 								amo = new AfterMatchOrder(tempUo,tempList.get(m));
 								if(amo.calcLevel(matchPara)>tempDouble){
 									tempDouble = amo.calcLevel(matchPara);
