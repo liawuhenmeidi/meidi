@@ -573,7 +573,8 @@ public class UploadManager {
 				tmp = rs.getString("name");
 				unConfirmedUploadOrderNames.add(tmp);
 			}
-			
+			/**
+			 * 
 			//
 			sql = "select DISTINCT name from uploadorder where checked = " + UploadOrder.CALCED + " or checked = " + UploadOrder.CHECKED;
 			rs = DB.getResultSet(stmt, sql);
@@ -582,7 +583,7 @@ public class UploadManager {
 				tmp = rs.getString("name");
 				unConfirmedUploadOrderNames.remove(tmp);
 			}
-			
+			 */
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -1338,7 +1339,7 @@ public class UploadManager {
 		List <UploadOrder> result = new ArrayList<UploadOrder>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadorder where checked != " + UploadOrder.COMFIRMED + " and name = '" + name + "' order by shop" ;
+		String sql = "select * from uploadorder where checked = " + UploadOrder.COMPARE_DEFAULT + " and name = '" + name + "' order by shop" ;
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
