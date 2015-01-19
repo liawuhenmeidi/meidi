@@ -81,7 +81,7 @@ function reloadopned(src){
           <li >
             <h4 >厂送单管理</h4>
             <div class="list-item none">
-            <%
+            <% 
            if(UserManager.checkPermissions(user, Group.come)){
             %> 
               <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanCome.jsp')">厂送票未回</a></p>
@@ -265,17 +265,17 @@ function reloadopned(src){
         	  
         }
         %>
-        <!-- 
+    
        <li > 
              <h4 >售后服务</h4>     
             <div class="list-item none">
               <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmit.jsp')" >售后报单</a></p>
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalereparesale.jsp')" >销售售后待处理</a></p>
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalerepare.jsp')" >网点上报售后待处理</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalerepare.jsp')" >销售售后待处理</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSale.jsp')" >网点上报售后待处理</a></p>
             </div>        
-          </li> 
+          </li>  
         
-         -->
+      
         
          </ul> 
         <script type="text/javascript" language="javascript">

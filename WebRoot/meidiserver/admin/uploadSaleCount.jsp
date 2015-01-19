@@ -308,7 +308,7 @@ if(total){ %>
 						}
 		  %>  
 		  
-		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>')" onclick="updateClass(this)"> 
+		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.sale %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
@@ -413,7 +413,7 @@ if(total){ %>
 						}
 		  %>  
 		  
-		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>')" onclick="updateClass(this)"> 
+		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.sale %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
@@ -514,8 +514,8 @@ if(total){ %>
 					}
 				   
 				  %> 
-				  <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?type=<%=up.getType() %>&said=<%=id %>')" onclick="updateClass(this)"> 
-					<td align="center" class="noprinln1"><%=idcount %></td>
+				  <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.sale %>')" onclick="updateClass(this)"> 
+					<td align="center" class="noprinln1"><%=idcount %></td> 
 					<td align="center" class="noprinln2"></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
 					<td align="center" class="noprinln4"><%=up.getType()%></td>

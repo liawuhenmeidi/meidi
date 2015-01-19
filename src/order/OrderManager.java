@@ -569,9 +569,11 @@ public static void updateSendstat(int statues,int sid, int oid) {
 		 }
 		
 		List<String> sqlp = OrderProductManager.save(maxid, order);
+		if(order.getOderStatus().equals(30+"")){
+			sqlp = OrderProductManager.saveTuihuo(maxid, order);
+		} 
 	    List<String> sqlg = GiftManager.save(maxid, order);
 		 
-	     
 	     sqls.addAll(sqlp);
 	     sqls.addAll(sqlg);
 	      
@@ -804,8 +806,8 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   }         
 			   }else if(Group.aftersalerepare == type){
 				   if(Order.aftersalerepare == statues){ 
-					   sql = "select * from mdorder where deliveryStatues in (2) "+search+"  order by "+sort+str;
-				   }
+					   sql = "select * from mdorder where deliveryStatues in (2) and id in (select orderid from mdorderproduct where issubmit is null)"+search+"  order by "+sort+str;
+				   } 
 			   }                    
 	    }      
 	    
@@ -985,7 +987,7 @@ logger.info(sql);
 				   }    
 			   }else if(Group.aftersalerepare == type){
 				   if(Order.aftersalerepare == statues){
-					   sql = "select count(*) from mdorder where deliveryStatues in (2) ";
+					   sql = "select count(*) from mdorder where deliveryStatues in (2) and id in (select orderid from mdorderproduct where issubmit is null) ";
 				   }
 			   }                      
 	    }       
@@ -1325,6 +1327,34 @@ logger.info(sql);
     	return Orders;  
     }
      
+    public static List<Order> getListByids(String ids){
+    	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
+    	//flag = true;
+    	List<Order> Orders = new ArrayList<Order>();
+   
+    	String sql = "select * from  mdorder  where id in ("+ids+")";                  
+    	   
+    	if(true){
+    		Connection conn = DB.getConn();
+            Statement stmt = DB.getStatement(conn);
+            ResultSet rs = DB.getResultSet(stmt, sql);
+
+ 			try { 
+ 				while (rs.next()) {
+ 					Order p = gerOrderFromRs(rs);
+  					Orders.add(p);
+ 				}
+ 			} catch (SQLException e) {
+ 				e.printStackTrace();
+ 			} finally {
+ 				DB.close(stmt);
+ 				DB.close(rs);
+ 				DB.close(conn);
+ 			}   
+    	}
+    	return Orders;  
+    }
+    
     //2014-11-21
     public static List<Order> getCheckedDBOrdersbyBranch(String branchid,String time){
     	//boolean flag = UserManager.checkPermissions(user, Group.dealSend); 
@@ -1486,12 +1516,12 @@ public static Map<String,Order> getOrdermapByIds(User user ,String id){
 
        listsqls.add(sqlop);
        listsqls.add(sql); 
-		return listsqls ;
+		return listsqls ; 
 	}
    
    // 添加H单号后更新状态
    
-   public static void updateHPOS(String ids) {
+   public static void updateHPOS(User user ,String ids) {
 		
       String sql = "update mdorder set categoryID = 0 where id in " + ids;
  

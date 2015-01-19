@@ -9,7 +9,7 @@
 	List<String> orderNames = UploadManager.getUnTotalUploadOrdersNames();
 	
 	Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
-	String message = "";
+	String message = ""; 
 	UploadTotalGroup upt = UploadTotalGroupManager.getUploadTotalGroup();
 	if(upt != null){
 	   message = upt.getCategoryname();
@@ -348,7 +348,7 @@ if(total){ %>
 						}
 		  %>  
 		  
-		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>')" onclick="updateClass(this)"> 
+		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
@@ -453,7 +453,7 @@ if(total){ %>
 						}
 		  %>  
 		  
-		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>')" onclick="updateClass(this)"> 
+		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
@@ -552,7 +552,7 @@ if(total){ %>
 					}
 				   
 				  %> 
-				  <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?type=<%=up.getType() %>&said=<%=id %>')" onclick="updateClass(this)"> 
+				  <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>

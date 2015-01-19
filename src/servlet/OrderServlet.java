@@ -22,6 +22,7 @@ import aftersale.AfterSaleManager;
 
 import category.Category;
 import category.CategoryManager;
+import category.CategoryService;
 
 
 import order.Order;
@@ -29,12 +30,14 @@ import order.OrderManager;
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
+import orderproduct.OrderProductManager;
 import orderproduct.OrderProductService;
 import product.Product;
 import product.ProductService;
 
 import user.User;
 import user.UserManager;
+import utill.DBUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
 import utill.TokenGen;
@@ -58,7 +61,7 @@ public class OrderServlet extends HttpServlet {
 		Object object = new Object();
 		  
 		String method = request.getParameter("method");
-	    logger.info(method);  
+	    //logger.info(method);  
 		synchronized(object){
 			if("println".equals(method)){
 				savePrintln(request,response);
@@ -70,8 +73,12 @@ public class OrderServlet extends HttpServlet {
 				saveHuanhuo(request,response);
 			}else if("saveTuihuo".equals(method)){ 
 				saveTuihuo(request,response);
+			}else if("cancelTuihuo".equals(method)){ 
+				cancelTuihuo(request,response);
 			}else if("aftersale".equals(method)){ 
 				saveaftersale(request,response);
+			}else if("queryaftersale".equals(method)){
+				queryaftersale(request,response);
 			}else {
 				save(request,response);
 			}
@@ -96,8 +103,6 @@ public class OrderServlet extends HttpServlet {
 		or.setUid(user.getId()); 
 		or.setGroupid(user.getUsertype());
 		OrderPrintlnManager.save(or); 
-		
-		
 	}
 	
 	private void savePrintln(HttpServletRequest request, HttpServletResponse response){
@@ -123,8 +128,7 @@ public class OrderServlet extends HttpServlet {
 		}else if("huanhuo".equals(mm)){
 			or.setType(OrderPrintln.huanhuo);
 		}
-		
-		
+
 		OrderPrintlnManager.save(or);
 		
 	  try {
@@ -461,11 +465,12 @@ public class OrderServlet extends HttpServlet {
     	        User user  = (User)request.getSession().getAttribute("user");
 		        String oid = request.getParameter("orderid");
 		        String realpos = request.getParameter("realpos");
+		        String saleTime = request.getParameter("saledate");
 		    	Order order = OrderManager.getOrderID(user, Integer.valueOf(oid));
 		    	
                 order.setPos(realpos); 
 			    order.setOderStatus(30+"");
-                
+                order.setSaleTime(saleTime);
 				order.setImagerUrl(order.getId()+"");
 				 
 				order.setOrderproduct(order.getOrderproduct());
@@ -478,7 +483,23 @@ public class OrderServlet extends HttpServlet {
 				
 				String ids = "("+flag+","+oid+")"; 
 				
-				OrderManager.updateHPOS(ids);  
+				OrderManager.updateHPOS(user,ids);  
+				 
+    	}catch(Exception e){  
+    		e.printStackTrace();
+    		logger.info(e);
+    	}
+    }
+    
+    private void cancelTuihuo(HttpServletRequest request, HttpServletResponse response){
+    	try{
+	    	      //处理请求，并执行resetToken方法，将session中的token去除
+    	        User user  = (User)request.getSession().getAttribute("user");
+		        String oid = request.getParameter("orderid");
+				
+				String ids = "("+oid+")"; 
+				 
+				OrderManager.updateHPOS(user,ids);  
 				
     	}catch(Exception e){  
     		e.printStackTrace();
@@ -511,6 +532,7 @@ public class OrderServlet extends HttpServlet {
 		        af.setUname(uname);
 		        af.setPhone(phone);
 		        af.setCid(Integer.valueOf(cid));
+		        af.setTid(ProductService.gettypemap().get(tname).getId());
 		        af.settName(tname);
 		        af.setBarcode(barcode);
 		        af.setBatchNumber(batchNumber);
@@ -533,6 +555,71 @@ public class OrderServlet extends HttpServlet {
     		logger.info(e);
     	}
     }
+    
+    private void queryaftersale(HttpServletRequest request, HttpServletResponse response){
+    	try{ 
+	    	      //处理请求，并执行resetToken方法，将session中的token去除
+    	        User user  = (User)request.getSession().getAttribute("user");
+		        String orderid = request.getParameter("orderid");
+		        String statues = request.getParameter("statues");
+		        List<Order> list = OrderManager.getListByids(orderid);
+		        List<String> listas = new ArrayList<String>(); 
+			   	HashMap<Integer,Category> categorymap = CategoryService.getmap();
+			   	Map<Integer, Product> pmap = ProductService.getIDmap();
+		             
+			   	String sql  = OrderProductManager.getupdateIsSubmitsql(orderid,statues);
+			   	listas.add(sql);
+			   	
+				if(null != list && OrderProduct.query == Integer.valueOf(statues)){
+					for(int i=0;i<list.size();i++){
+						Order or = list.get(i);
+						List<OrderProduct> listop = or.getOrderproduct();
+						if(null != listop){
+							for(int j=0;j<listop.size();j++){
+								OrderProduct op = listop.get(j);
+								if(op.getStatues() == 0 ){
+									AfterSale as = new AfterSale();
+									as.setPrintid(or.getPrintlnid());
+									as.setAndate(StringUtill.isNull(or.getInstalltime())==true?or.getSendtime():or.getInstalltime());
+									as.setBarcode(op.getBarcode());
+									as.setBatchNumber(op.getBatchNumber());
+									as.setBranch(or.getBranch());
+									as.setBranchName(or.getbranchName(or.getBranch()));
+									as.setCid(op.getCategoryId());
+									as.setPcount(op.getCount());
+									as.setcName(categorymap.get(op.getCategoryId()).getName());
+									as.setLocation(or.getLocateDetail());
+									as.setPhone(or.getPhone1());
+									as.setSaledate(or.getSaleTime());
+									as.setTid(Integer.valueOf(op.getSendType())); 
+									as.settName(pmap.get(Integer.valueOf(op.getSendType())).getType());
+									//System.out.println(pmap.get(Integer.valueOf(op.getSendType())).getName());
+									as.setUname(or.getUsername());
+									
+									List<String> listsql = AfterSaleManager.getsaveSQL(user, as);  
+									
+									
+									listas.addAll(listsql);
+								}
+							}
+						}
+					}
+		       
+				}
+		        
+				DBUtill.sava(listas); 
+		        try {   
+					response.sendRedirect("../admin/afterSale/dingdansubmit.jsp");
+				} catch (IOException e) { 
+					e.printStackTrace(); 
+				} 
+		        
+    	}catch(Exception e){  
+    		e.printStackTrace();
+    		logger.info(e);
+    	}
+    }
+    
     private void HuanHuo(HttpServletRequest request, HttpServletResponse response){
     	String id = request.getParameter("id");
     	try {

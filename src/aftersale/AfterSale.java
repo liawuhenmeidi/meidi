@@ -5,8 +5,14 @@ public class AfterSale {
    public static int typesale = 0 ;
    
    private String printid;
-    
-   private int id ;
+   private int oriedid;
+   public int getOriedid() {
+	return oriedid;
+}
+public void setOriedid(int oriedid) {
+	this.oriedid = oriedid;
+}
+private int id ;
    private int tid; // 产品型号id
    private String tName; // 产品型号
    private int cid; // 产品类别id

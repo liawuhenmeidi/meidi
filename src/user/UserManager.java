@@ -222,7 +222,7 @@ logger.info(pstmt);
 				while (rs.next()) {
 					String permissions = rs.getString("products");
 					Permissions = permissions.split("_");
-logger.info(Permissions);					
+//logger.info(Permissions);					
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

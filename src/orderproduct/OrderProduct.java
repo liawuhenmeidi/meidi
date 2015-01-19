@@ -2,6 +2,9 @@ package orderproduct;
 
 
 public class OrderProduct {
+	public static int query = 1;
+	public static int unquery = 0  ;
+	
 	private int id ;
     private int categoryId ;
     private String categoryName;
@@ -28,6 +31,17 @@ public class OrderProduct {
     
     private  String Barcode;  // 条码
     
+    private  int isSubmit;  // 是否提交到苏宁售后      0 表示忽略  1 表示已经确认
+    
+    
+	public int getIsSubmit() {
+		return isSubmit;
+	}
+
+	public void setIsSubmit(int isSubmit) {
+		this.isSubmit = isSubmit;
+	}
+
 	public String getBatchNumber() {
 		return batchNumber;
 	}

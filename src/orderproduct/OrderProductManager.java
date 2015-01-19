@@ -84,7 +84,24 @@ public class OrderProductManager {
 			 return sqls; 
 	   }
 	    
-	    
+	   
+	   public static List<String> saveTuihuo(int id, Order orderr) { 
+           
+		   List<OrderProduct> orders = orderr.getOrderproduct();
+		   List<String> sqls = new ArrayList<String>();
+             
+			 for(int i=0;i<orders.size();i++){ 
+			   
+				OrderProduct order = orders.get(i); 
+				String sql = "insert into  mdorderproduct (id, categoryID ,sendtype,saletype, count,orderid ,statues ,categoryname,salestatues,subtime,price)" +  
+	                         "  values ( null, "+order.getCategoryId()+", '"+order.getSendType()+"', '"+order.getSaleType()+"',-"+order.getCount()+","+id+","+order.getStatues()+",'"+order.getCategoryName()+"',"+order.getSalestatues()+",'"+TimeUtill.gettime()+"',"+order.getPrice()+")";
+		logger.info(sql); 
+				sqls.add(sql); 
+				OrderProductService.flag = true ;
+			} 
+			 return sqls; 
+	   }
+	   
 	   public static int getMaxid(){
 		   int id = 0 ;
 		   Connection conn = DB.getConn();
@@ -232,6 +249,11 @@ public class OrderProductManager {
 		 }
         
         
+        public static  String getupdateIsSubmitsql(String ids,String statues){
+ 		   
+    	    String sql = " update mdorderproduct set issubmit = "+statues+" where orderid in ("+ ids+")";
+			return sql;
+	 }
 	   public static OrderProduct getOrderStatuesFromRs(ResultSet rs){
 		   OrderProduct p = null;
 			try {
@@ -256,6 +278,7 @@ public class OrderProductManager {
 				p.setPrice(rs.getDouble("price")); 
 				p.setBarcode(rs.getString("barcode"));
 				p.setBatchNumber(rs.getString("batchNumber"));
+				p.setIsSubmit(rs.getInt("issubmit")); 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

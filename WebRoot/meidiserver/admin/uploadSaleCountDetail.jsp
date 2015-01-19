@@ -9,13 +9,15 @@
 	String id = request.getParameter("said");
 	String branch = request.getParameter("branch");
 	String type = request.getParameter("type");
+	String checkedStatus = request.getParameter("checkedStatus");
+	String totaltype =request.getParameter("totaltype"); 
 	
-	Map<String,Map<String,List<UploadTotal>>> mapt =UploadManager.getTotalOrdersGroup(id);
+	Map<String,Map<String,List<UploadTotal>>> mapt =UploadManager.getTotalOrdersGroup(id,Integer.valueOf(totaltype),checkedStatus); 
 	 
 	Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
-    System.out.println(id+"**"+branch+"**"+type);
+    //System.out.println(id+"**"+branch+"**"+type);
     List<UploadOrder> list = UploadManager.getTotalUploadOrders(id);
-	
+	System.out.println(list.size());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
