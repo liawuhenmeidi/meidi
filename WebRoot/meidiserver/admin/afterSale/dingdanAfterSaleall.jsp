@@ -3,9 +3,9 @@
 <%@ include file="../searchdynamic.jsp"%>       
  <%  
  if(StringUtill.isNull(statues)){ 
-	 statues = Order.aftersalerepare +"";
+	 statues = Order.aftersalesearch +"";
  }
-   
+    
 %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -59,16 +59,10 @@ position:fixed;
   <jsp:param name="" value="" />
   </jsp:include>   
          
-<jsp:include flush="true" page="../page.jsp"> 
+<jsp:include flush="true" page="page.jsp"> 
 	<jsp:param name="type" value="<%=statues%>"/> 
 </jsp:include> 
 
-<div class="btn">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=OrderProduct.query%>')"></input> 
-&nbsp;&nbsp;&nbsp; 
- <input type="submit" class="button" name="dosubmit" value="忽略" onclick="winconfirm('<%=OrderProduct.unquery%>')"></input>   
-</div>
 
 
 </div > 
@@ -77,7 +71,7 @@ position:fixed;
 
 <br/>  
 
-<%@ include file="../dispatch/searchOrderAll.jsp"%>  
+<%@ include file="searchOrderAll.jsp"%>  
  
 
 <script type="text/javascript">
@@ -102,7 +96,6 @@ function addImage(src){
 } 
 
 
-
 function searchlocate(id){
 	window.open('../adminmap.jsp?id='+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
@@ -111,43 +104,7 @@ function searchlocate(id){
  
 function adddetail(src){ 
 	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
-
-
 }
-
-
-function winconfirm(typestatues){
-	var question = confirm("你确认要执行此操作吗？");	
-	if (question != "0"){
-		var attract = new Array();
-		var i = 0;
-		
-		$("input[type='checkbox'][id='check_box']").each(function(){          
-	   		if($(this).attr("checked")){
-	   				var str = this.name; 
-	   				
-	   				if(str != null  &&  str != ""){
-		   				   attract[i] = str; 
-			   	            i++;
-		   				}	
-	   		}
-	   	}); 
-
-		$.ajax({ 
-			type: "post",   
-	         url: "../../user/OrderServlet", 
-	         data:"method=queryaftersale&orderid="+attract.toString()+"&statues="+typestatues,
-	         dataType: "",   
-	         success: function (data) {
-	        	 initOrder(type,statues,num,page,sort,sear);
-	           }, 
-	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	        	 alert("操作失败"); 
-	            } 
-	           });
-	}
-}
-
 
 </script>
 
@@ -156,7 +113,7 @@ function winconfirm(typestatues){
  <%@ include file="../remind.jsp"%> 
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
-		    <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
+		     <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
 			<td align="center">单号</td> 
 			<td align="center">顾客信息</td>
 			
@@ -175,6 +132,10 @@ function winconfirm(typestatues){
 	      <% 
               String tdcol = "bgcolor=red" ;
 	      %>
+				
+					
+				
+    
     
 </table> 
      </div>

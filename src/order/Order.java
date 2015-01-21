@@ -952,6 +952,33 @@ public String getSendType(int statues,String decollator){
 	return sendType;
 }
 
+public String getSendTypejson(int statues){ 
+	String sendType = "["; 
+
+	List<OrderProduct> lists = OrderProductService.getStaticOrderStatuesM().get(this.getId());
+	if(lists != null){
+		for(int g = 0 ;g<lists.size();g++){
+			if(lists.get(g).getStatues() == statues){   
+				int opid = lists.get(g).getId();
+				if(statues == 1){ 
+					String tempType = lists.get(g).getSaleType();
+					
+					String realtempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
+					sendType += "{\"id\":\""+opid+"\",\"name\":\""+realtempType+"\"},";
+				}else {  
+					String tempType = lists.get(g).getSendType(); 
+					String realtempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
+					sendType += "{\"id\":\""+opid+"\",\"name\":\""+realtempType+"\"},";
+				   } 
+				}
+			   
+			}
+       }
+	
+	sendType = sendType.substring(0, sendType.length()-1)+"]";
+	return sendType;
+}
+
 public String getSendTypeID(int statues,String decollator){ 
 	String sendType = ""; 
 

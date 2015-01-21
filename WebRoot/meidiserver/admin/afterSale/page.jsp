@@ -102,7 +102,7 @@ function exportServelet(){
 }
  
 function initsearchOrder(){
-	var account= $.cookie("sear");
+	var account= $.cookie("searaftersale");
 	if(account != "" && account != null){
 		account = account.substring(1,account.length);
 	}

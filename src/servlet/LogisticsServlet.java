@@ -19,6 +19,7 @@ import order.OrderManager;
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderPrint.OrderPrintlnService;
+import orderproduct.OrderProductManager;
 
 import user.User;
 import user.UserManager;
@@ -73,7 +74,8 @@ public class LogisticsServlet extends HttpServlet {
 			}else if((Order.orderinstall+"").equals(method)){
 				statues = install(user,order,uid,method);
 			}else  if("songhuo".equals(method)){
-				statues = songhuo(user,order,devstatues,method); 
+				String json = request.getParameter("json"); 
+				statues = songhuo(user,order,devstatues,method,json);  
 			}    
 		}else if(20 == statues){
 			  
@@ -93,7 +95,6 @@ public class LogisticsServlet extends HttpServlet {
 			 
 			if(null != op && op.getStatues() == 0){
 				method = op.getType()+"";
-				logger.info(method);
 				if((OrderPrintln.release+"").equals(method)){
 					statues = release(user,order,opid,method); 
 				}else if((OrderPrintln.salerelease+"").equals(method)){
@@ -378,20 +379,21 @@ public class LogisticsServlet extends HttpServlet {
 		 
 	} 
 	
-	public synchronized int songhuo(User user , Order order , String devstatues,String method){
+	public synchronized int songhuo(User user , Order order , String devstatues,String method,String json){
 		int count = -1 ;
 		if(UserManager.checkPermissions(user,Group.send, "w")){	
 			order = OrderManager.getOrderID(user, order.getId());
 			String sql = "";
 			int statues = Integer.valueOf(devstatues);
 			List<String> listsql = new ArrayList<String>();
-			
+			List<String> listop = new ArrayList<String>();
 			if(order.getOderStatus().equals(20+"")){
 				if(order.getDeliveryStatues() != 1 && order.getDeliveryStatues() != 2){
 					if((2 == statues || 1 == statues )){
 						if(2 == statues){
+							listop = OrderProductManager.getsql(json);
 							sql = "update mdorder set deliveryStatues = "+statues+" , deliverytype = 1 , sendTime = '"+TimeUtill.gettime()+"' , installTime = '"+TimeUtill.gettime()+"' , installid = mdorder.sendId   where id = " + order.getId();
-						}else if(1 == statues){
+						}else if(1 == statues){ 
 							sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 ,  printSatuesp = 0 , sendTime = '"+TimeUtill.gettime()+"'  where id = " +order.getId();
 						}
 				    	String sql1 = " delete from mdorderupdateprint where orderid = "+ order.getImagerUrl();
@@ -401,23 +403,34 @@ public class LogisticsServlet extends HttpServlet {
 				    	listsql.add(sql1);
 				    }
 				}else if(order.getDeliveryStatues() == 1 && statues != 1){
-					statues = 2 ;    
+					statues = 2 ;
+					listop = OrderProductManager.getsql(json);
 					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
 				}
 				
 		    }else {
 		    	if(2 == statues){
 					sql = "update mdorder set deliveryStatues = "+statues+" , deliverytype = 1 , sendTime = '"+TimeUtill.gettime()+"' , installTime = '"+TimeUtill.gettime()+"' , installid = mdorder.sendId   where id = " + order.getId();
-				}else if(1 == statues) {  
+				    listop = OrderProductManager.getsql(json);
+		    	}else if(1 == statues) {  
 					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 ,  printSatuesp = 0 , sendTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
-				}else if( 4 == statues ||  9 == statues || 10 == statues){
+				}else if( 4 == statues ){
+					statues = 2 ;    
+					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
+				}else if( 9 == statues || 10 == statues){
+					listop = OrderProductManager.getsql(json);
 					statues = 2 ;    
 					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
 				} 
 		    }  
 			
+			
 			if(!StringUtill.isNull(sql)){
 				listsql.add(sql); 
+				if(null != listop){
+					listsql.addAll(listop);
+				}
+				
 			}
 			    if( DBUtill.sava(listsql)){
 			    	count = 1 ;

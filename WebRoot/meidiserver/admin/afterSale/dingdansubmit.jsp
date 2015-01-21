@@ -1,4 +1,4 @@
-<%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  pageEncoding="UTF-8" import="aftersale.*" contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>  
 <%  
      
@@ -12,12 +12,12 @@ String plist = StringUtill.GetJson(listt);
 String id = request.getParameter("id");
 
 
-Order order = null ; 
-String strorder= null;
+AfterSale af = null ; 
+String strorder= null; 
 
-if(!StringUtill.isNull(id)){
-	order = OrderManager.getOrderID(user,Integer.valueOf(id));
-	strorder = StringUtill.GetJson(order);
+if(!StringUtill.isNull(id)){ 
+	af = AfterSaleManager.getAfterSaleID(user,id);
+	strorder = StringUtill.GetJson(af);
 
 }
  
@@ -67,55 +67,39 @@ if(!StringUtill.isNull(id)){
    
    $(document).ready(function(){
 	//initphone();
-	//init();   
+	init();   
 	initproductSerch("#ordercategory","#ordertype");
    });
    
    
    function init(){
 		   
-	   if(listop != null && listop != "" && listop != "null"){       
-			  for(var i=0;i<listop.length;i++){
-				  var listo = listop[i];  
-						$("#ordertype0").val(listo.typeName);
-						$("#orderproductNum0").val(listo.count);
-						//alert(listo.categoryId);
-						//alert($("#ordercategory0 #33").attr("selected"));  
-						$("select[id='ordercategory0'] option[id='"+listo.categoryId+"']").attr("selected","selected");
-						$("select[id='productsta0'] option[id='"+listo.salestatues+"']").attr("selected","selected");
-						//$("#ordercategory0 #"+listo.categoryId).attr("selected","selected");  
-	   }
-	   
-	   }
-	   //listgg
-	  
-	   
-	   
 	   if(order != null && order != "" && order != "null"){
-		   if(statues == null || statues == ""){
-			   $("#serviceDate").val(order.saleTime);
-			  
-			   $("#pos").val(order.pos);
-			   $("#sailId").val(order.sailId);
-			   $("#checked").val(order.check);
-			   $("#phoneremark").val(order.phoneRemark);
-			   $("#posremarkremark").val(order.phoneRemark);
-			   $("#checkedremark").val(order.phoneRemark);
-			   $("#sailidremark").val(order.phoneRemark);
-		   }
+		   $("#uname").val(order.uname);
+		   $("#phone").val(order.phone); 
 		   
-		   $("#serviceDate2").val(order.odate);
-		   $("#username").val(order.username);
-		   $("#phone1").val(order.phone1);
-		   $("#phone2").val(order.phone2);
-		   $("#locations").val(order.locateDetail);
-		   $("#remark").val(order.remark);
-		   $("#quyu").val(order.locate); 
+		   $("select[id='ordercategory'] option[id='"+order.cid+"']").attr("selected","selected");
+		   
+		   $("#ordercategory").attr("disabled","disabled");
+		   $("#hiddenordercategory").val(order.cid);  
+		   $("#hiddenordercategory").attr("name","ordercategory");
+		   
+		   $("#ordertype").val(order.tName);
+		   $("#ordertype").attr("readonly","readonly");
+		   
+		   $("#orderbatchNumber").val(order.batchNumber);
+		   $("#orderbarcode").val(order.barcode);
+		   
+		   $("#andate").val(order.andate);
+		   $("#saledate").val(order.saledate);
+		   $("#locations").val(order.location);
+		   $("#detail").val(order.detail);
 		   
 		   
 	   }
    }
     
+   
    function initproductSerch(str,str2){ 
 	    cid = $(str).val(); 
 		$(str2).autocomplete({ 
@@ -272,7 +256,7 @@ if(!StringUtill.isNull(id)){
 </div>
   
 <form action="../../user/OrderServlet"  method ="post"  id="form"   onsubmit="return checkedd()"  > 
-<!--  头 单种类  -->  
+<!--  头 单种类  -->   
 
 <input type="hidden" name="orderid" value="<%=id %>"/>
 <input type="hidden" name="method" value="aftersale"/>
@@ -294,7 +278,9 @@ if(!StringUtill.isNull(id)){
   <tr class="asc">
   <td  >产品类别<span style="color:red">*</span></td>
   <td  >
-  <select  name="ordercategory" id="ordercategory" >
+  <input type="hidden" name="hiddenordercategory" id="hiddenordercategory">
+  <select  name="ordercategory" id="ordercategory"  >
+  
    <option></option>
   <% 
   for(int i=0;i<list.size();i++){

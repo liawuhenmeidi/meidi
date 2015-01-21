@@ -95,7 +95,6 @@ function changecss(){
 
 
 function initOrder(type,statues,num,page,sort,sear){
-	
 	 $("#page").val(page);
 	 $("#table .asc").remove();  
 	 $("#table .asc_enable").remove();
@@ -105,7 +104,7 @@ function initOrder(type,statues,num,page,sort,sear){
 	 }  
 	 $("#dateadd").css("display","block"); 
 	 $.ajax({  
-	        type: "post", 
+	        type: "post",  
 	         url: str+"OrderServiceServlet",    
 	         data:"method=GETLIST&type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+sear,
 	         dataType: "",   
@@ -119,7 +118,6 @@ function initOrder(type,statues,num,page,sort,sear){
                 	 date =  aftersalerepare(date);
                 	 $("#table").append(date);
                   }
-                  
 	        	 $("#table").append(html);
 	        	
 	        	 $("#count").html(count);
@@ -135,10 +133,10 @@ function aftersalerepare(date){
 	var html = '';
 	var jsonlist =  $.parseJSON(date);
 	for(var i=0;i<jsonlist.length;i++){
-		var json = jsonlist[i];  
+		var json = jsonlist[i]; 
 		//String tdcol = 'bgcolor="red"' ; 
-		html += '<tr id='+json.printid+'  class="asc"  onclick="updateClass(this)">'; 
-		html += '<td align="center" width="20"><input type="checkbox"  id="check_box" name ='+json.oriedid+'></input></td>';
+		html += '<tr id='+json.printid+'  class="asc"  onclick="updateClass(this)" ondblclick="detail('+json.id+')">'; 
+		html += '<td align="center" width="20"><input type="checkbox"  id="check_box" name ='+json.id+'></input></td>';
 		html += '<td align="center">'+json.printid+'</td>'; 
 		html += '<td align="center">'+json.uname+'<p>'+json.phone+'</td>';
 		html += '<td align="center">'+json.cName+'</td>';

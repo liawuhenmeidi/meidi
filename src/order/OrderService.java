@@ -2944,7 +2944,7 @@ public class OrderService {
 			        	html.append("<option value=\"1\" >只送货 </option>");
 			     
 			        	html.append("</select>");  
-			        	html.append("<input type=\"button\" onclick=\"change('songh"+o.getId()+"','"+o.getId()+"','songhuo')\"  value=\"确定\"/>");
+			        	html.append("<input type=\"button\" onclick=\"change('songh"+o.getId()+"','"+o.getId()+"','songhuo','"+o.getPrintlnid()+"')\"  value=\"确定\"/>");
 
 			   
 			
@@ -2953,20 +2953,17 @@ public class OrderService {
 			    	html.append("<select class = \"category\" name=\"category\"  id=\"songh"+o.getId()+"\" >");
 			    	html.append(" <option value=\"4\" >只安装 </option>");  
 			                    html.append("</select>  "); 
-			                    		html.append("<input type=\"button\" onclick=\"change('songh"+o.getId()+"','"+o.getId()+"','songhuo')\"  value=\"确定\"/>");
+			                    		html.append("<input type=\"button\" onclick=\"change('songh"+o.getId()+"','"+o.getId()+"','songhuo','"+o.getPrintlnid()+"')\"  value=\"确定\"/>");
 			    	
 			          }
 			    }
-			    
 			     
 			    html.append(" </td>");
 			    html.append("<td align=\"center\">"); 
 					
 			   
 			    if(o.getReturnstatuse() == 0 && o.getReturnid() != 0 && query){
-
-			   
-			    
+			    	
 					 if(o.getReturnid() != 0){
 						if(usermap.get(Integer.valueOf(o.getReturnid())) != null){
 					 
@@ -3012,9 +3009,9 @@ public class OrderService {
 				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
 				
 			    
-				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
-				
-				html.append("<td align=\"center\" >"+o.getSendType(0,"</p>")+"</td>");
+				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>"); 
+				    
+				html.append("<td align=\"center\" ><input type=\"hidden\" id=\"orderproduct"+o.getId()+"\"  value="+o.getSendTypejson(0)+"/>"+o.getSendType(0,"</p>|")+"</td>");
 				
 				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
 				
@@ -3392,17 +3389,20 @@ public class OrderService {
 						if(op.getStatues() == 0 ){
 							AfterSale as = new AfterSale();
 							as.setOriedid(or.getId());
+							as.setId(or.getId()); 
 							as.setPrintid(or.getPrintlnid());
 							as.setAndate(StringUtill.isNull(or.getInstalltime())==true?or.getSendtime():or.getInstalltime());
 							as.setBarcode(op.getBarcode());
 							as.setBatchNumber(op.getBatchNumber());
 							as.setBranch(or.getBranch());
 							as.setBranchName(or.getbranchName(or.getBranch()));
-							as.setCid(op.getCategoryId());
+							as.setCid(op.getCategoryId()); 
 							as.setPcount(op.getCount());
 							as.setcName(categorymap.get(op.getCategoryId()).getName());
 							as.setLocation(or.getLocateDetail());
 							as.setPhone(or.getPhone1());
+							as.setBarcode(op.getBarcode()); 
+							as.setBatchNumber(op.getBatchNumber()); 
 							as.setSaledate(or.getSaleTime());
 							as.setTid(Integer.valueOf(op.getSendType())); 
 							as.settName(pmap.get(Integer.valueOf(op.getSendType())).getType());

@@ -35,13 +35,13 @@ public class AfterSaleManager {
 	   if(as.getId() != 0 ){
 		   String sqld = "delete from mdaftersale where id = "+ as.getId();
 		   list.add(sqld);
-		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail) " +
-			   		"values ("+as.getId()+","+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"') ;" ;
+		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime) " +
+			   		"values ("+as.getId()+","+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"') ;" ;
 	   }else {
-		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail) " +
-			   		"values (null,"+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"') ;" ;
+		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime) " +
+			   		"values (null,"+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"') ;" ;
 	   }
-	   
+	    
 	   list.add(sql);
 	   flag = DBUtill.sava(list);
 	   
@@ -56,11 +56,11 @@ public class AfterSaleManager {
 	   if(as.getId() != 0 ){
 		   String sqld = "delete from mdaftersale where id = "+ as.getId();
 		   list.add(sqld);
-		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail) " +
-			   		"values ("+as.getId()+","+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"') ;" ;
+		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime) " +
+			   		"values ("+as.getId()+","+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"') ;" ;
 	   }else {
-		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail) " +
-			   		"values (null,"+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"') ;" ;
+		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime) " +
+			   		"values (null,"+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"') ;" ;
 	   }
 	   
 	   list.add(sql);
@@ -70,6 +70,36 @@ public class AfterSaleManager {
 	   
    }
    
+
+   public static  String getupdateIsSubmitsql(String ids,String statues){
+	   
+	    String sql = " update mdaftersale set statues = "+statues+" where id in ("+ ids+")";
+		return sql;
+}
+   
+   public static  AfterSale getAfterSaleID(User user ,String id){
+	    AfterSale af = new AfterSale();
+	   
+	    String sql = " select * from  mdaftersale  where id in ("+ id+")";
+	    
+	    Connection conn = DB.getConn();
+	       Statement stmt = DB.getStatement(conn);
+	      
+		   ResultSet rs = DB.getResultSet(stmt, sql); 
+				try { 
+					while (rs.next()) {
+						af = gerAfterSaleFromRs(rs);
+					} 
+				} catch (SQLException e) { 
+					e.printStackTrace();
+				} finally {
+					DB.close(stmt);
+					DB.close(rs);
+					DB.close(conn);
+				 }
+				return af; 
+		 }
+
    
    public static List<AfterSale> getOrderlist(User user ,int type,int statues ,int num,int page,String sort,String search){
 	      
@@ -86,9 +116,11 @@ public class AfterSaleManager {
 		  
 		  //logger.info(f); 
         
-		 if(Group.aftersalerepare == type){
+		 if(Group.aftersalerepare == type){ 
 			   if(Order.aftersale == statues){ 
 				   sql = "select * from mdaftersale where statues = 0 "+search+"  order by "+sort+str;
+			   }else if(Order.aftersalesearch == statues){
+				   sql = "select * from mdaftersale where 1 =1  "+search+"  order by "+sort+str;
 			   } 
 		   }                    
 		    

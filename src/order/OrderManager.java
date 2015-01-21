@@ -868,11 +868,11 @@ logger.info(sql);
 			  }else if(Order.serach == statues){ 
 				  sql = "select count(*) from  mdorder  where 1 =1 "+search;
 			  }else if(Order.charge == statues){ 
-				  sql = "select count(*) from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0  "+search;
+				  sql = "select count(*) from  mdorder  where statues1 = 1 and statues2 = 1 and statues3 = 0  and oderStatus not in (20) "+search;
 			  }else if(Order.come == statues){
-				  sql = "select count(*) from  mdorder  where  statues1 = 0  "+search;
+				  sql = "select count(*) from  mdorder  where  statues1 = 0  and oderStatus not in (20) "+search;
 			  }else if(Order.go == statues){ 
-				  sql = "select count(*) from  mdorder  where  statues1 = 1 and statues2 = 0  "+search ;
+				  sql = "select count(*) from  mdorder  where  statues1 = 1 and statues2 = 0  and oderStatus not in (20) "+search ;
 			  }else if(Order.over == statues){ 
 				  sql = "select count(*) from  mdorder  where dealSendid != 0   and printSatues = 1  and deliveryStatues not in (0,3) and oderStatus not in (30)  and statues4 = 0  "+search ;
 			  }else if(Order.dingma == statues){ 
@@ -937,14 +937,14 @@ logger.info(sql);
 					   sql = "select count(*) from mdorder where   (  "+sqlstr+"   and   id in ("+sqlopp+"  and statues = 0  and mdtype = 2  ) )   "+search; 
 				   }else if(Order.callback == statues){ 
 					   sql = "select count(*) from mdorder where  "+sqlstr+"   and deliveryStatues in (2)  and wenyuancallback = 0  "+search;  
-				   }else if(Order.orderPrint == statues){ 
+				   }else if(Order.orderPrint == statues){  
 					   sql = "select count(*) from mdorder where  "+sqlstr+"   and  dealSendid != 0  and printSatues = 0  and sendId = 0  and deliveryStatues != 3  "+search;  
 				   }else if(Order.charge == statues){ 
-					   sql = "select count(*) from mdorder where  "+sqlstr+"   and statues1 = 1 and statues2 = 1 and statuesChargeSale is null  "+search;  
+					   sql = "select count(*) from mdorder where  "+sqlstr+"   and statues1 = 1 and statues2 = 1 and statuesChargeSale is null  and oderStatus not in (20) "+search;  
 				   }else if(Order.come == statues){  
-					   sql = "select count(*) from mdorder where  "+sqlstr+"     and statues1 = 0 "+search;  
+					   sql = "select count(*) from mdorder where  "+sqlstr+"     and statues1 = 0 and oderStatus not in (20) "+search;  
 				   }else if(Order.go == statues){ 
-					   sql = "select count(*) from mdorder where  "+sqlstr+"     and statues1 = 1 and statues2 = 0   "+search;  
+					   sql = "select count(*) from mdorder where  "+sqlstr+"     and statues1 = 1 and statues2 = 0  and oderStatus not in (20) "+search;  
 				   }else if(Order.over == statues){  
 					   sql = "select count(*) from  mdorder where   "+sqlstr+"    and printSatues = 1 and (sendId != 0 and deliverytype = 2 or sendId != 0 and deliverytype = 1 and wenyuancallback = 1 or  installid != 0 and wenyuancallback = 1  ) and deliveryStatues not in (0,3,8,9,10)  and statues4 = 0 and oderStatus not in (30) "+search; 
 					   //sql = "select count(*) from  mdorder where   "+sqlstr+"    and printSatues = 1 and sendId != 0  and deliveryStatues not in (0,3)  and statues4 = 0  "+search; 

@@ -2,13 +2,6 @@
  
 <%@ include file="searchdynamic.jsp"%>
   
-<%   
-
-//List<Order> list = OrderManager.getOrderlist(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
-//session.setAttribute("exportList", list); 
-//count =  OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.orderquery,num,Page,sort,sear);  
-
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -57,8 +50,7 @@ width:50px
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
-var id = "";
-var oid ="<%=id%>";
+var realoid =""; 
 var pgroup = "<%=pgroup%>"; 
 var opstatues = "<%=opstatues%>";
 
@@ -69,29 +61,6 @@ $(function () {
 	 initOrder(type,statues,num,page,sort,sear);
 });
 
-function func(str){
-    $(id).css("display","none");
-	$("#"+str).css("display","block");
-	id = "#"+str ;
-} 
-function funcc(str,str2){
-    $(id).css("display","none");
-	$("#"+str).css("display","block");
-	id = "#"+str ;
-	$.ajax({  
-        type: "post", 
-         url: "../server.jsp", 
-         data:"method=dingdan&id="+str2,
-         dataType: "", 
-         success: function (data) {
-            // window.location.href="senddingdan.jsp";
-           }, 
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-        // alert(errorThrown); 
-            }
-           });
-}
- 
 function changes(str1){
 	$.ajax({ 
         type: "post", 
@@ -107,13 +76,11 @@ function changes(str1){
            });
 }
 
-function change(str1,str2,type){
-	var statues = $("#"+str1).val(); 
-	//alert(uid);
+function dochange(statues,oid,type,json){
 	$.ajax({   
-        type: "post",    
+        type: "post",     
          url: "../../LogisticsServlet", 
-         data:"method="+type+"&oid="+str2+"&statues="+statues,
+         data:"method="+type+"&oid="+oid+"&statues="+statues+"&json="+json,
          dataType: "",    
          success: function (date) {
         	//alert(date);
@@ -137,24 +104,27 @@ function change(str1,str2,type){
 }
 
 
+function change(str1,oid,type,printid){
+	var statues = $("#"+str1).val();
+	if(statues == 3){
+		var gettype = "getopjson";
+		$.ajax({   
+	        type: "post",    
+	         url: "../server.jsp", 
+	         data:"method="+gettype+"&oid="+oid,
+	         dataType:"json",   
+	         success: function (op) {
+	        	 AddPOS(printid,oid,type,statues,op);
+	           },  
+	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	            } 
+	           });
+		
+	}else {
+		dochange(statues,oid,type,"");
+	}
+}
 
-//function winconfirm(statues,uid,oid){
-	//$.ajax({   
-  //      type: "post",   
-  //       url: "../server.jsp", 
-  //       data:"method=dealshifang&statues="+statues+"&oid="+oid+"&uid="+uid,
-  //       dataType: "",   
-  //       success: function (date) { 
-        	
-    //    	 window.location.href="dingdanquery.jsp";
-           
-    //       },  
-    //     error: function (XMLHttpRequest, textStatus, errorThrown) { 
-    // 
-    //        } 
-    //       });
-//}
- 
 function winconfirm(statues,uid,oid,opstatues){
 	if(opstatues == 0 ){
 		alert("您已经提交释放申请");
@@ -192,7 +162,6 @@ function adddetail(src){
 	if(winPar == "refresh"){
 	       window.location.reload();
     }
-
 }
 
 function orderPrint(id,statues){
@@ -210,6 +179,63 @@ function orderPrint(id,statues){
            }); 
 }
 
+var realop;
+function AddPOS(printid,oid,type,statues,op){
+	realop = op ; 
+	$("#addbb td").remove();
+	var html = '';
+	for(var i=0;i<op.length;i++){
+		var opp = op[i];
+		if(opp != ""){
+			    html += '<tr>';
+			    html += '<td align="center" >';
+			    html += opp.name;
+			    html += '</td>';
+			    html += '<td align="center" >';
+			    html += '条码:';
+			    html += '</td>';
+			    html += '<td align="center" >';
+			    html += '<input type="text" id="barcode'+opp.id+'"  placeholder="安装产品必填"/>';
+			    html += '</td>';
+			    html += '<td align="center" >'; 
+			    html += '批号:'; 
+			    html += '</td>';
+			    html += '<td align="center" >';
+			    html += '<input type="text" id="batchnumber'+opp.id+'"  placeholder="安装产品必填"/>';
+			    html += '</td>';
+			    html += '</tr>';
+		}
+	}
+	    $("#addbb").append( html);
+		realoid = oid ;
+		$("#type").val(type);
+		$("#statues").val(statues); 
+		$("#addprintid").text("单号:"+printid);
+		$("#addpos").css("display","block");
+} 
+
+function saveAddPOD(){
+	var json = '[';
+	 $("#addpos").css("display","none");
+	 var type = $("#type").val();
+	 var statues = $("#statues").val();
+	 for(var i=0;i<realop.length;i++){
+			var opp = realop[i];
+			if(opp != ""){
+				var id = opp.id;
+				var barcode = $("#barcode"+id).val();
+				var batchnumber = $("#batchnumber"+id).val();
+				   if( null != barcode && barcode != "" && batchnumber != "" && null != batchnumber){
+					   json += '{"id":"'+id+'","barcode":"'+barcode+'","batchnumber":"'+batchnumber+'"},';
+                       
+					 }
+				   
+			}
+	 }
+   json = json.substring(0, json.length-1)+"]";
+   dochange(statues,realoid,type,json);
+   
+}
 </script>
 
 <div style="position:fixed;width:100%;height:20%;">
@@ -281,6 +307,32 @@ function orderPrint(id,statues){
 
      </div>
 
+<div id="addpos" style="display:none"> 
+<div style="position:fixed;text-align:center; top:65%;background-color:white; left:30%; margin:-20% 0 0 -20%; height:30%; width:60%; z-index:999;">
+<br/>
+<input type="hidden" id="type"></input>
+<input type="hidden" id="statues"></input>
 
+<table   cellspacing="1" style="margin:auto;background-color:black; width:80%;height:80%;">  
+        <tr class="bsc">
+		<td align="center" colspan=2>
+		  <label id="addprintid"></label>
+		</td>	
+		</tr> 
+		<tr class="bsc" > 
+		   <td align="center" colspan=2>
+		     <table id="addbb"> </table>
+		   </td>	
+		</tr> 
+		<tr class="bsc">
+		
+		    <td class="center" ><input type="button" onclick="$('#addpos').css('display','none');"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="取消" /></td>
+		
+			<td class="center" ><input type="button" onclick="saveAddPOD()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="确定" /></td>
+		</tr>
+	
+</table> 
+</div>
+</div>
 </body>
 </html>

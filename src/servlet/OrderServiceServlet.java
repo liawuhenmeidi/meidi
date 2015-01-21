@@ -50,7 +50,9 @@ public class OrderServiceServlet extends HttpServlet {
 			String statues = request.getParameter("statues");
 			if((""+Order.aftersale).equals(statues)){
 				GEtListaf(request,response);
-			}else {
+			}else if((""+Order.aftersalesearch).equals(statues)){
+				GEtListaf(request,response);
+			}else{
 				GEtList(request,response);
 			}
 			
@@ -202,7 +204,6 @@ public class OrderServiceServlet extends HttpServlet {
     	map.put("date", date);
     	
     	String strmap = StringUtill.GetJson(map);
-    	
     	
     	try {
     		response.getWriter().write(strmap);  

@@ -4,6 +4,7 @@ package orderproduct;
 public class OrderProduct {
 	public static int query = 1;
 	public static int unquery = 0  ;
+	public static int submit = 2  ;
 	
 	private int id ;
     private int categoryId ;

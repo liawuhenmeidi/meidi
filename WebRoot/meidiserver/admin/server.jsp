@@ -657,6 +657,7 @@ if("deleOrder".equals(method)){
 	//
 
 }else if("savesalecategorytotal".equals(method)){
+	try{
 	String isuid = request.getParameter("isuid"); 
 	String[] category = request.getParameterValues("salecate");
 	String message = "{";
@@ -672,9 +673,18 @@ if("deleOrder".equals(method)){
 	
 	up.setCategoryname(message);
 	UploadTotalGroupManager.save(up);
-	System.out.println(message);
+	}catch(Exception e){ 
+		UploadTotalGroupManager.delete ();
+	}
 	response.sendRedirect("../jieguo.jsp?type=updated"); 
-	//
+	// 
+}else if("getopjson".equals(method)){
+	String id = request.getParameter("oid");
+	Order or = OrderManager.getOrderID(user, Integer.valueOf(id));
+	String str = or.getSendTypejson(0);
+	response.getWriter().write(str);   
+	response.getWriter().flush(); 
+	response.getWriter().close(); //inventory
 } 
 
 %>

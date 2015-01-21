@@ -79,6 +79,8 @@ public class OrderServlet extends HttpServlet {
 				saveaftersale(request,response);
 			}else if("queryaftersale".equals(method)){
 				queryaftersale(request,response);
+			}else if("updateaftersale".equals(method)){
+				updateaftersale(request,response);
 			}else {
 				save(request,response);
 			}
@@ -524,7 +526,7 @@ public class OrderServlet extends HttpServlet {
 		        String saledate = request.getParameter("saledate");
 		        String location = request.getParameter("locations");
 		        String remark = request.getParameter("remark");
-		        
+		        String submit = TimeUtill.getdateString();
 		        AfterSale af = new AfterSale();
 		        if(!StringUtill.isNull(oid)){
 		        	af.setId(Integer.valueOf(oid));
@@ -543,6 +545,7 @@ public class OrderServlet extends HttpServlet {
 		        af.setType(AfterSale.typeupdate);
 		        af.setBranch(Integer.valueOf(user.getBranch())); 
 		        af.setPcount(1); 
+		        af.setSubmitTime(submit);
 		        AfterSaleManager.save(user, af);  
 		        try {   
 					response.sendRedirect("../admin/afterSale/dingdansubmit.jsp");
@@ -595,7 +598,7 @@ public class OrderServlet extends HttpServlet {
 									as.settName(pmap.get(Integer.valueOf(op.getSendType())).getType());
 									//System.out.println(pmap.get(Integer.valueOf(op.getSendType())).getName());
 									as.setUname(or.getUsername());
-									
+									as.setSubmitTime(TimeUtill.getdateString());
 									List<String> listsql = AfterSaleManager.getsaveSQL(user, as);  
 									
 									
@@ -608,15 +611,28 @@ public class OrderServlet extends HttpServlet {
 				}
 		        
 				DBUtill.sava(listas); 
-		        try {   
-					response.sendRedirect("../admin/afterSale/dingdansubmit.jsp");
-				} catch (IOException e) { 
-					e.printStackTrace(); 
-				} 
 		        
     	}catch(Exception e){  
     		e.printStackTrace();
     		logger.info(e);
+    	}
+    }
+    
+    private void updateaftersale(HttpServletRequest request, HttpServletResponse response){
+    	try{ 
+	    	      //处理请求，并执行resetToken方法，将session中的token去除
+		        String orderid = request.getParameter("orderid");
+		        String statues = request.getParameter("statues");
+		      
+		        List<String> listas = new ArrayList<String>(); 
+			  
+			   	String sql  = AfterSaleManager.getupdateIsSubmitsql(orderid,statues);
+			   	listas.add(sql);
+			  
+				DBUtill.sava(listas); 
+    	}catch(Exception e){  
+    		e.printStackTrace();
+    		logger.info(e); 
     	}
     }
     

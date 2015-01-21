@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-
-<%@ include file="../searchdynamic.jsp"%>       
- <%  
+ 
+<%@ include file="../searchdynamic.jsp"%>        
+ <%   
  if(StringUtill.isNull(statues)){ 
 	 statues = Order.aftersale +"";
  }
@@ -62,6 +62,13 @@ position:fixed;
 <jsp:include flush="true" page="page.jsp"> 
 	<jsp:param name="type" value="<%=statues%>"/> 
 </jsp:include> 
+ 
+<div class="btn">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=OrderProduct.submit%>')"></input> 
+&nbsp;&nbsp;&nbsp;  
+</div> 
+
 
 </div > 
 <div style="height:100px;">
@@ -69,7 +76,7 @@ position:fixed;
 
 <br/>  
 
-<%@ include file="../searchOrderAll.jsp"%>  
+<%@ include file="searchOrderAll.jsp"%>  
  
 
 <script type="text/javascript">
@@ -94,17 +101,49 @@ function addImage(src){
 } 
 
 
-
 function searchlocate(id){
 	window.open('../adminmap.jsp?id='+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 }
 
- 
-function adddetail(src){ 
-	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+  
+function detail(id){ 
+	winPar=window.open('dingdansubmit.jsp?id='+id, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 
+}
+
+
+function winconfirm(typestatues){
+	var question = confirm("你确认要执行此操作吗？");	
+	if (question != "0"){
+		var attract = new Array();
+		var i = 0;
+		
+		$("input[type='checkbox'][id='check_box']").each(function(){          
+	   		if($(this).attr("checked")){
+	   				var str = this.name; 
+	   				
+	   				if(str != null  &&  str != ""){
+		   				   attract[i] = str; 
+			   	            i++;
+		   				}	
+	   		}
+	   	}); 
+
+		$.ajax({ 
+			type: "post",   
+	         url: "../../user/OrderServlet", 
+	         data:"method=updateaftersale&orderid="+attract.toString()+"&statues="+typestatues,
+	         dataType: "",   
+	         success: function (data) {
+	        	 initOrder(type,statues,num,page,sort,sear);
+	           }, 
+	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	        	 alert("操作失败"); 
+	            } 
+	           });
+	}
 }
 
 </script>
@@ -114,7 +153,7 @@ function adddetail(src){
  <%@ include file="../remind.jsp"%> 
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
-		    <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>
+		     <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
 			<td align="center">单号</td> 
 			<td align="center">顾客信息</td>
 			
