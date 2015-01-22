@@ -462,7 +462,7 @@ public class PrintServlet extends HttpServlet {
 		  } 
 		
 		
-		if(null != maptypeinit){
+		 if(null != maptypeinit){
 			   Set<Map.Entry<String, List<UploadTotal>>> setmaptype =  maptypeinit.entrySet();
 			   Iterator<Map.Entry<String, List<UploadTotal>>> itmaptype = setmaptype.iterator();
 			   double Totalcount = 0 ;
@@ -510,20 +510,20 @@ public class PrintServlet extends HttpServlet {
 									tpe = ups.getCatergory(); 
 								}
 							}
-                            
+                             
 							
 							   row = sheet.createRow((int) count + 1);
 							   count++;
 							   int y = 0 ; 
-							   row.createCell((short) y++).setCellValue(idcount);
+							    row.createCell((short) y++).setCellValue(idcount);
 								row.createCell((short) y++).setCellValue("");
 								row.createCell((short) y++).setCellValue(tpe);
 								row.createCell((short) y++).setCellValue(up.getType());
 								row.createCell((short) y++).setCellValue(0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
-								row.createCell((short) y++).setCellValue(Count);
-								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(Totalcount));
+								row.createCell((short) y++).setCellValue(up.getCount());
+								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()));
 								row.createCell((short) y++).setCellValue(0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()));
-								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(Tatalbreakcount)); 
+								row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTatalbreakcount())); 
 						   } 
 					   } 
 			   } 

@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import aftersale.AfterSale;
+import aftersale.AfterSaleManager;
+
 import order.Order;
 import order.OrderManager;
 import order.OrderService;
@@ -44,7 +47,15 @@ public class OrderServiceServlet extends HttpServlet {
 		String method = request.getParameter("method");
 		
 		if("GETLIST".equals(method)){
-			GEtList(request,response);
+			String statues = request.getParameter("statues");
+			if((""+Order.aftersale).equals(statues)){
+				GEtListaf(request,response);
+			}else if((""+Order.aftersalesearch).equals(statues)){
+				GEtListaf(request,response);
+			}else{
+				GEtList(request,response);
+			}
+			
 		}
 	}
 
@@ -156,6 +167,52 @@ public class OrderServiceServlet extends HttpServlet {
 		} 
     }
     
+    
+    private void GEtListaf(HttpServletRequest request, HttpServletResponse response){
+    	User user = (User)request.getSession().getAttribute("user");
+    	
+    	String type = request.getParameter("type");
+    	String statues = request.getParameter("statues");
+    	String num = request.getParameter("num");
+    	String page = request.getParameter("page");
+    	String sort = request.getParameter("sort");
+    	//String search = request.getParameter("searched");
+    	String sear = "";
+    	//if(!StringUtill.isNull(search)){ 
+    	//	sear = HttpRequestUtill.getSearch(request);
+    	//}
+    	 
+    	List<AfterSale> list = new  ArrayList<AfterSale>(); 
+    	int count = 0 ; 
+    	
+    	  
+    	list = AfterSaleManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
+	    //count = OrderManager.getOrderlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
+    	
+    	
+    	String html = "";
+    	String date = "";
+    	   
+    	date = StringUtill.GetJson(list);
+    	//Order.serach
+    	Map<String,String> map = new HashMap<String,String>();
+    	
+    	map.put("count", count+"");
+    	
+    	map.put("html", html);
+    	
+    	map.put("date", date);
+    	
+    	String strmap = StringUtill.GetJson(map);
+    	
+    	try {
+    		response.getWriter().write(strmap);  
+        	response.getWriter().flush(); 
+        	response.getWriter().close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+    }
     
     
 	/**

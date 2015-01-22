@@ -29,6 +29,10 @@ public class UploadTotalGroupManager {
 		return DBUtill.sava(sqls); 
 	 }  
 	  
+	 public static void delete (){
+		 String sql = "delete from mduploadtotalgroup" ;
+		 DBUtill.sava(sql); 
+	 }
 	/* public static boolean  update(UploadTotal  in){
 		 List<String> sqls = new ArrayList<String>();
 			//String sql = "update installSale(id,uid,uname,phone,locate,andate,message) values ("+in.getId()+","+in.getUid()+","+in.getUname()+","+in.getPhone()+","+in.getLocate()+","+in.getAndate()+",'"+in.getMessage()+"')";

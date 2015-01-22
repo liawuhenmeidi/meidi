@@ -92,7 +92,7 @@ public class EncodingFilter implements Filter {
 	 
 	protected static boolean sqlValidate(String str) {  
         str = str.toLowerCase();//统一转为小写  
-        logger.info(str);  
+       // logger.info(str);  
         String badStr = "exec|execute|insert|delete|drop|chr|master|truncate|" +  
                 "declare|sitename|net user|xp_cmdshell|;|create|drop|" +  
                 "table|grant|group_concat|column_name|" +   

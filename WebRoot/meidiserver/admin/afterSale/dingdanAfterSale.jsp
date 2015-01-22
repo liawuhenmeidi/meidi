@@ -1,11 +1,11 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-
-<%@ include file="../searchdynamic.jsp"%>       
- <%  
+ 
+<%@ include file="../searchdynamic.jsp"%>        
+ <%   
  if(StringUtill.isNull(statues)){ 
-	 statues = Order.aftersalerepare +"";
+	 statues = Order.aftersale +"";
  }
-   
+    
 %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -59,16 +59,15 @@ position:fixed;
   <jsp:param name="" value="" />
   </jsp:include>   
          
-<jsp:include flush="true" page="../page.jsp"> 
+<jsp:include flush="true" page="page.jsp"> 
 	<jsp:param name="type" value="<%=statues%>"/> 
 </jsp:include> 
-
+ 
 <div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=OrderProduct.query%>')"></input> 
-&nbsp;&nbsp;&nbsp; 
- <input type="submit" class="button" name="dosubmit" value="忽略" onclick="winconfirm('<%=OrderProduct.unquery%>')"></input>   
-</div>
+ <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=OrderProduct.submit%>')"></input> 
+&nbsp;&nbsp;&nbsp;  
+</div> 
 
 
 </div > 
@@ -77,7 +76,7 @@ position:fixed;
 
 <br/>  
 
-<%@ include file="../dispatch/searchOrderAll.jsp"%>  
+<%@ include file="searchOrderAll.jsp"%>  
  
 
 <script type="text/javascript">
@@ -102,15 +101,14 @@ function addImage(src){
 } 
 
 
-
 function searchlocate(id){
 	window.open('../adminmap.jsp?id='+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 }
 
- 
-function adddetail(src){ 
-	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+  
+function detail(id){ 
+	winPar=window.open('dingdansubmit.jsp?id='+id, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
 
 }
@@ -136,7 +134,7 @@ function winconfirm(typestatues){
 		$.ajax({ 
 			type: "post",   
 	         url: "../../user/OrderServlet", 
-	         data:"method=queryaftersale&orderid="+attract.toString()+"&statues="+typestatues,
+	         data:"method=updateaftersale&orderid="+attract.toString()+"&statues="+typestatues,
 	         dataType: "",   
 	         success: function (data) {
 	        	 initOrder(type,statues,num,page,sort,sear);
@@ -148,7 +146,6 @@ function winconfirm(typestatues){
 	}
 }
 
-
 </script>
 
  
@@ -156,7 +153,7 @@ function winconfirm(typestatues){
  <%@ include file="../remind.jsp"%> 
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
-		    <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
+		     <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
 			<td align="center">单号</td> 
 			<td align="center">顾客信息</td>
 			
@@ -175,6 +172,10 @@ function winconfirm(typestatues){
 	      <% 
               String tdcol = "bgcolor=red" ;
 	      %>
+				
+					
+				
+    
     
 </table> 
      </div>

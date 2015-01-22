@@ -171,7 +171,7 @@ logger.info(category.getName());
 			//String sql = " select mdcategory.*,mdgroup.* from mdcategory , mdgroup  where mdcategory.cstatues = "+statues+ " and  mdgroup.id = " + user.getUsertype()+ " and mdgroup.products like concat('%',mdcategory.id,'%')";
 			
 			Statement stmt = DB.getStatement(conn);
-logger.info(sql);
+//logger.info(sql);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {
 				while (rs.next()) {
@@ -185,7 +185,7 @@ logger.info(sql);
 				DB.close(stmt);
 				DB.close(conn);
 			}
-logger.info(categorys.size());
+//logger.info(categorys.size());
 			return categorys;
 		}
 		

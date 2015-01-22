@@ -5,7 +5,8 @@ public class AfterSale {
    public static int typesale = 0 ;
    
    private String printid;
-    
+   private int oriedid;
+   
    private int id ;
    private int tid; // 产品型号id
    private String tName; // 产品型号
@@ -25,8 +26,22 @@ public class AfterSale {
    private String saledate;
    private String branchName;
    private String detail ;
-   
-   public String getDetail() {
+   private String submitTime;
+    
+   public int getOriedid() {
+		return oriedid;
+	}
+	public void setOriedid(int oriedid) {
+		this.oriedid = oriedid;
+	}
+	
+   public String getSubmitTime() {
+	return submitTime;
+}
+public void setSubmitTime(String submitTime) {
+	this.submitTime = submitTime;
+}
+public String getDetail() {
 	return detail;
 }
 public void setDetail(String detail) {

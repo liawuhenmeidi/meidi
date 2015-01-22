@@ -71,11 +71,16 @@ $(function () {
 
 function saveAddPOD(){
 	 $("#addpos").css("display","none");
+	 
     var realpos = $("#realpos").val();
+    var saledate = $("#saledate").val();
+    if( null == realpos || realpos == "" || saledate == "" || null == saledate){
+		 return ; 
+	 }
 	$.ajax({  
         type: "post", 
          url: "../user/OrderServlet",
-         data:"method=saveTuihuo&orderid="+realoid+"&realpos="+realpos,
+         data:"method=saveTuihuo&orderid="+realoid+"&realpos="+realpos+"&saledate="+saledate,
          dataType: "", 
          success: function (data) {
         	 
@@ -95,6 +100,39 @@ function adddetail(src){
 	       window.location.reload();
     }
 } 
+
+function winconfirm(){
+	var question = confirm("你确认要执行此操作吗？");	
+	if (question != "0"){
+		var attract = new Array();
+		var i = 0;
+		
+		$("input[type='checkbox'][id='check_box']").each(function(){          
+	   		if($(this).attr("checked")){
+	   				var str = this.name; 
+	   				
+	   				if(str != null  &&  str != ""){
+		   				   attract[i] = str; 
+			   	            i++;
+		   				}	
+	   		}
+	   	}); 
+
+
+		$.ajax({ 
+			type: "post", 
+	         url: "../user/OrderServlet", 
+	         data:"method=cancelTuihuo&orderid="+attract.toString(),
+	         dataType: "",   
+	         success: function (data) {
+	        	 initOrder(type,statues,num,page,sort,sear);	 
+	           }, 
+	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	        	 alert("操作失败"); 
+	            } 
+	           });
+	}
+}
 
 function AddPOS(printid,oid){
 	realoid = oid ;
@@ -118,6 +156,11 @@ function AddPOS(printid,oid){
 <jsp:include page="headremind.jsp"/>
 </div>
 
+<div class="btn">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <input type="submit" class="button" name="dosubmit" value="忽略确认" onclick="winconfirm()"></input>  
+</div>
+
 </div > 
 <div style=" height:120px;">
 </div>
@@ -129,7 +172,8 @@ function AddPOS(printid,oid){
 
 <div id="wrap">
 <table  cellspacing="1" id="table">
-		<tr id="th">  
+		<tr id="th">
+		    <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
 			<td align="center">单号</td>
 			<td align="center">门店</td>
 			<td align="center">销售员</td>   
@@ -165,8 +209,11 @@ function AddPOS(printid,oid){
 		</td>	
 		</tr>
 		<tr class="bsc">
-		<td align="center" colspan=2>
-		   <input type="text" id="realpos"/>
+		<td align="center" >
+		   pos单号:<input type="text" id="realpos"  placeholder="必填"/>
+		</td>
+		<td align="center" >
+		   退货日期:<input type="text" id="saledate" onclick="new Calendar().show(this);" placeholder="必填"/>
 		</td>	 
 		</tr> 
 		<tr class="bsc">

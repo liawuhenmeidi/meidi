@@ -387,7 +387,7 @@ if(!StringUtill.isNull(id)){
 
 <input type="hidden" name="method" value="savehuanhuo"/> 
 <input type="hidden" name="orderid" value="<%=id %>"/>
-<input type="hidden" name="token" value="<%=s%>"/> 
+<input type="hidden" name="token" value="<%=s%>"/>  
  
 <div class="s_main_tit">销售报单<span class="qiangdan"></span></div>
 <div class="s_main_tit">门店:<span class="qian"><%=user.getBranchName()%></span></div>  

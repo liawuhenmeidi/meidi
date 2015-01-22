@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import order.Order;
 
 import org.apache.commons.logging.Log;
@@ -84,7 +86,24 @@ public class OrderProductManager {
 			 return sqls; 
 	   }
 	    
-	    
+	   
+	   public static List<String> saveTuihuo(int id, Order orderr) { 
+           
+		   List<OrderProduct> orders = orderr.getOrderproduct();
+		   List<String> sqls = new ArrayList<String>();
+             
+			 for(int i=0;i<orders.size();i++){ 
+			   
+				OrderProduct order = orders.get(i); 
+				String sql = "insert into  mdorderproduct (id, categoryID ,sendtype,saletype, count,orderid ,statues ,categoryname,salestatues,subtime,price)" +  
+	                         "  values ( null, "+order.getCategoryId()+", '"+order.getSendType()+"', '"+order.getSaleType()+"',-"+order.getCount()+","+id+","+order.getStatues()+",'"+order.getCategoryName()+"',"+order.getSalestatues()+",'"+TimeUtill.gettime()+"',"+order.getPrice()+")";
+		logger.info(sql); 
+				sqls.add(sql); 
+				OrderProductService.flag = true ;
+			} 
+			 return sqls; 
+	   }
+	   
 	   public static int getMaxid(){
 		   int id = 0 ;
 		   Connection conn = DB.getConn();
@@ -232,6 +251,38 @@ public class OrderProductManager {
 		 }
         
         
+        public static  String getupdateIsSubmitsql(String ids,String statues){
+ 		   
+    	    String sql = " update mdorderproduct set issubmit = "+statues+" where orderid in ("+ ids+")";
+			
+    	    OrderProductService.flag = true ;
+    	    
+    	    return sql;
+	 }
+        // 送货完成获取增加条码和批号的方法
+        public static List<String> getsql(String json){
+        	try{
+        	List<String> list = new ArrayList<String>();
+        	
+        	JSONArray jsons = JSONArray.fromObject(json); 
+        	
+        	for(int i=0;i<jsons.size();i++){
+        		JSONObject js = jsons.getJSONObject(i);
+        		int opid = js.getInt("id"); 
+        		String barcode = js.getString("barcode");
+        		String batchnumber = js.getString("batchnumber");
+        		 
+        		String sql = "update mdorderproduct set barcode =  "+barcode+" , batchnumber = "+ batchnumber+ " where id = "+opid  ;
+        	    list.add(sql); 
+        	}
+        	OrderProductService.flag = true ;
+        	return list ;
+        	}catch(Exception e){
+        		return null;
+        	}
+        	
+        }
+        
 	   public static OrderProduct getOrderStatuesFromRs(ResultSet rs){
 		   OrderProduct p = null;
 			try {
@@ -249,13 +300,14 @@ public class OrderProductManager {
 					p.setTypeName(ProductService.getIDmap().get(Integer.valueOf(sendtype)).getType());
 				}
 				p.setOrderid(Integer.valueOf(rs.getString("orderid")));
-				p.setStatues(rs.getInt("statues"));  
+				p.setStatues(rs.getInt("statues"));   
 				p.setCategoryName(rs.getString("categoryname"));
 				p.setSalestatues(rs.getInt("salestatues")); 
 				p.setSubtime(rs.getString("subtime")); 
 				p.setPrice(rs.getDouble("price")); 
 				p.setBarcode(rs.getString("barcode"));
 				p.setBatchNumber(rs.getString("batchNumber"));
+				p.setIsSubmit(rs.getInt("issubmit")); 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

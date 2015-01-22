@@ -3,9 +3,9 @@
 <%@ include file="../searchdynamic.jsp"%>       
  <%  
  if(StringUtill.isNull(statues)){ 
-	 statues = Order.aftersalerepare +"";
+	 statues = Order.aftersalesearch +"";
  }
-   
+    
 %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -63,13 +63,15 @@ position:fixed;
 	<jsp:param name="type" value="<%=statues%>"/> 
 </jsp:include> 
 
+
+
 </div > 
 <div style="height:100px;">
 </div>
 
 <br/>  
 
-<%@ include file="../searchOrderAll.jsp"%>  
+<%@ include file="searchOrderAll.jsp"%>  
  
 
 <script type="text/javascript">
@@ -94,7 +96,6 @@ function addImage(src){
 } 
 
 
-
 function searchlocate(id){
 	window.open('../adminmap.jsp?id='+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
@@ -103,8 +104,6 @@ function searchlocate(id){
  
 function adddetail(src){ 
 	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
-
-
 }
 
 </script>
@@ -114,7 +113,7 @@ function adddetail(src){
  <%@ include file="../remind.jsp"%> 
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
-		    <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>
+		     <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
 			<td align="center">单号</td> 
 			<td align="center">顾客信息</td>
 			

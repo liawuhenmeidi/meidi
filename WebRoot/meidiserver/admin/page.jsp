@@ -54,7 +54,7 @@ if(Order.orderDispatching == type || Order.neworder == type || Order.release == 
 }else if(Order.orderquery == type){
 	message = "送货确认页"; 
 }else if(Order.aftersalerepare == type){
-	message = "";
+	message = "售后待处理";
 }
 
 String path = request.getContextPath();
