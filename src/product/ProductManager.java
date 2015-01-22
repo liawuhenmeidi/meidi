@@ -359,16 +359,16 @@ logger.info(sql);
 			DBUtill.sava(sql);
 			ProductService.flag = true ;
 		}
-		
-		public static void update(String type,String id,double size ){
-logger.info(size);			
-			Connection conn = DB.getConn();
-			String sql = "update mdproduct set ptype = ? , size = ? where id = ?";
+		 
+		public static void update(String type,String id,double size,double stockprice ){	
+			Connection conn = DB.getConn(); 
+			String sql = "update mdproduct set ptype = ? , size = ? ,stockprice = ? where id = ?";
 			PreparedStatement pstmt = DB.prepare(conn, sql);
 			try {
 				pstmt.setString(1, type);
 				pstmt.setDouble(2, size); 
-				pstmt.setString(3, id); 
+				pstmt.setDouble(3, stockprice); 
+				pstmt.setString(4, id); 
 logger.info(pstmt); 				
 				pstmt.executeUpdate();
 				ProductService.flag = true ;
@@ -386,13 +386,14 @@ logger.info(pstmt);
 				try { 
 					p.setId(rs.getInt("id"));  
 					p.setCategoryID(rs.getInt("categoryID"));
-					p.setType(rs.getString("ptype"));  
-					p.setName(rs.getString("name"));  
+					p.setType(rs.getString("ptype"));   
+					p.setName(rs.getString("name"));   
 					p.setStatues(rs.getInt("pstatues"));
-					p.setSize(rs.getDouble("size"));
-				} catch (SQLException e) { 
+					p.setSize(rs.getDouble("size"));    
+					p.setStockprice(rs.getDouble("stockprice"));
+				} catch (SQLException e) {  
 					e.printStackTrace();
-				}
+				} 
 				return p;
 		   }
 		  

@@ -133,12 +133,16 @@ function aftersalerepare(date){
 	var html = '';
 	var jsonlist =  $.parseJSON(date);
 	for(var i=0;i<jsonlist.length;i++){
-		var json = jsonlist[i]; 
+		var json = jsonlist[i];  
+		alert(json.submituser.username); 
 		//String tdcol = 'bgcolor="red"' ; 
 		html += '<tr id='+json.printid+'  class="asc"  onclick="updateClass(this)" ondblclick="detail('+json.id+')">'; 
 		html += '<td align="center" width="20"><input type="checkbox"  id="check_box" name ='+json.id+'></input></td>';
 		html += '<td align="center">'+json.printid+'</td>'; 
-		html += '<td align="center">'+json.uname+'<p>'+json.phone+'</td>';
+		html += '<td align="center">'+json.uname+'</td>';
+		html += '<td align="center">'+json.phone+'</td>';
+		html += '<td align="center">'+json.submituser.username+'</td>';
+		html += '<td align="center">'+json.submituser.phone+'</td>'; 
 		html += '<td align="center">'+json.cName+'</td>';
 		html += '<td align="center">'+json.tName+'</td>';
 		html += '<td align="center">'+json.pcount+'</td>';
@@ -146,7 +150,7 @@ function aftersalerepare(date){
 		html += '<td align="center">'+json.barcode+'</td>';
 		
 		html += '<td align="center">'+json.location+'</td>';
-		html += '<td align="center">'+json.branchName+'</td>';
+		html += '<td align="center">'+json.typeName+'</td>'; 
 		html += '<td align="center">'+json.saledate+'</td>';
 		html += '<td align="center">'+json.andate+'</td>'; 
 		html += '</tr>';

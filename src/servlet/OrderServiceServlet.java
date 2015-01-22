@@ -194,6 +194,7 @@ public class OrderServiceServlet extends HttpServlet {
     	String date = "";
     	   
     	date = StringUtill.GetJson(list);
+    	logger.info(date);
     	//Order.serach
     	Map<String,String> map = new HashMap<String,String>();
     	

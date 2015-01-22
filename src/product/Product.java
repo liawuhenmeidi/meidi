@@ -1,5 +1,7 @@
 package product;
 
+import category.CategoryManager;
+
 public class Product {
   public static int sale = 0;
    public static int unsale = 1;
@@ -8,9 +10,31 @@ public class Product {
    private String type ; // 型号
    private String name ;
    private int categoryID; // 类别
+   private String cname;
    private int statues ;  //  0  在销售   1  已无货
    private double size;
    
+   private double stockprice;
+   
+   
+ 
+public String getCname() {
+	if(this.getCategoryID() == 0 ){
+		cname = ""; 
+	}else {
+		cname = CategoryManager.getCategoryMap().get(this.getCategoryID()).getName();
+	}
+	return cname;
+}
+public void setCname(String cname) {
+	this.cname = cname;
+}
+public double getStockprice() {
+	return stockprice;
+}
+public void setStockprice(double stockprice) {
+	this.stockprice = stockprice;
+} 
 public double getSize() {
 	return size;
 }

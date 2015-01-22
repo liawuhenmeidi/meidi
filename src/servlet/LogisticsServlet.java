@@ -423,8 +423,7 @@ public class LogisticsServlet extends HttpServlet {
 					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
 				} 
 		    }  
-			
-			
+			 
 			if(!StringUtill.isNull(sql)){
 				listsql.add(sql); 
 				if(null != listop){

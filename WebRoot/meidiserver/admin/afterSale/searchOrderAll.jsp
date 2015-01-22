@@ -128,7 +128,7 @@ function intsearch(){
 
 </script>
  
-<div id="wrapsearch" style="position:fixed;text-align:center; top:50%;background-color:#ACD6FF; left:30%; margin:-20% 0 0 -20%; height:50%; width:80%; z-index:999;display:none"> 
+<div id="wrapsearch" style="position:fixed;text-align:center; top:50%;background-color:#ACD6FF; left:30%; margin:-20% 0 0 -20%; height:50%; width:85%; z-index:999;display:none"> 
 <div >  
 <table  cellspacing="1" style="margin:auto;background-color:black; width:95%;height:300px;">  
  
@@ -137,7 +137,7 @@ function intsearch(){
 			<td align="center" >
 	        <input type="text"  name="printlnid" id="printlnid" value=""  />
 			</td>
-			<td align="center" >门店名</td>
+			<td align="center" >上报单位</td>
 			<td align="center" >
 	        <input type="text"  name="branch" id="branch" value=""  />
 			</td>

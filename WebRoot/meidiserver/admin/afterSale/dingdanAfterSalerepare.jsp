@@ -66,7 +66,7 @@ position:fixed;
 <div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=OrderProduct.query%>')"></input> 
-&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;  
  <input type="submit" class="button" name="dosubmit" value="忽略" onclick="winconfirm('<%=OrderProduct.unquery%>')"></input>   
 </div>
 
@@ -79,7 +79,6 @@ position:fixed;
 
 <%@ include file="../dispatch/searchOrderAll.jsp"%>  
  
-
 <script type="text/javascript">
 
 sort= "andate asc";
@@ -111,8 +110,6 @@ function searchlocate(id){
  
 function adddetail(src){ 
 	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
-
-
 }
 
 

@@ -21,20 +21,20 @@
 .fixedHead {  
 position:fixed;
 }   
- 
+
 *{
     margin:0;
     padding:0;
 }
 #table{  
-    width:1100px;
+    width:1400px;
     table-layout:fixed ;
 }
 
 #th{  
     background-color:white;
     position:absolute; 
-    width:1100px; 
+    width:1400px; 
     height:30px;
     top:0;
     left:0;
@@ -152,12 +152,13 @@ function winconfirm(typestatues){
 <div id="wrap">
  <%@ include file="../remind.jsp"%> 
 <table  cellspacing="1" id="table" >
-		<tr id="th">  
+		<tr id="th">   
 		     <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
 			<td align="center">单号</td> 
-			<td align="center">顾客信息</td>
-			
-			<td align="center">设备名称</td>
+			<td align="center">顾客姓名</td>
+			<td align="center">顾客电话</td>
+			<td align="center">安装单位</td>
+			<td align="center">安装单位电话</td>
 			<td align="center" >设备型号</td> 
 			<td align="center" >设备数量</td>
 			

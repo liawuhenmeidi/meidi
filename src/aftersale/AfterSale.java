@@ -1,5 +1,8 @@
 package aftersale;
 
+import user.User;
+import user.UserService;
+
 public class AfterSale {
    public static int typeupdate = 1 ;
    public static int typesale = 0 ;
@@ -19,7 +22,7 @@ public class AfterSale {
    private String andate;
    private String batchNumber;  //批号
    private String barcode;  // 条码
-   
+    
    private String location ; //
    private int branch ; 
    private int type;  // 单据类型      0 表示自己销售   1 网点上报
@@ -27,8 +30,36 @@ public class AfterSale {
    private String branchName;
    private String detail ;
    private String submitTime;
-    
-   public int getOriedid() {
+   private int submitId;
+   private User submituser;
+   private String typeName ;
+   
+   public String getTypeName() {
+	if(type == 0){
+		typeName = "网点上报";
+	}else if(type == 1){
+		typeName = "系统直营";
+	}
+	return typeName;
+}
+
+   public void setTypeName(String typeName){
+	   this.typeName = typeName; 
+   }
+public User getSubmituser() {
+	submituser = UserService.getMapId().get(submitId);
+	return submituser; 
+}
+public void setSubmituser(User submituser) {
+	this.submituser = submituser;
+}
+public int getSubmitId() {
+	return submitId;
+}
+public void setSubmitId(int submitId) {
+	this.submitId = submitId;
+}
+public int getOriedid() {
 		return oriedid;
 	}
 	public void setOriedid(int oriedid) {
