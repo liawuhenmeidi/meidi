@@ -1,6 +1,8 @@
 package wilson.matchOrder;
 
 import order.Order;
+import orderproduct.OrderProductManager;
+import orderproduct.OrderProductService;
 import utill.StringUtill;
 import wilson.upload.UploadOrder;
 
@@ -38,10 +40,9 @@ public class AfterMatchOrder {
 			DBSidePosNo = dbOrder.getPos();
 			DBSideSaleTime = dbOrder.getSaleTime();
 			DBSideType = dbOrder.getSendType();
-			DBSideType_trans = dbOrder.getSendType(0,"^");
-			if(DBSideType_trans.startsWith("^")){
-				DBSideType_trans = DBSideType_trans.substring(1,DBSideType_trans.length());
-			}
+			
+			DBSideType_trans = OrderProductService.getSendTypeAndCountAndPrice(dbOrder,false);
+			
 			DBSideCount = String.valueOf(dbOrder.getSendCount());
 			DBSideOrderId = dbOrder.getId();
 		}
@@ -98,10 +99,9 @@ public class AfterMatchOrder {
 				DBSidePosNo = dbOrder.getPos();
 				DBSideSaleTime = dbOrder.getSaleTime();
 				DBSideType = dbOrder.getSendType();
-				DBSideType_trans = dbOrder.getSendType(0,"^");
-				if(DBSideType_trans.startsWith("^")){
-					DBSideType_trans = DBSideType_trans.substring(1,DBSideType_trans.length());
-				}
+
+				DBSideType_trans = OrderProductService.getSendTypeAndCountAndPrice(dbOrder,false);
+				
 				DBSideCount = String.valueOf(dbOrder.getSendCount());
 				DBSideOrderId = dbOrder.getId();
 			}

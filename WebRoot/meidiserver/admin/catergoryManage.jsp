@@ -80,7 +80,7 @@ String merge= "[]";
 
 //左侧select里面的内容
 //List<BranchType> listb = BranchTypeManager.getLocate();
-//Map<String,List<Branch>> map2 = BranchManager.getLocateMapBranch(); 
+//Map<String,List<Branch>> map2 = BranchManager.getLocateMapBranch();
 //String mapjosn = StringUtill.GetJson(map2);
 
 Map<String,List<CatergoryMaping>> srcMap = CatergoryManager.getCatergoryMap();

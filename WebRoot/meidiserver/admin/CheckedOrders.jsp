@@ -22,7 +22,7 @@
 	if(startButton == null){
 		String transferShop = request.getParameter("transferShop");
 		String transferType = request.getParameter("transferType");
-		if(UploadManager.transferShopName(transferShop) && UploadManager.transferType(transferType)){
+		if(UploadManager.transferShopName(transferShop) && UploadManager.transferType(user,transferType)){
 			if(uploadSide != null && uploadSide.length > 0){
 				MatchOrderManager.checkUploadOrderList(uploadSide); 
 			}
@@ -131,6 +131,8 @@
 	//是否禁用
 	boolean dbsideDisabled =false;
 	boolean uploadsideDisabled=false;
+	
+	String dingmaColor = "#7CCD7C";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -158,6 +160,9 @@ tr strong,tr td {white-space:normal}
 
 var jsonmap = '<%=mapjosn%>';   
 var checkBoxStatus = '<%=checkBoxStatus%>';
+
+var color_dingma = '<%=dingmaColor%>';
+
 $(function () {
 	initButton();
 	initCheckBox();
@@ -226,8 +231,8 @@ function transferType(){
 			 var checkbox2 = $('#'+ this.cells[cols-id2col].id);
 			 var shop2 = $('#'+  this.cells[cols-shop2col].id);
 			 var transType2 = $('#'+  this.cells[cols-transType2col].id);
-			 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked'){
-				output += checkbox2.find("input").val() + "," + transType2.attr('bak') + "_";
+			 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked' && shop2.attr('bgcolor') == color_dingma){
+				 output += checkbox2.find("input").val() + "," + checkbox1.find("input").val() + "_";
 				transType2.text(transType2.attr('bak'));
 			 }
 			 
@@ -562,7 +567,7 @@ function baseFormSubmit(){
 				dbsideDisabled = true;
 			}
 			if(afterMatchOrders.get(i).getDBOrder().isDiangma()){
-				backgroundColor = "#7CCD7C";
+				backgroundColor = dingmaColor;
 				showColor = true;
 			}
 			

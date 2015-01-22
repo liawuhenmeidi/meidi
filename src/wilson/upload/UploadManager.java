@@ -21,6 +21,9 @@ import org.apache.commons.logging.LogFactory;
 
 import order.Order;
 import order.OrderManager;
+import orderPrint.OrderPrintlnService;
+import orderproduct.OrderProduct;
+import orderproduct.OrderProductService;
 import uploadtotal.UploadTotal;
 import uploadtotalgroup.UploadTotalGroup;
 import uploadtotalgroup.UploadTotalGroupManager;
@@ -128,8 +131,8 @@ public class UploadManager {
 	}
 	
 	//更改uploadorder送货型号(仅提供给manualCheckout.jsp使用)
-	//input :     id,type;id,type
-	public static boolean transferType(String input){
+	//input :     id,orderId_id,orderId
+	public static boolean transferType(User user,String input){
 		boolean result = false;
 		
 		if(StringUtill.isNull(input)){
@@ -140,6 +143,22 @@ public class UploadManager {
 			input = input.substring(0,input.length()-1);
 		}
 		
+		//去orderId对应的order (开始)
+		String ids = "";
+		Map<String,Order> orderMap = new HashMap<String, Order>();
+		Map<String,String> output = new HashMap<String, String>();
+		
+		for(int i = 0 ; i < input.split("_").length ; i ++){
+			ids += input.split("_")[i].split(",")[1] + ",";
+		}
+		if(ids.endsWith(",")){
+			ids = ids.substring(0,ids.length() - 1);
+		}
+		orderMap = OrderManager.getOrdermapByIds(user, ids);
+		//(结束)
+		
+		
+		
 		Connection conn = DB.getConn();
 		String sql = "update uploadorder set salesman = ? where id = ?";
 		PreparedStatement pstmt = DB.prepare(conn, sql);
@@ -147,7 +166,14 @@ public class UploadManager {
 			boolean autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit(false);
 			for(int i = 0 ; i < input.split("_").length; i ++){
-				pstmt.setString(1, input.split("_")[i].split(",")[1]);
+				String orderid = input.split("_")[i].split(",")[1];
+				Order o = new Order();
+				o = orderMap.get(orderid);
+				if(null == o){
+					throw new SQLException();
+				}
+				
+				pstmt.setString(1, OrderProductService.getSendTypeAndCountAndPrice(o));
 				pstmt.setInt(2, Integer.parseInt(input.split("_")[i].split(",")[0]));
 				pstmt.executeUpdate();
 			}	
@@ -159,7 +185,7 @@ public class UploadManager {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			logger.info("修改店名异常，回滚！");
+			logger.info("修改送货型号异常，回滚！");
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
