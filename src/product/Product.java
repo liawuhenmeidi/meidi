@@ -15,9 +15,7 @@ public class Product {
    private double size;
    
    private double stockprice;
-   
-   
- 
+
 public String getCname() {
 	if(this.getCategoryID() == 0 ){
 		cname = ""; 

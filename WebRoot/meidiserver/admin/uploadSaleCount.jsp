@@ -36,9 +36,9 @@
 		total = true ;     
 		maptypeinit = UploadManager.getTotalOrdersGroup(id,"type",BasicUtill.sale,"");
 	}else if("totalcategory".equals(type)){ 
-		total = true ;   
-		mapc = UploadManager.getTotalOrdersCategoryGroup(id,BasicUtill.send,"");
-	}
+		total = true ;    
+		mapc = UploadManager.getTotalOrdersCategoryGroup(id,BasicUtill.sale,"");
+	} 
 	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

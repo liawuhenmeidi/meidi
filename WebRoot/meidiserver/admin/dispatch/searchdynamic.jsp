@@ -63,8 +63,8 @@ String usermapstr = StringUtill.GetJson(usermaps);
 List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend); //UserService.getsencondDealsend(user);
 
 List<User> listSend = UserManager.getUsers(user,Group.send); //UserService.getsend(user);
-//提示信息
-System.out.println(listSend);
+//提示信息 
+//System.out.println(listSend);
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
 int count = 0 ; 

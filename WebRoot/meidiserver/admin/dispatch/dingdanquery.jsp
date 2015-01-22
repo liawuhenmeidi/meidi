@@ -105,7 +105,7 @@ function dochange(statues,oid,type,json){
 
 function change(str1,oid,type,printid){
 	var statues = $("#"+str1).val();
-	var flag = false ;   
+	var flag = true ;    
 	if(statues == 2 && flag == true){ 
 		var gettype = "getopjson";
 		$.ajax({   

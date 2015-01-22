@@ -192,7 +192,7 @@ logger.info(pstmt);
 		
 		String sql = "select permissions from mdgroup where  id = '" + user.getUsertype()+"';";
 		
-		System.out.println(sql);
+		//System.out.println(sql);
 		Connection conn = DB.getConn();
 		String[] Permissions = null ;
 		Statement stmt = DB.getStatement(conn);
@@ -201,8 +201,8 @@ logger.info(pstmt);
 			while (rs.next()) {
 				String permissions = rs.getString("permissions");
 				Permissions = permissions.split("_");
-				System.out.println(2);
-			}
+				//System.out.println(2);
+			} 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
