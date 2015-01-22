@@ -40,7 +40,6 @@ import user.UserManager;
 import utill.DBUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
-import utill.TokenGen;
 
 /**
  * 核心请求处理类
@@ -546,6 +545,7 @@ public class OrderServlet extends HttpServlet {
 		        af.setBranch(Integer.valueOf(user.getBranch())); 
 		        af.setPcount(1); 
 		        af.setSubmitTime(submit);
+		        af.setSubmitId(user.getId()); 
 		        AfterSaleManager.save(user, af);  
 		        try {   
 					response.sendRedirect("../admin/afterSale/dingdansubmit.jsp");
@@ -599,9 +599,8 @@ public class OrderServlet extends HttpServlet {
 									//System.out.println(pmap.get(Integer.valueOf(op.getSendType())).getName());
 									as.setUname(or.getUsername());
 									as.setSubmitTime(TimeUtill.getdateString());
+									as.setSubmitId(or.getDealsendId());
 									List<String> listsql = AfterSaleManager.getsaveSQL(user, as);  
-									
-									
 									listas.addAll(listsql);
 								}
 							}

@@ -1,8 +1,7 @@
-<%@ page language="java" import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ include file="../../common.jsp"%>
+ 
 <%
-request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user"); 
-       
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
  
 List<Branch> listbranch = BranchManager.getLocate(); 
@@ -72,7 +71,7 @@ td {
 <title>产品管理</title>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/> 
+<link rel="stylesheet" href="../../js/jquery-ui.css"/> 
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 <script type="text/javascript">
@@ -195,13 +194,13 @@ var disable = '<%=isdisabel %>';
       //System.out.println("aa"+user.getBranch()+inventory.getOutstatues()+UserManager.checkPermissions(user, Group.inventoryquery));
       if((outbranch.getId()+"").equals(user.getBranch()) && inventory.getOutstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) ){ 
       %>  
-      <li><a href="../../admin/inventory/InventoryServlet?method=outbranch&type=phone&id=<%=inventory.getId() %>">出库方确认</a></li>
+      <li><a href="../../admin/inventory/InventoryServlet?method=outbranch&type=phone&id=<%=inventory.getId() %>&token=<%=token%>">出库方确认</a></li>
       <%
       }  
       %>
      <% if((inbranch.getId()+"").equals(user.getBranch()) && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) ){ 
       %>  
-      <li><a href="../../admin/inventory/InventoryServlet?method=inbranch&type=phone&id=<%=inventory.getId() %>">入库方确认</a></li>
+      <li><a href="../../admin/inventory/InventoryServlet?method=inbranch&type=phone&id=<%=inventory.getId() %>&token=<%=token%>">入库方确认</a></li>
       <% 
       } 
      
@@ -212,13 +211,13 @@ var disable = '<%=isdisabel %>';
       }
       %>
       
-     </ul>   
+     </ul>    
    </div>      
      <div>     
      <form action="InventoryServlet"  method = "post"  onsubmit="return check()">
       <input type="hidden" name="method" value="add"/>  
       <input type="hidden" name="id" value="<%=inventoryid %>"/>
-                     
+                      
   <div  > 
    <center><div id="branchmessage"><font style="color:red;font-size:20px;" >调拨单</font></div></center>
    <br/>
@@ -229,7 +228,7 @@ var disable = '<%=isdisabel %>';
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <!-- 
     选择 <select id="outbranchs" <%=isdisabel %>>  
-	  <option value=""></option>
+	  <option value=""></option> 
 	   <% if(listbranch != null){
 		   for(int i=0;i<listbranch.size();i++){
 			   Branch b = listbranch.get(i);

@@ -3379,7 +3379,7 @@ public class OrderService {
 	   	Map<Integer, Product> pmap = ProductService.getIDmap();
 		String html = "";
            
-		if(null != list){
+		if(null != list){ 
 			for(int i=0;i<list.size();i++){
 				Order or = list.get(i);
 				List<OrderProduct> listop = or.getOrderproduct();
@@ -3407,13 +3407,15 @@ public class OrderService {
 							as.setTid(Integer.valueOf(op.getSendType())); 
 							as.settName(pmap.get(Integer.valueOf(op.getSendType())).getType());
 							//System.out.println(pmap.get(Integer.valueOf(op.getSendType())).getName());
-							as.setUname(or.getUsername());
+							as.setUname(or.getUsername());  
+							as.setSubmitId(or.getDealsendId());  
+							as.setType(AfterSale.typesale);  
 							listas.add(as); 
 						}
 					}
 				}
 			} 
-
+  
 			html = StringUtill.GetJson(listas);
 			//logger.info(html); 
 		}

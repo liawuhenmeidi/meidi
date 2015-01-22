@@ -103,10 +103,10 @@ function dochange(statues,oid,type,json){
            });
 }
 
-
 function change(str1,oid,type,printid){
 	var statues = $("#"+str1).val();
-	if(statues == 3){
+	var flag = true ;    
+	if(statues == 2 && flag == true){ 
 		var gettype = "getopjson";
 		$.ajax({   
 	        type: "post",    
@@ -213,7 +213,7 @@ function AddPOS(printid,oid,type,statues,op){
 		$("#addprintid").text("单号:"+printid);
 		$("#addpos").css("display","block");
 } 
-
+ 
 function saveAddPOD(){
 	var json = '[';
 	 $("#addpos").css("display","none");

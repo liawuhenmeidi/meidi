@@ -139,7 +139,6 @@ function changes(oid,id,statues,flag,returnstatues,type,printid){
 }
  // 派工送货员
 function change(str1,oid,type,statues,types,saleId){
-	
 	var uid = $("#"+str1).val();
 	var saleid = uuid;
 	   if(type == 4 || type == 5){
@@ -160,7 +159,7 @@ function change(str1,oid,type,statues,types,saleId){
 	        type: "post",   
 	         url: "../server.jsp",    
 	         data:"method=getinventory&types="+types+"&uid="+saleid,
-	         dataType: "",  
+	         dataType: "",   
 	         success: function (data) {  
 	        	    inventory = data;
 	        	    data = data.replace(/{/g, "");

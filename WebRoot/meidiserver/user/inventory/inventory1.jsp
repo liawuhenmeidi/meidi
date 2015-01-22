@@ -229,7 +229,7 @@ function add(){
 
   选择仓库:     
   <select id="branch">  
-  <option value=""></option>
+  <option value=""></option> 
    <%  
        String branchs[] = branchids.split("_"); 
 	   for(int i=0;i<listbranch.size();i++){

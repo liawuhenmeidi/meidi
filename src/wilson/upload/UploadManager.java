@@ -248,7 +248,6 @@ public class UploadManager {
 		Connection conn = DB.getConn();
 		String sql = "update uploadorder set checked = ? where id in (" + uploadOrderIdStrList + ")" ;
 		PreparedStatement pstmt = DB.prepare(conn, sql);
-		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
 
 			pstmt.setInt(1,UploadOrder.COMFIRMED);
@@ -813,7 +812,7 @@ public class UploadManager {
 		if(upt != null){
 		   message = upt.getCategoryname();
 		}
-		
+//int count = 0 ;		
 		
 		Map<String, HashMap<String, UploadTotal>> maps = UploadManager.getTotalOrdersShop(id,totaltype,checked);
 		Set<Map.Entry<String, HashMap<String, UploadTotal>>> setmap = maps.entrySet();
@@ -826,7 +825,7 @@ public class UploadManager {
 			while(itmaptype.hasNext()){
 				Map.Entry<String, UploadTotal> enmaptype = itmaptype.next();
 				UploadTotal up = enmaptype.getValue();
-				
+//count += up.getCount();		
 				String tpe = ""; 
 				if(null != mapus){
 					UploadSalaryModel ups = mapus.get(StringUtill.getStringNocn(up.getType()));
@@ -862,7 +861,7 @@ public class UploadManager {
 				list.add(up);			
 			}
 		}
-		
+//logger.info(count); 		
 		return map;
 		
 		
@@ -891,6 +890,7 @@ public class UploadManager {
 			while(itmaptype.hasNext()){
 				Map.Entry<String, UploadTotal> enmaptype = itmaptype.next();
 				UploadTotal up = enmaptype.getValue();
+int count = 0 ;
 				String tpe = ""; 
 				if(null != mapus){
 					UploadSalaryModel ups = mapus.get(StringUtill.getStringNocn(tp));
@@ -930,11 +930,10 @@ public class UploadManager {
 		return map;
 		
 		
-	}
+	} 
 	 
 	public static Map<String, HashMap<String, UploadTotal>> getTotalOrdersShop(String id,int totaltype,String checked){
 		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id,checked);
-		//logger.info(list.size());
 		//Map<String,UploadSalaryModel> listSM = getSalaryModelsAll();  
 		Map<String, HashMap<String, UploadTotal>> map = new HashMap<String,HashMap<String,UploadTotal>>();
 		if(null != list && list.size() >0){
@@ -960,7 +959,7 @@ public class UploadManager {
 					upt.setType(relatype);
 					upt.setTotalcount(up.getSalePrice());
 					upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
-					branchname.put(up.getType(),upt);
+					branchname.put(relatype,upt); 
 				}else {
 					upt.setCount(upt.getCount()+up.getNum());
 					upt.setTotalcount(upt.getTotalcount()+up.getSalePrice());  
@@ -1030,9 +1029,9 @@ public class UploadManager {
 				HashMap<String, UploadTotal> branchname= map.get(relatype);
 				if(null == branchname){
 					branchname = new HashMap<String, UploadTotal>();
-					map.put(up.getType(), branchname);
+					map.put(relatype, branchname);
 				}
-				
+				 
 				UploadTotal upt = branchname.get(up.getShop());
 				if(null == upt){
 					upt = new UploadTotal();
@@ -1064,13 +1063,13 @@ public class UploadManager {
 		}
 		
 		HashMap<String, UploadTotal> maptypeinit = UploadManager.getTotalOrders(id,"type",totaltype,checked);
-		
+
 		Set<Map.Entry<String, UploadTotal>> setmaiinit = maptypeinit.entrySet();
 		Iterator<Map.Entry<String, UploadTotal>> itmapinit = setmaiinit.iterator();
 		while(itmapinit.hasNext()){
 			Map.Entry<String, UploadTotal> en = itmapinit.next();
 			UploadTotal up = en.getValue();
-			
+
 			String tpe = ""; 
 			if(null != mapus){
 				UploadSalaryModel ups = mapus.get(StringUtill.getStringNocn(up.getType()));
@@ -1082,7 +1081,7 @@ public class UploadManager {
 			if(!StringUtill.isNull(message)){
 				JSONObject jsObj = JSONObject.fromObject(message);
 				Iterator<String> it = jsObj.keys();
-				 
+				  
 				while(it.hasNext()){  
 					String types = it.next();
 					if(types.contains(tpe)){
@@ -1099,15 +1098,13 @@ public class UploadManager {
 			list.add(up);		
 			
 		}
-		
-		
-		
+			
 		
 		return map;
 	}
 	
 	public static HashMap<String, UploadTotal> getTotalOrders(String id,String type,int totaltype,String checked){
-		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id,checked); 
+		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id,checked);
 		HashMap<String, UploadTotal> map = new HashMap<String,UploadTotal>(); 
 		if(null != list && list.size() >0){
 			for(int i=0;i<list.size();i++){
@@ -1118,24 +1115,32 @@ public class UploadManager {
 			    }else if(BasicUtill.send == totaltype){
 			    	relatype = up.getTypeForCalc();
 			    }
-				UploadTotal upt = map.get(relatype);
-				if(null == upt){
-					upt = new UploadTotal(); 
-					upt.setBranchname(up.getShop());
-					upt.setCount(up.getNum());
-					upt.setName(up.getName());
-					upt.setType(relatype);
-					upt.setTotalcount(up.getSalePrice());
-					upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
-					map.put(up.getType(),upt); 
-				}else {
-					upt.setCount(upt.getCount()+up.getNum());
-					upt.setTotalcount(upt.getTotalcount()+up.getSalePrice());
-					upt.setTatalbreakcount(upt.getTatalbreakcount()+up.getSalePrice()*(1-up.getBackPoint()/100));
-				}
+			    String[] types = relatype.split(",");
+			    
+			    for(int j=0;j<types.length;j++){
+			    	String typesend = types[j]; 
+			    	
+			    	UploadTotal upt = map.get(relatype);
+					if(null == upt){
+						upt = new UploadTotal(); 
+						upt.setBranchname(up.getShop());
+						upt.setCount(up.getNum());
+						upt.setName(up.getName());
+						upt.setType(relatype); 
+						upt.setTotalcount(up.getSalePrice());
+						upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
+						map.put(relatype,upt); 
+					}else {
+						upt.setCount(upt.getCount()+up.getNum());
+						upt.setTotalcount(upt.getTotalcount()+up.getSalePrice());
+						upt.setTatalbreakcount(upt.getTatalbreakcount()+up.getSalePrice()*(1-up.getBackPoint()/100));
+					}
+			    }
+				
 				
 			}
 		}
+		
 		return map;
 	}
 	

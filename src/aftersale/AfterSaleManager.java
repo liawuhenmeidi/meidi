@@ -22,6 +22,7 @@ import category.CategoryService;
 import database.DB;
 
 import user.User;
+import user.UserService;
 import utill.DBUtill;
 
 public class AfterSaleManager {
@@ -30,18 +31,17 @@ public class AfterSaleManager {
    public static boolean save(User user ,AfterSale as){
 	   boolean flag = false ;
 	   List<String> list = new ArrayList<String>();
-	   logger.info(as.getId());
 	   String sql = "";
 	   if(as.getId() != 0 ){
 		   String sqld = "delete from mdaftersale where id = "+ as.getId();
 		   list.add(sqld);
-		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime) " +
-			   		"values ("+as.getId()+","+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"') ;" ;
+		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime,submitid) " +
+			   		"values ("+as.getId()+","+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"',"+as.getSubmitId()+") ;" ;
 	   }else {
-		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime) " +
-			   		"values (null,"+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"') ;" ;
+		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime,submitid) " +
+			   		"values (null,"+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"',"+as.getSubmitId()+") ;" ;
 	   }
-	    
+	     
 	   list.add(sql);
 	   flag = DBUtill.sava(list);
 	   
@@ -56,11 +56,11 @@ public class AfterSaleManager {
 	   if(as.getId() != 0 ){
 		   String sqld = "delete from mdaftersale where id = "+ as.getId();
 		   list.add(sqld);
-		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime) " +
-			   		"values ("+as.getId()+","+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"') ;" ;
+		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime,submitid) " +
+			   		"values ("+as.getId()+","+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"',"+as.getSubmitId()+") ;" ;
 	   }else {
-		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime) " +
-			   		"values (null,"+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"') ;" ;
+		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime,submitid) " +
+			   		"values (null,"+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"',"+as.getSubmitId()+") ;" ;
 	   }
 	   
 	   list.add(sql);
@@ -166,13 +166,16 @@ public class AfterSaleManager {
 			p.setPhone(rs.getString("phone"));
 			p.setSaledate(rs.getString("saledate"));
 			int tid = rs.getInt("tid");
-			p.setTid(tid);   
+			p.setTid(tid);    
 			p.settName(ProductService.getIDmap().get(tid).getType());
 			p.setUname(rs.getString("uname"));  
 			p.setPrintid(rs.getString("printid"));
 			p.setDetail(rs.getString("detail"));
-			p.setType(rs.getInt("type"));
-		} catch (SQLException e) {  
+			p.setType(rs.getInt("type")); 
+			p.setPcount(rs.getInt("pcount")); 
+			int submitId = rs.getInt("submitId"); 
+			p.setSubmitId(submitId);
+		} catch (SQLException e) {   
 			e.printStackTrace();
 		} 
 		return p;  

@@ -67,8 +67,8 @@ public class InventoryBranchManager {
 			DB.close(rs);
 			DB.close(stmt);
 			DB.close(conn);
-		} 
-		logger.info(categorys.size());
+		}  
+		//logger.info(categorys.size());
 		return categorys;
 	} 
 	 

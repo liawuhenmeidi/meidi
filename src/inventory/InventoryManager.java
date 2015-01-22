@@ -117,9 +117,9 @@ public class InventoryManager {
 		Connection conn = DB.getConn();    
 		String sql = "";   
 		if("outbranch".equals(method)){  
-			sql = "select * from inventory where  instatues = 1 and  id = " + id;  
-		}else if("inbranch".equals(method)){  
-			sql = "select * from inventory where  outstatues = 1 and id = "+ id; 
+			sql = "select * from inventory where  instatues = 1 and outstatues = 0 and  id = " + id;  
+		}else if("inbranch".equals(method)){   
+			sql = "select * from inventory where  outstatues = 1 and instatues = 0 and id = "+ id; 
 		}
 		 
 		Statement stmt = DB.getStatement(conn);
