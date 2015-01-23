@@ -121,8 +121,8 @@
 	System.out.println("自动对比页面总执行时间(毫秒) = " + (System.currentTimeMillis() - startTime));
 	
 	
-	//下面用到的背景色
-	String backgroundColor ="";
+	//下面用到的背景色(相同POS单号)
+	String backgroundColor ="#B9D3EE";
 	boolean showColor = false;
 	
 	//下面用到的是否check
@@ -132,7 +132,8 @@
 	boolean dbsideDisabled =false;
 	boolean uploadsideDisabled=false;
 	
-	String dingmaColor = "#7CCD7C";
+	String dingmaColor = "#FFF68F";
+	String returnColor = "#FF7F50";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -162,6 +163,7 @@ var jsonmap = '<%=mapjosn%>';
 var checkBoxStatus = '<%=checkBoxStatus%>';
 
 var color_dingma = '<%=dingmaColor%>';
+var color_return = '<%=returnColor%>';
 
 $(function () {
 	initButton();
@@ -169,6 +171,7 @@ $(function () {
 	initPageChange();
 	$('#branchtype').val('<%=selectBranchType%>');
 	initcheck();
+	changeColor();
 });
 
 function initButton(){
@@ -195,50 +198,103 @@ function initPageChange(){
 	});
 }
 
-function transferShopName(){
-	var output = '';
-	var id1col = 16;
-	var id2col = 7;
-	var shop1col = 15;
-	var shop2col = 6;
+function changeColor(){
+	var status_col = 10;
 	if($('#baseTable tr').length > 0){
 		var cols = $('#baseTable tr')[0].cells.length;
 		 $('#baseTable tr').each(function () { 
-			 var checkbox1 = $('#'+ this.cells[cols-id1col].id);
-			 var checkbox2 = $('#'+ this.cells[cols-id2col].id);
-			 var shop1 = $('#'+  this.cells[cols-shop1col].id);
-			 var shop2 = $('#'+  this.cells[cols-shop2col].id);
-			 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked'){
-				output += checkbox2.find("input").val() + "," + shop1.text() + "_";
-				
-				shop2.html("<redtag class='style'>" + shop1.text() + "</redtag>");
+			 var status = $('#'+  this.cells[cols-status_col].id);
+			 if(status.text().indexOf('退')>=0){
+				 status.attr('bgcolor',color_return);
 			 }
-			 
 		 });
 	}
-	$('#transferShop').val(output);
+}
+
+var shop_switch = true;
+var type_switch = true;
+
+function transferShopName(){
+	if(shop_switch){
+		var output = '';
+		var id1col = 16;
+		var id2col = 7;
+		var shop1col = 15;
+		var shop2col = 6;
+		if($('#baseTable tr').length > 0){
+			var cols = $('#baseTable tr')[0].cells.length;
+			 $('#baseTable tr').each(function () { 
+				 var checkbox1 = $('#'+ this.cells[cols-id1col].id);
+				 var checkbox2 = $('#'+ this.cells[cols-id2col].id);
+				 var shop1 = $('#'+  this.cells[cols-shop1col].id);
+				 var shop2 = $('#'+  this.cells[cols-shop2col].id);
+				 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked'){
+					output += checkbox2.find("input").val() + "," + shop1.text() + "_";
+					
+					shop2.attr('bak',shop2.text());
+					shop2.html("<redtag class='style'>" + shop1.text() + "</redtag>");
+				 }
+				 
+			 });
+		}
+		$('#transferShop').val(output);
+		shop_switch = false;
+	}else{	
+		var shop2col = 6;
+		if($('#baseTable tr').length > 0){
+			var cols = $('#baseTable tr')[0].cells.length;
+			 $('#baseTable tr').each(function () { 
+				 var shop2 = $('#'+  this.cells[cols-shop2col].id);
+				 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked'){
+				 	if(shop2.attr('bak') != undefined){
+						shop2.html(shop2.attr('bak'));
+					}
+				 }
+				 
+			 });
+		}
+		$('#transferShop').val('');
+		shop_switch = true;
+	}
+	
 }
 
 function transferType(){
-	var output = '';
-	var id1col = 16;
-	var id2col = 7;
-	var shop2col = 6;
-	if($('#baseTable tr').length > 0){
-		var cols = $('#baseTable tr')[0].cells.length;
-		 $('#baseTable tr').each(function () { 
-			 var checkbox1 = $('#'+ this.cells[cols-id1col].id);
-			 var checkbox2 = $('#'+ this.cells[cols-id2col].id);
-			 var shop2 = $('#'+  this.cells[cols-shop2col].id);
-			 var transType2 = $('#'+  this.cells[cols-transType2col].id);
-			 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked' && shop2.attr('bgcolor') == color_dingma){
-				 output += checkbox2.find("input").val() + "," + checkbox1.find("input").val() + "_";
-				transType2.text(transType2.attr('bak'));
-			 }
-			 
-		 });
+	if(type_switch){
+		var output = '';
+		var id1col = 16;
+		var id2col = 7;
+		var shop2col = 6;
+		var transType2col = 2;
+		if($('#baseTable tr').length > 0){
+			var cols = $('#baseTable tr')[0].cells.length;
+			 $('#baseTable tr').each(function () { 
+				 var checkbox1 = $('#'+ this.cells[cols-id1col].id);
+				 var checkbox2 = $('#'+ this.cells[cols-id2col].id);
+				 var shop2 = $('#'+  this.cells[cols-shop2col].id);
+				 var transType2 = $('#'+  this.cells[cols-transType2col].id);
+				 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked' && shop2.attr('bgcolor') == color_dingma){
+					 output += checkbox2.find("input").val() + "," + checkbox1.find("input").val() + "_";
+					transType2.text(transType2.attr('bak'));
+				 }
+				 
+			 });
+		}
+		$('#transferType').val(output);
+		type_switch = false;
+	}else{
+		var transType2col = 2 ; 
+		if($('#baseTable tr').length > 0){
+			var cols = $('#baseTable tr')[0].cells.length;
+			 $('#baseTable tr').each(function () { 
+				var transType2 = $('#'+  this.cells[cols-transType2col].id);
+				transType2.text('');
+			 });
+		}
+		$('#transferType').val('');
+		type_switch = true;
 	}
-	$('#transferType').val(output);
+	
 }
 
 function initCheckBox(){
@@ -549,10 +605,10 @@ function baseFormSubmit(){
 		for(int i = 0 ; i < afterMatchOrders.size();i++	){
 			
 			showColor = false;
-			backgroundColor ="#B9D3EE";
 			isChecked = false;
 			dbsideDisabled =false;
 			uploadsideDisabled=false;
+			
 			if(afterMatchOrders.get(i).getUploadSideOrderId() == MatchOrder.SAME_POS_ID){
 				showColor = true;
 			}	
@@ -571,6 +627,11 @@ function baseFormSubmit(){
 				showColor = true;
 			}
 			
+			String dbdelivery_status = "";
+			if(!dbsideDisabled){
+				dbdelivery_status = OrderManager.getDeliveryStatues(afterMatchOrders.get(i).getDBOrder());
+			}
+			
 		%>
 		<tr>
 			<td align="center" id="<%=afterMatchOrders.get(i).getDBOrder().getId()%>db"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(true) {%>disabled="disabled"<% }%> name="dbside"  type="checkbox" value="<%=afterMatchOrders.get(i).getDBOrder().getId() %>" onclick="initleftcount(this)" /></td>
@@ -579,7 +640,7 @@ function baseFormSubmit(){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbsaletime"><%= afterMatchOrders.get(i).getDBSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbtype"><%= afterMatchOrders.get(i).getDBSideType() %></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbcount"><%= afterMatchOrders.get(i).getDBSideCount() %></td> 
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbstatus"><%= dbsideDisabled?"":OrderManager.getDeliveryStatues(afterMatchOrders.get(i).getDBOrder()) %></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbstatus"><%= dbdelivery_status %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getDBOrder().getId() %>dbfilename"><%= dbsideDisabled?"":((StringUtill.isNull(afterMatchOrders.get(i).getDBOrder().getStatuesCharge())?"否":afterMatchOrders.get(i).getDBOrder().getStatuesCharge())) %></td>
 			<td align="center" id=""><%=inter++ %></td> 
 			<td align="center" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(uploadsideDisabled) {%>disabled="disabled"<% }%> name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>" onclick="initrightcount(this)"/></td>		
