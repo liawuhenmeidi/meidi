@@ -70,7 +70,14 @@ public class XLSReader {
 				}
 				uo.setName(name);
 				uo.setShop(sheet0.getCell(SHOP_POS,i).getContents().trim());
-				uo.setPosNo(sheet0.getCell(POSNO_POS,i).getContents().trim());
+				
+				String tempPos = sheet0.getCell(POSNO_POS,i).getContents().trim();
+				if(tempPos.equals("")){
+					uo.setPosNo("0");
+				}else{
+					uo.setPosNo(tempPos);
+				}
+				
 				
 				String tmpDate = sheet0.getCell(SALETIME_POS,i).getContents().replace("-", "").replace("/", "").trim();
 				if(tmpDate.length() == 7){
