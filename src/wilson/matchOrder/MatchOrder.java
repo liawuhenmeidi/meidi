@@ -108,6 +108,7 @@ public class MatchOrder {
 			}else{
 				unMatchedUploadOrders = uploadOrders;
 				unMatchedDBOrders = dbOrders;
+				samePosDBOrders = getSamePosDBOrdersList(unMatchedDBOrders);
 				matchOrder(unMatchedUploadOrders,unMatchedDBOrders,matchPara);
 				flag = true;
 			}
@@ -291,6 +292,10 @@ public class MatchOrder {
 
 				for(int j = 0 ; j < unCheckedDBOrders.size() ; j ++){	
 					Order tempDBO = unCheckedDBOrders.get(j);
+					
+//					if(tempDBO.getPos().equals("D02033018") && tempUo.getPosNo().equals("D02033018")){
+//						System.out.println("1");
+//					}
 					
 					if(tempUo.getPosNo().toUpperCase().trim().equals(tempDBO.getPos().toUpperCase().trim())){
 						
