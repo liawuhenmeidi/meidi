@@ -5,8 +5,10 @@ import group.Group;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -18,6 +20,8 @@ import org.apache.commons.logging.LogFactory;
 
 import aftersale.AfterSale;
 import aftersale.AfterSaleManager;
+import aftersale.AftersaleAll;
+import aftersale.AftersaleAllManager;
 
 import order.Order;
 import order.OrderManager;
@@ -48,15 +52,13 @@ public class OrderServiceServlet extends HttpServlet {
 		
 		if("GETLIST".equals(method)){
 			String statues = request.getParameter("statues");
-			if((""+Order.aftersale).equals(statues)){
+			if((""+Order.aftersale).equals(statues) || (""+Order.aftersalesearch).equals(statues) || (""+Order.aftersalesecond).equals(statues)  || (""+Order.aftersaledeal).equals(statues) ){
 				GEtListaf(request,response);
-			}else if((""+Order.aftersalesearch).equals(statues)){
-				GEtListaf(request,response);
-			}else{
+			}else{ 
 				GEtList(request,response);
 			}
 			
-		}
+		} 
 	}
 
     private void GEtList(HttpServletRequest request, HttpServletResponse response){
@@ -120,7 +122,7 @@ public class OrderServiceServlet extends HttpServlet {
     			html = OrderService.getHtmlgo(user,list); 
     		}else if(Integer.valueOf(statues) == Order.charge){ 
     			html = OrderService.getHtmlcharge(user,list); 
-    		}    
+    		}     
     	}else if(Integer.valueOf(type) == Group.sencondDealsend){
     		if(Integer.valueOf(statues) == Order.orderDispatching){
     			html = OrderService.getHtmlSecondorderDispatching(user,list);
@@ -176,20 +178,23 @@ public class OrderServiceServlet extends HttpServlet {
     	String num = request.getParameter("num");
     	String page = request.getParameter("page");
     	String sort = request.getParameter("sort");
-    	//String search = request.getParameter("searched");
+    	
     	String sear = "";
-    	//if(!StringUtill.isNull(search)){ 
-    	//	sear = HttpRequestUtill.getSearch(request);
-    	//}
-    	 
-    	List<AfterSale> list = new  ArrayList<AfterSale>(); 
-    	int count = 0 ; 
     	
-    	  
-    	list = AfterSaleManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
+    	List<AftersaleAll> list = new  ArrayList<AftersaleAll>(); 
+    	int count = 0 ;  
+    	   
+    	list = AftersaleAllManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
 	    //count = OrderManager.getOrderlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
-    	
-    	
+    	Map<Integer,AftersaleAll> maps = AftersaleAllManager.getAftersaleAllMap(list);
+    	list = new ArrayList<AftersaleAll>();
+    	Set<Map.Entry<Integer,AftersaleAll>> mapentset = maps.entrySet(); 
+    	Iterator<Map.Entry<Integer,AftersaleAll>> mapit = mapentset.iterator();
+    	while(mapit.hasNext()){
+    		Map.Entry<Integer,AftersaleAll> mapent = mapit.next();
+    		AftersaleAll af = mapent.getValue();
+    		list.add(af);    
+    	} 
     	String html = "";
     	String date = "";
     	   

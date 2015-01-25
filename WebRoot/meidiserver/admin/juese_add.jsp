@@ -65,6 +65,7 @@ if("add".equals(action)){
 
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+ 
 <script type="text/javascript">
 
 $(function () {
@@ -273,7 +274,12 @@ $(function () {
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >导购提成</td><td width=25% >可对比提交<input type="checkbox" value="31-w" name = "permission" id="p31-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="31-r" name = "permission" id="p31-r" /></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装网点结款标准:</td><td width=25% >可操作<input type="checkbox" value="32-w" name = "permission" id="p32-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="32-r" name = "permission" id="p32-r" /></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装网点结款:</td><td width=25% >计算和确认<input type="checkbox" value="30-w" name = "permission" id="p30-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="30-r" name = "permission" id="p30-r" /></td></tr> 
-        	 
+        	
+        <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>售后服务类权限</td><td></td></tr></table></td></tr> 
+          
+        <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装单:</td><td width=25% >可上报<input type="checkbox" value="35-w" name = "permission" id="p35-w" /></td><td width=25% >可确认上报<input type="checkbox" value="35-q" name = "permission" id="p35-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="35-r" name = "permission" id="p35-r" /></td></tr> 
+   
+    
         	 <% 
          }else if(type == Group.sencondDealsend && null != map){ 
         	listg = map.get(2+"");
@@ -290,6 +296,11 @@ $(function () {
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >调货单权限:</td><td width=25% ></td><td width=25% >可确认<input type="checkbox" value="13-q" name = "permission" id="p13-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="13-r" name = "permission" id="p13-r" /></td></tr>	 	 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >库存权限:</td><td width=25% ></td><td width=25% ></td><td width=25% >可查询<input type="checkbox" value="12-r" name = "permission" id="p12-r" /></td></tr>	 	 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >预约调货权限:</td><td width=25% >可提交<input type="checkbox" value="28-w" name = "permission" id="p28-w" /></td><td width=25% >可确认<input type="checkbox" value="28-q" name = "permission" id="p28-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="28-r" name = "permission" id="p28-r" /></td></tr>	 	 
+        
+        <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>售后服务类权限</td><td></td></tr></table></td></tr> 
+          
+        <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装单:</td><td width=25% >可上报<input type="checkbox" value="35-w" name = "permission" id="p35-w" /></td><td width=25% >可确认上报<input type="checkbox" value="35-q" name = "permission" id="p35-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="35-r" name = "permission" id="p35-r" /></td></tr> 
+   
         	<%
         	   
          }else if(type == Group.sale && null != map){
@@ -331,7 +342,7 @@ $(function () {
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >厂送票已销:</td><td width=25% >可确认<input type="checkbox" value="22-w" name = "permission" id="p22-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="22-r" name = "permission" id="p22-r" /></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >厂送票已结款:</td><td width=25% >可确认<input type="checkbox" value="23-w" name = "permission" id="p23-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="23-r" name = "permission" id="p23-r" /></td></tr> 
         
-        
+         
         <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>库存类权限</td><td></td></tr></table></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >调货单权限:</td><td width=25% >可提交<input type="checkbox" value="13-w" name = "permission" id="p13-w" /></td><td width=25% >可确认<input type="checkbox" value="13-q" name = "permission" id="p13-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="13-r" name = "permission" id="p13-r" /></td></tr>	 	 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >库存权限:</td><td width=25% ></td><td width=25% ></td><td width=25% >可查询<input type="checkbox" value="12-r" name = "permission" id="p12-r" /></td></tr>	 	 
@@ -339,7 +350,7 @@ $(function () {
        
         
         <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>公司文员类权限</td><td></td></tr></table></td></tr> 
-        
+          
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >系统对比单:</td><td width=25% >可上传<input type="checkbox" value="24-w" name = "permission" id="p24-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="24-r" name = "permission" id="p24-r" /></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >提成标准:</td><td width=25% >可上传<input type="checkbox" value="25-w" name = "permission" id="p25-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="25-r" name = "permission" id="p25-r" /></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >销售单:</td><td width=25% >可上传<input type="checkbox" value="26-w" name = "permission" id="p26-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="26-r" name = "permission" id="p26-r" /></td></tr> 
@@ -347,7 +358,14 @@ $(function () {
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >导购提成</td><td width=25% >可对比提交<input type="checkbox" value="31-w" name = "permission" id="p31-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="31-r" name = "permission" id="p31-r" /></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装网点结款标准:</td><td width=25% >可操作<input type="checkbox" value="32-w" name = "permission" id="p32-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="32-r" name = "permission" id="p32-r" /></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装网点结款:</td><td width=25% >计算和确认<input type="checkbox" value="30-w" name = "permission" id="p30-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="30-r" name = "permission" id="p30-r" /></td></tr> 
-      <%} %>
+    
+         <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>售后服务类权限</td><td></td></tr></table></td></tr> 
+          
+        <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装单:</td><td width=25% >可上报<input type="checkbox" value="35-w" name = "permission" id="p35-w" /></td><td width=25% >可确认上报<input type="checkbox" value="35-q" name = "permission" id="p35-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="35-r" name = "permission" id="p35-r" /></td></tr> 
+        <tr class="asc"  onclick="updateClass(this)"><td width=25% >维修单上报:</td><td width=25% >可上传<input type="checkbox" value="25-w" name = "permission" id="p25-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="25-r" name = "permission" id="p25-r" /></td></tr> 
+        <tr class="asc"  onclick="updateClass(this)"><td width=25% >保养单上报:</td><td width=25% >可上传<input type="checkbox" value="26-w" name = "permission" id="p26-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="26-r" name = "permission" id="p26-r" /></td></tr> 
+                 
+    <%} %>  
      </table>
      </div> 
      <div class="juese_head">添加上级管理组

@@ -35,9 +35,12 @@ function clear(){
    if(UserManager.checkPermissions(user,Group.send)){ 	 
    %>
    <a href="<%=realPath %>songhuo.jsp">送货单</a>  
-   <%
+   <% 
      }
-   %> 
+   %>  
+    
+ 
+    
    <a href="javascript:clear()">退出登陆</a>
   </div>  
 

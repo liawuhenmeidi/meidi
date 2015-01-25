@@ -32,6 +32,7 @@ import utill.BasicUtill;
 import utill.StringUtill;
 
 import aftersale.AfterSale;
+import aftersale.AftersaleAll;
 import branch.BranchService;
 
 public class OrderService {
@@ -3374,10 +3375,10 @@ public class OrderService {
 	}
    
    public static String getHtmlaftersalerepare(User user ,List<Order> list){
-	   	List<AfterSale> listas = new ArrayList<AfterSale>(); 
+	   	List<AftersaleAll> listas = new ArrayList<AftersaleAll>(); 
 	   	HashMap<Integer,Category> categorymap = CategoryService.getmap();
 	   	Map<Integer, Product> pmap = ProductService.getIDmap();
-		String html = "";
+		String html = ""; 
            
 		if(null != list){ 
 			for(int i=0;i<list.size();i++){
@@ -3410,7 +3411,10 @@ public class OrderService {
 							as.setUname(or.getUsername());  
 							as.setSubmitId(or.getDealsendId());  
 							as.setType(AfterSale.typesale);  
-							listas.add(as); 
+							
+							AftersaleAll asa = new AftersaleAll();
+							asa.setAs(as);
+							listas.add(asa); 
 						}
 					}
 				}

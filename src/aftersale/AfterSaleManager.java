@@ -22,8 +22,9 @@ import category.CategoryService;
 import database.DB;
 
 import user.User;
-import user.UserService;
+import user.UserManager;
 import utill.DBUtill;
+import utill.TimeUtill;
 
 public class AfterSaleManager {
 	protected static Log logger = LogFactory.getLog(AfterSaleManager.class);
@@ -49,6 +50,18 @@ public class AfterSaleManager {
 	   
    }
    
+   public static boolean checkePermission(User user ,String id){
+	   boolean flag =  true ;   
+	   AfterSale as =  getAfterSaleID(user ,id); 
+	   if(UserManager.checkPermissions(user, Group.installOrderupload,"w") && as.getStatues() == 1){
+		   flag = false ;
+	   } 
+	  // logger.info(UserManager.checkPermissions(user, Group.installOrderupload,"w"));
+	   //logger.info(as.getStatues() == 1);
+	   //logger.info(flag);
+	   return flag ;
+	   
+   }
    
    public static List<String> getsaveSQL(User user ,AfterSale as){
 	   List<String> list = new ArrayList<String>();
@@ -56,11 +69,11 @@ public class AfterSaleManager {
 	   if(as.getId() != 0 ){
 		   String sqld = "delete from mdaftersale where id = "+ as.getId();
 		   list.add(sqld);
-		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime,submitid) " +
-			   		"values ("+as.getId()+","+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"',"+as.getSubmitId()+") ;" ;
-	   }else {
-		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime,submitid) " +
-			   		"values (null,"+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"',"+as.getSubmitId()+") ;" ;
+		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime,submitid,statues,statuestime) " +
+			   		"values ("+as.getId()+","+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"',"+as.getSubmitId()+","+as.getStatues()+","+as.getStatuestime()+") ;" ;
+	   }else {  
+		   sql = "insert into mdaftersale (id,tid,printid,cid,pcount,uname,phone,batchnumber,barcode,location,branch,type,andate,saledate,detail,submittime,submitid,statues,statuestime) " + 
+			   		"values (null,"+as.getTid()+",'"+as.getPrintid()+"','"+as.getCid()+"','"+as.getPcount()+"','"+as.getUname()+"','"+as.getPhone()+"','"+as.getBatchNumber()+"','"+as.getBarcode()+"','"+as.getLocation()+"','"+as.getBranch()+"','"+as.getType()+"','"+as.getAndate()+"','"+as.getSaledate()+"','"+as.getDetail()+"','"+as.getSubmitTime()+"',"+as.getSubmitId()+","+as.getStatues()+","+as.getStatuestime()+") ;" ;
 	   }
 	   
 	   list.add(sql);
@@ -71,10 +84,10 @@ public class AfterSaleManager {
    }
    
 
-   public static  String getupdateIsSubmitsql(String ids,String statues){
+   public static  String getupdateIsSubmitsql(String ids,String statues){ 
 	   
-	    String sql = " update mdaftersale set statues = "+statues+" where id in ("+ ids+")";
-		return sql;
+	    String sql = " update mdaftersale set statues = "+statues+" , statuestime = '"+TimeUtill.getdateString()+"' where id in ("+ ids+")";
+		return sql; 
 }
    
    public static  AfterSale getAfterSaleID(User user ,String id){
@@ -86,9 +99,9 @@ public class AfterSaleManager {
 	       Statement stmt = DB.getStatement(conn);
 	      
 		   ResultSet rs = DB.getResultSet(stmt, sql); 
-				try { 
+				try {  
 					while (rs.next()) {
-						af = gerAfterSaleFromRs(rs);
+						af = getAfterSaleFromRs(rs);
 					} 
 				} catch (SQLException e) { 
 					e.printStackTrace();
@@ -100,7 +113,7 @@ public class AfterSaleManager {
 				return af; 
 		 }
 
-   
+    
    public static List<AfterSale> getOrderlist(User user ,int type,int statues ,int num,int page,String sort,String search){
 	      
 		 // boolean flagSearch = UserManager.checkPermissions(user, type,"r");
@@ -115,14 +128,27 @@ public class AfterSaleManager {
 		  String sql = "";    
 		  
 		  //logger.info(f); 
-        
+		  String sqlstr = " 1 = 1 and (mdaftersale.submitid in (select id from mduser where mduser.usertype in (select groupid from mdrelategroup where pgroupid = "+user.getUsertype()+")) or  submitid = "+ user.getId() +")";
+		  
+		  
 		 if(Group.aftersalerepare == type){ 
-			   if(Order.aftersale == statues){ 
-				   sql = "select * from mdaftersale where statues = 0 "+search+"  order by "+sort+str;
+			   if(Order.aftersale == statues){
+				   if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
+					   sql = "select * from mdaftersale where  statues in (0,2)  and "+sqlstr + search+"  order by "+sort+str;
+				   }else if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){
+					   sql = "select * from mdaftersale where statues in (0,2)  and submitid = "+ user.getId() +" "+search+"  order by "+sort+str;
+				   }
+  
 			   }else if(Order.aftersalesearch == statues){
-				   sql = "select * from mdaftersale where 1 =1  "+search+"  order by "+sort+str;
+				   if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
+					   sql = "select * from mdaftersale where   "+sqlstr + search+"  order by "+sort+str;
+				   }else if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){
+					   sql = "select * from mdaftersale where 1 =1  and submitid = "+ user.getId() +" "+search+"  order by "+sort+str;
+				   }  
+			   }else if(Order.aftersalesecond == statues){  
+				       sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = "+ user.getId() +"  and  mdaftersaleproduct.asid = mdaftersale.id "+search+"  order by "+sort+str;
 			   } 
-		   }                    
+		   }                     
 		    
 		  if("".equals(sql)){
 			   return null;  
@@ -134,7 +160,7 @@ public class AfterSaleManager {
 		   ResultSet rs = DB.getResultSet(stmt, sql); 
 				try { 
 					while (rs.next()) {
-						AfterSale p = gerAfterSaleFromRs(rs);
+						AfterSale p = getAfterSaleFromRs(rs);
 						AfterSales.add(p);
 					} 
 				} catch (SQLException e) { 
@@ -147,7 +173,29 @@ public class AfterSaleManager {
 				return AfterSales; 
 		 }
    
-   public static AfterSale gerAfterSaleFromRs(ResultSet rs){
+   public static int getMaxid(){
+	    int id = 1 ;
+	    Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn);
+		String  sql = "select max(id)+1 as id from mdaftersale" ;
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while (rs.next()) {
+				id = rs.getInt("id");
+				logger.info(id);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(stmt);
+			DB.close(rs);
+			DB.close(conn);
+		 }
+		return id;
+
+  }
+   
+   public static AfterSale getAfterSaleFromRs(ResultSet rs){
 	   AfterSale p = null;
 		try { 
 			p = new AfterSale();
@@ -174,7 +222,9 @@ public class AfterSaleManager {
 			p.setType(rs.getInt("type")); 
 			p.setPcount(rs.getInt("pcount")); 
 			int submitId = rs.getInt("submitId"); 
-			p.setSubmitId(submitId);
+			p.setSubmitId(submitId);   
+			p.setStatuestime(rs.getString("statuestime"));
+		    p.setStatues(rs.getInt("statues"));   
 		} catch (SQLException e) {   
 			e.printStackTrace();
 		} 

@@ -1,7 +1,11 @@
 <%@ page language="java"  pageEncoding="UTF-8" import="aftersale.*" contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>  
 <%  
-     
+List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend); //UserService.getsencondDealsend(user);
+    
+List<Category> listall = CategoryService.getList();
+String clistall = StringUtill.GetJson(listall);
+
 List<Category> list = CategoryManager.getCategory(user,Category.sale); 
 String clist = StringUtill.GetJson(list);
  
@@ -10,20 +14,18 @@ HashMap<String,ArrayList<String>> listt = ProductService.gettypeName();
 String plist = StringUtill.GetJson(listt);
 
 String id = request.getParameter("id");
-
-
+String statues = request.getParameter("statues"); 
+//System.out.println(id);
 AfterSale af = null ; 
-String strorder= null; 
+String strorder= null;   
  
-if(!StringUtill.isNull(id)){   
-	af = AfterSaleManager.getAfterSaleID(user, id);
-	System.out.println(StringUtill.GetJson(af));
+if(!StringUtill.isNull(id)){  
+	af = AfterSaleManager.getAfterSaleID(user,id);
 	strorder = StringUtill.GetJson(af); 
+}   
 
-}
- 
 %> 
-   
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,8 +66,9 @@ if(!StringUtill.isNull(id)){
    
    var order = <%=strorder%>;
 
-   
-   
+   var row = 1;  
+   var rows = new Array();
+    
    $(document).ready(function(){
 	//initphone();
 	init();   
@@ -78,7 +81,7 @@ if(!StringUtill.isNull(id)){
 	   if(order != null && order != "" && order != "null"){
 		   $("#uname").val(order.uname);
 		   $("#phone").val(order.phone); 
-		   
+
 		   $("select[id='ordercategory'] option[id='"+order.cid+"']").attr("selected","selected");
 		   
 		   $("#ordercategory").attr("disabled","disabled");
@@ -91,13 +94,13 @@ if(!StringUtill.isNull(id)){
 		   $("#orderbatchNumber").val(order.batchNumber);
 		   $("#orderbarcode").val(order.barcode);
 		   
-		   $("#andate").val(order.andate);
-		   $("#saledate").val(order.saledate);
+		   $("#andate").val(order.andate); 
+		   $("#saledate").val(order.saledate); 
 		   $("#locations").val(order.location);
 		   $("#detail").val(order.detail);
 		   
-		   
-	   }
+
+	   } 
    }
     
    
@@ -116,42 +119,47 @@ if(!StringUtill.isNull(id)){
        } 
 
     
- function initphone(){ 
-	   $("#phone1").focus(function(){
-		    $("#phone1").css("background-color","#FFFFCC");
-		  });
-		  $("#phone1").blur(function(){
-		    $("#phone1").css("background-color","#D6D6FF");
-		    var phone1 = $("#phone1").val(); 
-		    //alert(phone1);
-		    $.ajax({ 
-		        type:"post",  
-		         url:"server.jsp",  
-		         //data:"method=list_pic&page="+pageCount,
-		         data:"method=phone1&name="+phone1+"&branch=<%=user.getBranch()%>",
-		         dataType: "",  
-		         success: function (data) {
-		        	 if("true" == data){ 
-		        		 var question = confirm("顾客电话相同单据有可能录重，是否继续?");	
-		        			if (question == "0"){
-		        				//$("#phone1").val("");
-		        				//$("#phone1").focus(); 
-		        				window.location.href="order.jsp";
-		        				return false ;
-		        			}else {   
-		        				$("#phoneremark").val("1"); 
-		        			}  
-		        	 }else {
-		        		 $("#phoneremark").val("0"); 
-		        	 }  
-		           },   
-		          error: function (XMLHttpRequest, textStatus, errorThrown) { 
-		        	  return false ;
-		            } 
-		           });  
-		  });  
-  }
  
+   function addrow(listo){
+		
+	    rows.push(row);
+		var yellow = "";
+		if(row%2 == 0){
+			yellow = "#c4e1e1"; 
+		} 
+		     
+		var str =  '<tr id=produc'+row+ '>' +
+	               '<td>维修类别<span style="color:red">*</span></td>'+
+	               '<td ><input type="hidden" name="product" value="'+row+'"/>'+
+	               '<select class = "category" name="ordercategory'+row+'"  id="ordercategory'+row+'"  style="width:95% ">'; 
+	               for(var i=0;i<json.length;i++){
+	            	   var ckeck = "";
+	            	   var jo = json[i];  
+	            	   if(jo.id == listo.categoryId){
+	            		   str += '<option value='+jo.id+'  selected="selected" >'+jo.name+'</option>';
+	            	   }else {
+	            		   str += '<option value='+jo.id+'>'+jo.name+'</option>'; 
+	            	   }
+
+	               }
+	               str += '</select> '+
+	               ' </td>'+ 
+	               ' <td >送货型号<span style="color:red">*</span></td> '+
+	               ' <td  ><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="" style="width:90% " /></td> ' +
+	          	   ' <td  ><input type="button"   style="color:white;background-color:#0080FF" name="" value="删除" onclick="deletes(produc'+row+','+row+')"/></td>'+
+	          	   '</tr>';
+	                 
+	        $("#tableproduct").append(str); 
+	        initproductSerch("#ordercategory"+row,"#ordertype"+row);
+	        row++;  
+	        } 
+	 
+	 function deletes(str,str2){
+	 	$(str).empty();
+		    rows.splice($.inArray(str2,rows),1);
+	  } 
+	 
+   
  function checkedd(){
      
 	 var uname = $("#uname").val();
@@ -166,8 +174,7 @@ if(!StringUtill.isNull(id)){
 	 var saledate = $("#saledate").val();
 	 
 	 var locations = $("#locations").val();
-	 
-	 
+	 var nexttime = $("#nexttime").val(); 
 	 
 	 if(uname == "" || uname == null || uname == "null"){
 		 alert("顾客姓名不能为空");
@@ -234,10 +241,46 @@ if(!StringUtill.isNull(id)){
 	 if(locations == "" || locations == null || locations == "null"){
 		 alert("详细地址不能为空");
 		 return false;
-	 }
+	 } 
+	   
+	 if(rows.length <1){
+			alert("请添加保养项目");
+			return false ; 
+		 }else {
+			 for(var i=0;i<rows.length;i++){
+				 var str = $("#ordertype"+rows[i]).val();
+				 var juese = $("#ordercategory"+rows[i]).val();
+				 if(str == "" || str == null || str == "null"){
+					 alert("送货型号不能为空");
+					 return false; 
+				 }else {
+					 var flag = true ;
+			         	  var array = jsons[juese];
+			         	  //alert(array);
+			         	  if(array != "" && array != null &&  array != "null" && array != undefined && array != "undefined"){
+				         	   for(var k=0;k<array.length;k++){
+
+				         		   if(str == array[k]){
+				         			   flag = false  ;
+				         		   }
+				         	   }
+				         	   }
+					 if(flag){
+						 alert("系统不存在此型号"+str);
+						 return false ;
+					 }
+				 }
+		 }
+	}
 	 
+	 
+	 if(nexttime == "" || nexttime == null || nexttime == "null"){
+		 alert("下次保养时间不能为空");
+		 return false;
+	 }  
 	 
 	 $("#submit").css("display","none"); 
+	 window.opener.location.reload();
 	 return true ; 
  }
  
@@ -254,14 +297,16 @@ if(!StringUtill.isNull(id)){
   </div>
 
 <div style="height:70px;">
-</div>
+</div> 
   
 <form action="../../user/OrderServlet"  method ="post"  id="form"   onsubmit="return checkedd()"  > 
 <!--  头 单种类  -->   
-
-<input type="hidden" name="orderid" value="<%=id %>"/>
+  
+<input type="hidden" name="orderid" value="<%=id %>"/> 
 <input type="hidden" name="method" value="aftersale"/>
+<input type="hidden" name="typemethod" value="maintain"/> 
 <input type="hidden" name="token" value="<%=token%>"/>  
+<input type="hidden" name="statues" value="<%=statues%>"/>  
 
 <div class="s_main_tit">上报单位:<span class="qian"><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %></span></div>  
 <!--  订单详情  -->   
@@ -284,8 +329,8 @@ if(!StringUtill.isNull(id)){
   
    <option></option>
   <% 
-  for(int i=0;i<list.size();i++){
-	  Category cate = list.get(i);
+  for(int i=0;i< listall.size();i++){ 
+	  Category cate =  listall.get(i);
 	 
   %>  
     
@@ -310,8 +355,6 @@ if(!StringUtill.isNull(id)){
    <td><input type="text" name="orderbarcode" id="orderbarcode"   placeholder="必填" /> </td> 
 
    </tr> 
-  
-   
     <tr class="asc"> 
     
     <td  >安装日期<span style="color:red">*</span></td>
@@ -326,22 +369,51 @@ if(!StringUtill.isNull(id)){
     <td ><textarea  id="locations" name="locations" ></textarea></td>  
     <td >备注</td>
     <td ><textarea  id="remark" name="remark" ></textarea></td>
+   </tr>    
+   <tr class="asc">
+     <td colspan=4> 
+     <table id="tableproduct"  style="width:100%">  
+      
+      
+      
+     </table>
+     </td>
+     
+    
+   </tr> 
+     
+     <tr class="dsc" > 
+    <td colspan=4>
+     <input type="button"  name="" style="color:red" value="增加维修配件" onclick="addrow(0)" width="100%"  />
+    </td>
+   </tr>  
    
-   </tr>
-   <% if(!StringUtill.isNull(id) && UserManager.checkPermissions(user, Group.installOrderupload,"q")){
-	   %>
-	   <tr class="asc"> 
-	   <td colspan="2">修改单据状态</td>
-	   <td colspan="2">
-	   <select  name="statues">
-	     <option></option>
-	     <option value="2">美的已拒绝</option>
-	    </select>
-	    </td>
-	  </tr>
-	   <%
-   } %>
+ <tr class="asc"> 
+     <!-- 
+    <td  >保养单位<span style="color:red">*</span></td>
+    <td  >
+    <select  name="uid" id="uid"  >
+  
+   <option></option>
+  <%  
+  for(int i=0;i<listS.size();i++){
+	  User cate = listS.get(i);
+	 
+  %>  
+    
+    <option value="<%= cate.getId()%>" id="<%= cate.getId()%>"><%=cate.getUsername()%></option>
+  <%
+  }
+  %>
    
+  </select> 
+    
+       </td>
+     -->
+    <td  colspan=2>下次保养时间<span style="color:red">*</span></td>
+    <td  colspan=2><input  type="text" name="nexttime" id ="nexttime" onclick="new Calendar().show(this)"   placeholder="必填"  readonly="readonly" ></input>   </td>
+ 
+ </tr>
    <tr class="asc"> 
     <td colspan="4" style="background-color:orange" class="center"><input type="submit"  value="提  交" /></td>
    </tr>
