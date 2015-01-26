@@ -1,12 +1,16 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%@ include file="../searchdynamic.jsp"%>       
- <%  
+ <%   
  if(StringUtill.isNull(statues)){ 
-	 statues = Order.aftersalesearch +"";
+	  // 网点配工  
+	 statues = Order.aftersalesecond +"";
  }
-    
-%>  
+ 
+  
+ String list = StringUtill.GetJson(UserService.getjsuser(listSend )); 
+ 
+%>   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -79,13 +83,8 @@ position:fixed;
 sort= "andate asc";
 var id = "";
 var type = "<%=Group.aftersalerepare%>";
-
-var pgroup = "<%=pgroup%>";
-var opstatues = "<%=opstatues%>"; 
-var usermapstr = <%=usermapstr%> ;
-var inventory = "";  
-
- 
+var listuser = <%=list%>;  
+  
 $(function () { 
 	 fixation();
 	 initOrder(type,statues,num,page,sort,sear);
@@ -95,11 +94,6 @@ function addImage(src){
 	window.open(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 } 
 
-function detail(id){ 
-	winPar=window.open('dingdansubmit.jsp?id='+id, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
-
-
-}
 
 function searchlocate(id){
 	window.open('../adminmap.jsp?id='+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
@@ -109,6 +103,45 @@ function searchlocate(id){
  
 function adddetail(src){ 
 	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+}
+
+function change(str1,afid){
+	var uid = $("#"+str1).val();
+	 
+	if(uid == null || uid == ""){
+		alert("请选择保养人员");
+		return ; 
+	}
+	 
+	question = confirm("您确定要配单吗？\n");
+		 if (question != "0"){ 
+					$.ajax({   
+				        type: "post",     
+				         url: "../../AfterSaleServlet",  
+				         data:"method=dealsend&afid="+afid+"&uid="+uid,
+				         dataType: "",  
+				         success: function (data) { 
+				        	 if(data == 0){
+				        		 alert("导购提交修改申请，不能配工");
+				        		 return ; 
+				        	 }if(data == -1){
+				        		 alert("请刷新页面");
+				        		 return ; 
+				        	 }else if(data == 20){ 
+				        		 alert("导购提交退货申请，不能配工");
+				        		 return ; 
+				        	 }else {   
+				        		 window.location.href="../printPaigong.jsp?id="+oid+"&type="+type;
+				        	 }   
+				        	 
+				           },  
+				         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+				        // alert(errorThrown); 
+				            } 
+				           });
+				        			
+			           } 
+	     
 }
 
 </script>

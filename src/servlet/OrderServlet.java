@@ -19,6 +19,8 @@ import org.apache.commons.logging.LogFactory;
 
 import aftersale.AfterSale;
 import aftersale.AfterSaleManager;
+import aftersale.AfterSaleProduct;
+import aftersale.AfterSaleProductManager;
 
 import category.Category;
 import category.CategoryManager;
@@ -38,6 +40,7 @@ import product.ProductService;
 import user.User;
 import user.UserManager;
 import utill.DBUtill;
+import utill.RemarkUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
 
@@ -510,11 +513,14 @@ public class OrderServlet extends HttpServlet {
     
     private void saveaftersale(HttpServletRequest request, HttpServletResponse response){
     	try{ 
-    	
+    	        boolean flag = true ;
+    	        boolean isreturn = true ;
 	    	      //处理请求，并执行resetToken方法，将session中的token去除
     	        User user  = (User)request.getSession().getAttribute("user");
+    	        String href = "../admin/afterSale/dingdansubmit.jsp";
 		        String oid = request.getParameter("orderid");
-		        
+		        List<String> listas = new ArrayList<String>();  
+		        String typemethod = request.getParameter("typemethod"); 
 		        String uname = request.getParameter("uname");
 		        String phone = request.getParameter("phone");
 		        String cid = request.getParameter("ordercategory");
@@ -525,11 +531,27 @@ public class OrderServlet extends HttpServlet {
 		        String saledate = request.getParameter("saledate");
 		        String location = request.getParameter("locations");
 		        String remark = request.getParameter("remark");
+		        String fault = request.getParameter("fault");
+		        String statues = request.getParameter("statues");
+		        int submitid = user.getId();
+		        String branch = user.getBranch();
+		        int maxid = AfterSaleManager.getMaxid();
+ 
+		        if(!StringUtill.isNull(oid)){
+		        	maxid = Integer.valueOf(oid);
+		        	flag = AfterSaleManager.checkePermission(user, oid);
+		        	AfterSale af= AfterSaleManager.getAfterSaleID(user, oid);
+		        	submitid = af.getSubmitId();
+		        	branch = af.getBranch()+""; 
+		        	isreturn = false ;
+		        	
+		        } 
+		         logger.info(maxid); 
+		         
 		        String submit = TimeUtill.getdateString();
 		        AfterSale af = new AfterSale();
-		        if(!StringUtill.isNull(oid)){
-		        	af.setId(Integer.valueOf(oid));
-		        }
+
+		        af.setId(maxid);
 		        af.setUname(uname);
 		        af.setPhone(phone);
 		        af.setCid(Integer.valueOf(cid));
@@ -539,16 +561,85 @@ public class OrderServlet extends HttpServlet {
 		        af.setBatchNumber(batchNumber);
 		        af.setAndate(andate);
 		        af.setSaledate(saledate);
-		        af.setLocation(location);
+		        af.setLocation(location); 
 		        af.setDetail(remark);
-		        af.setType(AfterSale.typeupdate);
-		        af.setBranch(Integer.valueOf(user.getBranch())); 
-		        af.setPcount(1); 
-		        af.setSubmitTime(submit);
-		        af.setSubmitId(user.getId()); 
-		        AfterSaleManager.save(user, af);  
+		        af.setType(AfterSale.typesale);
+		        af.setBranch(Integer.valueOf(branch)); 
+		        af.setPcount(1);  
+		        af.setSubmitTime(submit); 
+		        af.setSubmitId(submitid); 
+		          
+		        if(!StringUtill.isNull(statues)){ 
+		        	af.setStatues(Integer.valueOf(statues)); 
+		        	af.setStatuestime("'"+TimeUtill.getdateString()+"'");
+		        }
+			    if("fault".equals(typemethod)){ 
+			    	af.setStatues(AfterSale.typeupdate);
+			    	String uid= request.getParameter("uid");
+			    	AfterSaleProduct asp = new AfterSaleProduct();
+			    	asp.setAsid(maxid); 
+		 
+			    	asp.setCause(fault); 
+			    	asp.setType(AfterSaleProduct.fault);
+			    	asp.setDealid(Integer.valueOf(uid)); 
+			    	List<String> listsp = AfterSaleProductManager.getsaveSQL(user, asp);
+			    	listas.addAll(listsp);  
+			    	href = "../admin/afterSale/dingdansubmitfault.jsp";
+				}else if("maintain".equals(typemethod)){
+					
+					String[] producs = request.getParameterValues("product");
+					
+					if(null != producs){
+						af.setStatues(AfterSale.typeupdate);
+				    	String uid= request.getParameter("uid");
+				    	String nexttime = "'"+request.getParameter("nexttime")+"'";
+					    // 送货状态     
+					for(int i=0;i<producs.length;i++){		
+						AfterSaleProduct asp = new AfterSaleProduct();
+						String ccid = request.getParameter("ordercategory"+producs[i]);
+						String ttname = request.getParameter("ordertype"+producs[i]);
+						logger.info(ttname); 
+						int tid = ProductService.gettypemap().get(ttname).getId(); 
+						logger.info(tid); 
+						asp.setAsid(maxid); 
+						logger.info(maxid);     
+				    	asp.setCid(Integer.valueOf(ccid));
+				    	asp.setTid(tid);
+				    	asp.setType(AfterSaleProduct.maintain);
+				    	if(!StringUtill.isNull(uid)){
+				    		asp.setDealid(Integer.valueOf(uid)); 
+				    	} 
+				    	
+				    	asp.setNexttime(nexttime); 
+				    	
+				    	List<String> listsp = AfterSaleProductManager.getsaveSQL(user, asp);
+				    	listas.addAll(listsp);  
+					}
+				}
+					  
+				 href = "../admin/afterSale/dingdansubmitmaintain.jsp";
+				 
+				}
+			    
+			   
+			    List<String> listsql = AfterSaleManager.getsaveSQL(user, af);   
+				listas.addAll(listsql);
+				if(flag){
+					 DBUtill.sava(listas); 
+				}
+			   
 		        try {   
-					response.sendRedirect("../admin/afterSale/dingdansubmit.jsp");
+		        	if(isreturn){
+		        		response.sendRedirect(href);
+		        	} else {
+		        		int mark = -1 ;
+		        		if(flag){
+		        			mark = RemarkUtill.success;
+		        		}else { 
+		        			mark = RemarkUtill.nopermission;
+		        		} 
+		        		response.sendRedirect("../jieguo.jsp?type=update&mark="+mark); 
+		        	}
 				} catch (IOException e) { 
 					e.printStackTrace(); 
 				} 

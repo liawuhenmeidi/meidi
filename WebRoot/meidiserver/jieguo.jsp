@@ -6,7 +6,13 @@
  
  String type = request.getParameter("type");
  String oid = request.getParameter("oid");
- 
+   
+String mark = request.getParameter("mark");
+
+ if(!StringUtill.isNull(mark)){ 
+		resCode = RemarkUtill.getMessage(Integer.valueOf(mark));
+ }
+
  
  // System.out.println("oid"+oid);
 %>

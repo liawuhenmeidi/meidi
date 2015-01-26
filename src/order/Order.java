@@ -55,10 +55,12 @@ public class Order {
  public static int huanhuo = 26 ;
  public static int tuihuo = 27 ;
  public static int repareorderDispatching = 28 ;
- public static int aftersalerepare = 29;
- public static int aftersale = 30; 
- public static int aftersalesearch = 31;
- 
+ public static int aftersalerepare = 29;   // 售后待处理上报美的
+ public static int aftersale = 30;    // 网点上报售后待处理
+ public static int aftersalesearch = 31;  // 查询 
+  
+ public static int aftersalesecond = 32;   // 网点配工
+ public static int aftersaledeal = 33;   // 售后文员配工 
  
  public static int orderpeisong= 1;  
  public static int orderinstall = 2; 

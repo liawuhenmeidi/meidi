@@ -87,6 +87,17 @@
 	    
 	    
 	    <servlet>  
+	        <servlet-name>AfterSaleServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.AfterSaleServlet
+	        </servlet-class>   
+   </servlet>     
+	    <servlet-mapping>     
+	        <servlet-name>AfterSaleServlet</servlet-name>  
+	        <url-pattern>/meidiserver/AfterSaleServlet</url-pattern>  
+	    </servlet-mapping>
+	    
+	    <servlet>  
 	        <servlet-name>LogisticsServlet</servlet-name>  
 	        <servlet-class>  
 	            servlet.LogisticsServlet 
@@ -96,8 +107,6 @@
 	        <servlet-name>LogisticsServlet</servlet-name>  
 	        <url-pattern>/meidiserver/LogisticsServlet</url-pattern>  
 	    </servlet-mapping>
-	    
-	    
 	    
 	    <servlet>  
 	        <servlet-name>OrderServiceServlet</servlet-name>  

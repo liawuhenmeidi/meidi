@@ -4,10 +4,11 @@ import user.User;
 import user.UserService;
 
 public class AfterSale {
-   public static int typeupdate = 1 ;
-   public static int typesale = 0 ;
-   
-   private String printid;
+   public static int typeupdate = 1 ;  // 已上报
+   public static int typesale = 0 ;   // 待上报 
+   public static int typesalecome = 2 ;   // 厂家未通过 
+    
+   private String printid; 
    private int oriedid;
    
    private int id ;
@@ -27,18 +28,52 @@ public class AfterSale {
    private int branch ; 
    private int type;  // 单据类型      0 表示自己销售   1 网点上报
    private String saledate;
-   private String branchName;
+   private String branchName; 
    private String detail ;
+   private int statues;  // 1 已上报  // 0 未上报   2 已拒绝
+   private String statuesName; 
    private String submitTime;
    private int submitId;
    private User submituser;
    private String typeName ;
-   
-   public String getTypeName() {
+   private String statuestime; 
+
+   public String getStatuesName() {
+	   if(typeupdate == statues){
+		   statuesName = "已上报";
+	   }else if(typesale == statues){
+		   statuesName = "未上报"; 
+	   }else if(typesalecome == statues){
+		   statuesName = "被拒绝";
+	   } 
+	return statuesName;
+}
+
+public void setStatuesName(String statuesName) {
+	this.statuesName = statuesName;
+}
+
+public int getStatues() {
+	return statues;
+}
+ 
+public void setStatues(int statues) {
+	this.statues = statues;
+}
+
+public String getStatuestime() {
+	return statuestime;
+}
+
+public void setStatuestime(String statuestime) {
+	this.statuestime = statuestime;
+}
+
+public String getTypeName() {
 	if(type == 0){
-		typeName = "网点上报";
-	}else if(type == 1){
 		typeName = "系统直营";
+	}else if(type == 1){
+		typeName = "网点上报"; 
 	}
 	return typeName;
 }
@@ -48,6 +83,9 @@ public class AfterSale {
    }
 public User getSubmituser() {
 	submituser = UserService.getMapId().get(submitId);
+	if(null == submituser){
+		submituser = new User(); 
+	}
 	return submituser; 
 }
 public void setSubmituser(User submituser) {

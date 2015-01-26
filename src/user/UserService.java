@@ -2,6 +2,7 @@ package user;
 
 import group.Group;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,6 +17,18 @@ public class UserService {
    public static HashMap<String,User>  usermapStr ;
    public static HashMap<String,List<User>>  usermapBranch ;
    
+   public static List<User> getjsuser(List<User> list){
+	   List<User> listn = new ArrayList<User>(); 
+	   if(null != list){
+		   for(int i=0;i<list.size();i++){
+			   User u = new User();
+			   u.setId(list.get(i).getId());
+			   u.setUsername(list.get(i).getUsername());
+			   listn.add(u);
+		   }
+	   } 
+	   return listn;
+   }
   //获取二次配单元（工队）
    public static List<User>  list ;   
     
@@ -53,7 +66,7 @@ public class UserService {
    }
    
 public static  List<User> getsencondDealsend(User user){
-	   if(list == null){ 
+	   if(null == list){ 
 		   list = UserManager.getUsers(user,Group.sencondDealsend);
 	   }
 	    
@@ -61,8 +74,8 @@ public static  List<User> getsencondDealsend(User user){
    }
 
 public static  List<User> getsend(User user){
-	   
-	   if(listsend == null){ 
+	    
+	   if(null == listsend){ 
 		   listsend =UserManager.getUsers(user,Group.send);
 	   }
 	    

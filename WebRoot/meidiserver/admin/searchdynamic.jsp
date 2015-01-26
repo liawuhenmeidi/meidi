@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,java.net.*,product.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,java.net.*,product.*,utill.*,category.*,gift.*,aftersale.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%  
  
@@ -27,9 +27,13 @@ Map<String,User> usermaps = UserService.getuserIdStr();
 String usermapstr = StringUtill.GetJson(usermaps);
 
 // 安装网点 
-List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend); //UserService.getsencondDealsend(user);
+//List<User> listS =  UserService.getsencondDealsend(user);  //
+ 
+List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend);
+ 
+//List<User> listSend = UserService.getsend(user);
 
-List<User> listSend = UserManager.getUsers(user,Group.send); //UserService.getsend(user);
+List<User> listSend =UserManager.getUsers(user,Group.send);;//
 //提示信息
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 

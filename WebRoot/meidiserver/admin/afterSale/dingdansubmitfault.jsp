@@ -1,7 +1,8 @@
 <%@ page language="java"  pageEncoding="UTF-8" import="aftersale.*" contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>  
 <%  
-     
+List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend); //UserService.getsencondDealsend(user);
+    
 List<Category> list = CategoryManager.getCategory(user,Category.sale); 
 String clist = StringUtill.GetJson(list);
  
@@ -14,11 +15,10 @@ String id = request.getParameter("id");
 
 AfterSale af = null ; 
 String strorder= null; 
- 
-if(!StringUtill.isNull(id)){   
-	af = AfterSaleManager.getAfterSaleID(user, id);
-	System.out.println(StringUtill.GetJson(af));
-	strorder = StringUtill.GetJson(af); 
+
+if(!StringUtill.isNull(id)){ 
+	af = AfterSaleManager.getAfterSaleID(user,id);
+	strorder = StringUtill.GetJson(af);
 
 }
  
@@ -166,8 +166,8 @@ if(!StringUtill.isNull(id)){
 	 var saledate = $("#saledate").val();
 	 
 	 var locations = $("#locations").val();
-	 
-	 
+	 var fault = $("#fault").val();
+	 var uid = $("#uid").val();
 	 
 	 if(uname == "" || uname == null || uname == "null"){
 		 alert("顾客姓名不能为空");
@@ -234,8 +234,17 @@ if(!StringUtill.isNull(id)){
 	 if(locations == "" || locations == null || locations == "null"){
 		 alert("详细地址不能为空");
 		 return false;
+	 } 
+	   
+	 if(fault == "" || fault == null || fault == "null"){
+		 alert("详细地址不能为空");
+		 return false;
 	 }
 	 
+	 if(uid == "" || uid  == null || uid  == "null"){
+		 alert("维修单位不能为空");
+		 return false;
+	 }
 	 
 	 $("#submit").css("display","none"); 
 	 return true ; 
@@ -260,6 +269,7 @@ if(!StringUtill.isNull(id)){
 <!--  头 单种类  -->   
 
 <input type="hidden" name="orderid" value="<%=id %>"/>
+<input type="hidden" name="typemethod" value="fault"/>
 <input type="hidden" name="method" value="aftersale"/>
 <input type="hidden" name="token" value="<%=token%>"/>  
 
@@ -310,8 +320,6 @@ if(!StringUtill.isNull(id)){
    <td><input type="text" name="orderbarcode" id="orderbarcode"   placeholder="必填" /> </td> 
 
    </tr> 
-  
-   
     <tr class="asc"> 
     
     <td  >安装日期<span style="color:red">*</span></td>
@@ -326,22 +334,31 @@ if(!StringUtill.isNull(id)){
     <td ><textarea  id="locations" name="locations" ></textarea></td>  
     <td >备注</td>
     <td ><textarea  id="remark" name="remark" ></textarea></td>
-   
-   </tr>
-   <% if(!StringUtill.isNull(id) && UserManager.checkPermissions(user, Group.installOrderupload,"q")){
-	   %>
-	   <tr class="asc"> 
-	   <td colspan="2">修改单据状态</td>
-	   <td colspan="2">
-	   <select  name="statues">
-	     <option></option>
-	     <option value="2">美的已拒绝</option>
-	    </select>
-	    </td>
-	  </tr>
-	   <%
-   } %>
-   
+   </tr>    
+   <tr class="asc"> 
+    <td >故障原因<span style="color:red">*</span></td>
+    <td ><input type="hidden" value=""><textarea  id="fault" name="fault" ></textarea></td>  
+     <td >维修单位<span style="color:red">*</span></td>
+    <td  > 
+    <select  name="uid" id="uid"  >
+  
+   <option></option>
+  <%  
+  for(int i=0;i<listS.size();i++){
+	  User cate = listS.get(i);
+	 
+  %>  
+    
+    <option value="<%= cate.getId()%>" id="<%= cate.getId()%>"><%=cate.getUsername()%></option>
+  <%
+  }
+  %>
+  
+  </select> 
+    
+       </td>
+   </tr>  
+
    <tr class="asc"> 
     <td colspan="4" style="background-color:orange" class="center"><input type="submit"  value="提  交" /></td>
    </tr>

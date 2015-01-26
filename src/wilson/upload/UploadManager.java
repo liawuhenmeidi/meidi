@@ -975,14 +975,14 @@ public class UploadManager {
 		String search = "";
 		if(!StringUtill.isNull(statues)){
 			if(Integer.valueOf(statues) == 1){
-				search = " and checked = 1 ";
+				search = " and checked in (1,3) ";
 			}else if(Integer.valueOf(statues) == 0){ 
-				search = " and checked in (0,2) ";
+				search = " and checked in (0,2) "; 
 			}
-		}
-		
+		} 
+		     
 		String sql = "select * from uploadorder where dealtime is null and name = '"+id+"' "+search+" order by shop";
-  
+   
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		UploadOrder uo = new UploadOrder();

@@ -3,7 +3,7 @@
 <%@ include file="../searchdynamic.jsp"%>        
  <%   
  if(StringUtill.isNull(statues)){ 
-	 statues = Order.aftersale +"";
+	 statues = Order.aftersale +"";  
  }
     
 %>  
@@ -12,7 +12,7 @@
 <head>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
-
+<script type="text/javascript" src="../../js/aftersalecommon.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>文员派工页</title>
   
@@ -27,14 +27,14 @@ position:fixed;
     padding:0;
 }
 #table{  
-    width:1400px;
+    width:1700px;
     table-layout:fixed ;
 }
 
 #th{  
     background-color:white;
-    position:absolute; 
-    width:1400px; 
+    position:absolute;  
+    width:1700px; 
     height:30px;
     top:0;
     left:0;
@@ -62,14 +62,17 @@ position:fixed;
 <jsp:include flush="true" page="page.jsp"> 
 	<jsp:param name="type" value="<%=statues%>"/> 
 </jsp:include> 
- 
+<%
+if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
+%>
+   
 <div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=OrderProduct.submit%>')"></input> 
+ <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=AfterSale.typeupdate%>')"></input> 
 &nbsp;&nbsp;&nbsp;  
-</div> 
+</div>  
 
-
+<% }%>
 </div > 
 <div style="height:100px;">
 </div>
@@ -107,12 +110,10 @@ function searchlocate(id){
 }
 
   
-function detail(id){ 
-	winPar=window.open('dingdansubmit.jsp?id='+id, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
-
-
+function detail(id,statues){ 
+	winPar=window.open('dingdanupdatemaintain.jsp?id='+id+'&statues='+statues, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
-
+ 
 
 function winconfirm(typestatues){
 	var question = confirm("你确认要执行此操作吗？");	
@@ -120,29 +121,31 @@ function winconfirm(typestatues){
 		var attract = new Array();
 		var i = 0;
 		
-		$("input[type='checkbox'][id='check_box']").each(function(){          
+		$("input[type='radio'][name='id']").each(function(){          
 	   		if($(this).attr("checked")){
-	   				var str = this.name; 
+	   				var str = this.value; 
 	   				
 	   				if(str != null  &&  str != ""){
 		   				   attract[i] = str; 
 			   	            i++;
 		   				}	
 	   		}
-	   	}); 
-
-		$.ajax({ 
-			type: "post",   
-	         url: "../../user/OrderServlet", 
-	         data:"method=updateaftersale&orderid="+attract.toString()+"&statues="+typestatues,
-	         dataType: "",   
-	         success: function (data) {
-	        	 initOrder(type,statues,num,page,sort,sear);
-	           }, 
-	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	        	 alert("操作失败"); 
-	            } 
-	           });
+	   	});  
+        
+		detail(attract.toString(),typestatues);
+		//alert(attract.toString());
+		//$.ajax({ 
+		//	type: "post",   
+	     //    url: "../../user/OrderServlet", 
+	      //   data:"method=updateaftersale&orderid="+attract.toString()+"&statues="+typestatues,
+	      //   dataType: "",   
+	       //  success: function (data) {
+	       // 	 initOrder(type,statues,num,page,sort,sear);
+	       //    }, 
+	        // error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	        //	 alert("操作失败"); 
+	       //     } 
+	        //   });
 	}
 }
 
@@ -153,12 +156,13 @@ function winconfirm(typestatues){
  <%@ include file="../remind.jsp"%> 
 <table  cellspacing="1" id="table" >
 		<tr id="th">   
-		     <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
+		     <td align="center" width=""> </td>  
 			<td align="center">单号</td> 
 			<td align="center">顾客姓名</td>
 			<td align="center">顾客电话</td>
 			<td align="center">安装单位</td>
 			<td align="center">安装单位电话</td>
+			<td align="center" >设备类别</td> 
 			<td align="center" >设备型号</td> 
 			<td align="center" >设备数量</td>
 			
@@ -168,6 +172,8 @@ function winconfirm(typestatues){
 			<td align="center">单据类型</td>
             <td align="center">安装日期</td>
             <td align="center">预约日期</td>
+            <td align="center" >是否上报厂家（美的）</td>
+            <td align="center" >备注</td>
 		</tr>
 		 
 	      <% 

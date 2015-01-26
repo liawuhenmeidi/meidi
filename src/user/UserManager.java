@@ -250,11 +250,11 @@ logger.info(pstmt);
 	               String mess = pe[i];
 	              // logger.info(permissions+"***"+pe[i]);
 	               String[] mes = mess.split("-");
-	               String p = mes[0];
-	               String type = mes[1];
-				 
+	               String p = mes[0]; 
+	               String type = mes[1]; 
+				  
 					if(Integer.valueOf(p) == permissions || Integer.valueOf(p) == Group.Manger){
-						if("w".equals(type) || petnissionsType.equals(type)){
+						if("w".equals(type) && petnissionsType.equals("r") || petnissionsType.equals(type)){
 							flag = true ;
 						}
 						

@@ -12,7 +12,7 @@
 <head>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
-
+<script type="text/javascript" src="../../js/aftersalecommon.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>文员派工页</title>
   
@@ -89,7 +89,6 @@ var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>"; 
 var usermapstr = <%=usermapstr%> ;
 var inventory = "";  
-
  
 $(function () { 
 	 fixation();
@@ -108,7 +107,8 @@ function searchlocate(id){
 }
 
  
-function adddetail(src){ 
+function adddetail(src){
+
 	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
 
@@ -155,9 +155,11 @@ function winconfirm(typestatues){
 		<tr id="th">  
 		    <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
 			<td align="center">单号</td> 
-			<td align="center">顾客信息</td>
-			
-			<td align="center">设备名称</td>
+			<td align="center">顾客姓名</td>
+			<td align="center">顾客电话</td>
+			<td align="center">安装单位</td>
+			<td align="center">安装单位电话</td>
+			<td align="center" >设备类别</td> 
 			<td align="center" >设备型号</td> 
 			<td align="center" >设备数量</td>
 			
@@ -167,6 +169,8 @@ function winconfirm(typestatues){
 			<td align="center">单据类型</td>
             <td align="center">安装日期</td>
             <td align="center">预约日期</td>
+            <td align="center" >是否上报厂家（美的）</td>
+            <td align="center" >备注</td>
 		</tr>
 		 
 	      <% 
