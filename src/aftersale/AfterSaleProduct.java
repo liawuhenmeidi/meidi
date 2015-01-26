@@ -7,7 +7,10 @@ public class AfterSaleProduct {
 	public static int fault = 1 ;   // 维修 
 	public static int maintain = 2;  // 保养
 	
-	
+	public static int pending = 0;  //待处理
+	public static int success = 1;  //处理完  
+	public static int Failure = 2;  //失败 
+	 
    private int id ;
    private int asid ;   // 售后单id
    private int type ;  //  1 维修单   2  保养单
@@ -24,8 +27,14 @@ public class AfterSaleProduct {
    private int statues ;  //  状态 ，是驳回还是
    private String detail ;   // 处理备注  
    private String nexttime;   // 下次处理时间
-      
+   private String thistime;   // 此次维护处理时间    
    
+public String getThistime() {
+	return thistime;
+}
+public void setThistime(String thistime) {
+	this.thistime = thistime;
+}
 public String getNexttime() {
 	return nexttime;
 }

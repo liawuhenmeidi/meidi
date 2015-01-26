@@ -1,7 +1,7 @@
 <%@ page language="java"  pageEncoding="UTF-8" import="aftersale.*" contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>  
 <%  
-     
+      
 List<Category> list = CategoryManager.getCategory(user,Category.sale); 
 String clist = StringUtill.GetJson(list);
  
@@ -14,13 +14,11 @@ String id = request.getParameter("id");
 
 AfterSale af = null ; 
 String strorder= null; 
- 
-if(!StringUtill.isNull(id)){   
-	af = AfterSaleManager.getAfterSaleID(user, id);
-	System.out.println(StringUtill.GetJson(af));
-	strorder = StringUtill.GetJson(af); 
 
-}
+if(!StringUtill.isNull(id)){   
+	af = AfterSaleManager.getAfterSaleID(user, id); 
+	strorder = StringUtill.GetJson(af);  
+} 
  
 %> 
    
@@ -63,9 +61,7 @@ if(!StringUtill.isNull(id)){
    // statues 表示是否是相同顾客报装
    
    var order = <%=strorder%>;
-
-   
-   
+  
    $(document).ready(function(){
 	//initphone();
 	init();   

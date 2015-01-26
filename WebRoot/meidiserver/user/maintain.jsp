@@ -2,10 +2,13 @@
 <%   
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
+String statues = request.getParameter("statues");
+if(StringUtill.isNull(statues)){
+	statues = AfterSaleProduct.pending+"" ;  
+}
+List<AftersaleAll> list = AftersaleAllManager.getOrderlistneedmaintain(user,statues);
 
-List<AftersaleAll> list = AftersaleAllManager.getOrderlistneedmaintain(user);
-
-
+  
 %>
 <!DOCTYPE html>
 <html>
@@ -23,17 +26,19 @@ List<AftersaleAll> list = AftersaleAllManager.getOrderlistneedmaintain(user);
  
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
+ 
+ var type = "<%=statues%>";
 
-$(function () { 
-	//$("#"+type).css("color","red");
-});
-
+$(function () {  
+	$("#"+type).css("color","red");
+}); 
+ 
 function detail(src){
 	window.location.href=src;
 }
- 
-function search(type){
-	window.location.href="maintain.jsp?type="+type;
+  
+function search(statues){
+	window.location.href="maintain.jsp?statues="+statues;
 }
 </script> 
 </head>
@@ -42,12 +47,12 @@ function search(type){
 <div class="s_main">
 <jsp:include flush="true" page="../head.jsp">
   <jsp:param name="dmsn" value="" />
-  </jsp:include>
-
+  </jsp:include> 
+  
 <!--  头 单种类  -->
 <div class="s_main_tit"><span class="qiangdan"><a href="chaxun_songhuo.jsp">我要查询</a></span><span class="qiangdan"><a href="welcom.jsp">返回</a></span></div>
-<div class="s_main_tit"><span style="cursor:hand" id="<%=Order.serach%>" onclick="search('<%=Order.serach%>')">待派送</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.orderDispatching%>" onclick="search('<%=Order.orderDispatching%>')">待安装</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.over%>" onclick="search('<%=Order.over%>')">已送货</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=Order.returns%>" onclick="search('<%=Order.returns%>')">已安装</span></div>
-  
+<div class="s_main_tit"><span style="cursor:hand" id="<%=AfterSaleProduct.pending%>" onclick="search('<%=AfterSaleProduct.pending%>')">待解决</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=AfterSaleProduct.success%>" onclick="search('<%=AfterSaleProduct.success%>')">已解决</span>&nbsp;&nbsp;</div>
+   
 <!--  订单详情  -->
 <div class="s_main_box">
 <table width="100%" class="s_main_table">
@@ -61,20 +66,23 @@ function search(type){
    if(list != null){
     for(int i = 0;i<list.size();i++){
     	AftersaleAll o = list.get(i);
+    	
     	String col = "";
     	if(i%2 == 0){
     		col = "style='background-color:yellow'";
     	}
   %>
- <tr <%=col %> onclick="detail('dingdanDetailsonghuo.jsp?id=<%=o.getAs().getId()%>')">  
+ <tr <%=col %> onclick="detail('dingdanDetailmaintain.jsp?id=<%=o.getAs().getId()%>')">  
       <%  
          String cname = "";
          String tname = "";
+         String time = "";
          List<AfterSaleProduct> listas = o.getAsplist();
          for(int j=0;j<listas.size();j++){
         	 AfterSaleProduct as = listas.get(j);
         	 cname += as.getCname(); 
         	 tname += as.getTname();
+        	 time = as.getThistime();
          }
          %> 
      <td align="left"> 
@@ -84,9 +92,8 @@ function search(type){
         <%=tname %>
 		 </td>    
 		     
-		     
-    <td><%= o.getAs().getUname() %></td>
-    <td><%= o.getAs().getPhone()%></td> 
+    <td><%= time %></td>
+    <td><%= o.getAs().getLocation()%></td> 
   </tr>
    
      <%}

@@ -112,7 +112,7 @@ function adddetail(src){
 	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
 
-
+ 
 function winconfirm(typestatues){
 	var question = confirm("你确认要执行此操作吗？");	
 	if (question != "0"){

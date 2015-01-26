@@ -44,7 +44,9 @@ public class Group {
    public static int dealsendchargerule = 32;   // 给安装网点结款标准
    public static int aftersalerepare= 33;    // 预约售后待处理
    public static int aftersale= 34;    // 预约售后处理
-   public static int installOrderupload = 35;    // 安装单 
+   public static int installOrderupload = 35;    // 上报厂家安装单 
+   public static int maintainOrder = 36;    // 保养单  
+   public static int faultOrder = 37;    // 维修单  
    
     //   从 15开始 
    private int id ;  
