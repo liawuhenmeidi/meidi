@@ -5,6 +5,29 @@ import utill.StringUtill;
 
 public class UploadOrder {
 	
+	public UploadOrder() {
+		super();
+	}
+	
+	public UploadOrder(UploadOrder uo) {
+		super();
+		this.id = uo.getId();
+		this.name = uo.getName();
+		this.shop = uo.getShop();
+		this.posNo = uo.getPosNo();
+		this.saleManName = uo.getSaleManName();
+		this.saleTime = uo.getSaleTime();
+		this.type = uo.getType();
+		this.num = uo.getNum();
+		this.salePrice = uo.getSalePrice();
+		this.backPoint = uo.getBackPoint();
+		this.fileName = uo.getFileName();
+		this.checked = uo.getChecked();
+		this.checkedTime = uo.getCheckedTime();
+		this.checkOrderId = uo.getCheckOrderId();
+		//this.typeForCompare = uo.gettyp;
+	}
+
 	private int id = -1; //id
 	
 	private String name = ""; 
@@ -172,7 +195,6 @@ public class UploadOrder {
 		
 		if(StringUtill.isNull(this.saleManName)){
 			try{
-				result += ProductService.gettypemap().get(this.type).getId() + ":";
 				result += this.getType() + ":";
 				result += this.getNum() + ":";
 				result += this.getSalePrice();
@@ -185,7 +207,6 @@ public class UploadOrder {
 			try{
 				for(int i = 0 ; i < saleManName.split(",").length ; i ++){
 					int id = Integer.parseInt(saleManName.split(",")[i].split(":")[0]);
-					result += id + ":";
 					result += ProductService.getIDmap().get(id).getType() + ":";
 					result += saleManName.split(",")[i].split(":")[1] + ":";
 					result += saleManName.split(",")[i].split(":")[2] + ",";
