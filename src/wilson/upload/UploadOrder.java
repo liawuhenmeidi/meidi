@@ -166,6 +166,42 @@ public class UploadOrder {
 			return result;
 		}
 	}
+	
+	public String getSendType(){
+		String result = "";
+		
+		if(StringUtill.isNull(this.saleManName)){
+			try{
+				result += ProductService.gettypemap().get(this.type).getId() + ":";
+				result += this.getType() + ":";
+				result += this.getNum() + ":";
+				result += this.getSalePrice();
+						
+			}catch(Exception e){
+				e.printStackTrace();
+				return this.type;
+			}
+		}else{
+			try{
+				for(int i = 0 ; i < saleManName.split(",").length ; i ++){
+					int id = Integer.parseInt(saleManName.split(",")[i].split(":")[0]);
+					result += id + ":";
+					result += ProductService.getIDmap().get(id).getType() + ":";
+					result += saleManName.split(",")[i].split(":")[1] + ":";
+					result += saleManName.split(",")[i].split(":")[2] + ",";
+				}
+				if(result.endsWith(",")){
+					result = result.substring(0,result.length() -1);
+				}
+				
+			}catch(Exception e){
+				e.printStackTrace();
+				return this.saleManName;
+			}
+
+		}
+		return result;
+	}
 
 	public void setSaleManName(String saleManName) {
 		this.saleManName = saleManName;
