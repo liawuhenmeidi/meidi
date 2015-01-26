@@ -1171,7 +1171,7 @@ int count = 0 ;
 						 String[] sendtypes = sendtype.split(":");
 						 relatype = sendtypes[0];  
 						 int realcount = Integer.valueOf(sendtypes[1]);
-						 Double prince = Double.valueOf(sendtypes[2]);
+						 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
 					     UploadTotal upt = branchname.get(relatype);
 							if(null == upt){
 								upt = new UploadTotal();
@@ -1281,7 +1281,7 @@ int count = 0 ;
 						 String[] sendtypes = sendtype.split(":");
 						 relatype = sendtypes[0];  
 						 int realcount = Integer.valueOf(sendtypes[1]);
-						 Double prince = Double.valueOf(sendtypes[2]);
+						 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
 						 
 						 HashMap<String, UploadTotal> branchname= map.get(relatype);
 							if(null == branchname){
@@ -1401,8 +1401,8 @@ int count = 0 ;
 						// System.out.println(sendtypestrs[j]);
 						 String[] sendtypes = sendtype.split(":");
 						 relatype = sendtypes[0];  
-						 int realcount = Integer.valueOf(sendtypes[1]);
-						 Double prince = Double.valueOf(sendtypes[2]);
+						 int realcount = Integer.valueOf(sendtypes[1]); 
+						 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
 			             
 						 UploadTotal upt = map.get(relatype);
 							if(null == upt){

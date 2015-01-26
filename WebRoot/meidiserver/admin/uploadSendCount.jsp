@@ -2,10 +2,10 @@
 
 <%@ page language="java" import="java.util.*,wilson.upload.*,net.sf.json.JSONObject,uploadtotalgroup.*,utill.*,wilson.matchOrder.*,uploadtotal.*,user.*,wilson.salaryCalc.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
-<% 
+<%  
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
-	 
+	  
 	List<String> orderNames = UploadManager.getUnTotalUploadOrdersNames();
 	
 	Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
@@ -228,10 +228,8 @@ if(total){ %>
 			if(null != up){
 				tpe = up.getCatergory(); 
 			}
-		} 
-		 count += sain.getNum(); 
-		 moneycount += sain.getSalePrice();
-		 bpmoneycount += sain.getSalePrice()*(1-sain.getBackPoint()/100);
+		}  
+		 
 		// System.out.println(sain.getType());
 		 String sendtypestr = sain.getSendType();
 		 String[] sendtypestrs = sendtypestr.split(",");
@@ -241,7 +239,11 @@ if(total){ %>
 			 String[] sendtypes = sendtype.split(":");
 			 String realtype = sendtypes[0]; 
 			 Double realcount = Double.valueOf(sendtypes[1]);
-			 Double prince = Double.valueOf(sendtypes[2]); 
+			 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
+			 count += realcount;  
+			 moneycount += prince*realcount;
+			 bpmoneycount += prince*realcount*(1-sain.getBackPoint()/100);
+			 
 	%>
 	<tr class="asc"  onclick="updateClass(this)"> 
 					<td align="center"><%=i+1 %></td>
@@ -357,7 +359,7 @@ if(total){ %>
 						}
 		  %>  
 		  
-		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
+		   <tr class="asc"  ondblclick="detail('uploadSendCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
@@ -462,7 +464,7 @@ if(total){ %>
 						}
 		  %>  
 		  
-		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
+		   <tr class="asc"  ondblclick="detail('uploadSendCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
@@ -559,9 +561,9 @@ if(total){ %>
 							tpe = ups.getCatergory(); 
 						}
 					}
-				   
+				    
 				  %> 
-				  <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
+				  <tr class="asc"  ondblclick="detail('uploadSendCountDetail.jsp?type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
