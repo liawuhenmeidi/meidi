@@ -23,7 +23,7 @@
 	if(startButton == null){
 		String transferShop = request.getParameter("transferShop");
 		String transferType = request.getParameter("transferType");
-		if(UploadManager.transferShopName(transferShop) && UploadManager.transferType(user,transferType)){
+		if(UploadManager.transferShopName(transferShop) && UploadManager.transferType(user,transferType,request)){
 			if(dbSide != null && dbSide.length >0){
 				MatchOrderManager.checkDBOrderList(user,dbSide,selectOrderName);
 			}
@@ -33,6 +33,7 @@
 		}
 	}
 	
+	request.getSession().setAttribute("type_transList", null);
 	//初始化要对比的orders
 	MatchOrder mo = new MatchOrder();
 	List<AfterMatchOrder> afterMatchOrders = new ArrayList<AfterMatchOrder>();
@@ -170,6 +171,9 @@ var checkBoxStatus = '<%=checkBoxStatus%>';
 var color_dingma = '<%=dingmaColor%>';
 var color_return = '<%=returnColor%>';
 
+var scrollFrom;
+var fix;
+
 $(function () {
 	initButton();
 	initCheckBox();
@@ -177,15 +181,64 @@ $(function () {
 	$('#branchtype').val('<%=selectBranchType%>');
 	initcheck();
 	changeColor();
+	initTotalNum();
 });
 
+function initTotalNum(){
+	var leftTotal = 0 ; 
+	var rightTotal = 0 ;
+	var col1 = 14;
+	var col2 = 6;
+	
+	
+	if($('#baseTable tr').length > 0){
+		var cols = $('#baseTable tr')[0].cells.length;
+		 $('#baseTable tr').each(function () { 
+			 var shop1 = $('#'+  this.cells[cols-col1].id);
+			 var shop2 = $('#'+  this.cells[cols-col2].id);
+			 if(shop1.text() != ""){
+				 leftTotal ++;
+			 }
+			 if(shop2.text() != ""){
+				 rightTotal ++;
+			 }
+		 });
+	}
+	$("#leftTotal").text("总计数量"+leftTotal);
+	$("#rightTotal").text("总计数量"+rightTotal);
+}
+
 function initButton(){
+	
+	
 	$('#transferbutton').click(function (){
 		transferShopName();
 	});
 	$('#transfertypebutton').click(function (){
 		transferType();
 	});
+	scrollFrom = $('#scrollButton');
+	fix = $('#scrollButton').offset().top;
+	$('#scrollButton').click(scrollToNext);
+}
+
+
+function scrollToNext(){
+	var id1col = 15;
+	var id2col = 7;
+	if($('#baseTable tr').length > 0){
+		var cols = $('#baseTable tr')[0].cells.length;
+		 $('#baseTable tr').each(function () { 
+			 var checkbox1 = $('#'+ this.cells[cols-id1col].id);
+			 var checkbox2 = $('#'+ this.cells[cols-id2col].id);
+			 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked' && checkbox1.offset().top > scrollFrom.offset().top){
+				 scrollFrom = checkbox1;
+				 $('div').animate({scrollTop:scrollFrom.offset().top - fix}, 800);
+				 return false;
+			 }
+			 
+		 });
+	}
 }
 
 function initPageChange(){
@@ -529,8 +582,8 @@ function baseFormSubmit(){
 			</td>
 			
 			<td  align="center">
-			<label id="leftcount"></label>
-			
+			<label id="leftcount"></label><br/>
+			<label id="leftTotal"></label>
 			</td>
 			
 			<td align="center">
@@ -552,8 +605,10 @@ function baseFormSubmit(){
 			</td>
 			
 			<td  align="center">
-			 <label id="rightcount"></label>
-			</td>
+			 <label id="rightcount"></label><br/>
+			 <label id="rightTotal"></label><br/>
+			 <button type="button" id="scrollButton">下一个匹配项</button>
+			</td>移动到下一个匹配项
 			<td colspan="6" align="center">
 			<button id="transferbutton" type="button">店名转换</button>
 			<button id="transfertypebutton" type="button" >送货型号转换</button>

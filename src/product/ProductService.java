@@ -12,7 +12,17 @@ public class ProductService {
    public static List<String> list ;
    public static List<Product> listall ;
    public static HashMap<String,ArrayList<String>> typeName;
+   public static List<String> typeNameList;
    
+   public static List<String> getTypeNameList(){
+	   init();
+	   if(typeNameList == null ){
+		   typeNameList = ProductManager.getAllProductName();
+		 } 
+		return typeNameList;
+	   
+   }
+
   public static Map<String, Product> gettypemap() {
 	  init();
 	 if(typemap == null ){
@@ -55,6 +65,7 @@ public static Map<Integer, Product> getIDmap() {
 
 	public static void init(){
 		if(flag){
+			typeNameList = ProductManager.getAllProductName();
 			typemap = ProductManager.getProductType();
 			typeName = ProductManager.getProductName();
 			idmap = ProductManager.getProductID();

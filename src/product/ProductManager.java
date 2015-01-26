@@ -225,6 +225,7 @@ logger.info(sql);
 			return map;
 		} 
 		
+		
 		public static HashMap<Integer,Product> getProductID() {   
 			HashMap<Integer,Product> map = new HashMap<Integer,Product>();
 			Connection conn = DB.getConn();  
@@ -302,6 +303,29 @@ logger.info(sql);
 			}
 			return map;
 		}
+		
+		public static List<String> getAllProductName() {
+			List<String> result = new ArrayList<String>();
+			Connection conn = DB.getConn();
+			String sql = "select * from mdproduct where pstatues = 0  ";
+			 
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try { 
+				while (rs.next()) {
+					String pName = rs.getString("ptype");
+					result.add(pName);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			return result;
+		}
+		
 		public static HashMap<String,ArrayList<String>> getProductName(int statues) {
 			HashMap<String,ArrayList<String>> map = new HashMap<String,ArrayList<String>>();
 			Connection conn = DB.getConn();

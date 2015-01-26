@@ -7,6 +7,7 @@ import java.util.Map;
 
 import order.Order;
 import order.OrderManager;
+import product.Product;
 import product.ProductService;
 import wilson.upload.UploadOrder;
 
@@ -29,32 +30,100 @@ public class OrderProductService {
 		flag = false ;
 	}
 	
+	//取Order中statues = 1的有多个个
+	public static int getTotalNum(Order o){
+		int result  = 0;
+		OrderProduct op = new OrderProduct();
+		List<OrderProduct> opList = o.getOrderproduct();
+	
+		for(int i = 0 ; i < opList.size() ; i ++){
+			op = opList.get(i);
+			if(op.getStatues() == 1){
+				result ++;
+			}
+		}
+		return result;
+	}
+	
+	//Order o = > 123.2
+	public static Double getTotalPrice(Order o){
+		Double result  = 0.0;
+		OrderProduct op = new OrderProduct();
+		List<OrderProduct> opList = o.getOrderproduct();
+	
+		for(int i = 0 ; i < opList.size() ; i ++){
+			op = opList.get(i);
+			if(op.getStatues() == 1){
+				double t =  ProductService.getIDmap().get(Integer.parseInt(op.getSaleType())).getStockprice();
+				if(t == 0.0){
+					return 0.0;
+				}else{
+					result += t;
+				}
+				
+			}
+		}
+		return result;
+	}
+	
+	public static List<OrderProduct> getOrderProductFromList(List<OrderProduct> input,int id){
+		List<OrderProduct> result  = new ArrayList<OrderProduct>();
+		if(input == null){
+			return result;
+		}
+		for(int i = 0 ; i < input.size() ; i ++ ){
+			if(input.get(i).getId() == id){
+				result.add(input.get(i));
+			}
+		}
+		return result;
+	}
 	
 	//Order o   =>  67:1:123.2,381:1:155.0
-	public static String getSendTypeAndCountAndPrice(Order o,UploadOrder uo){
+	public static String getSendTypeAndCountAndPrice(Order o,UploadOrder uo) throws Exception{
 		return getSendTypeAndCountAndPrice(o,uo,true);
 	}
 	
 	//Order o   =>  MXG15-22:1:123.2,SS15T:2:155.0
-	public static String getSendTypeAndCountAndPrice(Order o,UploadOrder uo,boolean id){
+	public static String getSendTypeAndCountAndPrice(Order o,UploadOrder uo,boolean id) throws Exception{
 		OrderProduct op = new OrderProduct();
 		List<OrderProduct> opList = new ArrayList<OrderProduct>();
 		String result = "";
 		opList = o.getOrderproduct();
 		
+		Double totalPrice_db = getTotalPrice(o);
+		int num = getTotalNum(o);
+		Double tmpPrice = 0.0;
+		
+		Product p = new Product();
+		
+		
+		
 		if(id){
 			for(int i = 0 ; i < opList.size() ; i ++){
 				op = opList.get(i);
 				if(op.getStatues() == 1){
-					op.g
-					result += op.getSaleType() + ":" + op.getCount() + ",";
+					p = ProductService.getIDmap().get(Integer.parseInt(op.getSaleType()));
+					if(totalPrice_db == 0){
+						tmpPrice = (uo.getSalePrice()/num)/op.getCount();
+					}else{
+						tmpPrice = p.getStockprice() * uo.getSalePrice() / totalPrice_db;
+					}
+					
+					result += op.getSaleType() + ":" + op.getCount() + ":" + tmpPrice +  ",";
 				}
 			}
 		}else{
 			for(int i = 0 ; i < opList.size() ; i ++){
 				op = opList.get(i);
 				if(op.getStatues() == 1){
-					result += ProductService.getIDmap().get(Integer.parseInt(op.getSaleType())).getType() + ":" + op.getCount() + ",";
+					p = ProductService.getIDmap().get(Integer.parseInt(op.getSaleType()));
+					if(totalPrice_db == 0){
+						tmpPrice = (uo.getSalePrice()/num)/op.getCount();
+					}else{
+						tmpPrice = p.getStockprice() * uo.getSalePrice() / totalPrice_db;
+					}
+					result += p.getType() + ":" + op.getCount() + ":" + tmpPrice +  ",";
 				}
 			}
 		}

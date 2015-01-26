@@ -1,5 +1,6 @@
 package wilson.upload;
 
+import product.ProductService;
 import utill.StringUtill;
 
 public class UploadOrder {
@@ -150,7 +151,19 @@ public class UploadOrder {
 		if(StringUtill.isNull(this.saleManName)){
 			return this.type;
 		}else{
-			return this.saleManName;
+			String result = "";
+			try{
+				for(int i = 0 ; i < saleManName.split(",").length ; i ++){
+					int id = Integer.parseInt(saleManName.split(",")[i].split(":")[0]);
+					result += ProductService.getIDmap().get(id).getType();
+					result += ",";
+				}
+				
+			}catch(Exception e){
+				return this.saleManName;
+			}
+			
+			return result;
 		}
 	}
 

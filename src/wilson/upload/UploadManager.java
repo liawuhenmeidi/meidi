@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.sf.json.JSONObject;
 
 import org.apache.commons.logging.Log;
@@ -24,6 +26,7 @@ import order.OrderManager;
 import orderPrint.OrderPrintlnService;
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductService;
+import product.ProductService;
 import uploadtotal.UploadTotal;
 import uploadtotalgroup.UploadTotalGroup;
 import uploadtotalgroup.UploadTotalGroupManager;
@@ -131,9 +134,178 @@ public class UploadManager {
 	}
 	
 	//更改uploadorder送货型号(仅提供给manualCheckout.jsp使用)
+		//input :     id,orderId_id,orderId
+		public static boolean transferType(User user,String input){
+			boolean result = false;
+			
+			if(StringUtill.isNull(input)){
+				return true;
+			}
+			
+			if(input.endsWith("_")){
+				input = input.substring(0,input.length()-1);
+			}
+			
+			
+			//取id_orderId对应的order (开始)
+			String db_ids = "";
+			String up_ids = "";
+			Map<String,Order> orderMap = new HashMap<String, Order>();
+			
+			Map<String,UploadOrder> uploadOrderMap = new HashMap<String, UploadOrder>();
+			Map<String,String> output = new HashMap<String, String>();
+			
+			for(int i = 0 ; i < input.split("_").length ; i ++){
+				db_ids += input.split("_")[i].split(",")[1] + ",";
+				up_ids += input.split("_")[i].split(",")[0] + ",";
+			}
+			if(db_ids.endsWith(",")){
+				db_ids = db_ids.substring(0,db_ids.length() - 1);
+			}
+			if(up_ids.endsWith(",")){
+				up_ids = up_ids.substring(0,up_ids.length() - 1);
+			}
+			
+			uploadOrderMap = UploadManager.getUploadOrderMapByIds(up_ids);
+			orderMap = OrderManager.getOrdermapByIds(user, db_ids);
+			//(结束)
+			
+			
+			
+			Connection conn = DB.getConn();
+			String sql = "update uploadorder set salesman = ? where id = ?";
+			PreparedStatement pstmt = DB.prepare(conn, sql);
+			try {
+				boolean autoCommit = conn.getAutoCommit();
+				conn.setAutoCommit(false);
+				for(int i = 0 ; i < input.split("_").length; i ++){
+					String orderid = input.split("_")[i].split(",")[1];
+					String uploadorderid = input.split("_")[i].split(",")[0];
+					
+					
+					
+					Order o = new Order();
+					UploadOrder uo = new UploadOrder();
+					o = orderMap.get(orderid);
+					uo = uploadOrderMap.get(uploadorderid);
+					if(null == o || null == uo){
+						throw new SQLException();
+					}
+					
+					pstmt.setString(1, OrderProductService.getSendTypeAndCountAndPrice(o,uo));
+					pstmt.setInt(2, Integer.parseInt(uploadorderid));
+					pstmt.executeUpdate();
+					
+					
+				}	
+				
+				
+				conn.commit();
+				conn.setAutoCommit(autoCommit);
+				result = true ;
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+				logger.info("修改送货型号异常，回滚！");
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					logger.info("回滚失败！！！请注意");
+					e1.printStackTrace();
+				}
+				result =false;
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.info("修改送货型号异常，回滚！");
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					logger.info("回滚失败！！！请注意");
+					e1.printStackTrace();
+				}
+				result =false;
+			} finally {
+				DB.close(pstmt);
+				DB.close(conn);
+			}
+			return result;
+		}
+		
+	//更改uploadorder送货型号(仅提供给manualCheckout.jsp使用)
 	//input :     id,orderId_id,orderId
-	public static boolean transferType(User user,String input){
+	public static boolean transferType(User user,String input,HttpServletRequest request){
 		boolean result = false;
+		
+		//先处理session中的
+		List<OrderProduct> type_transList = (List<OrderProduct>)request.getSession().getAttribute("type_transList");
+		if(type_transList == null){
+			type_transList = new ArrayList<OrderProduct>();
+		}
+		String idsInSession = "";
+		Map<String,List<OrderProduct>> idMapInSession = new HashMap<String, List<OrderProduct>>();
+		for(int i = 0 ; i < type_transList.size() ; i ++){
+			List<OrderProduct> tmp = idMapInSession.get(String.valueOf(type_transList.get(i).getId()));
+			if(tmp == null){
+				tmp = new ArrayList<OrderProduct>();
+				idMapInSession.put(String.valueOf(type_transList.get(i).getId()),tmp);
+			}
+			tmp.add(type_transList.get(i));
+		}
+		request.getSession().setAttribute("type_transList", null);
+				
+		
+		
+		Connection conn = DB.getConn();
+		String sql = "update uploadorder set salesman = ? where id = ?";
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+
+		try {
+			boolean autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			Iterator<String> it = idMapInSession.keySet().iterator();
+			
+			while(it.hasNext()){
+				String key = it.next();
+				
+				List<OrderProduct> tmp = new ArrayList<OrderProduct>();
+				tmp = idMapInSession.get(key);
+				
+				String out = "";
+				for(int j = 0 ; j < tmp.size() ; j ++){
+					//MXG15-22:1:123.2,SS15T:2:155.0
+					
+					out += ProductService.gettypemap().get(tmp.get(j).getTypeName()).getId() + ":";
+					out += tmp.get(j).getCount() + ":";
+					out += tmp.get(j).getPrice() + ",";
+				}
+				if(out.endsWith(",")){
+					out = out.substring(0,out.length() -1);
+				}
+				
+				pstmt.setString(1, out);
+				pstmt.setInt(2, Integer.parseInt(key));
+				pstmt.executeUpdate();
+			}
+				
+			
+			
+			conn.commit();
+			conn.setAutoCommit(autoCommit);
+
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("修改送货型号异常，回滚！");
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				logger.info("回滚失败！！！请注意");
+				e1.printStackTrace();
+			}
+			result =false;
+		} 
+		
+		
 		
 		if(StringUtill.isNull(input)){
 			return true;
@@ -143,39 +315,56 @@ public class UploadManager {
 			input = input.substring(0,input.length()-1);
 		}
 		
-		//去orderId对应的order (开始)
-		String ids = "";
+		
+		
+
+		//取id_orderId对应的order (开始)
+		String db_ids = "";
+		String up_ids = "";
 		Map<String,Order> orderMap = new HashMap<String, Order>();
+		
+		Map<String,UploadOrder> uploadOrderMap = new HashMap<String, UploadOrder>();
 		Map<String,String> output = new HashMap<String, String>();
 		
 		for(int i = 0 ; i < input.split("_").length ; i ++){
-			ids += input.split("_")[i].split(",")[1] + ",";
+			db_ids += input.split("_")[i].split(",")[1] + ",";
+			up_ids += input.split("_")[i].split(",")[0] + ",";
 		}
-		if(ids.endsWith(",")){
-			ids = ids.substring(0,ids.length() - 1);
+		if(db_ids.endsWith(",")){
+			db_ids = db_ids.substring(0,db_ids.length() - 1);
 		}
-		orderMap = OrderManager.getOrdermapByIds(user, ids);
+		if(up_ids.endsWith(",")){
+			up_ids = up_ids.substring(0,up_ids.length() - 1);
+		}
+		
+		uploadOrderMap = UploadManager.getUploadOrderMapByIds(up_ids);
+		orderMap = OrderManager.getOrdermapByIds(user, db_ids);
 		//(结束)
 		
 		
-		
-		Connection conn = DB.getConn();
-		String sql = "update uploadorder set salesman = ? where id = ?";
-		PreparedStatement pstmt = DB.prepare(conn, sql);
+
 		try {
 			boolean autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit(false);
 			for(int i = 0 ; i < input.split("_").length; i ++){
 				String orderid = input.split("_")[i].split(",")[1];
+				String uploadorderid = input.split("_")[i].split(",")[0];
+				
+				
+				
 				Order o = new Order();
+				UploadOrder uo = new UploadOrder();
 				o = orderMap.get(orderid);
-				if(null == o){
+				uo = uploadOrderMap.get(uploadorderid);
+				if(null == o || null == uo){
 					throw new SQLException();
 				}
 				
-				pstmt.setString(1, OrderProductService.getSendTypeAndCountAndPrice(o));
-				pstmt.setInt(2, Integer.parseInt(input.split("_")[i].split(",")[0]));
+				pstmt.setString(1, OrderProductService.getSendTypeAndCountAndPrice(o,uo));
+				pstmt.setInt(2, Integer.parseInt(uploadorderid));
 				pstmt.executeUpdate();
+				
+				
 			}	
 			
 			
@@ -184,6 +373,16 @@ public class UploadManager {
 			result = true ;
 			
 		} catch (SQLException e) {
+			e.printStackTrace();
+			logger.info("修改送货型号异常，回滚！");
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				logger.info("回滚失败！！！请注意");
+				e1.printStackTrace();
+			}
+			result =false;
+		} catch (Exception e) {
 			e.printStackTrace();
 			logger.info("修改送货型号异常，回滚！");
 			try {
@@ -1157,6 +1356,31 @@ int count = 0 ;
 			while (rs.next()) {
 				uo = getUploadOrderFromRS(rs);
 				result = uo	;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}	
+		return result;
+	}
+	
+	public static Map<String,UploadOrder> getUploadOrderMapByIds(String ids){
+		Map<String,UploadOrder> result = new HashMap<String,UploadOrder>();
+		
+		Connection conn = DB.getConn(); 
+		String sql = "select * from uploadorder where id in ( " + ids + " )";
+
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadOrder uo = new UploadOrder();
+		try {     
+			while (rs.next()) {
+				uo = getUploadOrderFromRS(rs);
+				result.put(String.valueOf(uo.getId()), uo);
+				uo = new UploadOrder();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

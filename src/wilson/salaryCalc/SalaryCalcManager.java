@@ -1,11 +1,5 @@
 package wilson.salaryCalc;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,27 +12,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.poi.util.StringUtil;
 
-import utill.StringUtill;
+import product.ProductService;
+
 import wilson.catergory.CatergoryManager;
 import wilson.catergory.CatergoryMaping;
 import wilson.catergory.HiddenCatergoryMapingManager;
-import wilson.download.ExcelGenerator;
-import wilson.upload.SalaryModelUpload;
 import wilson.upload.UploadManager;
 import wilson.upload.UploadOrder;
 import wilson.upload.UploadSalaryModel;
-import wilson.upload.XLSReader;
 import database.DB;
 
 public class SalaryCalcManager {
@@ -426,6 +414,93 @@ public class SalaryCalcManager {
 		return result;
 	}
 	
+	public static SalaryResult matchModel(UploadOrder tempOrder,List<UploadSalaryModel> salaryModels){
+		SalaryResult result = null;
+		tempOrder.removeCharecterFromType();
+		
+		List<UploadSalaryModel> matchedSalaryModels = new ArrayList<UploadSalaryModel>();
+		UploadSalaryModel tempSalaryModel = new UploadSalaryModel();
+		boolean matched = false;
+		
+		//如果type是空，返回空
+		if(tempOrder.getType()==""||tempOrder.getType()==null||tempOrder.getType().equals("")){
+			return result;
+		}
+		
+		//在salaryModels中，寻找对应的model
+		for(int j = 0 ; j < salaryModels.size() ; j ++){
+
+			tempSalaryModel = salaryModels.get(j);
+			tempSalaryModel.setType(tempSalaryModel.getType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")","").replace("）", "").replace("（", ""));
+			//如果为空，直接跳过
+			if(tempSalaryModel.getType()==""||tempSalaryModel.getType()==null||tempSalaryModel.getType().equals("")){
+				continue;
+			}
+			
+			//如果相等，则添加到匹配列表中
+						
+			if(tempOrder.getType().trim().toUpperCase().replaceAll(" ","").equals(tempSalaryModel.getType().trim().toUpperCase().replaceAll(" ",""))){
+				matched = true;
+				matchedSalaryModels.add(tempSalaryModel);
+			}
+		}
+		
+		//如果匹配了
+		if(matched){
+			//匹配数为1的时候
+			if(matchedSalaryModels.size() == 1 ){
+				result = new SalaryResult(tempOrder,matchedSalaryModels.get(0));
+				//计算成功，就把结果实例加到result中，没成功，就直接仍入人工匹配列表
+//				if(tempSalaryResult.calc()){
+//					result.add(tempSalaryResult);
+//				}else{
+//					unCalcUploadOrders.add(tempOrder);
+//				}
+				return result;
+			
+			//匹配数大于1的时候
+			}else if(matchedSalaryModels.size() > 1){
+				
+				//取commitTime为最新的一个lastesSalaryModel
+				UploadSalaryModel latestSalaryModel = new UploadSalaryModel();
+				try{
+					for(int k = 0 ; k < matchedSalaryModels.size() ; k ++){
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.s");
+						Date commitTime = sdf.parse(matchedSalaryModels.get(k).getCommitTime());
+						Date tempTime = new Date();
+						if(k == 0){
+							tempTime = commitTime;
+							latestSalaryModel = matchedSalaryModels.get(k);
+						}
+						
+						if(commitTime.after(tempTime)){
+							tempTime = commitTime;
+							latestSalaryModel = matchedSalaryModels.get(k);
+						}
+					}
+				}catch (Exception e) {
+					return result;
+					//返回空
+				}
+				
+				//计算成功，就把结果实例加到result中，没成功，就直接仍入人工匹配列表
+				result = new SalaryResult(tempOrder,latestSalaryModel);
+				
+			//其他情况，一概当作没匹配
+			}else{
+				return result;
+				//返回空
+			}
+		
+		//如果没匹配
+		}else{
+			return result;
+			//返回空
+		}
+		
+		return result;
+	}
+	
 	public static List<SalaryResult> calcSalary(List<UploadOrder> uploadOrders,List<UploadSalaryModel> salaryModels,HttpServletRequest request){
 		List<UploadOrder> unCalcUploadOrders = new ArrayList<UploadOrder>();
 		if(uploadOrders == null || salaryModels == null ){
@@ -452,87 +527,63 @@ public class SalaryCalcManager {
 			
 			tempOrder = uploadOrders.get(i);
 			
-
-			tempOrder.removeCharecterFromType();
-			//如果type是空，直接放到人工归类列表里面
-			if(tempOrder.getTypeForCalc()==""||tempOrder.getTypeForCalc()==null||tempOrder.getTypeForCalc().equals("")){
-				unCalcUploadOrders.add(tempOrder);
-				continue;
-			}
 			
-			//在salaryModels中，寻找对应的model
-			for(int j = 0 ; j < salaryModels.size() ; j ++){
-
-				tempSalaryModel = salaryModels.get(j);
-				tempSalaryModel.setType(tempSalaryModel.getType().replaceAll("([\u4E00-\u9FA5]+)|([\u4E00-\u9FA5])", "").replace("(", "").replace(")","").replace("）", "").replace("（", ""));
-				//如果为空，直接跳过
-				if(tempSalaryModel.getType()==""||tempSalaryModel.getType()==null||tempSalaryModel.getType().equals("")){
-					continue;
-				}
+			//不顶码的对比
+			if(tempOrder.getSaleManName()==""||tempOrder.getSaleManName().equals("")){
 				
-				//如果相等，则添加到匹配列表中
-				
-				//System.out.println("tempOrder =" + tempOrder.getType().trim() + " = tempSalaryModel " + tempSalaryModel.getType() + " ?  " + tempOrder.getType().trim().contains(tempSalaryModel.getType().trim()));
-				
-				if(tempOrder.getTypeForCalc().trim().toUpperCase().replaceAll(" ","").equals(tempSalaryModel.getType().trim().toUpperCase().replaceAll(" ",""))){
-					matched = true;
-					matchedSalaryModels.add(tempSalaryModel);
-				}
-			}
-			
-			//如果匹配了
-			if(matched){
-				//匹配数为1的时候
-				if(matchedSalaryModels.size() == 1 ){
-					tempSalaryResult = new SalaryResult(tempOrder,matchedSalaryModels.get(0));
-					//计算成功，就把结果实例加到result中，没成功，就直接仍入人工匹配列表
-					if(tempSalaryResult.calc()){
-						result.add(tempSalaryResult);
-					}else{
-						unCalcUploadOrders.add(tempOrder);
-					}
-				
-				//匹配数大于1的时候
-				}else if(matchedSalaryModels.size() > 1){
-					
-					//取commitTime为最新的一个lastesSalaryModel
-					UploadSalaryModel latestSalaryModel = new UploadSalaryModel();
-					try{
-						for(int k = 0 ; k < matchedSalaryModels.size() ; k ++){
-							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.s");
-							Date commitTime = sdf.parse(matchedSalaryModels.get(k).getCommitTime());
-							Date tempTime = new Date();
-							if(k == 0){
-								tempTime = commitTime;
-								latestSalaryModel = matchedSalaryModels.get(k);
-							}
-							
-							if(commitTime.after(tempTime)){
-								tempTime = commitTime;
-								latestSalaryModel = matchedSalaryModels.get(k);
-							}
-						}
-					}catch (Exception e) {
-						unCalcUploadOrders.add(tempOrder);
-					}
-					
-					//计算成功，就把结果实例加到result中，没成功，就直接仍入人工匹配列表
-					tempSalaryResult = new SalaryResult(tempOrder,latestSalaryModel);
-					if(tempSalaryResult.calc()){
-						result.add(tempSalaryResult);
-					}else{
-						unCalcUploadOrders.add(tempOrder);
-					}
-					
-				//其他情况，一概当作没匹配
+				tempSalaryResult = matchModel(tempOrder,salaryModels);
+				if(tempSalaryResult == null){
+					unCalcUploadOrders.add(tempOrder);
 				}else{
+					if(tempSalaryResult.calc()){
+						result.add(tempSalaryResult);
+					}else{
+						unCalcUploadOrders.add(tempOrder);
+					}
+				}
+				
+				
+			//顶码的对比
+				//salemanName -> type:num:price,type:num:price
+			}else{
+				try{
+					String[] content = tempOrder.getSaleManName().split(",");
+					List<SalaryResult> tempSRList = new ArrayList<SalaryResult>();
+					
+					for(int j =  0 ; j < content.length ; j ++){
+						
+						String type = content[j].split(":")[0];
+						type = ProductService.getIDmap().get(Integer.parseInt(type)).getType();
+						String num = content[j].split(":")[1];
+						String price = content[j].split(":")[2];
+						
+						UploadOrder uo = tempOrder;
+						SalaryResult sr = new SalaryResult();
+						uo.setType(type);
+						uo.setSalePrice(Double.parseDouble(price));
+						uo.setNum(Integer.parseInt(num));
+						sr = matchModel(uo,salaryModels);
+						if(sr == null || !sr.calc()){
+							throw new Exception();
+						}
+						tempSRList.add(sr);
+						
+					}
+					
+					result.addAll(tempSRList);
+					tempSRList.clear();
+					
+				}catch(Exception e){
+					
 					unCalcUploadOrders.add(tempOrder);
 				}
-			
-			//如果没匹配
-			}else{
-				unCalcUploadOrders.add(tempOrder);
+				
+				
 			}
+				
+			
+			
+			
 			
 		}
 		request.getSession().setAttribute("calcResult", result);

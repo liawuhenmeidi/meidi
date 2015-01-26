@@ -172,7 +172,32 @@ $(function () {
 	$('#branchtype').val('<%=selectBranchType%>');
 	initcheck();
 	changeColor();
+	initTotalNum();
 });
+
+function initTotalNum(){
+	var leftTotal = 0 ; 
+	var rightTotal = 0 ;
+	var col1 = 14;
+	var col2 = 6;
+	
+	
+	if($('#baseTable tr').length > 0){
+		var cols = $('#baseTable tr')[0].cells.length;
+		 $('#baseTable tr').each(function () { 
+			 var shop1 = $('#'+  this.cells[cols-col1].id);
+			 var shop2 = $('#'+  this.cells[cols-col2].id);
+			 if(shop1.text() != ""){
+				 leftTotal ++;
+			 }
+			 if(shop2.text() != ""){
+				 rightTotal ++;
+			 }
+		 });
+	}
+	$("#leftTotal").text("总计数量"+leftTotal);
+	$("#rightTotal").text("总计数量"+rightTotal);
+}
 
 function initButton(){
 	$('#transferbutton').click(function (){
@@ -525,7 +550,8 @@ function baseFormSubmit(){
 			</td>
 			
 			<td  align="center">
-			<label id="leftcount"></label>
+			<label id="leftcount"></label><br/>
+			<label id="leftTotal"></label>
 			
 			</td>
 			
@@ -548,7 +574,8 @@ function baseFormSubmit(){
 			</td>
 			
 			<td  align="center">
-			 <label id="rightcount"></label>
+			 <label id="rightcount"></label><br/>
+			 <label id="rightTotal"></label>
 			</td>
 			<td colspan="6" align="center">
 			<button id="transferbutton" type="button">店名转换</button>
