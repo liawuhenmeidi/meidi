@@ -290,14 +290,35 @@ function reloadopned(src){
             	%>  
             	 <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSaleall.jsp')" >售后查询</a></p>
             	 <%
-              } %>
+              }
+            if(UserManager.checkPermissions(user, Group.maintainOrder,"w")){
+            	%>  
+            	   <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmitmaintain.jsp')" >保养单上报</a></p>
+            	 <%
+              } 
+            if(UserManager.checkPermissions(user, Group.faultOrder,"w")){
+            	%>  
+            	   <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmitfault.jsp')" >维修单上报</a></p>
+            	 <%
+              }
+            if(UserManager.checkPermissions(user, Group.faultOrder,"q") && !UserManager.checkPermissions(user, Group.faultOrder,"w") || UserManager.checkPermissions(user, Group.maintainOrder,"q") && !UserManager.checkPermissions(user, Group.faultOrder,"w")){
+            	%>  
+            	              <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintaindealsend.jsp')" >网点保养单待配工</a></p>
+            	 <% 
+              }
+            if(UserManager.checkPermissions(user, Group.faultOrder,"w") || UserManager.checkPermissions(user, Group.faultOrder,"w")){
+            	%>  
+                             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintain.jsp')" >售后文员保养单待配工</a></p>
+            	 <%
+              } 
+            %>
              
              
              
-             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmitfault.jsp')" >维修单上报</a></p>
-             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmitmaintain.jsp')" >保养单上报</a></p>
-             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintain.jsp')" >售后文员保养单待配工</a></p>
-             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintaindealsend.jsp')" >网点保养单待配工</a></p>
+            
+          
+            
+
             </div>        
           </li>  
          

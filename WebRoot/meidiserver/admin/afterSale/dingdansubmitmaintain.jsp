@@ -14,11 +14,11 @@ String id = request.getParameter("id");
 //System.out.println(id);
 AfterSale af = null ; 
 String strorder= null;   
-
+ 
 if(!StringUtill.isNull(id)){ 
 	af = AfterSaleManager.getAfterSaleID(user,id);
 	strorder = StringUtill.GetJson(af); 
-}   
+}    
 
 %> 
     
@@ -171,6 +171,8 @@ if(!StringUtill.isNull(id)){
 	 
 	 var locations = $("#locations").val();
 	 var uid = $("#uid").val();
+	 var thistime = $("#thistime").val();
+	 var nexttime = $("#nexttime").val();
 	 
 	 if(uname == "" || uname == null || uname == "null"){
 		 alert("顾客姓名不能为空");
@@ -272,6 +274,16 @@ if(!StringUtill.isNull(id)){
 	 
 	 if(uid == "" || uid  == null || uid  == "null"){
 		 alert("维修单位不能为空");
+		 return false;
+	 }
+	 
+	 if(thistime == "" || thistime == null || thistime == "null"){
+		 alert("保养日期不能为空");
+		 return false;
+	 }
+	  
+	 if(nexttime == "" || nexttime == null || nexttime == "null"){
+		 alert("下次保养日期日期不能为空");
 		 return false;
 	 }
 	 
@@ -404,9 +416,15 @@ if(!StringUtill.isNull(id)){
     
        </td>
     
-    <td  >下次保养时间<span style="color:red">*</span></td>
-    <td  ><input  type="text" name="nexttime" id ="nexttime" onclick="new Calendar().show(this)"   placeholder="必填"  readonly="readonly" ></input>   </td>
+    <td  >保养时间<span style="color:red">*</span></td>
+    <td  ><input  type="text" name="thistime" id ="thistime" onclick="new Calendar().show(this)"   placeholder="必填"  readonly="readonly" ></input>   </td>
  
+ </tr>
+ <tr class="asc">
+  <td  >下次保养时间<span style="color:red">*</span></td>
+    <td  ><input  type="text" name="nexttime" id ="nexttime" onclick="new Calendar().show(this)"   placeholder="必填"  readonly="readonly" ></input>   </td>
+  <td></td>
+  <td></td>
  </tr>
    <tr class="asc"> 
     <td colspan="4" style="background-color:orange" class="center"><input type="submit"  value="提  交" /></td>

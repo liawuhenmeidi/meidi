@@ -31,14 +31,14 @@ position:fixed;
     padding:0;
 }
 #table{  
-    width:1700px;
+    width:2000px;
     table-layout:fixed ;
 }
 
 #th{  
     background-color:white;
     position:absolute; 
-    width:1700px; 
+    width:2000px; 
     height:30px;
     top:0;
     left:0;
@@ -81,39 +81,26 @@ position:fixed;
 <script type="text/javascript">
 
 sort= "andate asc";
-var id = "";
+var id = "";  
 var type = "<%=Group.aftersalerepare%>";
 var listuser = <%=list%>;  
-  
 $(function () { 
 	 fixation();
 	 initOrder(type,statues,num,page,sort,sear);
 });
 
-function addImage(src){
-	window.open(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
-} 
 
 
-function searchlocate(id){
-	window.open('../adminmap.jsp?id='+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
-
-}
-
- 
-function adddetail(src){ 
-	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
-}
 
 function change(str1,afid){
 	var uid = $("#"+str1).val();
-	 
+	  
 	if(uid == null || uid == ""){
 		alert("请选择保养人员");
 		return ; 
-	}
-	 
-	question = confirm("您确定要配单吗？\n");
+	} 
+	  
+	var question = confirm("您确定要配单吗？\n");
 		 if (question != "0"){ 
 					$.ajax({   
 				        type: "post",     
@@ -121,19 +108,12 @@ function change(str1,afid){
 				         data:"method=dealsend&afid="+afid+"&uid="+uid,
 				         dataType: "",  
 				         success: function (data) { 
-				        	 if(data == 0){
-				        		 alert("导购提交修改申请，不能配工");
-				        		 return ; 
+				        	 if(data == 1){
+				        		 initOrder(type,statues,num,page,sort,sear);
 				        	 }if(data == -1){
-				        		 alert("请刷新页面");
+				        		 alert("派工失败");
 				        		 return ; 
-				        	 }else if(data == 20){ 
-				        		 alert("导购提交退货申请，不能配工");
-				        		 return ; 
-				        	 }else {   
-				        		 window.location.href="../printPaigong.jsp?id="+oid+"&type="+type;
-				        	 }   
-				        	 
+				        	 }
 				           },  
 				         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 				        // alert(errorThrown); 
@@ -141,7 +121,6 @@ function change(str1,afid){
 				           });
 				        			
 			           } 
-	     
 }
 
 </script>
@@ -151,7 +130,7 @@ function change(str1,afid){
  <%@ include file="../remind.jsp"%> 
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
-		     <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
+		      <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
 			<td align="center">单号</td> 
 			<td align="center">顾客姓名</td>
 			<td align="center">顾客电话</td>
@@ -159,8 +138,10 @@ function change(str1,afid){
 			<td align="center">安装单位电话</td>
 			<td align="center" >设备类别</td> 
 			<td align="center" >设备型号</td> 
-			<td align="center" >设备数量</td>
-			
+			<td align="center" >保养类别</td> 
+			<td align="center" >保养型号</td> 
+			<td  align="center">配工</td> 
+			<td  align="center">确认</td> 
 			<td align="center" >批号</td> 
 			<td align="center" >条码</td>
 			<td align="center">地址</td> 
@@ -170,10 +151,7 @@ function change(str1,afid){
             <td align="center" >是否上报厂家（美的）</td>
             <td align="center" >备注</td>
 		</tr>
-		 
-	      <% 
-              String tdcol = "bgcolor=red" ;
-	      %>
+		
 </table> 
      </div>
 

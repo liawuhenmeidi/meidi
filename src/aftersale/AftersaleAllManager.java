@@ -39,10 +39,10 @@ public class AftersaleAllManager {
 		 if(Group.aftersalerepare == type){ 
 			   if(Order.aftersale == statues){
 				   if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
-					   sql = "select * from mdaftersale where  statues = 0  and "+sqlstr + search+"  order by "+sort+str;
+					   sql = "select * from mdaftersale where  statues in (0,2)  and "+sqlstr + search+"  order by "+sort+str;
 				   }else if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){
-					   sql = "select * from mdaftersale where statues = 0  and submitid = "+ user.getId() +" "+search+"  order by "+sort+str;
-				   } 
+					   sql = "select * from mdaftersale where statues in (0,2)   and submitid = "+ user.getId() +" "+search+"  order by "+sort+str;
+				   }  
 			   }else if(Order.aftersalesearch == statues){
 				   if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
 					   sql = "select * from mdaftersale where   "+sqlstr + search+"  order by "+sort+str;
@@ -80,12 +80,12 @@ public class AftersaleAllManager {
 		 }
 	
 	
-	public static List<AftersaleAll> getOrderlistneedmaintain(User user){
-		  
+	public static List<AftersaleAll> getOrderlistneedmaintain(User user,String statues){
+		   
 		  
 		  List<AftersaleAll> AfterSales = new ArrayList<AftersaleAll>();
-		  
-		 String sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealsendid = "+user.getId()+"  and  mdaftersaleproduct.asid = mdaftersale.id  and mdaftersaleproduct.type = "+AfterSaleProduct.maintain;
+		    
+		 String sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealsendid = "+user.getId()+"  and  mdaftersaleproduct.statues = "+statues+"  and mdaftersaleproduct.asid = mdaftersale.id  and mdaftersaleproduct.type = "+AfterSaleProduct.maintain;
 	
 		 logger.info(sql); 
 		   Connection conn = DB.getConn();
@@ -107,12 +107,12 @@ public class AftersaleAllManager {
 				return AfterSales; 
 		 }
 	
-	public static List<AftersaleAll> getOrderlistneedfalut(User user){
+	public static List<AftersaleAll> getOrderlistneedfalut(User user,String statues){
 		  
-		  
+		   
 		  List<AftersaleAll> AfterSales = new ArrayList<AftersaleAll>();
 		  
-		 String sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealsendid = "+user.getId()+"  and  mdaftersaleproduct.asid = mdaftersale.id  and mdaftersaleproduct.type = "+AfterSaleProduct.fault;
+		 String sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealsendid = "+user.getId()+"  and  mdaftersaleproduct.statues = "+statues+" and  mdaftersaleproduct.asid = mdaftersale.id  and mdaftersaleproduct.type = "+AfterSaleProduct.fault;
 	 
 		 logger.info(sql);  
 		   Connection conn = DB.getConn();

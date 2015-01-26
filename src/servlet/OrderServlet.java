@@ -533,6 +533,8 @@ public class OrderServlet extends HttpServlet {
 		        String remark = request.getParameter("remark");
 		        String fault = request.getParameter("fault");
 		        String statues = request.getParameter("statues");
+		        String pritlnid = request.getParameter("printid");
+		        
 		        int submitid = user.getId();
 		        String branch = user.getBranch();
 		        int maxid = AfterSaleManager.getMaxid();
@@ -566,9 +568,9 @@ public class OrderServlet extends HttpServlet {
 		        af.setType(AfterSale.typesale);
 		        af.setBranch(Integer.valueOf(branch)); 
 		        af.setPcount(1);  
-		        af.setSubmitTime(submit); 
+		        af.setSubmitTime(submit);  
 		        af.setSubmitId(submitid); 
-		          
+		        af.setPrintid(pritlnid); 
 		        if(!StringUtill.isNull(statues)){ 
 		        	af.setStatues(Integer.valueOf(statues)); 
 		        	af.setStatuestime("'"+TimeUtill.getdateString()+"'");
@@ -576,12 +578,14 @@ public class OrderServlet extends HttpServlet {
 			    if("fault".equals(typemethod)){ 
 			    	af.setStatues(AfterSale.typeupdate);
 			    	String uid= request.getParameter("uid");
+			    	String thistime = "'"+request.getParameter("thistime")+"'";
 			    	AfterSaleProduct asp = new AfterSaleProduct();
 			    	asp.setAsid(maxid); 
 		 
 			    	asp.setCause(fault); 
 			    	asp.setType(AfterSaleProduct.fault);
 			    	asp.setDealid(Integer.valueOf(uid)); 
+			    	asp.setThistime(thistime); 
 			    	List<String> listsp = AfterSaleProductManager.getsaveSQL(user, asp);
 			    	listas.addAll(listsp);  
 			    	href = "../admin/afterSale/dingdansubmitfault.jsp";
@@ -593,6 +597,7 @@ public class OrderServlet extends HttpServlet {
 						af.setStatues(AfterSale.typeupdate);
 				    	String uid= request.getParameter("uid");
 				    	String nexttime = "'"+request.getParameter("nexttime")+"'";
+				    	String thistime = "'"+request.getParameter("thistime")+"'";
 					    // 送货状态     
 					for(int i=0;i<producs.length;i++){		
 						AfterSaleProduct asp = new AfterSaleProduct();
@@ -611,7 +616,7 @@ public class OrderServlet extends HttpServlet {
 				    	} 
 				    	
 				    	asp.setNexttime(nexttime); 
-				    	
+				    	asp.setThistime(thistime); 
 				    	List<String> listsp = AfterSaleProductManager.getsaveSQL(user, asp);
 				    	listas.addAll(listsp);  
 					}

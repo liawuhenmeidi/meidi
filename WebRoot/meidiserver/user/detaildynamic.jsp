@@ -6,7 +6,7 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 String id = request.getParameter("id");
 Order or = OrderManager.getOrderID(user,Integer.valueOf(id));
 int uid = user.getId();
- 
+  
 HashMap<Integer,User> usermap = UserService.getMapId();
 
 int saleid = or.getSaleID();

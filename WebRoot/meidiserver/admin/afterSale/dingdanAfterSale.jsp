@@ -5,7 +5,14 @@
  if(StringUtill.isNull(statues)){ 
 	 statues = Order.aftersale +"";  
  }
-    
+  
+ String href = "";
+ if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
+	 href = "dingdanupdatemaintain.jsp";
+ }else { 
+	 href = "dingdansubmit.jsp";
+ }
+   
 %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -91,8 +98,8 @@ var type = "<%=Group.aftersalerepare%>";
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>"; 
 var usermapstr = <%=usermapstr%> ;
-var inventory = "";  
-
+var href = "<%=href%>";  
+ 
  
 $(function () { 
 	 fixation();
@@ -111,7 +118,7 @@ function searchlocate(id){
 
   
 function detail(id,statues){ 
-	winPar=window.open('dingdanupdatemaintain.jsp?id='+id+'&statues='+statues, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+	winPar=window.open(href+'?id='+id+'&statues='+statues, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
  
 

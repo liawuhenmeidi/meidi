@@ -17,11 +17,14 @@ String id = request.getParameter("id");
 String statues = request.getParameter("statues"); 
 //System.out.println(id);
 AfterSale af = null ; 
-String strorder= null;   
- 
+String strorder= null;    
+String listap = null;   
+
 if(!StringUtill.isNull(id)){  
 	af = AfterSaleManager.getAfterSaleID(user,id);
 	strorder = StringUtill.GetJson(af); 
+	List<AfterSaleProduct> listasp  = AfterSaleProductManager.getmaintain(af.getId());
+	listap = StringUtill.GetJson(listasp); 
 }   
 
 %> 
@@ -68,7 +71,8 @@ if(!StringUtill.isNull(id)){
 
    var row = 1;  
    var rows = new Array();
-    
+   var listap = <%=listap%>; 
+   
    $(document).ready(function(){
 	//initphone();
 	init();   
@@ -98,9 +102,19 @@ if(!StringUtill.isNull(id)){
 		   $("#saledate").val(order.saledate); 
 		   $("#locations").val(order.location);
 		   $("#detail").val(order.detail);
+		  
 		   
 
 	   } 
+	   if(null != listap){
+		   var time = "";
+		   for(var i=0;i<listap.length;i++){
+			   time = listap[i].nexttime;
+			   addrow(listap[i]);  
+		   }
+		   $("#nexttime").val(time);
+	   }
+	  
    }
     
    
@@ -121,7 +135,7 @@ if(!StringUtill.isNull(id)){
     
  
    function addrow(listo){
-		
+		//alert(JSON.parse(listo));
 	    rows.push(row);
 		var yellow = "";
 		if(row%2 == 0){
@@ -145,9 +159,9 @@ if(!StringUtill.isNull(id)){
 	               str += '</select> '+
 	               ' </td>'+ 
 	               ' <td >送货型号<span style="color:red">*</span></td> '+
-	               ' <td  ><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="" style="width:90% " /></td> ' +
+	               ' <td  ><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="'+listo.tname+'" style="width:90% " /></td> ' +
 	          	   ' <td  ><input type="button"   style="color:white;background-color:#0080FF" name="" value="删除" onclick="deletes(produc'+row+','+row+')"/></td>'+
-	          	   '</tr>';
+	          	   '</tr>'; 
 	                 
 	        $("#tableproduct").append(str); 
 	        initproductSerch("#ordercategory"+row,"#ordertype"+row);
@@ -307,6 +321,7 @@ if(!StringUtill.isNull(id)){
 <input type="hidden" name="typemethod" value="maintain"/> 
 <input type="hidden" name="token" value="<%=token%>"/>  
 <input type="hidden" name="statues" value="<%=statues%>"/>  
+<input type="hidden" name="printid" value="<%=af.getPrintid()%>"/> 
 
 <div class="s_main_tit">上报单位:<span class="qian"><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %></span></div>  
 <!--  订单详情  -->   

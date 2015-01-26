@@ -1,10 +1,10 @@
 <%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="detaildynamic.jsp"%> 
-<%  
+<%   
 Map<Integer,List<Gift>> gMap = GiftService.getmap(); 
 User sale = UserService.getMapId().get(or.getSaleID());
 request.setAttribute("order", or);
-
+ 
 %>
 <!DOCTYPE html>
 <html>

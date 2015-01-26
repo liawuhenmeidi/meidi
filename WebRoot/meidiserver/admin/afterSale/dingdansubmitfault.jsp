@@ -168,6 +168,7 @@ if(!StringUtill.isNull(id)){
 	 var locations = $("#locations").val();
 	 var fault = $("#fault").val();
 	 var uid = $("#uid").val();
+	 var thistime = $("#thistime").val();
 	 
 	 if(uname == "" || uname == null || uname == "null"){
 		 alert("顾客姓名不能为空");
@@ -235,17 +236,22 @@ if(!StringUtill.isNull(id)){
 		 alert("详细地址不能为空");
 		 return false;
 	 } 
-	   
+	    
 	 if(fault == "" || fault == null || fault == "null"){
 		 alert("详细地址不能为空");
 		 return false;
 	 }
-	 
+	  
 	 if(uid == "" || uid  == null || uid  == "null"){
 		 alert("维修单位不能为空");
 		 return false;
-	 }
+	 } 
 	 
+	 if(thistime == "" ||thistime  == null || thistime  == "null"){
+		 alert("保养日期不能为空");
+		 return false;
+	 }
+	  
 	 $("#submit").css("display","none"); 
 	 return true ; 
  }
@@ -358,7 +364,12 @@ if(!StringUtill.isNull(id)){
     
        </td>
    </tr>  
-
+<tr class="asc"> 
+  <td  >保养时间<span style="color:red">*</span></td>
+    <td  ><input  type="text" name="thistime" id ="thistime" onclick="new Calendar().show(this)"   placeholder="必填"  readonly="readonly" ></input>   </td>
+  <td></td>
+  <td></td>
+ </tr>
    <tr class="asc"> 
     <td colspan="4" style="background-color:orange" class="center"><input type="submit"  value="提  交" /></td>
    </tr>

@@ -57,16 +57,25 @@ public class AfterSaleServlet extends HttpServlet {
 		
 		String uid = request.getParameter("uid"); 
 		String afid = request.getParameter("afid");
-
+        
+		
 		User user = (User)request.getSession().getAttribute("user");
 		 int statues = -1 ;
 	    if("dealsend".equals(method)){
-	    	dealsend(user,uid,afid);
-
+	    	if(dealsend(user,uid,afid)){
+	    		statues = 1;
+	    	};
 	    }else if("deal".equals(method)){
-	    	deal(user,uid,afid);
-	    }	
-
+	    	if(deal(user,uid,afid)){
+	    		statues = 1;
+	    	};
+	    }else if("maintain".equals(method)){
+	    	String sta = request.getParameter("statues");
+	    	if(maintain(user,sta,afid)){ 
+	    		statues = 1;
+	    	};
+	    } 	
+ 
 		try {
 			response.getWriter().write(""+statues);
 			response.getWriter().flush(); 
@@ -92,6 +101,15 @@ public class AfterSaleServlet extends HttpServlet {
 		AftersaleAll af = AftersaleAllManager.getAfterSaleID(user, afid);
 		List<AfterSaleProduct> list = af.getAsplist();    
 		List<String> sqls = AfterSaleProductManager.getupdateDeal(list, uid);  
+		boolean count = DBUtill.sava(sqls);  
+		return count ;
+		 
+	} 
+	
+	public synchronized static boolean maintain(User user,String statues,String afid){
+		AftersaleAll af = AftersaleAllManager.getAfterSaleID(user, afid);
+		List<AfterSaleProduct> list = af.getAsplist();     
+		List<String> sqls = AfterSaleProductManager.getupdatemaintain(list, statues);  
 		boolean count = DBUtill.sava(sqls);  
 		return count ;
 		 
