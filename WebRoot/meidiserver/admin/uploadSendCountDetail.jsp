@@ -17,7 +17,7 @@
 	Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
     //System.out.println(id+"**"+branch+"**"+type);
     List<UploadOrder> list = UploadManager.getTotalUploadOrders(id);
-//	System.out.println(list.size());
+	System.out.println(list.size());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -50,7 +50,7 @@
 				<td align="center">扣点后价格</td>
 		</tr>
 
- <%
+ <% 
     int count = 0;
 	double moneycount = 0 ;
 	double bpmoneycount = 0 ;
@@ -58,20 +58,30 @@
    if(null != list){   
 	 for(int i = 0 ; i < list.size() ; i ++){ 
 		UploadOrder sain  = list.get(i);
+		 String sendtypestr = sain.getSendType();
+		 String[] sendtypestrs = sendtypestr.split(",");
+		 for(int j=0;j<sendtypestrs.length;j++){
+			 String sendtype = sendtypestrs[j];
+			// System.out.println(sendtypestrs[j]);
+			 String[] sendtypes = sendtype.split(":");
+			 String realtype = sendtypes[0]; 
+			 Double realcount = Double.valueOf(sendtypes[1]);
+			 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
+			 if((branch.equals(sain.getShop()) || StringUtill.isNull(branch) ) && type.equals(realtype)){
+					String tpe = ""; 
+					if(null != mapus){
+						UploadSalaryModel up = mapus.get(StringUtill.getStringNocn(realtype));
+						if(null != up){
+							tpe = up.getCatergory(); 
+						}
+					}
+					 count += realcount; 
+					 moneycount += prince*realcount;
+					 bpmoneycount +=  prince*realcount*(1-sain.getBackPoint()/100);
+
+		 
+		 
 		
-		
-		
-		if((branch.equals(sain.getShop()) || StringUtill.isNull(branch) ) && type.equals(sain.getType())){
-		String tpe = ""; 
-		if(null != mapus){
-			UploadSalaryModel up = mapus.get(StringUtill.getStringNocn(sain.getType()));
-			if(null != up){
-				tpe = up.getCatergory(); 
-			}
-		}
-		 count += sain.getNum();
-		 moneycount += sain.getSalePrice();
-		 bpmoneycount += sain.getSalePrice()*(1-sain.getBackPoint()/100);
 		
 	%>
 	<tr class="asc"  onclick="updateClass(this)"> 
@@ -88,6 +98,7 @@
 					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*(1-sain.getBackPoint()/100)) %></td>
 	</tr>
 	<%
+     }
 	} 
    }
    }

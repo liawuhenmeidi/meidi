@@ -2,10 +2,10 @@
 
 <%@ page language="java" import="java.util.*,wilson.upload.*,net.sf.json.JSONObject,uploadtotalgroup.*,utill.*,wilson.matchOrder.*,uploadtotal.*,user.*,wilson.salaryCalc.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
-<% 
+<%  
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
-	 
+	  
 	List<String> orderNames = UploadManager.getUnTotalUploadOrdersNames();
 	
 	Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
@@ -148,7 +148,6 @@ if(total){ %>
 			<td align="center">
 			请选择需要打印的信息
 			</td>
- 
 		</tr> 
  
 		<tr class="bsc">
@@ -195,7 +194,7 @@ if(total){ %>
 </table> 
 
 </div>
-
+ 
 
 </div>
  </form>
@@ -206,15 +205,15 @@ if(total){ %>
 				<td align="center">销售门店</td>
 				<td align="center">销售日期</td>
 				<td align="center">品类</td> 
-				<td align="center">票面型号</td> 
+				<td align="center">送货型号</td> 
 				<td align="center">单价</td>
-				<td align="center">票面数量</td> 
+				<td align="center">送货数量</td> 
 				<td align="center">供价</td>
 				<td align="center">扣点</td>
 				<td align="center">扣点后单价</td>
 				<td align="center">扣点后价格</td>
 		</tr>
-
+ 
  <%
     int count = 0;
 	double moneycount = 0 ;
@@ -229,26 +228,38 @@ if(total){ %>
 			if(null != up){
 				tpe = up.getCatergory(); 
 			}
-		}
-		 count += sain.getNum();
-		 moneycount += sain.getSalePrice();
-		 bpmoneycount += sain.getSalePrice()*(1-sain.getBackPoint()/100);
-		
+		}  
+		 
+		// System.out.println(sain.getType());
+		 String sendtypestr = sain.getSendType();
+		 String[] sendtypestrs = sendtypestr.split(",");
+		 for(int j=0;j<sendtypestrs.length;j++){
+			 String sendtype = sendtypestrs[j];
+			// System.out.println(sendtypestrs[j]);
+			 String[] sendtypes = sendtype.split(":");
+			 String realtype = sendtypes[0]; 
+			 Double realcount = Double.valueOf(sendtypes[1]);
+			 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
+			 count += realcount;  
+			 moneycount += prince*realcount;
+			 bpmoneycount += prince*realcount*(1-sain.getBackPoint()/100);
+			 
 	%>
 	<tr class="asc"  onclick="updateClass(this)"> 
 					<td align="center"><%=i+1 %></td>
 					<td align="center"><%=sain.getShop() %></td>
 					<td align="center"><%=sain.getSaleTime() %></td>
 					<td align="center"><%=tpe %></td> 
-					<td align="center"><%=sain.getTypeForCalc() %></td>  
-					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()/sain.getNum())  %></td>
-					<td align="center"><%=sain.getNum() %></td> 
-					<td align="center"><%=sain.getSalePrice() %></td>
-					<td align="center"><%=sain.getBackPoint() %></td> 
-					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*(1-sain.getBackPoint()/100)/sain.getNum()) %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*(1-sain.getBackPoint()/100)) %></td>
+					<td align="center"><%=realtype %></td>   
+					<td align="center"><%=DoubleUtill.getdoubleTwo(prince)  %></td>
+					<td align="center"><%=realcount %></td>  
+					<td align="center"><%=DoubleUtill.getdoubleTwo(prince*realcount) %></td>  
+					<td align="center"><%=sain.getBackPoint() %></td>  
+					<td align="center"><%=DoubleUtill.getdoubleTwo(prince*(1-sain.getBackPoint()/100)) %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(prince*realcount*(1-sain.getBackPoint()/100)) %></td>
 	</tr>
 	<%
+		 }
 	} 
    }
 	%>
@@ -348,7 +359,7 @@ if(total){ %>
 						}
 		  %>  
 		  
-		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
+		   <tr class="asc"  ondblclick="detail('uploadSendCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
@@ -453,7 +464,7 @@ if(total){ %>
 						}
 		  %>  
 		  
-		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
+		   <tr class="asc"  ondblclick="detail('uploadSendCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
@@ -550,9 +561,9 @@ if(total){ %>
 							tpe = ups.getCatergory(); 
 						}
 					}
-				   
+				    
 				  %> 
-				  <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
+				  <tr class="asc"  ondblclick="detail('uploadSendCountDetail.jsp?type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>

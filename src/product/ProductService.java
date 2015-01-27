@@ -20,7 +20,6 @@ public class ProductService {
 		   typeNameList = ProductManager.getAllProductName();
 		 } 
 		return typeNameList;
-	   
    }
 
   public static Map<String, Product> gettypemap() {

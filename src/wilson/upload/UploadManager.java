@@ -1014,6 +1014,7 @@ public class UploadManager {
 //int count = 0 ;		
 		
 		Map<String, HashMap<String, UploadTotal>> maps = UploadManager.getTotalOrdersShop(id,totaltype,checked);
+		
 		Set<Map.Entry<String, HashMap<String, UploadTotal>>> setmap = maps.entrySet();
 		Iterator<Map.Entry<String, HashMap<String, UploadTotal>>> itmap = setmap.iterator();
 		while(itmap.hasNext()){
@@ -1146,24 +1147,51 @@ int count = 0 ;
 			    String relatype = "";
 			    if(BasicUtill.sale == totaltype){
 			    	relatype = up.getType();
+			    	UploadTotal upt = branchname.get(relatype);
+					if(null == upt){
+						upt = new UploadTotal();
+						upt.setBranchname(up.getShop());
+						upt.setCount(up.getNum());
+						upt.setName(up.getName());
+						upt.setType(relatype);
+						upt.setTotalcount(up.getSalePrice());
+						upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
+						branchname.put(relatype,upt); 
+					}else {
+						upt.setCount(upt.getCount()+up.getNum());
+						upt.setTotalcount(upt.getTotalcount()+up.getSalePrice());  
+						upt.setTatalbreakcount(upt.getTatalbreakcount()+up.getSalePrice()*(1-up.getBackPoint()/100));
+					} 
 			    }else if(BasicUtill.send == totaltype){
-			    	relatype = up.getTypeForCalc();
+			    	String sendtypestr = up.getSendType(); 
+					 String[] sendtypestrs = sendtypestr.split(",");
+					 for(int j=0;j<sendtypestrs.length;j++){
+						 String sendtype = sendtypestrs[j];
+						// System.out.println(sendtypestrs[j]);
+						 String[] sendtypes = sendtype.split(":");
+						 relatype = sendtypes[0];  
+						 int realcount = Integer.valueOf(sendtypes[1]);
+						 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
+					     UploadTotal upt = branchname.get(relatype);
+							if(null == upt){
+								upt = new UploadTotal();
+								upt.setBranchname(up.getShop());
+								upt.setCount(up.getNum());
+								upt.setName(up.getName());
+								upt.setType(relatype);
+								upt.setTotalcount(prince*realcount);
+								upt.setTatalbreakcount(prince*realcount*(1-up.getBackPoint()/100));
+								branchname.put(relatype,upt); 
+							}else {
+								upt.setCount(upt.getCount()+realcount);
+								upt.setTotalcount(upt.getTotalcount()+prince*realcount);  
+								upt.setTatalbreakcount(upt.getTatalbreakcount()+prince*realcount*(1-up.getBackPoint()/100));
+							}
+							
+							
+					 }
 			    }
-				UploadTotal upt = branchname.get(relatype);
-				if(null == upt){
-					upt = new UploadTotal();
-					upt.setBranchname(up.getShop());
-					upt.setCount(up.getNum());
-					upt.setName(up.getName());
-					upt.setType(relatype);
-					upt.setTotalcount(up.getSalePrice());
-					upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
-					branchname.put(relatype,upt); 
-				}else {
-					upt.setCount(upt.getCount()+up.getNum());
-					upt.setTotalcount(upt.getTotalcount()+up.getSalePrice());  
-					upt.setTatalbreakcount(upt.getTatalbreakcount()+up.getSalePrice()*(1-up.getBackPoint()/100));
-				}
+				
 				  
 			}
 		}
@@ -1222,31 +1250,69 @@ int count = 0 ;
 				String relatype = "";
 			    if(BasicUtill.sale == totaltype){
 			    	relatype = up.getType();
+			    	HashMap<String, UploadTotal> branchname= map.get(relatype);
+					if(null == branchname){
+						branchname = new HashMap<String, UploadTotal>();
+						map.put(relatype, branchname);
+					}
+					 
+					UploadTotal upt = branchname.get(up.getShop());
+					if(null == upt){
+						upt = new UploadTotal();
+						upt.setBranchname(up.getShop());
+						upt.setCount(up.getNum());
+						upt.setName(up.getName());
+						upt.setType(relatype);
+						upt.setTotalcount(up.getSalePrice());
+						upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
+						branchname.put(up.getShop(),upt);  
+					}else {
+						upt.setCount(upt.getCount()+up.getNum());
+						upt.setTotalcount(upt.getTotalcount()+up.getSalePrice());  
+						upt.setTatalbreakcount(upt.getTatalbreakcount()+up.getSalePrice()*(1-up.getBackPoint()/100));
+					}
+					
 			    }else if(BasicUtill.send == totaltype){
-			    	relatype = up.getTypeForCalc();
+			    	 String sendtypestr = up.getSendType(); 
+					 String[] sendtypestrs = sendtypestr.split(",");
+					 for(int j=0;j<sendtypestrs.length;j++){
+						 String sendtype = sendtypestrs[j]; 
+						// System.out.println(sendtypestrs[j]);
+						 String[] sendtypes = sendtype.split(":");
+						 relatype = sendtypes[0];  
+						 int realcount = Integer.valueOf(sendtypes[1]);
+						 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
+						 
+						 HashMap<String, UploadTotal> branchname= map.get(relatype);
+							if(null == branchname){
+								branchname = new HashMap<String, UploadTotal>();
+								map.put(relatype, branchname);
+							}
+							
+							UploadTotal upt = branchname.get(up.getShop());
+							if(null == upt){
+								upt = new UploadTotal();
+								upt.setBranchname(up.getShop());
+								upt.setCount(realcount);
+								upt.setName(up.getName()); 
+								upt.setType(relatype);
+								upt.setTotalcount(prince*realcount);
+								upt.setTatalbreakcount(prince*realcount*(1-up.getBackPoint()/100));
+								branchname.put(up.getShop(),upt);  
+							}else { 
+								upt.setCount(upt.getCount()+realcount);
+								upt.setTotalcount(upt.getTotalcount()+prince*realcount);  
+								upt.setTatalbreakcount(upt.getTatalbreakcount()+prince*realcount*(1-up.getBackPoint()/100));
+							}
+							
+							
+					 }
+					 
+			    	
+					 
+					
 			    }
-				HashMap<String, UploadTotal> branchname= map.get(relatype);
-				if(null == branchname){
-					branchname = new HashMap<String, UploadTotal>();
-					map.put(relatype, branchname);
-				}
-				 
-				UploadTotal upt = branchname.get(up.getShop());
-				if(null == upt){
-					upt = new UploadTotal();
-					upt.setBranchname(up.getShop());
-					upt.setCount(up.getNum());
-					upt.setName(up.getName());
-					upt.setType(relatype);
-					upt.setTotalcount(up.getSalePrice());
-					upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
-					branchname.put(up.getShop(),upt);  
-				}else {
-					upt.setCount(upt.getCount()+up.getNum());
-					upt.setTotalcount(upt.getTotalcount()+up.getSalePrice());  
-					upt.setTatalbreakcount(upt.getTatalbreakcount()+up.getSalePrice()*(1-up.getBackPoint()/100));
-				}
-				  
+  
 			}
 		}
 		return map;
@@ -1311,14 +1377,6 @@ int count = 0 ;
 				String relatype = "";
 			    if(BasicUtill.sale == totaltype){
 			    	relatype = up.getType();
-			    }else if(BasicUtill.send == totaltype){
-			    	relatype = up.getTypeForCalc();
-			    }
-			    String[] types = relatype.split(",");
-			    
-			    for(int j=0;j<types.length;j++){
-			    	String typesend = types[j]; 
-			    	
 			    	UploadTotal upt = map.get(relatype);
 					if(null == upt){
 						upt = new UploadTotal(); 
@@ -1334,9 +1392,39 @@ int count = 0 ;
 						upt.setTotalcount(upt.getTotalcount()+up.getSalePrice());
 						upt.setTatalbreakcount(upt.getTatalbreakcount()+up.getSalePrice()*(1-up.getBackPoint()/100));
 					}
+					
+			    }else if(BasicUtill.send == totaltype){
+			    	 String sendtypestr = up.getSendType(); 
+					 String[] sendtypestrs = sendtypestr.split(",");
+					 for(int j=0;j<sendtypestrs.length;j++){
+						 String sendtype = sendtypestrs[j]; 
+						// System.out.println(sendtypestrs[j]);
+						 String[] sendtypes = sendtype.split(":");
+						 relatype = sendtypes[0];  
+						 int realcount = Integer.valueOf(sendtypes[1]); 
+						 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
+			             
+						 UploadTotal upt = map.get(relatype);
+							if(null == upt){
+								upt = new UploadTotal(); 
+								upt.setBranchname(up.getShop());
+								upt.setCount(realcount);
+								upt.setName(up.getName());
+								upt.setType(relatype); 
+								upt.setTotalcount(prince*realcount);
+								upt.setTatalbreakcount(prince*realcount*(1-up.getBackPoint()/100));
+								map.put(relatype,upt); 
+							}else { 
+								upt.setCount(upt.getCount()+realcount);
+								upt.setTotalcount(upt.getTotalcount()+prince*realcount);
+								upt.setTatalbreakcount(upt.getTatalbreakcount()+prince*realcount*(1-up.getBackPoint()/100));
+							}
+							
+					 }
+			    	
+					
 			    }
-				
-				
+		
 			}
 		}
 		
