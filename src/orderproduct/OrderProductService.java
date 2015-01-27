@@ -108,7 +108,7 @@ public class OrderProductService {
 					if(totalPrice_db == 0){
 						tmpPrice = (uo.getSalePrice()/num)/op.getCount();
 					}else{
-						tmpPrice = p.getStockprice() * uo.getSalePrice() / totalPrice_db;
+						tmpPrice = p.getStockprice() * uo.getSalePrice() * uo.getNum() / totalPrice_db;
 					}
 					
 					result += op.getSendType() + ":" + op.getCount() + ":" + tmpPrice +  ",";
@@ -122,7 +122,7 @@ public class OrderProductService {
 					if(totalPrice_db == 0){
 						tmpPrice = (uo.getSalePrice()/num)/op.getCount();
 					}else{
-						tmpPrice = p.getStockprice() * uo.getSalePrice() / totalPrice_db;
+						tmpPrice = p.getStockprice() * uo.getSalePrice() * uo.getNum() / totalPrice_db;
 					}
 					result += p.getType() + ":" + op.getCount() + ":" + tmpPrice +  ",";
 				}
