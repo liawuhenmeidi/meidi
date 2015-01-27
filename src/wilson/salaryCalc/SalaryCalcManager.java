@@ -557,7 +557,7 @@ public class SalaryCalcManager {
 						String num = content[j].split(":")[1];
 						String price = content[j].split(":")[2];
 						
-						UploadOrder uo = tempOrder;
+						UploadOrder uo = new UploadOrder(tempOrder);
 						SalaryResult sr = new SalaryResult();
 						uo.setType(type);
 						uo.setSalePrice(Double.parseDouble(price));
@@ -789,7 +789,7 @@ public class SalaryCalcManager {
 	
 	public static List<SalaryResult> getSalaryResultByName(String name) {
 		List<SalaryResult> result = new ArrayList<SalaryResult>();
-		Map<Integer,SalaryResult> tempSalaryResultMap = new HashMap<Integer,SalaryResult>();
+		Map<Integer,List<SalaryResult>> tempSalaryResultMap = new HashMap<Integer,List<SalaryResult>>();
 		
 		
 		String sql = "select * from salaryresult where status = 0";
@@ -799,6 +799,7 @@ public class SalaryCalcManager {
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		UploadOrder tempOrder = new UploadOrder();
 		SalaryResult tempResult = new SalaryResult();
+		List<SalaryResult> tmp = new ArrayList<SalaryResult>();
 		try {
 			while(rs.next()){
 				tempResult = new SalaryResult();
@@ -809,7 +810,13 @@ public class SalaryCalcManager {
 				tempResult.setSalary(rs.getDouble("salary"));	
 				tempResult.setStatus(rs.getInt("status"));
 				
-				tempSalaryResultMap.put(tempResult.getUploadOrderId(), tempResult);
+				tmp = tempSalaryResultMap.get(tempResult.getUploadOrderId());
+				if(tmp == null){
+					tmp = new ArrayList<SalaryResult>();
+				}
+				
+				tmp.add(tempResult);
+				tempSalaryResultMap.put(tempResult.getUploadOrderId(), tmp);
 			}
 			
 			
@@ -823,9 +830,15 @@ public class SalaryCalcManager {
 				tempOrder = UploadManager.getUploadOrderFromRS(rs);
 				tempResult = new SalaryResult();
 				if(tempSalaryResultMap.containsKey(tempOrder.getId())){
-					tempResult = tempSalaryResultMap.get(tempOrder.getId());
+					tmp = new ArrayList<SalaryResult>();
+					tmp = tempSalaryResultMap.get(tempOrder.getId());
+					for(int i = 0  ; i < tmp.size() ; i ++){
+						tempResult = new SalaryResult();
+						tempResult = tmp.get(i);
+						tempResult.setUploadOrder(tempOrder);
+						result.add(tempResult);
+					}
 					
-					tempResult.setUploadOrder(tempOrder);
 					
 				}else{
 					//千万别改这里
@@ -837,8 +850,10 @@ public class SalaryCalcManager {
 					}
 					tempResult.setUploadSalaryModelid(-1);
 					tempResult.setUploadOrder(tempOrder);
+					
+					result.add(tempResult);
 				}
-				result.add(tempResult);
+				
 				
 
 			}

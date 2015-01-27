@@ -38,7 +38,7 @@ public class OrderProductService {
 	
 		for(int i = 0 ; i < opList.size() ; i ++){
 			op = opList.get(i);
-			if(op.getStatues() == 1){
+			if(op.getStatues() == 0){
 				result ++;
 			}
 		}
@@ -53,8 +53,9 @@ public class OrderProductService {
 	
 		for(int i = 0 ; i < opList.size() ; i ++){
 			op = opList.get(i);
-			if(op.getStatues() == 1){
-				double t =  ProductService.getIDmap().get(Integer.parseInt(op.getSaleType())).getStockprice();
+			if(op.getStatues() == 0){
+				Product p = ProductService.getIDmap().get(Integer.parseInt(op.getSendType()));
+				double t =  p.getStockprice() * op.getCount();
 				if(t == 0.0){
 					return 0.0;
 				}else{
@@ -102,22 +103,22 @@ public class OrderProductService {
 		if(id){
 			for(int i = 0 ; i < opList.size() ; i ++){
 				op = opList.get(i);
-				if(op.getStatues() == 1){
-					p = ProductService.getIDmap().get(Integer.parseInt(op.getSaleType()));
+				if(op.getStatues() == 0){
+					p = ProductService.getIDmap().get(Integer.parseInt(op.getSendType()));
 					if(totalPrice_db == 0){
 						tmpPrice = (uo.getSalePrice()/num)/op.getCount();
 					}else{
 						tmpPrice = p.getStockprice() * uo.getSalePrice() / totalPrice_db;
 					}
 					
-					result += op.getSaleType() + ":" + op.getCount() + ":" + tmpPrice +  ",";
+					result += op.getSendType() + ":" + op.getCount() + ":" + tmpPrice +  ",";
 				}
 			}
 		}else{
 			for(int i = 0 ; i < opList.size() ; i ++){
 				op = opList.get(i);
-				if(op.getStatues() == 1){
-					p = ProductService.getIDmap().get(Integer.parseInt(op.getSaleType()));
+				if(op.getStatues() == 0){
+					p = ProductService.getIDmap().get(Integer.parseInt(op.getSendType()));
 					if(totalPrice_db == 0){
 						tmpPrice = (uo.getSalePrice()/num)/op.getCount();
 					}else{

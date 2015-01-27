@@ -608,7 +608,7 @@ function baseFormSubmit(){
 			 <label id="rightcount"></label><br/>
 			 <label id="rightTotal"></label><br/>
 			 <button type="button" id="scrollButton">下一个匹配项</button>
-			</td>移动到下一个匹配项
+			</td>
 			<td colspan="6" align="center">
 			<button id="transferbutton" type="button">店名转换</button>
 			<button id="transfertypebutton" type="button" >送货型号转换</button>

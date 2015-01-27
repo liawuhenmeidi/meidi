@@ -247,19 +247,19 @@ function delSend(obj){
 		<tr class="asc">	 
 			<td align="center" >票面型号</td>
 			<td align="center" >
-	        <input type="text"  name="saletype" id="saletype" value="<%=uo.getType() %>"  />
+	        <input type="text"  name="saletype" id="saletype" value="<%=uo.getType() %>" readonly="readonly" />
 			</td>
 		</tr>
 		<tr class="asc">	 
 			<td align="center" >票面数量</td>
 			<td align="center" >
-	        <input type="text"  name="salenum" id="salenum" value="<%=uo.getNum() %>"  />
+	        <input type="text"  name="salenum" id="salenum" value="<%=uo.getNum() %>"  readonly="readonly"/>
 			</td>
 		</tr>
 		<tr class="asc">	 
 			<td align="center" >价格</td>
 			<td align="center" >
-	        <input type="text"  name="saleprice" id="saleprice" value="<%=String.valueOf(uo.getSalePrice()) %>"  />
+	        <input type="text"  name="saleprice" id="saleprice" value="<%=String.valueOf(uo.getSalePrice()) %>" readonly="readonly" />
 			</td>
 		</tr>
 		<%

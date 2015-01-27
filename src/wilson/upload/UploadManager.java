@@ -2171,4 +2171,29 @@ int count = 0 ;
 		return result; 
 	}
 	
+	public static List<UploadOrder> initMultiUploadOrder(List<UploadOrder> input){
+		List<UploadOrder> result = new ArrayList<UploadOrder>();
+		for(int i = 0 ;  i< input.size() ; i ++){
+			String content = input.get(i).getSaleManName();
+			if(!content.equals("")){	
+				for(int j = 0 ; j<content.split(",").length ; j++){
+					UploadOrder uo = new UploadOrder(input.get(i));
+					String type = content.split(",")[j].split(":")[0];
+					type = ProductService.getIDmap().get(Integer.parseInt(type)).getType();
+					String num = content.split(",")[j].split(":")[1];
+					String salePrice = content.split(",")[j].split(":")[2];
+					
+					uo.setSaleManName("");
+					uo.setType(type);
+					uo.setNum(Integer.parseInt(num));
+					uo.setSalePrice(Double.parseDouble(salePrice));
+					
+					result.add(uo);
+				}
+			}else{
+				result.add(input.get(i));
+			}
+		}
+		return result;
+	}
 }

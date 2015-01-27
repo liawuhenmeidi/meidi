@@ -51,6 +51,7 @@
 	
 	if(paraOrderName != null && !paraOrderName.equals("")){
 		showOrders = UploadManager.getCheckedOrdersByName(paraOrderName);
+		showOrders = UploadManager.initMultiUploadOrder(showOrders);
 	}
 	
 	
@@ -294,7 +295,7 @@ function beforSubmit(){
 					<td align="center"><%=showOrders.get(i).getShop() %></td>
 					<td align="center"><%=showOrders.get(i).getPosNo()%></td>
 					<td align="center"><%=showOrders.get(i).getSaleTime() %></td>
-					<td align="center"><%=showOrders.get(i).getTypeForCalc() %></td> 
+					<td align="center"><%=showOrders.get(i).getType() %></td> 
 					<td align="center"><%=showOrders.get(i).getNum() %></td> 
 					<td align="center"><%=showOrders.get(i).getSalePrice() %></td>
 					
@@ -472,7 +473,7 @@ if(showResult){
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSaleTime() %></td>
 			<td align="center"><%=salaryResult.get(i).getSalaryModel().getCatergory() %></td> 
 			<td align="center"><%=salaryResult.get(i).getSaleManName() %></td> 
-			<td align="center"><%=salaryResult.get(i).getUploadOrder().getTypeForCalc() %></td> 
+			<td align="center"><%=salaryResult.get(i).getUploadOrder().getType() %></td> 
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getNum() %></td> 
 			<td align="center"><%=salaryResult.get(i).getSalaryModel().getContent() %></td>
 			<td align="center"><%=salaryResult.get(i).getUploadOrder().getSalePrice() %></td>
