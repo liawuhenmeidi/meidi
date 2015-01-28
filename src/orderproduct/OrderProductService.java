@@ -87,6 +87,9 @@ public class OrderProductService {
 	
 	//Order o   =>  MXG15-22:1:123.2,SS15T:2:155.0
 	public static String getSendTypeAndCountAndPrice(Order o,UploadOrder uo,boolean id) throws Exception{
+		if(!o.isDiangma()){
+			return "";
+		}
 		OrderProduct op = new OrderProduct();
 		List<OrderProduct> opList = new ArrayList<OrderProduct>();
 		String result = "";
@@ -135,5 +138,54 @@ public class OrderProductService {
 		}
 		return result;
 		
+	}
+	
+	//input   =>  1000,MXG15-22:1,SS15T:2
+	public static String getPrice(String input){
+		String result = "";
+		try{
+			String priceSTR = input.split(",")[0];
+			Product p = new Product();
+			
+			Double uptotalPrice = Double.parseDouble(priceSTR);
+			Double dbtotalPrice = 0.0;
+			int dbtotalNum = 0;
+			
+			boolean isFind = true;
+			for(int i = 1 ; i < input.split(",").length ; i ++){
+				String type = input.split(",")[i].split(":")[0];
+				int num = Integer.parseInt(input.split(",")[i].split(":")[1]);
+				
+				Double d = ProductService.gettypemap().get(type).getStockprice() * num ;
+				if(d == 0.0){
+					isFind = false;
+				}
+				dbtotalPrice += d ;
+				dbtotalNum += num;
+			}
+			
+			
+			if(isFind){
+				//算
+				for(int i = 1 ; i < input.split(",").length ; i ++){
+					String type = input.split(",")[i].split(":")[0];
+					result += ProductService.gettypemap().get(type).getStockprice() / dbtotalPrice  *  uptotalPrice + ",";
+				}
+				
+			}else{
+				//均分
+				for(int i = 1 ; i < input.split(",").length ; i ++){
+					
+					result += String.format("%.2f", uptotalPrice / dbtotalNum) + ",";
+				}
+				
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			return "";
+		}
+		
+		return result;
 	}
 }

@@ -22,13 +22,14 @@
 	if(startButton == null){
 		String transferShop = request.getParameter("transferShop");
 		String transferType = request.getParameter("transferType");
-		if(UploadManager.transferShopName(transferShop) && UploadManager.transferType(user,transferType)){
+		if(UploadManager.transferShopName(transferShop) && UploadManager.transferType(user,transferType,request)){
 			if(uploadSide != null && uploadSide.length > 0){
 				MatchOrderManager.checkUploadOrderList(uploadSide); 
 			}
 		}
 	}
 	
+	request.getSession().setAttribute("type_transList", null);
 	//初始化要对比的orders
 	MatchOrder mo = new MatchOrder();
 	List<AfterMatchOrder> afterMatchOrders = new ArrayList<AfterMatchOrder>();
@@ -223,6 +224,24 @@ function initPageChange(){
 	});
 }
 
+function clearSession(){
+	$.ajax({ 
+        type:"post", 
+         url:"AjaxHandler.jsp",
+         //data:"method=list_pic&page="+pageCount,
+         data:"action=clearsession",
+         dataType: "",  
+         success: function (data) {
+
+        	
+           },  
+          error: function (XMLHttpRequest, textStatus, errorThrown) { 
+        	  alert('类型转换失败，请刷新重试');
+        	  return false ;
+            } 
+           }); 
+}
+
 function changeColor(){
 	var status_col = 10;
 	if($('#baseTable tr').length > 0){
@@ -316,6 +335,7 @@ function transferType(){
 				transType2.text('');
 			 });
 		}
+		clearSession();
 		$('#transferType').val('');
 		type_switch = true;
 	}

@@ -585,7 +585,8 @@ function baseFormSubmit(){
 			</td>
 			<td colspan="5" align="center">
 			<button id="transferbutton" type="button" onclick="transferShopName()">店名转换</button>
-			<button id="transfertypebutton" type="button" onclick="transferType()">送货型号转换</button>
+			<!-- <button id="transfertypebutton" type="button" onclick="transferType()">送货型号转换</button> -->
+			
 			
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<h3>上传单据</h3>

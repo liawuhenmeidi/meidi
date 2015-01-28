@@ -218,11 +218,16 @@ function initButton(){
 		transferType();
 	});
 	scrollFrom = $('#scrollButton');
-	fix = $('#scrollButton').offset().top;
+	if($('#baseTable tr').length > 0){
+		fix = $('#' + $('#baseTable tr')[0].cells[0].id).offset().top;
+	}else{
+		fix = $('#scrollButton').offset().top;
+	}
 	$('#scrollButton').click(scrollToNext);
 }
 
 
+var off = 0;
 function scrollToNext(){
 	var id1col = 15;
 	var id2col = 7;
@@ -232,9 +237,10 @@ function scrollToNext(){
 			 var checkbox1 = $('#'+ this.cells[cols-id1col].id);
 			 var checkbox2 = $('#'+ this.cells[cols-id2col].id);
 			 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked' && checkbox1.offset().top > scrollFrom.offset().top){
-				 scrollFrom = checkbox1;
-				 $('div').animate({scrollTop:scrollFrom.offset().top - fix}, 800);
-				 return false;
+				scrollFrom = checkbox1;
+				var off = scrollFrom.offset().top + off;
+				$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + off}, 800);
+				return false;
 			 }
 			 
 		 });
@@ -254,6 +260,24 @@ function initPageChange(){
 		}
 
 	});
+}
+
+function clearSession(){
+	$.ajax({ 
+        type:"post", 
+         url:"AjaxHandler.jsp",
+         //data:"method=list_pic&page="+pageCount,
+         data:"action=clearsession",
+         dataType: "",  
+         success: function (data) {
+
+        	
+           },  
+          error: function (XMLHttpRequest, textStatus, errorThrown) { 
+        	  alert('类型转换失败，请刷新重试');
+        	  return false ;
+            } 
+           }); 
 }
 
 function changeColor(){
@@ -346,6 +370,7 @@ function transferType(){
 				transType2.text('');
 			 });
 		}
+		clearSession();
 		$('#transferType').val('');
 		type_switch = true;
 	}
@@ -654,7 +679,7 @@ function baseFormSubmit(){
        </tr>
    <tr>
    <td align="center" width="100%">
-    <div style="overflow-y:auto; width:100%;height:500px">
+    <div id="maindiv" style="overflow-y:auto; width:100%;height:500px">
 
 <table id="baseTable" align="center" width="100%" cellspacing="1" border="2px" >
 		
@@ -705,7 +730,7 @@ function baseFormSubmit(){
 			<td align="center" id=""><%=inter++ %></td> 
 			<td align="center" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>upload"><input <%if(isChecked) {%>checked="checked"<% }%> <%if(uploadsideDisabled) {%>disabled="disabled"<% }%> name="uploadside"  type="checkbox" value="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>" onclick="initrightcount(this)"/></td>		
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadshop" ><%= afterMatchOrders.get(i).getUploadSideShop() %></td>
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadposno"><a href="#" onClick="javascript:window.open('./uploadOrderDetail.jsp?id=<%=afterMatchOrders.get(i).getUploadOrder().getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></a></td>
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadposno"><a href="#" onClick="javascript:window.open('./uploadOrderDetail.jsp?id=<%=afterMatchOrders.get(i).getUploadOrder().getId() %>&oid=<%=afterMatchOrders.get(i).getDBOrder().getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></a></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadsaletime"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadtype"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadtype_trans" bak="<%=afterMatchOrders.get(i).getDBSideType_trans() %>"></td> 

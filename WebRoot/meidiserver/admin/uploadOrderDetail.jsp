@@ -1,6 +1,7 @@
+<%@page import="order.OrderManager"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="utill.StringUtill"%>
-<%@ page language="java" import="java.util.*,user.*,wilson.upload.*,utill.*,orderproduct.*,product.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,user.*,wilson.upload.*,utill.*,orderproduct.*,product.*,order.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%      
 
@@ -12,6 +13,7 @@ String submit = request.getParameter("submit");
 
 
 UploadOrder uo = new UploadOrder();
+Order o = null;
 List<OrderProduct> type_trans = new ArrayList<OrderProduct>();
 
 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
@@ -28,6 +30,14 @@ try{
 		return;
 	}
 	int id = Integer.parseInt(idSTR);
+	
+	
+	String oidSTR = request.getParameter("oid");
+	int oid = 0;
+	if(!StringUtill.isNull(oidSTR)){
+		oid = Integer.parseInt(oidSTR);
+	}
+	
 	
 	List<OrderProduct> type_transList = new ArrayList<OrderProduct>();
 	type_transList = (List<OrderProduct>)request.getSession().getAttribute("type_transList");
@@ -86,6 +96,10 @@ try{
 	
 	
 	uo = UploadManager.getUploadOrderById(id);
+
+	if(oid != 0){
+		o = OrderManager.getOrderID(user, oid);
+	}
 	
 	
 	if(!StringUtill.isNull(uo.getSaleTime())){
@@ -144,6 +158,79 @@ function autoCompleteInit(){
 	}
 }
 
+function initPrice(){
+	var rows = calcRows();
+	var content = $('#saleprice').val() + ",";
+	for(var i = 0 ; i < rows ; i ++){
+		content += $('#' + 'sendType' + i ).val() + ":";
+		content += $('#' + 'sendNum' + i ).val() + ",";
+	}
+	
+	$.ajax({ 
+        type:"post", 
+         url:"AjaxHandler.jsp",
+         //data:"method=list_pic&page="+pageCount,
+         data:"action=getprice&content=" + content,
+         dataType: "",  
+         success: function (data) {
+        	 //refresh
+        	for(var i = 0 ; i < rows ; i ++){
+        		 $('#' + 'sendPrice' + i ).val(data.split(",")[i]);
+        	}
+           },  
+          error: function (XMLHttpRequest, textStatus, errorThrown) { 
+        	  return false ;
+            } 
+           }); 
+}
+
+function checkFullFill(){
+	var rows = calcRows();
+	var result  = false;
+	for(var i = 0 ; i < rows ; i ++){
+		if($('#' + 'sendNum' + i ).val() == "")
+			return result;
+		
+		if($('#' + 'sendType' + i ).val() == "")
+			return result;
+	}
+	
+	
+	for(var i = 0 ; i < rows ; i ++){
+		if(isNaN(Number($('#' + 'sendNum' + i ).val()))){
+			alert('数量或者单价请填写数字!');
+			return result;
+		}
+		if(isNaN(Number($('#' + 'sendPrice' + i ).val()))){
+			alert('数量或者单价请填写数字!');
+			return result;
+		}
+	}
+	
+	result = true;
+	return result;
+}
+
+function onBlurInit(){
+	var rows = calcRows();
+	for(var i = 0 ; i < rows ; i ++){
+		$('#' + 'sendType' + i ).blur( function() {
+			if($('#' + 'sendNum' + i ).val() != ""){
+				if(checkFullFill()){
+					initPrice();
+				}
+			}
+	    });
+		$('#' + 'sendNum' + i ).blur( function() {
+			if($('#' + 'sendType' + i ).val() != ""){
+				if(checkFullFill()){
+					initPrice();
+				}
+			}
+	    });
+	}
+}
+
 function checkedd(){
 	// window.opener.document.getElementById("refresh").value ="refresh";
 	//parent.location.reload(); 
@@ -160,11 +247,11 @@ function checkedd(){
 	}
 	
 	for(var i = 0 ; i < rows ; i ++){
-		if(isNaN(Number($('#' + 'sendNum' + i ).val()))){
+		if(isNaN(Number($('#' + 'sendNum' + i ).val())) ||$('#' + 'sendNum' + i ).val() == ""){
 			alert('数量或者单价请填写数字!');
 			return false;
 		}
-		if(isNaN(Number($('#' + 'sendPrice' + i ).val()))){
+		if(isNaN(Number($('#' + 'sendPrice' + i ).val())) || $('#' + 'sendPrice' + i ).val() == ""){
 			alert('数量或者单价请填写数字!');
 			return false;
 		}
@@ -174,7 +261,7 @@ function checkedd(){
 		send += ",";
 	}
 	$('#<%=uo.getId()%>uploadshop', window.opener.document).text($('#shop').val());
-	$('#<%=uo.getId()%>uploadposno', window.opener.document).html("<a href='#' onClick=\"javascript:window.open('./uploadOrderDetail.jsp?id=" + <%=uo.getId()%> + "', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')\"  >" + $('#pos').val() + "</a>");
+	$('#<%=uo.getId()%>uploadposno', window.opener.document).html("<a href='#' onClick=\"javascript:window.open('./uploadOrderDetail.jsp?id=" + <%=uo.getId()%> + "&oid=" + <%=o==null?"0":o.getId()%> + "', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')\"  >" + $('#pos').val() + "</a>");
 	$('#<%=uo.getId()%>uploadsaletime', window.opener.document).text($('#saletime').val().replace(/-/g,""));
 	$('#<%=uo.getId()%>uploadtype', window.opener.document).text($('#saletype').val());
 	$('#<%=uo.getId()%>uploadcount', window.opener.document).text($('#salenum').val());
@@ -192,13 +279,17 @@ function calcRows(){
 
 function addSend(){
 	var rows = calcRows();
-	var newLine = "<tr class='asc'><td align='center' >送货型号/数量/单价<input type='button' id='delSendButton' style='background-color:red;font-size:5px;'  value='删除' onclick='delSend($(this))'/></td><td align='center' >送货型号<input type='text'  name='sendType" + rows +"' id='sendType" + rows +"' value=''/><br/>数量<input type='text'  name='sendNum" + rows +"' id='sendNum" + rows +"' value=''/><br/>单价<input type='text'  name='sendPrice" + rows +"' id='sendPrice" + rows +"' value=''/></td></tr>";
+	var newLine = "<tr class='asc'><td align='center' >送货型号/数量/单价<input type='button' id='delSendButton' style='background-color:red;font-size:5px;'  value='删除' onclick='delSend($(this))'/></td><td align='center' >送货型号<input type='text'  name='sendType" + rows +"' id='sendType" + rows +"' value=''/><br/>数量<input type='text'  name='sendNum" + rows +"' id='sendNum" + rows +"' value=''/><br/>单价<input type='text'  name='sendPrice" + rows +"' id='sendPrice" + rows +"' value='' readonly='readonly'/></td></tr>";
 	$('#addSendButton').parent().parent().before(newLine);
 	autoCompleteInit();
+	onBlurInit();
 }
 
 function delSend(obj){
 	obj.parent().parent().remove();
+	if(checkFullFill()){
+		initPrice();
+	}
 }
 </script>
 <div style="position:fixed;width:100%;height:100px;">
@@ -262,8 +353,35 @@ function delSend(obj){
 	        <input type="text"  name="saleprice" id="saleprice" value="<%=String.valueOf(uo.getSalePrice()) %>" readonly="readonly" />
 			</td>
 		</tr>
+		
 		<%
-		for(int i = 0 ; i < type_trans.size(); i ++){	
+		int i = 0 ;
+		if(o != null && o.isDiangma()){
+			String output = OrderProductService.getSendTypeAndCountAndPrice(o, uo, false);
+			//MXG15-22:1:123.2,SS15T:2:155.0
+			for(i = 0 ; i < output.split(",").length ; i ++){
+				String tmp_type = output.split(",")[i].split(":")[0];
+				String tmp_num = output.split(",")[i].split(":")[1];
+				String tmp_price = output.split(",")[i].split(":")[2];
+			
+		%>
+		<tr class="asc">	 
+			<td align="center" >
+			送货型号/数量/单价
+			</td>
+			<td align="center" >
+	        	送货型号<input type="text"  name="sendType<%=i %>" id="sendType<%=i %>" value="<%=tmp_type%>" readonly="readonly"/><br/>
+	       		数量<input type="text"  name="sendNum<%=i %>" id="sendNum<%=i %>" value="<%=tmp_num%>" readonly="readonly"/><br/>
+	      		单价<input type="text"  name="sendPrice<%=i %>" id="sendPrice<%=i %>" value="<%=tmp_price%>" readonly="readonly"/>
+			</td>
+		</tr>
+		<%
+			}
+		}
+		%>
+		
+		<%
+		for(int j = 0 ; j < type_trans.size(); j ++){	
 		%>
 
 		<tr class="asc">	 
@@ -271,12 +389,15 @@ function delSend(obj){
 			送货型号/数量/单价<input type="button" id="delSendButton" style="background-color:red;font-size:5px;"  value="删除" onclick="delSend($(this))"/>
 			</td>
 			<td align="center" >
-	        	送货型号<input type="text"  name="sendType<%=i %>" id="sendType<%=i %>" value="<%=type_trans.get(i).getTypeName()%>"/><br/>
-	       		数量<input type="text"  name="sendNum<%=i %>" id="sendNum<%=i %>" value="<%=type_trans.get(i).getCount()%>"/><br/>
-	      		单价<input type="text"  name="sendPrice<%=i %>" id="sendPrice<%=i %>" value="<%=type_trans.get(i).getPrice()%>"/>
+	        	送货型号<input type="text"  name="sendType<%=i %>" id="sendType<%=i %>" value="<%=type_trans.get(j).getTypeName()%>"/><br/>
+	       		数量<input type="text"  name="sendNum<%=i %>" id="sendNum<%=i %>" value="<%=type_trans.get(j).getCount()%>"/><br/>
+	      		单价<input type="text"  name="sendPrice<%=i %>" id="sendPrice<%=i %>" value="<%=type_trans.get(j).getPrice()%>" readonly="readonly"/>
 			</td>
 		</tr>
-		<%} %>
+		<%
+			i++;
+		} 
+		%>
 		<tr class="asc">
 			<td width="100%" class="center" colspan="2">
 				<input type="submit"  style="background-color:red;font-size:25px;"  value="确认修改" />
