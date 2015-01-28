@@ -165,6 +165,10 @@ tr strong,tr td {white-space:normal}
 
 
 var checkBoxStatus = '<%=checkBoxStatus%>';
+
+var scrollFrom;
+var fix;
+
 $(function () {
 	initButton();
 	initCheckBox();
@@ -176,7 +180,74 @@ function initButton(){
 	$('#transferbutton').click(function (){
 		transferShopName();
 	});
+	if($('#baseTable tr').length > 0){
+		scrollFrom = $('#baseTable tr')[0];
+		fix = $('#' + $('#baseTable tr')[0].cells[0].id).offset().top;
+	}else{
+		scrollFrom = $('#scrollButton');
+		fix = $('#scrollButton').offset().top;
+	}
+	$('#scrollNext').click(scrollToNext);
+	$('#scrollPrev').click(scrollToPrev);
 }
+
+function trIsChecked(tr){
+
+	var checkbox1 = $(tr).find('input')[0];
+	var checkbox2 = $(tr).find('input')[1];
+	if(checkbox1.checked && checkbox2.checked){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function scrollToPrev(){
+	
+	if($(scrollFrom).index() == 0){
+		//到最后一行了
+		
+		if(trIsChecked(scrollFrom)){
+			//滚到这个位置	
+			$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + $('#maindiv').scrollTop()}, 800);
+		}
+	}else{
+		
+		if(trIsChecked(scrollFrom)){
+			//滚到这个位置	
+			$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + $('#maindiv').scrollTop()}, 800);
+			scrollFrom = $(scrollFrom).prev();
+		}else{
+			scrollFrom = $(scrollFrom).prev();
+			scrollToPrev();
+		}
+		
+	}
+}
+
+function scrollToNext(){
+	
+	if($(scrollFrom).index() == $('#baseTable tr').length - 1){
+		//到最后一行了
+		
+		if(trIsChecked(scrollFrom)){
+			//滚到这个位置	
+			$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + $('#maindiv').scrollTop()}, 800);
+		}
+	}else{
+		
+		if(trIsChecked(scrollFrom)){
+			//滚到这个位置	
+			$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + $('#maindiv').scrollTop()}, 800);
+			scrollFrom = $(scrollFrom).next();
+		}else{
+			scrollFrom = $(scrollFrom).next();
+			scrollToNext();
+		}
+		
+	}
+}
+
 
 function initPageChange(){
 	$('#pagechange').change(function (){
@@ -414,6 +485,8 @@ function baseFormSubmit(){
 			
 			<td  align="center">
 			 <label id="rightcount"></label>
+			 <button type="button" id="scrollNext">下一个</button>
+			 <button type="button" id="scrollPrev">上一个</button>
 			</td>
 			<td colspan="5" align="center">
 			<button id="transferbutton" type="button">店名转换</button>
@@ -506,12 +579,12 @@ function baseFormSubmit(){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadtype"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadcount"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
-		<input type="hidden" value="" id="transferShop" name="transferShop"/>
+		
 		<%	
 			
 		}
 		%>
-		
+		<input type="hidden" value="" id="transferShop" name="transferShop"/>
 </table> 
 </form>
 

@@ -217,33 +217,72 @@ function initButton(){
 	$('#transfertypebutton').click(function (){
 		transferType();
 	});
-	scrollFrom = $('#scrollButton');
+	
 	if($('#baseTable tr').length > 0){
+		scrollFrom = $('#baseTable tr')[0];
 		fix = $('#' + $('#baseTable tr')[0].cells[0].id).offset().top;
 	}else{
+		scrollFrom = $('#scrollButton');
 		fix = $('#scrollButton').offset().top;
 	}
-	$('#scrollButton').click(scrollToNext);
+	$('#scrollNext').click(scrollToNext);
+	$('#scrollPrev').click(scrollToPrev);
 }
 
+function trIsChecked(tr){
 
-var off = 0;
+	var checkbox1 = $(tr).find('input')[0];
+	var checkbox2 = $(tr).find('input')[1];
+	if(checkbox1.checked && checkbox2.checked){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function scrollToPrev(){
+	
+	if($(scrollFrom).index() == 0){
+		//到最后一行了
+		
+		if(trIsChecked(scrollFrom)){
+			//滚到这个位置	
+			$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + $('#maindiv').scrollTop()}, 800);
+		}
+	}else{
+		
+		if(trIsChecked(scrollFrom)){
+			//滚到这个位置	
+			$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + $('#maindiv').scrollTop()}, 800);
+			scrollFrom = $(scrollFrom).prev();
+		}else{
+			scrollFrom = $(scrollFrom).prev();
+			scrollToPrev();
+		}
+		
+	}
+}
+
 function scrollToNext(){
-	var id1col = 15;
-	var id2col = 7;
-	if($('#baseTable tr').length > 0){
-		var cols = $('#baseTable tr')[0].cells.length;
-		 $('#baseTable tr').each(function () { 
-			 var checkbox1 = $('#'+ this.cells[cols-id1col].id);
-			 var checkbox2 = $('#'+ this.cells[cols-id2col].id);
-			 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked' && checkbox1.offset().top > scrollFrom.offset().top){
-				scrollFrom = checkbox1;
-				var off = scrollFrom.offset().top + off;
-				$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + off}, 800);
-				return false;
-			 }
-			 
-		 });
+	
+	if($(scrollFrom).index() == $('#baseTable tr').length - 1){
+		//到最后一行了
+		
+		if(trIsChecked(scrollFrom)){
+			//滚到这个位置	
+			$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + $('#maindiv').scrollTop()}, 800);
+		}
+	}else{
+		
+		if(trIsChecked(scrollFrom)){
+			//滚到这个位置	
+			$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + $('#maindiv').scrollTop()}, 800);
+			scrollFrom = $(scrollFrom).next();
+		}else{
+			scrollFrom = $(scrollFrom).next();
+			scrollToNext();
+		}
+		
 	}
 }
 
@@ -295,6 +334,7 @@ function changeColor(){
 
 var shop_switch = true;
 var type_switch = true;
+
 
 function transferShopName(){
 	if(shop_switch){
@@ -632,7 +672,8 @@ function baseFormSubmit(){
 			<td  align="center">
 			 <label id="rightcount"></label><br/>
 			 <label id="rightTotal"></label><br/>
-			 <button type="button" id="scrollButton">下一个匹配项</button>
+			 <button type="button" id="scrollNext">下一个</button>
+			 <button type="button" id="scrollPrev">上一个</button>
 			</td>
 			<td colspan="6" align="center">
 			<button id="transferbutton" type="button">店名转换</button>
@@ -736,12 +777,13 @@ function baseFormSubmit(){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadtype_trans" bak="<%=afterMatchOrders.get(i).getDBSideType_trans() %>"></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadcount"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
-		<input type="hidden" value="" id="transferShop" name="transferShop"/>
-		<input type="hidden" value="" id="transferType" name="transferType" />
+		
 		<%	
 			
 		}
 		%>
+		<input type="hidden" value="" id="transferShop" name="transferShop"/>
+		<input type="hidden" value="" id="transferType" name="transferType" />
 		
 </table> 
 </form>
