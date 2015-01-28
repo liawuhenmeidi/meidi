@@ -603,16 +603,16 @@ function saverule(){
 				%>
 			</select>
 			<button id="addbtn1">增加</button>
-			<!-- <button id="delbtn1">删除本项</button>  -->
+			<button id="delbtn1">删除本项</button>
         </td> 
         <td align="center">
         	<select id="shop" name="shop">
         		<option value="all">全部</option> 
        		</select>
-       		<!--  
+       		 
        		<button id="addbtn2">增加</button>
 			<button id="delbtn2">删除本项</button>
-			-->
+			
         </td>
         <td align="center">导购员</td>
        </tr>
