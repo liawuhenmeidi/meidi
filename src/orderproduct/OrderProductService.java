@@ -169,7 +169,8 @@ public class OrderProductService {
 				//算
 				for(int i = 1 ; i < input.split(",").length ; i ++){
 					String type = input.split(",")[i].split(":")[0];
-					result += ProductService.gettypemap().get(type).getStockprice() / dbtotalPrice  *  uptotalPrice + ",";
+					
+					result += String.format("%.2f",ProductService.gettypemap().get(type).getStockprice() / dbtotalPrice  *  uptotalPrice) + ",";
 				}
 				
 			}else{
