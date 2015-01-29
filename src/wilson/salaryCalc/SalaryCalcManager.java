@@ -539,6 +539,10 @@ public class SalaryCalcManager {
 		return result;
 	}
 	
+	public static void main(String[] args) {
+		Object a = null;
+		boolean b = (Boolean)a;
+	}
 	public static List<SalaryResult> calcSalary(List<UploadOrder> uploadOrders,List<UploadSalaryModel> salaryModels,HttpServletRequest request){
 		List<UploadOrder> unCalcUploadOrders = new ArrayList<UploadOrder>();
 		if(uploadOrders == null || salaryModels == null ){

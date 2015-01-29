@@ -713,7 +713,7 @@ function baseFormSubmit(){
        </tr>
    <tr>
    <td align="center" width="100%">
-    <div style="overflow-y:auto; width:100%;height:500px">
+    <div id="maindiv" style="overflow-y:auto; width:100%;height:500px">
 
 <table id="baseTable"  align="center" width="100%" cellspacing="1" border="2px" >
 		

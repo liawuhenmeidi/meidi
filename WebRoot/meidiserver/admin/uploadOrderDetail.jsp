@@ -11,6 +11,30 @@ User user = (User)session.getAttribute("user");
 String submit = request.getParameter("submit");
 
 
+boolean sendTypeSwitch = false;
+try{
+	if(session.getAttribute("sendtypeswitch") != null){
+		String tmp_bool = (String)session.getAttribute("sendtypeswitch");
+		sendTypeSwitch = Boolean.parseBoolean(tmp_bool);
+	}
+}catch(Exception e){
+	e.printStackTrace();
+}
+
+
+List<String> tmpList = new ArrayList<String>();
+try{
+	if(session.getAttribute("sendType_changed_List") != null){
+		tmpList = (List<String>)request.getSession().getAttribute("sendType_changed_List");
+	}
+}catch(Exception e){
+	e.printStackTrace();
+}
+boolean containThis = true;
+
+
+
+
 
 UploadOrder uo = new UploadOrder();
 Order o = null;
@@ -38,6 +62,8 @@ try{
 		oid = Integer.parseInt(oidSTR);
 	}
 	
+	
+	containThis = tmpList.contains(idSTR);
 	
 	List<OrderProduct> type_transList = new ArrayList<OrderProduct>();
 	type_transList = (List<OrderProduct>)request.getSession().getAttribute("type_transList");
@@ -84,6 +110,10 @@ try{
 		uo.setSalePrice(Double.parseDouble(saleprice));
 		
 		if(UploadManager.saveUploadOrder(uo)){
+				
+			tmpList.add(idSTR);
+			request.getSession().setAttribute("sendType_changed_List", tmpList);
+
 			out.print("<script>alert('操作成功!!');window.close()</script>"); 
 			return;
 		}else{
@@ -279,14 +309,19 @@ function calcRows(){
 
 function addSend(){
 	var rows = calcRows();
-	var newLine = "<tr class='asc'><td align='center' >送货型号/数量/单价<input type='button' id='delSendButton' style='background-color:red;font-size:5px;'  value='删除' onclick='delSend($(this))'/></td><td align='center' >送货型号<input type='text'  name='sendType" + rows +"' id='sendType" + rows +"' value=''/><br/>数量<input type='text'  name='sendNum" + rows +"' id='sendNum" + rows +"' value=''/><br/>单价<input type='text'  name='sendPrice" + rows +"' id='sendPrice" + rows +"' value='' readonly='readonly'/></td></tr>";
+	var newLine = "<tr class='asc'><td align='center' >送货型号/数量/单价</td><td align='center' >送货型号<input type='text'  name='sendType" + rows +"' id='sendType" + rows +"' value=''/><br/>数量<input type='text'  name='sendNum" + rows +"' id='sendNum" + rows +"' value=''/><br/>单价<input type='text'  name='sendPrice" + rows +"' id='sendPrice" + rows +"' value='' readonly='readonly'/></td></tr>";
 	$('#addSendButton').parent().parent().before(newLine);
 	autoCompleteInit();
 	onBlurInit();
 }
 
-function delSend(obj){
-	obj.parent().parent().remove();
+function delSend(){
+	var rows = calcRows();
+	if(rows > 1){
+		var i  = rows -1;
+		$('#' + 'sendNum' + i ).parent().parent().remove();
+	}
+	
 	if(checkFullFill()){
 		initPrice();
 	}
@@ -353,10 +388,15 @@ function delSend(obj){
 	        <input type="text"  name="saleprice" id="saleprice" value="<%=String.valueOf(uo.getSalePrice()) %>" readonly="readonly" />
 			</td>
 		</tr>
+
+<%
+if(sendTypeSwitch){
+%>
 		
+
 		<%
 		int i = 0 ;
-		if(o != null && o.isDiangma()){
+		if(o != null && o.isDiangma() && !containThis){
 			String output = OrderProductService.getSendTypeAndCountAndPrice(o, uo, false);
 			//MXG15-22:1:123.2,SS15T:2:155.0
 			for(i = 0 ; i < output.split(",").length ; i ++){
@@ -386,7 +426,7 @@ function delSend(obj){
 
 		<tr class="asc">	 
 			<td align="center" >
-			送货型号/数量/单价<input type="button" id="delSendButton" style="background-color:red;font-size:5px;"  value="删除" onclick="delSend($(this))"/>
+			送货型号/数量/单价
 			</td>
 			<td align="center" >
 	        	送货型号<input type="text"  name="sendType<%=i %>" id="sendType<%=i %>" value="<%=type_trans.get(j).getTypeName()%>"/><br/>
@@ -398,10 +438,16 @@ function delSend(obj){
 			i++;
 		} 
 		%>
+<%
+} 
+%>
 		<tr class="asc">
 			<td width="100%" class="center" colspan="2">
 				<input type="submit"  style="background-color:red;font-size:25px;"  value="确认修改" />
+				<%if(sendTypeSwitch){ %>
 				<input type="button" id="addSendButton" style="background-color:red;font-size:25px;"  value="添加送货型号" onclick="addSend()"/>
+				<input type="button" id="delSendButton" style="background-color:red;font-size:25px;"  value="删除送货型号" onclick="delSend()"/>
+				<%} %>
 			</td>
 		</tr>
 	
