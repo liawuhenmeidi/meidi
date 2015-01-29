@@ -376,6 +376,22 @@ if(showResult.size() > 0 ){
 		%>
 		<tr bgcolor='<%=total?backgroundColor:"" %>'>
 			<td><%= i+1 %></td>
+			
+			<%if(!total){%>
+			<td id="<%=showResult.get(i).getId() %>filename"><%=total?"总计":showResult.get(i).getUploadOrder().getName() %></td>
+			<td id="<%=showResult.get(i).getId() %>shop"><%=showResult.get(i).getUploadOrder().getShop() %></td>
+			<td id="<%=showResult.get(i).getId() %>pos"><%=showResult.get(i).getUploadOrder().getPosNo() %></td>
+			<td id="<%=showResult.get(i).getId() %>saletime"><%=showResult.get(i).getUploadOrder().getSaleTime() %></td>
+			<td id="<%=showResult.get(i).getId() %>catergory"><%=showResult.get(i).getSalaryModel() == null?"":showResult.get(i).getSalaryModel().getCatergory() %></td>
+			<td id="<%=showResult.get(i).getId() %>salemanname"><%=showResult.get(i).getSaleManName() %></td>
+			<td id="<%=showResult.get(i).getId() %>saletype"><a  <%if(editable){ %>href="#" onClick="javascript:window.open('./salarymodelChange.jsp?id=<%=showResult.get(i).getSalaryModel().getId()%>&salaryfilename=<%=name %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" <%} %> ><%=showResult.get(i).getUploadOrder().getType()  %></a></td>
+			<td id="<%=showResult.get(i).getId() %>saletype_trans"><%=showResult.get(i).getUploadOrder().getSaleManName()  %></td>
+			<td id="<%=showResult.get(i).getId() %>num" value="<%=showResult.get(i).getUploadOrder().getNum() %>"><%=showResult.get(i).getUploadOrder().getNum() %></td>
+			<td id="<%=showResult.get(i).getId() %>saleprice" value="<%=showResult.get(i).getUploadOrder().getSalePrice() %>"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
+			<td id="<%=showResult.get(i).getId() %>salary" value="<%=showResult.get(i).getPrintSalary() %>" <%if(ifFontColor){ %> style="background:<%=fontColor %>" <%} %>><a  <%if(editable){ %>href="#" onClick="javascript:window.open('./salaryResultDetail.jsp?id=<%=showResult.get(i).getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" <%} %> ><%=showResult.get(i).getPrintSalary() %></a></td>
+			<%
+			}else{
+			%>
 			<td id="<%=showResult.get(i).getId() %>filename"><%=total?"总计":showResult.get(i).getUploadOrder().getName() %></td>
 			<td id="<%=showResult.get(i).getId() %>shop"><%=showResult.get(i).getUploadOrder().getShop() %></td>
 			<td id="<%=showResult.get(i).getId() %>pos"><%=showResult.get(i).getUploadOrder().getPosNo() %></td>
@@ -384,13 +400,6 @@ if(showResult.size() > 0 ){
 			<td id="<%=showResult.get(i).getId() %>salemanname"><%=showResult.get(i).getSaleManName() %></td>
 			<td id="<%=showResult.get(i).getId() %>saletype"><%=showResult.get(i).getUploadOrder().getType()  %></td>
 			<td id="<%=showResult.get(i).getId() %>saletype_trans"><%=showResult.get(i).getUploadOrder().getSaleManName()  %></td>
-			<%if(!total){%>
-			<td id="<%=showResult.get(i).getId() %>num" value="<%=showResult.get(i).getUploadOrder().getNum() %>"><%=showResult.get(i).getUploadOrder().getNum() %></td>
-			<td id="<%=showResult.get(i).getId() %>saleprice" value="<%=showResult.get(i).getUploadOrder().getSalePrice() %>"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
-			<td id="<%=showResult.get(i).getId() %>salary" value="<%=showResult.get(i).getPrintSalary() %>" <%if(ifFontColor){ %> style="background:<%=fontColor %>" <%} %>><a  <%if(editable){ %>href="#" onClick="javascript:window.open('./salaryResultDetail.jsp?id=<%=showResult.get(i).getId()%>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')" <%} %> ><%=showResult.get(i).getPrintSalary() %></a></td>
-			<%
-			}else{
-			%>
 			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>num" value="total"><%=showResult.get(i).getUploadOrder().getNum() %></td>
 			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>saleprice" value="total"><%=showResult.get(i).getUploadOrder().getSalePrice() %></td>
 			<td id="<%=filetotal?"filetotal":StringUtill.shortUUID() %>salary" value="total" <%if(ifFontColor){ %> style="background:<%=fontColor %>" <%} %>><%=showResult.get(i).getPrintSalary() %></td>

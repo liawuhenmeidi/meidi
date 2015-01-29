@@ -223,7 +223,7 @@ function initButton(){
 		fix = $('#' + $('#baseTable tr')[0].cells[0].id).offset().top;
 	}else{
 		scrollFrom = $('#scrollButton');
-		fix = $('#scrollButton').offset().top;
+		fix = 0;
 	}
 	$('#scrollNext').click(scrollToNext);
 	$('#scrollPrev').click(scrollToPrev);

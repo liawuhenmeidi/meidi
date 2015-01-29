@@ -4,6 +4,7 @@ import utill.StringUtill;
 
 public class UploadSalaryModel {
 	
+	public static final int TEMP_OBJ = -2;
 	private int id = 0 ;//id
 	private String name = ""; //文件内部的命名
 	private String endTime = "3014-01-01 00:00:00"; //生效时间

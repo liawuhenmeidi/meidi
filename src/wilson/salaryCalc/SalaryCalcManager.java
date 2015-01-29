@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 
 import product.ProductService;
 
+import utill.StringUtill;
 import wilson.catergory.CatergoryManager;
 import wilson.catergory.CatergoryMaping;
 import wilson.catergory.HiddenCatergoryMapingManager;
@@ -414,6 +415,12 @@ public class SalaryCalcManager {
 		return result;
 	}
 	
+	public static SalaryResult matchModel(UploadOrder tempOrder,UploadSalaryModel salaryModels){
+		List<UploadSalaryModel> tmp = new ArrayList<UploadSalaryModel>();
+		tmp.add(salaryModels);
+		return matchModel(tempOrder, tmp); 
+	}
+	
 	public static SalaryResult matchModel(UploadOrder tempOrder,List<UploadSalaryModel> salaryModels){
 		SalaryResult result = null;
 		tempOrder.removeCharecterFromType();
@@ -498,6 +505,37 @@ public class SalaryCalcManager {
 			//返回空
 		}
 		
+		return result;
+	}
+	
+	public static boolean recalcSalary(String filename,UploadSalaryModel salarymodel){
+		boolean result = false;
+		List<SalaryResult> showResult = new ArrayList<SalaryResult>();
+		if(!StringUtill.isNull(filename)){
+
+			showResult = SalaryCalcManager.getSalaryResultByName(filename);
+			showResult = SalaryCalcManager.initSalaryModel(showResult);
+			
+			List<SalaryResult> output = new ArrayList<SalaryResult>();
+			SalaryResult sr = new SalaryResult();
+			for(int i = 0 ; i < showResult.size(); i ++){
+				sr = new SalaryResult();
+				sr = matchModel(showResult.get(i).getUploadOrder(), salarymodel);
+				if(sr == null){
+					continue;
+				}else{
+					if(!sr.calc()){
+						continue;
+					}
+					showResult.remove(i);
+					i --;
+					output.add(sr);
+				
+				}
+			}
+			showResult.addAll(output);
+
+		}
 		return result;
 	}
 	
@@ -589,6 +627,52 @@ public class SalaryCalcManager {
 		request.getSession().setAttribute("calcResult", result);
 		request.getSession().setAttribute("unCalcResult", unCalcUploadOrders);
 		return result;
+	}
+	
+	public static boolean alterSalaryResult(List<SalaryResult> salaryResult){
+		boolean flag = false;
+		if(salaryResult == null || salaryResult.size() <= 0){
+			return false;
+		}
+		
+		Connection conn = DB.getConn();
+		String sql = "update salaryresult set salary = ?,calctime=?,uploadsalarymodelid=? where id = ?";
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		
+		boolean autoCommit = false;
+		try {
+			//事务开始
+			logger.info("事务开始");
+			
+			autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			for(int i = 0 ; i < salaryResult.size() ; i ++){
+				pstmt.setDouble(1,salaryResult.get(i).getSalary());
+				pstmt.setString(2, salaryResult.get(i).getCalcTime());
+				pstmt.setInt(3, UploadSalaryModel.TEMP_OBJ);
+				pstmt.setInt(4,salaryResult.get(i).getId());
+				pstmt.executeUpdate();
+			}
+			
+			conn.commit();
+			conn.setAutoCommit(autoCommit);
+			
+			flag = true ;
+			logger.info("事务结束");
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				logger.info("回滚失败，请注意!!!");
+				e1.printStackTrace();
+			}
+			flag = false;
+			e.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return flag ;  
 	}
 	
 	public static boolean saveSalaryResult(List<SalaryResult> salaryResult,String catergoryMapingName){
