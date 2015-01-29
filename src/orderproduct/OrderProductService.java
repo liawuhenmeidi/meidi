@@ -125,7 +125,7 @@ public class OrderProductService {
 		
 		Double totalPrice_db = getTotalPrice(o);
 		int num = getTotalNum(o);
-		Double tmpPrice = 0.0;
+		String tmpPrice = "0.0";
 		
 		Product p = new Product();
 		
@@ -137,9 +137,9 @@ public class OrderProductService {
 				if(op.getStatues() == 0){
 					p = ProductService.getIDmap().get(Integer.parseInt(op.getSendType()));
 					if(totalPrice_db == 0){
-						tmpPrice = (uo.getSalePrice()/num)/op.getCount();
+						tmpPrice = DoubleUtill.getdoubleTwo((uo.getSalePrice()/num)/op.getCount());
 					}else{
-						tmpPrice = p.getStockprice() * uo.getSalePrice() * uo.getNum() / totalPrice_db;
+						tmpPrice = DoubleUtill.getdoubleTwo(p.getStockprice() * uo.getSalePrice() * uo.getNum() / totalPrice_db);
 					}
 					
 					result += op.getSendType() + ":" + op.getCount() + ":" + tmpPrice +  ",";
@@ -150,10 +150,10 @@ public class OrderProductService {
 				op = opList.get(i);
 				if(op.getStatues() == 0){
 					p = ProductService.getIDmap().get(Integer.parseInt(op.getSendType()));
-					if(totalPrice_db == 0){
-						tmpPrice = (uo.getSalePrice()/num)/op.getCount();
+					if(totalPrice_db == 0){   
+						tmpPrice = DoubleUtill.getdoubleTwo((uo.getSalePrice()/num)/op.getCount());
 					}else{
-						tmpPrice = p.getStockprice() * uo.getSalePrice() * uo.getNum() / totalPrice_db;
+						tmpPrice = DoubleUtill.getdoubleTwo(p.getStockprice() * uo.getSalePrice() * uo.getNum() / totalPrice_db);
 					}
 					result += p.getType() + ":" + op.getCount() + ":" + tmpPrice +  ",";
 				}

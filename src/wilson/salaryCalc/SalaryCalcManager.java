@@ -931,7 +931,7 @@ public class SalaryCalcManager {
 				}else{
 					//千万别改这里
 					tempResult.setSalary(null);
-					if(tempOrder.getChecked() == UploadOrder.UNCHECK){
+					if(tempOrder.getChecked() == UploadOrder.UNCHECK || tempOrder.getChecked() == UploadOrder.COMFIRMED){
 						tempResult.setStatus(SalaryResult.STATUS_UNCHECKOUT);
 					}else if(tempOrder.getChecked() == UploadOrder.CHECKED){
 						tempResult.setStatus(SalaryResult.STATUS_UNCALC);
