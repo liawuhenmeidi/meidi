@@ -190,6 +190,15 @@ public class UploadExportServlet extends HttpServlet {
 						t ++;
 					}
 					
+					if(0 == temp.getSendLength()){
+						label0  =   new  Label( 8 ,  j + 2,  temp.getType() );
+						sheet.addCell(label0);
+						label0  =   new  Label( 9 ,  j + 2,  String.valueOf(temp.getNum()) );
+						sheet.addCell(label0);
+						label0  =   new  Label( 10 ,  j + 2, String.valueOf(temp.getSalePrice()) );
+						sheet.addCell(label0);
+					}
+					
 					j++;
 					if(t > 0){
 						j = j + t -1;
