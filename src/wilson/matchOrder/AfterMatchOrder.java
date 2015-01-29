@@ -42,7 +42,7 @@ public class AfterMatchOrder {
 			DBSideType = dbOrder.getSendType();
 			
 			try {
-				DBSideType_trans = OrderProductService.getSendTypeAndCountAndPrice(dbOrder,this.uploadOrder,false);
+				DBSideType_trans = OrderProductService.getSendTypeAndCountAndPrice(dbOrder,this.uploadOrder,false,true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -105,7 +105,7 @@ public class AfterMatchOrder {
 				DBSideType = dbOrder.getSendType();
 
 				try {
-					DBSideType_trans = OrderProductService.getSendTypeAndCountAndPrice(dbOrder,uploadOrder,false);
+					DBSideType_trans = OrderProductService.getSendTypeAndCountAndPrice(dbOrder,uploadOrder,false,true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

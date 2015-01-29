@@ -406,7 +406,7 @@ function transferType(){
 				 var checkbox2 = $('#'+ this.cells[cols-id2col].id);
 				 var shop2 = $('#'+  this.cells[cols-shop2col].id);
 				 var transType2 = $('#'+  this.cells[cols-transType2col].id);
-				 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked' && shop2.attr('bgcolor') == color_dingma){
+				 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked'){
 					 output += checkbox2.find("input").val() + "," + checkbox1.find("input").val() + "_";
 					transType2.text(transType2.attr('bak'));
 				 }

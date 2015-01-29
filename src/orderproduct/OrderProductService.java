@@ -85,11 +85,22 @@ public class OrderProductService {
 		return getSendTypeAndCountAndPrice(o,uo,true);
 	}
 	
+	public static String getSendTypeAndCountAndPrice(Order o,UploadOrder uo,boolean alwaysGetData) throws Exception{
+		return getSendTypeAndCountAndPrice(o,uo,true,false);
+	}
+	
 	//Order o   =>  MXG15-22:1:123.2,SS15T:2:155.0
-	public static String getSendTypeAndCountAndPrice(Order o,UploadOrder uo,boolean id) throws Exception{
+	public static String getSendTypeAndCountAndPrice(Order o,UploadOrder uo,boolean id,boolean alwayGetData) throws Exception{
 		if(!o.isDiangma()){
-			return "";
+			if(alwayGetData){
+				return o.getSendType(0, "");
+			}else{
+				return "";
+			}
+			
 		}
+		
+		
 		OrderProduct op = new OrderProduct();
 		List<OrderProduct> opList = new ArrayList<OrderProduct>();
 		String result = "";
