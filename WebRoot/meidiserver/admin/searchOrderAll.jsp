@@ -267,9 +267,10 @@ function checkedd(){
 	                                
 			</td>
 		</tr>
-		<tr class="bsc">	 
+		<tr class="bsc">	  
 			<td align="center" >送货状态</td>  
-			<td align="center" colspan=3>
+			<td align="center" colspan=3> 
+			<input type="checkbox"  name="deliveryStatues" value="8"  id="deliveryStatues8" />已自提&nbsp;&nbsp;
                    <input type="checkbox"  name="deliveryStatues" value="1"  id="deliveryStatues1" />已送货&nbsp;&nbsp;
                  <input type="checkbox"  name="deliveryStatues"  value="2" id="deliveryStatues2"/>已安装 &nbsp;&nbsp;
                   <input type="checkbox"  name="deliveryStatues"  value="0" id="deliveryStatues0"/>未送货  &nbsp;&nbsp;

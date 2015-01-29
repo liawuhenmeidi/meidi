@@ -2,6 +2,7 @@
 <%  
 String id = request.getParameter("id");
 User user = (User)session.getAttribute("user");
+String statues = request.getParameter("statues");
 
 AfterSale af = null ; 
 String strorder= null;    
@@ -11,7 +12,7 @@ List<AfterSaleProduct> listasp = null ;
 if(!StringUtill.isNull(id)){  
 	af = AfterSaleManager.getAfterSaleID(user,id);
 	strorder = StringUtill.GetJson(af); 
-	listasp  = AfterSaleProductManager.getfault(af.getId());
+	listasp  = AfterSaleProductManager.getfault(af.getId(),statues);
 	listap = StringUtill.GetJson(listasp);  
 } 
 

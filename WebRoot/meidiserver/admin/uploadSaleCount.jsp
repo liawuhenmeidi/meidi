@@ -30,7 +30,7 @@
 		 list = UploadManager.getTotalUploadOrders(id); 
 		 check = true ;
 	}else if("total".equals(type)){
-		total = true ;    
+		total = true ;     
 		mapt = UploadManager.getTotalOrdersGroup(id,BasicUtill.sale,"");
 	}else if("typetotal".equals(type)){
 		total = true ;     
@@ -191,8 +191,8 @@ if(total){ %>
 			}
 		}
 		 count += sain.getNum();
-		 moneycount += sain.getSalePrice();
-		 bpmoneycount += sain.getSalePrice()*(1-sain.getBackPoint()/100);
+		 moneycount += Math.abs(sain.getSalePrice())*sain.getNum();
+		 bpmoneycount += Math.abs(sain.getSalePrice())*sain.getNum()*(1-sain.getBackPoint()/100);
 		
 	%>
 	<tr class="asc"  onclick="updateClass(this)"> 
@@ -201,12 +201,12 @@ if(total){ %>
 					<td align="center"><%=sain.getSaleTime() %></td>
 					<td align="center"><%=tpe %></td> 
 					<td align="center"><%=sain.getType() %></td>  
-					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()/sain.getNum())  %></td>
-					<td align="center"><%=sain.getNum() %></td> 
-					<td align="center"><%=sain.getSalePrice() %></td>
-					<td align="center"><%=sain.getBackPoint() %></td> 
-					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*(1-sain.getBackPoint()/100)/sain.getNum()) %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice())  %></td>
+					<td align="center"><%=sain.getNum() %></td>  
+					<td align="center"><%=Math.abs(sain.getSalePrice())*sain.getNum() %></td>
+					<td align="center"><%=sain.getBackPoint() %></td>  
 					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*(1-sain.getBackPoint()/100)) %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(Math.abs(sain.getSalePrice())*sain.getNum()*(1-sain.getBackPoint()/100)) %></td>
 	</tr>
 	<%
 	} 

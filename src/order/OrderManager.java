@@ -987,9 +987,11 @@ logger.info(sql);
 				   }    
 			   }else if(Group.aftersalerepare == type){
 				   if(Order.aftersalerepare == statues){
-					   sql = "select count(*) from mdorder where deliveryStatues in (2) and id in (select orderid from mdorderproduct where issubmit is null) ";
+					   sql = "select count(*) from mdorder where deliveryStatues in (2) and id in (select orderid from mdorderproduct where issubmit is null) "+search ; 
 				   }
-			   }                      
+			   }                       
+
+				
 	    }       
   	  if("".equals(sql)){ 
   		   count =  0; 

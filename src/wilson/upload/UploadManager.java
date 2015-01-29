@@ -350,9 +350,7 @@ public class UploadManager {
 				String orderid = input.split("_")[i].split(",")[1];
 				String uploadorderid = input.split("_")[i].split(",")[0];
 				
-				if(idMapInSession.containsKey(uploadorderid)){
-					continue;
-				}
+				
 				
 				Order o = new Order();
 				UploadOrder uo = new UploadOrder();
@@ -1156,13 +1154,13 @@ int count = 0 ;
 						upt.setCount(up.getNum());
 						upt.setName(up.getName());
 						upt.setType(relatype);
-						upt.setTotalcount(up.getSalePrice());
-						upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
+						upt.setTotalcount(Math.abs(up.getSalePrice())*up.getNum());
+						upt.setTatalbreakcount(Math.abs(up.getSalePrice())*up.getNum()*(1-up.getBackPoint()/100));
 						branchname.put(relatype,upt); 
 					}else {
 						upt.setCount(upt.getCount()+up.getNum());
-						upt.setTotalcount(upt.getTotalcount()+up.getSalePrice());  
-						upt.setTatalbreakcount(upt.getTatalbreakcount()+up.getSalePrice()*(1-up.getBackPoint()/100));
+						upt.setTotalcount(upt.getTotalcount()+Math.abs(up.getSalePrice())*up.getNum());  
+						upt.setTatalbreakcount(upt.getTatalbreakcount()+Math.abs(up.getSalePrice())*up.getNum()*(1-up.getBackPoint()/100));
 					} 
 			    }else if(BasicUtill.send == totaltype){
 			    	String sendtypestr = up.getSendType(); 
@@ -1265,13 +1263,13 @@ int count = 0 ;
 						upt.setCount(up.getNum());
 						upt.setName(up.getName());
 						upt.setType(relatype);
-						upt.setTotalcount(up.getSalePrice());
-						upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
-						branchname.put(up.getShop(),upt);  
+						upt.setTotalcount(Math.abs(up.getSalePrice())*up.getNum());
+						upt.setTatalbreakcount(Math.abs(up.getSalePrice())*up.getNum()*(1-up.getBackPoint()/100));
+						branchname.put(up.getShop(),upt);
 					}else {
 						upt.setCount(upt.getCount()+up.getNum());
-						upt.setTotalcount(upt.getTotalcount()+up.getSalePrice());  
-						upt.setTatalbreakcount(upt.getTatalbreakcount()+up.getSalePrice()*(1-up.getBackPoint()/100));
+						upt.setTotalcount(upt.getTotalcount()+Math.abs(up.getSalePrice())*up.getNum());  
+						upt.setTatalbreakcount(upt.getTatalbreakcount()+Math.abs(up.getSalePrice())*up.getNum()*(1-up.getBackPoint()/100));
 					}
 					
 			    }else if(BasicUtill.send == totaltype){
@@ -1386,13 +1384,13 @@ int count = 0 ;
 						upt.setCount(up.getNum());
 						upt.setName(up.getName());
 						upt.setType(relatype); 
-						upt.setTotalcount(up.getSalePrice());
-						upt.setTatalbreakcount(up.getSalePrice()*(1-up.getBackPoint()/100));
+						upt.setTotalcount(Math.abs(up.getSalePrice())*up.getNum());
+						upt.setTatalbreakcount(Math.abs(up.getSalePrice())*up.getNum()*(1-up.getBackPoint()/100));
 						map.put(relatype,upt); 
 					}else {
 						upt.setCount(upt.getCount()+up.getNum());
-						upt.setTotalcount(upt.getTotalcount()+up.getSalePrice());
-						upt.setTatalbreakcount(upt.getTatalbreakcount()+up.getSalePrice()*(1-up.getBackPoint()/100));
+						upt.setTotalcount(upt.getTotalcount()+Math.abs(up.getSalePrice())*up.getNum());
+						upt.setTatalbreakcount(upt.getTatalbreakcount()+Math.abs(up.getSalePrice())*up.getNum()*(1-up.getBackPoint()/100));
 					}
 					
 			    }else if(BasicUtill.send == totaltype){

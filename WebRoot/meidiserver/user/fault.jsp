@@ -7,8 +7,9 @@ if(StringUtill.isNull(statues)){
 	statues = AfterSaleProduct.pending+"" ;  
 } 
  
-List<AftersaleAll> list = AftersaleAllManager.getOrderlistneedfalut(user,statues);
-  
+List<AftersaleAll> list = AftersaleAllManager.getOrderlistneedmaintain(user,statues);
+Map<Integer,AftersaleAll> map = AftersaleAllManager.getAftersaleAllMap(list);  
+   
 
 %>
 <!DOCTYPE html>
@@ -62,18 +63,21 @@ function search(type){
     <td  class="s_list_m">地点</td>
   </tr>
    <%  
-   if(list != null){
-    for(int i = 0;i<list.size();i++){
-    	AftersaleAll o = list.get(i);
-    	
-    	String col = "";
-    	if(i%2 == 0){
-    		col = "style='background-color:yellow'";
-    	}
+   if(null != map){
+		Set<Map.Entry<Integer,AftersaleAll>> mapent = map.entrySet();
+		Iterator<Map.Entry<Integer,AftersaleAll>> itmap = mapent.iterator();
+		int i = 0 ;
+		while(itmap.hasNext()){
+	    	AftersaleAll o = itmap.next().getValue();
+	    	i++; 
+	    	String col = "";
+	    	if(i%2 == 0){
+	    		col = "style='background-color:yellow'";
+	    	}
   %>
- <tr <%=col %> onclick="detail('dingdanDetailfault.jsp?id=<%=o.getAs().getId()%>')">  
+ <tr <%=col %> onclick="detail('dingdanDetailfault.jsp?id=<%=o.getAs().getId()%>&statues=<%=statues%>')">  
       <% 
-         String fault = "";
+         String fault = ""; 
          String time = "";
          List<AfterSaleProduct> listas = o.getAsplist();
          for(int j=0;j<listas.size();j++){

@@ -89,7 +89,7 @@ $(function () {
 	 initOrder(type,statues,num,page,sort,sear);
 });
  
-
+ 
 function change(str1,afid){
 
 	var uid = $("#"+str1).val();

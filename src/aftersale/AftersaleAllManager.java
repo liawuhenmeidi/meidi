@@ -49,12 +49,13 @@ public class AftersaleAllManager {
 				   }else if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){
 					   sql = "select * from mdaftersale where 1 =1  and submitid = "+ user.getId() +" "+search+"  order by "+sort+str;
 				   }    
-			   }else if(Order.aftersalesecond == statues){  
+			   }else if(Order.aftersalesecond == statues){   
 				       sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = "+ user.getId() +"  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null  "+search+"  order by "+sort+str;
 			   }else if(Order.aftersaledeal == statues){   
-			       sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = 0  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null  "+search+"  order by "+sort+str;
+			       //sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = 0  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null    "+search+"  order by "+sort+str;
+			       sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = 0  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null  and curdate() - mdaftersaleproduct.thistime > 5  "+search+"  order by "+sort+str;
 		      } 
-		   }                                      
+		   }                                       
 		    
 		  if("".equals(sql)){
 			   return null;  
@@ -141,22 +142,18 @@ public class AftersaleAllManager {
 		    		AftersaleAll as = list.get(i);
 		    		AftersaleAll asm = map.get(as.getAs().getId());
 		    		if(null == asm){
-		    			asm = as ;
+		    			asm = as ; 
 		    			map.put(as.getAs().getId(), as);
-		    		}
-		    		
-		    		List<AfterSaleProduct> listap = as.getAsplist();
-		    		if(null == listap){
+		    		}else {
+		    			List<AfterSaleProduct> listap = as.getAsplist();
 		    			if(null != as.getAsp()){
-		    				listap = new ArrayList<AfterSaleProduct>();
-			    			as.setAsplist(listap);
-		    			}
-		    			
+			    			listap.add(as.getAsp());
+			    		}
 		    		}
 		    		
-		    		if(null != as.getAsp()){
-		    			listap.add(as.getAsp());
-		    		}
+		    		
+		    		
+		    		
 		    	}
 		    }
 	        return map ;

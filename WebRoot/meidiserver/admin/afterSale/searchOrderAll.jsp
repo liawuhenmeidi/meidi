@@ -12,9 +12,7 @@
 function checkedd(){ 
 	sear = ""; 
 	var list = $("input");
-	var oderStatus = "";
-	var deliveryStatues = "";
-	var sendcategoryname = "";
+	
 	for(var i=0;i<list.length;i++){
 		var input = list[i];
 		
@@ -26,50 +24,15 @@ function checkedd(){
 				if(name != null && name != "" && name != undefined)
 				sear += "&"+name+"="+value;
 			}
-		}else if("radio" == inputType){
-			var flag = $(input).is(':checked');
-			if(flag){
-				var value = $(input).val();
-				if(value != null && value != ""){
-					var name = $(input).attr("name");
-					sear += "&"+name+"="+value;
-				}
-			}
-			
-		}else if("checkbox" == inputType){
-			var flag = $(input).is(':checked');
-			if(flag){
-				var name = $(input).attr("name");
-				var value = $(input).val();
-				if("oderStatus" == name){
-					oderStatus += value+",";
-				}else if("deliveryStatues" == name){
-					deliveryStatues += value+"," ;
-				}else if("sendcategoryname" == name){
-					sendcategoryname += value+",";
-				}
-			}
 		}
 	} 
-	 
-	if(oderStatus != null && oderStatus != ""){
-		oderStatus = oderStatus.substring(0,oderStatus.length-1);
-		sear += "&oderStatus="+oderStatus; 
-	}
-	if(deliveryStatues != null && deliveryStatues != ""){
-		deliveryStatues = deliveryStatues.substring(0,deliveryStatues.length-1);
-		sear += "&deliveryStatues="+ deliveryStatues;
-	}
-	if(sendcategoryname != null && sendcategoryname != ""){
-		sendcategoryname = sendcategoryname.substring(0,sendcategoryname.length-1);
-		sear += "&sendcategoryname="+ sendcategoryname;
-	} 
+
 	$.cookie("searaftersale", sear); 
 	
 	if(sear != null && sear != ""){
 		sear += "&searched=searched";
 	}
-	
+	 
 	initOrder(type,statues,num,page,sort,sear);
 	
 	$("#wrapsearch").css("display","none"); 
@@ -126,10 +89,10 @@ function intsearch(){
 	 $("#wrapsearch").css("display","none"); 
  }
 
-</script>
- 
-<div id="wrapsearch" style="position:fixed;text-align:center; top:50%;background-color:#ACD6FF; left:30%; margin:-20% 0 0 -20%; height:50%; width:85%; z-index:999;display:none"> 
-<div >  
+</script> 
+  
+<div id="wrapsearch" style="position:fixed;text-align:center; top:50%;background-color:white; left:30%; margin:-20% 0 0 -25%; height:50%; width:90%; z-index:999;display:none"> 
+
 <table  cellspacing="1" style="margin:auto;background-color:black; width:95%;height:300px;">  
  
 		<tr class="bsc">
@@ -162,22 +125,16 @@ function intsearch(){
 			</td>	 
 		</tr>
 		<tr class="bsc">
-		    <td align="center" >地址</td>
-			<td align="center"  colspan=5>
+		    <td align="center" colspan=2>地址</td>
+			<td align="center"  colspan=4>
 			<input type="text"  name="location" id="location" value=""  />
 			</td>
  
 		</tr> 
 		
 		<tr class="bsc">
-		<td align="center" >开票日期</td>
-			<td align="center" colspan=2 >
-			<input class="date2" name="saledatestart" type="text" id="saledatestart" onclick="new Calendar().show(this);" />
-                                         至
-			<input class="date2" name="saledateend" type="text" id="saledateend" onclick="new Calendar().show(this);" />
-			</td>
-			<td align="center" >安装日期</td>
-			<td align="center" colspan=2 > 
+			<td align="center" colspan=2>安装日期</td>
+			<td align="center" colspan=4 > 
 			<input class="date2" name="andatestart" type="text" id="andatestart" onclick="new Calendar().show(this);" />
                                          至
 			<input class="date2" name="andateend" type="text" id="andateend" onclick="new Calendar().show(this);" />
@@ -206,7 +163,7 @@ function intsearch(){
 </table> 
 </div>
 
-</div>
+ 
 
 </body>
 </html>

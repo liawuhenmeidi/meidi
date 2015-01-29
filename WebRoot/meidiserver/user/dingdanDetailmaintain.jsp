@@ -1,6 +1,7 @@
 <%@ page language="java"  import="java.util.*,aftersale.*,category.*,group.*,user.*,utill.*,product.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%  
 String id = request.getParameter("id");
+String statues = request.getParameter("statues");
 User user = (User)session.getAttribute("user");
 
 AfterSale af = null ; 
@@ -11,10 +12,10 @@ List<AfterSaleProduct> listasp = null ;
 if(!StringUtill.isNull(id)){  
 	af = AfterSaleManager.getAfterSaleID(user,id);
 	strorder = StringUtill.GetJson(af); 
-	listasp  = AfterSaleProductManager.getmaintain(af.getId());
+	listasp  = AfterSaleProductManager.getmaintain(af.getId(),statues);
 	listap = StringUtill.GetJson(listasp); 
 } 
-
+ 
 %>
 <!DOCTYPE html>
 <html>
@@ -88,15 +89,15 @@ function change(statues,oid,type){
   <tr>
     <td width="25%" class="s_list_m">单号</td>
     <td class="s_list_m"><%=af.getPrintid() == null?"":af.getPrintid()%></td>
-   
+    
   </tr> 
   
-  <tr>
+  <tr >
     <td width="25%" class="s_list_m">产品型号</td>
     <td class="s_list_m"><%= af.getcName()%></td>
    
   </tr>
- <tr>
+ <tr  >
     <td width="25%" class="s_list_m">产品类别</td>
     <td class="s_list_m"><%=	af.gettName()%></td>
    
@@ -111,7 +112,7 @@ function change(statues,oid,type){
 	   statues = op.getStatues(); 
     	 %>
     	  
-    	 <tr >
+    	 <tr style="background:orange">
          <td width="55%" class="s_list_m">保养类别</td>
       
          <td class="s_list_m">
@@ -119,7 +120,7 @@ function change(statues,oid,type){
     		  <%= op.getCname()%> 
          </td>
          </tr>
-    	  <tr >
+    	  <tr style="background:orange">
      <td width="55%" class="s_list_m">保养型号</td>
      <td class="s_list_m">
 		    
