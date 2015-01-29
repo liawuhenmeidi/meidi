@@ -184,7 +184,7 @@ function initButton(){
 		scrollFrom = $('#baseTable tr')[0];
 		fix = $('#' + $('#baseTable tr')[0].cells[0].id).offset().top;
 	}else{
-		scrollFrom = $('#scrollButton');
+		scrollFrom = $('#scrollNext');
 		fix = 0;
 	}
 	$('#scrollNext').click(scrollToNext);
@@ -484,8 +484,8 @@ function baseFormSubmit(){
 			</td>
 			
 			<td  align="center">
-			 <label id="rightcount"></label>
-			 <button type="button" id="scrollNext">下一个</button>
+			 <label id="rightcount"></label><br/>
+			 <button type="button" id="scrollNext">下一个</button><br/>
 			 <button type="button" id="scrollPrev">上一个</button>
 			</td>
 			<td colspan="5" align="center">

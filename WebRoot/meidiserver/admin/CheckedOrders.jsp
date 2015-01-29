@@ -30,6 +30,8 @@
 	}
 	
 	request.getSession().setAttribute("type_transList", null);
+	request.getSession().setAttribute("sendType_changed_List", null);
+	
 	//初始化要对比的orders
 	MatchOrder mo = new MatchOrder();
 	List<AfterMatchOrder> afterMatchOrders = new ArrayList<AfterMatchOrder>();
@@ -214,7 +216,7 @@ function initButton(){
 		scrollFrom = $('#baseTable tr')[0];
 		fix = $('#' + $('#baseTable tr')[0].cells[0].id).offset().top;
 	}else{
-		scrollFrom = $('#scrollButton');
+		scrollFrom = $('#scrollNext');
 		fix = 0;
 	}
 	$('#scrollNext').click(scrollToNext);
@@ -311,6 +313,24 @@ function clearSession(){
            }); 
 }
 
+function sendTypeSwitch(bool){
+	$.ajax({ 
+        type:"post", 
+         url:"AjaxHandler.jsp",
+         //data:"method=list_pic&page="+pageCount,
+         data:"action=sendtypeswitch&value=" + bool,
+         dataType: "",  
+         success: function (data) {
+
+        	
+           },  
+          error: function (XMLHttpRequest, textStatus, errorThrown) { 
+        	  alert('类型转换失败，请刷新重试');
+        	  return false ;
+            } 
+           }); 
+}
+
 function changeColor(){
 	var status_col = 10;
 	if($('#baseTable tr').length > 0){
@@ -394,6 +414,7 @@ function transferType(){
 			 });
 		}
 		$('#transferType').val(output);
+		sendTypeSwitch("true");
 		type_switch = false;
 	}else{
 		var transType2col = 2 ; 
@@ -402,10 +423,14 @@ function transferType(){
 			 $('#baseTable tr').each(function () { 
 				var transType2 = $('#'+  this.cells[cols-transType2col].id);
 				transType2.text('');
+				
+				var t = transType2.attr('bak2');
+				transType2.attr('bak',t);
 			 });
 		}
 		clearSession();
 		$('#transferType').val('');
+		sendTypeSwitch("false");
 		type_switch = true;
 	}
 	
@@ -766,7 +791,7 @@ function baseFormSubmit(){
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadposno"><a href="#" onClick="javascript:window.open('./uploadOrderDetail.jsp?id=<%=afterMatchOrders.get(i).getUploadOrder().getId() %>', 'newwindow', 'scrollbars=auto,resizable=no, location=no, status=no')"><%= afterMatchOrders.get(i).getUploadSidePosNo() %></a></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadsaletime"><%= afterMatchOrders.get(i).getUploadSideSaleTime() %></td>
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadtype"><%= afterMatchOrders.get(i).getUploadSideType() %></td> 
-			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadtype_trans" bak="<%= afterMatchOrders.get(i).getDBSideType_trans() %>"></td> 
+			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadtype_trans" bak="<%= afterMatchOrders.get(i).getDBSideType_trans() %>" bak2="<%= afterMatchOrders.get(i).getDBSideType_trans() %>"></td> 
 			<td align="center" bgcolor="<%=showColor?backgroundColor:"" %>" id="<%=afterMatchOrders.get(i).getUploadOrder().getId() %>uploadcount"><%= afterMatchOrders.get(i).getUploadSideCount() %></td> 
 		</tr>
 		

@@ -19,7 +19,7 @@ int id = Integer.parseInt(idSTR);
 String catergory = request.getParameter("catergory");
 String type = request.getParameter("type");
 String filename = request.getParameter("filename");
-
+//URLEncoder.encode(URLEncoder.encode(name,"utf-8"));
 
 //接受提成标准
 String tempStr = "0";

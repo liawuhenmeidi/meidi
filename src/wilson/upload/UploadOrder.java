@@ -1,5 +1,10 @@
 package wilson.upload;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import orderproduct.OrderProduct;
+import product.Product;
 import product.ProductService;
 import utill.StringUtill;
 
@@ -57,6 +62,44 @@ public class UploadOrder {
 	public static final int CALCED = 2;
 	public static final int COMFIRMED = 3;
 	public static final int COMPARE_DEFAULT = 1;
+	
+	public String getPrintStatus(){
+		switch (this.checked){
+			case CHECKED:
+				return "已结款";
+			case UNCHECK:
+				return "未结款";
+			case CALCED:
+				return "已提成";
+			case COMFIRMED:
+				return "已消";
+			default:
+				return "未知";
+		}
+			
+	}
+	
+	public String getSendTypeAndCountAndPrice(){
+		String result = "";
+		if(StringUtill.isNull(this.getSaleManName())){
+			return result;
+		}
+		String content = this.getSaleManName();
+		
+		for(int i = 0 ; i < content.split(",").length ; i ++){
+			
+			String type = content.split(",")[i].split(":")[0];
+			type = ProductService.getIDmap().get(Integer.parseInt(type)).getType();
+			String num = content.split(",")[i].split(":")[1];
+			String price = content.split(",")[i].split(":")[2];
+
+			result += type + ":" + num + "台:" + price +  "元,";
+			
+		}
+		
+
+		return result;
+	}
 	
 	private String checkedTime = ""; //check的时间，默认为null
 	

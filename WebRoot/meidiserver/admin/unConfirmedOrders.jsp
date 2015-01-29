@@ -217,7 +217,7 @@ function initButton(){
 		scrollFrom = $('#baseTable tr')[0];
 		fix = $('#' + $('#baseTable tr')[0].cells[0].id).offset().top;
 	}else{
-		scrollFrom = $('#scrollButton');
+		scrollFrom = $('#scrollNext');
 		fix = 0;
 	}
 	$('#scrollNext').click(scrollToNext);
@@ -627,8 +627,7 @@ function baseFormSubmit(){
 			<td  align="center">
 			<label id="leftcount"></label><br/>
 			<label id="leftTotal"></label>
-			<button type="button" id="scrollNext">下一个</button>
-			 <button type="button" id="scrollPrev">上一个</button>
+			
 			
 			</td>
 			
@@ -652,7 +651,9 @@ function baseFormSubmit(){
 			
 			<td  align="center">
 			 <label id="rightcount"></label><br/>
-			 <label id="rightTotal"></label>
+			 <label id="rightTotal"></label><br/>
+			 <button type="button" id="scrollNext">下一个</button><br/>
+			 <button type="button" id="scrollPrev">上一个</button>
 			</td>
 			<td colspan="5" align="center">
 			<button id="transferbutton" type="button" onclick="transferShopName()">店名转换</button>

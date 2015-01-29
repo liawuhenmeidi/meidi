@@ -147,6 +147,11 @@ public class UploadExportServlet extends HttpServlet {
 				label0  =   new  Label( 6 ,  1 ,  " 扣点 " );
 				sheet.addCell(label0);
 				
+				label0  =   new  Label( 7 ,  1 ,  " 状态 " );
+				sheet.addCell(label0);
+				label0  =   new  Label( 8 ,  1 ,  " 送货型号/数量/价格 " );
+				sheet.addCell(label0);
+				
 				//其他行
 				for(int i = 0 ; i < list.size() ; i ++){
 					temp = list.get(i);
@@ -163,6 +168,11 @@ public class UploadExportServlet extends HttpServlet {
 					label0  =   new  Label( 5 ,  i + 2 ,  String.valueOf(temp.getSalePrice()) );
 					sheet.addCell(label0);
 					label0  =   new  Label( 6 ,  i + 2 ,  String.valueOf(temp.getBackPoint()) );
+					sheet.addCell(label0);
+					
+					label0  =   new  Label( 7 ,  i + 2 ,  String.valueOf(temp.getPrintStatus()) );
+					sheet.addCell(label0);
+					label0  =   new  Label( 8 ,  i + 2 ,  String.valueOf(temp.getSendTypeAndCountAndPrice()) );
 					sheet.addCell(label0);
 				}
 			}
