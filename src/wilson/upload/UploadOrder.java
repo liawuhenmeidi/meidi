@@ -79,6 +79,38 @@ public class UploadOrder {
 			
 	}
 	
+	public int getSendLength(){
+		int result = 0;
+		if(StringUtill.isNull(this.getSaleManName())){
+			return result;
+		}
+		String content = this.getSaleManName();
+		
+		result = content.split(",").length;
+
+		return result;
+	}
+	
+	public String getSendTypeAndCountAndPrice(int a,int b){
+		String result  = "";
+		if(StringUtill.isNull(this.getSaleManName())){
+			return result;
+		}
+		String content = this.getSaleManName();
+		
+		if(a >= content.split(",").length || b >= content.split(",")[a].split(":").length){
+			return result;
+		}
+		
+		result = content.split(",")[a].split(":")[b];
+		if(0 == b){
+			result = ProductService.getIDmap().get(Integer.parseInt(result)).getType();
+		}
+		
+
+		return result;
+	}
+	
 	public String getSendTypeAndCountAndPrice(){
 		String result = "";
 		if(StringUtill.isNull(this.getSaleManName())){

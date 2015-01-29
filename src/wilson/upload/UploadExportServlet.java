@@ -149,31 +149,56 @@ public class UploadExportServlet extends HttpServlet {
 				
 				label0  =   new  Label( 7 ,  1 ,  " 状态 " );
 				sheet.addCell(label0);
-				label0  =   new  Label( 8 ,  1 ,  " 送货型号/数量/价格 " );
+				label0  =   new  Label( 8 ,  1 ,  " 送货型号" );
+				sheet.addCell(label0);
+				label0  =   new  Label( 9 ,  1 ,  " 送货数量 " );
+				sheet.addCell(label0);
+				label0  =   new  Label( 10 ,  1 ,  " 送货价格 " );
 				sheet.addCell(label0);
 				
 				//其他行
+				
+				int j = 0 ;
 				for(int i = 0 ; i < list.size() ; i ++){
 					temp = list.get(i);
-					label0  =   new  Label( 0 ,  i + 2 ,  temp.getShop() );
+					label0  =   new  Label( 0 ,  j + 2 ,  temp.getShop() );
 					sheet.addCell(label0);
-					label0  =   new  Label( 1 ,  i + 2 ,  temp.getPosNo());
+					label0  =   new  Label( 1 ,  j + 2 ,  temp.getPosNo());
 					sheet.addCell(label0);
-					label0  =   new  Label( 2 ,  i + 2 ,  temp.getSaleTime() );
+					label0  =   new  Label( 2 ,  j + 2 ,  temp.getSaleTime() );
 					sheet.addCell(label0);
-					label0  =   new  Label( 3 ,  i + 2 ,  temp.getType() );
+					label0  =   new  Label( 3 ,  j + 2 ,  temp.getType() );
 					sheet.addCell(label0);
-					label0  =   new  Label( 4 ,  i + 2 ,  String.valueOf(temp.getNum()) ); 
+					label0  =   new  Label( 4 ,  j + 2 ,  String.valueOf(temp.getNum()) ); 
 					sheet.addCell(label0);
-					label0  =   new  Label( 5 ,  i + 2 ,  String.valueOf(temp.getSalePrice()) );
+					label0  =   new  Label( 5 ,  j + 2 ,  String.valueOf(temp.getSalePrice()) );
 					sheet.addCell(label0);
-					label0  =   new  Label( 6 ,  i + 2 ,  String.valueOf(temp.getBackPoint()) );
+					label0  =   new  Label( 6 ,  j + 2 ,  String.valueOf(temp.getBackPoint()) );
 					sheet.addCell(label0);
 					
-					label0  =   new  Label( 7 ,  i + 2 ,  String.valueOf(temp.getPrintStatus()) );
+					label0  =   new  Label( 7 ,  j + 2 ,  String.valueOf(temp.getPrintStatus()) );
 					sheet.addCell(label0);
-					label0  =   new  Label( 8 ,  i + 2 ,  String.valueOf(temp.getSendTypeAndCountAndPrice()) );
-					sheet.addCell(label0);
+					
+					if(temp.getPrintStatus().equals("未结款")){
+						System.out.println(1);
+					}
+					
+					int t = 0;
+					for(int k = 0 ; k < temp.getSendLength() ; k ++){
+						label0  =   new  Label( 8 ,  j + 2 + k ,  String.valueOf(temp.getSendTypeAndCountAndPrice(k,0)) );
+						sheet.addCell(label0);
+						label0  =   new  Label( 9 ,  j + 2 + k ,  String.valueOf(temp.getSendTypeAndCountAndPrice(k,1)) );
+						sheet.addCell(label0);
+						label0  =   new  Label( 10 ,  j + 2 + k ,  String.valueOf(temp.getSendTypeAndCountAndPrice(k,2)) );
+						sheet.addCell(label0);
+						t ++;
+					}
+					
+					j++;
+					if(t > 0){
+						j = j + t -1;
+					}
+					
 				}
 			}
 			
