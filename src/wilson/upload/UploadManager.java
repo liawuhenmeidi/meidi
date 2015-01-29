@@ -350,7 +350,9 @@ public class UploadManager {
 				String orderid = input.split("_")[i].split(",")[1];
 				String uploadorderid = input.split("_")[i].split(",")[0];
 				
-				
+				if(idMapInSession.containsKey(uploadorderid)){
+					continue;
+				}
 				
 				Order o = new Order();
 				UploadOrder uo = new UploadOrder();
