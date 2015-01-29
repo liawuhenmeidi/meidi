@@ -362,7 +362,7 @@ public class UploadManager {
 					throw new SQLException();
 				}
 				
-				pstmt.setString(1, OrderProductService.getSendTypeAndCountAndPrice(o,uo));
+				pstmt.setString(1, OrderProductService.getSendTypeAndCountAndPrice(o,uo,true,true));
 				pstmt.setInt(2, Integer.parseInt(uploadorderid));
 				pstmt.executeUpdate();
 				

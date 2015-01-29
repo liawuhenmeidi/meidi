@@ -9,6 +9,7 @@ import order.Order;
 import order.OrderManager;
 import product.Product;
 import product.ProductService;
+import utill.DoubleUtill;
 import wilson.upload.UploadOrder;
 
 public class OrderProductService {
@@ -93,7 +94,23 @@ public class OrderProductService {
 	public static String getSendTypeAndCountAndPrice(Order o,UploadOrder uo,boolean id,boolean alwayGetData) throws Exception{
 		if(!o.isDiangma()){
 			if(alwayGetData){
-				return o.getSendType(0, "");
+				String output = "";
+				String type_tmp = o.getSendType(0, "");
+				if(id){
+					type_tmp = ProductService.gettypemap().get(type_tmp).getId() + "";
+					
+				}
+				String num_tmp = uo.getNum()+"";
+				String price_tmp = DoubleUtill.getdoubleTwo(uo.getSalePrice() / uo.getNum());
+				
+						
+				output += type_tmp + ":" + num_tmp + ":" + price_tmp + ",";
+				
+				if(output.endsWith(",")){
+					output = output.substring(0,output.length()-1);
+				}
+				
+				return output;
 			}else{
 				return "";
 			}

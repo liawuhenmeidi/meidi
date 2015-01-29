@@ -396,8 +396,8 @@ if(sendTypeSwitch){
 
 		<%
 		int i = 0 ;
-		if(o != null && o.isDiangma() && !containThis){
-			String output = OrderProductService.getSendTypeAndCountAndPrice(o, uo, false);
+		if(o != null && !containThis){
+			String output = OrderProductService.getSendTypeAndCountAndPrice(o, uo, false,true);
 			//MXG15-22:1:123.2,SS15T:2:155.0
 			for(i = 0 ; i < output.split(",").length ; i ++){
 				String tmp_type = output.split(",")[i].split(":")[0];
