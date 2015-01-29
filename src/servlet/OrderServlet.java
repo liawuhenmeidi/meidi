@@ -565,7 +565,8 @@ public class OrderServlet extends HttpServlet {
 		        af.setSaledate(saledate);
 		        af.setLocation(location); 
 		        af.setDetail(remark);
-		        af.setType(AfterSale.typesale);
+		        af.setType(AfterSale.updateOrder); 
+		        af.setStatues(AfterSale.typesale);
 		        af.setBranch(Integer.valueOf(branch)); 
 		        af.setPcount(1);  
 		        af.setSubmitTime(submit);  

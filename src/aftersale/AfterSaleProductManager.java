@@ -85,10 +85,10 @@ public class AfterSaleProductManager {
 		return listsql; 
 	}
 	
-	public static List<AfterSaleProduct> getmaintain(int id){
+	public static List<AfterSaleProduct> getmaintain(int id,String statues){
 		List<AfterSaleProduct> list = new ArrayList<AfterSaleProduct>();
-		  
-		String sql = "select *  from mdaftersaleproduct where asid  in ("+id+") and type = "+AfterSaleProduct.maintain ;
+		   
+		String sql = "select *  from mdaftersaleproduct where statues = "+statues+" and asid  in ("+id+") and type = "+AfterSaleProduct.maintain ;
 		logger.info(sql);   
 		Connection conn = DB.getConn();  
 	    Statement stmt = DB.getStatement(conn);
@@ -113,10 +113,10 @@ public class AfterSaleProductManager {
         return list ;
 	}
 	
-	public static List<AfterSaleProduct> getfault(int id){
+	public static List<AfterSaleProduct> getfault(int id,String statues){
 		List<AfterSaleProduct> list = new ArrayList<AfterSaleProduct>();
-		  
-		String sql = "select *  from mdaftersaleproduct where asid  in ("+id+") and type = "+AfterSaleProduct.fault ;
+		   
+		String sql = "select *  from mdaftersaleproduct where stautes = "+statues+" and asid  in ("+id+") and type = "+AfterSaleProduct.fault ;
 		
 		logger.info(sql);    
 		

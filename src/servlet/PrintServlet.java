@@ -565,7 +565,7 @@ public class PrintServlet extends HttpServlet {
 		String printlntime = df2.format(date1); 
 		String type = request.getParameter("type");
    	    String statues = request.getParameter("statues");
-      	String num = request.getParameter("num");
+      	int num = -1 ; 
    	    String page = request.getParameter("page");
 	   	String sort = request.getParameter("sort");
 	   	String search = request.getParameter("searched");

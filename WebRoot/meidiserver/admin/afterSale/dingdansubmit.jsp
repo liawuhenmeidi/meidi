@@ -18,7 +18,7 @@ String strorder= null;
 if(!StringUtill.isNull(id)){   
 	af = AfterSaleManager.getAfterSaleID(user, id); 
 	strorder = StringUtill.GetJson(af);  
-} 
+}  
  
 %> 
    
@@ -250,7 +250,7 @@ if(!StringUtill.isNull(id)){
   </div>
 
 <div style="height:70px;">
-</div>
+</div> 
   
 <form action="../../user/OrderServlet"  method ="post"  id="form"   onsubmit="return checkedd()"  > 
 <!--  头 单种类  -->   

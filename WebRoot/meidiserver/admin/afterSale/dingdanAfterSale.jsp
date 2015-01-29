@@ -4,8 +4,8 @@
  <%   
  if(StringUtill.isNull(statues)){ 
 	 statues = Order.aftersale +"";  
- }
-  
+ } 
+    
  String href = "";
  if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
 	 href = "dingdanupdatemaintain.jsp";
@@ -71,7 +71,7 @@ position:fixed;
 </jsp:include> 
 <%
 if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
-%>
+%> 
    
 <div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

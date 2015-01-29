@@ -5,7 +5,7 @@ List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend); //UserServ
     
 List<Category> listall = CategoryService.getList();
 String clistall = StringUtill.GetJson(listall);
-
+ 
 List<Category> list = CategoryManager.getCategory(user,Category.sale); 
 String clist = StringUtill.GetJson(list);
  
@@ -19,11 +19,11 @@ String statues = request.getParameter("statues");
 AfterSale af = null ; 
 String strorder= null;    
 String listap = null;   
-
+  
 if(!StringUtill.isNull(id)){  
 	af = AfterSaleManager.getAfterSaleID(user,id);
 	strorder = StringUtill.GetJson(af); 
-	List<AfterSaleProduct> listasp  = AfterSaleProductManager.getmaintain(af.getId());
+	List<AfterSaleProduct> listasp  = AfterSaleProductManager.getmaintain(af.getId(),AfterSaleProduct.pending+"");
 	listap = StringUtill.GetJson(listasp); 
 }   
 
@@ -186,8 +186,9 @@ if(!StringUtill.isNull(id)){
 	 var orderbarcode = $("#orderbarcode").val();
 	 var andate = $("#andate").val();
 	 var saledate = $("#saledate").val();
-	 
+	  
 	 var locations = $("#locations").val();
+	 var thistime = $("#thistime").val();  
 	 var nexttime = $("#nexttime").val(); 
 	 
 	 if(uname == "" || uname == null || uname == "null"){
@@ -287,6 +288,11 @@ if(!StringUtill.isNull(id)){
 		 }
 	}
 	 
+	 
+	 if(thistime == "" || thistime == null || thistime == "null"){
+		 alert("下次保养时间不能为空");
+		 return false;
+	 } 
 	 
 	 if(nexttime == "" || nexttime == null || nexttime == "null"){
 		 alert("下次保养时间不能为空");
@@ -425,8 +431,11 @@ if(!StringUtill.isNull(id)){
     
        </td>
      -->
-    <td  colspan=2>下次保养时间<span style="color:red">*</span></td>
-    <td  colspan=2><input  type="text" name="nexttime" id ="nexttime" onclick="new Calendar().show(this)"   placeholder="必填"  readonly="readonly" ></input>   </td>
+     <td  >保养时间<span style="color:red">*</span></td>
+    <td  ><input  type="text" name="thistime" id ="thistime" onclick="new Calendar().show(this)"   placeholder="必填"  readonly="readonly" ></input>   </td>
+  
+    <td  >下次保养时间<span style="color:red">*</span></td>
+    <td  ><input  type="text" name="nexttime" id ="nexttime" onclick="new Calendar().show(this)"   placeholder="必填"  readonly="readonly" ></input>   </td>
  
  </tr>
    <tr class="asc"> 

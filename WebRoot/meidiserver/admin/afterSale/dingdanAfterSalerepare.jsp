@@ -65,8 +65,8 @@ position:fixed;
 
 <div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=OrderProduct.query%>')"></input> 
-&nbsp;&nbsp;&nbsp;  
+ <label></label><input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=OrderProduct.query%>')"></input> 
+&nbsp;&nbsp;&nbsp;   
  <input type="submit" class="button" name="dosubmit" value="忽略" onclick="winconfirm('<%=OrderProduct.unquery%>')"></input>   
 </div>
 
@@ -77,8 +77,8 @@ position:fixed;
 
 <br/>  
 
-<%@ include file="../dispatch/searchOrderAll.jsp"%>  
- 
+<%@ include file="../afterSale/searchOrderAllbefore.jsp"%>  
+  
 <script type="text/javascript">
 
 sort= "andate asc";

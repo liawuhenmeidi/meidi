@@ -228,9 +228,9 @@ if(total){ %>
 			if(null != up){
 				tpe = up.getCatergory(); 
 			}
-		}  
-		 
-		// System.out.println(sain.getType());
+		}   
+		   
+		 //System.out.println(sain.getId());
 		 String sendtypestr = sain.getSendType();
 		 String[] sendtypestrs = sendtypestr.split(",");
 		 for(int j=0;j<sendtypestrs.length;j++){

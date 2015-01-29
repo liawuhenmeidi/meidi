@@ -178,15 +178,19 @@ public class OrderServiceServlet extends HttpServlet {
     	String num = request.getParameter("num");
     	String page = request.getParameter("page");
     	String sort = request.getParameter("sort");
-    	
+    	String search = request.getParameter("searched"); 
     	String sear = "";
-    	
+    	if(!StringUtill.isNull(search)){ 
+    		sear = HttpRequestUtill.getSearch(request);
+    	}
     	List<AftersaleAll> list = new  ArrayList<AftersaleAll>(); 
     	int count = 0 ;  
-    	   
+    	    
     	list = AftersaleAllManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
 	    //count = OrderManager.getOrderlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
+    	//logger.info(StringUtill.GetJson(list)); 
     	Map<Integer,AftersaleAll> maps = AftersaleAllManager.getAftersaleAllMap(list);
+    	//logger.info(maps.get(61).getAsplist().size()); 
     	list = new ArrayList<AftersaleAll>();
     	Set<Map.Entry<Integer,AftersaleAll>> mapentset = maps.entrySet(); 
     	Iterator<Map.Entry<Integer,AftersaleAll>> mapit = mapentset.iterator();
@@ -199,7 +203,7 @@ public class OrderServiceServlet extends HttpServlet {
     	String date = "";
     	   
     	date = StringUtill.GetJson(list);
-    	logger.info(date);
+    	//logger.info(date);
     	//Order.serach
     	Map<String,String> map = new HashMap<String,String>();
     	

@@ -5,7 +5,7 @@
 request.setCharacterEncoding("utf-8");
 int type = Integer.valueOf(request.getParameter("type"));
 String message = "";  
-
+ 
 List<Category> listallp = CategoryService.getList();
 String listallpp = StringUtill.GetJson(listallp); 
 
@@ -51,10 +51,12 @@ if(Order.orderDispatching == type || Order.neworder == type || Order.release == 
 	message = "退货订单页"; 
 }else if(Order.chargeall == type){
 	message = "送货安装结款"; 
-}else if(Order.orderquery == type){
+}else if(Order.orderquery == type){ 
 	message = "送货确认页"; 
 }else if(Order.aftersalerepare == type){
-	message = "售后待处理";
+	message = "售后待处理"; 
+}else if(Order.repareorderDispatching == type){
+	message = "预约配工页";
 }
 
 String path = request.getContextPath();

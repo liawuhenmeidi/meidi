@@ -7,7 +7,7 @@ List<Category> list = CategoryManager.getCategory(user,Category.sale);
 String clist = StringUtill.GetJson(list);
  
 HashMap<String,ArrayList<String>> listt = ProductService.gettypeName();
- 
+  
 String plist = StringUtill.GetJson(listt);
 
 String id = request.getParameter("id");
@@ -19,7 +19,7 @@ String strorder= null;
 if(!StringUtill.isNull(id)){ 
 	af = AfterSaleManager.getAfterSaleID(user,id);
 	strorder = StringUtill.GetJson(af);
-
+ 
 }
  
 %> 

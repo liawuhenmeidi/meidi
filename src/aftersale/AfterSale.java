@@ -8,6 +8,9 @@ public class AfterSale {
    public static int typesale = 0 ;   // 待上报 
    public static int typesalecome = 2 ;   // 厂家未通过 
     
+   public static int unupdateOrder = 0 ;   // 厂家未通过 
+   public static int updateOrder = 1 ;   // 厂家未通过 
+   
    private String printid; 
    private int oriedid;
    
