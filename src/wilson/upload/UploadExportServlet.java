@@ -179,10 +179,6 @@ public class UploadExportServlet extends HttpServlet {
 					label0  =   new  Label( 7 ,  j + 2 ,  String.valueOf(temp.getPrintStatus()) );
 					sheet.addCell(label0);
 					
-					if(temp.getPrintStatus().equals("未结款")){
-						System.out.println(1);
-					}
-					
 					int t = 0;
 					for(int k = 0 ; k < temp.getSendLength() ; k ++){
 						label0  =   new  Label( 8 ,  j + 2 + k ,  String.valueOf(temp.getSendTypeAndCountAndPrice(k,0)) );
