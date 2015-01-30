@@ -1,15 +1,11 @@
 package order;
 
 import gift.Gift;
-
 import gift.GiftService;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
 import category.Category;
 
 import category.CategoryService;
@@ -1044,7 +1040,6 @@ public String getSendCount(){
 	return sendCount;
 }
  
-
 
 public String getSendCount(int statues,String decollator){
 	String sendCount = "";
