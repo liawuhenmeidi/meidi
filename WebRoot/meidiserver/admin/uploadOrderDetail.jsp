@@ -190,7 +190,7 @@ function autoCompleteInit(){
 
 function initPrice(){
 	var rows = calcRows();
-	var content = $('#saleprice').val() + ",";
+	var content = $('#saleprice').val() + ":" + $('#salenum').val() + ",";
 	for(var i = 0 ; i < rows ; i ++){
 		content += $('#' + 'sendType' + i ).val() + ":";
 		content += $('#' + 'sendNum' + i ).val() + ",";

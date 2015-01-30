@@ -101,7 +101,7 @@ public class OrderProductService {
 					
 				}
 				String num_tmp = uo.getNum()+"";
-				String price_tmp = DoubleUtill.getdoubleTwo(uo.getSalePrice() / uo.getNum());
+				String price_tmp = DoubleUtill.getdoubleTwo(uo.getSalePrice());
 				
 						
 				output += type_tmp + ":" + num_tmp + ":" + price_tmp + ",";
@@ -168,14 +168,16 @@ public class OrderProductService {
 		
 	}
 	
-	//input   =>  1000,MXG15-22:1,SS15T:2
+	//input   =>  1000:3,MXG15-22:1,SS15T:2
 	public static String getPrice(String input){
 		String result = "";
 		try{
-			String priceSTR = input.split(",")[0];
+			String priceSTR = input.split(",")[0].split(":")[0];
+			String numSTR = input.split(",")[0].split(":")[1];
 			Product p = new Product();
 			
 			Double uptotalPrice = Double.parseDouble(priceSTR);
+			int uptotolNum = Integer.parseInt(numSTR);
 			Double dbtotalPrice = 0.0;
 			int dbtotalNum = 0;
 			
@@ -198,14 +200,14 @@ public class OrderProductService {
 				for(int i = 1 ; i < input.split(",").length ; i ++){
 					String type = input.split(",")[i].split(":")[0];
 					
-					result += String.format("%.2f",ProductService.gettypemap().get(type).getStockprice() / dbtotalPrice  *  uptotalPrice) + ",";
+					result += String.format("%.2f",ProductService.gettypemap().get(type).getStockprice() / dbtotalPrice  *  uptotalPrice * uptotolNum) + ",";
 				}
 				
 			}else{
 				//均分
 				for(int i = 1 ; i < input.split(",").length ; i ++){
 					
-					result += String.format("%.2f", uptotalPrice / dbtotalNum) + ",";
+					result += String.format("%.2f", uptotalPrice * uptotolNum  / dbtotalNum) + ",";
 				}
 				
 			}
