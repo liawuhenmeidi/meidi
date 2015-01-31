@@ -68,6 +68,7 @@ public class SalaryResult {
 		uploadOrder.setShop(shop);
 	}
 	public void setUploadOrderPosNo(String posNo){
+		
 		uploadOrder.setPosNo(posNo);
 	}
 	public void setUploadSalaryModelCatergory(String catergory){
