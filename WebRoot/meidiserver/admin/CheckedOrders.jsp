@@ -31,6 +31,7 @@
 	
 	request.getSession().setAttribute("type_transList", null);
 	request.getSession().setAttribute("sendType_changed_List", null);
+	request.getSession().setAttribute("sendtypeswitch","false");
 	
 	//初始化要对比的orders
 	MatchOrder mo = new MatchOrder();

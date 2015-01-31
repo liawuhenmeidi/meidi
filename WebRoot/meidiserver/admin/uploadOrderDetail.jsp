@@ -34,8 +34,6 @@ boolean containThis = true;
 
 
 
-
-
 UploadOrder uo = new UploadOrder();
 Order o = null;
 List<OrderProduct> type_trans = new ArrayList<OrderProduct>();
@@ -43,10 +41,8 @@ List<OrderProduct> type_trans = new ArrayList<OrderProduct>();
 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
 SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
 
-
 List<String> listt = ProductService.getTypeNameList();
 String plist = StringUtill.GetJson(listt);
-
 
 try{
 	String idSTR = request.getParameter("id");
@@ -54,8 +50,7 @@ try{
 		return;
 	}
 	int id = Integer.parseInt(idSTR);
-	
-	
+		
 	String oidSTR = request.getParameter("oid");
 	int oid = 0;
 	if(!StringUtill.isNull(oidSTR)){
@@ -68,7 +63,6 @@ try{
 	List<OrderProduct> type_transList = new ArrayList<OrderProduct>();
 	type_transList = (List<OrderProduct>)request.getSession().getAttribute("type_transList");
 	type_trans = OrderProductService.getOrderProductFromList(type_transList, id);
-	
 	if(!StringUtill.isNull(submit)&&submit.equals("true")){
 		String shop = request.getParameter("shop");
 		String pos = request.getParameter("pos");
@@ -97,23 +91,19 @@ try{
 			type_transList.add(op);
 		}
 		session.setAttribute("type_transList", type_transList);
-		
-		if(StringUtill.isNull(saletime)){
-			return;
+		if(!StringUtill.isNull(saletime)){
+			uo.setSaleTime(sdf1.format(sdf2.parse(saletime)));
 		}
 		uo.setId(id);
 		uo.setShop(shop);
 		uo.setPosNo(pos);
-		uo.setSaleTime(sdf1.format(sdf2.parse(saletime)));
+		
 		uo.setType(type);
 		uo.setNum(Integer.parseInt(num));
 		uo.setSalePrice(Double.parseDouble(saleprice));
-		
 		if(UploadManager.saveUploadOrder(uo)){
-				
 			tmpList.add(idSTR);
 			request.getSession().setAttribute("sendType_changed_List", tmpList);
-
 			out.print("<script>alert('操作成功!!');window.close()</script>"); 
 			return;
 		}else{
