@@ -209,13 +209,13 @@ function scrollToPrev(){
 		
 		if(trIsChecked(scrollFrom)){
 			//滚到这个位置	
-			$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + $('#maindiv').scrollTop()}, 800);
+			$('#maindiv').animate({scrollTop:$(scrollFrom).offset().top - fix + $('#maindiv').scrollTop()}, 800);
 		}
 	}else{
 		
 		if(trIsChecked(scrollFrom)){
 			//滚到这个位置	
-			$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + $('#maindiv').scrollTop()}, 800);
+			$('#maindiv').animate({scrollTop:$(scrollFrom).offset().top - fix + $('#maindiv').scrollTop()}, 800);
 			scrollFrom = $(scrollFrom).prev();
 		}else{
 			scrollFrom = $(scrollFrom).prev();
@@ -232,13 +232,13 @@ function scrollToNext(){
 		
 		if(trIsChecked(scrollFrom)){
 			//滚到这个位置	
-			$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + $('#maindiv').scrollTop()}, 800);
+			$('#maindiv').animate({scrollTop:$(scrollFrom).offset().top - fix + $('#maindiv').scrollTop()}, 800);
 		}
 	}else{
 		
 		if(trIsChecked(scrollFrom)){
 			//滚到这个位置	
-			$('#maindiv').animate({scrollTop:scrollFrom.offset().top - fix + $('#maindiv').scrollTop()}, 800);
+			$('#maindiv').animate({scrollTop:$(scrollFrom).offset().top - fix + $('#maindiv').scrollTop()}, 800);
 			scrollFrom = $(scrollFrom).next();
 		}else{
 			scrollFrom = $(scrollFrom).next();
