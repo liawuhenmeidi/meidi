@@ -123,6 +123,11 @@ public class SalaryExportServlet extends HttpServlet {
         jxl.write.Number num3;
         
         for(int i = 0 ; i < lists.size() ; i ++ ){
+        	if(lists.get(i).getStatus() == SalaryResult.STATUS_TOTAL){
+        		lists.get(i).getUploadOrder().setName("总计");
+        	}
+        	
+        			
         	label0 = new Label(0,i+1,lists.get(i).getUploadOrder().getName());
         	label1 = new Label(1,i+1,lists.get(i).getUploadOrder().getShop());
         	label2 = new Label(2,i+1,lists.get(i).getUploadOrder().getPosNo());
@@ -136,7 +141,7 @@ public class SalaryExportServlet extends HttpServlet {
         	if(lists.get(i).isFinished()){
         		num3 = new jxl.write.Number(10, i+1,lists.get(i).getSalary()); 
         		sheet.addCell(num3);
-        	}else{
+        	}else{ 
         		label9 = new Label(10,i+1,lists.get(i).getPrintSalary());
         		sheet.addCell(label9);
         	}
