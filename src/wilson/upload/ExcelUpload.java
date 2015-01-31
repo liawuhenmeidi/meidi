@@ -29,7 +29,7 @@ import com.baidu.inf.iis.bcs.BaiduBCS;
 public class ExcelUpload extends HttpServlet { 
 	/**
 	 *  
-	 */ 
+	 */  
 	private static final long serialVersionUID = 1L; 
 	private static String uploadPath;
 	private static String realPath;
@@ -37,8 +37,8 @@ public class ExcelUpload extends HttpServlet {
 	private static String suningFilePath = "data/suningXLS";
 	private static String salaryFilePath = "data/salaryModelXLS";
 	private static String salesFilePath = "data/salesXLS";
-
-	
+	private static String changeFilePath = "data/changeXLS";
+	 
 	private ServletContext sc;
 
 	// BLOB
@@ -50,6 +50,7 @@ public class ExcelUpload extends HttpServlet {
 		suningFilePath = sc.getRealPath("/") + config.getInitParameter("suningFilePath");
 		salaryFilePath = sc.getRealPath("/") + config.getInitParameter("salaryFilePath");
 		salesFilePath = sc.getRealPath("/") + config.getInitParameter("salesFilePath");
+		changeFilePath = sc.getRealPath("/") + config.getInitParameter("changeFilePath");
 	}
  
 	private ServletConfig config = null;
@@ -69,7 +70,7 @@ public class ExcelUpload extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException { 
 		String tempPath = req.getSession().getServletContext().getRealPath("/") + "data" + File.separator + "tempFile"; 
-		System.out.println("tempFilePath=" + tempPath);
+		log.info("tempFilePath=" + tempPath);
 		
 		tempFile = new File(tempPath); 
 		if(!tempFile.exists()){
@@ -117,6 +118,11 @@ public class ExcelUpload extends HttpServlet {
 							//销售单上传
 							directUrl = "./admin/salesUpload.jsp?fileName=";
 							filePath = salesFilePath;
+						}else if(type.equals("4")){
+							//销售单上传 
+							log.info(4);
+							directUrl = "./admin/uploadequal.jsp?fileName=";
+							filePath = changeFilePath;
 						}else{
 							directUrl = "./admin/uploadManage.jsp?fileName=";
 							res.sendRedirect(directUrl+fileName);
@@ -132,49 +138,48 @@ public class ExcelUpload extends HttpServlet {
 				item = (FileItem) iter.next();
 				
 				if (item.isFormField()) {
-					System.out.println("表单参数名:" + item.getFieldName() + "，表单参数值:" + item.getString("UTF-8"));
+					log.info("表单参数名:" + item.getFieldName() + "，表单参数值:" + item.getString("UTF-8"));
 				}
 				// 忽略其他不是文件域的所有表单信息 
 				if (!item.isFormField()) { 
-
+ 
 					if (item.getName() != null && !item.getName().equals("")) {
 
-						if (item.getName().endsWith(".xls")) { 
-							System.out.println();
-							System.out.println("上传文件的大小:" + item.getSize());
-					     	System.out.println("上传文件的类型:" + item.getContentType());
-					     	System.out.println("上传文件的名称:" + item.getName());
+						if (item.getName().endsWith(".xls")) {   
+							log.info("上传文件的大小:" + item.getSize());
+					     	log.info("上传文件的类型:" + item.getContentType());
+					     	log.info("上传文件的名称:" + item.getName());
 					     	
 					     	File upperFolder = new File(filePath);
-					     	if(!upperFolder.exists()){
+					     	if(!upperFolder.exists()){ 
 					     		upperFolder.mkdirs();
 					     	}
 					     	File file = new File(filePath, fileName);
-					     	item.write(file);
-					     	System.out.println(("upload.message" + "上传文件成功！"));
-							
-						}else{
-							System.out.println("wront type " + item.getName());
-							System.out.println(("upload.message" + "文件类型错误，只能是xls类型！"));
-						}
-	
+					     	item.write(file); 
+					     	log.info("上传文件的名称:" + file.getAbsolutePath());
+					     	log.info(("upload.message" + "上传文件成功！"));
+						}else{ 
+							log.info("wront type " + item.getName());
+							log.info(("upload.message" + "文件类型错误，只能是xls类型！"));
+						}      
 					 }else{
-						 System.out.println(("upload.message" +  "没有选择上传文件！"));
+						 log.info(("upload.message" +  "没有选择上传文件！"));
 					 }
 
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println(("upload.message" + "文件IO错误！"));
+			log.info(("upload.message" + "文件IO错误！"));
 		} catch (FileUploadException e) {
 			e.printStackTrace();
-			System.out.println(("upload.message" +"文件上传错误！"));
+			log.info(("upload.message" +"文件上传错误！"));
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(("upload.message" + "文件上传错误！"));
-		}
+			log.info(("upload.message" + "文件上传错误！"));
+		} 
 		res.sendRedirect(directUrl+fileName);
+		log.info(""+directUrl+fileName);
 		//req.getRequestDispatcher("/meidiserver/admin/updateExcel.jsp").forward(req, res);
 	}
 
@@ -184,6 +189,14 @@ public class ExcelUpload extends HttpServlet {
 
 	public static String getSalaryFilePath() {
 		return salaryFilePath;
+	}
+
+	public static String getChangeFilePath() {
+		return changeFilePath;
+	}
+
+	public static void setChangeFilePath(String changeFilePath) {
+		ExcelUpload.changeFilePath = changeFilePath;
 	}
 
 	public static String getSalesFilePath() {

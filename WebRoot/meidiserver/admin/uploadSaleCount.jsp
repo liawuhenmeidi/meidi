@@ -84,7 +84,7 @@ function checkedd(){
 }
 </script>
 </head> 
- 
+  
 <body>
    <form action="" method="post" id="post" onsubmit="return checkedd()">
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名称:

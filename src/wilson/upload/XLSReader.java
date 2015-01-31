@@ -7,10 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import change.BranchTypeChange;
 
 import utill.StringUtill;
 
@@ -406,6 +409,88 @@ public class XLSReader {
 			}
 	        wb.close();
 			
-			return UploadOrders;
+			return UploadOrders; 
 		}
+		
+		  
+		public BranchTypeChange readchangeXML(String path,String fileName){
+			BranchTypeChange b = new BranchTypeChange(); 
+			Map<String, List<String>> map = b.getMaplist();
+			if(fileName == null || path == null){
+				return null; 
+			}
+			final int SHOP_POS = 0;
+			
+			String filepath = path.replace("\\", "/");
+			//List<String> list =   new ArrayList<String>();
+			File srcFile = new File(filepath,fileName); 
+			Workbook wb = null;
+			try {
+				wb = Workbook.getWorkbook(srcFile);
+			} catch (BiffException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} 
+			Sheet sheet0 = wb.getSheet(0);
+			
+			String name = "";
+			try{ 
+				name = sheet0.getCell(1,0).getContents().trim();
+				if(UploadManager.isUploaderFileNameExist(name)){
+					b.setName("文件名称重复!请修改名称");
+					return b;
+				}else {
+					b.setName(name);
+				} 
+			}catch(Exception e){
+				e.printStackTrace();
+				b.setName("文件名有问题，请检查");
+				return b;
+			} 
+			
+			logger.info(sheet0.getRows());
+			logger.info(sheet0.getColumns()); 
+			for(int i = 2 ; i < sheet0.getRows(); i ++){
+				
+				try{
+					if(sheet0.getCell(SHOP_POS,i).getContents().trim().equals("")){
+						continue;
+					}
+					boolean flag = true ;
+					int j = 0 ;  
+					String first = "";
+					
+					while(flag && j < sheet0.getColumns()){ 
+						String str = sheet0.getCell(j,i).getContents().trim();
+						//logger.info(str); 
+						if(StringUtill.isNull(str) ){
+							flag = false ;
+						}else { 
+							if(j == 0){
+								first = str ;
+							}  
+							List<String> list = map.get(first);
+							if(null == list){
+								list = new ArrayList<String>();
+								map.put(first, list);
+							} 
+							list.add(str);
+						}
+						j++;
+					}
+					 
+				}catch(Exception e){
+					e.printStackTrace();
+					
+					b.setName("第"+ (i+1) + "行附近有问题，请检查");
+					
+					return b;
+				}
+			}
+	        wb.close();
+			
+			return b;
+		}
+		
 }

@@ -21,6 +21,9 @@ import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import change.BranchTypeChange;
+import change.ChangeManager;
+
 import order.Order;
 import order.OrderManager;
 import orderPrint.OrderPrintlnService;
@@ -56,6 +59,19 @@ public class UploadManager {
 	public static boolean saveSalesFileToDB(String path,String fileName){
 		List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
 		UploadOrders = xlsreader.readSalesXLS(path, fileName);
+		if(saveOrderList(UploadOrders)){
+			logger.info("上传销售单保存成功");
+			return true;
+		}else{
+			logger.info("上传销售单保存失败");
+			return false;
+		}
+	}
+	
+	public static boolean savechangeFileToDB(String path,String fileName){
+		List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
+		BranchTypeChange bt = xlsreader.readchangeXML(path,fileName);
+		ChangeManager.save(bt);  
 		if(saveOrderList(UploadOrders)){
 			logger.info("上传销售单保存成功");
 			return true;
@@ -947,7 +963,6 @@ public class UploadManager {
 	
 	public static List<UploadOrder> getTotalUploadOrders(String id){
 		List <UploadOrder> checkedUploadOrders = new ArrayList<UploadOrder>();
- 
 		Connection conn = DB.getConn();  
 		String sql = "select * from uploadorder where dealtime is null and name = '"+id+"' order by shop";
 
@@ -2312,4 +2327,5 @@ int count = 0 ;
 		return result;
 		
 	}
+	
 }
