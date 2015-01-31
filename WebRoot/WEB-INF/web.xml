@@ -255,6 +255,10 @@
 	  		<param-name>salesFilePath</param-name>
 	  		<param-value>data/salesXLS</param-value>
 	  	</init-param>
+	  	<init-param> 
+	  		<param-name>changeFilePath</param-name>
+	  		<param-value>data/changeXLS</param-value>
+	  	</init-param>
 	  </servlet>
 	  <servlet-mapping>
 	  	<servlet-name>ExcelUpload</servlet-name>

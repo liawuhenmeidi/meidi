@@ -100,8 +100,10 @@ body {
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
   <a href="../DownloadServlet?name=tichengmuban&type=model"><font style="color:red;font-size:20px;" >提成标准模板</font> </a><br />
  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-  <a href="../DownloadServlet?name=xiaoshoudanmuban&type=model"><font style="color:red;font-size:20px;">销售单模板</font> </a>
-  
+  <a href="../DownloadServlet?name=xiaoshoudanmuban&type=model"><font style="color:red;font-size:20px;">销售单模板</font> </a><br />
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  <a href="../DownloadServlet?name=changemuban&type=model"><font style="color:red;font-size:20px;">转化单模板</font> </a>
+   
 
   <form action="../ExcelUpload" method="post" enctype ="multipart/form-data" runat="server"> 
       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -113,6 +115,7 @@ body {
       <option value="1">系统比对单上传</option>   
         <option value="2">提成标准上传</option>   
         <option value="3">销售单上传</option>   
+        <option value="4">转化单上传</option>   
       </select>
       <input type="submit" name="Button1" value="提交文件" id="Button1" />
   </form>
