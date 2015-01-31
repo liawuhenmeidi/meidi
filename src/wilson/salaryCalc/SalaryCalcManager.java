@@ -755,12 +755,9 @@ public class SalaryCalcManager {
 				inputSalaryMap.put(salaryResult.get(i).getUploadOrder().getId(), tmp);
 			}
 			
-			sql = "select count(*) from uploadorder where name = '" + uploadOrdername + "' and checked = '" + UploadOrder.ORIGIN + "'";
-			pstmt = DB.prepare(conn, sql);
-			rs = pstmt.executeQuery();
-			rs.next();
-			int num = rs.getInt(1);
-			if(num <= 0){
+			boolean isBackuped = UploadManager.isBackUped(uploadOrdername);
+
+			if(!isBackuped){
 				//取本文件全体uploadorders
 				sql = "select * from uploadorder where name = '" + uploadOrdername + "'";
 				pstmt = DB.prepare(conn, sql);

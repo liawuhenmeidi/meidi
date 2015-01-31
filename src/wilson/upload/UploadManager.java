@@ -2287,4 +2287,29 @@ int count = 0 ;
 		}
 		return result;
 	}
+	
+	public static boolean isBackUped(String name){
+		boolean result = false;
+		Connection conn = DB.getConn();
+		//暂时先这样。。。囧
+		String sql = "";
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		try{
+			sql = "select count(*) from uploadorder where name = '" + name + "' and checked = '" + UploadOrder.ORIGIN + "'";
+			pstmt = DB.prepare(conn, sql);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			int num = rs.getInt(1);
+			if(num > 0){
+				result = true;
+			}else{
+				result = false;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			return result;
+		}
+		return result;
+		
+	}
 }
