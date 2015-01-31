@@ -8,22 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import order.OrderManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import branch.Branch;
 import branch.BranchManager;
 
-import category.Category;
-import category.CategoryManager;
-
-import user.User;
-import user.UserManager;
 import database.DB;
   
 public class BranchTypeManager {

@@ -143,9 +143,14 @@ function inventory(inventory,type){
 		 //window.open('dingdanDetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }
 } 
-
+ 
+function detail(type){
+	window.open('inventoryDetail.jsp?starttime=<%=starttime%>&endtime=<%=endtime%>&ctype='+type+'&branchid=<%=branchName%>', 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+	//window.location.href='';
+}
+ 
 function checkTime(){
-	
+	 
 	var starttime = $("#starttime").val();
 
 	var endtime = $("#endtime").val();
@@ -264,9 +269,9 @@ function checkTime(){
 	            			  }
 	            		  }
 	            		  
-            	  %> 
+            	  %>  
             	  	 
-            	   <tr id=""  class="asc"  onclick="updateClass(this)">   
+            	   <tr id=""  class="asc"  onclick="updateClass(this)" ondblclick="detail('<%=in.getTypeid()%>')">    
 			 
         			  <td align="center"><%=mapc.get(in.getInventoryid()).getName() %></td>    
         			  <td align="center"><%=in.getType() %> </td>   
