@@ -117,7 +117,7 @@
 		session.setAttribute("addName_filename", paraOrderName);
 		if(paraSave != null && !paraSave.equals("")){
 			if(showOrders!=null &&showOrders.size() > 0 && showSalaryModels!=null&&showSalaryModels.size()>0){
-				SalaryCalcManager.saveSalaryResult(salaryResult,groupname);
+				SalaryCalcManager.saveSalaryResult(salaryResult,groupname,unCalcUploadOrders);
 				response.sendRedirect("salaryCalc.jsp");
 				return;
 			}

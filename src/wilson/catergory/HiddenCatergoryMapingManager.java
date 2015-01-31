@@ -117,15 +117,15 @@ public class HiddenCatergoryMapingManager {
 		}
 		
 		//判断存在性
-		if(!checkFile()){
-			return result;
-		}
+		checkFile();
+		
 		Properties props = getProperFile();
 		boolean isContain = false;
 		isContain = props.contains(filename);
 		
 		if(isContain){
-			return result;
+			delCatergoryMaping(filename);
+			//return result;
 		}
 		
 		//从数据库取数据

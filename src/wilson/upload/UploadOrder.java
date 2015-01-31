@@ -33,7 +33,7 @@ public class UploadOrder {
 		//this.typeForCompare = uo.gettyp;
 	}
 
-	private int id = -1; //id
+	private int id = DEFAULT; //id
 	
 	private String name = ""; 
 	
@@ -57,11 +57,13 @@ public class UploadOrder {
 	
 	private int checked = UNCHECK; //0 为已经check  1为没有 check 2为已经与提成标准匹配好  3为已经消单  默认为1
 	
+	public static final int DEFAULT = -1;
 	public static final int CHECKED = 0;
 	public static final int UNCHECK = 1;
 	public static final int CALCED = 2;
 	public static final int COMFIRMED = 3;
 	public static final int COMPARE_DEFAULT = 1;
+	public static final int ORIGIN = 5;
 	
 	public String getPrintStatus(){
 		switch (this.checked){
@@ -136,6 +138,9 @@ public class UploadOrder {
 	private String checkedTime = ""; //check的时间，默认为null
 	
 	private int checkOrderId = 0; //check后对应的orderID
+	
+	public static final int CHECK_ORDER_ID_DEFAULT = 0;
+	public static final int CHECK_ORDER_ID_SEPARATE = -10;
 
 	public Double getTotal(){
 		return getSalePrice() * getNum();

@@ -2277,6 +2277,7 @@ int count = 0 ;
 					uo.setType(type);
 					uo.setNum(Integer.parseInt(num));
 					uo.setSalePrice(Double.parseDouble(salePrice));
+					uo.setCheckOrderId(UploadOrder.CHECK_ORDER_ID_SEPARATE);
 					
 					result.add(uo);
 				}

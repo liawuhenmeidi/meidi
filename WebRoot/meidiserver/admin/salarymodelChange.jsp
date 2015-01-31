@@ -106,7 +106,7 @@ if(id ==-1){
 
 			if(SalaryCalcManager.recalcSalary(salaryFileName,salarymodel)){
 				//保存成功  
-				out.print("<script>alert('操作成功!!');window.close()</script>"); 
+				out.print("<script>alert('操作成功!!');window.opener.location.reload();window.close()</script>"); 
 				return;
 			}else{
 				//保存失败
@@ -334,12 +334,14 @@ function checkedd(){
 <br/>  
  
 <div id="wrap">  
-<form  action=""  method ="post"  id="form"   onsubmit="return checkedd()"  >
+<form  action=""  method ="get"  id="form"   onsubmit="return checkedd()"  >
+<input type="hidden" name="salaryfilename" value="<%=salaryFileName %>" />
+
 <table  cellspacing="1"  id="table" > 
 		<tr  class="asc">  
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			<td align="center">单号</td> 
-			<td align="center"><input type="text" value="<%=salarymodel.getId() %>" disabled="disabled"/></td>  
+			<td align="center"><input type="text" name="id" value="<%=salarymodel.getId() %>" readonly="readonly"/></td>  
 			<td align="center">门店</td>
 			<td align="center" id="shop"><%=salarymodel.getShop() %></td> 
 			<td align="center">提交时间</td>

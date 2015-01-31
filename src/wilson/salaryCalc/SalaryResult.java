@@ -82,6 +82,8 @@ public class SalaryResult {
 		super();
 		this.uploadOrder = uploadOrder;
 		this.salaryModel = salaryModel;
+		this.uploadOrderId = uploadOrder.getId();
+		this.uploadSalaryModelid = salaryModel.getId();
 	}
 	public int getId() {
 		return id;
@@ -94,11 +96,13 @@ public class SalaryResult {
 	}
 	public void setUploadOrderId(int uploadOrderId) {
 		this.uploadOrderId = uploadOrderId;
+		this.uploadOrder.setId(uploadOrderId);
 	}
 	public int getUploadSalaryModelid() {
 		return uploadSalaryModelid;
 	}
 	public void setUploadSalaryModelid(int uploadSalaryModelid) {
+		this.salaryModel.setId(uploadSalaryModelid);
 		this.uploadSalaryModelid = uploadSalaryModelid;
 	}
 	public UploadOrder getUploadOrder() {
