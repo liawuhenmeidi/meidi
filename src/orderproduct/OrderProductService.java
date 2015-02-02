@@ -40,7 +40,7 @@ public class OrderProductService {
 		for(int i = 0 ; i < opList.size() ; i ++){
 			op = opList.get(i);
 			if(op.getStatues() == 0){
-				result ++;
+				result += op.getCount();
 			}
 		}
 		return result;
@@ -137,7 +137,7 @@ public class OrderProductService {
 				if(op.getStatues() == 0){
 					p = ProductService.getIDmap().get(Integer.parseInt(op.getSendType()));
 					if(totalPrice_db == 0){
-						tmpPrice = DoubleUtill.getdoubleTwo((uo.getSalePrice()/num)/op.getCount());
+						tmpPrice = DoubleUtill.getdoubleTwo(uo.getSalePrice()* uo.getNum()/num);
 					}else{
 						tmpPrice = DoubleUtill.getdoubleTwo(p.getStockprice() * uo.getSalePrice() * uo.getNum() / totalPrice_db);
 					}
@@ -151,7 +151,7 @@ public class OrderProductService {
 				if(op.getStatues() == 0){
 					p = ProductService.getIDmap().get(Integer.parseInt(op.getSendType()));
 					if(totalPrice_db == 0){   
-						tmpPrice = DoubleUtill.getdoubleTwo((uo.getSalePrice()/num)/op.getCount());
+						tmpPrice = DoubleUtill.getdoubleTwo(uo.getSalePrice()* uo.getNum()/num);
 					}else{
 						tmpPrice = DoubleUtill.getdoubleTwo(p.getStockprice() * uo.getSalePrice() * uo.getNum() / totalPrice_db);
 					}

@@ -898,10 +898,11 @@ public class SalaryCalcManager {
 			
 			
 			//删除脏数据(UploadOrder表)  没提交的，但是拆成了新单的，删除
-			if(unCommit_idSTR.equals(",")){
+			if(unCommit_idSTR.endsWith(",")){
 				unCommit_idSTR = unCommit_idSTR.substring(0,unCommit_idSTR.length()-1);
 			}
 			sql = "delete from uploadorder where id in (" + unCommit_idSTR + ")";
+
 			pstmt = DB.prepare(conn, sql);
 			pstmt.executeUpdate();
 			

@@ -378,6 +378,9 @@ public class UploadManager {
 					throw new SQLException();
 				}
 				
+				if(uploadorderid.equals("61511")){
+					System.out.println(1);
+				}
 				pstmt.setString(1, OrderProductService.getSendTypeAndCountAndPrice(o,uo,true,true));
 				pstmt.setInt(2, Integer.parseInt(uploadorderid));
 				pstmt.executeUpdate();
@@ -392,6 +395,7 @@ public class UploadManager {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			
 			logger.info("修改送货型号异常，回滚！");
 			try {
 				conn.rollback();
