@@ -180,6 +180,7 @@ public class SalaryCalcManager {
 							//添加到noMapingList
 							//noMapingList.addAll(sameShopList);
 							//sameShopList.clear();
+							
 						}
 					}
 					
