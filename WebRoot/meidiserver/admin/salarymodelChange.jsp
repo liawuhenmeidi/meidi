@@ -17,7 +17,7 @@ int id = Integer.parseInt(idSTR);
 
 //接受参数
 String catergory = request.getParameter("catergory");
-String type = request.getParameter("type");
+String type = request.getParameter("saletype");
 String filename = request.getParameter("filename");
 //URLEncoder.encode(URLEncoder.encode(name,"utf-8"));
 
@@ -243,13 +243,13 @@ function checkContent(){
 	white($('#contentendlast'));
 	white($('#contentvaluelast'));
 	
-	if($('#catergory').val() == ""){
-		red($('#catergory'));
-		return false;
-	}else if($('#type').val()== ""){
-		red($('#type'));
-		return false;
-	}
+	//if($('#catergory').val() == ""){
+	//	red($('#catergory'));
+	//	return false;
+	//}else if($('#type').val()== ""){
+	//	red($('#type'));
+	//	return false;
+	//}
 	for(var i = 0 ; i < newCol ; i ++){
 		white($('#'+"contentstart" + i));
 		white($('#'+"contentend" + i));
@@ -354,7 +354,7 @@ function checkedd(){
 			</td>
 				<td align="center">型号</td>
 			<td align="center">			
-			    <input type="text" name="type" id="type" value="<%=salarymodel.getType() %>"  readonly="readonly"/> 
+			    <input type="text" name="saletype" id="type" value="<%=type %>"  readonly="readonly"/> 
 			</td>
 			<td align="center">名称</td>
 			 <td align="center" >

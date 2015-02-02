@@ -31,11 +31,11 @@
 
 					String url = "../UploadExport?type=uploadorder&name=" + URLEncoder.encode(URLEncoder.encode(name,"utf-8"));
 					response.sendRedirect(url);
-					return ;
+					return;
 				}else if(type.equals("salarymodel")){
 					String url = "../UploadExport?type=salarymodel&name=" + URLEncoder.encode(URLEncoder.encode(name,"utf-8"));
 					response.sendRedirect(url);
-					return ;
+					return;
 				}
 				
 			}
