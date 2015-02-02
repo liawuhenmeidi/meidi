@@ -2327,5 +2327,43 @@ int count = 0 ;
 		return result;
 		
 	}
+
+	public static List<UploadSalaryModel> getSalaryModelList(Date startDate ,Date endDate) {
+		List<UploadSalaryModel> result = new ArrayList<UploadSalaryModel>();
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String sql = "select * from uploadsalarymodel where ( status = 0 and starttime >= " + fmt.format(startDate)  + " and endtime <= " + fmt.format(endDate) + " ) " +
+				"or ( status = 0 and starttime < " + fmt.format(endDate)  + " and endtime > " + fmt.format(endDate) + " ) " +
+						"or ( status = 0 and starttime < " + fmt.format(startDate)  + " and endtime > " + fmt.format(startDate) + " ) ";
+		System.out.print("sql");
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		UploadSalaryModel usm = new UploadSalaryModel();
+		try {
+			while(rs.next()){
+				usm.setName(rs.getString("name"));
+				usm.setShop(rs.getString("shop"));
+				usm.setId(rs.getInt("id"));
+				usm.setStartTime(rs.getString("starttime"));
+				usm.setEndTime(rs.getString("endtime"));
+				usm.setCatergory(rs.getString("catergory"));
+				usm.setType(rs.getString("type"));
+				usm.setContent(rs.getString("content"));
+				usm.setCommitTime(rs.getString("committime"));
+				usm.setFileName(rs.getString("filename"));
+				usm.setStatus(rs.getInt("status"));
+				result.add(usm);
+				usm = new UploadSalaryModel();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return result;
+	}
 	
 }
