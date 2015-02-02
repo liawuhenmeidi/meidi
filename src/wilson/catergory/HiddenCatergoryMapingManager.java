@@ -125,6 +125,7 @@ public class HiddenCatergoryMapingManager {
 		
 		if(isContain){
 			delCatergoryMaping(filename);
+			props = getProperFile();
 			//return result;
 		}
 		
@@ -161,14 +162,19 @@ public class HiddenCatergoryMapingManager {
 		}
 		try{
 			String delFileName = getKey(props, filename);
-			
-			File delFile = new File(hiddenCatergoryMapingPath + File.separator + delFileName);
+			while(isContain){
+				delFileName = getKey(props, filename);
+				
+				File delFile = new File(hiddenCatergoryMapingPath + File.separator + delFileName);
 
-			if(delFile.exists()){
-				boolean deleteResult = delFile.delete();
-				System.out.println("删除" + (deleteResult?"成功":"失败"));
+				if(delFile.exists()){
+					boolean deleteResult = delFile.delete();
+					System.out.println("删除" + (deleteResult?"成功":"失败"));
+				}
+				props.remove(delFileName);	
+				isContain = props.contains(filename);
+				
 			}
-			props.remove(delFileName);
 			saveProperFile("del " + delFileName, props);
 			result = true;
 		}catch(Exception e){

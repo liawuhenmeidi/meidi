@@ -190,7 +190,11 @@ public class HiddenFileManager {
 		lists = SalaryCalcManager.getSalaryResultByName(name);
 		
 		//排序
+		lists = SalaryCalcManager.initSalaryModel(lists);
 		lists = SalaryCalcManager.sortSalaryResult(lists,true);
+		
+		
+		
 		//清理catergoryMaping文件
 		HiddenCatergoryMapingManager.delCatergoryMaping(name);
 		
@@ -204,8 +208,14 @@ public class HiddenFileManager {
 		//写properties
 		saveProperFile("Update " + randomName,props);
 
-		//清数据库
+		
+		
+		
+		//清数据库 Upload salaryResult文件
 		result = UploadManager.deleteUploadOrderByName(name);
+		//清理数据库salarymodel文件
+		result = UploadManager.deleteDeprecateSalaryModels();
+		
 
 		return result;
 	}

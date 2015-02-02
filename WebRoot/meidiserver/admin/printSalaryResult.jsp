@@ -16,7 +16,7 @@
 		
 	}
 	if(showResult.size() > 0){
-		showResult = SalaryCalcManager.sortSalaryResult(showResult);
+		showResult = SalaryCalcManager.sortSalaryResult(showResult,true);
 	}
 	
 	for(int i = 0 ; i < showResult.size() ; i ++){
