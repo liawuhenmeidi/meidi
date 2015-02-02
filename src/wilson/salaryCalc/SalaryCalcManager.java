@@ -866,11 +866,13 @@ public class SalaryCalcManager {
 			
 	
 			//新增数据库中的值(UploadOrder表) 拆分的中，没提交的，设置为CHECKED->存
+			String unCommit_idSTR = "";
 			sql = "insert into uploadorder (id,name,salesman,shop,posno,saletime,type,num,saleprice,backpoint,filename,uploadtime,checked,checkedtime,checkorderid) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
 			pstmt = DB.prepare(conn, sql);
 			for(int i = 0 ; i < unCalcList.size() ; i++){
 				if(unCalcList.get(i).getCheckOrderId() == UploadOrder.CHECK_ORDER_ID_SEPARATE){
 					UploadOrder uo = unCalcList.get(i);
+					unCommit_idSTR += uo.getId() + ",";
 					pstmt.setString(1, uo.getName());
 					pstmt.setString(2, uo.getSaleManName());
 					pstmt.setString(3, uo.getShop());
@@ -895,10 +897,21 @@ public class SalaryCalcManager {
 			}
 			
 			
+			//删除脏数据(UploadOrder表)  没提交的，但是拆成了新单的，删除
+			if(unCommit_idSTR.equals(",")){
+				unCommit_idSTR = unCommit_idSTR.substring(0,unCommit_idSTR.length()-1);
+			}
+			sql = "delete from uploadorder where id in (" + unCommit_idSTR + ")";
+			pstmt = DB.prepare(conn, sql);
+			pstmt.executeUpdate();
+			
 			//删除脏数据(UploadOrder表)  提交的所有的,删除
 			sql = "delete from uploadorder where id in (" + salaryResult_idSTR + ")";
 			pstmt = DB.prepare(conn, sql);
 			pstmt.executeUpdate();
+			
+			
+			
 			
 			//将新的数据存入salaryresult表
 			sql = "insert into salaryresult VALUES(null,?,?,?,?,?)";
