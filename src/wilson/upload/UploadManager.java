@@ -983,8 +983,7 @@ logger.info(sql);
 		try {     
 			while (rs.next()) {
 				uo = getUploadOrderFromRS(rs);
-				checkedUploadOrders.add(uo);
-				uo = new UploadOrder();
+				checkedUploadOrders.add(uo); 
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

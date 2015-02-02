@@ -28,6 +28,7 @@
 	List<UploadOrder> list = null ;   
 	if("check".equals(type)){ 
 		 list = UploadManager.getTotalUploadOrders(id); 
+		 System.out.println(list.size());
 		 check = true ;
 	}else if("total".equals(type)){
 		total = true ;     
@@ -87,7 +88,7 @@ function checkedd(){
   
 <body>
    <form action="" method="post" id="post" onsubmit="return checkedd()">
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名称:
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;票面销售统计:
    <input type="hidden" name="type" id="type" value="check"/>
    <select name="said" id="said">
 	<option ></option>
@@ -193,9 +194,9 @@ if(total){ %>
 		 count += sain.getNum();
 		 moneycount += Math.abs(sain.getSalePrice())*sain.getNum();
 		 bpmoneycount += Math.abs(sain.getSalePrice())*sain.getNum()*(1-sain.getBackPoint()/100);
-		
+		 
 	%>
-	<tr class="asc"  onclick="updateClass(this)"> 
+	<tr class="asc"  onclick="updateClass(this)" id="<%=sain.getId()%>"> 
 					<td align="center"><%=i+1 %></td>
 					<td align="center"><%=sain.getShop() %></td>
 					<td align="center"><%=sain.getSaleTime() %></td>

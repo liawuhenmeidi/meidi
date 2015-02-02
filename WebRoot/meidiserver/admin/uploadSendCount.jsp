@@ -104,7 +104,7 @@ function checkedd(){
 
 <body>
    <form action="" method="post" id="post" onsubmit="return checkedd()">
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名称: 
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;送货型号统计: 
    <input type="hidden" name="type" id="type" value="check"/>
    <select name="said" id="said">
 	<option ></option>
