@@ -34,14 +34,29 @@ public class ChangeManager {
 			}
 		}
 		DBUtill.sava(sqls); 
-		BranchTypeChange.map = germap();
+		BranchTypeChange.map = getmap();
 	}
-	public static Map<String,String>  germap(){
+	public static Map<String,String>  getmap(){
 		Map<String,String> map = new HashMap<String,String>();
 		List<Change> list = getLocate();
 		for(int i=0;i<list.size();i++){
 			Change c = list.get(i);
 			map.put(c.getChange(), c.getBechange());
+		}
+		return map;
+	} 
+	 
+	public static Map<String,List<String>>  getmapList(){
+		Map<String,List<String>> map = new HashMap<String,List<String>>();
+		List<Change> list = getLocate();
+		for(int i=0;i<list.size();i++){
+			Change c = list.get(i);
+			List<String> lists = map.get(c.getBechange());
+			if(null == lists){
+				lists = new ArrayList<String>();
+				map.put(c.getBechange(), lists); 
+			} 
+			lists.add(c.getChange());
 		}
 		return map;
 	}

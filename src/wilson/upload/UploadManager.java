@@ -964,8 +964,15 @@ public class UploadManager {
 	public static List<UploadOrder> getTotalUploadOrders(String id){
 		List <UploadOrder> checkedUploadOrders = new ArrayList<UploadOrder>();
 		Connection conn = DB.getConn();  
-		String sql = "select * from uploadorder where dealtime is null and name = '"+id+"' order by shop";
-
+		String str = "";
+		if(isBackUped(id)){
+			str = "  and  checked =  5";
+		}else { 
+			str = "  and  checked !=  5";
+		}    
+		 
+		String sql = "select * from uploadorder where dealtime is null and name = '"+id+"' "+str+" order by shop";
+logger.info(sql); 
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		UploadOrder uo = new UploadOrder();
@@ -996,10 +1003,15 @@ public class UploadManager {
 			}else if(Integer.valueOf(statues) == 0){ 
 				search = " and checked in (0,2) "; 
 			}
-		} 
-		     
-		String sql = "select * from uploadorder where dealtime is null and name = '"+id+"' "+search+" order by shop";
-   
+		}  
+		String str = "";
+		if(isBackUped(id)){
+			str = "  and  checked =  5";
+		}else {
+			str = "  and  checked !=  5"; 
+		}     
+		String sql = "select * from uploadorder where dealtime is null and name = '"+id+"' "+str + search+" order by shop";
+   logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		UploadOrder uo = new UploadOrder();
@@ -1541,7 +1553,6 @@ int count = 0 ;
 		return lists;
 	}
 	
-	
 	public static List<UploadSalaryModel> getAllSalaryModel(){
 		List<UploadSalaryModel> result = new ArrayList<UploadSalaryModel>();
 		String sql = "select * from uploadsalarymodel where status != " + UploadSalaryModel.DELETE;
@@ -2036,7 +2047,6 @@ int count = 0 ;
 		}
 		return result ;  
 	}
-	
 	public static boolean deleteUploadOrderByName(String name){
 		
 		//加trasaction 删除salaryResult里面记录
@@ -2365,5 +2375,4 @@ int count = 0 ;
 		}
 		return result;
 	}
-	
 }

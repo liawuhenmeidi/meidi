@@ -130,12 +130,14 @@ function reloadopned(src){
             </div>
           </li>
            <li >
-            <h4 >销售统计</h4>
+            <h4 >销售统计</h4>  
             <div class="list-item none">
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('changedetail.jsp')">转化规则</a></p>
               <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadSaleCount.jsp')">票面销售统计</a></p>
               <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadSendCount.jsp')">送货销售统计</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadSendCountchange.jsp')">送货转换销售统计</a></p>
             </div>
-          </li> 
+          </li>  
           
           <%
           }
