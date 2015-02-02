@@ -826,7 +826,7 @@ public class SalaryCalcManager {
 					pstmt.setInt(7, uo.getNum());
 					pstmt.setDouble(8, uo.getSalePrice());
 					pstmt.setDouble(9, uo.getBackPoint());
-					pstmt.setString(10, uo.getFileName());
+					pstmt.setString(10, catergoryMapingName);
 					pstmt.setString(11, fmt.format(new Date()));
 					
 					pstmt.setInt(12, UploadOrder.CALCED);

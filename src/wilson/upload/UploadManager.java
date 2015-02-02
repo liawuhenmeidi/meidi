@@ -1541,47 +1541,10 @@ int count = 0 ;
 		return lists;
 	}
 	
-	public static List<UploadSalaryModel> getSalaryModelList(Date startDate ,Date endDate) {
-		List<UploadSalaryModel> result = new ArrayList<UploadSalaryModel>();
-		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String sql = "select * from uploadsalarymodel where ( status = 0 and starttime >= " + fmt.format(startDate)  + " and endtime <= " + fmt.format(endDate) + " ) " +
-				"or ( status = 0 and starttime < " + fmt.format(endDate)  + " and endtime > " + fmt.format(endDate) + " ) " +
-						"or ( status = 0 and starttime < " + fmt.format(startDate)  + " and endtime > " + fmt.format(startDate) + " ) ";
-		System.out.print("sql");
-		Connection conn = DB.getConn();
-		Statement stmt = DB.getStatement(conn); 
-		ResultSet rs = DB.getResultSet(stmt, sql);
-		UploadSalaryModel usm = new UploadSalaryModel();
-		try {
-			while(rs.next()){
-				usm.setName(rs.getString("name"));
-				usm.setShop(rs.getString("shop"));
-				usm.setId(rs.getInt("id"));
-				usm.setStartTime(rs.getString("starttime"));
-				usm.setEndTime(rs.getString("endtime"));
-				usm.setCatergory(rs.getString("catergory"));
-				usm.setType(rs.getString("type"));
-				usm.setContent(rs.getString("content"));
-				usm.setCommitTime(rs.getString("committime"));
-				usm.setFileName(rs.getString("filename"));
-				usm.setStatus(rs.getInt("status"));
-				result.add(usm);
-				usm = new UploadSalaryModel();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			DB.close(rs);
-			DB.close(stmt);
-			DB.close(conn);
-		}
-		return result;
-	}
 	
 	public static List<UploadSalaryModel> getAllSalaryModel(){
 		List<UploadSalaryModel> result = new ArrayList<UploadSalaryModel>();
-		String sql = "select * from uploadsalarymodel where status != -1";
+		String sql = "select * from uploadsalarymodel where status != " + UploadSalaryModel.DELETE;
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -1632,7 +1595,7 @@ int count = 0 ;
 	
 	public static List<String> getAllSalaryModelNames(){
 		List<String> result = new ArrayList<String>();
-		String sql = "select distinct name from uploadsalarymodel where status != -1;";
+		String sql = "select distinct name from uploadsalarymodel where status != " + UploadSalaryModel.DELETE;
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -1800,7 +1763,7 @@ int count = 0 ;
 		Map<String,UploadSalaryModel> result = new HashMap<String,UploadSalaryModel>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadsalarymodel where  status != -1 order by name";
+		String sql = "select * from uploadsalarymodel where  status != " + UploadSalaryModel.DELETE + " order by name";
 
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -1835,7 +1798,7 @@ int count = 0 ;
 		List<String> list = new ArrayList<String>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select catergory from uploadsalarymodel where  status != -1 group by catergory";
+		String sql = "select catergory from uploadsalarymodel where  status != " + UploadSalaryModel.DELETE + " group by catergory";
 
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -1857,7 +1820,7 @@ int count = 0 ;
 		List <UploadSalaryModel> result = new ArrayList<UploadSalaryModel>();
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadsalarymodel where name = '" + name + "' and status != -1 order by name";
+		String sql = "select * from uploadsalarymodel where name = '" + name + "' and status != " + UploadSalaryModel.DELETE + " order by name";
 
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -1904,7 +1867,7 @@ int count = 0 ;
 		
 
 		Connection conn = DB.getConn(); 
-		String sql = "select * from uploadsalarymodel where name in (" + nameSTR + ") and status != -1 order by name";
+		String sql = "select * from uploadsalarymodel where name in (" + nameSTR + ") and status != " +  UploadSalaryModel.DELETE +  "  order by name";
 
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -2036,6 +1999,43 @@ int count = 0 ;
 		}	
 		return result;
 	}
+	public static boolean deleteDeprecateSalaryModels(){
+		boolean result = false;
+		Connection conn = DB.getConn();
+		ResultSet rs = null;
+		Statement stmt = null;
+		String ids = "";
+		try {
+			logger.info("清理过期uploadsalarymodel开始");
+
+			String sql = "select uploadsalarymodelid from salaryresult ";
+			stmt = DB.getStatement(conn);
+			rs = DB.getResultSet(stmt, sql);
+			while(rs.next()){
+				ids += rs.getInt("uploadsalarymodelid") + ",";
+			}
+			if(ids.length() <= 0){
+				return true;
+			}
+			
+			if(ids.endsWith(",")){
+				ids = ids.substring(0,ids.length()-1);
+			}
+			
+			
+			sql = "delete from uploadsalarymodel where status = " + UploadSalaryModel.DELETE  + "  and id not in (" + ids + ")";
+			stmt.execute(sql);
+			
+			result = true ;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return result ;  
+	}
 	
 	public static boolean deleteUploadOrderByName(String name){
 		
@@ -2091,11 +2091,11 @@ int count = 0 ;
 		logger.info("删除uploadOrder事务成功");
 		return flag ;  
 	}
-	
 	public static boolean deleteSalaryModelByName(String name){
 		boolean flag = false;
 		Connection conn = DB.getConn();
-		String sql = "delete from uploadsalarymodel  where name = '" + name + "'";
+		
+		String sql = "update uploadsalarymodel set name = '',status =  " + UploadSalaryModel.DELETE  + " where name = '" + name + "'";
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		Statement stmt = DB.getStatement(conn);
 		try {
