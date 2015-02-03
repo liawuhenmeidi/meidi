@@ -1005,14 +1005,10 @@ logger.info(sql);
 				search = " and checked in (1,3) ";
 			}else if(Integer.valueOf(statues) == 0){ 
 				search = " and checked in (0,2) "; 
-			}
+			} 
 		}  
-		String str = "";
-		if(isBackUped(id)){
-			str = "  and  checked =  5";
-		}else {
-			str = "  and  checked !=  5"; 
-		}     
+		String str = "  and  checked !=  5"; 
+     
 		String sql = "select * from uploadorder where dealtime is null and name = '"+id+"' "+str + search+" order by shop";
    logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
