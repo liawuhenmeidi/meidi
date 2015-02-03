@@ -4,7 +4,7 @@
 
 <%  
 	request.setCharacterEncoding("utf-8");
-	User user = (User)session.getAttribute("user");
+	User user = (User)session.getAttribute("user"); 
 	  
 	List<String> orderNames = UploadManager.getUnTotalUploadOrdersNames();
 	
@@ -28,11 +28,11 @@
 	HashMap<String, List<UploadTotal>> maptypeinit = null;
 	List<UploadOrder> list = null ;   
 	if("check".equals(type)){  
-		 checkedStatus = request.getParameter("checkedStatus");
-		 list = UploadManager.getTotalUploadOrders(id,checkedStatus); 
+		 checkedStatus = request.getParameter("checkedStatus"); 
+		 list = UploadManager.getTotalUploadOrders(id,checkedStatus,BasicUtill.send); 
 		 check = true ; 
-	}else if("total".equals(type)){
-		total = true ;   
+	}else if("total".equals(type)){ 
+		total = true ;    
 		checkedStatus = request.getParameter("realcheckedStatus");
 		mapt = UploadManager.getTotalOrdersGroup(id,BasicUtill.send,checkedStatus);  
 	}else if("typetotal".equals(type)){  
@@ -85,8 +85,9 @@ function changeprintln(){
     	// $(".noprinln"+$(this).val()).attr("class","noprint");
     	$(".noprinln"+$(this).val()).css("display","none");
         
-    }); 
+    });  
 	$("#wrapsearch").css("display","none");
+	$("#tablesearch").css("display","none");
 	 window.print();
 }
 

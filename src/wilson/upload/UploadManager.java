@@ -995,7 +995,7 @@ logger.info(sql);
 		return checkedUploadOrders;
 	}
 	
-	public static List<UploadOrder> getTotalUploadOrders(String id,String statues){
+	public static List<UploadOrder> getTotalUploadOrders(String id,String statues,int totaltype){
 		List <UploadOrder> checkedUploadOrders = new ArrayList<UploadOrder>();
  
 		Connection conn = DB.getConn();
@@ -1007,8 +1007,20 @@ logger.info(sql);
 				search = " and checked in (0,2) "; 
 			} 
 		}  
+		
+		  
+		
 		String str = "  and  checked !=  5"; 
-     
+         
+		if(BasicUtill.sale == totaltype){
+			if(isBackUped(id)){
+				str = "  and  checked =  5";
+			}else { 
+				str = "  and  checked !=  5";
+			}  
+		}
+		
+		
 		String sql = "select * from uploadorder where dealtime is null and name = '"+id+"' "+str + search+" order by shop";
    logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
@@ -1161,7 +1173,7 @@ int count = 0 ;
 	} 
 	 
 	public static Map<String, HashMap<String, UploadTotal>> getTotalOrdersShop(String id,int totaltype,String checked){
-		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id,checked);
+		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id,checked,totaltype);
 		//Map<String,UploadSalaryModel> listSM = getSalaryModelsAll();  
 		Map<String, HashMap<String, UploadTotal>> map = new HashMap<String,HashMap<String,UploadTotal>>();
 		if(null != list && list.size() >0){
@@ -1268,7 +1280,7 @@ int count = 0 ;
 	}
 	
 	public static Map<String, HashMap<String, UploadTotal>> getTotalOrdersCategory(String id,int totaltype,String checked){
-		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id,checked);
+		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id,checked,totaltype);
 		//logger.info(list.size());
 		//Map<String,UploadSalaryModel> listSM = getSalaryModelsAll();  
 		Map<String, HashMap<String, UploadTotal>> map = new HashMap<String,HashMap<String,UploadTotal>>();
@@ -1395,10 +1407,10 @@ int count = 0 ;
 		
 		return map;
 	}
-	
+	 
 	public static HashMap<String, UploadTotal> getTotalOrders(String id,String type,int totaltype,String checked){
-		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id,checked);
-		HashMap<String, UploadTotal> map = new HashMap<String,UploadTotal>(); 
+		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id,checked,totaltype);
+		HashMap<String, UploadTotal> map = new HashMap<String,UploadTotal>();  
 		if(null != list && list.size() >0){
 			for(int i=0;i<list.size();i++){
 				UploadOrder up = list.get(i);

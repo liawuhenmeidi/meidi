@@ -29,9 +29,9 @@
 	if("check".equals(type)){ 
 		 list = UploadManager.getTotalUploadOrders(id); 
 		 System.out.println(list.size());
-		 check = true ;
-	}else if("total".equals(type)){
-		total = true ;     
+		 check = true ; 
+	}else if("total".equals(type)){ 
+		total = true ;      
 		mapt = UploadManager.getTotalOrdersGroup(id,BasicUtill.sale,"");
 	}else if("typetotal".equals(type)){
 		total = true ;     

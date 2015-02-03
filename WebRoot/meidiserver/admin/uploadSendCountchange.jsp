@@ -13,7 +13,7 @@
 	String message = ""; 
 	UploadTotalGroup upt = UploadTotalGroupManager.getUploadTotalGroup();
 	if(upt != null){
-	   message = upt.getCategoryname();
+	   message = upt.getCategoryname(); 
 	}
 	
 	
@@ -28,16 +28,16 @@
 	//HashMap<String, UploadTotal> maptypeinit = null;
 	HashMap<String, List<UploadTotal>> maptypeinit = null;
 	List<UploadOrder> list = null ;   
-	if("check".equals(type)){  
+	if("check".equals(type)){   
 		 checkedStatus = request.getParameter("checkedStatus");
-		 list = UploadManager.getTotalUploadOrders(id,checkedStatus); 
-		 check = true ; 
-	}else if("total".equals(type)){
-		total = true ;   
+		 list = UploadManager.getTotalUploadOrders(id,checkedStatus,BasicUtill.send);  
+		 check = true ;  
+	}else if("total".equals(type)){  
+		total = true ;    
 		checkedStatus = request.getParameter("realcheckedStatus");
 		mapt = UploadManager.getTotalOrdersGroup(id,BasicUtill.send,checkedStatus);  
 	}else if("typetotal".equals(type)){  
-		total = true ;   
+		total = true ;    
 		checkedStatus = request.getParameter("realcheckedStatus");
 		maptypeinit = UploadManager.getTotalOrdersGroup(id,"type",BasicUtill.send,checkedStatus);
 	}else if("totalcategory".equals(type)){
@@ -148,7 +148,7 @@ function exports(){
 <input type="button" value="查看" class="noprint" onclick="checkedorder()"/>
  
 <% if(check){ %>
-
+ 
 <input type="button" class="button" value="设置标准" onclick="amortization('saleCountGroup.jsp')" ></input>
 <input type="submit" value="品类门店统计" onclick="$('#type').val('totalcategory');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
 <input type="submit" value="门店品类统计" onclick="$('#type').val('total');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
