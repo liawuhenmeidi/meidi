@@ -1,14 +1,18 @@
 package uploadtotal;
 
+import utill.StringUtill;
+
 public class UploadTotal {
    private int id ;
    private String name;
    private String type ;
+   private String realtype;
    private String branchname;
+   private String realbranchname;
    private int count ;
    private double totalcount;
    private double tatalbreakcount;
-   
+    
    
    
 public int getId() {
@@ -52,6 +56,24 @@ public double getTatalbreakcount() {
 }
 public void setTatalbreakcount(double tatalbreakcount) {
 	this.tatalbreakcount = tatalbreakcount;
+}
+public String getRealtype() {
+	if(StringUtill.isNull(realtype)){
+		return type; 
+	} 
+	return realtype;
+}
+public void setRealtype(String realtype) {
+	this.realtype = realtype;
+} 
+public String getRealbranchname() {
+	if(StringUtill.isNull(realbranchname)){
+		return branchname;
+	}
+	return realbranchname;
+}
+public void setRealbranchname(String realbranchname) {
+	this.realbranchname = realbranchname;
 }
    
    

@@ -31,10 +31,10 @@ public class ChangeManager {
 				String real = list.get(i);
 				String sql = " insert into mdchange (id,changes,bechange) values (null,'"+real+"','"+name+"')";
 			    sqls.add(sql);
-			}
-		}
+			} 
+		} 
 		DBUtill.sava(sqls); 
-		BranchTypeChange.map = getmap();
+		BranchTypeChange.setMap(getmap());
 	}
 	public static Map<String,String>  getmap(){
 		Map<String,String> map = new HashMap<String,String>();

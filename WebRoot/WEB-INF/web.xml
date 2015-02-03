@@ -159,11 +159,25 @@
 	        </servlet-class>  
    </servlet>  
         
-	    <servlet-mapping>  
+        <servlet-mapping>  
 	        <servlet-name>PrintServlet</servlet-name>  
 	        <url-pattern>/meidiserver/Print</url-pattern>  
 	    </servlet-mapping> 
-	  
+	    
+	    
+	    
+	    <servlet>   
+	        <servlet-name>GuanJiaPoPrintServlet</servlet-name>  
+	        <servlet-class>  
+	            servlet.GuanJiaPoPrintServlet  
+	        </servlet-class>  
+   </servlet>  
+   
+	    <servlet-mapping>  
+	        <servlet-name>GuanJiaPoPrintServlet</servlet-name>  
+	        <url-pattern>/meidiserver/GuanJiaPoPrint</url-pattern>  
+	    </servlet-mapping> 
+	    
 	  
 	  <servlet>  
 	        <servlet-name>ChargeExportServlet</servlet-name>  

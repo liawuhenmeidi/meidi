@@ -5,9 +5,9 @@
 <%  
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
-	  
+	    
 	List<String> orderNames = UploadManager.getUnTotalUploadOrdersNames();
-	Map<String,String> map = BranchTypeChange.map; 
+	Map<String,String> map = BranchTypeChange.getinstance().getMap();
 	
 	Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
 	String message = ""; 
@@ -136,7 +136,7 @@ function checkedd(){
 <%} 
 if(total){ %> 
 <input type="hidden" name="method" id="method" value=""/> 
-<input type="submit" class="noprint"  value="导出" onclick="$('#method').val('<%=type %>');$('#post').attr('action','../Print?type=<%=BasicUtill.send%>')"/>
+<input type="submit" class="noprint"  value="导出" onclick="$('#method').val('<%=type %>');$('#post').attr('action','../GuanJiaPoPrint?type=<%=BasicUtill.send%>')"/>
 <input type="button" class="noprint"  value="打印" onclick="println()" ></input>
 <%}  
 %>

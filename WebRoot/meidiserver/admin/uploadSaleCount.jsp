@@ -307,7 +307,7 @@ if(total){ %>
 								tpe = ups.getCatergory(); 
 							}
 						}
-		  %>  
+		  %>   
 		  
 		   <tr class="asc"  ondblclick="detail('uploadSaleCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.sale %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
