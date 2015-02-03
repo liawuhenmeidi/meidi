@@ -331,6 +331,7 @@ public class SalaryCalcManager {
 					}
 					
 					//未完成单据的
+					othersTotal = new SalaryResult();
 					if(unFinishedList.size() > 0){
 						for(int i = 0 ; i < unFinishedList.size() ; i++){
 							othersTotal.setUploadOrderNum(othersTotal.getUploadOrder().getNum() + unFinishedList.get(i).getUploadOrder().getNum());
