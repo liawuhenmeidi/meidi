@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,config.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%       
 request.setCharacterEncoding("utf-8");
@@ -71,5 +71,12 @@ int count = 0 ;
 
 int opstatues = OrderPrintln.releasedispatch;  
 
+boolean flag = false ;
+Config con = ConfigManager.getinstance().map.get(Config.addbarName);
+if(null != con){
+  if(con.getStatues() == Config.isok){
+	   flag = true ;
+	  }
+  }
 
 %>

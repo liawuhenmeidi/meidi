@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,gift.*,orderPrint.*,category.*,group.*,user.*,utill.*,product.*,order.*,orderproduct.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,gift.*,orderPrint.*,config.*,category.*,group.*,user.*,utill.*,product.*,order.*,orderproduct.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%    
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
@@ -43,9 +43,16 @@ if(or.getDeliveryStatues() == 0 || or.getDeliveryStatues() == 9 ){
 		opstatues = OrderPrintln.salereleasereturn ;
 	}
 	
-} else {
-	
-}
+} 
+ 
+
+boolean flagbar = false ;
+Config con = ConfigManager.getinstance().map.get(Config.addbarName);
+if(null != con){
+  if(con.getStatues() == Config.isok){
+	   flag = true ;
+	  }
+  }
 
 
 

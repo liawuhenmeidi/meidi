@@ -1,6 +1,6 @@
 <%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="detaildynamic.jsp"%> 
-<%   
+<%    
 Map<Integer,List<Gift>> gMap = GiftService.getmap(); 
 User sale = UserService.getMapId().get(or.getSaleID());
 request.setAttribute("order", or);
@@ -22,14 +22,15 @@ request.setAttribute("order", or);
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
-
+ 
 <script type="text/javascript">
 
 var id = "<%=id%>";
-var statues = "";
+var statues = ""; 
 var oppstatues = "<%=modify%>" ;
 var canupdate = "<%=canupdate%>";
 var opstatues = "<%=opstatues%>";
+var flag = "<%=flagbar%>";
 
 function updateOeder(){ 
   
@@ -115,14 +116,13 @@ function winconfirm(str){
 		           }); 
 		 }
 	}
-
+ 
 function change(str1,oid,type){
 		var statues = $("#"+str1).val(); 
 		if(statues == -1){
 			return false;
-		}  
-		var flag = true ;
-		if(statues == 2 && flag == true){
+		}   
+		if(statues == 2 && flag == "true"){
 			window.location.href="dingdanDetailsonghuoadd.jsp?id="+oid+"&statues="+statues+"&type="+type;
 			//var gettype = "getopjson";
 			//$.ajax({   

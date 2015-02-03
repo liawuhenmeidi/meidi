@@ -55,6 +55,9 @@ var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>";
 
 var type = "<%=Group.sencondDealsend%>";
+  
+var flag = "<%=flag%>" ; 
+
 $(function () { 
 	 fixation();
 	// alert(type+"*"+statues+"*"+num+"*"+page+"*"+sort+"*"+sear);
@@ -93,20 +96,17 @@ function dochange(statues,oid,type,json){
         	 } else{
         		 alert("设置成功"); 
   	        	   window.location.href="dingdanquery.jsp";
-        	 }
-           
-           
+        	 }     
            },  
          error: function (XMLHttpRequest, textStatus, errorThrown) { 
         // alert(errorThrown); 
             } 
            });
 }
-  
+   
 function change(str1,oid,type,printid){
 	var statues = $("#"+str1).val();
-	var flag = true ;     
-	if(statues == 2 && flag == true){ 
+	if(statues == 2 && flag == "true"){ 
 		var gettype = "getopjson";
 		$.ajax({   
 	        type: "post",    
