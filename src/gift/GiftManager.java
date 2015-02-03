@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import order.Order;
-import orderproduct.OrderProduct;
-import orderproduct.OrderProductManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

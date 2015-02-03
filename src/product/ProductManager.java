@@ -5,18 +5,14 @@ package product;
 	import java.sql.SQLException;
 	import java.sql.Statement;
 	import java.util.ArrayList;
-import java.util.HashMap;
+    import java.util.HashMap;
 	import java.util.List;
 
-import orderproduct.OrderProduct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import category.Category;
-import category.CategoryManager;
 	import database.DB;
-import user.User;
 import utill.DBUtill;
 	
 	public class ProductManager {
