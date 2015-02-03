@@ -902,15 +902,22 @@ public class SalaryCalcManager {
 			if(unCommit_idSTR.endsWith(",")){
 				unCommit_idSTR = unCommit_idSTR.substring(0,unCommit_idSTR.length()-1);
 			}
-			sql = "delete from uploadorder where id in (" + unCommit_idSTR + ")";
-
-			pstmt = DB.prepare(conn, sql);
-			pstmt.executeUpdate();
+			if(!StringUtill.isNull(unCommit_idSTR)){
+				sql = "delete from uploadorder where id in (" + unCommit_idSTR + ")";
+				
+				//logger.info(sql);
+				pstmt = DB.prepare(conn, sql);
+				pstmt.executeUpdate();
+			}
+			
 			
 			//删除脏数据(UploadOrder表)  提交的所有的,删除
-			sql = "delete from uploadorder where id in (" + salaryResult_idSTR + ")";
-			pstmt = DB.prepare(conn, sql);
-			pstmt.executeUpdate();
+			if(!StringUtill.isNull(salaryResult_idSTR)){
+				sql = "delete from uploadorder where id in (" + salaryResult_idSTR + ")";
+				pstmt = DB.prepare(conn, sql);
+				pstmt.executeUpdate();
+			}
+			
 			
 			
 			
