@@ -1,5 +1,6 @@
 package uploadtotal;
 
+import change.BranchTypeChange;
 import utill.StringUtill;
 
 public class UploadTotal {
@@ -60,6 +61,8 @@ public void setTatalbreakcount(double tatalbreakcount) {
 public String getRealtype() {
 	if(StringUtill.isNull(realtype)){
 		return type; 
+	}else { 
+		type = BranchTypeChange.getinstance().getMap().get(type);
 	} 
 	return realtype;
 }
@@ -69,6 +72,8 @@ public void setRealtype(String realtype) {
 public String getRealbranchname() {
 	if(StringUtill.isNull(realbranchname)){
 		return branchname;
+	}else {
+		realbranchname = BranchTypeChange.getinstance().getMap().get(branchname);
 	}
 	return realbranchname;
 }

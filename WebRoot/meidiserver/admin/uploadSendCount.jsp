@@ -69,6 +69,7 @@ function detail(src){
 
 function println(){
 	$("#wrapsearch").css("display","block");
+	$("#tablesearch").css("display","block");
 } 
 
 function checkedorder(){

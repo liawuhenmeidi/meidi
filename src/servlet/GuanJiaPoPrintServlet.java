@@ -1,10 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,18 +10,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+ 
 import net.sf.json.JSONObject;
 
 import uploadtotal.UploadTotal;
-import uploadtotalgroup.UploadTotalGroup;
-import uploadtotalgroup.UploadTotalGroupManager;
 
 import utill.DoubleUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
 import wilson.upload.UploadManager;
-import wilson.upload.UploadSalaryModel;
 
 
 import org.apache.commons.logging.Log;
@@ -35,9 +28,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 
-import change.BranchTypeChange;
 
  
 
@@ -70,13 +61,11 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 	 
 	public void exporttotalExport(HttpServletRequest request, HttpServletResponse response){
 		String id = request.getParameter("said");
-		SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMddHH");
-        Date date1 = new Date(); 
-		String printlntime = df2.format(date1); 
+		
         String method = request.getParameter("method");
         String type = request.getParameter("type");
         int statues = Integer.valueOf(type);
-		
+		String branch = request.getParameter("branch");
 		Map<String,Map<String,List<UploadTotal>>> mapc = null ;
 		
 		
@@ -231,7 +220,7 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 		cell.setCellStyle(style);  
 		 
 		
-		Map<String,String> map = BranchTypeChange.getinstance().getMap();
+	//	Map<String,String> map = BranchTypeChange.getinstance().getMap();
 		
 		if(null != mapc){ 
 			   Set<Map.Entry<String,Map<String,List<UploadTotal>>>> setmap = mapc.entrySet();
@@ -258,92 +247,161 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 					   Map.Entry<String,List<UploadTotal>> enmaptype = itmaptype.next();
 					   List<UploadTotal> listup = enmaptype.getValue();
 					   String branchname = enmaptype.getKey();
-					  
+					   
 					   if(null != listup){
+						   int flag1 = 0 ;
+						   int flag2 = 0;
 						   for(int i=0;i<listup.size();i++){
 							    UploadTotal up = listup.get(i);
-							    String typeOrder = "";
-							    if(up.getCount() > 0){
-							    	typeOrder = "销售单";
-							    }else {
-							    	typeOrder = "退货单";
-							    }
-							    
-								   
-								if( i == 0 ){
-								row = sheet.createRow((int) count);
-							    count++;
-								y = 0 ;  
-								// 第四步，创建单元格，并设置值
-								row.createCell((short) y++).setCellValue("L" );
-								row.createCell((short) y++).setCellValue(TimeUtill.getdateString());
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue(typeOrder);
-								row.createCell((short) y++).setCellValue("");
-								
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue("");
-								
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue(up.getRealbranchname());
-								row.createCell((short) y++).setCellValue(id);
-								row.createCell((short) y++).setCellValue("");
-								
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue("");
-								}
-								row = sheet.createRow((int) count);
-							    count++;
-								y = 0 ;   
-								// 第四步，创建单元格，并设置值
-								row.createCell((short) y++).setCellValue("M");
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue(up.getRealtype()); 
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue("");
-								
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue(up.getCount());
-								row.createCell((short) y++).setCellValue(up.getTotalcount()/up.getCount());
-								
-								row.createCell((short) y++).setCellValue(up.getTotalcount());
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue(up.getTotalcount()/up.getCount());
-								row.createCell((short) y++).setCellValue(up.getTotalcount());
-								row.createCell((short) y++).setCellValue("");
-								
-								row.createCell((short) y++).setCellValue("");
-								row.createCell((short) y++).setCellValue(up.getTotalcount()/up.getCount());
-								row.createCell((short) y++).setCellValue(up.getTotalcount());
-								row.createCell((short) y++).setCellValue(""); 
-								//row.createCell((short) y++).setCellValue(""); 	
-					   } 
-					    
-				   }	
-			   }
+							    if(!(up.getCount() == 0 && up.getTotalcount() == 0 )){
+							    	String typeOrder = "";
+								    if(up.getCount() > 0){ 
+								    	typeOrder = "销售单";
+								    	flag1 ++ ;
+								    
 
-				   
-				  
-		      } 
-		  } 
+										if( flag1 == 1 ){
+										row = sheet.createRow((int) count);
+									    count++;
+										y = 0 ;  
+										// 第四步，创建单元格，并设置值
+										row.createCell((short) y++).setCellValue("L" );
+										row.createCell((short) y++).setCellValue(TimeUtill.getdateString());
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(typeOrder);
+										row.createCell((short) y++).setCellValue("");
+										
+										row.createCell((short) y++).setCellValue(branch); 
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(up.getRealbranchname());
+										row.createCell((short) y++).setCellValue(id);
+										row.createCell((short) y++).setCellValue("");
+										
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										}
+										row = sheet.createRow((int) count);
+									    count++;
+										y = 0 ;   
+										// 第四步，创建单元格，并设置值
+										row.createCell((short) y++).setCellValue("M");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(up.getRealtype()); 
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(up.getCount());
+										row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
+										
+										row.createCell((short) y++).setCellValue(up.getTotalcount());
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
+										row.createCell((short) y++).setCellValue(up.getTotalcount());
+										row.createCell((short) y++).setCellValue("");
+										 
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
+										row.createCell((short) y++).setCellValue(up.getTotalcount());
+										row.createCell((short) y++).setCellValue(""); 
+										//row.createCell((short) y++).setCellValue("");
+								    }
+							    } 	
+					     } 
+					    
+						   
+						   for(int i=0;i<listup.size();i++){
+							    UploadTotal up = listup.get(i);
+							    if(!(up.getCount() == 0 && up.getTotalcount() == 0 )){
+							    	String typeOrder = "";
+								    if(up.getCount() <= 0){ 
+								    	typeOrder = "退货单";
+								    	flag2 ++;
+								    
+
+										if(flag2 == 1 ){
+										row = sheet.createRow((int) count);
+									    count++;
+										y = 0 ;  
+										// 第四步，创建单元格，并设置值
+										row.createCell((short) y++).setCellValue("L" );
+										row.createCell((short) y++).setCellValue(TimeUtill.getdateString());
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(typeOrder);
+										row.createCell((short) y++).setCellValue("");
+										
+										row.createCell((short) y++).setCellValue(branch); 
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(up.getRealbranchname());
+										row.createCell((short) y++).setCellValue(id);
+										row.createCell((short) y++).setCellValue("");
+										
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										}
+										row = sheet.createRow((int) count);
+									    count++;
+										y = 0 ;   
+										// 第四步，创建单元格，并设置值
+										row.createCell((short) y++).setCellValue("M");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(up.getRealtype()); 
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(up.getCount());
+										row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
+										
+										row.createCell((short) y++).setCellValue(up.getTotalcount());
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
+										row.createCell((short) y++).setCellValue(up.getTotalcount());
+										row.createCell((short) y++).setCellValue("");
+										 
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
+										row.createCell((short) y++).setCellValue(up.getTotalcount());
+										row.createCell((short) y++).setCellValue("");  
+										//row.createCell((short) y++).setCellValue(""); 
+								    }
+							    } 	
+					     }    
+				   }	 
+			   }
+		     } 
+		  }  
 		
 		//System.out.println(count);
 		// 第六步，将文件存到指定位置
 		try{    
 			response.setContentType("APPLICATION/OCTET-STREAM");
-			response.setHeader("Content-Disposition", "attachment; filename=\""+ printlntime + ".xls\"");
+			response.setHeader("Content-Disposition", "attachment; filename=\""+ TimeUtill.getdateString() + ".xls\"");
 			//FileOutputStream fout = new FileOutputStream("E:/报装单"+printlntime+".xls");
 			wb.write(response.getOutputStream());
-			response.getOutputStream().close();
+			response.getOutputStream().close(); 
 	
 		}
 		catch (Exception e){
