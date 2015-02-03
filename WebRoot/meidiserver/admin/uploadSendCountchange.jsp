@@ -100,6 +100,26 @@ function changechecked(){
 function checkedd(){
 	
 }
+ 
+function adddanwei(){ 
+	$("#wrapsearch").css("display","block");
+	$("#wanglaidanwei").css("display","block");
+	
+}
+function exports(){
+	var branch = $("#danwei").val(); 
+	if(branch == ""){ 
+		alert("往来单位不能为空");
+		return ;
+	}
+	$('#method').val('<%=type %>');
+	$('#post').attr('action','../GuanJiaPoPrint?type=<%=BasicUtill.send%>'); 
+	$("#post").submit();
+	$("#wrapsearch").css("display","none");
+	$("#wanglaidanwei").css("display","none");
+	
+}
+
 </script>
 </head> 
 
@@ -134,12 +154,12 @@ function checkedd(){
 <input type="submit" value="门店品类统计" onclick="$('#type').val('total');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
 <input type="submit" value="型号统计" onclick="$('#type').val('typetotal');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
 <%} 
-if(total){ %> 
+if(total){ %>  
 <input type="hidden" name="method" id="method" value=""/> 
-<input type="submit" class="noprint"  value="导出" onclick="$('#method').val('<%=type %>');$('#post').attr('action','../GuanJiaPoPrint?type=<%=BasicUtill.send%>')"/>
+<input type="button" class="noprint"  value="导出" onclick="adddanwei()"/>
 <input type="button" class="noprint"  value="打印" onclick="println()" ></input>
 <%}  
-%>
+%> 
 
  <div id="wrapsearch" style="position:fixed;text-align:center; top:50%;background-color:white; left:30%; margin:-20% 0 0 -20%; height:50%; width:50%; z-index:999;display:none"> 
  <div id="tablesearch" style="display:none">
@@ -173,6 +193,7 @@ if(total){ %>
 </table> 
  </div>
 <div id="tablechecked" style="display:none">
+
 <table   cellspacing="1" style="margin:auto;background-color:black; width:80%;height:80%;">  
 		    
 		<tr class="bsc">
@@ -196,7 +217,24 @@ if(total){ %>
 </table> 
 
 </div>
+
+ <div id="wanglaidanwei" style="display:none">
+ <table  cellspacing="1" style="margin:auto;background-color:black; width:80%;height:80%;">
+   <tr class="bsc"> 
+   <td>
+   往来单位：
+   </td> 
+   <td>
+   <input type="text" name="branch" id="danwei"/>
+   </td>
+   </tr> 
+   <tr class="bsc" > 
+			<td class="center" colspan=2><input type="button" onclick="exports()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="确定" /></td>
+		</tr>
+ </table>
+      
  
+ </div>
 
 </div>
  </form>
@@ -476,9 +514,10 @@ if(total){ %>
 		   <tr class="asc"  ondblclick="detail('uploadSendCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
+					<td align="center" class="noprinln2"><%=up.getRealbranchname() %></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
 					<td align="center" class="noprinln4"><%=up.getType()%></td>
-					<td align="center" class="noprinln10"><%=map.get(up.getType()) %></td>  
+					<td align="center" class="noprinln10"><%=up.getRealtype() %></td>  
 					<td align="center" class="noprinln5"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td>
 					<td align="center" class="noprinln6"><%=up.getCount() %></td>
 					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()) %></td>  
