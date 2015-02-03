@@ -523,12 +523,12 @@ if(showResult){
 		%>
 		<tr>
 			<td align="center" colspan="12">
-			<form method="post" action="" onsubmit="$('#catergorymaping').val($('#groupname').val())">
+			<form method="post" action="" onsubmit="$('#catergorymaping').val($('#groupname').val());$('#submitButton').attr('disabled','true');">
 			<input type="hidden"  name="save" value="true" />
 			<input type="hidden"  id="save_groupname" name="selectGroup" value="" />
 			<input type="hidden" id="save_orders" name="orders" value=""/>
 			<input type="hidden" id="save_selectModelsName" name="selectModelsName" value="" />
-			<input type="submit" value="提交保存" onclick="return confirm('是否确认?')"/>
+			<input type="submit" value="提交保存" id="submitButton" onclick="return confirm('是否确认?')"/>
 			</form>
 			</td>	
 		</tr>
