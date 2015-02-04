@@ -57,12 +57,14 @@ public class OrderProductService {
 			if(op.getStatues() == 0){
 				Product p = ProductService.getIDmap().get(Integer.parseInt(op.getSendType()));
 				double t =  p.getStockprice() * op.getCount();
-				if(t == 0.0){
+				/*if(t == 0.0){
 					return 0.0;
 				}else{
 					result += t;
+				}*/ 
+				if(t != 0.0){
+					result += t;
 				}
-				
 			}
 		}
 		return result;
@@ -187,13 +189,14 @@ public class OrderProductService {
 				int num = Integer.parseInt(input.split(",")[i].split(":")[1]);
 				
 				Double d = ProductService.gettypemap().get(type).getStockprice() * num ;
-				if(d == 0.0){
-					isFind = false;
-				}
+				
 				dbtotalPrice += d ;
 				dbtotalNum += num;
 			}
-			
+			 
+			if(dbtotalPrice == 0.0){
+				isFind = false;
+			}
 			
 			if(isFind){
 				//算

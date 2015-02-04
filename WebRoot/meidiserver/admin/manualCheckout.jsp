@@ -414,10 +414,10 @@ function transferType(){
 				 var shop2 = $('#'+  this.cells[cols-shop2col].id);
 				 var transType2 = $('#'+  this.cells[cols-transType2col].id);
 				 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked' ){
-					output += checkbox2.find("input").val() + "," + checkbox1.find("input").val() + "_";
-					transType2.text(transType2.attr('bak'));
+					 output += checkbox2.find("input").val() + "," + checkbox1.find("input").val() + "_";
+					alert(transType2.attr('bak'));
+					 transType2.text(transType2.attr('bak'));
 				 }
-				 
 			 });
 		}
 		$('#transferType').val(output);

@@ -185,7 +185,7 @@ function initPrice(){
 		content += $('#' + 'sendType' + i ).val() + ":";
 		content += $('#' + 'sendNum' + i ).val() + ",";
 	}
-	
+	//alert(content);
 	$.ajax({ 
         type:"post", 
          url:"AjaxHandler.jsp",
