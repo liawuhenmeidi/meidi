@@ -312,7 +312,6 @@ function clearSession(){
          data:"action=clearsession",
          dataType: "",  
          success: function (data) {
-
         	
            },  
           error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -415,7 +414,7 @@ function transferType(){
 				 var transType2 = $('#'+  this.cells[cols-transType2col].id);
 				 if(checkbox1.find("input").attr('checked') == 'checked' && checkbox2.find("input").attr('checked') == 'checked' ){
 					 output += checkbox2.find("input").val() + "," + checkbox1.find("input").val() + "_";
-					alert(transType2.attr('bak'));
+					//alert(transType2.attr('bak'));
 					 transType2.text(transType2.attr('bak'));
 				 }
 			 });
