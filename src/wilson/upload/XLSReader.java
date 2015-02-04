@@ -412,7 +412,6 @@ public class XLSReader {
 			return UploadOrders; 
 		}
 		
-		  
 		public BranchTypeChange readchangeXML(String path,String fileName){
 			BranchTypeChange b = new BranchTypeChange(); 
 			Map<String, List<String>> map = b.getMaplist();
@@ -449,35 +448,39 @@ public class XLSReader {
 				return b;
 			} 
 			
-			//logger.info(sheet0.getRows());
-			//logger.info(sheet0.getColumns()); 
+			logger.info(sheet0.getRows());
+			logger.info(sheet0.getColumns()); 
 			for(int i = 2 ; i < sheet0.getRows(); i ++){
 				
 				try{
 					if(sheet0.getCell(SHOP_POS,i).getContents().trim().equals("")){
 						continue;
 					}
-					boolean flag = true ;
+					//boolean flag = true ;
 					int j = 0 ;  
 					String first = "";
-					
-					while(flag && j < sheet0.getColumns()){ 
+					 
+					while(j < sheet0.getColumns()){ 
 						String str = sheet0.getCell(j,i).getContents().trim();
 						//logger.info(str); 
 						if(StringUtill.isNull(str) ){
-							flag = false ;
+							j++; 
+							continue;
 						}else { 
 							if(j == 0){
 								first = str ;
+							}else {
+								List<String> list = map.get(first);
+								if(null == list){
+									list = new ArrayList<String>();
+									map.put(first, list);
+								}    
+								str = StringUtill.getStringreal(str);
+								if(!list.contains(str)){
+									list.add(str);
+								}
 							}  
-							List<String> list = map.get(first);
-							if(null == list){
-								list = new ArrayList<String>();
-								map.put(first, list);
-							}   
-							if(!list.contains(str)){
-								list.add(str);
-							}
+							
 						}
 						j++;
 					}

@@ -1,10 +1,10 @@
 <%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="../common.jsp"%>  
-<%  
- 
+<%   
+  
 if(!UserManager.checkPermissions(user, Group.sale)){ 
 	response.sendRedirect("welcom.jsp");
-} 
+}  
       
 List<Category> list = CategoryManager.getCategory(user,Category.sale); 
 String clist = StringUtill.GetJson(list);
@@ -17,7 +17,7 @@ HashMap<String,ArrayList<String>> listt = ProductService.gettypeName();
 String plist = StringUtill.GetJson(listt);
 
 Branch branch = BranchService.getMap().get(Integer.valueOf(user.getBranch())); 
-  
+
 
 String id = request.getParameter("id");
 // 为空表示正常修改     不为空表示导购报送相同顾客单据
@@ -53,6 +53,15 @@ if(StringUtill.isNull( branchmessage)){
 	 branchmessage = "";
 }   
 String[] branlist =  branchmessage.split("_");
+boolean flagorderprince = false ;
+
+Config conorderprice = ConfigManager.getinstance().map.get(Config.orderprince);  
+if(null != conorderprice){
+    if(conorderprice.getStatues() == Config.isok){
+    	flagorderprince = true;
+      }
+    }
+
 
 %> 
    
@@ -98,6 +107,9 @@ String[] branlist =  branchmessage.split("_");
    // statues 表示是否是相同顾客报装
    var statues = '<%=statues%>' ;
    var order = <%=strorder%>;
+   
+   var flagop = <%=flagorderprince%>;
+   
   //alert(order);
    if(order != null && order != "" && (statues == null || statues == "")){
 	  
@@ -471,10 +483,13 @@ String[] branlist =  branchmessage.split("_");
                    ' <td  colspan="2" class=""><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="'+type+'" style="width:90% " '+disable+' onclick="serch(type'+row+')"/><div id="aotu'+row+'"></div></td> ' +
                    ' <td  colspan="3" class="center"></td> '+ 
                    ' </tr>'+ 
-                   ' <tr>'+ 
-                   ' <td width="25%" class="center">零售价</td> '+
-                   ' <td width="35%" ><input type="text" name="prize'+row+'" id="prize'+row+'">  </td> '+
-                   ' <td width="10%" class="center">数量</td> '+ 
+                   ' <tr>';
+                   if(flagop){
+                	   str +=   ' <td width="25%" class="center">零售价</td> '+
+                                ' <td width="35%" ><input type="text" name="prize'+row+'" id="prize'+row+'">  </td> ';
+                   }
+                    
+                   str += ' <td width="10%" class="center">数量</td> '+ 
                    ' <td width="10%" class=""><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'" value="'+count+'" style="width:50%" '+disable+'/></td> '+
                    ' <td width="10%" class="center"><input type="button"  style="background-color:orange" name="" value="+" onclick="add(orderproductNum'+row+')" '+disable+'/></td> '+ 
                    ' <td width="10%" class="center"><input type="button"  style="background-color:orange" name="" value="-" onclick="subtraction(orderproductNum'+row+') "  '+disable+'/></td> '+ 
@@ -995,11 +1010,16 @@ String[] branlist =  branchmessage.split("_");
    </td>
    <td  class="center" colspan="3"></td> 
      </tr>
-   <tr >
+   <tr > 
+      <%  
+	    if(true == flagorderprince){
+	   %>
     <td width="25%" class="center">零售价</td>
     <td  class="" width="35%">
    <input type="text" id="" name="dingmaprize"> 
    </td>
+    <%} %>
+    
     <td width="10%" class="center">数量</td> 
    <td width="10%" class=""><input type="text" id="dingmaproductNum" name="dingmaproductNum" value="1" style="width:50%" <%=isdisabel %>></td>  
    <td width="10%" class="center"><input type="button" name="" style="background-color:orange" value="+" onclick="add(dingmaproductNum)"></td>  
@@ -1042,10 +1062,16 @@ String[] branlist =  branchmessage.split("_");
     </tr>
     
    <tr>
+   <%  
+	    if(true == flagorderprince){
+	   %> 
     <td width="25%" class="center">零售价</td>
     <td  class="" width="35%" >
    <input type="text" name="prize0" id="prize0">
    </td>
+    <%
+    }%>
+    
    <td width="10%" class="center">数量</td>  
    <td width="10%" class=""><input type="text" id="orderproductNum0" name="orderproductNum0" value="1" style="width:50%" <%=isdisabel %>></td>  
    <td width="10%" class="center" ><input type="button" style="background-color:orange" name="" value="+" onclick="add(orderproductNum0)" <%=isdisabel %>></td>  
@@ -1078,7 +1104,7 @@ String[] branlist =  branchmessage.split("_");
    <table style="width:100%;background-color:orange">
      <tr >
    <%  
-       Config con = ConfigManager.getinstance().map.get(Config.addGift);
+    Config con = ConfigManager.getinstance().map.get(Config.addGift);  
       if(null != con){
 	    if(con.getStatues() == Config.isok){
 	   %>   

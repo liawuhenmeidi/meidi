@@ -3,6 +3,7 @@ package config;
 public class Config {
 	public static int addGift = 1;
 	public static int addbarName = 2;
+	public static int orderprince = 3 ;
 	 
 	public static int isok = 1;
 	public static int isnotok = 0;

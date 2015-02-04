@@ -44,9 +44,8 @@
 		total = true ;  
 		checkedStatus = request.getParameter("realcheckedStatus");
 		mapc = UploadManager.getTotalOrdersCategoryGroup(id,BasicUtill.send,checkedStatus);
-	}
-	
-%>
+	} 
+%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -299,13 +298,13 @@ if(total){ %>
 	<tr class="asc"  onclick="updateClass(this)"> 
 					<td align="center"><%=i+1 %></td>
 					<td align="center"><%=sain.getShop() %></td>
-					<% if(null==map.get(sain.getShop())){
+					<% if(null==map.get(StringUtill.getStringreal(sain.getShop()))){
 						%>
 						<td align="center"><%=sain.getShop()%></td>
 					  <% 
 					}else {
 						%> 
-						<td align="center" bgcolor="red"><%=map.get(sain.getShop()) %></td>
+						<td align="center" bgcolor="red"><%=map.get(StringUtill.getStringreal(sain.getShop())) %></td>
 					<%
 					}%>
 					
@@ -313,15 +312,15 @@ if(total){ %>
 					<td align="center"><%=tpe %></td> 
 					<td align="center"><%=realtype %></td> 
 					
-					<% if(null==map.get(realtype)){
+					<% if(null==map.get(StringUtill.getStringreal(realtype))){
 						%>
 						<td align="center"><%=realtype%></td>
 					  <% 
 					}else {
 						%> 
-						<td align="center" bgcolor="red"><%=map.get(realtype) %></td>
+						<td align="center" bgcolor="red"><%=map.get(StringUtill.getStringreal(realtype)) %></td>
 					<%
-					}%>   
+					}%>    
 					<td align="center"><%=DoubleUtill.getdoubleTwo(prince)  %></td>
 					<td align="center"><%=realcount %></td>  
 					<td align="center"><%=DoubleUtill.getdoubleTwo(prince*realcount) %></td>  

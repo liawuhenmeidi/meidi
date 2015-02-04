@@ -31,6 +31,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.Region;
 
+import change.BranchTypeChange;
+
 
  
 
@@ -229,7 +231,7 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 		cell.setCellValue("单据备注");
 		cell.setCellStyle(style);  
 		 	
-	//	Map<String,String> map = BranchTypeChange.getinstance().getMap();
+		  
 		int XS = 0;  
 		String XSSC = "XS-SC"+TimeUtill.gettimeString();  
 		if(null != mapc){ 
@@ -277,7 +279,7 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 										row.createCell((short) y++).setCellValue("");
 										row.createCell((short) y++).setCellValue("");
 										row.createCell((short) y++).setCellValue(up.getRealbranchname());
-										row.createCell((short) y++).setCellValue(id);
+										row.createCell((short) y++).setCellValue(up.getRealbranchname()+id);
 										row.createCell((short) y++).setCellValue("");
 										
 										row.createCell((short) y++).setCellValue("");

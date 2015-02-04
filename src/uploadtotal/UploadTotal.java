@@ -54,12 +54,12 @@ public void setTotalcount(double totalcount) {
 }
 public double getTatalbreakcount() {
 	return tatalbreakcount;
-}
+} 
 public void setTatalbreakcount(double tatalbreakcount) {
 	this.tatalbreakcount = tatalbreakcount;
 }
-public String getRealtype() {
-	realtype = BranchTypeChange.getinstance().getMap().get(type);
+public String getRealtype() { 
+	realtype = BranchTypeChange.getinstance().getMap().get(StringUtill.getStringreal(type));
 	if(StringUtill.isNull(realtype)){
 		realtype =  type; 
 	}
@@ -67,9 +67,9 @@ public String getRealtype() {
 }
 public void setRealtype(String realtype) {
 	this.realtype = realtype;
-} 
+}  
 public String getRealbranchname() {
-	realbranchname = BranchTypeChange.getinstance().getMap().get(branchname);
+	realbranchname = BranchTypeChange.getinstance().getMap().get(StringUtill.getStringreal(branchname));
 	if(StringUtill.isNull(realbranchname)){
 		realbranchname = branchname;
 	}

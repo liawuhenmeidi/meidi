@@ -54,6 +54,18 @@ function checkedd(){
 </head> 
     
 <body>
+  <div style="position:fixed;width:100%;height:20%;">
+  <jsp:include flush="true" page="head.jsp">
+  <jsp:param name="" value="" />
+  </jsp:include>   
+
+</div > 
+<div style="height:40px;">
+</div>
+  
+  
+  
+  <div id="wrap" >
   
 <table  cellspacing="1" border="2px"  id="table" width="80%">
 		<tr class="asc">    
@@ -99,7 +111,7 @@ function checkedd(){
 		
 </table> 
 
-
+</div>
 
 </body>
 </html>

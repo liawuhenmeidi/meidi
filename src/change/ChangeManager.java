@@ -16,9 +16,11 @@ import utill.DBUtill;
 import database.DB;
 
 public class ChangeManager {
-	
+	 
 	public static void save(BranchTypeChange bt){
 		List<String> sqls = new ArrayList<String>();
+		String sqlall = "delete from mdchange ";
+		sqls.add(sqlall); 
 		Map<String, List<String>>  map = bt.getMaplist();
 		Set<Map.Entry<String, List<String>>> setmap = map.entrySet();
 		

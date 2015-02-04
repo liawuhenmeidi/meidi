@@ -100,6 +100,14 @@ public class StringUtill {
 		  
     } 
     
+    public static String getStringreal(String str){
+   	    str = str.replace("(", "").replace(")", "").replace("（","").replace("）", "").replaceAll("\\s*", "");
+   	 
+		return str;  
+		  
+   } 
+    
+    
     public static String UUID(int num){
     	String s = UUID.randomUUID().toString();
     	if(num > 36){
