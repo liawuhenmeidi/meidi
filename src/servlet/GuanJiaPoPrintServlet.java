@@ -16,6 +16,7 @@ import net.sf.json.JSONObject;
 import uploadtotal.UploadTotal;
 
 import utill.DoubleUtill;
+import utill.MathUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
 import wilson.upload.UploadManager;
@@ -28,6 +29,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.Region;
 
 
  
@@ -66,25 +68,32 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
         String type = request.getParameter("type");
         int statues = Integer.valueOf(type);
 		String branch = request.getParameter("branch");
+		String name = request.getParameter("name");
+		
+		
 		Map<String,Map<String,List<UploadTotal>>> mapc = null ;
 		
 		
 		 if("totalcategory".equals(method)){  
 			mapc = UploadManager.getTotalOrdersCategoryGroup(id,statues,"");
-		} 
-		
-		
-		String message = "";
-		
+		}
+		 
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
-		HSSFSheet sheet = wb.createSheet("管家婆开单表");
+		HSSFSheet sheet = wb.createSheet("单据明细");
 		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
 		int count = 0 ;
 		int y = 0 ;
 		HSSFRow row = sheet.createRow((int) count);
-		count++;
+		 
+		sheet.addMergedRegion(new Region(count,(short)0,count,(short)18)); 
+		count++; 
+		row = sheet.createRow((int) count);
+	    count++;
+		y = 0 ;  
+		
+		
 		// 第四步，创建单元格，并设置值表头 设置表头居中
 		HSSFCellStyle style = wb.createCellStyle();
 		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
@@ -153,9 +162,10 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 		cell = row.createCell((short) y++);
 		cell.setCellValue("交货日期(订单专用)");
 		cell.setCellStyle(style);  
-        
-		
+         
+		 
 		row = sheet.createRow((int) count);
+		sheet.addMergedRegion(new Region(count-1,(short)0,count,(short)0));
 		y = 0 ;   
 		count++;
 		cell = row.createCell((short) y++);
@@ -218,36 +228,22 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 		cell = row.createCell((short) y++);
 		cell.setCellValue("单据备注");
 		cell.setCellStyle(style);  
-		 
-		
+		 	
 	//	Map<String,String> map = BranchTypeChange.getinstance().getMap();
-		
+		int XS = 0;  
+		String XSSC = "XS-SC"+TimeUtill.gettimeString();  
 		if(null != mapc){ 
 			   Set<Map.Entry<String,Map<String,List<UploadTotal>>>> setmap = mapc.entrySet();
 			   Iterator<Map.Entry<String,Map<String,List<UploadTotal>>>> itmap = setmap.iterator();
 			   while(itmap.hasNext()){
 				   Map.Entry<String,Map<String,List<UploadTotal>>> enmap = itmap.next();
-				   String key = enmap.getKey();
-				   
-				   if(!StringUtill.isNull(message)){
-						JSONObject jsObj = JSONObject.fromObject(message);
-						Iterator<String> it = jsObj.keys();
-						while(it.hasNext()){ 
-							String t = it.next();
-							if(key.equals(t)){ 
-								key = jsObj.getString(key);
-							}
-						}
-					}
-				   
-				   Map<String,List<UploadTotal>> maptype = enmap.getValue();
+				   Map<String,List<UploadTotal>> maptype = enmap.getValue(); 
 				   Set<Map.Entry<String,List<UploadTotal>>> setmaptype =  maptype.entrySet();
 				   Iterator<Map.Entry<String,List<UploadTotal>>> itmaptype = setmaptype.iterator();
 				   while(itmaptype.hasNext()){
 					   Map.Entry<String,List<UploadTotal>> enmaptype = itmaptype.next();
 					   List<UploadTotal> listup = enmaptype.getValue();
-					   String branchname = enmaptype.getKey();
-					   
+					    
 					   if(null != listup){
 						   int flag1 = 0 ;
 						   int flag2 = 0;
@@ -258,22 +254,23 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 								    if(up.getCount() > 0){ 
 								    	typeOrder = "销售单";
 								    	flag1 ++ ;
-								    
-
+								        
+                                        
 										if( flag1 == 1 ){
+										XS++;
 										row = sheet.createRow((int) count);
 									    count++;
 										y = 0 ;  
 										// 第四步，创建单元格，并设置值
 										row.createCell((short) y++).setCellValue("L" );
 										row.createCell((short) y++).setCellValue(TimeUtill.getdateString());
-										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(XSSC+MathUtill.getThree(XS));
 										row.createCell((short) y++).setCellValue(typeOrder);
 										row.createCell((short) y++).setCellValue("");
-										
+										 
 										row.createCell((short) y++).setCellValue(branch); 
 										row.createCell((short) y++).setCellValue("");
-										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(name);
 										row.createCell((short) y++).setCellValue("");
 										row.createCell((short) y++).setCellValue("");
 										
@@ -326,18 +323,22 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 							    if(!(up.getCount() == 0 && up.getTotalcount() == 0 )){
 							    	String typeOrder = "";
 								    if(up.getCount() <= 0){ 
-								    	typeOrder = "退货单";
+								    	typeOrder = "销售退货单";
 								    	flag2 ++;
-								    
-
+								     
+                                        int realcount = Math.abs(up.getCount());
+                                        double realtotal = Math.abs(up.getTotalcount()); 
+                                        String price = DoubleUtill.getdoubleTwo(realtotal/realcount);
 										if(flag2 == 1 ){
+										XS++; 
+										
 										row = sheet.createRow((int) count);
 									    count++;
-										y = 0 ;  
+										y = 0 ;   
 										// 第四步，创建单元格，并设置值
 										row.createCell((short) y++).setCellValue("L" );
 										row.createCell((short) y++).setCellValue(TimeUtill.getdateString());
-										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(XSSC+MathUtill.getThree(XS));
 										row.createCell((short) y++).setCellValue(typeOrder);
 										row.createCell((short) y++).setCellValue("");
 										
@@ -372,18 +373,18 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 										row.createCell((short) y++).setCellValue("");
 										row.createCell((short) y++).setCellValue("");
 										row.createCell((short) y++).setCellValue("");
-										row.createCell((short) y++).setCellValue(up.getCount());
-										row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
+										row.createCell((short) y++).setCellValue(realcount); 
+										row.createCell((short) y++).setCellValue(price);
 										
-										row.createCell((short) y++).setCellValue(up.getTotalcount());
+										row.createCell((short) y++).setCellValue(realtotal);
 										row.createCell((short) y++).setCellValue("");
-										row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
-										row.createCell((short) y++).setCellValue(up.getTotalcount());
+										row.createCell((short) y++).setCellValue(realcount);
+										row.createCell((short) y++).setCellValue(realtotal);
 										row.createCell((short) y++).setCellValue("");
-										 
-										row.createCell((short) y++).setCellValue("");
-										row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()));
-										row.createCell((short) y++).setCellValue(up.getTotalcount());
+										  
+										row.createCell((short) y++).setCellValue(""); 
+										row.createCell((short) y++).setCellValue(realcount);
+										row.createCell((short) y++).setCellValue(realtotal);
 										row.createCell((short) y++).setCellValue("");  
 										//row.createCell((short) y++).setCellValue(""); 
 								    }

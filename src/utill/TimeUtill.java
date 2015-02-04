@@ -28,6 +28,13 @@ public class TimeUtill {
 		return submitTime;
 	}
 	
+	public static String gettimeString(){ 
+		SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        Date date1 = new Date();   
+		String submitTime= df2.format(date1);
+		return submitTime;
+	}
+	
 	public static String getdateString(){ 
 		SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = new Date();   

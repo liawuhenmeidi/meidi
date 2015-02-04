@@ -6,21 +6,21 @@ import java.util.Map;
 
 public class BranchTypeChange {
 	private static BranchTypeChange instance;
-	
-	public  static BranchTypeChange getinstance(){
+    public  String name ; 
+    private  static Map<String,String> map = null;
+    public  Map<String,List<String>> maplist = new HashMap<String,List<String>>();
+     
+    public  static BranchTypeChange getinstance(){
 		if(null == instance){
 			instance = new BranchTypeChange();
 		} 
 		return instance;
 	}
-	
-    public  String name ; 
-    private  static Map<String,String> map = null;
     
     public static void setMap(Map<String, String> map) {
 		BranchTypeChange.map = map;
 	} 
-	public  Map<String,List<String>> maplist = new HashMap<String,List<String>>();
+	
 	public String getName() { 
 		return name; 
 	}

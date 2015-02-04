@@ -294,6 +294,10 @@
 	  		<param-name>xiaoshoudanmubanPath</param-name>
 	  		<param-value>data/model/xiaoshoudanmuban.xls</param-value>
 	  	</init-param>
+	  	<init-param> 
+	  		<param-name>changemubanPath</param-name>
+	  		<param-value>data/model/changeModel.xls</param-value>
+	  	</init-param>
 	  </servlet>
 	  <servlet-mapping>
 	  	<servlet-name>DownloadServlet</servlet-name>

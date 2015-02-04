@@ -8,16 +8,16 @@
 	
 	String id = request.getParameter("said");
 	String branch = request.getParameter("branch");
-	String type = request.getParameter("type");
+	String type = request.getParameter("type").trim();
 	String checkedStatus = request.getParameter("checkedStatus");
 	String totaltype =request.getParameter("totaltype"); 
-	
+	//System.out.println(type+"***"+branch+"***"+id+"****"+checkedStatus+"***"+totaltype);
 	Map<String,Map<String,List<UploadTotal>>> mapt =UploadManager.getTotalOrdersGroup(id,Integer.valueOf(totaltype),checkedStatus); 
 	 
 	Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
     //System.out.println(id+"**"+branch+"**"+type);
     List<UploadOrder> list = UploadManager.getTotalUploadOrders(id);
-	System.out.println(list.size());
+	//System.out.println(list.size());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -63,13 +63,14 @@
 		 for(int j=0;j<sendtypestrs.length;j++){
 			 String sendtype = sendtypestrs[j];
 			// System.out.println(sendtypestrs[j]);
-			 String[] sendtypes = sendtype.split(":");
-			 String realtype = sendtypes[0]; 
+			 String[] sendtypes = sendtype.split(":"); 
+			 String realtype = StringUtill.getStringNocn(sendtypes[0]); 
 			 Double realcount = Double.valueOf(sendtypes[1]);
 			 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
+			 //System.out.println(sain.getShop()+"****"+realtype); 
 			 if((branch.equals(sain.getShop()) || StringUtill.isNull(branch) ) && type.equals(realtype)){
 					String tpe = ""; 
-					if(null != mapus){
+					if(null != mapus){ 
 						UploadSalaryModel up = mapus.get(StringUtill.getStringNocn(realtype));
 						if(null != up){
 							tpe = up.getCatergory(); 
@@ -88,14 +89,14 @@
 					<td align="center"><%=i+1 %></td>
 					<td align="center"><%=sain.getShop() %></td>
 					<td align="center"><%=sain.getSaleTime() %></td>
-					<td align="center"><%=tpe %></td> 
+					<td align="center"><%=tpe %></td>  
 					<td align="center"><%=sain.getType() %></td>  
-					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()/sain.getNum())  %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice())  %></td>
 					<td align="center"><%=sain.getNum() %></td> 
 					<td align="center"><%=sain.getSalePrice() %></td>
 					<td align="center"><%=sain.getBackPoint() %></td> 
-					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*(1-sain.getBackPoint()/100)/sain.getNum()) %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*(1-sain.getBackPoint()/100)) %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*sain.getNum()*(1-sain.getBackPoint()/100)/sain.getNum()) %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*sain.getNum()*(1-sain.getBackPoint()/100)) %></td>
 	</tr>
 	<%
      }

@@ -449,8 +449,8 @@ public class XLSReader {
 				return b;
 			} 
 			
-			logger.info(sheet0.getRows());
-			logger.info(sheet0.getColumns()); 
+			//logger.info(sheet0.getRows());
+			//logger.info(sheet0.getColumns()); 
 			for(int i = 2 ; i < sheet0.getRows(); i ++){
 				
 				try{
@@ -474,8 +474,10 @@ public class XLSReader {
 							if(null == list){
 								list = new ArrayList<String>();
 								map.put(first, list);
-							} 
-							list.add(str);
+							}   
+							if(!list.contains(str)){
+								list.add(str);
+							}
 						}
 						j++;
 					}

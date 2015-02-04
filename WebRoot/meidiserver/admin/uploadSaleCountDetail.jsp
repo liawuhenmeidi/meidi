@@ -80,12 +80,12 @@
 					<td align="center"><%=sain.getSaleTime() %></td>
 					<td align="center"><%=tpe %></td> 
 					<td align="center"><%=sain.getType() %></td>  
-					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()/sain.getNum())  %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice())  %></td>
 					<td align="center"><%=sain.getNum() %></td> 
 					<td align="center"><%=sain.getSalePrice() %></td>
 					<td align="center"><%=sain.getBackPoint() %></td> 
-					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*(1-sain.getBackPoint()/100)/sain.getNum()) %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*(1-sain.getBackPoint()/100)) %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*sain.getNum()*(1-sain.getBackPoint()/100)/sain.getNum()) %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(sain.getSalePrice()*sain.getNum()*(1-sain.getBackPoint()/100)) %></td>
 	</tr>
 	<%
 	} 

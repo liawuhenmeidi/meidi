@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,wilson.upload.*,utill.*,wilson.matchOrder.*,user.*,change.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,wilson.upload.*,utill.*,java.util.ArrayList,wilson.matchOrder.*,user.*,change.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%
 	request.setCharacterEncoding("utf-8");
@@ -9,10 +9,10 @@
 	String confirm = request.getParameter("confirm");
 	String filePath = ExcelUpload.getChangeFilePath(); 
 	//UploadOrderManager uom = new UploadOrderManager();
-
+    
 	boolean showContent =false;
 	
-	boolean confirmResult = false; 
+	boolean confirmResult = false;  
 	BranchTypeChange b = null ;
 	if(confirm != null && confirm != ""){
 		if(confirm.equals("confirm")){ 
@@ -27,7 +27,7 @@
 		}	
 	}
 	  
-	System.out.println(StringUtill.GetJson(b));
+	//System.out.println(StringUtill.GetJson(b));
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -83,7 +83,22 @@ td {
 <!--   头部开始   --> 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript">
+var flag = true ;
+function submit(){
+	 if(flag){
+		    $('#commitbutton').val('正在提交');
+			$('#baseform').submit();
+			$('#submitswitcher').val('confirmed');
+	 }else {
+		 return ;
+	 }
+	
+	
+}
 
+
+</script>
 <%
 	if(fileName != null && fileName != "" && !fileName.equals("")){	
 		String temp = "";
@@ -131,7 +146,7 @@ td {
 		<input type="hidden" name="confirm" value="confirm" id="submitswitcher"/>
 		<h3><%=b.getName() %></h3>
 		<%if(showContent){ %>
-		<input type="button" id="commitbutton" value="提交" onmousedown="$('#commitbutton').val('正在提交');$('#baseform').submit();$('#submitswitcher').val('confirmed')"></input>
+		<input type="button" id="commitbutton" value="提交" onmousedown="submit()"></input>
 		<%} %>
 		</td>
 		</tr> 
@@ -139,13 +154,16 @@ td {
    <tr>
    <td align="center" width="100%">
     <div style="overflow-y:auto; width:100%;height:450px">
-<table  cellspacing="1" border="2px"  id="table" width="80%">
-		<tr>    
+<table  cellspacing="1" border="2px"  width="80%">
+		<tr class="bsc" >    
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			<td style="width:20;" align="center">转换结果</td>
 			<td  style="width:80;" align="center"  >待转化</td>
 		</tr> 
-		<%
+		<%  
+		List<String> lists = new ArrayList<String>();
+		List<String> listnew = new ArrayList<String>();
+		
 		if(showContent){
 			Map<String, List<String>> map = b.getMaplist();
 			Set<Map.Entry<String, List<String>>> setmap = map.entrySet();
@@ -156,17 +174,23 @@ td {
 				String name = mape.getKey();
 				List<String> list = mape.getValue();
 				%> 
-				<tr>   
+			<tr class="bsc" >   
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
 			<td align="center"  ><%=name %></td>
 			<td align="center"   >   
 			<table width="100%">
 			
 			<% for(int i=0;i<list.size();i++){
+				String str = list.get(i);
 				
-				%>
-				<tr>
-				<td align="center"><%=list.get(i) %></td>
+	            if(!lists.contains(str)){
+	            	lists.add(str);
+	            }else {
+	            	listnew.add(str);
+	            }
+				%> 
+				<tr class="<%=str.hashCode()%>"  >  
+				<td align="center"><%=str %></td>
 				</tr>
 				
 				<%
@@ -180,15 +204,41 @@ td {
 				<%
 			}
 		}
-		%>
-		
-		
-		
+			%>
 </table> 
 </div>
    </td>
    </tr>
  </table>
+ 
+ <%
+		
+		if(listnew.size() > 0 ){
+			%>
+	<script type="text/javascript">	
+	$('#commitbutton').attr("onmousedown",""); 
+			<%
+			for(int i=0;i<listnew.size();i++){
+				int str = listnew.get(i).hashCode();
+				
+				%>
+ 
+        $(".<%=str%>").css('background-color','red');
+				<%
+				
+			} 
+			%> 
+	alert("您上传的转化规则不符合要求");		
+
+</script>		
+			 
+			
+			<%
+		}
+		%>
+		
  </form>
+ 
+ 
 </body>
 </html>

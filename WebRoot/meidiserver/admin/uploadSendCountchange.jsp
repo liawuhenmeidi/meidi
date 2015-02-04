@@ -107,9 +107,15 @@ function adddanwei(){
 	
 }
 function exports(){
-	var branch = $("#danwei").val(); 
+	var branch = $("#danwei").val();
+	var uname = $("#danweiuname").val();
 	if(branch == ""){ 
 		alert("往来单位不能为空");
+		return ;
+	}
+	 
+	if(uname == ""){
+		alert("经手人不能为空");
 		return ;
 	}
 	$('#method').val('<%=type %>');
@@ -125,10 +131,10 @@ function exports(){
 
 <body>
    <form action="" method="post" id="post" onsubmit="return checkedd()">
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名称: 
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型号转化: 
    <input type="hidden" name="type" id="type" value="check"/>
    <select name="said" id="said">
-	<option ></option>
+	<option ></option> 
 	<%
 	for(int i = 0 ; i < orderNames.size() ; i ++){ 
 		String sain  = orderNames.get(i);
@@ -175,6 +181,7 @@ if(total){ %>
 		<td align="center" id="salecategorynamecd">
 		    <input type="checkbox"  name="oderStatus"  value="1"  />序号&nbsp;&nbsp;<br/>
 		    <input type="checkbox"  name="oderStatus"  value="2"  />门店&nbsp;&nbsp;<br/>
+		    <input type="checkbox"  name="oderStatus"  value="11"  />转化后门店&nbsp;&nbsp;<br/>
 		    <input type="checkbox"  name="oderStatus"  value="3" />品类&nbsp;&nbsp;<br/>
 		    <input type="checkbox"  name="oderStatus"  value="4" />型号&nbsp;&nbsp;<br/>
 		    <input type="checkbox"  name="oderStatus"  value="10" />转化后型号&nbsp;&nbsp;<br/>
@@ -221,13 +228,15 @@ if(total){ %>
  <div id="wanglaidanwei" style="display:none">
  <table  cellspacing="1" style="margin:auto;background-color:black; width:80%;height:80%;">
    <tr class="bsc"> 
-   <td>
-   往来单位：
-   </td> 
-   <td>
-   <input type="text" name="branch" id="danwei"/>
-   </td>
+       <td>往来单位： </td> 
+       <td> <input type="text" name="branch" id="danwei" placeholder="必填"/> </td>
    </tr> 
+   <tr class="bsc"> 
+       <td>经手人： </td>
+       <td> <input type="text" name="name" id="danweiuname" placeholder="必填"/> </td>
+   </tr> 
+   
+   
    <tr class="bsc" > 
 			<td class="center" colspan=2><input type="button" onclick="exports()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="确定" /></td>
 		</tr>
@@ -243,6 +252,7 @@ if(total){ %>
        <tr>
 		        <td align="center">序号</td>
 				<td align="center">销售门店</td>
+				<td align="center">转化后门店</td>	
 				<td align="center">销售日期</td>
 				<td align="center">品类</td> 
 				<td align="center">送货型号</td> 
@@ -289,10 +299,29 @@ if(total){ %>
 	<tr class="asc"  onclick="updateClass(this)"> 
 					<td align="center"><%=i+1 %></td>
 					<td align="center"><%=sain.getShop() %></td>
+					<% if(null==map.get(sain.getShop())){
+						%>
+						<td align="center"><%=sain.getShop()%></td>
+					  <% 
+					}else {
+						%> 
+						<td align="center" bgcolor="red"><%=map.get(sain.getShop()) %></td>
+					<%
+					}%>
+					
 					<td align="center"><%=sain.getSaleTime() %></td>
 					<td align="center"><%=tpe %></td> 
 					<td align="center"><%=realtype %></td> 
-					<td align="center"><%=map.get(realtype) %></td>   
+					
+					<% if(null==map.get(realtype)){
+						%>
+						<td align="center"><%=realtype%></td>
+					  <% 
+					}else {
+						%> 
+						<td align="center" bgcolor="red"><%=map.get(realtype) %></td>
+					<%
+					}%>   
 					<td align="center"><%=DoubleUtill.getdoubleTwo(prince)  %></td>
 					<td align="center"><%=realcount %></td>  
 					<td align="center"><%=DoubleUtill.getdoubleTwo(prince*realcount) %></td>  
@@ -314,6 +343,7 @@ if(total){ %>
 					<td align="center"></td> 
 					<td align="center"></td> 
 					<td align="center"></td> 
+					<td align="center"></td> 
 					<td align="center"><%=count %></td> 
 					<td align="center"><%=DoubleUtill.getdoubleTwo(moneycount)%></td>
 					<td align="center"></td>
@@ -331,6 +361,7 @@ if(total){ %>
        <tr>
 		        <td align="center" class="noprinln1">序号</td>
 				<td align="center" class="noprinln2">门店</td>
+				<td align="center" class="noprinln11">转化后门店</td>	
 				<td align="center" class="noprinln3">品类</td> 
 				<td align="center" class="noprinln4">型号</td>
 				<td align="center" class="noprinln10">转化后型号</td>		 
@@ -342,7 +373,6 @@ if(total){ %>
 		</tr>
 
  <% 
- 
    int idcount = 0 ;
    double AllTotalcount = 0 ;
    int AllCount = 0 ;
@@ -406,9 +436,27 @@ if(total){ %>
 		   <tr class="asc"  ondblclick="detail('uploadSendCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
+					<% if(null==map.get(up.getBranchname())){
+						%>
+						<td align="center" class="noprinln11"><%=up.getBranchname()%></td>
+					  <% 
+					}else {
+						%> 
+						<td align="center" class="noprinln11"  bgcolor="red"><%=map.get(up.getBranchname()) %></td>
+					<%
+					}%>
+					
 					<td align="center" class="noprinln3"><%=tpe%></td>
 					<td align="center" class="noprinln4"><%=up.getType()%></td>
-					<td align="center" class="noprinln10"><%=map.get(up.getType()) %></td>   
+					<% if(null==map.get(up.getType())){
+						%>
+						<td align="center" class="noprinln10"><%=up.getType()%></td>
+					  <% 
+					}else {
+						%> 
+						<td align="center" bgcolor="red" class="noprinln10"><%=map.get(up.getType()) %></td>
+					<%
+					}%>    
 					<td align="center" class="noprinln5"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td>
 					<td align="center" class="noprinln6"><%=up.getCount() %></td>
 					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()) %></td>  
@@ -425,8 +473,10 @@ if(total){ %>
         <tr class="asc"  style="background:orange"  onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"></td>
 					<td align="center" class="noprinln2"><%=branchname %></td>
+					<td align="center" class="noprinln11"></td> 
 					<td align="center" class="noprinln3"><%=key%></td>
 					<td align="center" class="noprinln4"></td>
+					
 					<td align="center" class="noprinln5"></td>
 					<td align="center" class="noprinln10"></td>
 					<td align="center" class="noprinln6"><%=initCount %></td>
@@ -442,6 +492,7 @@ if(total){ %>
 	   <tr class="asc" style="background:#ff7575" ondblclick="unconfire('<%=branchname%>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"></td>
 					<td align="center" class="noprinln2"><%=branchname %></td>
+					<td align="center" class="noprinln11"></td>
 					<td align="center" class="noprinln3">总计</td>
 					<td align="center" class="noprinln4"></td>
 					<td align="center" class="noprinln5"></td>
@@ -514,7 +565,7 @@ if(total){ %>
 		   <tr class="asc"  ondblclick="detail('uploadSendCountDetail.jsp?branch=<%=up.getBranchname() %>&type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
-					<td align="center" class="noprinln2"><%=up.getRealbranchname() %></td>
+					<td align="center" class="noprinln11"><%=up.getRealbranchname() %></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
 					<td align="center" class="noprinln4"><%=up.getType()%></td>
 					<td align="center" class="noprinln10"><%=up.getRealtype() %></td>  
@@ -534,6 +585,7 @@ if(total){ %>
         <tr class="asc"  style="background:orange"  onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"></td>
 					<td align="center" class="noprinln2"><%=branchname %></td>
+						<td align="center" class="noprinln11"></td>
 					<td align="center" class="noprinln3"><%=key%></td>
 					<td align="center" class="noprinln4"></td>
 					<td align="center" class="noprinln5"></td>
@@ -551,6 +603,7 @@ if(total){ %>
 	   <tr class="asc" style="background:#ff7575"  onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"></td>
 					<td align="center" class="noprinln2"></td>
+						<td align="center" class="noprinln11"></td>
 					<td align="center" class="noprinln3">总计</td>
 					<td align="center" class="noprinln4"></td>
 					<td align="center" class="noprinln10"></td>
@@ -617,6 +670,7 @@ if(total){ %>
 				  <tr class="asc"  ondblclick="detail('uploadSendCountDetail.jsp?type=<%=up.getType() %>&said=<%=id %>&totaltype=<%=BasicUtill.send %>&checkedStatus=<%=checkedStatus %>')" onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"><%=idcount %></td>
 					<td align="center" class="noprinln2"></td>
+						<td align="center" class="noprinln11"></td>
 					<td align="center" class="noprinln3"><%=tpe%></td>
 					<td align="center" class="noprinln4"><%=up.getType()%></td>
 					<td align="center" class="noprinln10"><%=map.get(up.getType()) %></td>  
@@ -635,6 +689,7 @@ if(total){ %>
 		  <tr class="asc" style="background:#ff7575"  onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"></td>
 					<td align="center" class="noprinln2"></td>
+						<td align="center" class="noprinln11"></td>
 					<td align="center" class="noprinln3"><%=key%></td>
 					<td align="center" class="noprinln4"></td>
 					<td align="center" class="noprinln10"></td>
@@ -654,6 +709,7 @@ if(total){ %>
 	 <tr class="asc" style="background:#ff7575"  onclick="updateClass(this)"> 
 					<td align="center" class="noprinln1"></td>
 					<td align="center" class="noprinln2">总计</td>
+						<td align="center" class="noprinln11"></td>
 					<td align="center" class="noprinln3">总计</td>
 					<td align="center" class="noprinln4"></td>
 					<td align="center" class="noprinln10"></td>
