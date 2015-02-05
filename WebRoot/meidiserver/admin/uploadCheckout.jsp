@@ -420,21 +420,21 @@ function baseFormSubmit(){
 	<tr>
 		<td colspan="2" align="left">
 		对比的项目为:
-		<input type="checkbox" id="checkbox_compareshop" checked="checked">
+		<input type="checkbox" id="checkbox_compareshop" checked="checked"></input>
 		销售门店
-		</input>
-		<input type="checkbox" id="checkbox_comparepos" checked="checked">
+		
+		<input type="checkbox" id="checkbox_comparepos" checked="checked"></input>
 		pos(厂送)单号
-		</input>
-		<input type="checkbox" id="checkbox_comparesaletime" checked="checked">
+		
+		<input type="checkbox" id="checkbox_comparesaletime" checked="checked"></input>
 		销售日期
-		</input>
-		<input type="checkbox" id="checkbox_comparetype" checked="checked">
+		
+		<input type="checkbox" id="checkbox_comparetype" checked="checked"></input>
 		票面型号
-		</input>
-		<input type="checkbox" id="checkbox_comparenum" checked="checked">
+		
+		<input type="checkbox" id="checkbox_comparenum" checked="checked"></input>
 		票面数量
-		</input>
+		
 		</td>
 	</tr>
 </table>
