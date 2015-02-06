@@ -418,7 +418,6 @@ public class XLSReader {
 			if(fileName == null || path == null){
 				return null; 
 			}
-			final int SHOP_POS = 0;
 			
 			String filepath = path.replace("\\", "/");
 			//List<String> list =   new ArrayList<String>();
@@ -453,12 +452,12 @@ public class XLSReader {
 			for(int i = 2 ; i < sheet0.getRows(); i ++){
 				
 				try{
-					if(sheet0.getCell(SHOP_POS,i).getContents().trim().equals("")){
+					/*if(sheet0.getCell(SHOP_POS,i).getContents().trim().equals("")){
 						continue;
-					}
+					}*/
 					//boolean flag = true ;
 					int j = 0 ;  
-					String first = "";
+					String first = null;
 					 
 					while(j < sheet0.getColumns()){ 
 						String str = sheet0.getCell(j,i).getContents().trim();
@@ -469,12 +468,17 @@ public class XLSReader {
 						}else { 
 							if(j == 0){
 								first = str ;
-							}else {
 								List<String> list = map.get(first);
 								if(null == list){
 									list = new ArrayList<String>();
 									map.put(first, list);
-								}    
+								}  
+							}else { 
+								List<String> list = map.get(first);
+								if(null == list){ 
+									list = new ArrayList<String>();
+									map.put(first, list);
+								}  
 								str = StringUtill.getStringreal(str);
 								if(!list.contains(str)){
 									list.add(str);

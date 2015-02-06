@@ -2,12 +2,17 @@
 
 <%@ page language="java" import="java.util.*,wilson.upload.*,change.*,net.sf.json.JSONObject,uploadtotalgroup.*,utill.*,wilson.matchOrder.*,uploadtotal.*,user.*,wilson.salaryCalc.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
-<% 
+<%  
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
-	Map<String,List<String>> map =  ChangeManager.getmapList(); 
+	Map<String,List<Change>> map =  ChangeManager.getmapListC(); 
 	
+	String[] ids = request.getParameterValues("ids"); 
+	if(null != ids){
+		ChangeManager.delete(ids);
+	}
 	
+	 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -50,59 +55,90 @@ function changeprintln(){
 function checkedd(){
 	 
 }
+
+function winconfirm(){
+	$("#post").submit();
+}
 </script>
 </head> 
-    
-<body>
-  <div style="position:fixed;width:100%;height:20%;">
+     
+<body style="scoll:no">
+  <div style="position:fixed;width:100%;height:80px;">
+   
   <jsp:include flush="true" page="head.jsp">
-  <jsp:param name="" value="" />
-  </jsp:include>   
+  <jsp:param name="dmsn" value="" />
+  </jsp:include>
+   
+<div class="btn">
 
-</div > 
-<div style="height:40px;">
+ <input type="button" class="button" name="dosubmit" value="确认删除" onclick="winconfirm()"></input>  
 </div>
-  
-  
-  
-  <div id="wrap" >
-  
-<table  cellspacing="1" border="2px"  id="table" width="80%">
+</div> 
+<div style=" height:120px;">
+</div>
+    
+ <div >
+ <form action="" id="post">
+
+<table  cellspacing="1"   id="table" width=80% style="height:450px">
 		<tr class="asc">    
-			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
+			<td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>
+			<td style="width:20;" align="center" >编号</td>
 			<td style="width:20;" align="center">转换结果</td>
 			<td  style="width:80;" align="center"  >待转化</td>
 		</tr> 
 		<%
-			Set<Map.Entry<String, List<String>>> setmap = map.entrySet();
+			Set<Map.Entry<String, List<Change>>> setmap = map.entrySet();
 			
-			Iterator<Map.Entry<String, List<String>>> itmap = setmap.iterator();
+			Iterator<Map.Entry<String, List<Change>>> itmap = setmap.iterator();
+			int count = 0 ;
 			while(itmap.hasNext()){
-				Map.Entry<String, List<String>> mape = itmap.next();
+				Map.Entry<String, List<Change>> mape = itmap.next();
 				String name = mape.getKey();
-				List<String> list = mape.getValue();
-				%> 
-				<tr class="asc">   
-			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
-			<td align="center"  ><%=name %></td>
-			<td align="center"   >   
-			<table width="100%">
-			
-			<% for(int i=0;i<list.size();i++){
-				
-				%>
-				<tr>
-				<td align="center"><%=list.get(i) %></td>
+				List<Change> list = mape.getValue();
+		    	String   rowspan = "";
+			 for(int i=0;i<list.size();i++){
+				 count ++ ;
+			  	if(list.size() > 1){
+					 if(i == 0 ){ 
+						rowspan = "rowspan="+(list.size()) ;
+						%>
+					   <tr class="asc">   
+			              <td align="center" width=""><input type="checkbox" value="<%=list.get(i).getId() %>" name="ids" id="check_box" /></td>
+			              <td align="center"  ><%=count %></td>  
+			              <td align="center"  <%=rowspan %>><%=name %></td>  
+				          <td align="center" ><%=list.get(i).getChange() %></td>
+				       </tr>	
+						<%
+						
+					}else {  
+						rowspan = "";
+					%>	
+					 <tr class="asc">  
+					     <td align="center" width=""><input type="checkbox" value="<%=list.get(i).getId() %>"  name="ids"  id="check_box" /></td>
+					     <td align="center"  ><%=count %></td> 
+			   
+				          <td align="center" ><%=list.get(i).getChange()%></td>
+				       </tr>
+						<%
+					}
+				}else {
+					%>
+					<tr class="asc"> 
+					   <td align="center" width=""><input type="checkbox" value="<%=list.get(i).getId() %>" name="ids" id="check_box" /></td>
+					<td align="center"  ><%=count%></td> 
+			      
+			       <td align="center"  <%=rowspan %>><%=name %></td>   
+				   <td align="center" ><%=list.get(i).getChange() %></td>
 				</tr>
+					
+					<%
+				}
+				%>
+				
 				
 				<%
-			} %>
-			
-			</table>
-			</td>
-		
-		</tr> 
-				
+			    } %>
 				<%
 			}
 		%>
@@ -110,7 +146,7 @@ function checkedd(){
 		
 		
 </table> 
-
+ </form>
 </div>
 
 </body>

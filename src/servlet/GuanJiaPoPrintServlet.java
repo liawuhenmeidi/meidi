@@ -279,7 +279,7 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 										row.createCell((short) y++).setCellValue("");
 										row.createCell((short) y++).setCellValue("");
 										row.createCell((short) y++).setCellValue(up.getRealbranchname());
-										row.createCell((short) y++).setCellValue(up.getRealbranchname()+id);
+										row.createCell((short) y++).setCellValue("结"+up.getRealbranchname()+id);
 										row.createCell((short) y++).setCellValue("");
 										
 										row.createCell((short) y++).setCellValue("");
@@ -346,22 +346,22 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 										
 										row.createCell((short) y++).setCellValue(branch); 
 										row.createCell((short) y++).setCellValue("");
-										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(name);
 										row.createCell((short) y++).setCellValue("");
 										row.createCell((short) y++).setCellValue("");
 										
-										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue(""); 
 										row.createCell((short) y++).setCellValue("");
 										row.createCell((short) y++).setCellValue(up.getRealbranchname());
-										row.createCell((short) y++).setCellValue(id);
+										row.createCell((short) y++).setCellValue("结"+up.getRealbranchname()+id);
 										row.createCell((short) y++).setCellValue("");
-										
-										row.createCell((short) y++).setCellValue("");
-										row.createCell((short) y++).setCellValue("");
+										 
 										row.createCell((short) y++).setCellValue("");
 										row.createCell((short) y++).setCellValue("");
 										row.createCell((short) y++).setCellValue("");
-										}
+										row.createCell((short) y++).setCellValue("");
+										row.createCell((short) y++).setCellValue("");
+										} 
 										row = sheet.createRow((int) count);
 									    count++;
 										y = 0 ;   
@@ -378,14 +378,14 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 										row.createCell((short) y++).setCellValue(realcount); 
 										row.createCell((short) y++).setCellValue(price);
 										
-										row.createCell((short) y++).setCellValue(realtotal);
+										row.createCell((short) y++).setCellValue(realtotal); 
 										row.createCell((short) y++).setCellValue("");
-										row.createCell((short) y++).setCellValue(realcount);
+										row.createCell((short) y++).setCellValue(price);
 										row.createCell((short) y++).setCellValue(realtotal);
 										row.createCell((short) y++).setCellValue("");
 										  
-										row.createCell((short) y++).setCellValue(""); 
-										row.createCell((short) y++).setCellValue(realcount);
+										row.createCell((short) y++).setCellValue("");  
+										row.createCell((short) y++).setCellValue(price); 
 										row.createCell((short) y++).setCellValue(realtotal);
 										row.createCell((short) y++).setCellValue("");  
 										//row.createCell((short) y++).setCellValue(""); 

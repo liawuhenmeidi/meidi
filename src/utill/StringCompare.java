@@ -3,8 +3,14 @@ package utill;
 import java.text.NumberFormat;  
 	  
 import java.util.Locale;  
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import change.UploadChangeManager;
 	
 public class StringCompare {	 
+	protected static Log logger = LogFactory.getLog(StringCompare.class);
 //	/**
 //	* 编辑距离算法，首先由俄国科学家Levenshtein提出的，又叫Levenshtein Distance
 //	* 主要用来计算从原串（s）转换到目标串(t)所需要的最少的插入，删除和替换的数目，
@@ -123,23 +129,26 @@ public class StringCompare {
 	
 	//以上方法不适合，我自己写了个简单的，效率还不错
 	public static double compare(String str ,String target){
-		char aa[] = str.toCharArray();
-		char bb[] = target.toCharArray();
-		
 		double result = 0; 
+		try{
+			char aa[] = str.toCharArray();
+			char bb[] = target.toCharArray();
+			
 		
-		for(int i = 0 ; i < aa.length ; i ++){
-			for(int j = 0 ; j < bb.length ; j ++){
-				if(aa[i] == bb[j]){
-					//去掉j
-					bb[j] = '烫';
-					result ++;
-					break;
+			
+			for(int i = 0 ; i < aa.length ; i ++){
+				for(int j = 0 ; j < bb.length ; j ++){
+					if(aa[i] == bb[j]){
+						//去掉j
+						bb[j] = '烫';
+						result ++;
+						break;
+					}
 				}
 			}
+		}catch(Exception e){
+		   logger.info(e);
 		}
-		
-		
 		return result;
 	}
 	 

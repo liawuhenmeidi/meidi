@@ -11,7 +11,7 @@
 	//UploadOrderManager uom = new UploadOrderManager();
     
 	boolean showContent =false;
-	
+	 
 	boolean confirmResult = false;  
 	BranchTypeChange b = null ;
 	if(confirm != null && confirm != ""){
@@ -36,55 +36,18 @@
 <title>苏宁消单明细上传页面</title>
   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
-<style type="text/css">
-.fixedHead { 
-position:fixed;
-}  
-.tabled tr td{ 
-width:50px
-}  
-*{
-    margin:0;
-    padding:0;
-}
-
-td { 
-    width:100px;
-    line-height:30px;
-}
- 
-#table{  
-    BACKGROUND-IMAGE: url('../image/f.JPG');
-   
-    table-layout:fixed ;
-}
-
-#th{ 
-    background-color:white;
-    position:absolute;
-   
-    height:30px;
-    top:0;
-    left:0;
-}
-#wrap{
-    clear:both;
-    position:relative;
-    padding-top:30px;
-    overflow:auto;
-    height:450px;
-}
-
+<style media=print type="text/css">   
+.noprint{visibility:hidden}   
 </style>
 </head>
-
+ 
 <body style="scoll:no">
  
 <!--   头部开始   --> 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
-var flag = true ;
+var flag = true ; 
 function submit(){
 	 if(flag){
 		    $('#commitbutton').val('正在提交');
@@ -93,10 +56,7 @@ function submit(){
 	 }else {
 		 return ;
 	 }
-	
-	
 }
-
 
 </script>
 <%
@@ -110,10 +70,8 @@ function submit(){
 %>
 			<script type="text/javascript">
 				alert('<%=temp%>');
-			
 			</script>
 <%
-
 		}
 	}
 
@@ -157,6 +115,7 @@ function submit(){
 <table  cellspacing="1" border="2px"  width="80%">
 		<tr class="bsc" >    
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
+			<td style="width:20;" align="center">编号</td>
 			<td style="width:20;" align="center">转换结果</td>
 			<td  style="width:80;" align="center"  >待转化</td>
 		</tr> 
@@ -169,16 +128,19 @@ function submit(){
 			Set<Map.Entry<String, List<String>>> setmap = map.entrySet();
 			
 			Iterator<Map.Entry<String, List<String>>> itmap = setmap.iterator();
+			int count = 0 ;
 			while(itmap.hasNext()){
 				Map.Entry<String, List<String>> mape = itmap.next();
 				String name = mape.getKey();
 				List<String> list = mape.getValue();
+				count++;
 				%> 
 			<tr class="bsc" >   
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
+			<td align="center"  ><%=count %></td>
 			<td align="center"  ><%=name %></td>
 			<td align="center"   >   
-			<table width="100%">
+			<table width="100%" id="table">
 			
 			<% for(int i=0;i<list.size();i++){
 				String str = list.get(i);
@@ -188,8 +150,8 @@ function submit(){
 	            }else {
 	            	listnew.add(str);
 	            }
-				%> 
-				<tr class="<%=str.hashCode()%>"  >  
+				%>  
+				<tr class="asc" id="<%=str.hashCode()%>"  >  
 				<td align="center"><%=str %></td>
 				</tr>
 				
@@ -223,7 +185,7 @@ function submit(){
 				
 				%>
  
-        $(".<%=str%>").css('background-color','red');
+        $("#<%=str%>").css('background-color','red');
 				<%
 				
 			} 
