@@ -77,6 +77,8 @@
 	//查询条件提交后，右侧显示内容
 	unCheckedUploadOrders1 = MatchOrderManager.getUnCheckedUploadOrders(selectOrderName1);
 	unCheckedUploadOrders2 = MatchOrderManager.getUnCheckedUploadOrders(selectOrderName2);
+	int count1 = unCheckedUploadOrders1.size();
+	int count2 = unCheckedUploadOrders2.size();
 	unCheckedDBOrders = MatchOrderManager.transferUploadOrder(unCheckedUploadOrders1);
 	
 	System.out.println("自动对比页面取数据时间(毫秒) = " + (System.currentTimeMillis() - startTime));
@@ -133,11 +135,12 @@
 	boolean showColor = false;
 	
 	//下面用到的是否check
-	boolean isChecked = false;
+	boolean isChecked = false; 
 	
-	//是否禁用
+	//是否禁用  
 	boolean dbsideDisabled =false;
 	boolean uploadsideDisabled=false;
+	//System.out.println("unCheckedUploadOrders2"+unCheckedUploadOrders2.size());
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -175,6 +178,7 @@ $(function () {
 	initPageChange();
 	initcheck();
 });
+
 
 function initButton(){
 	$('#transferbutton').click(function (){
@@ -461,7 +465,8 @@ function baseFormSubmit(){
 			
 			
 			<td  align="center">
-			<label id="leftcount"></label>
+			<label id="leftcount"></label><br/>
+			<label id="leftTotal">总计条数<%=count1 %></label>
 			
 			</td>
 			
@@ -483,8 +488,10 @@ function baseFormSubmit(){
 			%>
 			</td>
 			
-			<td  align="center">
-			 <label id="rightcount"></label><br/>
+			<td  align="center"> 
+			  <label id="rightcount"></label><br/>
+			  <label id="rightTotal">总计条数<%=count2 %></label><br/>
+			  
 			 <button type="button" id="scrollNext">下一个</button><br/>
 			 <button type="button" id="scrollPrev">上一个</button>
 			</td>

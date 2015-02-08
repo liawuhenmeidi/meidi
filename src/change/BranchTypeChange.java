@@ -7,18 +7,32 @@ import java.util.Map;
 public class BranchTypeChange {
 	private static BranchTypeChange instance;
     public  String name ; 
-    private  static Map<String,String> map = null;
+    private  Map<String,String> map = null;
+    private  Map<Integer,Change> mapO = null;
     public  Map<String,List<String>> maplist = new HashMap<String,List<String>>();
-     
-    public  static BranchTypeChange getinstance(){
+    
+    
+   
+
+	
+       
+    public Map<Integer, Change> getMapO() {
+		return mapO;
+	}
+
+	public void setMapO(Map<Integer, Change> mapO) {
+		this.mapO = mapO;
+	}
+
+	public  static BranchTypeChange getinstance(){
 		if(null == instance){
 			instance = new BranchTypeChange();
 		} 
 		return instance;
 	}
     
-    public static void setMap(Map<String, String> map) {
-		BranchTypeChange.map = map;
+    public  void setMap(Map<String, String> map) {
+		this.map = map;
 	} 
 	
 	public String getName() { 
@@ -31,7 +45,7 @@ public class BranchTypeChange {
 	public Map<String, String> getMap() {
 		if(null == map){
 			map = ChangeManager.getmap();
-		} 
+		}  
 		return map;
 	}
 	
@@ -43,7 +57,11 @@ public class BranchTypeChange {
 		this.maplist = maplist;
 	}
      
-	
+	public void init(){  
+		this.setMap(ChangeManager.getmap()); 
+		this.setMapO(ChangeManager.getmapO());
+		 
+	}
     
     
 }

@@ -107,7 +107,7 @@ function winconfirm(){
 			              <td align="center" width=""><input type="checkbox" value="<%=list.get(i).getId() %>" name="ids" id="check_box" /></td>
 			              <td align="center"  ><%=count %></td>  
 			              <td align="center"  <%=rowspan %>><%=name %></td>  
-				          <td align="center" ><%=list.get(i).getChange() %></td>
+				          <td align="center" ><%=list.get(i).getBechange() %></td>
 				       </tr>	
 						<%
 						
@@ -118,7 +118,7 @@ function winconfirm(){
 					     <td align="center" width=""><input type="checkbox" value="<%=list.get(i).getId() %>"  name="ids"  id="check_box" /></td>
 					     <td align="center"  ><%=count %></td> 
 			   
-				          <td align="center" ><%=list.get(i).getChange()%></td>
+				          <td align="center" ><%=list.get(i).getBechange()%></td>
 				       </tr>
 						<%
 					}
@@ -129,7 +129,7 @@ function winconfirm(){
 					<td align="center"  ><%=count%></td> 
 			      
 			       <td align="center"  <%=rowspan %>><%=name %></td>   
-				   <td align="center" ><%=list.get(i).getChange() %></td>
+				   <td align="center" ><%=list.get(i).getBechange() %></td>
 				</tr>
 					
 					<%

@@ -22,7 +22,7 @@ public class ChangeManager {
 		List<String> sqls = new ArrayList<String>();
 		/*
 		 * String sqlall = "delete from mdchange "; sqls.add(sqlall);
-		 */
+		 */ 
 		Map<String, List<String>> map = bt.getMaplist();
 		Set<Map.Entry<String, List<String>>> setmap = map.entrySet();
 
@@ -36,11 +36,11 @@ public class ChangeManager {
 				for (int i = 0; i < list.size(); i++) {
 					String real = list.get(i);
 					if (StringUtill.isNull(name)) {
-						String sql = " insert into ignore mduploadchange (id,filename,name,statues) values (null,'"
+						String sql = " insert into  mduploadchange (id,filename,name,statues) values (null,'"
 								+ bt.getName() + "','" + real + "',0);";
 						sqls.add(sql); 
 					} else { 
-						String sql = " insert into ignore mdchange (id,changes,bechange) values (null,'"
+						String sql = " insert into  mdchange (id,changes,bechange) values (null,'"
 								+ real + "','" + name + "')";
 						sqls.add(sql);
 					}
@@ -56,7 +56,7 @@ public class ChangeManager {
 
 		}
 		DBUtill.sava(sqls);
-		BranchTypeChange.setMap(getmap());
+		BranchTypeChange.getinstance().init();
 	}
 
 	public static void save(String[] bt) {
@@ -81,64 +81,101 @@ public class ChangeManager {
 
 		if (!StringUtill.isNull(idss)) {
 			idss = "(" + idss.substring(0, idss.length() - 1) + ")";
-			String sql = " delete from  mduploadchange where id in " + idss;
-			sqls.add(sql);
+			String sqld = " update  mduploadchange set statues = 2 where id in " + idss;
+			sqls.add(sqld);
 		}
 
 		DBUtill.sava(sqls);
-		BranchTypeChange.setMap(getmap());
+		BranchTypeChange.getinstance().init();
 
-	}
+	} 
+    
+	public static void save(String[] lefts,String[] rights) {
+		List<String> sqls = new ArrayList<String>();
+		String idss = "";
+		Map<Integer, UploadChange> map = UploadChangeManager.getmap();
+		idss += lefts[0] + ","+rights[0]+","; 
+		UploadChange left = map.get(Integer.valueOf(lefts[0]));
+		UploadChange right = map.get(Integer.valueOf(rights[0]));
+		 
+		String sql = " insert into mdchange (id,changes,bechange) values (null,'"
+					+ left.getName() + "','" + right.getName() + "')";
+			sqls.add(sql);
 
+		if (!StringUtill.isNull(idss)) {
+			idss = "(" + idss.substring(0, idss.length() - 1) + ")";
+			String sqld = " update  mduploadchange set statues = 2 where id in " + idss;
+			sqls.add(sqld);
+		} 
+ 
+		DBUtill.sava(sqls);
+		BranchTypeChange.getinstance().init();
+
+	} 
+	
 	public static Map<String, String> getmap() {
 		Map<String, String> map = new HashMap<String, String>();
 		List<Change> list = getLocate();
 		for (int i = 0; i < list.size(); i++) {
-			Change c = list.get(i);
-			map.put(c.getChange(), c.getBechange());
+			Change c = list.get(i); 
+			map.put(c.getBechange(), c.getChange());
 		}
 		return map;
 	}
-
+  
+	public static Map<Integer, Change> getmapO() {
+		Map<Integer, Change> map = new HashMap<Integer, Change>();
+		List<Change> list = getLocate();
+		for (int i = 0; i < list.size(); i++) { 
+			Change c = list.get(i); 
+			map.put(c.getId(), c);
+		}
+		return map;
+	}
+	
 	public static Map<String, List<Change>> getmapListC() {
 		Map<String, List<Change>> map = new HashMap<String, List<Change>>();
 		List<Change> list = getLocate();
 		for (int i = 0; i < list.size(); i++) { 
 			Change c = list.get(i);
-			List<Change> lists = map.get(c.getBechange());
+			List<Change> lists = map.get(c.getChange());
 			if (null == lists) {
 				lists = new ArrayList<Change>();
-				map.put(c.getBechange(), lists);
+				map.put(c.getChange(), lists);
 			} 
 			lists.add(c); 
 		} 
 		return map;
 	}
-    
+     
 	public static Map<String, List<String>> getmapList() {
 		Map<String, List<String>> map = new HashMap<String, List<String>>();
 		List<Change> list = getLocate();
 		for (int i = 0; i < list.size(); i++) { 
 			Change c = list.get(i);
-			List<String> lists = map.get(c.getBechange());
+			List<String> lists = map.get(c.getChange());
 			if (null == lists) {
 				lists = new ArrayList<String>();
-				map.put(c.getBechange(), lists);
+				map.put(c.getChange(), lists);
 			} 
-			lists.add(c.getChange()); 
+			lists.add(c.getBechange()); 
 		}
-		return map;
+		return map; 
 	}
 	 
 	public static void delete (String[] list){
-		String str = "";
+		List<String> sqls = new ArrayList<String>();
+		String str = ""; 
 		for(int i=0;i<list.length;i++){
 			str += list[i]+","; 
-		} 
+		}  
 		str = "(" + str.substring(0,str.length()-1)+")";
 		String sql   = "delete from mdchange where id in "+ str;
-		DBUtill.sava(sql); 
-		BranchTypeChange.setMap(getmap());
+		String sql1 = "update mdchange set statues = 0 where id in " +str ;
+		sqls.add(sql1);
+		sqls.add(sql);
+		DBUtill.sava(sqls);  
+		BranchTypeChange.getinstance().init();
 	}
 	public static List<Change> getLocate() {
 		List<Change> list = new ArrayList<Change>();
@@ -146,7 +183,7 @@ public class ChangeManager {
 		Connection conn = DB.getConn();
 		String sql = "select * from mdchange ";
 		Statement stmt = DB.getStatement(conn);
-		ResultSet rs = DB.getResultSet(stmt, sql);
+		ResultSet rs = DB.getResultSet(stmt, sql); 
 		try { // cname,uname,phone,locate
 			while (rs.next()) {
 				Change g = new Change();
@@ -154,7 +191,7 @@ public class ChangeManager {
 				g.setChange(rs.getString("changes"));
 				g.setId(rs.getInt("id"));
 				list.add(g);
-			}
+			} 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

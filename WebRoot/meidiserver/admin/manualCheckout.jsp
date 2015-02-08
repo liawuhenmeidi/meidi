@@ -555,7 +555,7 @@ function initcheck(){
 	
 	$("[name='dbside'][checked]").each(function(){
 		 leftcount++;
-	    });
+	    }); 
 
 	 $("[name='uploadside'][checked]").each(function(){
 		 rightcount++;
