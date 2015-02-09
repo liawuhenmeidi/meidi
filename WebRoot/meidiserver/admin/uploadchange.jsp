@@ -543,7 +543,8 @@ function saveAddPOD(){
 				<td valign="top" colspan=<%=row%>>
 					<table style="width:100%;" cellspacing="1"  id="table" >
 						<tr class="asc">
-							<td align="center" colspan=2>门店转化</td>
+							<td align="center" colspan=3>门店转化</td>
+							<td align="center">点击添加</td>
 						</tr>
 						<%
 							Iterator<String> itbr = rightb.iterator();
@@ -584,7 +585,8 @@ function saveAddPOD(){
 				<td valign="top" colspan=<%=row%>>
 					<table style="width:100%;" cellspacing="1" id="table">
 						<tr class="asc">
-							<td align="center" colspan=2>型号转化</td>
+							<td align="center" colspan=3>型号转化</td>
+							<td align="center">点击添加</td>
 						</tr>
 						<%
 							Iterator<String> ittr = rightt.iterator();

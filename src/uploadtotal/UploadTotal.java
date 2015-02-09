@@ -13,9 +13,17 @@ public class UploadTotal {
    private int count ;
    private double totalcount;
    private double tatalbreakcount;
+   private String pos ;
+   
     
    
    
+public String getPos() {
+	return pos;
+}
+public void setPos(String pos) {
+	this.pos = pos;
+}
 public int getId() {
 	return id;
 }

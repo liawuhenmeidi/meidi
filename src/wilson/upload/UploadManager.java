@@ -1075,12 +1075,12 @@ logger.info(sql);
 						tpe = ups.getCatergory(); 
 					}
 				}
-				
+				 
 				if(!StringUtill.isNull(message)){
 					JSONObject jsObj = JSONObject.fromObject(message);
 					Iterator<String> it = jsObj.keys();
 					 
-					while(it.hasNext()){ 
+					while(it.hasNext()){  
 						String type = it.next();
 						if(type.contains(tpe)){
 							tpe = type ;
@@ -1094,7 +1094,7 @@ logger.info(sql);
 					mapll = new HashMap<String,List<UploadTotal>>();
 					map.put(up.getBranchname(), mapll);
 				}
-				
+
 				List<UploadTotal> list = mapll.get(tpe);
 				if(null == list){
 					list = new ArrayList<UploadTotal>();
@@ -1108,7 +1108,141 @@ logger.info(sql);
 		
 		
 	}
-	
+	 
+	public static Map<String,Map<String,List<UploadTotal>>> getUploadOrderCategoryGroup(String id,int totaltype,String checked){
+		Map<String,Map<String,List<UploadTotal>>> map = new HashMap<String,Map<String,List<UploadTotal>>>();
+		
+		Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
+		String message = "";
+		UploadTotalGroup upt = UploadTotalGroupManager.getUploadTotalGroup();
+		if(upt != null){
+		   message = upt.getCategoryname();
+		}
+		
+		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id,checked,totaltype); 
+		
+		//logger.info(list.size());
+		
+		Iterator<UploadOrder> itall = list.iterator();
+		// double count  = 0 ;
+		
+		 while(itall.hasNext()){
+			 UploadOrder up = itall.next();
+			 String relatype = "";
+			    if(BasicUtill.sale == totaltype){
+			    	relatype = up.getType();
+			    	String tpe = "";
+			    	
+					if(null != mapus){
+						UploadSalaryModel ups = mapus.get(StringUtill.getStringNocn(relatype));
+						if(null != ups){
+							tpe = ups.getCatergory(); 
+						}
+					}
+					
+					if(!StringUtill.isNull(message)){
+						JSONObject jsObj = JSONObject.fromObject(message);
+						Iterator<String> it = jsObj.keys();
+						 
+						while(it.hasNext()){ 
+							String type = it.next();
+							if(type.contains(tpe)){
+								tpe = type ;
+								break ;
+							}
+						}
+					}	
+			    	Map<String,List<UploadTotal>> branchname= map.get(tpe);
+					if(null == branchname){ 
+						branchname = new HashMap<String,List<UploadTotal>>();
+						map.put(relatype, branchname);
+					}
+					 
+					List<UploadTotal> uplist = branchname.get(up.getShop());
+					if(null == uplist){
+						uplist = new ArrayList<UploadTotal>();
+						branchname.put(up.getShop(),uplist);
+					}  
+					 
+				    UploadTotal uptt = new UploadTotal();
+					uptt.setBranchname(up.getShop());
+					uptt.setCount(up.getNum());
+					uptt.setName(up.getName());
+					uptt.setPos(up.getPosNo()); 
+					uptt.setType(relatype);
+					uptt.setTotalcount(Math.abs(up.getSalePrice())*up.getNum());
+					uptt.setTatalbreakcount(Math.abs(up.getSalePrice())*up.getNum()*(1-up.getBackPoint()/100));
+					uplist.add(uptt); 
+					
+					
+			    }else if(BasicUtill.send == totaltype){
+			    	 String sendtypestr = up.getSendType(); 
+					 String[] sendtypestrs = sendtypestr.split(",");
+					 for(int j=0;j<sendtypestrs.length;j++){
+						 String sendtype = sendtypestrs[j]; 
+						// System.out.println(sendtypestrs[j]);
+						 String[] sendtypes = sendtype.split(":");
+						 relatype = sendtypes[0];  
+						 int realcount = Integer.valueOf(sendtypes[1]);
+						 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
+						 
+						 String tpe = "";
+					    	
+							if(null != mapus){
+								UploadSalaryModel ups = mapus.get(StringUtill.getStringNocn(relatype));
+								if(null != ups){
+									tpe = ups.getCatergory(); 
+								}
+							}
+							
+							if(!StringUtill.isNull(message)){
+								JSONObject jsObj = JSONObject.fromObject(message);
+								Iterator<String> it = jsObj.keys();
+								 
+								while(it.hasNext()){ 
+									String type = it.next();
+									if(type.contains(tpe)){
+										tpe = type ;
+										break ;
+									}
+								}
+							}	 
+							 
+							Map<String,List<UploadTotal>> branchname= map.get(tpe);
+							if(null == branchname){  
+								branchname = new HashMap<String,List<UploadTotal>>();
+								map.put(tpe, branchname);
+							}
+							 
+							List<UploadTotal> uplist = branchname.get(up.getShop());
+							if(null == uplist){ 
+								uplist = new ArrayList<UploadTotal>();
+								branchname.put(up.getShop(),uplist);
+							} 
+							 
+						//	count += Math.abs(prince)*realcount; 
+							  
+						    UploadTotal uptt = new UploadTotal();
+							uptt.setBranchname(up.getShop());
+							uptt.setCount(up.getNum());
+							uptt.setName(up.getName());
+							uptt.setType(relatype);
+							uptt.setPos(up.getPosNo()); 
+							uptt.setTotalcount(Math.abs(prince)*realcount);
+							uptt.setTatalbreakcount(Math.abs(prince)*realcount*(1-up.getBackPoint()/100));
+							uplist.add(uptt); 
+							
+							
+					 }
+			    }
+				
+		 }
+		
+		//logger.info(count); 
+		
+		return map;	
+	} 
+	 
 	public static Map<String,Map<String,List<UploadTotal>>> getTotalOrdersCategoryGroup(String id,int totaltype,String checked){
 		Map<String,Map<String,List<UploadTotal>>> map = new HashMap<String,Map<String,List<UploadTotal>>>();
 		Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
@@ -1132,7 +1266,7 @@ logger.info(sql);
 			while(itmaptype.hasNext()){
 				Map.Entry<String, UploadTotal> enmaptype = itmaptype.next();
 				UploadTotal up = enmaptype.getValue();
-int count = 0 ;
+
 				String tpe = ""; 
 				if(null != mapus){
 					UploadSalaryModel ups = mapus.get(StringUtill.getStringNocn(tp));
@@ -1145,7 +1279,7 @@ int count = 0 ;
 					JSONObject jsObj = JSONObject.fromObject(message);
 					Iterator<String> it = jsObj.keys();
 					 
-					while(it.hasNext()){ 
+					while(it.hasNext()){  
 						String type = it.next();
 						if(type.contains(tpe)){
 							tpe = type ;
@@ -1174,6 +1308,7 @@ int count = 0 ;
 		
 	} 
 	 
+	
 	public static Map<String, HashMap<String, UploadTotal>> getTotalOrdersShop(String id,int totaltype,String checked){
 		List<UploadOrder> list = UploadManager.getTotalUploadOrders(id,checked,totaltype);
 		//Map<String,UploadSalaryModel> listSM = getSalaryModelsAll();  
@@ -1359,6 +1494,9 @@ int count = 0 ;
 		}
 		return map;
 	}
+	
+	
+	
 	public static HashMap<String, List<UploadTotal>> getTotalOrdersGroup(String id,String type,int totaltype,String checked){
 		HashMap<String, List<UploadTotal>> map = new HashMap<String, List<UploadTotal>>();
         Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();

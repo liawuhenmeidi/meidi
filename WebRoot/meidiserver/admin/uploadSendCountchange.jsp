@@ -17,7 +17,7 @@
 	}
 	
 	
-	String type = request.getParameter("type");
+	String type = request.getParameter("method");
 	String id = request.getParameter("said");
 	String checkedStatus = "";
 	boolean check = false ;
@@ -28,7 +28,7 @@
 	//HashMap<String, UploadTotal> maptypeinit = null;
 	HashMap<String, List<UploadTotal>> maptypeinit = null;
 	List<UploadOrder> list = null ;   
-	if("check".equals(type)){   
+	if("check".equals(type)){    
 		 checkedStatus = request.getParameter("checkedStatus");
 		 list = UploadManager.getTotalUploadOrders(id,checkedStatus,BasicUtill.send);  
 		 check = true ;  
@@ -116,7 +116,7 @@ function exports(){
 	if(uname == ""){
 		alert("经手人不能为空");
 		return ;
-	}
+	}  
 	$('#method').val('<%=type %>');
 	$('#post').attr('action','../GuanJiaPoPrint?type=<%=BasicUtill.send%>'); 
 	$("#post").submit();
@@ -131,7 +131,7 @@ function exports(){
 <body>
    <form action="" method="post" id="post" onsubmit="return checkedd()">
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型号转化: 
-   <input type="hidden" name="type" id="type" value="check"/>
+   <input type="hidden" name="method" id="method" value="check"/>
    <select name="said" id="said">
 	<option ></option> 
 	<%
@@ -155,9 +155,11 @@ function exports(){
 <% if(check){ %>
  
 <input type="button" class="button" value="设置标准" onclick="amortization('saleCountGroup.jsp')" ></input>
-<input type="submit" value="品类门店统计" onclick="$('#type').val('totalcategory');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
-<input type="submit" value="门店品类统计" onclick="$('#type').val('total');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
+<input type="submit" value="品类门店合计" onclick="$('#method').val('totalcategory');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
+<!-- <input type="submit" value="门店品类统计" onclick="$('#type').val('total');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
 <input type="submit" value="型号统计" onclick="$('#type').val('typetotal');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
+ --> 
+ <input type="button" class="noprint"  value="导出" onclick="adddanwei()"/> 
 <%} 
 if(total){ %>  
 <input type="hidden" name="method" id="method" value=""/> 
