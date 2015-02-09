@@ -1,18 +1,18 @@
 package change;
 
 public class MathChange {
-    private UploadChange change;  // 管家婆
-    private UploadChange bechange;
-	public UploadChange getChange() {
-		return change;
-	} 
-	public void setChange(UploadChange change) {
+    private String change;  // 管家婆
+    private String bechange;
+	public String getChange() {
+		return change; 
+	}
+	public void setChange(String change) {
 		this.change = change;
 	}
-	public UploadChange getBechange() {
+	public String getBechange() {
 		return bechange;
 	}
-	public void setBechange(UploadChange bechange) {
+	public void setBechange(String bechange) {
 		this.bechange = bechange;
 	}
 	

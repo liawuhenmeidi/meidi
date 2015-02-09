@@ -32,7 +32,7 @@
 		 list = UploadManager.getTotalUploadOrders(id,checkedStatus,BasicUtill.send); 
 		 check = true ; 
 	}else if("total".equals(type)){ 
-		total = true ;    
+		total = true ;     
 		checkedStatus = request.getParameter("realcheckedStatus");
 		mapt = UploadManager.getTotalOrdersGroup(id,BasicUtill.send,checkedStatus);  
 	}else if("typetotal".equals(type)){  

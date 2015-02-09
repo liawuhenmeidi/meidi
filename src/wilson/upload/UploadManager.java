@@ -23,6 +23,8 @@ import org.apache.commons.logging.LogFactory;
 
 import change.BranchTypeChange;
 import change.ChangeManager;
+import change.UploadChangeAll;
+import change.UploadChangeManager;
 
 import order.Order;
 import order.OrderManager;
@@ -67,12 +69,12 @@ public class UploadManager {
 			return false;
 		}
 	}
-	
+	  
 	public static boolean savechangeFileToDB(String path,String fileName){
 		List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
-		BranchTypeChange bt = xlsreader.readchangeXML(path,fileName);
-		ChangeManager.save(bt);  
-		if(saveOrderList(UploadOrders)){
+		UploadChangeAll bt = xlsreader.readchangeXML(path,fileName);
+		UploadChangeManager.save(bt);       
+		if(saveOrderList(UploadOrders)){ 
 			logger.info("上传销售单保存成功");
 			return true;
 		}else{
@@ -846,7 +848,7 @@ public class UploadManager {
 		Connection conn = DB.getConn(); 
 		String sql = "select * from uploadorder where checked = " + UploadOrder.UNCHECK +  " or checked = " + UploadOrder.COMFIRMED + " order by shop";
 
-		Statement stmt = DB.getStatement(conn); 
+		Statement stmt = DB.getStatement(conn);  
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		UploadOrder uo = new UploadOrder();
 		try {     
@@ -1637,6 +1639,30 @@ int count = 0 ;
 			DB.close(conn);
 		}
 		return result;
+	} 
+	
+	public static List<String> getAllChangeModelNames(){
+		List<String> result = new ArrayList<String>();
+		String sql = "select distinct filename from mduploadchange ";
+		Connection conn = DB.getConn(); 
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		String tmp = ""; 
+		try {  
+			while(rs.next()){
+				tmp = rs.getString("filename");
+				result.add(tmp);  
+				tmp = "";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result.clear();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return result;
 	}
 	
 	//传入uploadorders的list对象，取出名称返回
@@ -2131,8 +2157,28 @@ int count = 0 ;
 		return flag ;  
 	}
 	
-	public static boolean deleteSalaryModelById(int id){
+	public static boolean deleteChangeModelByName(String name){
 		boolean flag = false;
+		Connection conn = DB.getConn();
+		   
+		String sql = "delete from  mduploadchange where filename = '"+name+"'"; 
+		logger.info(sql); 
+		PreparedStatement pstmt = DB.prepare(conn, sql);
+		Statement stmt = DB.getStatement(conn);
+		try {
+			stmt.execute(sql);
+			flag = true ;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(pstmt);
+			DB.close(conn);
+		}
+		return flag ;  
+	}
+	
+	public static boolean deleteSalaryModelById(int id){
+		boolean flag = false; 
 		Connection conn = DB.getConn();
 		String sql = "delete from uploadsalarymodel  where id = " + id;
 		PreparedStatement pstmt = DB.prepare(conn, sql);

@@ -7,23 +7,25 @@
 	User user = (User)session.getAttribute("user");
 	String fileName = request.getParameter("fileName");
 	
-	String type = request.getParameter("type");
+	String type = request.getParameter("type"); 
 	String name =request.getParameter("name");
 	String button = request.getParameter("button");
 
-	//类型不能为空
+	//类型不能为空 
 	if(type != null && !type.equals("")){
 		//接受到的名称不能为空
 		if(name != null && !name.equals("")){
 			
 			//判断行为
 			if(button != null && button.equals("删除")){
-				
+				 
 				if(type.equals("uploadorder")){
 					UploadManager.deleteUploadOrderByName(name);
 				}else if(type.equals("salarymodel")){
 					UploadManager.deleteSalaryModelByName(name);
-				}
+				}else if(type.equals("changemodel")){ 
+					UploadManager.deleteChangeModelByName(name);
+				} 
 				
 			}else if(button != null && button.equals("导出")){
 				
@@ -49,7 +51,8 @@
 	
 	//提成标准
 	List<String> salaryModelNames = UploadManager.getAllSalaryModelNames();
-	
+	// 转化单 
+	List<String> changeModelNames = UploadManager.getAllChangeModelNames();
 	//下面用到的临时变量
 	String tempName = "";
 %>
@@ -123,7 +126,7 @@ body {
 
   </div> 
   
-  <br/><br/><br/><br/><br/><br/><br/><br/>
+  <br/><br/><br/><br/><br/>
 <hr style="border : 1px dashed blue;" />
 
 <p>系统对比/销售单 删除</p>
@@ -166,6 +169,25 @@ body {
 
 </form>
 
+ 
+ <p>上传转化单删除</p>
+<form action="" method="post">
+<input type="hidden" name="type" value="changemodel"/>
+<select name="name" id="changemodelselect">
+	<option value="" selected="selected"></option>
+	<%
+	for(int i = 0 ; i < changeModelNames.size() ; i ++){
+		tempName = changeModelNames.get(i);
+	%>
+	<option value="<%=tempName  %>" ><%=tempName %></option>
+	<%
+	} 
+	%>
+</select>
+<input name="button" type="submit" value="删除" onclick="return confirm('是否确认删除' + $('#changemodelselect').find('option:selected').text() + '?')"/>
+<input name="button" type="submit" value="导出"/>
+
+</form>
 
 </body>
 </html>

@@ -5,11 +5,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import net.sf.json.JSONObject;
 
 import utill.DBUtill;
 import utill.StringUtill;
@@ -17,24 +23,24 @@ import utill.StringUtill;
 import database.DB;
 
 public class ChangeManager {
-
+	protected static Log logger = LogFactory.getLog(ChangeManager.class);
 	public static void save(BranchTypeChange bt) {
 		List<String> sqls = new ArrayList<String>();
 		/*
 		 * String sqlall = "delete from mdchange "; sqls.add(sqlall);
 		 */ 
-		Map<String, List<String>> map = bt.getMaplist();
-		Set<Map.Entry<String, List<String>>> setmap = map.entrySet();
-
-		Iterator<Map.Entry<String, List<String>>> itmap = setmap.iterator();
-		while (itmap.hasNext()) {
-			Map.Entry<String, List<String>> mape = itmap.next();
-			String name = mape.getKey();
-			List<String> list = mape.getValue();
-			if (list.size() > 1) {
+		Map<String, Set<String>> map = bt.getMaplist();
+		Set<Map.Entry<String, Set<String>>> setmap = map.entrySet();
  
-				for (int i = 0; i < list.size(); i++) {
-					String real = list.get(i);
+		Iterator<Map.Entry<String, Set<String>>> itmap = setmap.iterator();
+		while (itmap.hasNext()) { 
+			Map.Entry<String, Set<String>> mape = itmap.next();
+			String name = mape.getKey();
+			Set<String> list = mape.getValue();        
+			if (list.size() > 1) {
+				Iterator<String> it = list.iterator();
+				while(it.hasNext()){
+					String real = it.next(); 
 					if (StringUtill.isNull(name)) {
 						String sql = " insert into  mduploadchange (id,filename,name,statues) values (null,'"
 								+ bt.getName() + "','" + real + "',0);";
@@ -44,8 +50,8 @@ public class ChangeManager {
 								+ real + "','" + name + "')";
 						sqls.add(sql);
 					}
-
 				}
+				
 
 			} else {
 
@@ -58,7 +64,27 @@ public class ChangeManager {
 		DBUtill.sava(sqls);
 		BranchTypeChange.getinstance().init();
 	}
-
+  
+	 
+	public static void save(Object json) {
+		List<String> sqls = new ArrayList<String>();
+		
+		JSONObject jsons = JSONObject.fromObject(json);  
+		 
+		Iterator<String> it = jsons.keys();  
+       while(it.hasNext()){  
+        	String key  = it.next();
+        	String value = jsons.getString(key);
+        	String sql = " insert ignore into  mdchange (id,changes,bechange) values (null,'"
+					+ value + "','" + key + "')";
+			sqls.add(sql); 
+        }     
+        logger.info(sqls);
+		
+		DBUtill.sava(sqls); 
+		BranchTypeChange.getinstance().init();
+	}
+	
 	public static void save(String[] bt) {
 		List<String> sqls = new ArrayList<String>();
 		String idss = "";
@@ -71,7 +97,7 @@ public class ChangeManager {
 				UploadChange left = map.get(Integer.valueOf(ids[0]));
 				UploadChange right = map.get(Integer.valueOf(ids[1]));
  
-				String sql = " insert into mdchange (id,changes,bechange) values (null,'"
+				String sql = " insert ignore into mdchange (id,changes,bechange) values (null,'"
 						+ left.getName() + "','" + right.getName() + "')";
 				sqls.add(sql);
 
@@ -171,8 +197,8 @@ public class ChangeManager {
 		}  
 		str = "(" + str.substring(0,str.length()-1)+")";
 		String sql   = "delete from mdchange where id in "+ str;
-		String sql1 = "update mdchange set statues = 0 where id in " +str ;
-		sqls.add(sql1);
+		//String sql1 = "update mdchange set statues = 0 where id in " +str ;
+		// sqls.add(sql1);
 		sqls.add(sql);
 		DBUtill.sava(sqls);  
 		BranchTypeChange.getinstance().init();
@@ -181,11 +207,11 @@ public class ChangeManager {
 		List<Change> list = new ArrayList<Change>();
 
 		Connection conn = DB.getConn();
-		String sql = "select * from mdchange ";
+		String sql = "select * from mdchange "; 
 		Statement stmt = DB.getStatement(conn);
-		ResultSet rs = DB.getResultSet(stmt, sql); 
+		ResultSet rs = DB.getResultSet(stmt, sql);  
 		try { // cname,uname,phone,locate
-			while (rs.next()) {
+			while (rs.next()) { 
 				Change g = new Change();
 				g.setBechange(rs.getString("bechange"));
 				g.setChange(rs.getString("changes"));

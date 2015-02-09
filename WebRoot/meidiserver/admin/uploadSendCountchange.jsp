@@ -8,7 +8,7 @@
 	    
 	List<String> orderNames = UploadManager.getUnTotalUploadOrdersNames();
 	Map<String,String> map = BranchTypeChange.getinstance().getMap();
-	
+	//System.out.println(StringUtill.GetJson(map)); 
 	Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
 	String message = ""; 
 	UploadTotalGroup upt = UploadTotalGroupManager.getUploadTotalGroup();
@@ -174,7 +174,7 @@ if(total){ %>
 			<td align="center">
 			请选择需要打印的信息
 			</td>
-		</tr> 
+		</tr>  
  
 		<tr class="bsc">
 		<td align="center" id="salecategorynamecd">
@@ -298,13 +298,13 @@ if(total){ %>
 	<tr class="asc"  onclick="updateClass(this)"> 
 					<td align="center"><%=i+1 %></td>
 					<td align="center"><%=sain.getShop() %></td>
-					<% if(null==map.get(StringUtill.getStringreal(sain.getShop()))){
+					<% if(null==map.get(sain.getShop())){
 						%>
-						<td align="center"><%=sain.getShop()%></td>
-					  <% 
+						<td align="center"  bgcolor="red"><%=sain.getShop()%></td>
+					  <%  
 					}else {
-						%> 
-						<td align="center" bgcolor="red"><%=map.get(StringUtill.getStringreal(sain.getShop())) %></td>
+						%>  
+						<td align="center"><%=map.get(sain.getShop()) %></td>
 					<%
 					}%>
 					
@@ -312,13 +312,13 @@ if(total){ %>
 					<td align="center"><%=tpe %></td> 
 					<td align="center"><%=realtype %></td> 
 					
-					<% if(null==map.get(StringUtill.getStringreal(realtype))){
+					<% if(null==map.get(realtype)){
 						%>
-						<td align="center"><%=realtype%></td>
+						<td align="center" bgcolor="red"><%=realtype%></td>
 					  <% 
-					}else {
+					}else { 
 						%> 
-						<td align="center" bgcolor="red"><%=map.get(StringUtill.getStringreal(realtype)) %></td>
+						<td align="center" ><%=map.get(realtype) %></td>
 					<%
 					}%>    
 					<td align="center"><%=DoubleUtill.getdoubleTwo(prince)  %></td>
@@ -437,11 +437,11 @@ if(total){ %>
 					<td align="center" class="noprinln2"><%=up.getBranchname() %></td>
 					<% if(null==map.get(up.getBranchname())){
 						%>
-						<td align="center" class="noprinln11"><%=up.getBranchname()%></td>
+						<td align="center" bgcolor="red" class="noprinln11"><%=up.getBranchname()%></td>
 					  <% 
 					}else {
 						%> 
-						<td align="center" class="noprinln11"  bgcolor="red"><%=map.get(up.getBranchname()) %></td>
+						<td align="center" class="noprinln11"  ><%=map.get(up.getBranchname()) %></td>
 					<%
 					}%>
 					
@@ -449,11 +449,11 @@ if(total){ %>
 					<td align="center" class="noprinln4"><%=up.getType()%></td>
 					<% if(null==map.get(up.getType())){
 						%>
-						<td align="center" class="noprinln10"><%=up.getType()%></td>
+						<td align="center" bgcolor="red" class="noprinln10"><%=up.getType()%></td>
 					  <% 
 					}else {
 						%> 
-						<td align="center" bgcolor="red" class="noprinln10"><%=map.get(up.getType()) %></td>
+						<td align="center"  class="noprinln10"><%=map.get(up.getType()) %></td>
 					<%
 					}%>    
 					<td align="center" class="noprinln5"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td>
@@ -718,7 +718,7 @@ if(total){ %>
 					<td align="center" class="noprinln8"></td>
 					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(AllTatalbreakcount) %></td> 
 	    </tr>
-</table>
+</table> 
 <%} %>
 
 

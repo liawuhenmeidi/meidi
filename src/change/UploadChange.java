@@ -4,7 +4,7 @@ public class UploadChange {
      private  int id ;
      private String filename;
      private String name ;
-     private int statues;   // 0 表示上传需转化   1 表示转化结果
+     private int statues;   // 0 表示上传的是门店     1 表示型号 
 
 	public int getId() { 
 		return id;

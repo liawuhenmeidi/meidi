@@ -79,15 +79,16 @@ function winconfirm(){
     
  <div >
  <form action="" id="post">
-
-<table  cellspacing="1"   id="table" width=80% style="height:450px">
+ 
+<div style="height:450px"> 
+<table  cellspacing="1"   id="table" width=80% >
 		<tr class="asc">    
 			<td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>
-			<td style="width:20;" align="center" >编号</td>
-			<td style="width:20;" align="center">转换结果</td>
-			<td  style="width:80;" align="center"  >待转化</td>
+			<td  align="center" >编号</td>
+			<td  align="center">转换结果</td>
+			<td   align="center"  >待转化</td>
 		</tr> 
-		<%
+		<% 
 			Set<Map.Entry<String, List<Change>>> setmap = map.entrySet();
 			
 			Iterator<Map.Entry<String, List<Change>>> itmap = setmap.iterator();
@@ -104,7 +105,7 @@ function winconfirm(){
 						rowspan = "rowspan="+(list.size()) ;
 						%>
 					   <tr class="asc">   
-			              <td align="center" width=""><input type="checkbox" value="<%=list.get(i).getId() %>" name="ids" id="check_box" /></td>
+			              <td align="center" ><input type="checkbox" value="<%=list.get(i).getId() %>" name="ids" id="check_box" /></td>
 			              <td align="center"  ><%=count %></td>  
 			              <td align="center"  <%=rowspan %>><%=name %></td>  
 				          <td align="center" ><%=list.get(i).getBechange() %></td>
@@ -115,7 +116,7 @@ function winconfirm(){
 						rowspan = "";
 					%>	
 					 <tr class="asc">  
-					     <td align="center" width=""><input type="checkbox" value="<%=list.get(i).getId() %>"  name="ids"  id="check_box" /></td>
+					     <td align="center" ><input type="checkbox" value="<%=list.get(i).getId() %>"  name="ids"  id="check_box" /></td>
 					     <td align="center"  ><%=count %></td> 
 			   
 				          <td align="center" ><%=list.get(i).getBechange()%></td>
@@ -125,7 +126,7 @@ function winconfirm(){
 				}else {
 					%>
 					<tr class="asc"> 
-					   <td align="center" width=""><input type="checkbox" value="<%=list.get(i).getId() %>" name="ids" id="check_box" /></td>
+					   <td align="center"><input type="checkbox" value="<%=list.get(i).getId() %>" name="ids" id="check_box" /></td>
 					<td align="center"  ><%=count%></td> 
 			      
 			       <td align="center"  <%=rowspan %>><%=name %></td>   
@@ -146,6 +147,7 @@ function winconfirm(){
 		
 		
 </table> 
+</div>
  </form>
 </div>
 

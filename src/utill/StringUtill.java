@@ -102,21 +102,19 @@ public class StringUtill {
      
     // 获取字母不包含数字 
     public static  String getNumbers(String content) {  
-        Pattern pattern = Pattern.compile("\\d+");  
-        Matcher matcher = pattern.matcher(content);  
-        while (matcher.find()) {  
-            return matcher.group(0);  
-        }  
-        return "";  
+    	String regEx="[^0-9]";   
+    	Pattern p = Pattern.compile(regEx);   
+    	Matcher m = p.matcher(content);   
+        return  m.replaceAll("").trim();   
     }  
     
     
-    public static String getStringreal(String str){
+    /*public static String getStringreal(String str){
    	    str = str.replace("(", "").replace(")", "").replace("（","").replace("）", "").replaceAll("\\s*", "");
    	 
 		return str;  
 		  
-   } 
+   } */
     
     
     public static String UUID(int num){

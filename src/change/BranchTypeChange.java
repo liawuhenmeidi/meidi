@@ -3,18 +3,14 @@ package change;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
+ 
 public class BranchTypeChange {
 	private static BranchTypeChange instance;
     public  String name ; 
-    private  Map<String,String> map = null;
+    private  Map<String,String> map = null; 
     private  Map<Integer,Change> mapO = null;
-    public  Map<String,List<String>> maplist = new HashMap<String,List<String>>();
-    
-    
-   
-
-	
+    public  Map<String,Set<String>> maplist = new HashMap<String,Set<String>>();
        
     public Map<Integer, Change> getMapO() {
 		return mapO;
@@ -49,12 +45,12 @@ public class BranchTypeChange {
 		return map;
 	}
 	
-	public Map<String, List<String>> getMaplist() {
+	public Map<String, Set<String>> getMaplist() {
 		
 		return maplist;
 	}
-	public void setMaplist(Map<String, List<String>> maplist) {
-		this.maplist = maplist;
+	public void setMaplist(Map<String, Set<String>> maplist) {
+		this.maplist = maplist;  
 	}
      
 	public void init(){  

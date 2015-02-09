@@ -6,14 +6,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import change.BranchTypeChange;
+import change.UploadChangeAll;
 
 import utill.StringUtill;
 
@@ -412,12 +415,12 @@ public class XLSReader {
 			return UploadOrders; 
 		}
 		
-		public BranchTypeChange readchangeXML(String path,String fileName){
-			BranchTypeChange b = new BranchTypeChange(); 
-			Map<String, List<String>> map = b.getMaplist();
+		public UploadChangeAll readchangeXML(String path,String fileName){
+			UploadChangeAll all = new UploadChangeAll(); 
+			//Map<String, Set<String>> map = b.getMaplist();
 			if(fileName == null || path == null){
-				return null; 
-			}
+				return null;  
+			} 
 			
 			String filepath = path.replace("\\", "/");
 			//List<String> list =   new ArrayList<String>();
@@ -436,70 +439,58 @@ public class XLSReader {
 			try{ 
 				name = sheet0.getCell(1,0).getContents().trim();
 				if(UploadManager.isUploaderFileNameExist(name)){
-					b.setName("文件名称重复!请修改名称");
-					return b;
-				}else {
-					b.setName(name);
+					all.setFilename("文件名称重复!请修改名称");
+					return all;
+				}else {  
+					all.setFilename(name);
 				} 
+				 
+				if(sheet0.getColumns() >2){
+					all.setFilename("您上传的文件格式有问题");
+					return all;
+				} 
+				
 			}catch(Exception e){
 				e.printStackTrace();
-				b.setName("文件名有问题，请检查");
-				return b;
-			} 
+				all.setFilename("文件名有问题，请检查");
+				return all;
+			}  
 			
-			logger.info(sheet0.getRows());
-			logger.info(sheet0.getColumns()); 
+			
+			logger.info(sheet0.getRows()); 
+			//logger.info(sheet0.getColumns()); 
 			for(int i = 2 ; i < sheet0.getRows(); i ++){
-				
+				 
 				try{
-					/*if(sheet0.getCell(SHOP_POS,i).getContents().trim().equals("")){
-						continue;
-					}*/
-					//boolean flag = true ;
+					
 					int j = 0 ;  
-					String first = null;
 					 
-					while(j < sheet0.getColumns()){ 
+					while(j < 2){ 
 						String str = sheet0.getCell(j,i).getContents().trim();
-						//logger.info(str); 
 						if(StringUtill.isNull(str) ){
 							j++; 
 							continue;
 						}else { 
 							if(j == 0){
-								first = str ;
-								List<String> list = map.get(first);
-								if(null == list){
-									list = new ArrayList<String>();
-									map.put(first, list);
-								}  
+								all.getBranch().add(str);
 							}else { 
-								List<String> list = map.get(first);
-								if(null == list){ 
-									list = new ArrayList<String>();
-									map.put(first, list);
-								}  
-								str = StringUtill.getStringreal(str);
-								if(!list.contains(str)){
-									list.add(str);
-								}
-							}  
-							
+								all.getTypes().add(str); 
+							}   
 						}
 						j++;
 					}
 					 
 				}catch(Exception e){
 					e.printStackTrace();
+					 
+					all.setFilename("第"+ (i+1) + "行附近有问题，请检查");
 					
-					b.setName("第"+ (i+1) + "行附近有问题，请检查");
-					
-					return b;
+					return all;
 				}
 			}
 	        wb.close();
 			
-			return b;
+			return all;
 		}
 		
 }

@@ -3,17 +3,18 @@
 <%
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
-	
-	
+	TokenGen.getInstance().saveToken(request);
+	String token = (String)session.getAttribute("token"); 
+	  
 	String fileName = request.getParameter("fileName");
 	String confirm = request.getParameter("confirm");
-	String filePath = ExcelUpload.getChangeFilePath(); 
+	String filePath = ExcelUpload.getChangeFilePath();  
 	//UploadOrderManager uom = new UploadOrderManager();
     
 	boolean showContent =false;
-	 
+	   
 	boolean confirmResult = false;  
-	BranchTypeChange b = null ;
+	UploadChangeAll b = null ; 
 	if(confirm != null && confirm != ""){
 		if(confirm.equals("confirm")){ 
 			confirmResult = UploadManager.savechangeFileToDB(filePath,fileName);
@@ -38,9 +39,9 @@
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 <style media=print type="text/css">   
 .noprint{visibility:hidden}   
-</style>
+</style> 
 </head>
- 
+   
 <body style="scoll:no">
  
 <!--   头部开始   --> 
@@ -48,12 +49,14 @@
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 var flag = true ; 
-function submit(){
-	 if(flag){
+function submited(){ 
+	 if(flag){  
 		    $('#commitbutton').val('正在提交');
-			$('#baseform').submit();
+		    $('#commitbutton').css("display","none"); 
+		    $('#commitbutton').attr("disable","disable");
+			$('#baseform').submit(); 
 			$('#submitswitcher').val('confirmed');
-	 }else {
+	 }else {  
 		 return ;
 	 }
 }
@@ -62,9 +65,9 @@ function submit(){
 <%
 	if(fileName != null && fileName != "" && !fileName.equals("")){	
 		String temp = "";
-		if(null != b.getName()){
+		if(null != b.getFilename()){
 			temp = "上传成功";
-		}else{
+		}else{ 
 			temp = "上传失败";
 			showContent =false;
 %>
@@ -84,27 +87,25 @@ function submit(){
   <jsp:param name="dmsn" value="" />
   </jsp:include>
       
-      
-  
-      
 </div >
 
-</div>
-
-<div style=" height:120px;">
+</div>  
+ 
+<div style=" height:20px;">
 </div>
  
 <br/>  
 
 <form id="baseform" method="post" action="">
+<input type="hidden" name="token" value="<%=token%>"/> 
 <table width="100%" align="center" border=0>
        <tr style="height:30px" align="center">
        <td width="100%" align="center">
        <input type="hidden" name="fileName" value="<%=fileName %>"/>
 		<input type="hidden" name="confirm" value="confirm" id="submitswitcher"/>
-		<h3><%=b.getName() %></h3>
-		<%if(showContent){ %>
-		<input type="button" id="commitbutton" value="提交" onmousedown="submit()"></input>
+		<h3><%=b.getFilename() %></h3>
+		<%if(showContent){ %> 
+		<input type="button" id="commitbutton" value="提交" onclick="submited()"></input>
 		<%} %>
 		</td>
 		</tr> 
@@ -112,93 +113,62 @@ function submit(){
    <tr>
    <td align="center" width="100%">
     <div style="overflow-y:auto; width:100%;height:450px">
-<table  cellspacing="1" border="2px"  width="80%">
+    <table  cellspacing="1" border="2px"  width="80%">
 		<tr class="bsc" >    
 			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
-			<td style="width:20;" align="center">编号</td>
-			<td style="width:20;" align="center">转换结果</td>
-			<td  style="width:80;" align="center"  >待转化</td>
+			<td style="width:20;" align="center">门店</td>
+			<td  style="width:80;" align="center"  >型号化</td>
 		</tr> 
-		<%  
-		List<String> lists = new ArrayList<String>();
-		List<String> listnew = new ArrayList<String>();
-		
-		if(showContent){
-			Map<String, List<String>> map = b.getMaplist();
-			Set<Map.Entry<String, List<String>>> setmap = map.entrySet();
-			
-			Iterator<Map.Entry<String, List<String>>> itmap = setmap.iterator();
-			int count = 0 ;
-			while(itmap.hasNext()){
-				Map.Entry<String, List<String>> mape = itmap.next();
-				String name = mape.getKey();
-				List<String> list = mape.getValue();
-				count++;
-				%> 
-			<tr class="bsc" >   
-			<!--  <td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>  -->
-			<td align="center"  ><%=count %></td>
-			<td align="center"  ><%=name %></td>
-			<td align="center"   >   
-			<table width="100%" id="table">
-			
-			<% for(int i=0;i<list.size();i++){
-				String str = list.get(i);
-				
-	            if(!lists.contains(str)){
-	            	lists.add(str);
-	            }else {
-	            	listnew.add(str);
-	            }
-				%>  
-				<tr class="asc" id="<%=str.hashCode()%>"  >  
-				<td align="center"><%=str %></td>
-				</tr>
-				
-				<%
-			} %>
-			
-			</table>
-			</td>
-		
-		</tr> 
-				
-				<%
-			}
-		}
-			%>
+		<tr>
+		  <td valign="top">
+		   <table width="100%">
+		    <%Set<String> set = b.getBranch();
+		    Iterator<String> it =  set.iterator();
+		      while(it.hasNext()){
+		    	  String str = it.next();
+		    	  %>
+		    	  <tr class="bsc">
+		    	  <td align="center">
+		    	   <%=str %>
+		    	  
+		    	  </td>
+		    	  
+		    	  </tr>
+		    	  
+		    	  <%
+		      }
+		    
+		    
+		    %>
+		  </table>
+		  
+		  </td>
+		  <td valign="top">
+		   <table width="100%">
+		    <%Set<String> sett = b.getTypes() ;
+		    Iterator<String> itt =  sett.iterator();
+		      while(itt.hasNext()){ 
+		    	  String str = itt.next();
+		    	  %>
+		    	  <tr class="bsc">
+		    	  <td align="center">
+		    	   <%=str %>
+		    	  
+		    	  </td>
+		    	  
+		    	  </tr>
+		    	  
+		    	  <%
+		      }
+		    %>
+		  </table>
+		  </td>
+		</tr>
 </table> 
 </div>
    </td>
    </tr>
  </table>
- 
- <%
-		
-		if(listnew.size() > 0 ){
-			%>
-	<script type="text/javascript">	
-	$('#commitbutton').attr("onmousedown",""); 
-			<%
-			for(int i=0;i<listnew.size();i++){
-				int str = listnew.get(i).hashCode();
-				
-				%>
- 
-        $("#<%=str%>").css('background-color','red');
-				<%
-				
-			} 
-			%> 
-	alert("您上传的转化规则不符合要求");		
-
-</script>		
-			 
-			
-			<%
-		}
-		%>
-		
  </form>
  
  
