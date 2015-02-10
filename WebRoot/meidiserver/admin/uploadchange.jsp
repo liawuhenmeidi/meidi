@@ -521,15 +521,15 @@ function addleft(num){
     	     <table style="width:100%;height:100%;bgcolor:black" cellspacing="1"    align="center" border=0> 
     	       <tr>
     	          	<td valign="top"> 
-					<table style="width:100%;" cellspacing="1" id="table">
-					    <tr class="asc"> 
-					    <td align="center"> <input type="button" class="mybutton"  value="删除" onclick="deleteleft('0')"></input></td>
-					    <td ><input type="text" value="" placeholder="输入门店" name="addbranch"></input> </td>
-					    <td align="center"><input type="button" class="mybutton"  value="添加" onclick="addleft('0')"></input></td>
+					<table style="width:100%;" cellspacing="1" id="Ntable">
+					    <tr class="asc">  
+					    <td align="center" width="10%"> <input type="button" class="mybutton"  value="删除" onclick="deleteleft('0')"></input></td>
+					    <td colspan=2 align="center" ><input type="text" value="" placeholder="输入门店" name="addbranch"></input> 
+					    <input type="button" class="mybutton"  value="添加" onclick="addleft('0')"></input></td>
 					    </tr>
 						<tr class="asc">
-						    <td></td>
-                            <td align="center">编号</td>
+						    <td  > </td>
+                            <td align="center" width="10%">编号</td>
 							<td align="center">门店</td>
 						</tr>
 						<%  int countb = 0 ;
@@ -552,17 +552,17 @@ function addleft(num){
 					</table>
 			</td>
     	       <td valign="top">
-					<table style="width:100%;" cellspacing="1"  id="table">
+					<table style="width:100%;" cellspacing="1"  id="Ntable">
 					    <tr class="asc"> 
-					    <td align="center"> <input type="button" class="mybutton"  value="删除" onclick="deleteleft('1')"></input></td>
-					    <td ><input type="text" value="" placeholder="输入型号" name="addtype" ></input> </td> 
-					    <td align="center"><input type="button" class="mybutton"  value="添加" onclick="addleft('1')"></input></td>
+					    <td align="center" width="10%"> <input type="button" class="mybutton"  value="删除" onclick="deleteleft('1')"></input></td>
+					    <td colspan=2 align="center" ><input type="text" value="" placeholder="输入型号" name="addtype" ></input> 
+					    <input type="button" class="mybutton"  value="添加" onclick="addleft('1')"></input></td>
 					    </tr>
 					
 					
 						<tr class="asc">
-						   <td></td>
-                            <td align="center">编号</td>
+						   <td width="10%"></td>
+                            <td align="center" width="10%">编号</td>
 							<td align="center">型号</td>
 						</tr>
 						<%   
@@ -620,7 +620,7 @@ function addleft(num){
 			<table width="100%"> 
     	     <tr class="asc"> 
     	     <td valign="top" align="center">
-    	     <table cellspacing="1"  id="table" width="100%">
+    	     <table cellspacing="1"  id="Ntable" width="100%">
 			<%
 			 
 			Iterator<String> itbr = rightb.iterator();
@@ -636,7 +636,7 @@ function addleft(num){
 				}
 				%>
 				<tr class="asc"> 
-				 <td align="center">
+				 <td align="center" width="10%">
 				 <%=countbranch %>
 				 </td>
 				<td align="center">
@@ -655,7 +655,7 @@ function addleft(num){
     	     </table>
     	     </td>
     	     <td valign="top" align="center">
-    	      <table cellspacing="1"  id="table" width="100%">
+    	      <table cellspacing="1"  id="Ntable" width="100%">
     	       <%
     	         Iterator<String> ittr = rightt.iterator();
 				int counttype = 0;
@@ -670,8 +670,8 @@ function addleft(num){
 					}
 					%>
 					
-				<tr class="asc"> 
-				 <td align="center">
+				<tr class="asc" > 
+				 <td align="center" width="10%">
 				 <%=counttype %>
 				 </td> 
 				<td align="center">
@@ -728,8 +728,8 @@ function addleft(num){
     		   %>
     		   <table> 
     		     <tr >
-    		       <td valign="top" align="center">
-    		       <table style="width:100%;" cellspacing="1"  id="table" >
+    		       <td valign="top" align="center" width="30%">
+    		       <table style="width:100%;" cellspacing="1"  id="Ntable" >
     		       <tr class="bsc">
 				           	<td align="center">门店</td>
 				        </tr>
@@ -748,8 +748,8 @@ function addleft(num){
     		       
     		      </table> 
     		      </td>
-    		      <td valign="top" align="center"> 
-                      <table style="width:100%;" cellspacing="1"  id="table" >
+    		      <td valign="top" align="center" width="70%"> 
+                      <table style="width:100%;" cellspacing="1"  id="Ntable" >
 						<tr class="asc">
 							<td align="center" colspan=3>门店转化</td>
 							<td align="center">点击添加</td>
@@ -770,10 +770,10 @@ function addleft(num){
 									}
 						%>
 						<tr class="asc"> 
-							<td><input type="checkbox" id="type<%=str + countbranch%>"
+							<td width="10%"><input type="checkbox" id="type<%=str + countbranch%>"
 								name="type" <%=ischecked%> 
 								onclick="doclick('<%=str + countbranch%>')" /></td>
-								<td><%=countbranch%></td>
+								<td width="10%"><%=countbranch%></td>
 							<td><label id="left<%=str + countbranch%>"><%=bl%></label></td>
 							<td onclick="adddetail('<%=str + countbranch%>','<%=realtype%>')">
 								<label id="right<%=str + countbranch%>"><%=realtype%></label></td>
@@ -795,8 +795,8 @@ function addleft(num){
     		   %>
     		   <table>
     		   <tr> 
-    		   <td valign="top">
-					<table style="width:100%;" cellspacing="1"  id="table">
+    		   <td valign="top" width="30%">
+					<table style="width:100%;" cellspacing="1"  id="Ntable">
 						<tr class="asc">
 							<td align="center">型号</td>
 						</tr>
@@ -815,8 +815,8 @@ function addleft(num){
 
 					</table>
 					</td>
-					<td valign="top" colspan=<%=row%>>
-					<table style="width:100%;" cellspacing="1" id="table">
+					<td valign="top" colspan=<%=row%> width="70%">
+					<table style="width:100%;" cellspacing="1" id="Ntable">
 						<tr class="asc">
 							<td align="center" colspan=3>型号转化</td>
 							<td align="center">点击添加</td>
@@ -839,10 +839,10 @@ function addleft(num){
 									// System.out.println(map);
 						%>
 						<tr class="asc">
-							<td><input type="checkbox" id="type<%=str + counttype%>"
+							<td width="10%"><input type="checkbox" id="type<%=str + counttype%>"
 								name="type" <%=ischecked%>
 								onclick="doclick('<%=str + counttype%>')" /></td>
-							<td><%=counttype%></td>
+							<td width="10%"><%=counttype%></td>
 							<td><label id="left<%=str + counttype%>"><%=bl%></label></td>
 							<td onclick="adddetail('<%=str + counttype%>','<%=realtype%>')">
 								<label id="right<%=str + counttype%>"><%=realtype%></label></td>

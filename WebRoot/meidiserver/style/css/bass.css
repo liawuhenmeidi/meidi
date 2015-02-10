@@ -107,6 +107,12 @@ border-right:1px #000 solid;
      table-layout:fixed ;
 } 
 
+#Ntable {  
+     background-color:black;
+     table-layout:fixed ;
+}
+
+
 #table td { 
     width:100px;
     line-height:15px;
