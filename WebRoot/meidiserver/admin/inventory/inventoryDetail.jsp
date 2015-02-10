@@ -138,7 +138,7 @@ function inventory(inventory,type){
 	            	   
 		        		 String strtype = "";
 		        		 int type = in.getOperatortype(); 
-		        		 System.out.println(type);
+		        		 //System.out.println(type);
 		        		 String branch = branchmap.get(in.getBranchid()).getLocateName();
 		        		 if(branchid != "" && branchid != null){
 		        			 papercount =in.getPapercount();
@@ -164,7 +164,7 @@ function inventory(inventory,type){
 		        		 }else if(type == 11){ 
 		        			 strtype =usermap.get(in.getSendUser()).getBranchName()+"派工给"+usermap.get(in.getReceiveuser()).getUsername();
 		        		 }else if(type == 6){   
-		        			 System.out.println(in.getReceiveuser());
+		        			// System.out.println(in.getReceiveuser());
 		        			 strtype = usermap.get(in.getReceiveuser()).getUsername()+"释放给"+usermap.get(in.getSendUser()).getBranchName();
 		        		 }else if(type == 7){     
 		        			 //strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回给"+usermap.get(in.getSendUser()).getBranchName();

@@ -54,9 +54,6 @@ function changeprintln(){
 	 window.print();
 }
 
-function checkedd(){
-	 
-}
 
 function winconfirm(){
 	$("#post").submit();

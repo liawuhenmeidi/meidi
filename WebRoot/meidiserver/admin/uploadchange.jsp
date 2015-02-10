@@ -159,7 +159,6 @@ $(function () {
 });
 
 function trIsChecked(tr){
-
 	var checkbox1 = $(tr).find('input')[0];
 	var checkbox2 = $(tr).find('input')[1];
 	if(checkbox1.checked && checkbox2.checked){
@@ -170,7 +169,7 @@ function trIsChecked(tr){
 }
 
 function scrollToPrev(){
-	
+
 	if($(scrollFrom).index() == 0){
 		//到最后一行了
 		

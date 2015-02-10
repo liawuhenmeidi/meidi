@@ -242,6 +242,7 @@ if(total){ %>
         <td>收/付款账户</td> 
 		 <td > 
 		   <select id="salenum" name="salemun">
+		    <option value=""> </option> 
 		    <option value="101">现金 </option>
 		    <option value="0141">银行存款 </option>
 		    <option value="2131">预收账款 </option> 
@@ -253,8 +254,7 @@ if(total){ %>
 			<td class="center" colspan=2><input type="button" onclick="exports()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="确定" /></td>
 		</tr>
  </table>
-      
- 
+
  </div>
 
 </div>
