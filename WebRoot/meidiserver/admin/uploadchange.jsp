@@ -7,16 +7,20 @@
 <%
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
-	List<String> ordersalesNames = UploadManager.getUnTotalUploadOrdersNames();
-	//显示内容的开关  
+	long startTime = System.currentTimeMillis();
 	TokenGen.getInstance().saveToken(request);
 	String token = (String)session.getAttribute("token"); 
-	  
-	boolean showContent = false;  
-	long startTime = System.currentTimeMillis();
+	
 	String method = request.getParameter("method");
-	UploadChangeAll left = new UploadChangeAll();
-	List<UploadOrder> right = new ArrayList<UploadOrder>(); 
+	boolean showleft = false; 
+	boolean showright = false; 
+	boolean showContent = false;    
+	List<String> ordersalesNames = UploadManager.getUnTotalUploadOrdersNames();
+	//显示内容的开关  
+	
+	UploadChangeAll left = null;
+	List<UploadOrder> right = null; 
+	 
 	List<UploadChange> uploadOrders = UploadChangeManager.getUnCheckedUploadOrders();
 	List<String>  orderNames= UploadChangeManager.getAllUploadOrderNames(uploadOrders);
 	String selectOrderName1 = "";
@@ -29,12 +33,15 @@
     int row =   2 ;  
     Set<String> ri = new HashSet<String>(); 
     String source = "{}";
+    
+    System.out.println(method);
 	if("commited".equals(method)){   
 		//接受两边的id    
 		selectOrderName1 = request.getParameter("uploadorder1");
 		selectOrderName2 = request.getParameter("uploadorder2");
+		showContent = true;  
 		if(StringUtill.isNull(selectOrderName2) || StringUtill.isNull(selectOrderName1)){
-	return ; 
+	         return ; 
 		} 
 		statues = request.getParameter("statues");
 		//接受选定的对比参数    
@@ -42,9 +49,9 @@
 		UploadChangeAll leftnew = UploadChangeManager.getUnCheckedString(selectOrderName1);
  
 		if(Integer.valueOf(statues) == 0){
-	source = StringUtill.GetJson(leftnew.getBranch());
+	             source = StringUtill.GetJson(leftnew.getBranch());
 		}else if(Integer.valueOf(statues) == 1){
-	source = StringUtill.GetJson(leftnew.getTypes());
+	             source = StringUtill.GetJson(leftnew.getTypes());
 		} 
 		//System.out.println("source"+source); 
 	    right = UploadManager.getTotalUploadOrders(selectOrderName2,-1+"",BasicUtill.send); 
@@ -56,25 +63,42 @@
 		//System.out.println(StringUtill.GetJson(mapchange)); 
 		change = StringUtill.GetJson(mapchange);  
 		map.putAll(mapchange);  
-		showContent = true;  
+		
 		//System.out.println(StringUtill.GetJson(mapchange));
-	}else if("search".equals(method)){
+	}else if("RightSerach".equals(method)){
+		showright = true ;
 		selectOrderName2 = request.getParameter("uploadorder2");
 		right = UploadManager.getTotalUploadOrders(selectOrderName2,-1+"",BasicUtill.send);
 		map  = BranchTypeChange.getinstance().getMap();
-		System.out.println(map.size());
+		showContent = true;  
+	}else if("searchleft".equals(method)){
+		showleft = true ;
+		selectOrderName1 = request.getParameter("uploadorder1");
+		if(StringUtill.isNull(selectOrderName1)){
+	         return ; 
+		}  
+		left = UploadChangeManager.getUnCheckedUploadOrders(selectOrderName1);
 	}else if("confirm".equals(method)) {
 		String datechange = request.getParameter("datechange");
-		ChangeManager.save(datechange);     
+		ChangeManager.save(datechange);      
+	}else if("delleft".equals(method)){ 
+		String[] datechange = request.getParameterValues("leftbranch");
+		UploadChangeManager.delete(datechange); 
+	}else if("delright".equals(method)){ 
+		String[] datechange = request.getParameterValues("lefttype");
+		UploadChangeManager.delete(datechange);  
+	}else if("addleft".equals(method)){ 
+		String branch = request.getParameter("addbranch");
+		selectOrderName1 = request.getParameter("uploadorder1");
+		UploadChangeManager.save(branch, selectOrderName1, 0);
 		 
-	} 
+	}else if("addright".equals(method)){ 
+		String branch = request.getParameter("addtype");
+		selectOrderName1 = request.getParameter("uploadorder1");
+		UploadChangeManager.save(branch, selectOrderName1, 1);
+	}  
 	
 	System.out.println("自动对比页面取数据时间(毫秒) = " + (System.currentTimeMillis() - startTime));
-	
-    
-	 
-		//计算本轮的计算的个数
- 
 	int inter = 1;
 	//System.out.println("自动对比页面总执行时间(毫秒) = " + (System.currentTimeMillis() - startTime));
 
@@ -292,12 +316,25 @@ function commited(statues){
 	$("#method").val("commited");
 	$("#statues").val(statues);  
 	$("#baseform").submit();  
-	
-}
+	 
+} 
 
-function search(){ 
-	$(".mybutton").attr("disabled","disabled"); 
-	$("#method").val("search"); 
+function search(num){ 
+	
+	if(0 == num){
+		var s1 = $("#uploadorder1").val();
+		if(s1 == ""|| s1 == null){
+			return ;
+		}
+		$("#method").val("searchleft"); 
+	}else if( 1== num){
+		var s2 = $("#uploadorder2").val();
+		if(s2 == "" || s2 == null){
+			return ;
+		}
+		$("#method").val("RightSerach"); 
+	}
+	$(".mybutton").attr("disabled","disabled");
 	$("#baseform").submit();
 	
 }
@@ -349,7 +386,33 @@ function saveAddPOD(){
 	}else { 
 		alert("您添加的数据有问题");
 	}
+}
+
+function deleteleft(num){
 	
+	var a = confirm("确定要删除吗?");
+	if (a != "0"){    
+		$(".mybutton").attr("disabled","disabled");
+		if( 0 == num){
+			$("#method").val("delleft");  
+		}else if(1 == num){
+			$("#method").val("delright");  
+		}
+		
+		$("#baseform").submit(); 
+} 
+}
+
+
+function addleft(num){
+	$(".mybutton").attr("disabled","disabled");
+	if( 0 == num){
+		$("#method").val("addleft");  
+	}else if(1 == num){
+		$("#method").val("addright");  
+	}
+	
+	$("#baseform").submit(); 
 }
 
 </script>
@@ -363,50 +426,52 @@ function saveAddPOD(){
 
 	<form name="baseform" id="baseform" method="post"
 		action="uploadchange.jsp">
-		<input type="hidden" name="method" id="method" value="" /> <input
+		   <input type="hidden" name="method" id="method" value="" /> <input
 			type="hidden" name="statues" id="statues" value="" /> <input
 			type="hidden" name="datechange" id="datechange" value="" /> <input
 			type="hidden" name="token" value="<%=token%>" />
 
 		<table width="100%" >
-			<tr>
-				<td  align="left">去除汉字对比 <input type="radio"
+			<tr >
+				<td  align="center">去除汉字对比 <input type="radio"
 					name="ridiocheck" id="cn" value="cn" checked="checked"></input>
 					
 				 </td>
-				<td>
+				<td align="center">
 					去除汉字英文字符对比 <input type="radio" name="ridiocheck" id="en" value="en"></input>
 				</td>
-					<td>
+					<td align="center">
 					 模糊对比 <input
 					type="radio" name="ridiocheck" id="all" value="all"></input>
 				</td>
 				<td>
-				
+				 
 				</td>
 				<td>
 				</td>
 			</tr>
 		</table>
 
-
-		<table style="width:100%;height:100%;" cellspacing="1"   id="table" align="center"
-			border=0>
+       <br/>
+       
+		<table style="width:100%;height:60%;" cellspacing="1"   id="table" align="center" border=0> 
 			<tr class="asc">
-				<td align="center" colspan=2>&nbsp;&nbsp;&nbsp;&nbsp;
-					<h3>上传单据</h3> <select name="uploadorder1" id="uploadorder1"
-					onchange="$('#submitbutton').attr('disabled','disabled');">
+				<td align="center" colspan=2>
+				<input type="button" id="searchleft" name="searchleft" class="mybutton" value="查看"
+					onclick="search(0)" />
+					<h3>上传单据</h3>
+					 <select name="uploadorder1" id="uploadorder1"  onchange="$('#submitbutton').attr('disabled','disabled');">
 						<%
 							for (int i = 0; i < orderNames.size(); i++) {
 						%>
-						<option value="<%=orderNames.get(i)%>"
-							<%if (orderNames.get(i).equals(selectOrderName1)) {%>
-							selected="selected" <%}%>><%=orderNames.get(i)%></option>
+						  <option value="<%=orderNames.get(i)%>"
+						     	<%if (orderNames.get(i).equals(selectOrderName1)) {%>
+							     selected="selected" <%}%>><%=orderNames.get(i)%></option>
 						<%
 							}
 						%>
-				</select> &nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td align="center"><label id="leftcount"></label></td>
+				</select> &nbsp;&nbsp;&nbsp;&nbsp;
+			</td>
 				<td align="center">
 					<table>
 						<tr>
@@ -425,10 +490,8 @@ function saveAddPOD(){
 							<td align="center">
 								<%
 									if (showContent) {
-								%> <!--  
-			<input type="button" value="导出" class="mybutton" onclick="$('#baseform').attr('action','../MatchOrderExport');$('#baseform').submit()"/>
-			<br/>  
-			--> <input type="button" id="submitbutton" class="mybutton"
+								%> 
+			<input type="button" id="submitbutton" class="mybutton"
 								value="提交" onclick="confirmed()" /> <%
  	}
  %>
@@ -436,66 +499,85 @@ function saveAddPOD(){
 						</tr>
 
 					</table></td>
-				<td align="center">
-
-					<button type="button" id="scrollNext">下一个</button>
-					<br />
-					<button  type="button" id="scrollPrev">上一个</button></td>
-				<td align="center" colspan=2><input type="button"
-					id="searchbutton" name="searchbutton" class="mybutton" value="查看"
-					onclick="search()" /> &nbsp;&nbsp;&nbsp;&nbsp;
-					<h3>销售数据</h3> <select name="uploadorder2" id="uploadorder2"
-					onchange="$('#submitbutton').attr('disabled','disabled');">
-						<%
+				<td align="center" colspan=2><input type="button"  id="searchright" name="searchright" class="mybutton" value="查看"  onclick="search(1)" /> 
+					<h3>销售数据</h3> 
+					 <select name="uploadorder2" id="uploadorder2"  onchange="$('#submitbutton').attr('disabled','disabled');">
+						<%  
 							for (int i = 0; i < ordersalesNames.size(); i++) {
-						%>
+						%> 
 						<option value="<%=ordersalesNames.get(i)%>"
 							<%if (ordersalesNames.get(i).equals(selectOrderName2)) {%>
 							selected="selected" <%}%>><%=ordersalesNames.get(i)%></option>
-						<%
+						<% 
 							}
 						%>
-				</select> &nbsp;&nbsp;&nbsp;&nbsp;</td>
+				  </select>
+				</td>
 			</tr>
- 
-               </table>
-               
-                
-          <table style="width:100%;height:100%;bgcolor:black" cellspacing="1"    align="center" border=0>
-			  <tr class="asc"> 
-				<td valign="top"> 
+     </table>
+      
+      
+      <% if(showleft) {
+    	   %>
+    	     <table style="width:100%;height:100%;bgcolor:black" cellspacing="1"    align="center" border=0> 
+    	       <tr>
+    	          	<td valign="top"> 
 					<table style="width:100%;" cellspacing="1" id="table">
+					    <tr class="asc"> 
+					    <td align="center"> <input type="button" class="mybutton"  value="删除" onclick="deleteleft('0')"></input></td>
+					    <td ><input type="text" value="" placeholder="输入门店" name="addbranch"></input> </td>
+					    <td align="center"><input type="button" class="mybutton"  value="添加" onclick="addleft('0')"></input></td>
+					    </tr>
 						<tr class="asc">
-
+						    <td></td>
+                            <td align="center">编号</td>
 							<td align="center">门店</td>
 						</tr>
-						<%
+						<%  int countb = 0 ;
 							Iterator<UploadChange> itb = left.getBranchO().iterator();
 							while (itb.hasNext()) {
-								String bl = itb.next().getName();
-						%>
+								countb ++;
+								UploadChange up = itb.next();
+								String bl = up.getName();
+						%> 
 						<tr class="asc">
-							<td><%=bl%></td>
+						    <td><input type="checkbox"  name="leftbranch" value="<%=bl %>" /> </td>
+						    <td align="center"><%=countb %></td> 
+							<td align="center"><%=bl%></td>
 						</tr>
-
+ 
 						<%
 							}
 						%>
 
 					</table>
 			</td>
-				<td valign="top">
+    	       <td valign="top">
 					<table style="width:100%;" cellspacing="1"  id="table">
+					    <tr class="asc"> 
+					    <td align="center"> <input type="button" class="mybutton"  value="删除" onclick="deleteleft('1')"></input></td>
+					    <td ><input type="text" value="" placeholder="输入型号" name="addtype" ></input> </td> 
+					    <td align="center"><input type="button" class="mybutton"  value="添加" onclick="addleft('1')"></input></td>
+					    </tr>
+					
+					
 						<tr class="asc">
+						   <td></td>
+                            <td align="center">编号</td>
 							<td align="center">型号</td>
 						</tr>
-						<%
+						<%   
+						   int countt = 0;
 							Iterator<UploadChange> itt = left.getTypesO().iterator();
 							while (itt.hasNext()) {
+								countt++;
 								String bl = itt.next().getName();
+								
 						%>
 						<tr class="asc">
-							<td><%=bl%></td>
+						<td><input type="checkbox"  name="lefttype" value="<%=bl %>" /> </td>
+						    <td align="center"><%=countt %></td> 
+							<td align="center"><%=bl%></td>
 						</tr>
 
 						<%
@@ -504,49 +586,176 @@ function saveAddPOD(){
 
 					</table>
 					</td>
+    	       </tr>
+    	   
+    	   </table>
+    	   
+    	   <%
+      }
+      
+      
+      if(showright){ 
+    	    Set<String> rightb = new HashSet<String>();
+			Set<String> rightt = new HashSet<String>();
+			
+			Map<String, String> mapnew = BranchTypeChange.getinstance()
+					.getMap();
+			Iterator<UploadOrder> it = right.iterator();
+			while (it.hasNext()) {
+				UploadOrder up = it.next();
+				rightb.add(up.getShop());
 
+				String sendtypestr = up.getSendType();
+				String[] sendtypestrs = sendtypestr.split(",");
+				for (int j = 0; j < sendtypestrs.length; j++) {
+					String sendtype = sendtypestrs[j];
+					// System.out.println(sendtypestrs[j]);
+					String[] sendtypes = sendtype.split(":");
+					String realtype = sendtypes[0];
+					rightt.add(realtype);
+				}
+
+			}
+			
+			%>
+			<table width="100%"> 
+    	     <tr class="asc"> 
+    	     <td valign="top" align="center">
+    	     <table cellspacing="1"  id="table" width="100%">
+			<%
+			 
+			Iterator<String> itbr = rightb.iterator();
+			int countbranch = 0;
+			while (itbr.hasNext()) {
+				String bl = itbr.next();
+				countbranch++;
+				String ischecked = "";
+				String realtype = map.get(bl);
+				if (StringUtill.isNull(realtype)) {
+					realtype = "";
+					ischecked = "bgcolor=\"red\"";
+				}
+				%>
+				<tr class="asc"> 
+				 <td align="center">
+				 <%=countbranch %>
+				 </td>
+				<td align="center">
+				 <%=bl%>
+				 </td>
+				 <td align="center" <%=ischecked %>>
+				 <%=realtype%>
+				 </td>
+				</tr>
+				
+				
 				<%
-					Set<String> rightb = new HashSet<String>();
-					Set<String> rightt = new HashSet<String>();
-					Map<String, String> mapnew = BranchTypeChange.getinstance()
-							.getMap();
-					Set<String> db = mapnew.keySet();
-					Iterator<UploadOrder> it = right.iterator();
-					while (it.hasNext()) {
-						UploadOrder up = it.next();
-
-						if (!db.contains(up.getShop())) {
-							rightb.add(up.getShop());
-						}
-
-						String sendtypestr = up.getSendType();
-						String[] sendtypestrs = sendtypestr.split(",");
-						for (int j = 0; j < sendtypestrs.length; j++) {
-							String sendtype = sendtypestrs[j];
-							// System.out.println(sendtypestrs[j]);
-							String[] sendtypes = sendtype.split(":");
-							String realtype = sendtypes[0];
-							if (!db.contains(realtype)) {
-								rightt.add(realtype);
-							}
-						}
-
+			}
+    	%>
+    	  
+    	     </table>
+    	     </td>
+    	     <td valign="top" align="center">
+    	      <table cellspacing="1"  id="table" width="100%">
+    	       <%
+    	         Iterator<String> ittr = rightt.iterator();
+				int counttype = 0;
+				while (ittr.hasNext()) {
+					counttype++;
+					String bl = ittr.next();
+					String ischecked = "";
+					String realtype = map.get(bl);
+					if (StringUtill.isNull(realtype)) {
+						realtype = "";
+						ischecked = "bgcolor=\"red\"";
 					}
-				%>
+					%>
+					
+				<tr class="asc"> 
+				 <td align="center">
+				 <%=counttype %>
+				 </td> 
+				<td align="center">
+				 <%=bl%>
+				 </td>
+				  <td align="center" <%=ischecked %>>
+				 <%=realtype%>
+				 </td>
+				</tr>
+					<%
+					
+				}
+    	       %>
+    	      </table>
+    	     
+    	     </td>
+    	     </tr>
+    	  </table>
+    	 
+    	 
+    	
+    	  <%
+         }
+      
+       if(showContent){
+    	   Set<String> rightb = new HashSet<String>();
+			Set<String> rightt = new HashSet<String>();
+			Map<String, String> mapnew = BranchTypeChange.getinstance()
+					.getMap();
+			Set<String> db = mapnew.keySet();
+			Iterator<UploadOrder> it = right.iterator();
+			while (it.hasNext()) {
+				UploadOrder up = it.next();
+
+				if (!db.contains(up.getShop())) {
+					rightb.add(up.getShop());
+				}
+
+				String sendtypestr = up.getSendType();
+				String[] sendtypestrs = sendtypestr.split(",");
+				for (int j = 0; j < sendtypestrs.length; j++) {
+					String sendtype = sendtypestrs[j];
+					// System.out.println(sendtypestrs[j]);
+					String[] sendtypes = sendtype.split(":");
+					String realtype = sendtypes[0];
+					if (!db.contains(realtype)) {
+						rightt.add(realtype);
+					}
+				}
+
+			}
+			
+    	   if( 0 == Integer.valueOf(statues)){
+    		   %>
+    		   <table> 
+    		     <tr >
+    		       <td valign="top" align="center">
+    		       <table style="width:100%;" cellspacing="1"  id="table" >
+    		       <tr class="bsc">
+				           	<td align="center">门店</td>
+				        </tr>
+    		      <% 
+    		      Iterator<UploadChange> itb = left.getBranchO().iterator();
+					while (itb.hasNext()) {
+						String bl = itb.next().getName();
+			            	%>
+				        <tr class="asc">
+				           	<td align="center"><%=bl%></td>
+				        </tr>
 
 				<%
-					if (0 == Integer.valueOf(statues) || -1 == Integer.valueOf(statues)) {
-						if (0 == Integer.valueOf(statues)) {
-							row = 4;
-						}
-				%>
-				<td valign="top" colspan=<%=row%>>
-					<table style="width:100%;" cellspacing="1"  id="table" >
+					}
+    		      %>
+    		       
+    		      </table> 
+    		      </td>
+    		      <td valign="top" align="center"> 
+                      <table style="width:100%;" cellspacing="1"  id="table" >
 						<tr class="asc">
 							<td align="center" colspan=3>门店转化</td>
 							<td align="center">点击添加</td>
 						</tr>
-						<%
+						<% 
 							Iterator<String> itbr = rightb.iterator();
 								int countbranch = 0;
 								String str = "branch";
@@ -576,14 +785,38 @@ function saveAddPOD(){
 						%>
 					</table>
 					</td>
-				<%
-					}
-					if (1 == Integer.valueOf(statues) || -1 == Integer.valueOf(statues)) {
-						if (1 == Integer.valueOf(statues)) {
-							row = 4;
-						}
-				%>
-				<td valign="top" colspan=<%=row%>>
+    		     </tr>
+    		   
+    		   </table>
+    		   
+    		   <%
+    		   
+    		   
+    	   }else if(1 == Integer.valueOf(statues)){
+    		   %>
+    		   <table>
+    		   <tr> 
+    		   <td valign="top">
+					<table style="width:100%;" cellspacing="1"  id="table">
+						<tr class="asc">
+							<td align="center">型号</td>
+						</tr>
+						<%
+							Iterator<UploadChange> itt = left.getTypesO().iterator();
+							while (itt.hasNext()) {
+								String bl = itt.next().getName();
+						%>
+						<tr class="asc" >
+							<td align="center"><%=bl%></td>
+						</tr>
+
+						<%
+							}
+						%>
+
+					</table>
+					</td>
+					<td valign="top" colspan=<%=row%>>
 					<table style="width:100%;" cellspacing="1" id="table">
 						<tr class="asc">
 							<td align="center" colspan=3>型号转化</td>
@@ -619,13 +852,15 @@ function saveAddPOD(){
 						<%
 							}
 						%>
-					</table></td>
-			<%
-				}
-			%>
-			</tr>
-		</table>
-
+					</table>
+					</td>
+    		   </tr>
+    		   </table>
+    		   <%
+    	   }
+       }
+      
+      %>         
 	</form> 
 
 	<div id="addpos" style="display:none">
@@ -645,7 +880,7 @@ function saveAddPOD(){
 						style="background-color:#ACD6FF;font-size:25px;width:200px"
 						value="取消" />
 					</td>
-
+ 
 					<td class="center"><input type="button"
 						onclick="saveAddPOD()"
 						style="background-color:#ACD6FF;font-size:25px;width:200px"

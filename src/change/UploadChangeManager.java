@@ -27,7 +27,16 @@ import database.DB;
 public class UploadChangeManager {
 	protected static Log logger = LogFactory.getLog(UploadChangeManager.class);
 	public static int count = 0;
-
+    
+	public static void save(String name ,String filename ,int statues){
+		if(!StringUtill.isNull(name) && !StringUtill.isNull(filename)){
+			String sql = " insert ignore into  mduploadchange (id,filename,name,statues) values (null,'"
+					+ filename + "','" + name + "','"+statues+"');";
+			DBUtill.sava(sql);
+		} 
+		
+		
+	}
 	public static void save(UploadChangeAll bt) {
 		List<String> sqls = new ArrayList<String>();
 		Set<String> branchs = bt.getBranch();
@@ -502,7 +511,24 @@ public class UploadChangeManager {
 		}
 		return result;
 	}
-
+    
+	public static void delete(String[] str){
+		List<String> list = new ArrayList<String>();
+		String sqlstr = "";
+		if(str != null){
+			for(int i =0 ;i<str.length;i++){
+				sqlstr += "'"+str[i]+"',";
+			}
+			sqlstr = "("+sqlstr.substring(0,sqlstr.length()-1)+")";
+		} 
+		
+		String sql = "delete from mduploadchange where name in " +sqlstr;
+		String sql2 = "delete from mdchange where changes in " +sqlstr ;
+		list.add(sql);
+		list.add(sql2);
+		DBUtill.sava(list); 
+	} 
+	
 	private static UploadChange getUploadChangeFromRs(ResultSet rs) {
 		UploadChange g = new UploadChange();
 		try {
