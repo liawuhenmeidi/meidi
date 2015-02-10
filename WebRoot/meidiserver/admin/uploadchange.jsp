@@ -23,8 +23,8 @@
 	 
 	List<UploadChange> uploadOrders = UploadChangeManager.getUnCheckedUploadOrders();
 	List<String>  orderNames= UploadChangeManager.getAllUploadOrderNames(uploadOrders);
-	String selectOrderName1 = "";
-	String selectOrderName2 = ""; 
+	String selectOrderName1 = ""; 
+	String selectOrderName2 = "";  
 	String checkBoxStatus = "";    
 	Map<String,String> map  = new HashMap<String,String>(); 
     String mapstr = StringUtill.GetJson(map);
@@ -33,8 +33,8 @@
     int row =   2 ;  
     Set<String> ri = new HashSet<String>(); 
     String source = "{}";
-    
-    System.out.println(method);
+     
+   // System.out.println(method);
 	if("commited".equals(method)){   
 		//接受两边的id    
 		selectOrderName1 = request.getParameter("uploadorder1");

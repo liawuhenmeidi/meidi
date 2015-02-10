@@ -5,8 +5,10 @@
 <%  
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
-	Map<String,List<Change>> map =  ChangeManager.getmapListC(); 
-	
+	String statues = request.getParameter("statues");
+	 
+	Map<String,List<Change>> map =  ChangeManager.getmapListC(statues); 
+	  
 	String[] ids = request.getParameterValues("ids"); 
 	if(null != ids){
 		ChangeManager.delete(ids);
@@ -59,6 +61,12 @@ function checkedd(){
 function winconfirm(){
 	$("#post").submit();
 }
+ 
+function dosearch(){
+	var statues = $("#typestatues").val();
+	$("#statues").val(statues);
+	$("#post").submit();
+}
 </script>
 </head> 
      
@@ -70,8 +78,23 @@ function winconfirm(){
   </jsp:include>
    
 <div class="btn">
+  <table> 
+   <tr> 
+    <td> <input type="button" class="button" name="dosubmit" value="确认删除" onclick="winconfirm()"></input>   </td>
+   <td> <select id="typestatues"> 
+     <option value="">全部</option>
+     <option value="0" >门店</option>
+     <option value="1">型号</option>
+       </select></td>
+   <td> <input type="button" class="button" name="dosubmit" value="查询" onclick="dosearch()"></input></td>
+   </tr>
+  
+  </table>
 
- <input type="button" class="button" name="dosubmit" value="确认删除" onclick="winconfirm()"></input>  
+ 
+  
+ 
+ 
 </div>
 </div> 
 <div style=" height:120px;">
@@ -79,7 +102,7 @@ function winconfirm(){
     
  <div >
  <form action="" id="post">
- 
+  <input type="hidden" name="statues" id="statues"/>
 <div style="height:450px"> 
 <table  cellspacing="1"   id="table" width=80% >
 		<tr class="asc">    

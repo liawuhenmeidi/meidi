@@ -159,9 +159,9 @@ public class ChangeManager {
 		return map;
 	}
 	
-	public static Map<String, List<Change>> getmapListC() {
+	public static Map<String, List<Change>> getmapListC(String statues) {
 		Map<String, List<Change>> map = new HashMap<String, List<Change>>();
-		List<Change> list = getLocate();
+		List<Change> list = getLocate(statues); 
 		for (int i = 0; i < list.size(); i++) { 
 			Change c = list.get(i);
 			List<Change> lists = map.get(c.getChange());
@@ -227,4 +227,39 @@ public class ChangeManager {
 		}
 		return list;
 	}
+	 
+	public static List<Change> getLocate(String statues) {
+		List<Change> list = new ArrayList<Change>();
+
+		Connection conn = DB.getConn();
+		String sql = "select * from mdchange "; 
+		if(!StringUtill.isNull(statues)){
+			if(0 == Integer.valueOf(statues)){
+				sql = "select * from mdchange where changes in (select name from mduploadchange where statues = 0 )";
+			}else if(1 == Integer.valueOf(statues)){ 
+				sql = "select * from mdchange where changes in (select name from mduploadchange where statues = 1 )";
+			}
+		}
+		
+		
+		Statement stmt = DB.getStatement(conn);
+		ResultSet rs = DB.getResultSet(stmt, sql);  
+		try { // cname,uname,phone,locate
+			while (rs.next()) { 
+				Change g = new Change();
+				g.setBechange(rs.getString("bechange"));
+				g.setChange(rs.getString("changes"));
+				g.setId(rs.getInt("id"));
+				list.add(g);
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return list;
+	}
+	
 }
