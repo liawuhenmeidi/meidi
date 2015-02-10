@@ -11,27 +11,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
 import uploadtotal.UploadTotal;
 
 import utill.DoubleUtill;
 import utill.MathUtill;
-import utill.StringUtill;
 import utill.TimeUtill;
 import wilson.upload.UploadManager;
-import wilson.upload.UploadOrder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle; 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.Region;
-
-import change.BranchTypeChange;
 
 /**
  * 核心请求处理类
@@ -74,18 +68,18 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 		int statues = Integer.valueOf(type);
 		String branch = request.getParameter("branch");
 		String name = request.getParameter("name");
-
+        String salemun = request.getParameter("salemun");
 		Map<String, Map<String, List<UploadTotal>>> mapc = null;
 		if ("totalcategory".equals(method)) {
 			mapc = UploadManager.getTotalOrdersCategoryGroup(id, statues, "");
 		}else if("check".equals(method)){
 			mapc = UploadManager.getUploadOrderCategoryGroup(id, statues, "");
 		}
- //logger.info(mapc);
+ //logger.info(mapc); 
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
-		HSSFSheet sheet = wb.createSheet("单据明细");
+		HSSFSheet sheet = wb.createSheet("单据明细"); 
 		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
 		int count = 0;
 		int y = 0;
@@ -233,7 +227,6 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 		int XS = 0;
 		String XSSC = "XS-SC" + TimeUtill.gettimeString();
  
-
 			if (null != mapc) {
 				Set<Map.Entry<String, Map<String, List<UploadTotal>>>> setmap = mapc
 						.entrySet();
@@ -255,30 +248,36 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 						if (null != listup) {
 							int flag1 = 0;
 							int flag2 = 0;
+							double totalsale = 0 ;
+							double totalsaleT = 0 ;
+							int countL = 0 ;
+							int countLT = 0 ;
+							
 							for (int i = 0; i < listup.size(); i++) {
 								UploadTotal up = listup.get(i);
 								if (!(up.getCount() == 0 && up.getTotalcount() == 0)) {
+									 
 									String typeOrder = "";
 									if (up.getCount() > 0) {
 										typeOrder = "销售单";
 										flag1++;
-
+										totalsale += up.getTotalcount();
 										if (flag1 == 1) {
-											XS++;
+											countL = count ;
+											XS++; 
 											row = sheet.createRow((int) count);
 											count++;
 											y = 0;
+											
 											// 第四步，创建单元格，并设置值
 											row.createCell((short) y++)
 													.setCellValue("L");
 											row.createCell((short) y++)
 													.setCellValue(
-															TimeUtill
-																	.getdateString());
+															TimeUtill.getdateString());
 											row.createCell((short) y++)
 													.setCellValue(
-															XSSC
-																	+ MathUtill
+															XSSC+ MathUtill
 																			.getThree(XS));
 											row.createCell((short) y++)
 													.setCellValue(typeOrder);
@@ -316,9 +315,9 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 											row.createCell((short) y++)
 													.setCellValue("");
 											row.createCell((short) y++)
-													.setCellValue("");
+													.setCellValue(salemun);
 											row.createCell((short) y++)
-													.setCellValue("");
+													.setCellValue(totalsale);
 											row.createCell((short) y++)
 													.setCellValue("");
 										}
@@ -383,25 +382,34 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 										// y++).setCellValue("");
 									}
 								}
+							} 
+                            
+							if(flag1 >0){
+								sheet.getRow(countL).getCell(18).setCellValue(totalsale);
 							}
-
+							
+							
 							for (int i = 0; i < listup.size(); i++) {
 								UploadTotal up = listup.get(i);
 								if (!(up.getCount() == 0 && up.getTotalcount() == 0)) {
 									String typeOrder = "";
+									
 									if (up.getCount() <= 0) {
 										typeOrder = "销售退货单";
 										flag2++;
-
+										
 										int realcount = Math.abs(up.getCount());
 										double realtotal = Math.abs(up
 												.getTotalcount());
 										String price = DoubleUtill
 												.getdoubleTwo(realtotal
 														/ realcount);
+										
+										totalsaleT += realtotal;  
+										
 										if (flag2 == 1) {
 											XS++;
-
+											countLT = count ;
 											row = sheet.createRow((int) count);
 											count++;
 											y = 0;
@@ -422,6 +430,7 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 											row.createCell((short) y++)
 													.setCellValue("");
 
+											
 											row.createCell((short) y++)
 													.setCellValue(branch);
 											row.createCell((short) y++)
@@ -452,13 +461,14 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 													.setCellValue("");
 											row.createCell((short) y++)
 													.setCellValue("");
+											row.createCell((short) y++) 
+													.setCellValue(salemun); 
+											row.createCell((short) y++)
+													.setCellValue(totalsaleT);
 											row.createCell((short) y++)
 													.setCellValue("");
-											row.createCell((short) y++)
-													.setCellValue("");
-											row.createCell((short) y++)
-													.setCellValue("");
-										}
+											
+										} 
 										row = sheet.createRow((int) count);
 										count++;
 										y = 0;
@@ -506,9 +516,14 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 												.setCellValue(up.getPos());
 										// row.createCell((short)
 										// y++).setCellValue("");
-									}
-								}
+									} 
+								} 
+							} 
+							if(flag2>0){ 
+								//logger.info(sheet.getRow(countLT).getCell(18));
+								sheet.getRow(countLT).getCell(18).setCellValue(totalsaleT);
 							}
+							 
 						}
 					}
 				}

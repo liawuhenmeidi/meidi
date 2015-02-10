@@ -5,6 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import branch.BranchManager;
+
 import order.Order;
 import order.OrderManager;
 import product.Product;
@@ -13,6 +18,8 @@ import utill.DoubleUtill;
 import wilson.upload.UploadOrder;
 
 public class OrderProductService {
+	 protected static Log logger = LogFactory.getLog(BranchManager.class);
+	 
 	public static Map<Integer,List<OrderProduct>> OrPMap ;
 	public static boolean flag = false ;
 	 
@@ -98,7 +105,8 @@ public class OrderProductService {
 			if(alwayGetData){
 				String output = "";
 				String type_tmp = o.getSendType(0, "");
-				if(id){
+				if(id){ 
+				    logger.info(type_tmp); 
 					type_tmp = ProductService.gettypemap().get(type_tmp).getId() + "";
 					
 				}

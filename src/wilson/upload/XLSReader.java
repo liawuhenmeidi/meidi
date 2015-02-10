@@ -438,13 +438,13 @@ public class XLSReader {
 			String name = "";
 			try{ 
 				name = sheet0.getCell(1,0).getContents().trim();
-				if(UploadManager.isUploaderFileNameExist(name)){
-					all.setFilename("文件名称重复!请修改名称");
-					return all;
-				}else {  
+				//if(UploadManager.isUploaderFileNameExist(name)){
+					//all.setFilename("文件名称重复!请修改名称");
+					//return all;
+				//}else {      
 					all.setFilename(name);
-				} 
-				 
+				//} 
+				  
 				if(sheet0.getColumns() >2){
 					all.setFilename("您上传的文件格式有问题");
 					return all;

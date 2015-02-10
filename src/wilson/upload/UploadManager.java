@@ -1231,8 +1231,7 @@ logger.info(sql);
 							uptt.setTotalcount(Math.abs(prince)*realcount);
 							uptt.setTatalbreakcount(Math.abs(prince)*realcount*(1-up.getBackPoint()/100));
 							uplist.add(uptt); 
-							
-							
+
 					 }
 			    }
 				

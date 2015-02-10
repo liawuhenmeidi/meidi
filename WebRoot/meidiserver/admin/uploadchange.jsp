@@ -346,8 +346,8 @@ function saveAddPOD(){
     if($.inArray(pos, source) != -1){
     	$("#right"+num).text(pos);  
     	$("#addpos").css("display","none");
-	}else {
-		alert("您添加的型号有问题");
+	}else { 
+		alert("您添加的数据有问题");
 	}
 	
 }
@@ -561,10 +561,11 @@ function saveAddPOD(){
 										ischecked = "checked=checked";
 									}
 						%>
-						<tr class="asc">
+						<tr class="asc"> 
 							<td><input type="checkbox" id="type<%=str + countbranch%>"
-								name="type" <%=ischecked%>
+								name="type" <%=ischecked%> 
 								onclick="doclick('<%=str + countbranch%>')" /></td>
+								<td><%=countbranch%></td>
 							<td><label id="left<%=str + countbranch%>"><%=bl%></label></td>
 							<td onclick="adddetail('<%=str + countbranch%>','<%=realtype%>')">
 								<label id="right<%=str + countbranch%>"><%=realtype%></label></td>

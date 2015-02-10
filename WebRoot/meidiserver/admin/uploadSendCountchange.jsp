@@ -155,7 +155,9 @@ function exports(){
 <% if(check){ %>
  
 <input type="button" class="button" value="设置标准" onclick="amortization('saleCountGroup.jsp')" ></input>
-<input type="submit" value="品类门店合计" onclick="$('#method').val('totalcategory');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
+<input type="button" value="品类门店合计" onclick="$('#method').val('totalcategory');$('#realcheckedStatus').val('<%=checkedStatus%>');$('#post').submit();"/>
+
+
 <!-- <input type="submit" value="门店品类统计" onclick="$('#type').val('total');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
 <input type="submit" value="型号统计" onclick="$('#type').val('typetotal');$('#realcheckedStatus').val('<%=checkedStatus%>')"/>
  --> 
@@ -216,8 +218,8 @@ if(total){ %>
 		    <input type="radio"  name="checkedStatus"  value="1"  />未对比&nbsp;&nbsp;<br/>
 		    <input type="radio"  name="checkedStatus"  value="-1" />全部类&nbsp;&nbsp;<br/>
 		</td>	
-		
 		</tr> 
+		
 		<tr class="bsc">
 			<td class="center" ><input type="button" onclick="changechecked()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="确定" /></td>
 		</tr>
@@ -236,7 +238,16 @@ if(total){ %>
        <td>经手人： </td>
        <td> <input type="text" name="name" id="danweiuname" placeholder="必填"/> </td>
    </tr> 
-   
+   <tr class="bsc"> 
+        <td>收/付款账户</td> 
+		 <td > 
+		   <select id="salenum" name="salemun">
+		    <option value="101">现金 </option>
+		    <option value="0141">银行存款 </option>
+		    <option value="2131">预收账款 </option> 
+		   </select>
+		 </td>
+		</tr>
    
    <tr class="bsc" > 
 			<td class="center" colspan=2><input type="button" onclick="exports()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="确定" /></td>
