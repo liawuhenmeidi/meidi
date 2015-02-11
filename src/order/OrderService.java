@@ -3617,7 +3617,7 @@ public class OrderService {
 				
 				
 				 html.append("<td align=\"center\">"); 
-				   
+				 // 
 				if( o.getOstatues().totalshifang == 2){ 
 					    	  
 					    	    
@@ -3631,7 +3631,7 @@ public class OrderService {
 							}else if(o.getOstatues().totalshifang != -1){
 								html.append(o.getOstatues().orp== null ?"":o.getOstatues().orp.getMessage()); 
 								if(UserManager.checkPermissions(user, Group.dealSend, "w")){
-									 
+								// logger.info(o.getOstatues().totalshifang); 
 									html.append("<input type=\"button\" onclick=\"changes('"+o.getOstatues().orp.getId()+"','"+o.getId()+"','"+OrderPrintln.comited+"','"+o.getDealsendId()+"','','','"+o.getOstatues().totalshifang+"',this)\"  value=\"同意\"/>") ;
 									html.append("<input type=\"button\" onclick=\"changes('"+o.getOstatues().orp.getId()+"','"+o.getId()+"','"+OrderPrintln.uncomited+"','"+o.getDealsendId()+"','','','"+o.getOstatues().totalshifang+"',this)\"  value=\"不同意\"/>");
 								}

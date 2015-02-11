@@ -527,6 +527,9 @@ public class UploadChangeManager {
 		list.add(sql);
 		list.add(sql2);
 		DBUtill.sava(list); 
+		 
+		BranchTypeChange.getinstance().init();
+		
 	} 
 	
 	private static UploadChange getUploadChangeFromRs(ResultSet rs) {

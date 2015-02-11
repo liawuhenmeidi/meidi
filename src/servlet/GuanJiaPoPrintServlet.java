@@ -255,13 +255,13 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 							
 							for (int i = 0; i < listup.size(); i++) {
 								UploadTotal up = listup.get(i);
-								if (!(up.getCount() == 0 && up.getTotalcount() == 0)) {
+								if (!(up.getCount() == 0 && up.getTatalbreakcount() == 0)) {
 									 
 									String typeOrder = "";
 									if (up.getCount() > 0) {
 										typeOrder = "销售单";
 										flag1++;
-										totalsale += up.getTotalcount();
+										totalsale += up.getTatalbreakcount();
 										if (flag1 == 1) {
 											countL = count ;
 											XS++; 
@@ -346,23 +346,20 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 												.setCellValue(up.getCount());
 										row.createCell((short) y++)
 												.setCellValue(
-														DoubleUtill.getdoubleTwo(up
-																.getTotalcount()
+														DoubleUtill.getdoubleTwo(up.getTatalbreakcount()
 																/ up.getCount()));
 
 										row.createCell((short) y++)
 												.setCellValue(
-														up.getTotalcount());
+														up.getTatalbreakcount());
 										row.createCell((short) y++)
 												.setCellValue("");
 										row.createCell((short) y++)
 												.setCellValue(
-														DoubleUtill.getdoubleTwo(up
-																.getTotalcount()
-																/ up.getCount()));
+														DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/ up.getCount()));
 										row.createCell((short) y++)
 												.setCellValue(
-														up.getTotalcount());
+														up.getTatalbreakcount());
 										row.createCell((short) y++)
 												.setCellValue("");
 
@@ -370,19 +367,17 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 												.setCellValue("");
 										row.createCell((short) y++)
 												.setCellValue(
-														DoubleUtill.getdoubleTwo(up
-																.getTotalcount()
-																/ up.getCount()));
+														DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/ up.getCount()));
 										row.createCell((short) y++)
 												.setCellValue(
-														up.getTotalcount());
+														up.getTatalbreakcount());
 										row.createCell((short) y++)
 												.setCellValue(up.getPos());
 										// row.createCell((short)
 										// y++).setCellValue("");
 									}
 								}
-							} 
+							}  
                             
 							if(flag1 >0){
 								sheet.getRow(countL).getCell(18).setCellValue(totalsale);
@@ -391,20 +386,17 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 							
 							for (int i = 0; i < listup.size(); i++) {
 								UploadTotal up = listup.get(i);
-								if (!(up.getCount() == 0 && up.getTotalcount() == 0)) {
-									String typeOrder = "";
-									
+								if (!(up.getCount() == 0 && up.getTatalbreakcount() == 0)) {
+									String typeOrder = ""; 
+									 
 									if (up.getCount() <= 0) {
 										typeOrder = "销售退货单";
 										flag2++;
 										
 										int realcount = Math.abs(up.getCount());
-										double realtotal = Math.abs(up
-												.getTotalcount());
-										String price = DoubleUtill
-												.getdoubleTwo(realtotal
-														/ realcount);
-										
+										double realtotal = Math.abs(up.getTatalbreakcount());
+										String price = DoubleUtill.getdoubleTwo(realtotal/ realcount);
+										 
 										totalsaleT += realtotal;  
 										
 										if (flag2 == 1) {
@@ -414,21 +406,11 @@ public class GuanJiaPoPrintServlet extends HttpServlet {
 											count++;
 											y = 0;
 											// 第四步，创建单元格，并设置值
-											row.createCell((short) y++)
-													.setCellValue("L");
-											row.createCell((short) y++)
-													.setCellValue(
-															TimeUtill
-																	.getdateString());
-											row.createCell((short) y++)
-													.setCellValue(
-															XSSC
-																	+ MathUtill
-																			.getThree(XS));
-											row.createCell((short) y++)
-													.setCellValue(typeOrder);
-											row.createCell((short) y++)
-													.setCellValue("");
+											row.createCell((short) y++).setCellValue("L");
+											row.createCell((short) y++).setCellValue(TimeUtill.getdateString());
+											row.createCell((short) y++).setCellValue(XSSC+ MathUtill.getThree(XS));
+											row.createCell((short) y++).setCellValue(typeOrder);
+											row.createCell((short) y++).setCellValue("");
 
 											
 											row.createCell((short) y++)

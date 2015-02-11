@@ -8,12 +8,12 @@
 	
 	String id = request.getParameter("said");
 	String branch = request.getParameter("branch");
-	String type = request.getParameter("type").trim();
+	String type = StringUtill.getStringNocn(request.getParameter("type")); 
 	String checkedStatus = request.getParameter("checkedStatus");
 	String totaltype =request.getParameter("totaltype"); 
 	//System.out.println(type+"***"+branch+"***"+id+"****"+checkedStatus+"***"+totaltype);
-	Map<String,Map<String,List<UploadTotal>>> mapt =UploadManager.getTotalOrdersGroup(id,Integer.valueOf(totaltype),checkedStatus); 
-	 
+	//Map<String,Map<String,List<UploadTotal>>> mapt =UploadManager.getTotalOrdersGroup(id,Integer.valueOf(totaltype),checkedStatus); 
+	   
 	Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
     //System.out.println(id+"**"+branch+"**"+type);
     List<UploadOrder> list = UploadManager.getTotalUploadOrders(id);
@@ -62,13 +62,13 @@
 		 String[] sendtypestrs = sendtypestr.split(",");
 		 for(int j=0;j<sendtypestrs.length;j++){
 			 String sendtype = sendtypestrs[j];
-			// System.out.println(sendtypestrs[j]);
+			// System.out.println(sendtypestrs[j]); 
 			 String[] sendtypes = sendtype.split(":"); 
-			 String realtype = StringUtill.getStringNocn(sendtypes[0]); 
+			 String realtype = sendtypes[0]; 
 			 Double realcount = Double.valueOf(sendtypes[1]);
 			 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
 			 //System.out.println(sain.getShop()+"****"+realtype); 
-			 if((branch.equals(sain.getShop()) || StringUtill.isNull(branch) ) && type.equals(realtype)){
+			 if((branch.equals(sain.getShop()) || StringUtill.isNull(branch) ) && type.equals(StringUtill.getStringNocn(realtype))){
 					String tpe = ""; 
 					if(null != mapus){ 
 						UploadSalaryModel up = mapus.get(StringUtill.getStringNocn(realtype));

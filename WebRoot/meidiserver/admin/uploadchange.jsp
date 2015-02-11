@@ -423,8 +423,7 @@ function addleft(num){
 
 
 
-	<form name="baseform" id="baseform" method="post"
-		action="uploadchange.jsp">
+	<form name="baseform" id="baseform" method="post"  action="uploadchange.jsp">
 		   <input type="hidden" name="method" id="method" value="" /> <input
 			type="hidden" name="statues" id="statues" value="" /> <input
 			type="hidden" name="datechange" id="datechange" value="" /> <input

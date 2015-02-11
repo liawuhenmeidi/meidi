@@ -274,8 +274,9 @@ public class OrderServlet extends HttpServlet {
 					}
 					if(Integer.valueOf(salestatues) == 0){
 						devedity = 8; 
-						bbflag = false ;
-					}
+						andate = saledate;
+						bbflag = false ; 
+					} 
 					listp.add(o);
 					
 				}

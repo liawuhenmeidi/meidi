@@ -112,14 +112,15 @@ function exports(){
 		alert("往来单位不能为空");
 		return ;
 	}
-	 
+	  
 	if(uname == ""){
 		alert("经手人不能为空");
 		return ;
-	}  
+	}    
 	$('#method').val('<%=type %>');
 	$('#post').attr('action','../GuanJiaPoPrint?type=<%=BasicUtill.send%>'); 
 	$("#post").submit();
+	$('#post').attr('action','');   
 	$("#wrapsearch").css("display","none");
 	$("#wanglaidanwei").css("display","none");
 	
@@ -166,10 +167,10 @@ function exports(){
 if(total){ %>  
 <input type="hidden" name="method" id="method" value=""/> 
 <input type="button" class="noprint"  value="导出" onclick="adddanwei()"/>
-<input type="button" class="noprint"  value="打印" onclick="println()" ></input>
-<%}  
-%> 
 
+<%}   
+%>  
+ 
  <div id="wrapsearch" style="position:fixed;text-align:center; top:50%;background-color:white; left:30%; margin:-20% 0 0 -20%; height:50%; width:50%; z-index:999;display:none"> 
  <div id="tablesearch" style="display:none">
  <table  cellspacing="1" style="margin:auto;background-color:black; width:80%;height:80%;">  
@@ -268,13 +269,13 @@ if(total){ %>
 				<td align="center">销售日期</td>
 				<td align="center">品类</td> 
 				<td align="center">送货型号</td> 
-				<td align="center">转化后型号</td>		   
-				<td align="center">单价</td>
-				<td align="center">送货数量</td> 
-				<td align="center">供价</td>
+				<td align="center">转化后型号</td>	
+				<td align="center">送货数量</td> 	   
+				<td align="center">零售单价</td>
+				<td align="center">金额</td>
 				<td align="center">扣点</td>
 				<td align="center">扣点后单价</td>
-				<td align="center">扣点后价格</td>
+				<td align="center">扣点后金额</td>
 		</tr>
  
  <%
@@ -301,7 +302,7 @@ if(total){ %>
 			// System.out.println(sendtypestrs[j]);
 			 String[] sendtypes = sendtype.split(":");
 			 String realtype = sendtypes[0]; 
-			 Double realcount = Double.valueOf(sendtypes[1]);
+			 int realcount = Integer.valueOf(sendtypes[1]);
 			 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
 			 count += realcount;  
 			 moneycount += prince*realcount;
@@ -334,8 +335,9 @@ if(total){ %>
 						<td align="center" ><%=map.get(realtype) %></td>
 					<%
 					}%>    
-					<td align="center"><%=DoubleUtill.getdoubleTwo(prince)  %></td>
-					<td align="center"><%=realcount %></td>  
+					
+					<td align="center"><%=realcount %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(prince)  %></td>  
 					<td align="center"><%=DoubleUtill.getdoubleTwo(prince*realcount) %></td>  
 					<td align="center"><%=sain.getBackPoint() %></td>  
 					<td align="center"><%=DoubleUtill.getdoubleTwo(prince*(1-sain.getBackPoint()/100)) %></td>
@@ -376,10 +378,11 @@ if(total){ %>
 				<td align="center" class="noprinln11">转化后门店</td>	
 				<td align="center" class="noprinln3">品类</td> 
 				<td align="center" class="noprinln4">型号</td>
-				<td align="center" class="noprinln10">转化后型号</td>		 
-				<td align="center" class="noprinln5">单价</td> 
-				<td align="center" class="noprinln6">数量</td> 
-				<td align="center" class="noprinln7">销售金额</td>
+				<td align="center" class="noprinln10">转化后型号</td>	
+				<td align="center" class="noprinln6">送货数量</td> 	 
+				<td align="center" class="noprinln5">零售单价</td> 
+ 
+				<td align="center" class="noprinln7">金额</td>
 				<td align="center" class="noprinln8">扣点后单价</td>
 				<td align="center" class="noprinln9">扣点后金额</td>
 		</tr>
@@ -455,7 +458,7 @@ if(total){ %>
 					}else {
 						%> 
 						<td align="center" class="noprinln11"  ><%=map.get(up.getBranchname()) %></td>
-					<%
+					<% 
 					}%>
 					
 					<td align="center" class="noprinln3"><%=tpe%></td>
@@ -468,9 +471,10 @@ if(total){ %>
 						%> 
 						<td align="center"  class="noprinln10"><%=map.get(up.getType()) %></td>
 					<%
-					}%>    
+					}%>  
+					<td align="center" class="noprinln6"><%=up.getCount() %></td>  
 					<td align="center" class="noprinln5"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td>
-					<td align="center" class="noprinln6"><%=up.getCount() %></td>
+					
 					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()) %></td>  
 					<td align="center" class="noprinln8"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()) %></td> 
 					<td align="center" class="noprinln9" ><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()) %></td> 
@@ -581,8 +585,9 @@ if(total){ %>
 					<td align="center" class="noprinln3"><%=tpe%></td>
 					<td align="center" class="noprinln4"><%=up.getType()%></td>
 					<td align="center" class="noprinln10"><%=up.getRealtype() %></td>  
-					<td align="center" class="noprinln5"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td>
 					<td align="center" class="noprinln6"><%=up.getCount() %></td>
+					<td align="center" class="noprinln5"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td>
+					
 					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()) %></td>  
 					<td align="center" class="noprinln8"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()) %></td> 
 					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()) %></td> 
@@ -686,8 +691,9 @@ if(total){ %>
 					<td align="center" class="noprinln3"><%=tpe%></td>
 					<td align="center" class="noprinln4"><%=up.getType()%></td>
 					<td align="center" class="noprinln10"><%=map.get(up.getType()) %></td>  
-					<td align="center" class="noprinln5"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td> 
 					<td align="center" class="noprinln6"><%=up.getCount() %></td>
+					<td align="center" class="noprinln5"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTotalcount()/up.getCount()) %></td> 
+					
 					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(up.getTotalcount()) %></td> 
 					<td align="center" class="noprinln8"><%=0==up.getCount()?"":DoubleUtill.getdoubleTwo(up.getTatalbreakcount()/up.getCount()) %></td>
 					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(up.getTatalbreakcount()) %></td> 
@@ -705,8 +711,9 @@ if(total){ %>
 					<td align="center" class="noprinln3"><%=key%></td>
 					<td align="center" class="noprinln4"></td>
 					<td align="center" class="noprinln10"></td>
+						<td align="center" class="noprinln6"><%=initCount %></td>
 					<td align="center" class="noprinln5"></td>
-					<td align="center" class="noprinln6"><%=initCount %></td>
+				
 					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(initTotalcount) %></td> 
 					<td align="center" class="noprinln8"></td>
 					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(initTatalbreakcount) %></td> 
@@ -725,8 +732,9 @@ if(total){ %>
 					<td align="center" class="noprinln3">总计</td>
 					<td align="center" class="noprinln4"></td>
 					<td align="center" class="noprinln10"></td>
-					<td align="center" class="noprinln5"></td>
 					<td align="center" class="noprinln6"><%=AllCount %></td>
+					<td align="center" class="noprinln5"></td>
+					
 					<td align="center" class="noprinln7"><%=DoubleUtill.getdoubleTwo(AllTotalcount) %></td> 
 					<td align="center" class="noprinln8"></td>
 					<td align="center" class="noprinln9"><%=DoubleUtill.getdoubleTwo(AllTatalbreakcount) %></td> 
