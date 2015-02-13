@@ -96,14 +96,14 @@ function dosearch(){
 </div> 
 <div style=" height:120px;">
 </div>
-    
+     
  <div >
  <form action="" id="post">
   <input type="hidden" name="statues" id="statues"/>
 <div style="height:450px"> 
-<table  cellspacing="1"   id="table" width=80% >
+<table  cellspacing="1"   id="table" width=80% >  
 		<tr class="asc">    
-			<td align="center" width=""><input type="checkbox" value="" id="check_box" onclick="selectall('userid[]');"/></td>
+			<td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"/></td>
 			<td  align="center" >编号</td>
 			<td  align="center">转换结果</td>
 			<td   align="center"  >待转化</td>
