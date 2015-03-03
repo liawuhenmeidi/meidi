@@ -46,6 +46,7 @@
 		statues = request.getParameter("statues");
 		//接受选定的对比参数    
 		left = UploadChangeManager.getUnCheckedUploadOrders(selectOrderName1);
+		
 		UploadChangeAll leftnew = UploadChangeManager.getUnCheckedString(selectOrderName1);
  
 		if(Integer.valueOf(statues) == 0){
@@ -701,10 +702,11 @@ function addleft(num){
 			Map<String, String> mapnew = BranchTypeChange.getinstance()
 					.getMap();
 			Set<String> db = mapnew.keySet();
+			//System.out.println(db);
 			Iterator<UploadOrder> it = right.iterator();
 			while (it.hasNext()) {
 				UploadOrder up = it.next();
-
+//System.out.println(up.getShop());
 				if (!db.contains(up.getShop())) {
 					rightb.add(up.getShop());
 				}

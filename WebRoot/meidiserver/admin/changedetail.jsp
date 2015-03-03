@@ -6,14 +6,13 @@
 	request.setCharacterEncoding("utf-8");
 	User user = (User)session.getAttribute("user");
 	String statues = request.getParameter("statues");
-	 
-	Map<String,List<Change>> map =  ChangeManager.getmapListC(statues); 
-	  
 	String[] ids = request.getParameterValues("ids"); 
 	if(null != ids){
 		ChangeManager.delete(ids);
 	}
 	
+	Map<String,List<Change>> map =  ChangeManager.getmapListC(statues); 
+
 	 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
