@@ -3,10 +3,10 @@
 		  return aftersalesecond(date,type);
 	  }else if( 29== type || 31 == type){
 		  return aftersalesearch(date,type); 
-	  }else if( 30 == type){
+	  }else if( 30 == type || 34 == type || 35 == type){
 		  return aftersalerepare(date,type); 
-	  } 
-}   
+	  }   
+}      
    
   function aftersalesecond(date,type){
 		var html = '';
@@ -17,8 +17,8 @@
 			//alert(json.submituser.username); 
 			//String tdcol = 'bgcolor="red"' ;  
 				html += '<tr id='+json.as.id+'  class="asc"  onclick="updateClass(this)" >'; 
-				html += '<td align="center" width="20"><input type="checkbox"  id="check_box" name ='+json.as.id+'></input></td>';
-				html += '<td align="center">'+json.as.printid+'</td>'; 
+				html += '<td align="center" width="20"><input type="radio"  name="id" value='+json.as.id+' ></input></td>'; 
+				html += '<td align="center">'+json.as.printid+'</td>';  
 				html += '<td align="center">'+json.as.uname+'</td>'; 
 				html += '<td align="center">'+json.as.phone+'</td>';
 				html += '<td align="center">'+json.as.submituser.username+'</td>';

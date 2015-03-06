@@ -76,7 +76,7 @@ public class AfterSaleProductManager {
 			str += asp.getId()+","; 
 		}
 		  
-		str = "("+str.substring(0,str.length()-1)+")";
+		str = "("+str.substring(0,str.length()-1)+")"; 
 		
 		String sql = "update mdaftersaleproduct set statues = " + uid +" where asid  in "+ str ;
 		logger.info(sql); 
@@ -150,9 +150,9 @@ public class AfterSaleProductManager {
 				p.setId(rs.getInt("id"));
 				p.setAsid(rs.getInt("asid"));
 				p.setCause(rs.getString("cause"));
-				int cid = rs.getInt("cid");
-				p.setCid(cid); 
-				int tid = rs.getInt("tid"); 
+				int cid = rs.getInt("mdaftersaleproduct.cid");
+				p.setCid(cid);  
+				int tid = rs.getInt("mdaftersaleproduct.tid"); 
 				p.setTid(tid); 
 				p.setDealid(rs.getInt("dealid"));
 				p.setDealsendid(rs.getInt("dealsendid")); 
@@ -163,7 +163,7 @@ public class AfterSaleProductManager {
 				p.setResult(rs.getInt("result")) ; 
 				p.setStatues(rs.getInt("statues"));
 				p.setDetail(rs.getString("detail"));
-				p.setType(rs.getInt("type"));  
+				p.setType(rs.getInt("mdaftersaleproduct.type"));  
 
 			} catch (SQLException e) {
 				p = null;

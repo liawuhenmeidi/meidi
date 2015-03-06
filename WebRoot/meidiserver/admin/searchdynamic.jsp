@@ -38,7 +38,7 @@ List<User> listSend =UserManager.getUsers(user,Group.send);;//
 Map<Integer,Map<Integer,OrderPrintln>> opmap = OrderPrintlnManager.getOrderStatuesMap(user);
 
 int count = 0 ; 
-
+ 
 int opstatues = OrderPrintln.releasedispatch;  
 
 

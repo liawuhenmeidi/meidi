@@ -98,8 +98,8 @@ function intsearch(){
 		<tr class="bsc">
 		   	<td align="center" >单号</td> 
 			<td align="center" >
-	        <input type="text"  name="printlnid" id="printlnid" value=""  />
-			</td>
+	        <input type="text"  name="printid" id="printid" value=""  />
+			</td> 
 			<td align="center" >上报单位</td>
 			<td align="center" >
 	        <input type="text"  name="branch" id="branch" value=""  />

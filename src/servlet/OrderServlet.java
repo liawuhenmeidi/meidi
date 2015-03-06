@@ -132,7 +132,6 @@ public class OrderServlet extends HttpServlet {
 		}else if("huanhuo".equals(mm)){
 			or.setType(OrderPrintln.huanhuo);
 		}
-
 		OrderPrintlnManager.save(or);
 		
 	  try {
@@ -535,7 +534,15 @@ public class OrderServlet extends HttpServlet {
 		        String fault = request.getParameter("fault");
 		        String statues = request.getParameter("statues");
 		        String pritlnid = request.getParameter("printid");
+		        String ptype= request.getParameter("ptype");
 		        
+		        if(StringUtill.isNull(pritlnid)){
+		        	pritlnid = "T"+TimeUtill.gettimeString();  
+		        }  
+		        
+		        if(StringUtill.isNull(ptype)){
+		        	ptype = AfterSale.updateOrder+"";
+		        }
 		        int submitid = user.getId();
 		        String branch = user.getBranch();
 		        int maxid = AfterSaleManager.getMaxid();
@@ -549,6 +556,7 @@ public class OrderServlet extends HttpServlet {
 		        	isreturn = false ;
 		        	
 		        } 
+		        
 		         logger.info(maxid); 
 		         
 		        String submit = TimeUtill.getdateString();
@@ -562,17 +570,18 @@ public class OrderServlet extends HttpServlet {
 		        af.settName(tname);
 		        af.setBarcode(barcode);
 		        af.setBatchNumber(batchNumber);
-		        af.setAndate(andate);
+		        af.setAndate(andate); 
 		        af.setSaledate(saledate);
 		        af.setLocation(location); 
-		        af.setDetail(remark);
-		        af.setType(AfterSale.updateOrder); 
+		        af.setDetail(remark); 
+		        af.setType(Integer.valueOf(ptype)); 
 		        af.setStatues(AfterSale.typesale);
 		        af.setBranch(Integer.valueOf(branch)); 
 		        af.setPcount(1);  
 		        af.setSubmitTime(submit);  
 		        af.setSubmitId(submitid); 
 		        af.setPrintid(pritlnid); 
+		        
 		        if(!StringUtill.isNull(statues)){ 
 		        	af.setStatues(Integer.valueOf(statues)); 
 		        	af.setStatuestime("'"+TimeUtill.getdateString()+"'");
@@ -600,6 +609,7 @@ public class OrderServlet extends HttpServlet {
 				    	String uid= request.getParameter("uid");
 				    	String nexttime = "'"+request.getParameter("nexttime")+"'";
 				    	String thistime = "'"+request.getParameter("thistime")+"'";
+				        af.setNexttime(nexttime); 
 					    // 送货状态     
 					for(int i=0;i<producs.length;i++){		
 						AfterSaleProduct asp = new AfterSaleProduct();
@@ -625,9 +635,17 @@ public class OrderServlet extends HttpServlet {
 				}
 					  
 				 href = "../admin/afterSale/dingdansubmitmaintain.jsp";
-				 
+				  
+				}else if("adddetail".equals(typemethod)){
+					String nexttime= request.getParameter("nexttime");
+					if(!StringUtill.isNull(nexttime)){
+						af.setNexttime("'"+nexttime+"'"); 
+					} 
+					//logger.info("nexttime"+nexttime);
+					
+					
 				}
-			    
+			     
 			   
 			    List<String> listsql = AfterSaleManager.getsaveSQL(user, af);   
 				listas.addAll(listsql);
@@ -646,11 +664,11 @@ public class OrderServlet extends HttpServlet {
 		        			mark = RemarkUtill.nopermission;
 		        		} 
 		        		response.sendRedirect("../jieguo.jsp?type=update&mark="+mark); 
-		        	}
+		        	} 
 				} catch (IOException e) { 
 					e.printStackTrace(); 
 				} 
-		        
+		         
     	}catch(Exception e){  
     		e.printStackTrace();
     		logger.info(e);

@@ -57,6 +57,8 @@ public class Order {
   
  public static int aftersalesecond = 32;   // 网点配工
  public static int aftersaledeal = 33;   // 售后文员配工 
+ public static int aftersalephone = 34;   // 电话回访 
+ public static int aftersalecharge = 35;    // 网点上报售后待处理
  
  public static int orderpeisong= 1;  
  public static int orderinstall = 2; 

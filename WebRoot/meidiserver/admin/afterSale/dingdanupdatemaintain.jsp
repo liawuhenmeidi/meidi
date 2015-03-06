@@ -9,6 +9,9 @@ String clistall = StringUtill.GetJson(listall);
 List<Category> list = CategoryManager.getCategory(user,Category.sale); 
 String clist = StringUtill.GetJson(list);
  
+List<Category> listmaintain = CategoryService.getlistmaintain(); 
+String clistmaintain = StringUtill.GetJson(listmaintain);
+ 
 HashMap<String,ArrayList<String>> listt = ProductService.gettypeName();
  
 String plist = StringUtill.GetJson(listt);
@@ -64,7 +67,8 @@ if(!StringUtill.isNull(id)){
    var cid = "";  
    var ids = "";  
    var json = <%=clist%>;
-   var listop =  null;
+   var jsonmaintain = <%=clistmaintain%>;
+   var listop =  null;  
    // statues 表示是否是相同顾客报装
    
    var order = <%=strorder%>;
@@ -146,9 +150,9 @@ if(!StringUtill.isNull(id)){
 	               '<td>维修类别<span style="color:red">*</span></td>'+
 	               '<td ><input type="hidden" name="product" value="'+row+'"/>'+
 	               '<select class = "category" name="ordercategory'+row+'"  id="ordercategory'+row+'"  style="width:95% ">'; 
-	               for(var i=0;i<json.length;i++){
+	               for(var i=0;i<jsonmaintain.length;i++){
 	            	   var ckeck = "";
-	            	   var jo = json[i];  
+	            	   var jo = jsonmaintain[i];  
 	            	   if(jo.id == listo.categoryId){
 	            		   str += '<option value='+jo.id+'  selected="selected" >'+jo.name+'</option>';
 	            	   }else {
@@ -162,7 +166,7 @@ if(!StringUtill.isNull(id)){
 	               ' <td  ><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="'+listo.tname+'" style="width:90% " /></td> ' +
 	          	   ' <td  ><input type="button"   style="color:white;background-color:#0080FF" name="" value="删除" onclick="deletes(produc'+row+','+row+')"/></td>'+
 	          	   '</tr>'; 
-	                 
+	                  
 	        $("#tableproduct").append(str); 
 	        initproductSerch("#ordercategory"+row,"#ordertype"+row);
 	        row++;  
@@ -401,12 +405,12 @@ if(!StringUtill.isNull(id)){
      </td>
      
     
-   </tr> 
+   </tr>  
      
      <tr class="dsc" > 
     <td colspan=4>
-     <input type="button"  name="" style="color:red" value="增加维修配件" onclick="addrow(0)" width="100%"  />
-    </td>
+     <input type="button"  name="" style="color:red" value="增加保养项目" onclick="addrow(0)" width="100%"  />
+    </td> 
    </tr>  
    
  <tr class="asc"> 

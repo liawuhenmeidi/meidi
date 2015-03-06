@@ -22,9 +22,9 @@ public class AfterSaleProduct {
    private double prince ; 
    private int dealid;
    private int dealsendid;
-   private String dealtime ;
-   private int result;  // 处理结果 
-   private int statues ;  //  状态 ，是驳回还是
+   private String dealtime ; 
+   private int result;  //  
+   private int statues ;  // 处理结果          1   安装网点驳回      2 维修人员驳回
    private String detail ;   // 处理备注  
    private String nexttime;   // 下次处理时间
    private String thistime;   // 此次维护处理时间    

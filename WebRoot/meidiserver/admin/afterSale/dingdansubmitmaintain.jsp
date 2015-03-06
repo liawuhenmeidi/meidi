@@ -6,6 +6,9 @@ List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend); //UserServ
 List<Category> list = CategoryManager.getCategory(user,Category.sale); 
 String clist = StringUtill.GetJson(list);
   
+List<Category> listmaintain = CategoryService.getlistmaintain(); 
+String clistmaintain = StringUtill.GetJson(listmaintain);
+
 HashMap<String,ArrayList<String>> listt = ProductService.gettypeName();
  
 String plist = StringUtill.GetJson(listt);
@@ -57,6 +60,7 @@ if(!StringUtill.isNull(id)){
    var cid = "";  
    var ids = "";  
    var json = <%=clist%>;
+   var jsonmaintain = <%=clistmaintain%>;
    var listop =  null;
    // statues 表示是否是相同顾客报装
    
@@ -128,12 +132,12 @@ if(!StringUtill.isNull(id)){
 	               '<td>维修类别<span style="color:red">*</span></td>'+
 	               '<td ><input type="hidden" name="product" value="'+row+'"/>'+
 	               '<select class = "category" name="ordercategory'+row+'"  id="ordercategory'+row+'"  style="width:95% ">'; 
-	               for(var i=0;i<json.length;i++){
+	               for(var i=0;i<jsonmaintain.length;i++){
 	            	   var ckeck = "";
-	            	   var jo = json[i];  
-	            	   if(jo.id == listo.categoryId){
+	            	   var jo = jsonmaintain[i];  
+	             	   if(jo.id == listo.categoryId){
 	            		   str += '<option value='+jo.id+'  selected="selected" >'+jo.name+'</option>';
-	            	   }else {
+	            	   }else { 
 	            		   str += '<option value='+jo.id+'>'+jo.name+'</option>'; 
 	            	   }
 

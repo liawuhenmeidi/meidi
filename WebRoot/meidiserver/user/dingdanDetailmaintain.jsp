@@ -3,19 +3,19 @@
 String id = request.getParameter("id");
 String statues = request.getParameter("statues");
 User user = (User)session.getAttribute("user");
-
-AfterSale af = null ; 
+  
+AfterSale af = null ;  
 String strorder= null;    
 String listap = null;  
 List<AfterSaleProduct> listasp = null ;
 
-if(!StringUtill.isNull(id)){  
+if(!StringUtill.isNull(id)){   
 	af = AfterSaleManager.getAfterSaleID(user,id);
 	strorder = StringUtill.GetJson(af); 
 	listasp  = AfterSaleProductManager.getmaintain(af.getId(),statues);
 	listap = StringUtill.GetJson(listasp); 
 } 
- 
+  
 %>
 <!DOCTYPE html>
 <html>
@@ -104,12 +104,12 @@ function change(statues,oid,type){
   </tr>
    
   <%
-  String time = "";
-  int statues = -1 ;
+  String time = "";  
+  int stas = -1 ;
   for(int g = 0 ;g<listasp.size();g++){
 	  AfterSaleProduct op = listasp.get(g);
 	   time = op.getThistime();
-	   statues = op.getStatues(); 
+	   stas = op.getStatues(); 
     	 %>
     	  
     	 <tr style="background:orange">
@@ -165,7 +165,7 @@ function change(statues,oid,type){
     <td class="s_list_m">
     <%
    
-    if(statues == 0 ){
+    if(stas == 0 ){
  
     %>
      <select class = "category" name="category"  id="songh<%=af.getId() %>" >
@@ -188,7 +188,7 @@ function change(statues,oid,type){
     <td align="left" class="s_list_m"><%=af.getDetail() %></td>
     
   </tr>  
-   
+     
 </table>
 
   <br>

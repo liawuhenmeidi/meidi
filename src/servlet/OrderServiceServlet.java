@@ -51,8 +51,8 @@ public class OrderServiceServlet extends HttpServlet {
 		String method = request.getParameter("method");
 		
 		if("GETLIST".equals(method)){
-			String statues = request.getParameter("statues");
-			if((""+Order.aftersale).equals(statues) || (""+Order.aftersalesearch).equals(statues) || (""+Order.aftersalesecond).equals(statues)  || (""+Order.aftersaledeal).equals(statues) ){
+			String statues = request.getParameter("statues"); 
+			if((""+Order.aftersale).equals(statues) || (""+Order.aftersalesearch).equals(statues) || (""+Order.aftersalesecond).equals(statues)  || (""+Order.aftersaledeal).equals(statues) || (""+Order.aftersalephone).equals(statues) || (""+Order.aftersalecharge).equals(statues) ){
 				GEtListaf(request,response);
 			}else{ 
 				GEtList(request,response);

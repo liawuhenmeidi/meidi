@@ -5,10 +5,10 @@
  if(StringUtill.isNull(statues)){ 
 	 statues = Order.aftersale +"";  
  } 
-    
+     
  String href = "";
  if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
-	 href = "dingdanupdatemaintain.jsp";
+	 href = "adddetail.jsp";
  }else { 
 	 href = "dingdansubmit.jsp";
  }
@@ -76,7 +76,8 @@ if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
 <div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=AfterSale.typeupdate%>')"></input> 
-&nbsp;&nbsp;&nbsp;  
+ <input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=AfterSale.cannotupload%>')"></input> 
+&nbsp;&nbsp;&nbsp;   
 </div>  
 
 <% }%>
@@ -137,9 +138,14 @@ function winconfirm(typestatues){
 			   	            i++;
 		   				}	
 	   		}
-	   	});  
-        
-		detail(attract.toString(),typestatues);
+	   	});   
+         
+		if(1 == typestatues){
+			detail(attract.toString(),typestatues);
+		}else {
+			window.location.href="../../AfterSaleServlet?method=cannotupdate&id="+attract.toString();
+		}
+		
 		//alert(attract.toString());
 		//$.ajax({ 
 		//	type: "post",   

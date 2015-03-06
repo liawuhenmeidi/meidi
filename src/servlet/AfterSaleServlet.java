@@ -57,7 +57,7 @@ public class AfterSaleServlet extends HttpServlet {
 		
 		String uid = request.getParameter("uid"); 
 		String afid = request.getParameter("afid");
-        
+        logger.info(method); 
 		
 		User user = (User)request.getSession().getAttribute("user");
 		 int statues = -1 ;
@@ -74,8 +74,53 @@ public class AfterSaleServlet extends HttpServlet {
 	    	if(maintain(user,sta,afid)){ 
 	    		statues = 1;
 	    	};
-	    } 	
- 
+	    }else if("updatecharge".equals(method)){
+	    	String id = request.getParameter("id");
+	    	//logger.info(id);
+	    	AftersaleAllManager.updatechager(id );
+	    	try { 
+				response.sendRedirect("admin/afterSale/dingdanAfterSalecharge.jsp");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+	    	return ;
+	    }else if("cannotupdate".equals(method)){
+	    	String id = request.getParameter("id");
+	    	//logger.info(id); 
+	    	AftersaleAllManager.updatecannotup(id );
+	    	try {  
+				response.sendRedirect("admin/afterSale/dingdanAfterSale.jsp");
+			} catch (IOException e) { 
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+	    	return ;
+	    }else if("del".equals(method)){
+	    	String id = request.getParameter("id");
+	    	//logger.info(id); 
+	    	AftersaleAllManager.delete(id ); 
+	    	try {  
+				response.sendRedirect("admin/afterSale/dingdanAfterSalephone.jsp");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+	    	return ;
+	    }else if("updatestatues".equals(method)){
+	    	String id = request.getParameter("id"); 
+	    	String sta = request.getParameter("statues");
+	    	//logger.info(id); 
+	    	AftersaleAllManager.updatestatues(id ,sta);    
+	    	try {  
+				response.sendRedirect("admin/afterSale/dingdanAfterSalemaintaindealsend.jsp");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+	    	return ;
+	    }  	
+	    
 		try {
 			response.getWriter().write(""+statues);
 			response.getWriter().flush(); 

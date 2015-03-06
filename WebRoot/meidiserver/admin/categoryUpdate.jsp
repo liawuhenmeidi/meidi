@@ -110,13 +110,41 @@ function checkedd(){
      
      <form action="categoryUpdate.jsp"  method = "post"  onsubmit="return checkedd()">
       <input type="hidden" name="action" value="add"/>
-        
       <input type="hidden" name="id" value="<%=category.getId()%>"/>
+      <table id="table" width="80%">
+      <tr class="asc"> 
+         <td align="center">类&nbsp;&nbsp;别&nbsp;&nbsp;名&nbsp;&nbsp;称<span style="color:red">*</span></td>
+         <td align="center"> <input type="text"  id="name" value="<%=category.getName() %>" name="name" /> <br /> </td>
+      </tr>
+      <tr class="asc"> 
+         <td align="center"> 类别安装截止日期<span style="color:red">*</span>:</td>
+         <td align="center"><input type="text"  id="time" value="<%=category.getTime() %>" name="time" />天 <br /></td>
+      </tr>
+      <tr class="asc"> 
+         <td align="center">产品类别</td>
+         <td align="center"> 
+          <% if(category.getPtype() == 0 ) { 
+        %> 
+                                 销售产品 <input type="radio" name="ptype"  value=0  checked="checked"/> 
+                                   维修配件    <input type="radio" name="ptype" value = 1 />
+          <%	  
+          } else { 
+          %>        
+                                                 销售产品 <input type="radio" name="ptype"  value=0  />
+                                                维修配件    <input type="radio" name="ptype" value = 1 checked="checked"/>
+          <% }%>
+                                        
+                                        
+               </td>
+      </tr>
+      </table>
+      
 
-                    类&nbsp;&nbsp;别&nbsp;&nbsp;名&nbsp;&nbsp;称<span style="color:red">*</span>&nbsp;&nbsp;&nbsp;&nbsp;：
-      <input type="text"  id="name" value="<%=category.getName() %>" name="name" /> <br />     
-                   类别安装截止日期<span style="color:red">*</span>:
-      <input type="text"  id="time" value="<%=category.getTime() %>" name="time" />天 <br /> 
+                  
+         
+                 
+      
+               
       <input type="submit" value="提  交" />
 
  

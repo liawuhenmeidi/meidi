@@ -114,6 +114,7 @@ function initOrder(type,statues,num,page,sort,sear){
 	        	 
 	        	  count = json.count;
                   var date = json.date ; 
+                  //alert(date);
                   if("" != date && null != date){
                 	 date =  aftersale(date,statues);
                 	 $("#table").append(date);

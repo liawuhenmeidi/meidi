@@ -5,13 +5,15 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 String action = request.getParameter("action");
 
-if("add".equals(action)){
+if("add".equals(action)){ 
 	String categoryName = request.getParameter("name");
 	String time = request.getParameter("time");
+	String ptype = request.getParameter("ptype");
 	if(!StringUtill.isNull(categoryName)){
 		Category c = new Category();
 		c.setName(categoryName );
 		c.setTime(time); 
+		c.setPtype(Integer.valueOf(ptype));
 		boolean  me = CategoryManager.save(c);
 		if(me){
 			response.sendRedirect("category.jsp");
@@ -107,17 +109,29 @@ function checkedd(){
      
      <form action="categoryAdd.jsp"  method = "post"  onsubmit="return checkedd()">
       <input type="hidden" name="action" value="add"/>
-   
-                    类&nbsp;&nbsp;别&nbsp;&nbsp;名&nbsp;&nbsp;称<span style="color:red">*</span>&nbsp;&nbsp;&nbsp;&nbsp;：
-      <input type="text"  id="name" name="name" /> <br />     
-                   类别安装截止日期<span style="color:red">*</span>:
-      <input type="text"  id="time" name="time" />天<br /> 
+      <table id="table" width="80%">
+         <tr class="asc" > 
+          <td align="center">类&nbsp;&nbsp;别&nbsp;&nbsp;名&nbsp;&nbsp;称<span style="color:red">*</span> </td>
+          <td align="center"> <input type="text"  id="name" name="name" />  </td>
+         </tr>
+        <tr class="asc" >  
+         <td align="center"> 类别安装截止日期<span style="color:red">*</span>:</td>
+         <td align="center"> <input type="text"  id="time" name="time" />天<br /> </td>
+        </tr>      
+         <tr class="asc" >  
+        <td align="center"> 
+        产品类型 
+          
+        </td>
+        <td align="center"> 
+                销售产品 <input type="radio" name="ptype"  value=0 />
+                &nbsp;  &nbsp;  &nbsp;  &nbsp;
+               维修配件    <input type="radio" name="ptype" value = 1 /> 
+        </td>  
+        </tr> 
+      </table> 
+
       <input type="submit" value="提  交" />
-     
-  
- 
- 
- 
  </form>
   
      </div>

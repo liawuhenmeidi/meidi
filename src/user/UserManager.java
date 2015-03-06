@@ -990,10 +990,12 @@ logger.info(sql);
 		
 		
 	}
-	
+	 
 	public static boolean check(User user){
 		boolean flag = false ;
 		Connection conn = DB.getConn();
+		
+		//logger.info(user.getUsertype()); 
 		
 		String sql = "select * from mduser where usertype = " + user.getUsertype() + "  and id != "+user.getId()+" and statues = 1 "; 
 		

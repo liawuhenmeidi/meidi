@@ -7,7 +7,9 @@ public class AfterSale {
    public static int typeupdate = 1 ;  // 已上报
    public static int typesale = 0 ;   // 待上报 
    public static int typesalecome = 2 ;   // 厂家未通过 
-    
+   public static int cannotupload = 4 ;   // 无法上报
+     
+   
    public static int unupdateOrder = 0 ;   // 厂家未通过 
    public static int updateOrder = 1 ;   // 厂家未通过 
    
@@ -20,9 +22,9 @@ public class AfterSale {
    private int cid; // 产品类别id
    private String cName; // 产品类别名称
    private int pcount;
-   
-   private String uname;
-   private String phone;
+    
+   private String uname; 
+   private String phone; 
    private String andate;
    private String batchNumber;  //批号
    private String barcode;  // 条码
@@ -31,24 +33,34 @@ public class AfterSale {
    private int branch ; 
    private int type;  // 单据类型      0 表示自己销售   1 网点上报
    private String saledate;
-   private String branchName; 
-   private String detail ;
-   private int statues;  // 1 已上报  // 0 未上报   2 已拒绝
+   private String branchName;  
+   private String detail ; 
+   private int statues;  // 1 已上报  // 0 未上报   2 已拒绝        3 已结款    4 无法上报驳回 
    private String statuesName; 
    private String submitTime;
    private int submitId;
    private User submituser;
    private String typeName ;
    private String statuestime; 
+   private String nexttime;  
+   public String getNexttime() {
+	return nexttime;
+}
 
-   public String getStatuesName() {
+public void setNexttime(String nexttime) {
+	this.nexttime = nexttime;
+}
+
+public String getStatuesName() {
 	   if(typeupdate == statues){
 		   statuesName = "已上报";
 	   }else if(typesale == statues){
 		   statuesName = "未上报"; 
 	   }else if(typesalecome == statues){
 		   statuesName = "被拒绝";
-	   } 
+	   }else if(cannotupload == statues){  
+		   statuesName = "条码错误，无法上报";  
+		} 
 	return statuesName;
 }
 
@@ -75,7 +87,7 @@ public void setStatuestime(String statuestime) {
 public String getTypeName() {
 	if(type == 0){
 		typeName = "系统直营";
-	}else if(type == 1){
+	}else if(type == 1){ 
 		typeName = "网点上报"; 
 	}
 	return typeName;

@@ -70,15 +70,16 @@ logger.info(category.getName());
          
 		public static boolean  save(Category c){
 			Connection conn = DB.getConn();
-			String sql = "insert into mdcategory(id,categoryname,pid,time,cstatues) values (null, ?,null,?,0)";
+			String sql = "insert into mdcategory(id,categoryname,pid,time,cstatues,ptype) values (null, ?,null,?,0,?)";
 			PreparedStatement pstmt = DB.prepare(conn, sql);
 			try {
 				pstmt.setString(1, c.getName()); 
 				pstmt.setString(2, c.getTime());
-				pstmt.executeUpdate();
+				pstmt.setInt(3, c.getPtype());  
+				pstmt.executeUpdate(); 
 				CategoryService.flag = true ;
 			} catch (SQLException e) {
-				e.printStackTrace();
+				e.printStackTrace(); 
 			} finally {
 				DB.close(pstmt);
 				DB.close(conn);
@@ -124,7 +125,30 @@ logger.info(category.getName());
 			}
 			logger.info(categorys.size());
 			return categorys;
+		} 
+		
+		public static List<Category> getCategorymaintain() {
+			List<Category> categorys = new ArrayList<Category>();
+			Connection conn = DB.getConn();
+			String sql = "select * from mdcategory where ptype = 1";
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) {
+					Category u = CategoryManager.getCategoryFromRs(rs);
+					categorys.add(u);
+				}
+			} catch (SQLException e) {
+				logger.error(e);
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			}
+			logger.info(categorys.size());
+			return categorys;
 		}
+		
 		// 获取在售的产品
 		public static List<Category> getCategory(int statues) {
 			List<Category> categorys = null;
@@ -189,6 +213,45 @@ logger.info(category.getName());
 			return categorys;
 		}
 		
+		// 对应用户在售的产品	 
+		
+				public static List<Category> getCategoryMaintain(User user,int statues) {
+					  
+					List<Category> categorys = new ArrayList<Category>();
+					Connection conn = DB.getConn(); 
+					String[] products = UserManager.getProducts(user);	 
+				    String str = "(";
+					for(int i=0;i<products.length;i++){
+						str += products[i] +",";
+					}  
+					str = str.substring(0,str.length()-1)+")";
+					String sql = "";  
+		             if(UserManager.checkPermissions(user, Group.Manger)){
+		            	 sql = "select * from mdcategory" ; 
+		             }else {    
+		            	 sql = "select * from mdcategory where cstatues = "+ statues+ " and  ptype = 1 and id  in " + str ;
+		             } 
+					//String sql = " select mdcategory.*,mdgroup.* from mdcategory , mdgroup  where mdcategory.cstatues = "+statues+ " and  mdgroup.id = " + user.getUsertype()+ " and mdgroup.products like concat('%',mdcategory.id,'%')";
+					
+					Statement stmt = DB.getStatement(conn);
+		//logger.info(sql);
+					ResultSet rs = DB.getResultSet(stmt, sql);
+					try {
+						while (rs.next()) {
+							Category u = CategoryManager.getCategoryFromRs(rs);
+							categorys.add(u);
+						}
+					} catch (SQLException e) {
+						logger.error(e);
+					} finally {
+						DB.close(rs);
+						DB.close(stmt);
+						DB.close(conn);
+					}
+		//logger.info(categorys.size());
+					return categorys;
+				}
+				
 		// 通过id获取
 		public static Category getCategory(String id) {
 			Category u = new Category();
@@ -394,9 +457,9 @@ logger.info(sql);
 				c.setId(rs.getInt("id")); 
 				c.setName(rs.getString("categoryname"));
 				c.setPid(rs.getInt("pid"));
-				c.setTime(rs.getString("time")); 
+				c.setTime(rs.getString("time"));  
 				c.setStatues(rs.getInt("cstatues"));
-				
+				c.setPtype(rs.getInt("ptype")); 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}	
