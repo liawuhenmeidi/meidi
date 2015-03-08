@@ -67,7 +67,7 @@ public class AfterSaleProductManager {
 		return listsql; 
 	}
 	
-	public static List<String> getupdatemaintain(List<AfterSaleProduct> list,String uid){
+	public static List<String> getupdatemaintain(List<AfterSaleProduct> list,String statues){
 		List<String> listsql = new ArrayList<String>();
 		String str = ""; 
 		 
@@ -77,8 +77,13 @@ public class AfterSaleProductManager {
 		}
 		  
 		str = "("+str.substring(0,str.length()-1)+")"; 
-		
-		String sql = "update mdaftersaleproduct set statues = " + uid +" where asid  in "+ str ;
+		String sql = "";
+		if(1 == Integer.valueOf(statues)){ 
+			sql = "update mdaftersaleproduct set result = " + statues +" where asid  in "+ str ;
+		}else {   
+			sql = "update mdaftersaleproduct set statues = " + statues +" where asid  in "+ str ;
+		}
+		  
 		logger.info(sql); 
 		
 		listsql.add(sql);
@@ -154,15 +159,15 @@ public class AfterSaleProductManager {
 				p.setCid(cid);  
 				int tid = rs.getInt("mdaftersaleproduct.tid"); 
 				p.setTid(tid); 
-				p.setDealid(rs.getInt("dealid"));
-				p.setDealsendid(rs.getInt("dealsendid")); 
+				p.setDealid(rs.getInt("mdaftersaleproduct.dealid")); 
+				p.setDealsendid(rs.getInt("mdaftersaleproduct.dealsendid")); 
 				p.setDealtime(rs.getString("dealtime"));
-				p.setNexttime(rs.getString("nexttime")); 
+				p.setNexttime(rs.getString("mdaftersaleproduct.nexttime")); 
 				p.setThistime(rs.getString("thistime")); 
 				p.setPrince(rs.getDouble("prince")); 
 				p.setResult(rs.getInt("result")) ; 
-				p.setStatues(rs.getInt("statues"));
-				p.setDetail(rs.getString("detail"));
+				p.setStatues(rs.getInt("mdaftersaleproduct.statues"));
+				p.setDetail(rs.getString("mdaftersaleproduct.detail"));
 				p.setType(rs.getInt("mdaftersaleproduct.type"));  
 
 			} catch (SQLException e) {

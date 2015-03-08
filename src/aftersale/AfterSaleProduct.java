@@ -2,6 +2,8 @@ package aftersale;
 
 import category.CategoryService;
 import product.ProductService;
+import user.UserService;
+import utill.StringUtill;
 
 public class AfterSaleProduct {
 	public static int fault = 1 ;   // 维修 
@@ -21,14 +23,70 @@ public class AfterSaleProduct {
    private String tname ; 
    private double prince ; 
    private int dealid;
+   private String dealName;
    private int dealsendid;
+   private String dealsendName;
    private String dealtime ; 
-   private int result;  //  
+   private int result;  //   
    private int statues ;  // 处理结果          1   安装网点驳回      2 维修人员驳回
    private String detail ;   // 处理备注  
-   private String nexttime;   // 下次处理时间
+   private String nexttime;   // 下次处理时间 
    private String thistime;   // 此次维护处理时间    
+   private String resultStr;   
+    
+   public String getResultStr() {
+	   String str = "";
+	   if(result == 0 ){
+		   str = "未处理";
+	   }else if(result == 1){
+		   str = "已处理";
+	   }else if(result == 2){
+		   str = "已上报"; 
+	   }else if(result == 3){
+		   str = "已结款";
+	   }
+	   return str ;
+}
+
+public void setResultStr(String resultStr) {
+	this.resultStr = resultStr;
+}
+ 
    
+public String getDealsendName() {
+	if(dealsendid != 0 ){ 
+		  
+		//System.out.println(UserService.getMapId());  
+		dealsendName = UserService.getMapId().get(dealsendid).getUsername();
+	}else {
+		dealsendName = ""; 
+	} 
+	return dealsendName;
+}
+
+
+public void setDealsendName(String dealsendName) {
+	this.dealsendName = dealsendName;
+}
+
+
+public String getDealName() { 
+	if(dealid != 0 ){ 
+  
+		//System.out.println(UserService.getMapId());  
+		dealName = UserService.getMapId().get(dealid).getUsername();
+	}else {
+		dealName = ""; 
+	}
+	return dealName;
+}
+
+
+public void setDealName(String dealName) {
+	this.dealName = dealName;
+}
+
+
 public String getThistime() {
 	return thistime;
 }

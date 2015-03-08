@@ -36,7 +36,7 @@ public class AftersaleAllManager {
 		  String sqlstr = " 1 = 1 ";
 		  //logger.info(f); 
 		  //sqlstr = "  1 = 1 and (mdaftersale.submitid in (select id from mduser where mduser.usertype in (select groupid from mdrelategroup where pgroupid = "+user.getUsertype()+")) or  submitid = "+ user.getId() +")";
-		   
+		    
 		  
 		 if(Group.aftersalerepare == type){ 
 			   if(Order.aftersale == statues){ 
@@ -51,22 +51,26 @@ public class AftersaleAllManager {
 				   }else if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){
 					   sql = "select * from mdaftersale where statues in (1)   and submitid = "+ user.getId() +" "+search+"  order by "+sort+str;
 				   }  
-			   }else if(Order.aftersalesearch == statues){
+			   }else if(Order.aftersalesearch == statues){  
 				   if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
-					   sql = "select * from mdaftersale where   "+sqlstr + search+"  order by "+sort+str;
+					   sql = "select * from mdaftersale, mdaftersaleproduct  where (mdaftersale.id = mdaftersaleproduct.asid or mdaftersale.id not in (select asid from mdaftersaleproduct)) and "+sqlstr + search+"  order by "+sort+str;
 				   }else if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){
-					   sql = "select * from mdaftersale where 1 =1  and submitid = "+ user.getId() +" "+search+"  order by "+sort+str;
-				   }     
-			   }else if(Order.aftersalesecond == statues){   
-				       sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = "+ user.getId() +"  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null  "+search+"  order by "+sort+str;
+					   sql = "select * from mdaftersale, mdaftersaleproduct  where mdaftersale.id = mdaftersaleproduct.asid  and submitid = "+ user.getId() +" "+search+"  order by "+sort+str;
+				   }      
+			   }else if(Order.aftersalesecond == statues){    
+				       sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = "+ user.getId() +"  and  mdaftersaleproduct.asid = mdaftersale.id and ( mdaftersaleproduct.dealsendid = 0   or  mdaftersaleproduct.statues = 2 )  "+search+"  order by "+sort+str;
 			   }else if(Order.aftersaledeal == statues){   
 			       //sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = 0  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null    "+search+"  order by "+sort+str;
-			       sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = 0  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null   "+search+"  order by "+sort+str;
+			       sql = "select * from mdaftersale,mdaftersaleproduct where  ( mdaftersaleproduct.dealid = 0 or mdaftersaleproduct.statues = 1 ) and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid = 0   "+search+"  order by "+sort+str;
 		      }else if(Order.aftersalephone == statues){   
 			       //sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = 0  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null    "+search+"  order by "+sort+str;
 			       sql = "select * from mdaftersale where  mdaftersale.nexttime - curdate() < 5  "+search+"  order by "+sort+str;
+		      }else if(Order.aftersaledealupload == statues){     
+		    	  sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 1   "+search+"  order by "+sort+str;
+		      }else if(Order.aftersaledealcharge== statues){    
+		    	  sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 2   "+search+"  order by "+sort+str;
 		      }  
-		   }                                         
+		   }                                          
 		    
 		  if("".equals(sql)){
 			   return null;  
@@ -207,8 +211,42 @@ logger.info(sql);
 	}  
 	 
 	public static void updatestatues(String id,String statues ){
-		String sql = "update mdaftersaleproduct  set result = "+statues +" where id = "+ id;
-		DBUtill.sava(sql);  
+		String sql = "update mdaftersaleproduct  set statues = "+statues +" where asid = "+ id + " and result = 0 ; ";
+		DBUtill.sava(sql);   
+	}  
+	 
+	public static void updatestatuesdeal(String id,int statues ){
+		String sql = "";
+		if(statues == 0){
+			sql = "update mdaftersaleproduct  set statues = 0 , dealid = 0 where asid = "+ id + " and result = 0 and statues = 1  ; ";
+		}else if(statues == 1){
+			 sql = "update mdaftersaleproduct  set statues = 0  where asid = "+ id + " and result = 0 ; ";
+		} 
+		 
+		DBUtill.sava(sql);    
+	}  
+	
+	public static void updatestatuesdealsend(String id,int statues ){
+		String sql = ""; 
+		if(statues == 0){ 
+			sql = "update mdaftersaleproduct  set statues = 0 , dealsendid = 0 where asid = "+ id + " and result = 0 and statues = 2  ; ";
+		}else if(statues == 1){
+			 sql = "update mdaftersaleproduct  set statues = 0  where asid = "+ id + " and result = 0 ; ";
+		} 
+		  
+		DBUtill.sava(sql);    
+	}  
+	
+	public static void updatestatuesmatain(String id){ 
+		String sql  = "update mdaftersaleproduct  set result = 2  where asid = "+ id + " and result = 1 ; ";
+		  
+		DBUtill.sava(sql);    
+	}  
+	
+	public static void chargestatuesmatain(String id){ 
+		String sql  = "update mdaftersaleproduct  set result =3  where asid = "+ id + " and result = 2; ";
+		  
+		DBUtill.sava(sql);    
 	}  
 	
 	public static void delete(String id ){

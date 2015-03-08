@@ -118,8 +118,25 @@ public class AfterSaleServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
-	    	return ;
-	    }  	
+	    	return ;  
+	    }else if("updatestatuesdeal".equals(method)){
+	    	String id = request.getParameter("id");  
+	    	int sta = Integer.valueOf(request.getParameter("statues"));
+	    	AftersaleAllManager.updatestatuesdeal(id ,sta);    
+	    	  
+	    }else if("updatestatuesdealsend".equals(method)){
+	    	String id = request.getParameter("id");  
+	    	int sta = Integer.valueOf(request.getParameter("statues"));
+	    	AftersaleAllManager.updatestatuesdealsend(id ,sta);    
+	    	
+	    }else if("uploadmatian".equals(method)){ 
+	    	String id = request.getParameter("id");  
+	    	AftersaleAllManager.updatestatuesmatain(id);    
+	    	  
+	    }else if("chargematian".equals(method)){ 
+	    	String id = request.getParameter("id");  
+	    	AftersaleAllManager.chargestatuesmatain(id);    
+	    }        	
 	    
 		try {
 			response.getWriter().write(""+statues);

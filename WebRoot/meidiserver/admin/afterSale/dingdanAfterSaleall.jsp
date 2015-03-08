@@ -119,7 +119,7 @@ function adddetail(src){
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
 		     <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
-			<td align="center">单号</td> 
+			<td align="center">单号</td>  
 			<td align="center">顾客姓名</td>
 			<td align="center">顾客电话</td>
 			<td align="center">安装单位</td>
@@ -127,7 +127,11 @@ function adddetail(src){
 			<td align="center" >设备类别</td> 
 			<td align="center" >设备型号</td> 
 			<td align="center" >设备数量</td>
-			
+			<td align="center" >保养类别</td> 
+			<td align="center" >保养型号</td> 
+			<td  align="center">保养维修网点</td> 
+			<td  align="center">保养维修人员</td> 
+			<td align="center" >保养维修状态</td> 
 			<td align="center" >批号</td> 
 			<td align="center" >条码</td>
 			<td align="center">地址</td> 
@@ -135,8 +139,8 @@ function adddetail(src){
             <td align="center">安装日期</td>
             <td align="center">预约日期</td>
             <td align="center" >是否上报厂家（美的）</td>
-            <td align="center" >备注</td>
-		</tr>
+            <td align="center" >备注</td> 
+		</tr> 
 		 
 	      <% 
               String tdcol = "bgcolor=red" ;

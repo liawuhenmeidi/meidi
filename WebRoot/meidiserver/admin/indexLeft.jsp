@@ -304,22 +304,21 @@ function reloadopned(src){
             	%>  
             	              <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintaindealsend.jsp')" >网点保养单待配工</a></p>
             	 <% 
-              }
+              }  
             if(UserManager.checkPermissions(user, Group.faultOrder,"w") || UserManager.checkPermissions(user, Group.faultOrder,"w")){
-            	%>           
+            	%>             
             	             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalephone.jsp')" >电话回访页</a></p>
                              <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintain.jsp')" >售后文员保养单待配工</a></p>
+                             
+                             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintainupload.jsp')" >保养单上报</a></p>
+                             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintaincharge.jsp')" >保养单未结款</a></p> 
             	 <%
-              } 
+              }  
             
-            if(UserManager.checkPermissions(user, Group.installOrderupload,"r")){
+           
             	%>  
             	 <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSaleall.jsp')" >售后查询</a></p>
-            	 <%
-              }
-            
-            %>
-
+            	 
             
 
             </div>        

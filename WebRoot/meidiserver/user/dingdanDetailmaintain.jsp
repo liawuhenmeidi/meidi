@@ -97,6 +97,7 @@ function change(statues,oid,type){
     <td class="s_list_m"><%= af.getcName()%></td>
    
   </tr>
+ 
  <tr  >
     <td width="25%" class="s_list_m">产品类别</td>
     <td class="s_list_m"><%=	af.gettName()%></td>
@@ -138,7 +139,6 @@ function change(statues,oid,type){
     <td class="s_list_m">顾客姓名</td>
     <td class="s_list_m"><%=af.getUname() %></td>
   </tr>
-   <tr>
  
     
   
@@ -171,8 +171,8 @@ function change(statues,oid,type){
      <select class = "category" name="category"  id="songh<%=af.getId() %>" >
      
       <option value="" >&nbsp;&nbsp;&nbsp;&nbsp;</option> 
-     <option value="1" >已处理 </option>  
-     
+      <option value="1" >已处理 </option>  
+      <option value="2" >无法处理驳回 </option> 
       </select>   
      <input type="button" onclick="change('songh<%=af.getId() %>','<%=af.getId() %>','maintain')"  value="确定"/>
 

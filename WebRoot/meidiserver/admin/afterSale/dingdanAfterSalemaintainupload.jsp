@@ -1,15 +1,14 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
- 
+
 <%@ include file="../searchdynamic.jsp"%>       
- <%   
- if(StringUtill.isNull(statues)){   
-	  // 网点配工  
-	 statues = Order.aftersalesecond +"";
- }
+ <%    
+ if(StringUtill.isNull(statues)){ 
+	  // 网点配工
+	 statues = Order.aftersaledealupload+"";
+ }  
  
-   
- String list = StringUtill.GetJson(UserService.getjsuser(listSend )); 
- 
+ String list = StringUtill.GetJson(UserService.getjsuser(listS ));  
+  
 %>   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -29,13 +28,13 @@ position:fixed;
 *{
     margin:0;
     padding:0;
-}
+} 
 #table{  
     width:2000px;
     table-layout:fixed ;
 }
 
-#th{  
+#th{   
     background-color:white;
     position:absolute; 
     width:2000px; 
@@ -69,10 +68,10 @@ position:fixed;
 
 <div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- <input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=AfterSale.typeupdate%>')"></input> 
-&nbsp;&nbsp;&nbsp;  
-</div>  
-
+ <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=AfterSale.typeupdate%>')"></input> 
+&nbsp;&nbsp;&nbsp;   
+</div> 
+ 
 </div > 
 <div style="height:100px;">
 </div>
@@ -85,51 +84,30 @@ position:fixed;
 <script type="text/javascript">
 
 sort= "andate asc";
-var id = "";  
+var id = ""; 
 var type = "<%=Group.aftersalerepare%>";
-var listuser = <%=list%>;  
+var listuser = <%=list%>;   
+
 $(function () { 
 	 fixation();
 	 initOrder(type,statues,num,page,sort,sear);
 });
-
-function winconfirm(typestatues){
-	var question = confirm("你确认要执行此操作吗？");	
-	if (question != "0"){
-		var attract = new Array();
-		var i = 0;
-		 
-		$("input[type='radio'][name='id']").each(function(){          
-	   		if($(this).attr("checked")){
-	   				var str = this.value; 
-	   				
-	   				if(str != null  &&  str != ""){
-		   				   attract[i] = str; 
-			   	            i++;
-		   				}	
-	   		}
-	   	});  
-          
-		window.location.href="../../AfterSaleServlet?method=updatestatues&id="+attract.toString()+"&statues=1";
-		
-	}
-}
-
-
+ 
+ 
 function change(str1,afid){
+
 	var uid = $("#"+str1).val();
-	  
 	if(uid == null || uid == ""){
 		alert("请选择保养人员");
 		return ; 
-	} 
-	  
+	}
+	   
 	var question = confirm("您确定要配单吗？\n");
 		 if (question != "0"){ 
 					$.ajax({   
 				        type: "post",     
 				         url: "../../AfterSaleServlet",  
-				         data:"method=dealsend&afid="+afid+"&uid="+uid,
+				         data:"method=deal&afid="+afid+"&uid="+uid,
 				         dataType: "",  
 				         success: function (data) { 
 				        	 if(data == 1){
@@ -145,16 +123,16 @@ function change(str1,afid){
 				           });
 				        			
 			           } 
+	     
 }
-
 
 function changeStatues(id,date){
 	var question = confirm("您确定吗？\n");
-	 if (question != "0"){  
+	 if (question != "0"){ 
 				$.ajax({      
 			        type: "post",     
 			         url: "../../AfterSaleServlet",    
-			         data:"method=updatestatuesdealsend&id="+id+"&statues="+date,
+			         data:"method=updatestatuesdeal&id="+id+"&statues="+date,
 			         dataType: "",  
 			         success: function (data) { 
 			        		 initOrder(type,statues,num,page,sort,sear);
@@ -167,16 +145,50 @@ function changeStatues(id,date){
 		           } 
 }
 
+
+function winconfirm(typestatues){
+	var question = confirm("你确认要执行此操作吗？");	
+	if (question != "0"){
+		var attract = new Array();
+		var i = 0;
+		
+		$("input[type='radio'][name='id']").each(function(){          
+	   		if($(this).attr("checked")){
+	   				var str = this.value; 
+	   				 
+	   				if(str != null  &&  str != ""){
+		   				   attract[i] = str; 
+			   	            i++;
+		   				}	
+	   		}
+	   	});   
+            
+		 alert(attract.toString());
+		$.ajax({    
+	        type: "post",      
+	         url: "../../AfterSaleServlet",  
+	         data:"method=uploadmatian&id="+attract.toString(),
+	         dataType: "",    
+	         success: function (data) { 
+	        		 initOrder(type,statues,num,page,sort,sear);
+	        	
+	           },  
+	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	        // alert(errorThrown); 
+	            } 
+	           });
+	        			
+           } 
+}
+ 
 </script>
 
  
-<div id="wrap"> 
+<div id="wrap">
  <%@ include file="../remind.jsp"%> 
 <table  cellspacing="1" id="table" >
 		<tr id="th">  
-		      <td align="center" width=""> 
-		      <!--  <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> -->
-		      </td>  
+		    <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
 			<td align="center">单号</td> 
 			<td align="center">顾客姓名</td>
 			<td align="center">顾客电话</td>
@@ -186,8 +198,8 @@ function changeStatues(id,date){
 			<td align="center" >设备型号</td> 
 			<td align="center" >保养类别</td> 
 			<td align="center" >保养型号</td> 
-			<td  align="center">配工</td> 
-			<td  align="center">确认</td> 
+			<td  align="center">安装网点</td> 
+			<td  align="center">维修人员</td> 
 			<td align="center" >批号</td> 
 			<td align="center" >条码</td>
 			<td align="center">地址</td> 
@@ -197,7 +209,8 @@ function changeStatues(id,date){
             <td align="center" >是否上报厂家（美的）</td>
             <td align="center" >备注</td>
 		</tr>
-		
+		 
+	     
 </table> 
      </div>
 

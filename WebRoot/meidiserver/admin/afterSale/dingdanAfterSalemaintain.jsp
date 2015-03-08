@@ -122,6 +122,24 @@ function change(str1,afid){
 	     
 }
 
+function changeStatues(id,date){
+	var question = confirm("您确定吗？\n");
+	 if (question != "0"){ 
+				$.ajax({      
+			        type: "post",     
+			         url: "../../AfterSaleServlet",    
+			         data:"method=updatestatuesdeal&id="+id+"&statues="+date,
+			         dataType: "",  
+			         success: function (data) { 
+			        		 initOrder(type,statues,num,page,sort,sear);
+			           },  
+			         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+			        // alert(errorThrown); 
+			            } 
+			           });
+			        			
+		           } 
+}
 </script>
 
  
