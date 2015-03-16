@@ -255,7 +255,7 @@ public class OrderProductManager {
  		   
     	    String sql = " update mdorderproduct set issubmit = "+statues+" where orderid in ("+ ids+")";
 			
-    	    OrderProductService.flag = true ;
+    	    OrderProductService.flag = true ; 
     	    
     	    return sql;
 	 }
@@ -265,15 +265,16 @@ public class OrderProductManager {
         	List<String> list = new ArrayList<String>();
         	
         	JSONArray jsons = JSONArray.fromObject(json); 
-        	
+        	 
         	for(int i=0;i<jsons.size();i++){
         		JSONObject js = jsons.getJSONObject(i);
         		int opid = js.getInt("id"); 
         		String barcode = js.getString("barcode");
-        		String batchnumber = js.getString("batchnumber");
-        		 
-        		String sql = "update mdorderproduct set barcode =  "+barcode+" , batchnumber = "+ batchnumber+ " where id = "+opid  ;
-        	    list.add(sql); 
+        		String batchnumber = js.getString("batchnumber");  
+        		  
+        		String sql = "update mdorderproduct set barcode =  '"+barcode+"' , batchnumber = '"+ batchnumber+ "' and issubmit = 1 where id = "+opid  ;
+        	    
+        		list.add(sql); 
         	}
         	OrderProductService.flag = true ;
         	return list ;

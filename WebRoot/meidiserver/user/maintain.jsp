@@ -58,12 +58,12 @@ function search(statues){
 <div class="s_main_box">
 <table width="100%" class="s_main_table">
   <tr > 
-    <td width="20%" class="s_list_m">产品名称</td>
-    <td width="30%" class="s_list_m">产品型号</td>
-    <td width="20%" class="s_list_m">安装日期</td>
-    <td width="30%" class="s_list_m">送货地点</td>
+    <td width="20%" class="s_list_m">保养维修内容</td>
+    <td width="30%" class="s_list_m">预约时间</td>
+    <td width="20%" class="s_list_m">顾客信息</td>
+    <td width="30%" class="s_list_m">地点</td>
   </tr>
-   <% 
+   <%  
    if(null != map){ 
 	Set<Map.Entry<Integer,AftersaleAll>> mapent = map.entrySet();
 	Iterator<Map.Entry<Integer,AftersaleAll>> itmap = mapent.iterator();
@@ -78,25 +78,25 @@ function search(statues){
   %>
  <tr <%=col %> onclick="detail('dingdanDetailmaintain.jsp?id=<%=o.getAs().getId()%>&statues=<%=statues%>')">  
       <%  
-         String cname = "";
-         String tname = "";
+    
          String time = "";
+         String cause = "";
          List<AfterSaleProduct> listas = o.getAsplist();
          for(int j=0;j<listas.size();j++){
         	 AfterSaleProduct as = listas.get(j);
-        	 cname += as.getCname(); 
-        	 tname += as.getTname();
+        	
         	 time = as.getThistime();
+        	 cause = as.getCause();
          }
          %> 
      <td align="left"> 
-        <%=cname %>
-		     </td>  
+        <%= cause%>
+		     </td>   
      <td align="left"> 
-        <%=tname %>
-		 </td>    
+        <%=time%>
+		 </td>     
 		     
-    <td><%= time %></td>
+    <td><%= o.getAs().getUname()+"<p>"+o.getAs().getPhone()  %></td>
     <td><%= o.getAs().getLocation()%></td> 
   </tr>
    

@@ -9,11 +9,28 @@ String message = "";
 List<Category> listallp = CategoryService.getList();
 String listallpp = StringUtill.GetJson(listallp); 
 
-
 if(Order.aftersalerepare == type){
-	message = "售后待处理";
+	message = "遗留数据处理"; 
+}else if(Order.aftersale == type){ 
+	message = "未上报工厂单据";  
+}else if(Order.aftersaledealcharge == type){
+	message = "工厂未结算单据"; 
+}else if(Order.aftersalesearch == type){
+	message = "售后查询"; 
+}else if(Order.aftersalerepare == type){
+	message = "系统外维修保养配工";
+}else if(Order.aftersalerepare == type){
+	message = "网点保养单待配工";
+}else if(Order.aftersalephone == type){
+	message = "当月需保养用户电话回访"; 
+}else if(Order.aftersaledealupload == type){ 
+	message = "维修保养未完成单据";
+}else if(Order.aftersalesecond == type){
+	message = "网点保养单待配工";
+}else if(Order.aftersaledeal == type){ 
+	message = "网点驳回单据";
 }
- 
+
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/meidiserver/";
  
@@ -150,7 +167,7 @@ function SearchDiv(){
     <input type="hidden" id="sear"  value=""/>
  
  <table  cellspacing="1" style="width: 95%;margin:auto"> 
-  <tr >  
+  <tr >   
    <td >
         现在位置：<%=message %> 
    &nbsp;&nbsp;&nbsp;&nbsp;
@@ -197,8 +214,8 @@ function SearchDiv(){
    <a href="javascript:void(0)" onclick="SearchDiv()"><img src="<%=basePath %>/image/search.png"  style="width:30px;height:30px;" alt="弹出广告图"/></a>
    </td>
    <td>
-   <!--<a href="<%=basePath %>Print"><font style="color:red;font-size:20px;" >导出数据</font> </a>  -->
-       <a href="javascript:void(0)" onclick="exportServelet()" ><font style="color:red;font-size:20px;" >导出数据</font></a>    
+   <!--<a href="<%=basePath %>Print"><font style="color:red;font-size:20px;" >导出数据</font> </a>  
+       <a href="javascript:void(0)" onclick="exportServelet()" ><font style="color:red;font-size:20px;" >导出数据</font></a>   -->  
    </td>
   </tr>
   </table> 

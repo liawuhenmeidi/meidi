@@ -3,6 +3,7 @@ package order;
 import gift.GiftManager;
 import group.Group; 
 import group.GroupManager;
+import group.GroupService;
  
 import inventory.InventoryBranchManager;
 
@@ -336,13 +337,13 @@ logger.info(sql);
 		}	
     	return flag;
     }
-	
+	 
 	// 判断是不是顶码
-	public static boolean Check(int oid){
+	/*public static boolean Check(int oid){
     	boolean flag = false ;
 		Connection conn = DB.getConn(); 
-		
-		
+		 
+		 
 		String	sql = "select * from mdorderproduct where statues = 1 and orderid = "+ oid;  
 		
 logger.info(sql);    
@@ -360,7 +361,7 @@ logger.info(sql);
 			DB.close(conn);
 		}	
     	return flag;
-    }
+    }*/
 	
 
 public static void updateSendstat(int statues,int sid, int oid) {
@@ -602,7 +603,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 
 	}
     
-  
+   
     public static List<Order> getOrderlist(User user ,int type,int statues ,int num,int page,String sort,String search){
 	   
 	  boolean f = UserManager.checkPermissions(user, Group.Manger);  
@@ -804,9 +805,12 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   }else if(Order.orderquery == statues){  
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )      "+search+"  order by "+sort+str;    
 				   }         
-			   }else if(Group.aftersalerepare == type){
-				   if(Order.aftersalerepare == statues){ 
-					   sql = "select * from mdorder where deliveryStatues in (2) and id in (select orderid from mdorderproduct where issubmit is null)"+search+"  order by "+sort+str;
+			   }else if(Group.aftersalerepare == type){  
+				   String prodectsp = GroupService.getidMap().get(user.getUsertype()).getProducts(); 
+				  String pp = prodectsp.replace("_", ",");  
+				   if(Order.aftersalerepare == statues){  
+					    
+					   sql = "select * from mdorder where deliveryStatues in (2) and id in (select orderid from mdorderproduct where issubmit is null and categoryID in ( "+pp+" ))"+search+"  order by "+sort+str;
 				   } 
 			   }                    
 	    }      
@@ -986,12 +990,12 @@ logger.info(sql);
 					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+"  and (deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )  and printSatuesp = 1    "+search ; 
 				   }    
 			   }else if(Group.aftersalerepare == type){
+				      String prodectsp = GroupService.getidMap().get(user.getUsertype()).getProducts(); 
+					  String pp = prodectsp.replace("_", ",");  
 				   if(Order.aftersalerepare == statues){
-					   sql = "select count(*) from mdorder where deliveryStatues in (2) and id in (select orderid from mdorderproduct where issubmit is null) "+search ; 
+					   sql = "select count(*) from mdorder where deliveryStatues in (2) and id in (select orderid from mdorderproduct where issubmit is null and categoryID in ( "+pp+" ) ) "+search ; 
 				   }
-			   }                       
-
-				
+			   }                        
 	    }       
   	  if("".equals(sql)){ 
   		   count =  0; 

@@ -274,7 +274,8 @@ $(function () {
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >导购提成</td><td width=25% >可对比提交<input type="checkbox" value="31-w" name = "permission" id="p31-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="31-r" name = "permission" id="p31-r" /></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装网点结款标准:</td><td width=25% >可操作<input type="checkbox" value="32-w" name = "permission" id="p32-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="32-r" name = "permission" id="p32-r" /></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装网点结款:</td><td width=25% >计算和确认<input type="checkbox" value="30-w" name = "permission" id="p30-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="30-r" name = "permission" id="p30-r" /></td></tr> 
-        	
+        <tr class="asc"  onclick="updateClass(this)"><td width=25% >型号与门店转化:</td><td width=25% >计算和确认<input type="checkbox" value="38-w" name = "permission" id="p38-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="38-r" name = "permission" id="p38-r" /></td></tr>  
+         	
         <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>售后服务类权限</td><td></td></tr></table></td></tr> 
           
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >上报厂家安装单:</td><td width=25% >可上报<input type="checkbox" value="35-w" name = "permission" id="p35-w" /></td><td width=25% >可确认上报<input type="checkbox" value="35-q" name = "permission" id="p35-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="35-r" name = "permission" id="p35-r" /></td></tr> 
@@ -360,7 +361,8 @@ $(function () {
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >导购提成</td><td width=25% >可对比提交<input type="checkbox" value="31-w" name = "permission" id="p31-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="31-r" name = "permission" id="p31-r" /></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装网点结款标准:</td><td width=25% >可操作<input type="checkbox" value="32-w" name = "permission" id="p32-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="32-r" name = "permission" id="p32-r" /></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >安装网点结款:</td><td width=25% >计算和确认<input type="checkbox" value="30-w" name = "permission" id="p30-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="30-r" name = "permission" id="p30-r" /></td></tr> 
-    
+    <tr class="asc"  onclick="updateClass(this)"><td width=25% >型号与门店转化:</td><td width=25% >计算和确认<input type="checkbox" value="38-w" name = "permission" id="p38-w" /></td><td width=25% ></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="38-r" name = "permission" id="p38-r" /></td></tr>  
+         
          <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>售后服务类权限</td><td></td></tr></table></td></tr> 
           
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >上报厂家安装单:</td><td width=25% >可上报<input type="checkbox" value="35-w" name = "permission" id="p35-w" /></td><td width=25% >可确认上报<input type="checkbox" value="35-q" name = "permission" id="p35-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="35-r" name = "permission" id="p35-r" /></td></tr> 

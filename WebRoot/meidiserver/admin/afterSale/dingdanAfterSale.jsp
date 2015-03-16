@@ -9,7 +9,7 @@
  String href = "";
  if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
 	 href = "adddetail.jsp";
- }else { 
+ }else {  
 	 href = "dingdansubmit.jsp";
  }
    
@@ -33,15 +33,15 @@ position:fixed;
     margin:0;
     padding:0;
 }
-#table{  
-    width:1700px;
+#table{   
+    width:1300px;
     table-layout:fixed ;
 }
 
-#th{  
+#th{   
     background-color:white;
     position:absolute;  
-    width:1700px; 
+    width:1300px; 
     height:30px;
     top:0;
     left:0;
@@ -69,18 +69,17 @@ position:fixed;
 <jsp:include flush="true" page="page.jsp"> 
 	<jsp:param name="type" value="<%=statues%>"/> 
 </jsp:include> 
-<%
-if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
-%> 
-   
 <div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<% 
+if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
+%> 
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=AfterSale.typeupdate%>')"></input> 
  <input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=AfterSale.cannotupload%>')"></input> 
-&nbsp;&nbsp;&nbsp;   
-</div>  
 
 <% }%>
+<input type="submit" class="button" name="dosubmit" value="修改" onclick="clickdetail()"></input> 
+</div>  
 </div > 
 <div style="height:100px;">
 </div>
@@ -117,11 +116,33 @@ function searchlocate(id){
 
 }
 
-  
+   
 function detail(id,statues){ 
 	winPar=window.open(href+'?id='+id+'&statues='+statues, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
  
+function clickdetail(){
+	var attract = new Array();
+	var i = 0;
+	
+	$("input[type='radio'][name='id']").each(function(){          
+   		if($(this).attr("checked")){
+   				var str = this.value; 
+   				
+   				if(str != null  &&  str != ""){
+	   				   attract[i] = str; 
+		   	            i++;
+	   				}	
+   		} 
+   	}); 
+	
+	if(attract.toString() == ""){
+		return ;
+	}else {
+		detail(attract.toString(),""); 
+	}
+	
+}
 
 function winconfirm(typestatues){
 	var question = confirm("你确认要执行此操作吗？");	
@@ -140,25 +161,15 @@ function winconfirm(typestatues){
 	   		}
 	   	});   
          
-		if(1 == typestatues){
-			detail(attract.toString(),typestatues);
-		}else {
-			window.location.href="../../AfterSaleServlet?method=cannotupdate&id="+attract.toString();
+		if(attract.toString() == ""){
+			return ;
+		}else { 
+			if(1 == typestatues){  
+				detail(attract.toString(),typestatues);
+			}else {
+				window.location.href="../../AfterSaleServlet?method=cannotupdate&id="+attract.toString();
+			}
 		}
-		
-		//alert(attract.toString());
-		//$.ajax({ 
-		//	type: "post",   
-	     //    url: "../../user/OrderServlet", 
-	      //   data:"method=updateaftersale&orderid="+attract.toString()+"&statues="+typestatues,
-	      //   dataType: "",   
-	       //  success: function (data) {
-	       // 	 initOrder(type,statues,num,page,sort,sear);
-	       //    }, 
-	        // error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	        //	 alert("操作失败"); 
-	       //     } 
-	        //   });
 	}
 }
 
@@ -173,23 +184,21 @@ function winconfirm(typestatues){
 			<td align="center">单号</td> 
 			<td align="center">顾客姓名</td>
 			<td align="center">顾客电话</td>
-			<td align="center">安装单位</td>
-			<td align="center">安装单位电话</td>
 			<td align="center" >设备类别</td> 
+			
 			<td align="center" >设备型号</td> 
 			<td align="center" >设备数量</td>
-			
 			<td align="center" >批号</td> 
 			<td align="center" >条码</td>
+			
 			<td align="center">地址</td> 
-			<td align="center">单据类型</td>
+			
             <td align="center">安装日期</td>
             <td align="center">预约日期</td>
-            <td align="center" >是否上报厂家（美的）</td>
             <td align="center" >备注</td>
 		</tr>
 		 
-	      <% 
+	      <%  
               String tdcol = "bgcolor=red" ;
 	      %>
 				

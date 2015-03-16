@@ -30,6 +30,8 @@ import utill.TimeUtill;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import aftersale.AfterSaleManager;
+
 /**
  * 核心请求处理类
  * 
@@ -329,7 +331,7 @@ public class LogisticsServlet extends HttpServlet {
 			}
 			return count ;
 			 
-		} 
+		}  
 		
 		// 导购同意安装网点释放 
 				public synchronized int returns(User user , Order order , String uid,String method){
@@ -372,12 +374,12 @@ public class LogisticsServlet extends HttpServlet {
 				listsql.add(sql);
 			    if( DBUtill.sava(listsql)){
 			    	count = 1 ;
-			    }
+			    } 
 			}
 		}
 		return count ;
-		 
-	} 
+		   
+	}  
 	
 	public synchronized int songhuo(User user , Order order , String devstatues,String method,String json){
 		int count = -1 ;
@@ -387,11 +389,13 @@ public class LogisticsServlet extends HttpServlet {
 			int statues = Integer.valueOf(devstatues);
 			List<String> listsql = new ArrayList<String>();
 			List<String> listop = new ArrayList<String>();
+			List<String> listaf = new ArrayList<String>();
 			if(order.getOderStatus().equals(20+"")){
 				if(order.getDeliveryStatues() != 1 && order.getDeliveryStatues() != 2){
 					if((2 == statues || 1 == statues )){
-						if(2 == statues){
+						if(2 == statues){   
 							listop = OrderProductManager.getsql(json);
+							listaf = AfterSaleManager.saveByOrderList(user,order,json); 
 							sql = "update mdorder set deliveryStatues = "+statues+" , deliverytype = 1 , sendTime = '"+TimeUtill.gettime()+"' , installTime = '"+TimeUtill.gettime()+"' , installid = mdorder.sendId   where id = " + order.getId();
 						}else if(1 == statues){ 
 							sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 ,  printSatuesp = 0 , sendTime = '"+TimeUtill.gettime()+"'  where id = " +order.getId();
@@ -404,14 +408,16 @@ public class LogisticsServlet extends HttpServlet {
 				    }
 				}else if(order.getDeliveryStatues() == 1 && statues != 1){
 					statues = 2 ;
+					
 					listop = OrderProductManager.getsql(json);
+					listaf = AfterSaleManager.saveByOrderList(user,order,json); 
 					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
-				}
-				
+				} 
 		    }else {
 		    	if(2 == statues){
 					sql = "update mdorder set deliveryStatues = "+statues+" , deliverytype = 1 , sendTime = '"+TimeUtill.gettime()+"' , installTime = '"+TimeUtill.gettime()+"' , installid = mdorder.sendId   where id = " + order.getId();
 				    listop = OrderProductManager.getsql(json);
+				    listaf = AfterSaleManager.saveByOrderList(user,order,json); 
 		    	}else if(1 == statues) {  
 					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 ,  printSatuesp = 0 , sendTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
 				}else if( 4 == statues ){
@@ -419,6 +425,8 @@ public class LogisticsServlet extends HttpServlet {
 					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
 				}else if( 9 == statues || 10 == statues){
 					listop = OrderProductManager.getsql(json);
+					 
+					listaf = AfterSaleManager.saveByOrderList(user,order,json); 
 					statues = 2 ;    
 					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
 				} 
@@ -429,8 +437,14 @@ public class LogisticsServlet extends HttpServlet {
 				if(null != listop){
 					listsql.addAll(listop);
 				}
+				 
+				if(null != listaf){ 
+					listsql.addAll(listaf);
+				}
 				
 			}
+			  
+			//logger.info(listsql);
 			    if( DBUtill.sava(listsql)){
 			    	count = 1 ;
 			    }

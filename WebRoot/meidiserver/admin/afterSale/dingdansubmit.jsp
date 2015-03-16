@@ -8,11 +8,9 @@ String clist = StringUtill.GetJson(list);
 HashMap<String,ArrayList<String>> listt = ProductService.gettypeName();
  
 String plist = StringUtill.GetJson(listt);
-
+ 
 String id = request.getParameter("id");
-
-
-AfterSale af = null ; 
+AfterSale af = new AfterSale() ;  
 String strorder= null; 
 
 if(!StringUtill.isNull(id)){   
@@ -252,7 +250,7 @@ if(!StringUtill.isNull(id)){
 
 <div style="height:70px;">
 </div> 
-  
+   
 <form action="../../user/OrderServlet"  method ="post"  id="form"   onsubmit="return checkedd()"  > 
 <!--  头 单种类  -->   
 

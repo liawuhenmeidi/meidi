@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
 <%@ include file="searchdynamic.jsp"%>
- 
+  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -154,12 +154,19 @@ function AddPOS(printid,oid){
 
 <div id="headremind">
 <jsp:include page="headremind.jsp"/>
-</div>
 
-<div class="btn">
+</div>
+<%  
+//System.out.println(UserManager.checkPermissions(user, Group.tuihuo,"q")+user.getPositions());
+if(UserManager.checkPermissions(user, Group.tuihuo,"q")){
+	%>   
+	<div class="btn"> 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <input type="submit" class="button" name="dosubmit" value="忽略确认" onclick="winconfirm()"></input>  
 </div>
+	<%
+} %>
+
 
 </div > 
 <div style=" height:120px;">
@@ -206,8 +213,8 @@ function AddPOS(printid,oid){
         <tr class="bsc">
 		<td align="center" colspan=2>
 		  <label id="addprintid"></label>
-		</td>	
-		</tr>
+		</td> 	
+		</tr> 
 		<tr class="bsc">
 		<td align="center" >
 		   pos单号:<input type="text" id="realpos"  placeholder="必填"/>
@@ -216,13 +223,14 @@ function AddPOS(printid,oid){
 		   退货日期:<input type="text" id="saledate" onclick="new Calendar().show(this);" placeholder="必填"/>
 		</td>	 
 		</tr> 
+		<% if(UserManager.checkPermissions(user, Group.tuihuo,"q")){%>
 		<tr class="bsc">
-		
+		   
 		    <td class="center" ><input type="button" onclick="$('#addpos').css('display','none');"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="取消" /></td>
 		
 			<td class="center" ><input type="button" onclick="saveAddPOD()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="确定" /></td>
 		</tr>
-	
+	<%} %>
 </table> 
 </div>
 </div>

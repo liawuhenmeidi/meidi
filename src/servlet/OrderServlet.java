@@ -21,6 +21,7 @@ import aftersale.AfterSale;
 import aftersale.AfterSaleManager;
 import aftersale.AfterSaleProduct;
 import aftersale.AfterSaleProductManager;
+import aftersale.AftersaleAllManager;
 
 import category.Category;
 import category.CategoryManager;
@@ -514,7 +515,7 @@ public class OrderServlet extends HttpServlet {
     private void saveaftersale(HttpServletRequest request, HttpServletResponse response){
     	try{ 
     	        boolean flag = true ;
-    	        boolean isreturn = true ;
+    	        boolean isreturn = true ; 
 	    	      //处理请求，并执行resetToken方法，将session中的token去除
     	        User user  = (User)request.getSession().getAttribute("user");
     	        String href = "../admin/afterSale/dingdansubmit.jsp";
@@ -528,23 +529,27 @@ public class OrderServlet extends HttpServlet {
 		        String batchNumber = request.getParameter("orderbatchNumber");
 		        String barcode = request.getParameter("orderbarcode");
 		        String andate = request.getParameter("andate");
+		        
 		        String saledate = request.getParameter("saledate");
+		        
 		        String location = request.getParameter("locations");
 		        String remark = request.getParameter("remark");
 		        String fault = request.getParameter("fault");
-		        String statues = request.getParameter("statues");
+		        String statues = request.getParameter("statues"); 
 		        String pritlnid = request.getParameter("printid");
 		        String ptype= request.getParameter("ptype");
+		        String opid = request.getParameter("opid");
 		        
 		        if(StringUtill.isNull(pritlnid)){
 		        	pritlnid = "T"+TimeUtill.gettimeString();  
 		        }  
-		        
+		          
 		        if(StringUtill.isNull(ptype)){
 		        	ptype = AfterSale.updateOrder+"";
-		        }
-		        int submitid = user.getId();
+		        } 
+		        int submitid = user.getId(); 
 		        String branch = user.getBranch();
+		        
 		        int maxid = AfterSaleManager.getMaxid();
  
 		        if(!StringUtill.isNull(oid)){
@@ -557,16 +562,23 @@ public class OrderServlet extends HttpServlet {
 		        	
 		        } 
 		        
+		        if(0 == maxid){
+		        	maxid = 1 ;  
+		        }
 		         logger.info(maxid); 
 		         
 		        String submit = TimeUtill.getdateString();
 		        AfterSale af = new AfterSale();
-
+		        if(!StringUtill.isNull(opid)){
+		        	af.setOpid(Integer.valueOf(opid));
+		        } 
+                  
 		        af.setId(maxid);
 		        af.setUname(uname);
 		        af.setPhone(phone);
 		        af.setCid(Integer.valueOf(cid));
-		        af.setTid(ProductService.gettypemap().get(tname).getId());
+		       // logger.info(tname); 
+		        //af.setTid(ProductService.gettypemap().get(tname).getId());
 		        af.settName(tname);
 		        af.setBarcode(barcode);
 		        af.setBatchNumber(batchNumber);
@@ -586,6 +598,7 @@ public class OrderServlet extends HttpServlet {
 		        	af.setStatues(Integer.valueOf(statues)); 
 		        	af.setStatuestime("'"+TimeUtill.getdateString()+"'");
 		        }
+		        
 			    if("fault".equals(typemethod)){ 
 			    	af.setStatues(AfterSale.typeupdate);
 			    	String uid= request.getParameter("uid");
@@ -601,56 +614,90 @@ public class OrderServlet extends HttpServlet {
 			    	listas.addAll(listsp);  
 			    	href = "../admin/afterSale/dingdansubmitfault.jsp";
 				}else if("maintain".equals(typemethod)){
-					
+					 
+					af.setStatues(AfterSale.typeupdate);  
+			    	String uid= request.getParameter("uid"); 
+			    	String thistime = "'"+request.getParameter("thistime")+"'";
+			    	String nexttime = request.getParameter("nexttime");
+			    	if(!StringUtill.isNull(nexttime)){
+			    		nexttime = "'"+nexttime+"'";
+			    	}else {
+			    		nexttime = null;
+			    	} 
+			    	  
+			    	af.setNexttime(nexttime); 
 					String[] producs = request.getParameterValues("product");
 					
 					if(null != producs){
-						af.setStatues(AfterSale.typeupdate);
-				    	String uid= request.getParameter("uid");
-				    	String nexttime = "'"+request.getParameter("nexttime")+"'";
-				    	String thistime = "'"+request.getParameter("thistime")+"'";
-				        af.setNexttime(nexttime); 
 					    // 送货状态     
 					for(int i=0;i<producs.length;i++){		
 						AfterSaleProduct asp = new AfterSaleProduct();
 						String ccid = request.getParameter("ordercategory"+producs[i]);
 						String ttname = request.getParameter("ordertype"+producs[i]);
-						logger.info(ttname); 
+						//logger.info(ttname); 
 						int tid = ProductService.gettypemap().get(ttname).getId(); 
-						logger.info(tid); 
+						//logger.info(tid); 
 						asp.setAsid(maxid); 
-						logger.info(maxid);     
+						//logger.info(maxid);     
 				    	asp.setCid(Integer.valueOf(ccid));
 				    	asp.setTid(tid);
-				    	asp.setType(AfterSaleProduct.maintain);
+				    	//asp.setType(AfterSaleProduct.maintain);
 				    	if(!StringUtill.isNull(uid)){
 				    		asp.setDealid(Integer.valueOf(uid)); 
-				    	} 
-				    	
+				    	}   
+				    	   
 				    	asp.setNexttime(nexttime); 
 				    	asp.setThistime(thistime); 
+				    	asp.setCause(fault); 
 				    	List<String> listsp = AfterSaleProductManager.getsaveSQL(user, asp);
 				    	listas.addAll(listsp);  
 					}
+				}else {
+					AfterSaleProduct asp = new AfterSaleProduct();
+			    	asp.setAsid(maxid); 
+		 
+			    	asp.setCause(fault); 
+			    	//asp.setType(AfterSaleProduct.maintain);
+			    	asp.setDealid(Integer.valueOf(uid)); 
+			    	asp.setThistime(thistime); 
+			    	List<String> listsp = AfterSaleProductManager.getsaveSQL(user, asp);
+			    	listas.addAll(listsp); 
+
 				}
 					  
 				 href = "../admin/afterSale/dingdansubmitmaintain.jsp";
 				  
 				}else if("adddetail".equals(typemethod)){
 					String nexttime= request.getParameter("nexttime");
-					if(!StringUtill.isNull(nexttime)){
-						af.setNexttime("'"+nexttime+"'"); 
-					} 
+					if("1".equals(statues)){
+						if(!StringUtill.isNull(nexttime)){
+							af.setNexttime("'"+nexttime+"'"); 
+					    	AftersaleAllManager.updatestatuesmatain(oid);   
+						}  
+					}else if("2".equals(statues)){
+						AftersaleAllManager.chargestatuesmatain(oid); 
+					}
+					
 					//logger.info("nexttime"+nexttime);
-					
-					
+ 
+				}else { 
+					AfterSaleProduct asp = new AfterSaleProduct();
+					asp.setAsid(maxid);     
+					asp.setType(AfterSaleProduct.install);
+					asp.setResult(AfterSaleProduct.success);
+					//asp.setDealid(or.getDealsendId());
+					//asp.setDealsendid(!StringUtill.isNull(or.getSendId()+"")?or.getSendId():or.getInstallid());
+					  asp.setDealid(user.getId()); 
+					List<String> listsql1 = AfterSaleProductManager.getsaveSQL(user, asp);  
+					listas.addAll(listsql1); 
 				}
-			     
+			      
 			   
 			    List<String> listsql = AfterSaleManager.getsaveSQL(user, af);   
 				listas.addAll(listsql);
 				if(flag){
-					 DBUtill.sava(listas); 
+					 DBUtill.sava(listas);
+					 isreturn = false ; 
 				}
 			   
 		        try {   
@@ -660,10 +707,10 @@ public class OrderServlet extends HttpServlet {
 		        		int mark = -1 ;
 		        		if(flag){
 		        			mark = RemarkUtill.success;
-		        		}else { 
+		        		}else {  
 		        			mark = RemarkUtill.nopermission;
 		        		} 
-		        		response.sendRedirect("../jieguo.jsp?type=update&mark="+mark); 
+		        		response.sendRedirect("../jieguo.jsp?type=updated&mark="+mark); 
 		        	} 
 				} catch (IOException e) { 
 					e.printStackTrace(); 
@@ -676,57 +723,68 @@ public class OrderServlet extends HttpServlet {
     }
     
     private void queryaftersale(HttpServletRequest request, HttpServletResponse response){
-    	try{ 
+    	try{  
 	    	      //处理请求，并执行resetToken方法，将session中的token去除
     	        User user  = (User)request.getSession().getAttribute("user");
 		        String orderid = request.getParameter("orderid");
 		        String statues = request.getParameter("statues");
-		        List<Order> list = OrderManager.getListByids(orderid);
-		        List<String> listas = new ArrayList<String>(); 
-			   	HashMap<Integer,Category> categorymap = CategoryService.getmap();
-			   	Map<Integer, Product> pmap = ProductService.getIDmap();
+		          
+		        String[] orderids = orderid.split(","); 
+		        for(int i=0;i<orderids.length;i++){
+		        	String ordid = orderids[i];
+		        	String[] oids = ordid.split("_");
+		        	String oid = oids[1];
+		        	//String opid = oids[0];
+		            Order or = OrderManager.getOrderID(user, Integer.valueOf(oid));
+		            List<String> listas = new ArrayList<String>(); 
+		            AfterSaleManager.saveByOrder(user,or,listas); 
 		             
-			   	String sql  = OrderProductManager.getupdateIsSubmitsql(orderid,statues);
-			   	listas.add(sql);
-			   	
-				if(null != list && OrderProduct.query == Integer.valueOf(statues)){
-					for(int i=0;i<list.size();i++){
-						Order or = list.get(i);
-						List<OrderProduct> listop = or.getOrderproduct();
-						if(null != listop){
-							for(int j=0;j<listop.size();j++){
-								OrderProduct op = listop.get(j);
-								if(op.getStatues() == 0 ){
-									AfterSale as = new AfterSale();
-									as.setPrintid(or.getPrintlnid());
-									as.setAndate(StringUtill.isNull(or.getInstalltime())==true?or.getSendtime():or.getInstalltime());
-									as.setBarcode(op.getBarcode());
-									as.setBatchNumber(op.getBatchNumber());
-									as.setBranch(or.getBranch());
-									as.setBranchName(or.getbranchName(or.getBranch()));
-									as.setCid(op.getCategoryId());
-									as.setPcount(op.getCount());
-									as.setcName(categorymap.get(op.getCategoryId()).getName());
-									as.setLocation(or.getLocateDetail());
-									as.setPhone(or.getPhone1());
-									as.setSaledate(or.getSaleTime());
-									as.setTid(Integer.valueOf(op.getSendType())); 
-									as.settName(pmap.get(Integer.valueOf(op.getSendType())).getType());
-									//System.out.println(pmap.get(Integer.valueOf(op.getSendType())).getName());
-									as.setUname(or.getUsername());
-									as.setSubmitTime(TimeUtill.getdateString());
-									as.setSubmitId(or.getDealsendId());
-									List<String> listsql = AfterSaleManager.getsaveSQL(user, as);  
-									listas.addAll(listsql);
-								}
-							}
-						}
-					}
-		       
-				}
-		        
-				DBUtill.sava(listas); 
-		        
+			        
+				   	//HashMap<Integer,Category> categorymap = CategoryService.getmap();
+				 //  	Map<Integer, Product> pmap = ProductService.getIDmap(); 
+			               
+				   	String sql  = OrderProductManager.getupdateIsSubmitsql(oid,statues);
+				   	  
+				   	listas.add(sql);
+				   	
+							/*List<OrderProduct> listop = or.getOrderproduct();
+							//logger.info(listop);  
+							if(null != listop){ 
+								for(int j=0;j<listop.size();j++){
+									OrderProduct op = listop.get(j);
+									if(op.getStatues() == 0 && op.getId() == Integer.valueOf(opid)){
+										AfterSale as = new AfterSale(); 
+										 
+										as.setOpid(op.getId()); 
+										as.setPrintid(or.getPrintlnid()); 
+										as.setAndate(StringUtill.isNull(or.getInstalltime())==true?or.getSendtime():or.getInstalltime());
+										as.setBarcode(op.getBarcode());
+										as.setBatchNumber(op.getBatchNumber());
+										as.setBranch(or.getBranch());
+										as.setBranchName(or.getbranchName(or.getBranch()));
+										as.setCid(op.getCategoryId());
+										as.setPcount(op.getCount());
+										as.setcName(categorymap.get(op.getCategoryId()).getName());
+										as.setLocation(or.getLocateDetail());
+										as.setPhone(or.getPhone1());
+										as.setSaledate(or.getSaleTime()); 
+										as.setTid(Integer.valueOf(op.getSendType())); 
+										as.setStatues(Integer.valueOf(statues));   
+										as.settName(pmap.get(Integer.valueOf(op.getSendType())).getType());
+										//System.out.println(pmap.get(Integer.valueOf(op.getSendType())).getName());
+										as.setUname(or.getUsername());
+										as.setSubmitTime(TimeUtill.getdateString());
+										as.setSubmitId(or.getDealsendId());
+										
+										logger.info(as.getOpid()); 
+										 
+										List<String> listsql = AfterSaleManager.getsaveSQL(user, as);  
+										listas.addAll(listsql);
+									}
+								} 
+							}*/ 
+					DBUtill.sava(listas); 
+		        }  
     	}catch(Exception e){  
     		e.printStackTrace();
     		logger.info(e);

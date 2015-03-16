@@ -34,8 +34,8 @@ import aftersale.AfterSaleProduct;
 import aftersale.AfterSaleProductManager;
 import aftersale.AftersaleAll;
 import aftersale.AftersaleAllManager;
-
-/**
+ 
+/** 
  * 核心请求处理类
  * 
  * @author 
@@ -71,7 +71,15 @@ public class AfterSaleServlet extends HttpServlet {
 	    	};
 	    }else if("maintain".equals(method)){
 	    	String sta = request.getParameter("statues");
-	    	if(maintain(user,sta,afid)){ 
+	    	String message = request.getParameter("message");
+	    	String cause = request.getParameter("cause");
+	    	
+	    	String barcode = request.getParameter("barcode");
+	    	String batchNumber = request.getParameter("batchNumber");
+	    	 
+	    	logger.info(barcode+batchNumber);
+	    	
+	    	if(maintain(user,sta,afid,message,cause,barcode,batchNumber)){ 
 	    		statues = 1;
 	    	};
 	    }else if("updatecharge".equals(method)){
@@ -167,12 +175,12 @@ public class AfterSaleServlet extends HttpServlet {
 		return count ;
 		 
 	} 
-	
-	public synchronized static boolean maintain(User user,String statues,String afid){
+	 
+	public synchronized static boolean maintain(User user,String statues,String afid,String message,String cause,String barcode,String batchNumber){
 		AftersaleAll af = AftersaleAllManager.getAfterSaleID(user, afid);
-		List<AfterSaleProduct> list = af.getAsplist();     
-		List<String> sqls = AfterSaleProductManager.getupdatemaintain(list, statues);  
-		boolean count = DBUtill.sava(sqls);  
+		List<AfterSaleProduct> list = af.getAsplist();        
+		List<String> sqls = AfterSaleProductManager.getupdatemaintain(list, statues,message,cause,barcode,batchNumber);  
+		boolean count = DBUtill.sava(sqls);   
 		return count ;
 		 
 	}

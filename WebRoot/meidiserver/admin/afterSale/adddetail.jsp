@@ -16,16 +16,24 @@ String plist = StringUtill.GetJson(listt);
 String id = request.getParameter("id");
 String statues = request.getParameter("statues"); 
 
+List<Category> listmaintain = CategoryService.getlistmaintain(); 
+String clistmaintain = StringUtill.GetJson(listmaintain);
+
 AfterSale af = null ; 
 String strorder= null;      
-  
+String listap = null;  
+
 if(!StringUtill.isNull(id)){  
 	af = AfterSaleManager.getAfterSaleID(user,id);
 	strorder = StringUtill.GetJson(af); 
+	List<AfterSaleProduct> listasp  = AfterSaleProductManager.getmaintain(af.getId(),AfterSaleProduct.pending+"");
+	listap = StringUtill.GetJson(listasp); 
+	//System.out.println(listap);
+	
 }   
 
 %> 
-    
+     
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,11 +71,12 @@ if(!StringUtill.isNull(id)){
    var json = <%=clist%>;
    var listop =  null;
    // statues 表示是否是相同顾客报装
-   
    var order = <%=strorder%>;
-
+   var jsonmaintain = <%=clistmaintain%>;
    var row = 1;  
    var rows = new Array();
+   var statues = "<%=statues%>"; 
+   var listap = <%=listap%>; 
    
    $(document).ready(function(){
 	//initphone();
@@ -93,15 +102,82 @@ if(!StringUtill.isNull(id)){
 		   
 		   $("#orderbatchNumber").val(order.batchNumber);
 		   $("#orderbarcode").val(order.barcode);
-		   
-		   $("#andate").val(order.andate); 
+		      
+		   $("#andate").val(order.andate);   
+		   $("#yuyueandate").text(order.nexttime);        
 		   $("#saledate").val(order.saledate); 
 		   $("#locations").val(order.location);
 		   $("#detail").val(order.detail);
 	   } 
 	  
+	   if(null != listap){
+		   var time = "";
+		   var thistime = "";
+		   var typeStr = "";
+		   for(var i=0;i<listap.length;i++){
+			   time = listap[i].nexttime;
+			   thistime = listap[i].thistime;
+			   addrowinit(listap[i]);    
+			   if(listap[i].result == 1){
+				   if(listap[i].type == 2 ){
+					   typeStr  = listap[i].typeStr ;
+				   }else if(listap[i].type == 3){
+					   typeStr  = listap[i].typeStr ;
+				   }  
+				   
+			   }
+		   }   
+		   $("#nexttime").val(time);
+		   $("#thistime").val(thistime);  
+		   if(thistime != "" && thistime != null){
+			  $("#yuyueandate").text(thistime);  
+		   } 
+		   $("#typeStr ").text(typeStr ); 
+	   }
+	  
    }
     
+   function addrowinit(listo){
+		//alert(JSON.parse(listo));
+	    rows.push(row);
+		var yellow = "";
+		if(row%2 == 0){
+			yellow = "#c4e1e1"; 
+		} 
+		 
+		var str =  '<tr class="bsc">' ;
+		str +=  '<td>操作内容</td>'+
+			    ' <td >单据类型</td> '+
+               ' <td >网点</td> '+
+               ' <td >人员</td> '+
+               ' <td >状态</td> '+ 
+	            '</tr>';  
+		
+		if(listo.type == 2){ 
+			str +=  '<tr class="bsc">' +
+				 '<td >'; 
+           for(var i=0;i<jsonmaintain.length;i++){
+        	   var ckeck = ""; 
+        	   var jo = jsonmaintain[i];  
+        	   if(jo.id == listo.categoryId){
+        		   str += jo.name;
+        	   }
+           } 
+           str += ' </td>';
+		 }else if(listo.type == 1 ||listo.type == 0 || listo.type == 3){
+			 str += '<td >';
+			 str += listo.cause;  
+			 str += ' </td>'; 
+		 }
+		str += ' <td  >'+listo.typeStr+'</td> ' +
+		' <td  >'+listo.dealName+'</td> ' +
+        ' <td  >'+listo.dealsendName+'</td> ' +
+               ' <td  >'+listo.resultStr+'</td> ' +
+      	   '</tr>';  
+                
+    $("#tableproductinit").append(str); 
+
+	 } 
    
    function initproductSerch(str,str2){ 
 	    cid = $(str).val(); 
@@ -117,7 +193,45 @@ if(!StringUtill.isNull(id)){
 			}) ;
        } 
 
-   
+   function addrow(listo){
+		//alert(JSON.parse(listo));
+	    rows.push(row);
+		var yellow = "";
+		if(row%2 == 0){
+			yellow = "#c4e1e1"; 
+		} 
+		     
+		var str =  '<tr id=produc'+row+ '>' +
+	               '<td>维修类别<span style="color:red">*</span></td>'+
+	               '<td ><input type="hidden" name="product" value="'+row+'"/>'+
+	               '<select class = "category" name="ordercategory'+row+'"  id="ordercategory'+row+'"  style="width:95% ">'; 
+	               for(var i=0;i<jsonmaintain.length;i++){
+	            	   var ckeck = "";
+	            	   var jo = jsonmaintain[i];  
+	            	   if(jo.id == listo.categoryId){
+	            		   str += '<option value='+jo.id+'  selected="selected" >'+jo.name+'</option>';
+	            	   }else {
+	            		   str += '<option value='+jo.id+'>'+jo.name+'</option>'; 
+	            	   }
+
+	               }
+	               str += '</select> '+
+	               ' </td>'+ 
+	               ' <td >送货型号<span style="color:red">*</span></td> '+
+	               ' <td  ><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="'+listo.tname+'" style="width:90% " /></td> ' +
+	          	   ' <td  ><input type="button"   style="color:white;background-color:#0080FF" name="" value="删除" onclick="deletes(produc'+row+','+row+')"/></td>'+
+	          	   '</tr>'; 
+	                  
+	        $("#tableproduct").append(str); 
+	        initproductSerch("#ordercategory"+row,"#ordertype"+row);
+	        row++;  
+	        } 
+	 
+	 function deletes(str,str2){
+	 	$(str).empty();
+		    rows.splice($.inArray(str2,rows),1);
+	  } 
+	 
  function checkedd(){
      
 	 var uname = $("#uname").val();
@@ -126,8 +240,8 @@ if(!StringUtill.isNull(id)){
 	 var str = $("#ordertype").val();
 	 
 	 
-	 var orderbatchNumber = $("#orderbatchNumber").val();
-	 var orderbarcode = $("#orderbarcode").val();
+	// var orderbatchNumber = $("#orderbatchNumber").val();
+	// var orderbarcode = $("#orderbarcode").val();
 	 var andate = $("#andate").val();
 	 var saledate = $("#saledate").val();
 	  
@@ -152,6 +266,7 @@ if(!StringUtill.isNull(id)){
 		 }
 	 }  
 	 
+	 /*
 	 
 	 if(str == "" || str == null || str == "null"){
 		 alert("产品型号不能为空");
@@ -174,18 +289,18 @@ if(!StringUtill.isNull(id)){
 		 }
 	 }
 	  
-	 
-	 if(orderbatchNumber == "" || orderbatchNumber == null || orderbatchNumber == "null"){
-		 alert("批号不能为空");
-		 return false;
-	 }
-     
+	 */ 
+	 //if(orderbatchNumber == "" || orderbatchNumber == null || orderbatchNumber == "null"){
+	//	 alert("批号不能为空");
+	//	 return false;
+	// }
+      
     
-	 if(orderbarcode == "" || orderbarcode == null || orderbarcode == "null"){
-		 alert("条码不能为空");
-		 return false;
-	 }
-	 
+	// if(orderbarcode == "" || orderbarcode == null || orderbarcode == "null"){
+	//	 alert("条码不能为空");
+	//	 return false;
+	// }
+	 /*
      if(andate == "" || andate == null || andate == "null"){
 		 alert("安装日期不能为空");
 		 return false;
@@ -195,19 +310,21 @@ if(!StringUtill.isNull(id)){
 		 alert("购买日期不能为空");
 		 return false;
 	 }
-		 
+		 */ 
 	 if(locations == "" || locations == null || locations == "null"){
 		 alert("详细地址不能为空");
 		 return false;
 	 } 
 	   
-	 
-	 
-	 if(nexttime == "" || nexttime == null || nexttime == "null"){
-		 alert("下次保养时间不能为空");
-		 return false;
-	 }  
-	 
+ 
+	 if(1 == statues){
+		 if(nexttime == "" || nexttime == null || nexttime == "null"){
+			 alert("下次保养时间不能为空");
+			 return false;
+		 } 
+	 } 
+	     
+	  
 	 $("#submit").css("display","none"); 
 	 window.opener.location.reload();
 	 return true ; 
@@ -280,37 +397,83 @@ if(!StringUtill.isNull(id)){
 
    <tr class="asc">
    <td>批号</td>  
-   <td><input type="text" name="orderbatchNumber" id="orderbatchNumber"   placeholder="必填" /> </td>
-   <td>条码</td> 
-   <td><input type="text" name="orderbarcode" id="orderbarcode"   placeholder="必填" /> </td> 
+   <td><input type="text" name="orderbatchNumber" id="orderbatchNumber"    /> </td>
+   <td>条码</td>  
+   <td><input type="text" name="orderbarcode" id="orderbarcode"  /> </td> 
 
    </tr> 
     <tr class="asc"> 
     
-    <td  >安装日期<span style="color:red">*</span></td>
-    <td  ><input class="date2" type="text" name="andate" id ="andate" onclick="new Calendar().show(this);"  placeholder="必填"  readonly="readonly" ></input>   </td>
+    <td  >购买日期</td> 
+    <td  ><input class="date2" type="text" name="saledate" id ="saledate" onclick="new Calendar().show(this);"   readonly="readonly" ></input>   </td>
+     
+    <td  >安装日期</td>
+    <td  ><input class="date2" type="text" name="andate" id ="andate" onclick="new Calendar().show(this);"  readonly="readonly" ></input>   </td>
    
-    <td  >购买日期<span style="color:red">*</span></td>
-    <td  ><input class="date2" type="text" name="saledate" id ="saledate" onclick="new Calendar().show(this);"  placeholder="必填"  readonly="readonly" ></input>   </td>
-
+    
  </tr>
-   <tr class="asc"> 
+  <tr class="bsc">  
+     <td colspan=4>   
+     <table id="tableproductinit"  style="width:100%;background-color:white">   
+      
+      
+      
+     </table>
+     </td>
+     
+    
+   </tr>  
+ <tr class="asc">
+     <td colspan=4> 
+     <table id="tableproduct"  style="width:100%">  
+      
+      
+      
+     </table>
+     </td>
+     
+    
+   </tr> 
+   
+   
+ 
+ <tr class="asc">     
+  <td  >预约维护日期</td>
+  <!--  
+    <td  ><input class="date2" type="text" name="yuyueandate" id ="yuyueandate" onclick="new Calendar().show(this);  readonly="readonly" ></input>   </td>
+    --> 
+   <td  ><label  id ="yuyueandate" ></label>  </td> 
+    <% if(!"1".equals(statues)){ 
+    	 
+     %>  
+       <td></td>
+       <td></td> 
+     
+    <% }else { 
+    	
+    %>
+    
+     <td  >下次保养时间<span style="color:red">*</span></td>
+    <td  ><input  type="text" name="nexttime" id ="nexttime" onclick="new Calendar().show(this)"   placeholder="必填"  readonly="readonly" ></input>   </td>
+     
+    <% }%>  
+     <!-- 
+     <td  >上报类型<span style="color:red">*</span></td>
+    <td  ><label id="typeStr" ></label></td> 
+   --> 
+    
+    <tr class="asc"> 
     <td >详细地址<span style="color:red">*</span></td>
     <td ><textarea  id="locations" name="locations" ></textarea></td>  
     <td >备注</td>
     <td ><textarea  id="remark" name="remark" ></textarea></td>
    </tr>    
-
- <tr class="asc">     
-  
-    <td  >下次保养时间<span style="color:red">*</span></td>
-    <td  ><input  type="text" name="nexttime" id ="nexttime" onclick="new Calendar().show(this)"   placeholder="必填"  readonly="readonly" ></input>   </td>
-    <td></td>
-    <td></td>
- </tr>
-   <tr class="asc"> 
+ </tr>  
+ <% if(UserManager.checkPermissions(user, Group.installOrderupload,"q") && !"2".equals(statues)){ %>
+   <tr class="asc">  
     <td colspan="4" style="background-color:orange" class="center"><input type="submit"  value="提  交" /></td>
-   </tr>
+   </tr> 
+   <% }%>
    </table>
    </div>
  <div class="center"> 

@@ -21,13 +21,13 @@ width:50px
     padding:0;
 }
 #table{  
-    width:2600px;
+    width:2800px;
      table-layout:fixed ;
 }
 #th{
     background-color:white;
     position:absolute;
-    width:2600px; 
+    width:2800px; 
     height:30px;
     top:0;
     left:0; 
@@ -57,6 +57,7 @@ var opstatues = "<%=opstatues%>";
 var type = "<%=Group.sencondDealsend%>";
   
 var flag = "<%=flag%>" ; 
+var realop;
 
 $(function () { 
 	 fixation();
@@ -104,6 +105,8 @@ function dochange(statues,oid,type,json){
            });
 }
    
+
+
 function change(str1,oid,type,printid){
 	var statues = $("#"+str1).val();
 	if(statues == 2 && flag == "true"){ 
@@ -119,7 +122,6 @@ function change(str1,oid,type,printid){
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 	            } 
 	           });
-		
 	}else {
 		dochange(statues,oid,type,"");
 	}
@@ -179,7 +181,7 @@ function orderPrint(id,statues){
            }); 
 }
 
-var realop;
+/*
 function AddPOS(printid,oid,type,statues,op){
 	realop = op ; 
 	$("#addbb td").remove();
@@ -213,10 +215,19 @@ function AddPOS(printid,oid,type,statues,op){
 		$("#addprintid").text("单号:"+printid);
 		$("#addpos").css("display","block");
 } 
+ */
  
-function saveAddPOD(){
-	var json = '[';
-	 $("#addpos").css("display","none");
+function AddPOS(printid,oid,type,statues,op){
+	    realop = op ; 
+		realoid = oid ; 
+		$("#type").val(type);
+		$("#statues").val(statues);
+		saveAddPOD();
+}  
+
+function saveAddPOD(){ 
+	var json = '['; 
+	// $("#addpos").css("display","none");
 	 var type = $("#type").val();
 	 var statues = $("#statues").val();
 	 for(var i=0;i<realop.length;i++){
@@ -224,16 +235,25 @@ function saveAddPOD(){
 			if(opp != ""){
 				var id = opp.id;
 				var barcode = $("#barcode"+id).val();
-				var batchnumber = $("#batchnumber"+id).val();
-				   if( null != barcode && barcode != "" && batchnumber != "" && null != batchnumber){
+				var batchnumber = $("#batchnumber"+id).val(); 
+				   if( null != barcode && barcode != "" || batchnumber != "" && null != batchnumber){
 					   json += '{"id":"'+id+'","barcode":"'+barcode+'","batchnumber":"'+batchnumber+'"},';
-                       
-					 }
-				   
-			}
-	 }
-   json = json.substring(0, json.length-1)+"]";
-   dochange(statues,realoid,type,json);
+                          
+					 }  
+			} 
+	 } 
+   json = json.substring(0, json.length-1); 
+   if(null == json || "" == json){ 
+	   var question = confirm("批号和条码未填写完整，是否提交？");
+		if (question != "0"){
+			dochange(statues,realoid,type,json); 
+		}
+   }else { 
+	   json =  json  +"]";
+	   dochange(statues,realoid,type,json);
+   }
+ 
+   
    
 }
 </script>
@@ -264,12 +284,18 @@ function saveAddPOD(){
 			
 			<td align="center"><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>-->
 			<td align="center">单号</td>
+			 
+			<td align="center">释放</td>
+			<td align="center">送货名称</td>
+			<td align="center">送货型号</td>
+			<td align="center">送货数量</td>
+			<td align="center">条码</td>
+			<td align="center">批号</td>
+			<td align="center">操作</td>
 			<td align="center">送货员</td>
 			<td align="center">送货时间</td>
 			<td align="center">安装员</td>
-			<td align="center">安装时间</td> 
-			<td align="center">释放</td>
-			<td align="center">操作</td>
+			<td align="center">安装时间</td>
 			<td align="center">退货员</td> 
 			<td align="center">退货</td> 
 			<td align="center">送货状态</td> 
@@ -279,10 +305,7 @@ function saveAddPOD(){
 			<td align="center">销售员</td>
 			<td align="center">顾客信息</td>
 			
-			<td align="center">送货名称</td>
 			
-			<td align="center">送货型号</td>
-			<td align="center">送货数量</td>
 			<td align="center">赠品</td>
 			<td align="center">赠品数量</td>
 			<td align="center">赠品状态</td>

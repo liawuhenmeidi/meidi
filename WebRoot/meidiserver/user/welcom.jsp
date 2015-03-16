@@ -68,12 +68,11 @@ function clear(){
    %>
    <li><a href="inventory/inventory.jsp">库存查询</a></li>
    <% 
-     } 
+     }  
    %> 
-        
-    <li><a href="<%=realPath %>maintain.jsp">保养单</a> </li> 
-    <li><a href="<%=realPath %>fault.jsp">维修单</a> </li>  
-
+    
+    <li><a href="<%=realPath %>maintain.jsp">维修保养单</a> </li> 
+ 
     <li> <a href="javascript:clear()">退出登陆</a></li>
    </ul>
   </div>   

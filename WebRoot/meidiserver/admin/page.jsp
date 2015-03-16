@@ -135,9 +135,9 @@ function pagelast(){
 	page = Math.ceil(count/num) ;
 	initOrder(type,statues,num,page,sort,sear);
 }
-
-function exportServelet(){
-	if(8 == type){
+ 
+function exportServelet(){  
+	if(8 == type || 33 == type){
 		window.location.href="../../Print?method=exportall&type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+sear;
 	}else {
 		window.location.href="../Print?method=exportall&type="+type+"&statues="+statues+"&num="+num+"&page="+page+"&sort="+sort+sear;

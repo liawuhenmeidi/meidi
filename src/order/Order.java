@@ -942,8 +942,9 @@ public String getSendType(int statues,String decollator){
 					String tempType = lists.get(g).getSaleType(); 
 					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
 					sendType += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);
-				}else {
-					String tempType = lists.get(g).getSendType(); 
+				}else { 
+					String tempType = lists.get(g).getSendType();  
+					//System.out.println(lists.get(g).getId()+tempType); 
 					tempType = ProductService.getIDmap().get(Integer.valueOf(tempType)).getType();
 					sendType += decollator + ((tempType == null || tempType.equals("null"))?"":tempType);
 				   }

@@ -109,13 +109,15 @@ if("add".equals(action)){
       <input type="hidden" name="categoryID" value="<%=categoryID%>"/>
       <input type="hidden" id="productid" name="productid" value="<%=productID%>"/>
       <input type="hidden" id="token" name="token" value="<%=token%>"/> 
-      
-     <div >    
+        
+     <div >     
         产品型号:<input type="text"  id="name" name="name"  value="<%=p.getType()%>"/> <br /> 
         产品体积:<input type="text"  id="size" name="size"  value="<%=p.getSize()%>"/>  <br />  
         最低售价:<input type="text"  id="stockprice" name="stockprice"  value="<%=p.getStockprice()%>"/>  <br /> 
+
+        <%   if(UserManager.checkPermissions(user, Group.addprodoct,"w")){ %>
     <input type="submit" value="提  交" />
-     
+     <%} %> 
      </div>
  </form>
 

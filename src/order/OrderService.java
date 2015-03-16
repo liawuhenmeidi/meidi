@@ -2889,13 +2889,7 @@ public class OrderService {
 				
 				html.append("<td align=\"center\"><a href=\"javascript:void(0)\" onclick=\"adddetail('../dingdanDetail.jsp?id="+o.getId()+"')\" > "+(o.getPrintlnid() == null?"":o.getPrintlnid())+"</a></td>");
 				
-				html.append("<td align=\"center\" >"+o.getsendName() +" </td>");
 				
-				html.append("<td align=\"center\" >"+o.getSendtime() +" </td>");
-				
-				html.append("<td align=\"center\" >"+o.getinstallName() +" </td>");
-				
-				html.append("<td align=\"center\" >"+o.getInstalltime() +" </td>");
 				
 				 html.append("<td align=\"center\">");
 			     boolean query = true;
@@ -2927,9 +2921,31 @@ public class OrderService {
 						
 					}
 			  
-				html.append("</td>"); 
-					 
-			   html.append("<td align=\"center\">");
+				html.append("</td>");  
+				
+				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>"); 
+			    
+				html.append("<td align=\"center\" ><input type=\"hidden\" id=\"orderproduct"+o.getId()+"\"  value="+o.getSendTypejson(0)+"/>"+o.getSendType(0,"</p>|")+"</td>");
+				
+				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
+				
+				List<OrderProduct> ops = o.getOrderproduct();
+				String barcode = ""; 
+				String batchnumber = ""; 
+				for(int m=0;m<ops.size();m++){
+					OrderProduct op = ops.get(m);
+					if(op.getStatues() == 0){
+						barcode += "<input style=\"width:80%;\" id=\"barcode"+op.getId()+"\" type=\"text\" placeholder=\"安装产品必填\" >";
+						batchnumber += "<input style=\"width:80%;\" id=\"batchnumber"+op.getId()+"\" type=\"text\" placeholder=\"安装产品必填\" >"; 
+				 
+					}
+						} 
+				//id="barcode'+opp.id+'"
+				html.append("<td align=\"center\">"+barcode+"</td>" );
+				  
+				html.append("<td align=\"center\">"+batchnumber+"</td>"); 
+				  
+			   html.append("<td align=\"center\">"); 
 			 
 			    if(o.getReturnid() == 0 && o.getOstatues().releasedispatch != 0  && o.getOstatues().totalshifang != 0){ 
 			        if(o.getDeliveryStatues() == 0 || 9 == o.getDeliveryStatues()){
@@ -2960,6 +2976,13 @@ public class OrderService {
 			    }
 			     
 			    html.append(" </td>");
+                html.append("<td align=\"center\" >"+o.getsendName() +" </td>");
+				
+				html.append("<td align=\"center\" >"+o.getSendtime() +" </td>");
+				 
+				html.append("<td align=\"center\" >"+o.getinstallName() +" </td>");
+				
+				html.append("<td align=\"center\" >"+o.getInstalltime() +" </td>");
 			    html.append("<td align=\"center\">"); 
 					
 			   
@@ -2993,7 +3016,7 @@ public class OrderService {
 				   html.append("<td class=\"s_list_m\"></td>"); 
 
 			   }
- 
+  
 			    html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
 			    
 			    html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
@@ -3010,11 +3033,7 @@ public class OrderService {
 				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
 				
 			    
-				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>"); 
-				    
-				html.append("<td align=\"center\" ><input type=\"hidden\" id=\"orderproduct"+o.getId()+"\"  value="+o.getSendTypejson(0)+"/>"+o.getSendType(0,"</p>|")+"</td>");
 				
-				html.append("<td align=\"center\" >"+ o.getSendCount(0,"</p>")+"</td>");
 				
 				html.append("<td align=\"center\" >"+ o.getGifttype("</p>")+"</td>");
 				
@@ -3390,7 +3409,7 @@ public class OrderService {
 						if(op.getStatues() == 0 ){
 							AfterSale as = new AfterSale();
 							as.setOriedid(or.getId());
-							as.setId(or.getId()); 
+							as.setId(op.getId());      
 							as.setPrintid(or.getPrintlnid());
 							as.setAndate(StringUtill.isNull(or.getInstalltime())==true?or.getSendtime():or.getInstalltime());
 							as.setBarcode(op.getBarcode());
@@ -3591,8 +3610,8 @@ public class OrderService {
 					   
 				   }else if(o.getDealsendId() == 0 && Integer.valueOf(o.getOderStatus()) == 8 && o.getPrintSatues() == 0){
 					   if(UserManager.checkPermissions(user, Group.dealSend, "w")){
-						   if(OrderManager.Check(o.getId())){ 
-							     
+						   if(StringUtill.isNull(o.getSendType(1, ""))){  
+							      
 							   html.append("<input type=\"button\" onclick=\"changepeidan('2','"+o.getId()+"','"+Integer.valueOf(o.getOderStatus())+"','"+o.getSendType(0,"</p>")+"','"+o.getSaleID()+"')\"  value=\"打印\"/>"); 
 							   html.append("&nbsp;&nbsp;&nbsp");
 							  

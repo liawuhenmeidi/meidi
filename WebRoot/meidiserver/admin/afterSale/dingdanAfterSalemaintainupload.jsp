@@ -6,7 +6,7 @@
 	  // 网点配工
 	 statues = Order.aftersaledealupload+"";
  }  
- 
+  
  String list = StringUtill.GetJson(UserService.getjsuser(listS ));  
   
 %>   
@@ -29,17 +29,17 @@ position:fixed;
     margin:0;
     padding:0;
 } 
-#table{  
-    width:2000px;
+#table{   
+    width:1500px;
     table-layout:fixed ;
 }
 
 #th{   
     background-color:white;
     position:absolute; 
-    width:2000px; 
+    width:1500px; 
     height:30px;
-    top:0;
+    top:0;  
     left:0;
 }
 #wrap{
@@ -65,13 +65,14 @@ position:fixed;
 <jsp:include flush="true" page="page.jsp"> 
 	<jsp:param name="type" value="<%=statues%>"/> 
 </jsp:include> 
-
+<!-- 
 <div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=AfterSale.typeupdate%>')"></input> 
 &nbsp;&nbsp;&nbsp;   
 </div> 
- 
+  -->
+  
 </div > 
 <div style="height:100px;">
 </div>
@@ -163,7 +164,7 @@ function winconfirm(typestatues){
 	   		}
 	   	});   
             
-		 alert(attract.toString());
+		
 		$.ajax({    
 	        type: "post",      
 	         url: "../../AfterSaleServlet",  
@@ -181,6 +182,10 @@ function winconfirm(typestatues){
            } 
 }
  
+function detail(id,statues){  
+	winPar=window.open('adddetail.jsp?id='+id+'&statues='+statues, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+}
+
 </script>
 
  
@@ -192,21 +197,23 @@ function winconfirm(typestatues){
 			<td align="center">单号</td> 
 			<td align="center">顾客姓名</td>
 			<td align="center">顾客电话</td>
+			<!--  
 			<td align="center">安装单位</td>
 			<td align="center">安装单位电话</td>
+			--> 
+			
 			<td align="center" >设备类别</td> 
+			
 			<td align="center" >设备型号</td> 
+			<td align="center" >保养维修内容</td> 
 			<td align="center" >保养类别</td> 
 			<td align="center" >保养型号</td> 
-			<td  align="center">安装网点</td> 
-			<td  align="center">维修人员</td> 
+			<td  align="center">维护网点</td>  
+			
+			<td  align="center">维护人员</td>  
 			<td align="center" >批号</td> 
 			<td align="center" >条码</td>
 			<td align="center">地址</td> 
-			<td align="center">单据类型</td>
-            <td align="center">安装日期</td>
-            <td align="center">预约日期</td>
-            <td align="center" >是否上报厂家（美的）</td>
             <td align="center" >备注</td>
 		</tr>
 		 

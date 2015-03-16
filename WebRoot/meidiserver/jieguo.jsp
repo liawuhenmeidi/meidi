@@ -34,16 +34,16 @@ String mark = request.getParameter("mark");
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-</head>
+</head> 
 
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
 var type = '<%=type%>';
 
-$(function () { 
+$(function () {  
 	if("updated" == type){
-		
-		checkedd();
+		//alert(1);
+		checkedd(); 
 	}
 	
 });

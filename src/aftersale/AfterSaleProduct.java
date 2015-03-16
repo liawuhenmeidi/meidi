@@ -8,38 +8,59 @@ import utill.StringUtill;
 public class AfterSaleProduct {
 	public static int fault = 1 ;   // 维修 
 	public static int maintain = 2;  // 保养
-	
-	public static int pending = 0;  //待处理
-	public static int success = 1;  //处理完  
-	public static int Failure = 2;  //失败 
+	public static int fm  = 0;  //  类型未知
+	public static int install = 3;  // 安装上报
+	        
+	public static int pending = 0;  //待处理  
+	public static int success = 1;  //处理完   
+	public static int uploaded = 2; //已上报 
+	public static int charged = 3; //已结款
 	 
-   private int id ;
-   private int asid ;   // 售后单id
+   private int id ;  
+   private int asid ;   // 售后单id 
    private int type ;  //  1 维修单   2  保养单
    private String cause ;  // 故障原因
-   private int cid ;
-   private String cname ; 
+   private int cid ; 
+   private String cname ;  
    private int tid ;
-   private String tname ; 
+   private String tname ;  
    private double prince ; 
    private int dealid;
-   private String dealName;
+   private String dealName; 
    private int dealsendid;
    private String dealsendName;
-   private String dealtime ; 
-   private int result;  //   
-   private int statues ;  // 处理结果          1   安装网点驳回      2 维修人员驳回
+   private String dealtime ;   
+   private int result;  //    1 已处理  2 已上报    3  已结款
+   private int statues ;  // 处理结果        0 待处理  1   安装网点驳回      2 维修人员驳回 
    private String detail ;   // 处理备注  
    private String nexttime;   // 下次处理时间 
    private String thistime;   // 此次维护处理时间    
    private String resultStr;   
-    
-   public String getResultStr() {
+   private String typeStr ;
+   
+   public String getTypeStr() { 
+	   if(type == 0 ){  
+		   typeStr = "类型未知";
+	   }else if(type == 1){  
+		   typeStr = "维修";
+	   }else if(type == 2){ 
+		   typeStr = "保养";  
+	   }else if(type == 3){
+		   typeStr = "安装上报"; 
+	   }
+	return typeStr;
+}
+
+public void setTypeStr(String typeStr) {
+	this.typeStr = typeStr;
+}
+
+public String getResultStr() {
 	   String str = "";
 	   if(result == 0 ){
 		   str = "未处理";
-	   }else if(result == 1){
-		   str = "已处理";
+	   }else if(result == 1){ 
+		   str = "待上报"; 
 	   }else if(result == 2){
 		   str = "已上报"; 
 	   }else if(result == 3){
@@ -118,6 +139,9 @@ public void setType(int type) {
 	this.type = type;
 }
 public String getCause() {
+	if(StringUtill.isNull(cause)){
+		cause = ""; 
+	} 
 	return cause;
 }
 public void setCause(String cause) {
@@ -132,6 +156,8 @@ public void setCid(int cid) {
 public String getCname() {
 	if(cid != 0 ){
 		cname = CategoryService.getmap().get(cid).getName();
+	}else { 
+		cname = "";  
 	}
 	return cname;
 }
@@ -150,6 +176,8 @@ public void setTid(int tid) {
 public String getTname() {
 	if(tid != 0 ){
 		tname = ProductService.getIDmap().get(tid).getType();
+	}else {
+		tname = ""; 
 	}
 	return tname; 
 }

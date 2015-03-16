@@ -1,6 +1,7 @@
 package aftersale;
 
 import group.Group;
+import group.GroupService;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -32,45 +33,60 @@ public class AftersaleAllManager {
 		  
 		  List<AftersaleAll> AfterSales = new ArrayList<AftersaleAll>();
 		  
-		  String sql = "";    
-		  String sqlstr = " 1 = 1 ";
+		  String sql = "";     
 		  //logger.info(f); 
 		  //sqlstr = "  1 = 1 and (mdaftersale.submitid in (select id from mduser where mduser.usertype in (select groupid from mdrelategroup where pgroupid = "+user.getUsertype()+")) or  submitid = "+ user.getId() +")";
-		    
-		  
+		      
+		  String prodectsp = GroupService.getidMap().get(user.getUsertype()).getProducts(); 
+		  String pp = prodectsp.replace("_", ",");  
+		  String sqlstr = " mdaftersale.cid in ( "+pp+" ) "; 
+		   
 		 if(Group.aftersalerepare == type){ 
 			   if(Order.aftersale == statues){ 
 				   if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
-					   sql = "select * from mdaftersale where  statues in (0,2)  and "+sqlstr + search+"  order by "+sort+str;
-				   }else if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){
-					   sql = "select * from mdaftersale where statues in (2,4)   and submitid = "+ user.getId() +" "+search+"  order by "+sort+str;
-				   }       
+					   sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 1   and "+sqlstr+search+"  order by "+sort+str;
+					   //sql = "select * from mdaftersale where  statues in (0,2)  and "+sqlstr + search+"  order by "+sort+str;
+				   }else if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){ 
+					   sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 1  and mdaftersaleproduct.dealid = "+ user.getId() +" and "+sqlstr+search+"  order by "+sort+str;
+					   //sql = "select * from mdaftersale where statues in (0,2,4)   and submitid = "+ user.getId() +" "+search+"  order by "+sort+str;
+				   }         
 			   }else if(Order.aftersalecharge == statues){ 
 				   if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
 					   sql = "select * from mdaftersale where  statues in (1)  and "+sqlstr + search+"  order by "+sort+str;
-				   }else if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){
-					   sql = "select * from mdaftersale where statues in (1)   and submitid = "+ user.getId() +" "+search+"  order by "+sort+str;
-				   }  
+				   }else if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){ 
+					   sql = "select * from mdaftersale where statues in (1)  and mdaftersaleproduct.dealid = "+ user.getId() +" and "+sqlstr+search+"  order by "+sort+str;
+				   }   
 			   }else if(Order.aftersalesearch == statues){  
 				   if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
-					   sql = "select * from mdaftersale, mdaftersaleproduct  where (mdaftersale.id = mdaftersaleproduct.asid or mdaftersale.id not in (select asid from mdaftersaleproduct)) and "+sqlstr + search+"  order by "+sort+str;
+					   sql = "select * from mdaftersale, mdaftersaleproduct  where (mdaftersale.id = mdaftersaleproduct.asid ) and "+sqlstr + search+"  order by "+sort+str;
 				   }else if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){
-					   sql = "select * from mdaftersale, mdaftersaleproduct  where mdaftersale.id = mdaftersaleproduct.asid  and submitid = "+ user.getId() +" "+search+"  order by "+sort+str;
-				   }      
-			   }else if(Order.aftersalesecond == statues){    
-				       sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = "+ user.getId() +"  and  mdaftersaleproduct.asid = mdaftersale.id and ( mdaftersaleproduct.dealsendid = 0   or  mdaftersaleproduct.statues = 2 )  "+search+"  order by "+sort+str;
-			   }else if(Order.aftersaledeal == statues){   
+					   sql = "select * from mdaftersale, mdaftersaleproduct  where (mdaftersale.id = mdaftersaleproduct.asid  ) and mdaftersaleproduct.dealid = "+ user.getId() +" and "+sqlstr+search+"  order by "+sort+str;
+				   }         
+			   }else if(Order.aftersalesecond == statues){     
+				       sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = "+ user.getId() +"  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.type != 3 and ( mdaftersaleproduct.dealsendid = 0  and mdaftersaleproduct.statues != 1  or  mdaftersaleproduct.statues = 2 )  and "+sqlstr+search+"  order by "+sort+str;
+			   }else if(Order.aftersaledeal == statues){        
+			       //sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = 0  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null    "+search+"  order by "+sort+str;  
+			       sql = "select * from mdaftersale,mdaftersaleproduct where   (mdaftersaleproduct.dealid = 0 or mdaftersaleproduct.statues = 1 ) and mdaftersaleproduct.type != 3 and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid = 0   and "+sqlstr+search+"  order by "+sort+str;
+		      }else if(Order.aftersalephone == statues){      
 			       //sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = 0  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null    "+search+"  order by "+sort+str;
-			       sql = "select * from mdaftersale,mdaftersaleproduct where  ( mdaftersaleproduct.dealid = 0 or mdaftersaleproduct.statues = 1 ) and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid = 0   "+search+"  order by "+sort+str;
-		      }else if(Order.aftersalephone == statues){   
-			       //sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = 0  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null    "+search+"  order by "+sort+str;
-			       sql = "select * from mdaftersale where  mdaftersale.nexttime - curdate() < 5  "+search+"  order by "+sort+str;
-		      }else if(Order.aftersaledealupload == statues){     
-		    	  sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 1   "+search+"  order by "+sort+str;
-		      }else if(Order.aftersaledealcharge== statues){    
-		    	  sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 2   "+search+"  order by "+sort+str;
+			       //sql = "select * from mdaftersale where  mdaftersale.nexttime - curdate() < 5  "+search+"  order by "+sort+str;
+		    	  sql = "select * from mdaftersale where   nexttime is not null  and "+sqlstr+search+"  order by nexttime "+str;  
+		      }else if(Order.aftersaledealupload == statues){  
+		    	  if(UserManager.checkPermissions(user, Group.sencondDealsend)){  
+		    		  sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 0  and mdaftersaleproduct.dealid =  "+user.getId()+" and "+sqlstr+search+"  order by "+sort+str;
+		    	  }else {
+		    		  sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 0  and "+sqlstr+search+"  order by "+sort+str;
+		    	  }
+		    	  
+		      }else if(Order.aftersaledealcharge== statues){ 
+		    	  if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){ 
+			    	  sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 2   and "+sqlstr+search+"  order by "+sort+str;
+				   }else if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){
+				    	  sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 2 and  mdaftersaleproduct.dealid = "+user.getId()+"   and "+sqlstr+search+"  order by "+sort+str;
+				   } 
+
 		      }  
-		   }                                          
+		   }                                           
 		    
 		  if("".equals(sql)){
 			   return null;  
@@ -100,13 +116,13 @@ public class AftersaleAllManager {
 		   
 		  
 		  List<AftersaleAll> AfterSales = new ArrayList<AftersaleAll>();
-		    
-		 String sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealsendid = "+user.getId()+"  and  mdaftersaleproduct.statues = "+statues+"  and mdaftersaleproduct.asid = mdaftersale.id  and mdaftersaleproduct.type = "+AfterSaleProduct.maintain;
+		     
+		 String sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealsendid = "+user.getId()+"  and  mdaftersaleproduct.result = "+statues+"  and mdaftersaleproduct.asid = mdaftersale.id and  mdaftersaleproduct.statues != 2 "; 
 	
-		 logger.info(sql); 
+		  logger.info(sql);  
 		   Connection conn = DB.getConn();
 	       Statement stmt = DB.getStatement(conn);
-	      
+	       
 		   ResultSet rs = DB.getResultSet(stmt, sql); 
 				try { 
 					while (rs.next()) {

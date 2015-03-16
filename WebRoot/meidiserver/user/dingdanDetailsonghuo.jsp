@@ -4,7 +4,7 @@
 Map<Integer,List<Gift>> gMap = GiftService.getmap(); 
 User sale = UserService.getMapId().get(or.getSaleID());
 request.setAttribute("order", or);
- 
+  
 %>
 <!DOCTYPE html>
 <html>
@@ -14,10 +14,9 @@ request.setAttribute("order", or);
 <meta name="apple-mobile-web-app-capable" content="yes" />
 
 <title>订单详细页</title>
- 
+    
 <meta name="viewport" content="initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0,user-scalable=yes"/> 
-
-
+ 
 <link rel="stylesheet" href="../css/songhuo.css">
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
@@ -31,7 +30,7 @@ var oppstatues = "<%=modify%>" ;
 var canupdate = "<%=canupdate%>";
 var opstatues = "<%=opstatues%>";
 var flag = "<%=flagbar%>";
-
+var realop = <%=opstr%>; 
 function updateOeder(){ 
   
 	if(1 == canupdate){
@@ -122,8 +121,39 @@ function change(str1,oid,type){
 		if(statues == -1){
 			return false;
 		}   
-		if(statues == 2 && flag == "true"){
-			window.location.href="dingdanDetailsonghuoadd.jsp?id="+oid+"&statues="+statues+"&type="+type;
+   
+		if(statues == 2 && flag == "true"){ 
+			
+			var json = '[';
+			 //var type = $("#type").val();
+			 //var statues = $("#statues").val();
+			 for(var i=0;i<realop.length;i++){
+					var opp = realop[i]; 
+					if(opp != ""){
+						var id = opp.id; 
+						var barcode = $("#barcode"+id).val();
+						var batchnumber = $("#batchnumber"+id).val();
+						   if( null != barcode && barcode != "" || batchnumber != "" && null != batchnumber){
+							   json += '{"id":"'+id+'","barcode":"'+barcode+'","batchnumber":"'+batchnumber+'"},';
+		                       
+							 }
+						   
+					} 
+			 }
+			 json = json.substring(0, json.length-1); 
+			 
+			   if(null == json || "" == json){
+				   var question = confirm("批号和条码未填写完整，是否提交？");
+					if (question != "0"){
+						dochange(statues,oid,type,"");
+					}
+			   }else {  
+				   json =  json  +"]"; 
+				   dochange(statues,oid,type,json);
+			   }
+		  // dochange(statues,oid,type,json);
+			
+			//window.location.href="dingdanDetailsonghuoadd.jsp?id="+oid+"&statues="+statues+"&type="+type;
 			//var gettype = "getopjson";
 			//$.ajax({   
 		     //   type: "post",    
@@ -138,7 +168,7 @@ function change(str1,oid,type){
 		      //      } 
 		      //     });
 			
-		}else {
+		}else { 
 			dochange(statues,oid,type,"");
 		}
 	}
@@ -299,7 +329,7 @@ function dochange(statues,oid,type,json){
   <tr>          
      <%
        } 
-     %>
+     %> 
   		
   <tr>
     <td width="25%" class="s_list_m">单号</td>
@@ -333,8 +363,9 @@ function dochange(statues,oid,type,json){
     <td class="s_list_m"><%=OrderManager.getDeliveryStatues(or)%></td>
    
   </tr> 
-  <%
-  List<OrderProduct> lists = OrderProductManager.getOrderStatues(user, or.getId());
+  <% 
+  List<OrderProduct> lists = or.getOrderproduct(); 
+   
   for(int g = 0 ;g<lists.size();g++){
  	 OrderProduct op = lists.get(g);
       if(op.getStatues() == 0 ){
@@ -374,6 +405,29 @@ function dochange(statues,oid,type,json){
 	
 	</td>
   </tr> 
+   
+  <tr <%=col %>>
+      
+      <td width="55%" class="s_list_m">批号</td>
+     
+      <td class="s_list_m">
+
+		    <input style="width:80%;" id="barcode<%=op.getId() %>" type="text" placeholder="安装产品必填" >	
+	
+	</td>
+  </tr> 
+  <tr <%=col %>>
+      
+      <td width="55%" class="s_list_m">条码</td>
+     
+      <td class="s_list_m">
+
+		    	<input style="width:80%;" id="batchnumber<%=op.getId() %>" type="text" placeholder="安装产品必填" >"; 
+	
+	</td>
+  </tr> 
+  
+  
     <%   
       }
    }

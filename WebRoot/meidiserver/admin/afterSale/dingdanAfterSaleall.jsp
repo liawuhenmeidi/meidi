@@ -27,14 +27,14 @@ position:fixed;
     padding:0;
 }
 #table{  
-    width:1700px;
+    width:1400px;
     table-layout:fixed ;
 }
 
 #th{  
     background-color:white;
     position:absolute; 
-    width:1700px; 
+    width:1400px; 
     height:30px;
     top:0;
     left:0;
@@ -63,8 +63,13 @@ position:fixed;
 	<jsp:param name="type" value="<%=statues%>"/> 
 </jsp:include> 
 
-
-
+<% if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){ %>
+<div class="btn">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+ <input type="submit" class="button" name="dosubmit" value="维修保养" onclick="winconfirm()"></input>  
+&nbsp;&nbsp;&nbsp;  
+</div>    
+<%} %> 
 </div > 
 <div style="height:100px;">
 </div>
@@ -72,10 +77,9 @@ position:fixed;
 <br/>  
 
 <%@ include file="searchOrderAll.jsp"%>  
- 
-
+  
 <script type="text/javascript">
-
+ 
 sort= "andate asc";
 var id = "";
 var type = "<%=Group.aftersalerepare%>";
@@ -96,9 +100,9 @@ function addImage(src){
 } 
 
 function detail(id){ 
-	winPar=window.open('dingdansubmit.jsp?id='+id, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+	winPar=window.open('dingdanupdatemaintain.jsp?id='+id, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
-
+ 
 }
 
 function searchlocate(id){
@@ -111,14 +115,37 @@ function adddetail(src){
 	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
 
+function winconfirm(type){
+	var question = confirm("你确认要执行此操作吗？");	
+	if (question != "0"){
+		var attract = new Array();
+		var i = 0; 
+		
+		$("input[type='radio'][name='id']").each(function(){          
+	   		if($(this).attr("checked")){
+	   				var str = this.value; 
+	   				
+	   				if(str != null  &&  str != ""){
+		   				   attract[i] = str; 
+			   	            i++;
+		   				}	
+	   		}
+	   	});    
+		 
+		if(attract.toString() != ""){
+			winPar=window.open('dingdanupdatemaintain.jsp?id='+attract.toString()+'&statues='+statues, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');		
+		}
+		
+	}
+} 
 </script>
 
  
 <div id="wrap">
  <%@ include file="../remind.jsp"%> 
-<table  cellspacing="1" id="table" >
+<table  cellspacing="1" id="table" > 
 		<tr id="th">  
-		     <td align="center" width=""><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </td>  
+		     <td align="center" width=""></td>  
 			<td align="center">单号</td>  
 			<td align="center">顾客姓名</td>
 			<td align="center">顾客电话</td>
@@ -126,19 +153,18 @@ function adddetail(src){
 			<td align="center">安装单位电话</td>
 			<td align="center" >设备类别</td> 
 			<td align="center" >设备型号</td> 
-			<td align="center" >设备数量</td>
-			<td align="center" >保养类别</td> 
-			<td align="center" >保养型号</td> 
+			<td align="center" >设备数量</td> 
+			<td align="center" >保养维修内容</td>  
+			<td align="center" >保养类别</td>   
+			<td align="center" >配件名称</td>   
+			<!--   
 			<td  align="center">保养维修网点</td> 
 			<td  align="center">保养维修人员</td> 
-			<td align="center" >保养维修状态</td> 
+			  -->
+			<td align="center" >单据状态</td> 
 			<td align="center" >批号</td> 
 			<td align="center" >条码</td>
-			<td align="center">地址</td> 
-			<td align="center">单据类型</td>
-            <td align="center">安装日期</td>
-            <td align="center">预约日期</td>
-            <td align="center" >是否上报厂家（美的）</td>
+			<td align="center">地址</td>
             <td align="center" >备注</td> 
 		</tr> 
 		 

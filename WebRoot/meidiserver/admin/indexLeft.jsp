@@ -135,12 +135,19 @@ function reloadopned(src){
               
               <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadSaleCount.jsp')">票面销售统计</a></p>
               <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadSendCount.jsp')">送货销售统计</a></p>
+              <%  if(UserManager.checkPermissions(user, Group.change)){%>
               <p ><a href="javascript:void(0);"  onclick="reloadopned('changedetail.jsp')">转化规则</a></p>
-               <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadchange.jsp')">生成转化规则</a></p>
+               
+             <%} 
+              if(UserManager.checkPermissions(user, Group.change,"w")){
+            	  %>
+            	  <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadchange.jsp')">生成转化规则</a></p>
+             
+              <% }%> 
               <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadSendCountchange.jsp')">送货转换销售统计</a></p>
             </div>
           </li>  
-          
+           
           <%
           }
          if(UserManager.checkPermissions(user, Group.ManagerUser)){
@@ -234,7 +241,7 @@ function reloadopned(src){
           }if(UserManager.checkPermissions(user, Group.Manger)){
           %>
           
-          <li > 
+          <li >  
             <h4 >数据备份</h4>   
             <div class="list-item none">
               <p ><a  href="javascript:void(0);"  onclick="reloadopned('database.jsp')">数据备份</a></p>
@@ -271,33 +278,38 @@ function reloadopned(src){
        <li > 
              <h4 >售后服务</h4>     
             <div class="list-item none">
+            <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSaleall.jsp')" >售后查询</a></p>
+            	 
             <%
               if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){ 
             %> 
               <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmit.jsp')" >售后报单</a></p>
 
-             <%  
+             <%   
              } 
             if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){  
-             %> 
-             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalerepare.jsp')" >销售售后待处理</a></p>
-               
+             %>   
+            <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalerepare.jsp')" >遗留数据处理</a></p>
+                
               <% }
             if(UserManager.checkPermissions(user, Group.installOrderupload,"q") || UserManager.checkPermissions(user, Group.installOrderupload,"w") ){
-            	 %>     
-            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSale.jsp')" >上报美的售后待处理</a></p>
-            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalecharge.jsp')" >已上报未结款</a></p>
-            	 <%
+            	 %>         
+            	<p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSale.jsp')" >未上报工厂单据</a></p> 
+            <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintaincharge.jsp')" >工厂未结算单据</a></p>
+            	 <% 
+              }  
+             
+            if(UserManager.checkPermissions(user, Group.maintainOrder,"w")){
+            	%>   
+            	   <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmitmaintain.jsp')" >系统外维修保养配工</a></p>
+            	 <% 
               } 
             
-            if(UserManager.checkPermissions(user, Group.maintainOrder,"w")){
-            	%>  
-            	   <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmitmaintain.jsp')" >保养单上报</a></p>
-            	 <%
-              } 
             if(UserManager.checkPermissions(user, Group.faultOrder,"w")){
             	%>  
-            	   <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmitfault.jsp')" >维修单上报</a></p>
+            	  
+            	 <!--   <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmitfault.jsp')" >维修单配工</a></p> -->
+            	   
             	 <%
               }
             if(UserManager.checkPermissions(user, Group.faultOrder,"q") && !UserManager.checkPermissions(user, Group.faultOrder,"w") || UserManager.checkPermissions(user, Group.maintainOrder,"q") && !UserManager.checkPermissions(user, Group.faultOrder,"w")){
@@ -306,20 +318,23 @@ function reloadopned(src){
             	 <% 
               }  
             if(UserManager.checkPermissions(user, Group.faultOrder,"w") || UserManager.checkPermissions(user, Group.faultOrder,"w")){
-            	%>             
-            	             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalephone.jsp')" >电话回访页</a></p>
-                             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintain.jsp')" >售后文员保养单待配工</a></p>
-                             
-                             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintainupload.jsp')" >保养单上报</a></p>
-                             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintaincharge.jsp')" >保养单未结款</a></p> 
+            	%>               
+            	             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalephone.jsp')" >当月需保养用户电话回访</a></p>
+                          <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintain.jsp')" >网点驳回单据</a></p> 
+          
+
+            	 <%
+              }   
+            if(UserManager.checkPermissions(user, Group.faultOrder,"q") || UserManager.checkPermissions(user, Group.faultOrder,"q")){
+            	%>               
+            	             
+                               <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintainupload.jsp')" >维修保养未完成单据</a></p> 
+
             	 <%
               }  
-            
            
             	%>  
-            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSaleall.jsp')" >售后查询</a></p>
             	 
-            
 
             </div>        
           </li>  

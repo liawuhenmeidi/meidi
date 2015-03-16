@@ -144,7 +144,7 @@ if(!StringUtill.isNull(id)){
 	               }
 	               str += '</select> '+
 	               ' </td>'+ 
-	               ' <td >送货型号<span style="color:red">*</span></td> '+
+	               ' <td >配件<span style="color:red">*</span></td> '+
 	               ' <td  ><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="" style="width:90% " /></td> ' +
 	          	   ' <td  ><input type="button"   style="color:white;background-color:#0080FF" name="" value="删除" onclick="deletes(produc'+row+','+row+')"/></td>'+
 	          	   '</tr>';
@@ -218,7 +218,7 @@ if(!StringUtill.isNull(id)){
 		 }
 	 }
 	  
-	 
+	 /*
 	 if(orderbatchNumber == "" || orderbatchNumber == null || orderbatchNumber == "null"){
 		 alert("批号不能为空");
 		 return false;
@@ -229,7 +229,7 @@ if(!StringUtill.isNull(id)){
 		 alert("条码不能为空");
 		 return false;
 	 }
-	 
+	
      if(andate == "" || andate == null || andate == "null"){
 		 alert("安装日期不能为空");
 		 return false;
@@ -239,12 +239,12 @@ if(!StringUtill.isNull(id)){
 		 alert("购买日期不能为空");
 		 return false;
 	 }
-		 
+		*/ 
 	 if(locations == "" || locations == null || locations == "null"){
 		 alert("详细地址不能为空");
 		 return false;
 	 } 
-	   
+	 /*  
 	 if(rows.length <1){
 			alert("请添加保养项目");
 			return false ; 
@@ -274,8 +274,8 @@ if(!StringUtill.isNull(id)){
 				 }
 		 }
 	}
-	 
-	 
+	  
+	 */
 	 if(uid == "" || uid  == null || uid  == "null"){
 		 alert("维修单位不能为空");
 		 return false;
@@ -285,12 +285,12 @@ if(!StringUtill.isNull(id)){
 		 alert("保养日期不能为空");
 		 return false;
 	 }
-	  
+	/*  
 	 if(nexttime == "" || nexttime == null || nexttime == "null"){
 		 alert("下次保养日期日期不能为空");
 		 return false;
 	 }
-	 
+	 */
 	 $("#submit").css("display","none"); 
 	 return true ; 
  }
@@ -317,8 +317,8 @@ if(!StringUtill.isNull(id)){
 <input type="hidden" name="method" value="aftersale"/>
 <input type="hidden" name="typemethod" value="maintain"/> 
 <input type="hidden" name="token" value="<%=token%>"/>  
-
-<div class="s_main_tit">上报单位:<span class="qian"><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %></span></div>  
+ 
+<div class="s_main_tit">现在位置:<span class="qian">系统外维修保养配工</span></div>  
 <!--  订单详情  -->   
   
  <div id="wrap"> 
@@ -360,25 +360,26 @@ if(!StringUtill.isNull(id)){
 
    <tr class="asc">
    <td>批号</td>  
-   <td><input type="text" name="orderbatchNumber" id="orderbatchNumber"   placeholder="必填" /> </td>
+   <td><input type="text" name="orderbatchNumber" id="orderbatchNumber"    /> </td>
    <td>条码</td> 
-   <td><input type="text" name="orderbarcode" id="orderbarcode"   placeholder="必填" /> </td> 
+   <td><input type="text" name="orderbarcode" id="orderbarcode"    /> </td> 
 
    </tr> 
     <tr class="asc"> 
     
     <td  >安装日期<span style="color:red">*</span></td>
-    <td  ><input class="date2" type="text" name="andate" id ="andate" onclick="new Calendar().show(this);"  placeholder="必填"  readonly="readonly" ></input>   </td>
+    <td  ><input class="date2" type="text" name="andate" id ="andate" onclick="new Calendar().show(this);"  readonly="readonly" ></input>   </td>
    
-    <td  >购买日期<span style="color:red">*</span></td>
-    <td  ><input class="date2" type="text" name="saledate" id ="saledate" onclick="new Calendar().show(this);"  placeholder="必填"  readonly="readonly" ></input>   </td>
+    <td  >购买日期<span style="color:red">*</span></td> 
+    <td  ><input class="date2" type="text" name="saledate" id ="saledate" onclick="new Calendar().show(this);"   readonly="readonly" ></input>   </td>
 
  </tr>
-   <tr class="asc"> 
+   <tr class="asc">  
     <td >详细地址<span style="color:red">*</span></td>
-    <td ><textarea  id="locations" name="locations" ></textarea></td>  
-    <td >备注</td>
-    <td ><textarea  id="remark" name="remark" ></textarea></td>
+    <td ><textarea  id="locations" name="locations" ></textarea></td>
+   <td >故障保养内容<span style="color:red">*</span></td>
+    <td ><input type="hidden" value=""><textarea  id="fault" name="fault" ></textarea></td> 
+    
    </tr>    
    <tr class="asc">
      <td colspan=4> 
@@ -426,9 +427,9 @@ if(!StringUtill.isNull(id)){
  </tr>
  <tr class="asc">
   <td  >下次保养时间<span style="color:red">*</span></td>
-    <td  ><input  type="text" name="nexttime" id ="nexttime" onclick="new Calendar().show(this)"   placeholder="必填"  readonly="readonly" ></input>   </td>
-  <td></td>
-  <td></td>
+    <td  ><input  type="text" name="nexttime" id ="nexttime" onclick="new Calendar().show(this)"   readonly="readonly" ></input>   </td>
+   <td >备注</td>
+    <td ><textarea  id="remark" name="remark" ></textarea></td>
  </tr>
    <tr class="asc"> 
     <td colspan="4" style="background-color:orange" class="center"><input type="submit"  value="提  交" /></td>

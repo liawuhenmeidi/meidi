@@ -66,10 +66,10 @@ public class InventoryManager {
 			DB.close(stmt);
 			DB.close(conn);
 		} 
-		logger.info(categorys.size());
+		//logger.info(categorys.size());
 		return categorys;
 	}
-	 
+	  
 	public static boolean updatePrintln(String id ){
 		String sql = "update inventory set outstatues = 1 where id = "+ id ;
 		return DBUtill.sava(sql);

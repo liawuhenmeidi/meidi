@@ -123,7 +123,7 @@ logger.info(category.getName());
 				DB.close(stmt);
 				DB.close(conn);
 			}
-			logger.info(categorys.size());
+		//	logger.info(categorys.size());
 			return categorys;
 		} 
 		
@@ -131,10 +131,10 @@ logger.info(category.getName());
 			List<Category> categorys = new ArrayList<Category>();
 			Connection conn = DB.getConn();
 			String sql = "select * from mdcategory where ptype = 1";
-			Statement stmt = DB.getStatement(conn);
-			ResultSet rs = DB.getResultSet(stmt, sql);
+			Statement stmt = DB.getStatement(conn);  
+			ResultSet rs = DB.getResultSet(stmt, sql); 
 			try {
-				while (rs.next()) {
+				while (rs.next()) { 
 					Category u = CategoryManager.getCategoryFromRs(rs);
 					categorys.add(u);
 				}

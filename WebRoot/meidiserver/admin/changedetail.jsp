@@ -1,6 +1,6 @@
 <%@page import="java.net.URLEncoder"%>
 
-<%@ page language="java" import="java.util.*,wilson.upload.*,change.*,net.sf.json.JSONObject,uploadtotalgroup.*,utill.*,wilson.matchOrder.*,uploadtotal.*,user.*,wilson.salaryCalc.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,wilson.upload.*,change.*,group.*,net.sf.json.JSONObject,uploadtotalgroup.*,utill.*,wilson.matchOrder.*,uploadtotal.*,user.*,wilson.salaryCalc.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
  
 <%  
 	request.setCharacterEncoding("utf-8");
@@ -23,7 +23,7 @@
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>  
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
-<style media=print type="text/css">   
+<style media=print type="text/css">    
 .noprint{visibility:hidden}   
 </style>
 <script type="text/javascript">
@@ -75,8 +75,10 @@ function dosearch(){
    
 <div class="btn">
   <table> 
-   <tr> 
+   <tr>  
+   <%  if(UserManager.checkPermissions(user, Group.change,"w")){%>
     <td> <input type="button" class="button" name="dosubmit" value="确认删除" onclick="winconfirm()"></input>   </td>
+  <%} %>
    <td> <select id="typestatues"> 
      <option value="">全部</option>
      <option value="0" >门店</option>

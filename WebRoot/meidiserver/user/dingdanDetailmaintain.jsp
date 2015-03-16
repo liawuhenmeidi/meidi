@@ -3,7 +3,14 @@
 String id = request.getParameter("id");
 String statues = request.getParameter("statues");
 User user = (User)session.getAttribute("user");
-  
+
+List<Category> listmaintain = CategoryService.getlistmaintain(); 
+String clistmaintain = StringUtill.GetJson(listmaintain);
+
+HashMap<String,ArrayList<String>> listt = ProductService.gettypeName();
+
+String plist = StringUtill.GetJson(listt);
+
 AfterSale af = null ;  
 String strorder= null;    
 String listap = null;  
@@ -34,20 +41,73 @@ if(!StringUtill.isNull(id)){
 <script type="text/javascript" src="../js/common.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 
-<script type="text/javascript">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+<script type="text/javascript" src="../js/jquery-ui.js"></script>
 
+<script type="text/javascript"> 
+var jsons = <%=plist%> ;
 var id = "<%=id%>";
+var row = 1;  
+var rows = new Array();
+var jsonmaintain = <%=clistmaintain%>;
 
 function change(statues,oid,type){ 
+	
 	var statue = $("#"+statues).val(); 
 	if(statues == -1){
 		return false;
 	}  
-	  
+    var barcode = $("#barcode").val(); 
+    var batchNumber = $("#batchNumber").val(); 
+    var cause = $("#cause").val(); 
+	var message = "";
+	//var x = 0 ;
+	//alert(rows);
+	if(statue == 1){
+		/*
+		if(rows.length <1){
+			alert("请添加保养项目");
+			return false ; 
+		 }else {
+			 for(var i=0;i<rows.length;i++){
+				 var str = $("#ordertype"+rows[i]).val();
+				 var juese = $("#ordercategory"+rows[i]).val();
+				
+				 if(str == "" || str == null || str == "null"){
+					 alert("送货型号不能为空");
+					 return false; 
+				 }else {
+					 var flag = true ;
+			         	  var array = jsons[juese];
+			         	  //alert(array);
+			         	  if(array != "" && array != null &&  array != "null" && array != undefined && array != "undefined"){
+				         	   for(var k=0;k<array.length;k++){
+
+				         		   if(str == array[k]){
+				         			   flag = false  ;
+				         		   }
+				         	   }
+				         	   }
+					 if(flag){
+						 alert("系统不存在此型号"+str);
+						 return false ;
+					 }
+				 } 
+
+			message +=","+juese+"_"+str; 
+		 }
+	} 
+		*/
+	}
+
+	 
+	message = message.substring(1, message.length);
+	///alert(message); 
+	//return ;
 	$.ajax({     
-        type: "post",      
+        type: "post",       
          url: "../AfterSaleServlet", 
-         data:"method="+type+"&afid="+oid+"&statues="+statue,
+         data:"method="+type+"&afid="+oid+"&statues="+statue+"&message="+message+"&cause="+cause+"&batchNumber="+batchNumber+"&barcode="+barcode,       
          dataType: "",    
          success: function (date) { 
         	//alert(date); 
@@ -66,7 +126,54 @@ function change(statues,oid,type){
 }
 
 
+function addrow(listo){
+	
+    rows.push(row); 
+	var str =  '<tr id=produc'+row+ '>' +
+               '<td>维修类别<span style="color:red">*</span></td>'+
+               '<td ><input type="hidden" name="product" value="'+row+'"/>'+
+               '<select class = "category" name="ordercategory'+row+'"  id="ordercategory'+row+'"  style="width:95% ">'; 
+                
+               str += '<option>    </option>';   
+               for(var i=0;i<jsonmaintain.length;i++){
+            	   var jo = jsonmaintain[i];  
+             	   if(jo.id == listo.categoryId){
+            		   str += '<option value='+jo.id+'  selected="selected" >'+jo.name+'</option>';
+            	   }else { 
+            		   str += '<option value='+jo.id+'>'+jo.name+'</option>'; 
+            	   }
 
+               }
+               str += '</select> '+
+               ' </td>'+ 
+               ' <td >送货型号<span style="color:red">*</span></td> '+
+               ' <td  ><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="" style="width:90% " /></td> ' +
+          	   ' <td  ><input type="button"   style="color:white;background-color:#0080FF" name="" value="删除" onclick="deletes(produc'+row+','+row+')"/></td>'+
+          	   '</tr>';
+                  
+        $("#tableproduct").append(str); 
+        initproductSerch("#ordercategory"+row,"#ordertype"+row);
+        row++;  
+        } 
+ 
+ function deletes(str,str2){
+ 	$(str).empty();
+	    rows.splice($.inArray(str2,rows),1);
+  } 
+ 
+ function initproductSerch(str,str2){ 
+	    cid = $(str).val(); 
+		$(str2).autocomplete({ 
+			 source: jsons[cid]
+		    }); 
+		$(str).change(function(){
+			$(str2).val("");
+			cid = $(str).val();  
+			$(str2).autocomplete({
+				 source: jsons[cid]
+			    });
+			}) ;
+    } 
 </script>
 </head>
 
@@ -105,19 +212,20 @@ function change(statues,oid,type){
   </tr>
    
   <%
-  String time = "";  
+  String time = "";   
   int stas = -1 ;
+  String cause  = "";
   for(int g = 0 ;g<listasp.size();g++){
 	  AfterSaleProduct op = listasp.get(g);
+	  
 	   time = op.getThistime();
 	   stas = op.getStatues(); 
-    	 %>
-    	  
+	   cause = op.getCause();
+	   if(!StringUtill.isNull(op.getCname()) && StringUtill.isNull(op.getTname())){
+    	 %> 
     	 <tr style="background:orange">
-         <td width="55%" class="s_list_m">保养类别</td>
-      
+         <td width="55%" class="s_list_m"></td>
          <td class="s_list_m">
- 
     		  <%= op.getCname()%> 
          </td>
          </tr>
@@ -130,22 +238,29 @@ function change(statues,oid,type){
       </tr>
     	 
     	
-    <%   
+    <%  
+	   }
    }
-  %>
-   
-	
-  <tr>
-    <td class="s_list_m">顾客姓名</td>
-    <td class="s_list_m"><%=af.getUname() %></td>
+  
+  %> 
+    
+	 
+	 <tr> 
+    <td width="55%" class="s_list_m">批号</td>
+    <td class="s_list_m"> 
+    <input type="text" id="barcode" name="barcode" value="<%=af.getBarcode() %>"></input></td>
+  </tr>
+  <tr> 
+    <td width="55%" class="s_list_m">条码</td>
+    <td class="s_list_m"><input type="text" id="batchNumber" name="batchNumber"  value="<%=af.getBatchNumber() %> "></input></td>
   </tr>
  
     
   
   <tr >
     <td class="s_list_m">电话</td> 
-    
-    <td><a href="tel:<%=af.getPhone() %>"></a></td>
+     
+    <td><a href="tel:<%=af.getPhone() %>"><%=af.getPhone() %></a></td>
     <!--  一键拨号  -->
   </tr>
    
@@ -160,6 +275,33 @@ function change(statues,oid,type){
     <td class="s_list_m"><%=af.getLocation() %></td>
   </tr>
   
+  <tr>
+    <td class="s_list_m">维修保养内容</td>
+    <td class="s_list_m">   
+    <textarea id="cause" name="cause" ><%=cause%></textarea></td> 
+  </tr>
+  
+  <tr >
+     <td class="s_list_m" colspan=2 align="center">  
+     <table id="tableproduct"  style="width:100%">  
+      
+      
+      
+     </table>
+     </td>
+     
+    
+   </tr> 
+      
+     <tr  > 
+      
+    <td class="s_list_m">操作</td>
+    <td  class="s_list_m">
+     <input type="button"  name="" style="color:red" value="增加维修配件" onclick="addrow(0)" width="100%"  />
+    </td>
+    
+   </tr>   
+   
    <tr>
     <td class="s_list_m"> 状态</td>
     <td class="s_list_m">

@@ -233,8 +233,11 @@ logger.info(pstmt);
 	// 验证职工是否有某种权限
 		//  w  写全蝎  r 读权限
 	public static boolean checkPermissions(User user , int permissions,String petnissionsType){
+		int sendcondpermissions = -1 ;
+		
 		if(Group.tuihuo == permissions){
-			permissions = Group.send;
+			
+			sendcondpermissions = Group.send;
 		   }  
 		boolean flag = false ; 
 		//logger.info(user.getUsertype());
@@ -251,9 +254,9 @@ logger.info(pstmt);
 	              // logger.info(permissions+"***"+pe[i]);
 	               String[] mes = mess.split("-");
 	               String p = mes[0]; 
-	               String type = mes[1]; 
-				  
-					if(Integer.valueOf(p) == permissions || Integer.valueOf(p) == Group.Manger){
+	               String type = mes[1];   
+				   
+					if(Integer.valueOf(p) == permissions || Integer.valueOf(p) == sendcondpermissions || Integer.valueOf(p) == Group.Manger){
 						if("w".equals(type) && petnissionsType.equals("r") || petnissionsType.equals(type)){
 							flag = true ;
 						}
@@ -267,9 +270,11 @@ logger.info(pstmt);
 	
 	//  w  写全蝎  r 读权限
 	public static boolean checkPermissions(User user , int permissions){
+		//logger.info( permissions); 
+		int sendcondpermission = -1 ; 
 		if(Group.tuihuo == permissions){
-			permissions = Group.send;
-		   }   
+			sendcondpermission = Group.send;
+		   }    
 		boolean flag = false ; 
 		Group listg = GroupService.getidMap().get(user.getUsertype());
 		String[] pe = null ;  
@@ -285,9 +290,9 @@ logger.info(pstmt);
 	            	   String[] mes = mess.split("-");
 		               String p = mes[0]; 
 					 //logger.info(permissions+"***"+pe[i]+"****"+p);
-						if(Integer.valueOf(p) == permissions || Integer.valueOf(p) == Group.Manger){	
+						if(Integer.valueOf(p) == permissions || Integer.valueOf(p) == sendcondpermission || Integer.valueOf(p) == Group.Manger){	
 							flag = true ;
-						}
+						} 
 	               }
 				} 
 		 }

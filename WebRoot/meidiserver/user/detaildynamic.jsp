@@ -5,6 +5,9 @@ User user = (User)session.getAttribute("user");
 HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 String id = request.getParameter("id");
 Order or = OrderManager.getOrderID(user,Integer.valueOf(id));
+List<OrderProduct> ops = or.getOrderproduct();
+String opstr = StringUtill.GetJson(ops); 
+
 int uid = user.getId();
   
 HashMap<Integer,User> usermap = UserService.getMapId();
@@ -48,9 +51,10 @@ if(or.getDeliveryStatues() == 0 || or.getDeliveryStatues() == 9 ){
 
 boolean flagbar = false ;
 Config con = ConfigManager.getinstance().map.get(Config.addbarName);
-if(null != con){
+System.out.println(StringUtill.GetJson(con));
+if(null != con){ 
   if(con.getStatues() == Config.isok){
-	   flag = true ;
+	  flagbar  = true ;
 	  }
   }
 

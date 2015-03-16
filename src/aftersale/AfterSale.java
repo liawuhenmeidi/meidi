@@ -2,20 +2,20 @@ package aftersale;
 
 import user.User;
 import user.UserService;
+import utill.StringUtill;
 
 public class AfterSale {
    public static int typeupdate = 1 ;  // 已上报
    public static int typesale = 0 ;   // 待上报 
    public static int typesalecome = 2 ;   // 厂家未通过 
-   public static int cannotupload = 4 ;   // 无法上报
-     
-   
-   public static int unupdateOrder = 0 ;   // 厂家未通过 
-   public static int updateOrder = 1 ;   // 厂家未通过 
+   public static int cannotupload = 4 ;   // 无法上报 
+
+   public static int unupdateOrder = 0 ;   // 厂家未通过  
+   public static int updateOrder = 1 ;   // 厂家未通过  
    
    private String printid; 
    private int oriedid;
-   
+   private int opid ;
    private int id ;
    private int tid; // 产品型号id
    private String tName; // 产品型号
@@ -43,7 +43,17 @@ public class AfterSale {
    private String typeName ;
    private String statuestime; 
    private String nexttime;  
-   public String getNexttime() {
+   
+    
+   public int getOpid() {
+	return opid;
+}
+
+public void setOpid(int opid) {
+	this.opid = opid;
+}
+
+public String getNexttime() {
 	return nexttime;
 }
 
@@ -126,6 +136,9 @@ public void setSubmitTime(String submitTime) {
 	this.submitTime = submitTime;
 }
 public String getDetail() {
+	if(StringUtill.isNull(detail)){
+		detail = "";
+	} 
 	return detail;
 }
 public void setDetail(String detail) {
@@ -206,6 +219,9 @@ public void setAndate(String andate) {
 	this.andate = andate;
 }
 public String getBatchNumber() {
+	if(StringUtill.isNull(batchNumber)){
+		batchNumber = "";
+	}
 	return batchNumber;
 }
 public void setBatchNumber(String batchNumber) {
@@ -233,6 +249,9 @@ public void setSaledate(String saledate) {
 }
    
 public String getBarcode() {
+	if(StringUtill.isNull(barcode)){
+		barcode = ""; 
+	}
 	return barcode;
 }
 public void setBarcode(String barcode) {
