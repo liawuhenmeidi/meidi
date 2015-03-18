@@ -155,7 +155,7 @@ if(!StringUtill.isNull(id)){
 			yellow = "#c4e1e1"; 
 		} 
 		 
-		var str =  '<tr>' ;
+		var str =  '<tr class="dsc">' ;
 		str +=  '<td>维修保养内容</td>'+ 
 		         '<td>维修保养结果</td>'+
 			    ' <td >单据类型</td> '+
@@ -165,7 +165,7 @@ if(!StringUtill.isNull(id)){
                 ' <td >状态</td> '+ 
 	            '</tr>';  
 		
-	    str +=  '<tr>' +
+	    str +=  '<tr class="dsc">' +
 	           '<td>'+listo.cause+'</td><td>';    
 		if(listo.type == 2){
 			

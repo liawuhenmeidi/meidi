@@ -145,7 +145,7 @@ if(!StringUtill.isNull(id)){
 			yellow = "#c4e1e1"; 
 		} 
 		 
-		var str =  '<tr class="bsc">' ;
+		var str =  '<tr class="dsc">' ;
 		str +=  '<td></td>'+
 			    '<td>维修保养内容</td>'+
 			    '<td>维修保养结果</td>'+
@@ -155,7 +155,7 @@ if(!StringUtill.isNull(id)){
                ' <td >保养维修完成时间</td> '+ 
                ' <td >状态</td> '+ 
 	           '</tr>'+
-	          '<tr class="bsc">'+
+	          '<tr class="dsc">'+
 	          '<td>';
 	          
 	    if(1 == statues && listo.result == 1){
@@ -429,7 +429,7 @@ if(!StringUtill.isNull(id)){
  </tr>
   <tr class="bsc">  
      <td colspan=4>   
-     <table id="tableproductinit"  style="width:100%;background-color:white">   
+     <table id="tableproductinit"  style="width:100%;">   
       
       
       
