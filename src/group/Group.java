@@ -47,6 +47,7 @@ public class Group {
    public static int installOrderupload = 35;    // 上报厂家安装单 
    public static int maintainOrder = 36;    // 保养单  
    public static int faultOrder = 37;    // 维修单   
+   public static int aftersaleCharge= 39;    // 售后结款    
    public static int change = 38;    // 型号转化与门店转化权限  
     //   从 15开始  
    private int id ;  

@@ -72,14 +72,14 @@ public class AfterSaleServlet extends HttpServlet {
 	    }else if("maintain".equals(method)){
 	    	String sta = request.getParameter("statues");
 	    	String message = request.getParameter("message");
-	    	String cause = request.getParameter("cause");
+	    	String dealresult = request.getParameter("dealresult");
 	    	
 	    	String barcode = request.getParameter("barcode");
 	    	String batchNumber = request.getParameter("batchNumber");
 	    	 
 	    	logger.info(barcode+batchNumber);
 	    	
-	    	if(maintain(user,sta,afid,message,cause,barcode,batchNumber)){ 
+	    	if(maintain(user,sta,afid,message,dealresult,barcode,batchNumber)){ 
 	    		statues = 1;
 	    	};
 	    }else if("updatecharge".equals(method)){

@@ -102,11 +102,11 @@ if(!StringUtill.isNull(id)){
 		   $("#orderbatchNumber").val(order.batchNumber);
 		   $("#orderbarcode").val(order.barcode);
 		
-		 
+		  
 		   $("#andate").val(order.andate); 
 		  // $("#nexttime").val(order.nexttime);   
-		  $("#nexttime").text(order.nexttime); 
-		   
+		   $("#nexttime").val(order.nexttime); 
+		     
 		   $("#yuyueandate").val(order.nexttime); 
 		   $("#saledate").val(order.saledate); 
 		   $("#locations").val(order.location);
@@ -119,6 +119,7 @@ if(!StringUtill.isNull(id)){
 		   for(var i=0;i<listap.length;i++){
 			   time = listap[i].nexttime;
 			   thistime = listap[i].thistime;
+			   
                addrowinit(listap[i]);   
 		   }   
 		  // $("#nexttime").val(time);
@@ -155,16 +156,19 @@ if(!StringUtill.isNull(id)){
 		} 
 		 
 		var str =  '<tr>' ;
-		str +=  '<td>操作内容</td>'+
+		str +=  '<td>维修保养内容</td>'+ 
+		         '<td>维修保养结果</td>'+
 			    ' <td >单据类型</td> '+
                 ' <td >网点</td> '+
                 ' <td >人员</td> '+
+                ' <td >维修保养完成时间</td> '+
                 ' <td >状态</td> '+ 
 	            '</tr>';  
 		
+	    str +=  '<tr>' +
+	           '<td>'+listo.cause+'</td><td>';    
 		if(listo.type == 2){
-			str +=  '<tr>' +
-				 '<td >';
+			
             for(var i=0;i<jsonmaintain.length;i++){
          	   var ckeck = ""; 
          	   var jo = jsonmaintain[i];  
@@ -172,15 +176,16 @@ if(!StringUtill.isNull(id)){
          		   str += jo.name;
          	   }
             } 
-            str += ' </td>';
 		 }else if(listo.type == 1 ||listo.type == 0 || listo.type == 3){
-			 str += '<td >';
-			 str += listo.cause;  
-			 str += ' </td>'; 
+			 str += listo.dealresult;  
+		
 		 }
-		str += ' <td  >'+listo.typeStr+'</td> ' +
+		 
+		str += ' </td>'+
+		         '<td  >'+listo.typeStr+'</td> ' +
                 ' <td  >'+listo.dealName+'</td> ' +
                 ' <td  >'+listo.dealsendName+'</td> ' +
+                ' <td  >'+listo.dealtime+'</td> ' +
                 ' <td  >'+listo.resultStr+'</td> ' +
        	   '</tr>';  
                  
@@ -228,8 +233,8 @@ if(!StringUtill.isNull(id)){
 	  } 
 	 
    
- function checkedd(){
-     
+ function checkedd(type){
+      
 	 var uname = $("#uname").val();
 	 var phone = $("#phone").val();
 	 var juese = $("#ordercategory").val();
@@ -343,26 +348,28 @@ if(!StringUtill.isNull(id)){
 		 }
 	}
 	  
-	 */
-	 if(thistime == "" || thistime == null || thistime == "null"){
-		 alert("保养时间不能为空");
-		 return false;
+	*/
+	if( 1 == type){
+		 if(thistime == "" || thistime == null || thistime == "null"){
+			 alert("保养时间不能为空");
+			 return false;
+		 } 
+		 
+		 if(uid == "" || uid == null || uid == "null"){
+			 alert("维修单位不能为空");
+			 return false;
+		 } 
+	}else  if( 0 == type){
+		 if(nexttime == "" || nexttime == null || nexttime == "null"){
+			 alert("下次保养时间不能为空");
+			 return false;
+		 }  
 	 } 
-	 
-	 if(uid == "" || uid == null || uid == "null"){
-		 alert("维修单位不能为空");
-		 return false;
-	 } 
-	  
-	 /*
-	 if(nexttime == "" || nexttime == null || nexttime == "null"){
-		 alert("下次保养时间不能为空");
-		 return false;
-	 }  
-	 */
+     
 	 $("#submit").css("display","none"); 
+	 $("form").submit();
 	 window.opener.location.reload();
-	 return true ; 
+	  
  }
  
 </script>
@@ -380,16 +387,16 @@ if(!StringUtill.isNull(id)){
 <div style="height:70px;">
 </div> 
   
-<form action="../../user/OrderServlet"  method ="post"  id="form"   onsubmit="return checkedd()"  > 
+<form action="../../user/OrderServlet"  method ="post"  id="form"    > 
 <!--  头 单种类  -->   
   
 <input type="hidden" name="orderid" value="<%=id %>"/> 
-<input type="hidden" name="method" value="aftersale"/>
+<input type="hidden" name="method" value="aftersale"/> 
 <input type="hidden" name="typemethod" value="maintain"/> 
 <input type="hidden" name="token" value="<%=token%>"/>  
 <input type="hidden" name="statues" value="<%=statues%>"/>  
 <input type="hidden" name="printid" value="<%=af.getPrintid()%>"/> 
- 
+  
 <div class="s_main_tit">上报单位:<span class="qian"><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %></span></div>  
 <!--  订单详情  -->   
   
@@ -506,19 +513,20 @@ if(!StringUtill.isNull(id)){
    
      <td  >保养时间<span style="color:red">*</span></td>
     <td  ><input  type="text" name="thistime" id ="thistime" onclick="new Calendar().show(this)"   placeholder="必填"  readonly="readonly" ></input>   </td>
-  </tr>
+  </tr> 
   <tr class="asc">
     <td  >下次保养时间<span style="color:red">*</span></td>
-    <!--  
+  
     <td  ><input  type="text" name="nexttime" id ="nexttime" onclick="new Calendar().show(this)"    readonly="readonly" ></input>   </td>
-    -->
-    <td  ><label id="nexttime" ></label>  </td>
+      <!--  
+    <td  ><label id="nexttime" ></label>  </td>-->
   <td >备注</td>
     <td ><textarea  id="remark" name="remark" ></textarea></td>
  </tr>
  <% if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){ %>
    <tr class="asc"> 
-    <td colspan="4" style="background-color:orange" class="center"><input type="submit"  value="提  交" /></td>
+    <td colspan="2" style="background-color:orange" class="center"><input type="button" onclick="checkedd(0)"  value="修改" /></td>
+   <td colspan="2" style="background-color:orange" class="center"><input type="button"  onclick="checkedd(1)"  value="配工" /></td>
    </tr> 
    <%} %>
    </table>

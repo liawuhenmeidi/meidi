@@ -146,32 +146,47 @@ if(!StringUtill.isNull(id)){
 		} 
 		 
 		var str =  '<tr class="bsc">' ;
-		str +=  '<td>操作内容</td>'+
+		str +=  '<td></td>'+
+			    '<td>维修保养内容</td>'+
+			    '<td>维修保养结果</td>'+
 			    ' <td >单据类型</td> '+
                ' <td >网点</td> '+
                ' <td >人员</td> '+
+               ' <td >保养维修完成时间</td> '+ 
                ' <td >状态</td> '+ 
-	            '</tr>';  
-		
+	           '</tr>'+
+	          '<tr class="bsc">'+
+	          '<td>';
+	          
+	    if(1 == statues && listo.result == 1){
+	    	str += '<input type="checkbox" name="opid" value="'+listo.id+'" checked="checked">';
+	    }else if(2 == statues && listo.result == 2){
+	    	str += '<input type="checkbox" name="opid" value="'+listo.id+'" checked="checked">';
+	    }   
+	     
+	    str += '</td><td>'+listo.cause+'</td>';
+	    
 		if(listo.type == 2){ 
-			str +=  '<tr class="bsc">' +
+			
 				 '<td >'; 
            for(var i=0;i<jsonmaintain.length;i++){
         	   var ckeck = ""; 
         	   var jo = jsonmaintain[i];  
         	   if(jo.id == listo.categoryId){
         		   str += jo.name;
-        	   }
-           } 
-           str += ' </td>';
+        	   } 
+           }  
+           str += ' </td>'; 
 		 }else if(listo.type == 1 ||listo.type == 0 || listo.type == 3){
 			 str += '<td >';
-			 str += listo.cause;  
+			 str += listo.dealresult;  
 			 str += ' </td>'; 
-		 }
+		 } 
 		str += ' <td  >'+listo.typeStr+'</td> ' +
-		' <td  >'+listo.dealName+'</td> ' +
+		' <td  >'+listo.dealName+'</td> ' + 
+		
         ' <td  >'+listo.dealsendName+'</td> ' +
+        ' <td  >'+listo.dealtime+'</td> ' +
                ' <td  >'+listo.resultStr+'</td> ' +
       	   '</tr>';  
                 
@@ -467,7 +482,7 @@ if(!StringUtill.isNull(id)){
     <td ><textarea  id="locations" name="locations" ></textarea></td>  
     <td >备注</td>
     <td ><textarea  id="remark" name="remark" ></textarea></td>
-   </tr>    
+   </tr>     
  </tr>  
  <% if(UserManager.checkPermissions(user, Group.installOrderupload,"q") && !"2".equals(statues)){ %>
    <tr class="asc">  

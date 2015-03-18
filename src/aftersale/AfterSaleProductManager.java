@@ -20,12 +20,15 @@ import utill.TimeUtill;
 
 public class AfterSaleProductManager {
 	protected static Log logger = LogFactory.getLog(AfterSaleProductManager.class);
-	 
+	  
 	public static List<String> getsaveSQL(User user ,AfterSaleProduct as){
+		   if(!StringUtill.isNull(as.getThistime())){
+			   as.setThistime("'"+as.getThistime()+"'"); 
+		   }
 		   List<String> list = new ArrayList<String>();
 		   String sql= "insert into mdaftersaleproduct (id,asid,type,cause,cid,tid,prince,dealid,dealtime,result,statues,detail,nexttime,thistime) " + 
 				   		"values ("+as.getId()+","+as.getAsid()+","+as.getType()+",'"+as.getCause()+"','"+as.getCid()+"','"+as.getTid()+"','"+as.getPrince()+"','"+as.getDealid()+"',"+as.getDealtime()+",'"+as.getResult()+"','"+as.getStatues()+"','"+as.getDetail()+"',"+as.getNexttime()+","+as.getThistime()+") ;" ;
-		    
+		     
 		   list.add(sql);
  
 		   return list ;
@@ -90,29 +93,29 @@ public class AfterSaleProductManager {
 				String[] strs =  message.split(",");
 				for(int i=0;i<strs.length;i++){
 					String oids = strs[i];
-					//logger.info(oids);
+					//logger.info(oids); 
 					String[] oidss = oids.split("_");
 					    String cid = oidss[0];
 						String oname =oidss[1];    
-					//	logger.info(oname);
+					//	logger.info(oname); 
 						int tid = ProductService.gettypemap().get(oname).getId();
 						String sql2 = "delete from mdaftersaleproduct  where id = "+as.getId();
 						  
-						String sql1= "insert into mdaftersaleproduct (id,asid,type,cause,cid,tid,prince,dealid,dealsendid,dealtime,result,statues,detail,nexttime,thistime) " +  
-						   		"values (null,"+as.getAsid()+","+as.getType()+",'"+cause+"','"+cid+"','"+tid+"','"+as.getPrince()+"','"+as.getDealid()+"','"+as.getDealsendid()+"',"+as.getDealtime()+",'"+statues+"','"+as.getStatues()+"','"+as.getDetail()+"',"+as.getNexttime()+",'"+as.getThistime()+"') ;" ;
+						String sql1= "insert into mdaftersaleproduct (id,asid,type,cause,cid,tid,prince,dealid,dealsendid,dealtime,result,statues,detail,nexttime,thistime,dealresult) " +  
+						   		"values (null,"+as.getAsid()+","+as.getType()+",'"+as.getCause()+"','"+cid+"','"+tid+"','"+as.getPrince()+"','"+as.getDealid()+"','"+as.getDealsendid()+"','"+TimeUtill.getdateString()+"','"+statues+"','"+as.getStatues()+"','"+as.getDetail()+"',"+as.getNexttime()+",'"+as.getThistime()+"','"+cause+"') ;" ;
 						 
-						listsql.add(sql2);    
+						listsql.add(sql2);      
 						listsql.add(sql1);
-				}   
-			}else { 
-				sql = "update mdaftersaleproduct set result = " + statues +" , cause = '"+cause+"' ,thistime = '"+TimeUtill.getdateString()+"' where id  in "+ str +" and result = 0 ";
+				}     
+			}else {  
+				sql = "update mdaftersaleproduct set result = " + statues +" , dealresult = '"+cause+"' ,thistime = '"+TimeUtill.getdateString()+"',dealtime = '"+TimeUtill.getdateString()+"' where id  in "+ str +" and result = 0 ";
 				listsql.add(sql); 
 			}
 			  
 			//sql = "update mdaftersaleproduct set result = " + statues +" where asid  in "+ str +" and result = 0 " ;
 		}else {    
 			//sql = "update mdaftersaleproduct set dealsendid= 0 , cause = '"+cause+"' where id  in "+ str +" and result = 0 ";
-			sql = "update mdaftersaleproduct set statues = 2  , cause = '"+cause+"' where id  in "+ str +" and result = 0 ";
+			sql = "update mdaftersaleproduct set statues = 2  , dealresult = '"+cause+"' where id  in "+ str +" and result = 0 ";
 			listsql.add(sql);
 		} 
 		   
@@ -203,6 +206,11 @@ public class AfterSaleProductManager {
         return list ;
 	}
 	
+	public static String delete(int id){ 
+		String sql = " delete from mdaftersaleproduct where id = "+ id ;
+		return sql ;
+	}
+	
 	public static AfterSaleProduct gerAfterSaleProductFromRs(ResultSet rs){
 		   AfterSaleProduct p = null;
 			try {  
@@ -211,7 +219,7 @@ public class AfterSaleProductManager {
 				p.setAsid(rs.getInt("asid"));
 				p.setCause(rs.getString("cause"));
 				int cid = rs.getInt("mdaftersaleproduct.cid");
-				p.setCid(cid);  
+				p.setCid(cid);    
 				int tid = rs.getInt("mdaftersaleproduct.tid"); 
 				p.setTid(tid); 
 				p.setDealid(rs.getInt("mdaftersaleproduct.dealid")); 
@@ -219,12 +227,12 @@ public class AfterSaleProductManager {
 				p.setDealtime(rs.getString("dealtime"));
 				p.setNexttime(rs.getString("mdaftersaleproduct.nexttime")); 
 				p.setThistime(rs.getString("thistime")); 
-				p.setPrince(rs.getDouble("prince")); 
+				p.setPrince(rs.getDouble("prince"));  
 				p.setResult(rs.getInt("result")) ; 
 				p.setStatues(rs.getInt("mdaftersaleproduct.statues"));
 				p.setDetail(rs.getString("mdaftersaleproduct.detail"));
 				p.setType(rs.getInt("mdaftersaleproduct.type"));  
-
+                p.setDealresult(rs.getString("dealresult")); 
 			} catch (SQLException e) {
 				p = null;
 				logger.info(e);

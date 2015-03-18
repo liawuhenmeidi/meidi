@@ -33,7 +33,8 @@ public class AftersaleAllManager {
 		  
 		  List<AftersaleAll> AfterSales = new ArrayList<AftersaleAll>();
 		  
-		  String sql = "";     
+		  String sql = "";    
+		  logger.info(sort); 
 		  //logger.info(f); 
 		  //sqlstr = "  1 = 1 and (mdaftersale.submitid in (select id from mduser where mduser.usertype in (select groupid from mdrelategroup where pgroupid = "+user.getUsertype()+")) or  submitid = "+ user.getId() +")";
 		      
@@ -70,8 +71,8 @@ public class AftersaleAllManager {
 		      }else if(Order.aftersalephone == statues){      
 			       //sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = 0  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null    "+search+"  order by "+sort+str;
 			       //sql = "select * from mdaftersale where  mdaftersale.nexttime - curdate() < 5  "+search+"  order by "+sort+str;
-		    	  sql = "select * from mdaftersale where   nexttime is not null  and "+sqlstr+search+"  order by nexttime "+str;  
-		      }else if(Order.aftersaledealupload == statues){  
+		    	  sql = "select * from mdaftersale where   nexttime is not null  and "+sqlstr+search+"  order by nexttime desc "+str;   
+		      }else if(Order.aftersaledealupload == statues){   
 		    	  if(UserManager.checkPermissions(user, Group.sencondDealsend)){  
 		    		  sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 0  and mdaftersaleproduct.dealid =  "+user.getId()+" and "+sqlstr+search+"  order by "+sort+str;
 		    	  }else {
@@ -254,13 +255,13 @@ logger.info(sql);
 	}  
 	
 	public static void updatestatuesmatain(String id){ 
-		String sql  = "update mdaftersaleproduct  set result = 2  where asid = "+ id + " and result = 1 ; ";
+		String sql  = "update mdaftersaleproduct  set result = 2  where id in  "+ id + " and result = 1 ; ";
 		  
 		DBUtill.sava(sql);    
 	}  
-	
+	 
 	public static void chargestatuesmatain(String id){ 
-		String sql  = "update mdaftersaleproduct  set result =3  where asid = "+ id + " and result = 2; ";
+		String sql  = "update mdaftersaleproduct  set result =3  where id in  "+ id + " and result = 2; ";
 		  
 		DBUtill.sava(sql);    
 	}  

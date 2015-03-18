@@ -43,7 +43,7 @@ if(Order.orderDispatching == type || Order.neworder == type || Order.release == 
 	message = "客户回访";  
 }else if(Order.pcharge == type){
 	type = Order.charge;
-	message = "安装结款";   
+	message = "安装结款";    
 }else if(Order.pchargepaisong == type){
 	type = Order.pcharge;
 	message = "送货结款"; 
@@ -54,7 +54,7 @@ if(Order.orderDispatching == type || Order.neworder == type || Order.release == 
 }else if(Order.orderquery == type){ 
 	message = "送货确认页"; 
 }else if(Order.aftersalerepare == type){
-	message = "售后待处理"; 
+	message = "遗留数据处理";  
 }else if(Order.repareorderDispatching == type){
 	message = "预约配工页";
 }

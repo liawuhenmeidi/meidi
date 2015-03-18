@@ -132,6 +132,17 @@ public class StringUtill {
     	return UUID(8);
     }
     
+    public static String getStr(String[] list){
+    	String str = "";
+    	if(null != list && list.length != 0){
+    		for(int i=0;i<list.length;i++){
+    			str += ","+list[i];
+    		} 
+    		//logger.info(str);
+    		str = "("+str.substring(1,str.length())+")";
+    	} 
+    	return str ;
+    }
     public static void main(String args[]){
     	String str1 = "MRO201-4（智能型）净水机";
     	String str2 = "空壳MRO201-4(豪华型）美的净水机 空壳样机";

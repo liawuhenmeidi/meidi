@@ -276,6 +276,13 @@ public class AfterSaleManager {
 	   }else{ 
 		   as.setSaledate(null);
 	   } 
+	    
+	   if (!StringUtill.isNull(as.getNexttime())) {
+			as.setNexttime("'" + as.getNexttime() + "'")  ;
+		} else {
+			as.setNexttime(null)  ;
+		}
+
 	   List<String> list = new ArrayList<String>();
 	   String sql = "";
 	   if(as.getId() != 0 ){ 

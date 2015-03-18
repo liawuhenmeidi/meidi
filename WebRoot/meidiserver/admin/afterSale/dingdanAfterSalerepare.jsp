@@ -25,16 +25,16 @@ position:fixed;
 *{
     margin:0;
     padding:0;
-}
+} 
 #table{  
-    width:1100px;
+    width:1500px;
     table-layout:fixed ;
 }
 
 #th{  
     background-color:white;
     position:absolute; 
-    width:1100px; 
+    width:1500px; 
     height:30px;
     top:0;
     left:0;
@@ -68,9 +68,9 @@ position:fixed;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <%  
 if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
-%>  
+%>   
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=AfterSale.typesale%>')"></input> 
- <input type="submit" class="button" name="dosubmit" value="驳回" onclick="winconfirm('<%=AfterSale.cannotupload%>')"></input> 
+ <input type="submit" class="button" name="dosubmit" value="删除" onclick="winconfirm('<%=AfterSale.cannotupload%>')"></input> 
 
 <% }%>
 </div> 
@@ -186,7 +186,7 @@ function detail(id,statues){
 			<td align="center">地址</td> 
 			<td align="center">单据类型</td>
             <td align="center">安装日期</td>
-            <td align="center">预约日期</td>
+         
             <td align="center" >是否上报厂家（美的）</td>
             <td align="center" >备注</td>
 		</tr>

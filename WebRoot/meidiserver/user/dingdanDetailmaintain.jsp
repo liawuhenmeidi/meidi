@@ -59,7 +59,7 @@ function change(statues,oid,type){
 	}  
     var barcode = $("#barcode").val(); 
     var batchNumber = $("#batchNumber").val(); 
-    var cause = $("#cause").val(); 
+    var dealresult = $("#dealresult").val(); 
 	var message = "";
 	//var x = 0 ;
 	//alert(rows);
@@ -107,7 +107,7 @@ function change(statues,oid,type){
 	$.ajax({     
         type: "post",       
          url: "../AfterSaleServlet", 
-         data:"method="+type+"&afid="+oid+"&statues="+statue+"&message="+message+"&cause="+cause+"&batchNumber="+batchNumber+"&barcode="+barcode,       
+         data:"method="+type+"&afid="+oid+"&statues="+statue+"&message="+message+"&dealresult="+dealresult+"&batchNumber="+batchNumber+"&barcode="+barcode,       
          dataType: "",    
          success: function (date) { 
         	//alert(date); 
@@ -215,6 +215,7 @@ function addrow(listo){
   String time = "";   
   int stas = -1 ;
   String cause  = "";
+  
   for(int g = 0 ;g<listasp.size();g++){
 	  AfterSaleProduct op = listasp.get(g);
 	  
@@ -278,9 +279,13 @@ function addrow(listo){
   <tr>
     <td class="s_list_m">维修保养内容</td>
     <td class="s_list_m">   
-    <textarea id="cause" name="cause" ><%=cause%></textarea></td> 
+       <%=cause%>
   </tr>
-  
+  <tr>
+    <td class="s_list_m">维修保养结果</td>
+    <td class="s_list_m">   
+    <textarea id="dealresult" name="dealresult" ></textarea></td> 
+  </tr>
   <tr >
      <td class="s_list_m" colspan=2 align="center">  
      <table id="tableproduct"  style="width:100%">  

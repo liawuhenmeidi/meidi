@@ -295,10 +295,14 @@ function reloadopned(src){
             if(UserManager.checkPermissions(user, Group.installOrderupload,"q") || UserManager.checkPermissions(user, Group.installOrderupload,"w") ){
             	 %>         
             	<p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSale.jsp')" >未上报工厂单据</a></p> 
-            <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintaincharge.jsp')" >工厂未结算单据</a></p>
+           
+            	 <%  
+              }   
+            if(UserManager.checkPermissions(user, Group.aftersaleCharge)){
+            	%>   
+            	    <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintaincharge.jsp')" >工厂未结算单据</a></p>
             	 <% 
-              }  
-             
+              } 
             if(UserManager.checkPermissions(user, Group.maintainOrder,"w")){
             	%>   
             	   <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmitmaintain.jsp')" >系统外维修保养配工</a></p>

@@ -191,7 +191,6 @@
 				 
 				html += '<td align="center">'+json.as.location+'</td>';
 				html += '<td align="center">'+json.as.typeName+'</td>';  
-				html += '<td align="center">'+json.as.saledate+'</td>';
 				html += '<td align="center">'+json.as.andate+'</td>';  
 				html += '<td align="center">'+json.as.statuesName+"<p>"+json.as.statuestime+'</td>'; 
 				html += '<td align="center">'+json.as.detail+'</td>';  

@@ -178,6 +178,7 @@ public class OrderServiceServlet extends HttpServlet {
     	String num = request.getParameter("num");
     	String page = request.getParameter("page");
     	String sort = request.getParameter("sort");
+    	//logger.info(sort); 
     	String search = request.getParameter("searched"); 
     	String sear = "";
     	if(!StringUtill.isNull(search)){ 
