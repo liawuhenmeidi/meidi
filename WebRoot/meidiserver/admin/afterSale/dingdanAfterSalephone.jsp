@@ -186,14 +186,10 @@ function deleteed(){
 			<td align="center">单号</td> 
 			<td align="center">顾客姓名</td>
 			<td align="center">顾客电话</td>
-			<!--  
-			<td align="center">安装单位</td> 
-			<td align="center">安装单位电话</td>
-			-->
 			<td align="center" >设备类别</td> 
+			
 			<td align="center" >设备型号</td> 
 			<td align="center" >设备数量</td>
-			
 			<td align="center" >批号</td> 
 			<td align="center" >条码</td>
 			<td align="center">地址</td> 

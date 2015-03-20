@@ -25,21 +25,21 @@ position:fixed;
 *{
     margin:0;
     padding:0;
-}
+} 
 #table{  
-    width:1400px;
+    width:1700px;
     table-layout:fixed ;
 }
 
 #th{  
     background-color:white;
     position:absolute; 
-    width:1400px; 
+    width:1700px; 
     height:30px;
     top:0;
     left:0;
 }
-#wrap{
+#wrap{ 
     clear:both;
     position:relative;
     padding-top:30px;
@@ -150,20 +150,19 @@ function winconfirm(type){
 			<td align="center">顾客姓名</td>
 			<td align="center">顾客电话</td>
 			<td align="center">安装单位</td>
+			
 			<td align="center">安装单位电话</td>
 			<td align="center" >设备类别</td> 
 			<td align="center" >设备型号</td> 
 			<td align="center" >设备数量</td> 
-			<td align="center" >保养维修内容</td>  
+			<td align="center" >保养维修内容</td> 
+			 
 			<td align="center" >保养类别</td>   
 			<td align="center" >配件名称</td>   
-			<!--   
-			<td  align="center">保养维修网点</td> 
-			<td  align="center">保养维修人员</td> 
-			  -->
 			<td align="center" >单据状态</td> 
 			<td align="center" >批号</td> 
 			<td align="center" >条码</td>
+			
 			<td align="center">地址</td>
             <td align="center" >备注</td> 
 		</tr> 

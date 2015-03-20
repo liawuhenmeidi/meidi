@@ -122,7 +122,7 @@ if(!StringUtill.isNull(id)){
 
 	   } 
 	   if(null != listap){ 
-		   var time = "";
+		  // var time = "";
 		   var thistime = "";
 		   for(var i=0;i<listap.length;i++){
 			   time = listap[i].nexttime;
@@ -158,10 +158,10 @@ if(!StringUtill.isNull(id)){
    function addrowinit(listo){
 		//alert(JSON.parse(listo));
 	    rows.push(row);
-		var yellow = "";
-		if(row%2 == 0){
-			yellow = "#c4e1e1"; 
-		} 
+		//var yellow = "";
+		//if(row%2 == 0){
+		//	yellow = "#c4e1e1"; 
+		//} 
 		  
 	    var str =  '<tr class="dsc">' +
 	           
@@ -170,7 +170,7 @@ if(!StringUtill.isNull(id)){
 		if(listo.type == 2){
 			
             for(var i=0;i<jsonmaintain.length;i++){
-         	   var ckeck = ""; 
+         	   //var ckeck = ""; 
          	   var jo = jsonmaintain[i];  
          	   if(jo.id == listo.categoryId){
          		   str += jo.name;
@@ -196,17 +196,17 @@ if(!StringUtill.isNull(id)){
    function addrow(listo){
 		//alert(JSON.parse(listo));
 	    rows.push(row);
-		var yellow = "";
-		if(row%2 == 0){
-			yellow = "#c4e1e1"; 
-		} 
+		//var yellow = "";
+		//if(row%2 == 0){
+		//	yellow = "#c4e1e1"; 
+		//} 
 		     
 		var str =  '<tr id=produc'+row+ '>' +
 	               '<td>维修类别<span style="color:red">*</span></td>'+
 	               '<td ><input type="hidden" name="product" value="'+row+'"/>'+
 	               '<select class = "category" name="ordercategory'+row+'"  id="ordercategory'+row+'"  style="width:95% ">'; 
 	               for(var i=0;i<jsonmaintain.length;i++){
-	            	   var ckeck = "";
+	            	 //  var ckeck = "";
 	            	   var jo = jsonmaintain[i];  
 	            	   if(jo.id == listo.categoryId){
 	            		   str += '<option value='+jo.id+'  selected="selected" >'+jo.name+'</option>';
@@ -243,14 +243,14 @@ if(!StringUtill.isNull(id)){
       
 	 var uname = $("#uname").val();
 	 var phone = $("#phone").val();
-	 var juese = $("#ordercategory").val();
-	 var str = $("#ordertype").val();
+	 //var juese = $("#ordercategory").val();
+	 //var str = $("#ordertype").val();
 	 
 	 
-	 var orderbatchNumber = $("#orderbatchNumber").val();
-	 var orderbarcode = $("#orderbarcode").val();
-	 var andate = $("#andate").val();
-	 var saledate = $("#saledate").val();
+	 //var orderbatchNumber = $("#orderbatchNumber").val();
+	// var orderbarcode = $("#orderbarcode").val();
+	// var andate = $("#andate").val();
+	// var saledate = $("#saledate").val();
 	  
 	 var locations = $("#locations").val();
 	 var thistime = $("#thistime").val();  
@@ -366,6 +366,8 @@ if(!StringUtill.isNull(id)){
 			 return false;
 		 } 
 	}else  if( 0 == type){
+		 $("#thistime").val("");  
+		 $("#uid").val("");  
 		 if(nexttime == "" || nexttime == null || nexttime == "null"){
 			 alert("下次保养时间不能为空");
 			 return false;
@@ -406,7 +408,7 @@ if(!StringUtill.isNull(id)){
 <div class="s_main_tit">上报单位:<span class="qian"><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %></span></div>  
 <!--  订单详情  -->   
   
- <div id="wrap"> 
+ <div id="wrap">  
   <table  cellspacing="1" id="table" style="width:90%">
   <tr class="asc">
     <td  >顾客姓名<span style="color:red">*</span></td>
@@ -508,15 +510,50 @@ if(!StringUtill.isNull(id)){
           <td>最近更换时间</td>
           <td>下次更换时间</td>
         </tr>  
+         
         <% if(!StringUtill.isNull(matainids)){
+        	List<String> l = new ArrayList<String>();
+              // System.out.println(l);
         	String matainidss[] = matainids.split(",");
+        	String html = "";
         	for(int i=0;i<matainidss.length;i++){
-        		String opid = matainidss[i];
+        		String opid = matainidss[i]; 
         		String name = ProductService.getIDmap().get(Integer.valueOf(opid)).getType();
         		int time = ProductService.getIDmap().get(Integer.valueOf(opid)).getMataintime();
         		double price = ProductService.getIDmap().get(Integer.valueOf(opid)).getStockprice();
         		String lasttime = AftersaleAllManager.getlasttime(asf, Integer.valueOf(opid));
         		String nexttime = TimeUtill.dataAdd(lasttime, time);
+        		
+        		if(l.size()>0){
+        			boolean flag = true ;
+        			for(int j=0;j<l.size();j++){
+        				String str = l.get(j);
+        				String[] strs = str.split("_");
+        				if(TimeUtill.compare(strs[5], nexttime)){
+        					l.add(j,opid+"_"+name+"_"+time+"_"+price+"_"+lasttime+"_"+nexttime);
+        					flag = false ;
+        					break ;
+        				}else {
+        					continue; 
+        				}
+        			}
+        			if(flag){
+        				l.add(opid+"_"+name+"_"+time+"_"+price+"_"+lasttime+"_"+nexttime);
+        			}
+        		}else {
+        			l.add(opid+"_"+name+"_"+time+"_"+price+"_"+lasttime+"_"+nexttime);
+        		}
+        	}
+        	//String nexttime = "";
+        	for(int i=0;i<l.size();i++){
+        		String str = l.get(i);
+        		String[] strs = str.split("_");
+        		String opid = strs[0];
+        		String name = strs[1];
+        		String time = strs[2]; 
+        		String price = strs[3]; 
+        		String lasttime =strs[4];
+        		String nexttime = strs[5];
         		%>
         		<tr class="asc_enable">  
         		<td><%=name %></td>
