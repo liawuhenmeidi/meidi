@@ -38,7 +38,7 @@ public class OrderProduct {
 	public int getIsSubmit() {
 		return isSubmit;
 	}
-
+ 
 	public void setIsSubmit(int isSubmit) {
 		this.isSubmit = isSubmit;
 	}

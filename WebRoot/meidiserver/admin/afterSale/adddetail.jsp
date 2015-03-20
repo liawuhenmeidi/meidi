@@ -22,13 +22,21 @@ String clistmaintain = StringUtill.GetJson(listmaintain);
 AfterSale af = null ; 
 String strorder= null;      
 String listap = null;  
+AftersaleAll asf = null;
+String matainids = "";
 
 if(!StringUtill.isNull(id)){  
-	af = AfterSaleManager.getAfterSaleID(user,id);
-	strorder = StringUtill.GetJson(af); 
-	List<AfterSaleProduct> listasp  = AfterSaleProductManager.getmaintain(af.getId(),AfterSaleProduct.pending+"");
-	listap = StringUtill.GetJson(listasp); 
-	//System.out.println(listap);
+	asf =  AftersaleAllManager.getAfterSaleID(user, id);
+	af = asf.getAs();
+	Product p = ProductService.gettypemap().get(af.gettName());
+	if(null != p){
+		matainids = p.getMatainids();
+	}
+	//af = AfterSaleManager.getAfterSaleID(user,id);
+	strorder = StringUtill.GetJson(af);  
+	List<AfterSaleProduct> listasp  = asf.getAsplist();
+	//List<AfterSaleProduct> listasp  = AfterSaleProductManager.getmaintain(af.getId(),AfterSaleProduct.pending+"");
+	listap = StringUtill.GetJson(listasp);  
 	
 }   
 
@@ -107,9 +115,10 @@ if(!StringUtill.isNull(id)){
 		   $("#yuyueandate").text(order.nexttime);        
 		   $("#saledate").val(order.saledate); 
 		   $("#locations").val(order.location);
-		   $("#detail").val(order.detail);
+		   // alert(order.detail);
+		   $("#remark").text(order.detail); 
 	   } 
-	  
+	   
 	   if(null != listap){
 		   var time = "";
 		   var thistime = "";
@@ -127,7 +136,7 @@ if(!StringUtill.isNull(id)){
 				   
 			   }
 		   }   
-		   $("#nexttime").val(time);
+		  // $("#nexttime").val(time);
 		   $("#thistime").val(thistime);  
 		   if(thistime != "" && thistime != null){
 			  $("#yuyueandate").text(thistime);  
@@ -145,27 +154,17 @@ if(!StringUtill.isNull(id)){
 			yellow = "#c4e1e1"; 
 		} 
 		 
-		var str =  '<tr class="dsc">' ;
-		str +=  '<td></td>'+
-			    '<td>维修保养内容</td>'+
-			    '<td>维修保养结果</td>'+
-			    ' <td >单据类型</td> '+
-               ' <td >网点</td> '+
-               ' <td >人员</td> '+
-               ' <td >保养维修完成时间</td> '+ 
-               ' <td >状态</td> '+ 
-	           '</tr>'+
-	          '<tr class="dsc">'+
+		var str =  '<tr class="dsc">'+
 	          '<td>';
-	          
+	           
 	    if(1 == statues && listo.result == 1){
 	    	str += '<input type="checkbox" name="opid" value="'+listo.id+'" checked="checked">';
 	    }else if(2 == statues && listo.result == 2){
 	    	str += '<input type="checkbox" name="opid" value="'+listo.id+'" checked="checked">';
 	    }   
 	     
-	    str += '</td><td>'+listo.cause+'</td>';
-	    
+	    str += '</td><td>'+listo.cause+'</td><td>'+listo.tname+'</td>';
+	     
 		if(listo.type == 2){ 
 			
 				 '<td >'; 
@@ -230,10 +229,14 @@ if(!StringUtill.isNull(id)){
 	            	   }
 
 	               }
+	               var type = listo.tname;
+	               if(listo.tname == null || listo.tname =="" || listo.tname==undefined ||listo.tname=="undefined" ){
+	            	  type="";  
+	               } 
 	               str += '</select> '+
 	               ' </td>'+ 
-	               ' <td >送货型号<span style="color:red">*</span></td> '+
-	               ' <td  ><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="'+listo.tname+'" style="width:90% " /></td> ' +
+	               ' <td >送货型号<span style="color:red">*</span></td> '+ 
+	               ' <td  ><input type="text"  id="ordertype'+row+'" name="ordertype'+row+'" value="'+type+'" style="width:90% " /></td> ' +
 	          	   ' <td  ><input type="button"   style="color:white;background-color:#0080FF" name="" value="删除" onclick="deletes(produc'+row+','+row+')"/></td>'+
 	          	   '</tr>'; 
 	                  
@@ -430,7 +433,17 @@ if(!StringUtill.isNull(id)){
   <tr class="bsc">  
      <td colspan=4>   
      <table id="tableproductinit"  style="width:100%;">   
-      
+      <tr class="dsc">
+		<td></td>
+			    <td>维修保养内容</td>
+			      <td>维修配件</td>
+			    <td>维修保养结果</td>
+			     <td >单据类型</td> 
+                <td >网点</td> 
+                <td >人员</td> 
+                <td >保养维修完成时间</td> 
+                <td >状态</td> 
+	           </tr>
       
       
      </table>
@@ -450,7 +463,49 @@ if(!StringUtill.isNull(id)){
     
    </tr> 
    
-   
+    <tr class="asc">
+     <td colspan=4> 
+     <table   style="width:100%">
+        <tr class="asc_enable">
+          <td>更换配件名称</td>
+          <td>价格</td>
+          <td>更换周期</td>
+          <td>最近更换时间</td>
+          <td>下次更换时间</td>
+        </tr>  
+        <% 
+          
+         if(!StringUtill.isNull(matainids)){
+        	String matainidss[] = matainids.split(",");
+        	for(int i=0;i<matainidss.length;i++){
+        		String opid = matainidss[i];
+        		String name = ProductService.getIDmap().get(Integer.valueOf(opid)).getType();
+        		int time = ProductService.getIDmap().get(Integer.valueOf(opid)).getMataintime();
+        		double price = ProductService.getIDmap().get(Integer.valueOf(opid)).getStockprice();
+        		String lasttime = AftersaleAllManager.getlasttime(asf, Integer.valueOf(opid));
+        		String nexttime = TimeUtill.dataAdd(lasttime, time);
+        		%>
+        		<tr class="asc_enable">  
+        		<td><%=name %></td>
+        		<td><%=price  %></td>
+        		<td><%=time %></td>
+        		<td><%=lasttime %></td>
+        		<td><%=nexttime %></td>
+        		</tr>
+        		
+        		
+        		
+        		<%
+        	}
+        	
+        }
+      %>
+      
+     </table>
+     </td>
+     
+    
+   </tr>  
  
  <tr class="asc">     
   <td  >预约维护日期</td>
@@ -480,7 +535,7 @@ if(!StringUtill.isNull(id)){
     <tr class="asc"> 
     <td >详细地址<span style="color:red">*</span></td>
     <td ><textarea  id="locations" name="locations" ></textarea></td>  
-    <td >备注</td>
+    <td >备注</td>  
     <td ><textarea  id="remark" name="remark" ></textarea></td>
    </tr>     
  </tr>  

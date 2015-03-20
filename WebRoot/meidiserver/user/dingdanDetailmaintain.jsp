@@ -211,6 +211,17 @@ function addrow(listo){
    
   </tr>
    
+   <tr  >
+    <td width="25%" class="s_list_m">购买日期</td>
+    <td class="s_list_m"><%=af.getSaledate()%></td>
+   
+  </tr>
+  <tr  > 
+    <td width="25%" class="s_list_m">安装日期</td>
+    <td class="s_list_m"><%=af.getAndate()%></td>
+   
+  </tr>
+  
   <%
   String time = "";   
   int stas = -1 ;
@@ -222,14 +233,8 @@ function addrow(listo){
 	   time = op.getThistime();
 	   stas = op.getStatues(); 
 	   cause = op.getCause();
-	   if(!StringUtill.isNull(op.getCname()) && StringUtill.isNull(op.getTname())){
+	   if(!StringUtill.isNull(op.getCname()) && !StringUtill.isNull(op.getTname())){
     	 %> 
-    	 <tr style="background:orange">
-         <td width="55%" class="s_list_m"></td>
-         <td class="s_list_m">
-    		  <%= op.getCname()%> 
-         </td>
-         </tr>
     	  <tr style="background:orange">
      <td width="55%" class="s_list_m">保养型号</td>
      <td class="s_list_m">
@@ -247,12 +252,12 @@ function addrow(listo){
     
 	 
 	 <tr> 
-    <td width="55%" class="s_list_m">批号</td>
+    <td width="55%" class="s_list_m">条码</td>
     <td class="s_list_m"> 
     <input type="text" id="barcode" name="barcode" value="<%=af.getBarcode() %>"></input></td>
-  </tr>
+  </tr> 
   <tr> 
-    <td width="55%" class="s_list_m">条码</td>
+    <td width="55%" class="s_list_m">批号</td>
     <td class="s_list_m"><input type="text" id="batchNumber" name="batchNumber"  value="<%=af.getBatchNumber() %> "></input></td>
   </tr>
  
@@ -319,8 +324,8 @@ function addrow(listo){
      
       <option value="" >&nbsp;&nbsp;&nbsp;&nbsp;</option> 
       <option value="1" >已处理 </option>  
-      <option value="2" >无法处理驳回 </option> 
-      </select>   
+      <option value="2" >驳回 </option> 
+      </select>    
      <input type="button" onclick="change('songh<%=af.getId() %>','<%=af.getId() %>','maintain')"  value="确定"/>
 
    

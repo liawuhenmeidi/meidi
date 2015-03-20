@@ -55,12 +55,12 @@ function search(statues){
 <div class="s_main_tit"><span style="cursor:hand" id="<%=AfterSaleProduct.pending%>" onclick="search('<%=AfterSaleProduct.pending%>')">待解决</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=AfterSaleProduct.success%>" onclick="search('<%=AfterSaleProduct.success%>')">已解决</span>&nbsp;&nbsp;</div>
    
 <!--  订单详情  -->
-<div class="s_main_box">
-<table width="100%" class="s_main_table">
-  <tr > 
-    <td width="20%" class="s_list_m">保养维修内容</td>
-    <td width="30%" class="s_list_m">预约时间</td>
-    <td width="20%" class="s_list_m">顾客信息</td>
+<div >
+<table width="100%" border="0" cellspacing="1"  > 
+  <tr >  
+    <td width="40%" class="s_list_m">保养维修内容</td>
+    <td width="20%" class="s_list_m">预约时间</td>
+    <td width="10%" class="s_list_m">顾客信息</td>
     <td width="30%" class="s_list_m">地点</td>
   </tr>
    <%  

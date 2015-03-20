@@ -20,6 +20,7 @@ import user.User;
 import user.UserManager;
 import utill.DBUtill;
 import utill.StringUtill;
+import utill.TimeUtill;
 import database.DB;
 
 public class AftersaleAllManager {
@@ -34,7 +35,7 @@ public class AftersaleAllManager {
 		  List<AftersaleAll> AfterSales = new ArrayList<AftersaleAll>();
 		  
 		  String sql = "";    
-		  logger.info(sort); 
+		  //logger.info(sort); 
 		  //logger.info(f); 
 		  //sqlstr = "  1 = 1 and (mdaftersale.submitid in (select id from mduser where mduser.usertype in (select groupid from mdrelategroup where pgroupid = "+user.getUsertype()+")) or  submitid = "+ user.getId() +")";
 		      
@@ -68,16 +69,16 @@ public class AftersaleAllManager {
 			   }else if(Order.aftersaledeal == statues){        
 			       //sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = 0  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null    "+search+"  order by "+sort+str;  
 			       sql = "select * from mdaftersale,mdaftersaleproduct where   (mdaftersaleproduct.dealid = 0 or mdaftersaleproduct.statues = 1 ) and mdaftersaleproduct.type != 3 and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid = 0   and "+sqlstr+search+"  order by "+sort+str;
-		      }else if(Order.aftersalephone == statues){      
+		      }else if(Order.aftersalephone == statues){         
 			       //sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.dealid = 0  and  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.dealsendid is null    "+search+"  order by "+sort+str;
 			       //sql = "select * from mdaftersale where  mdaftersale.nexttime - curdate() < 5  "+search+"  order by "+sort+str;
-		    	  sql = "select * from mdaftersale where   nexttime is not null  and "+sqlstr+search+"  order by nexttime desc "+str;   
-		      }else if(Order.aftersaledealupload == statues){   
+		    	  sql = "select * from mdaftersale where   nexttime is not null  and statues != 2 and "+sqlstr+search+"   order by nexttime "+str;   
+		      }else if(Order.aftersaledealupload == statues){    
 		    	  if(UserManager.checkPermissions(user, Group.sencondDealsend)){  
 		    		  sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 0  and mdaftersaleproduct.dealid =  "+user.getId()+" and "+sqlstr+search+"  order by "+sort+str;
 		    	  }else {
 		    		  sql = "select * from mdaftersale,mdaftersaleproduct where  mdaftersaleproduct.asid = mdaftersale.id and mdaftersaleproduct.result = 0  and "+sqlstr+search+"  order by "+sort+str;
-		    	  }
+		    	  } 
 		    	  
 		      }else if(Order.aftersaledealcharge== statues){ 
 		    	  if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){ 
@@ -99,7 +100,8 @@ public class AftersaleAllManager {
 		   ResultSet rs = DB.getResultSet(stmt, sql); 
 				try { 
 					while (rs.next()) {
-						AftersaleAll p = gerAftersaleAllFromRs(rs);
+						AftersaleAll p = new AftersaleAll();
+						p = gerAftersaleAllFromRs(p,rs); 
 						AfterSales.add(p);
 					} 
 				} catch (SQLException e) { 
@@ -127,7 +129,8 @@ public class AftersaleAllManager {
 		   ResultSet rs = DB.getResultSet(stmt, sql); 
 				try { 
 					while (rs.next()) {
-						AftersaleAll p = gerAftersaleAllFromRs(rs);
+						AftersaleAll p = new AftersaleAll();
+						p = gerAftersaleAllFromRs(p,rs);
 						AfterSales.add(p);
 					} 
 				} catch (SQLException e) { 
@@ -154,7 +157,8 @@ public class AftersaleAllManager {
 		   ResultSet rs = DB.getResultSet(stmt, sql); 
 				try { 
 					while (rs.next()) {
-						AftersaleAll p = gerAftersaleAllFromRs(rs);
+						AftersaleAll p = new AftersaleAll();
+						p = gerAftersaleAllFromRs(p,rs);
 						AfterSales.add(p);
 					} 
 				} catch (SQLException e) { 
@@ -169,29 +173,51 @@ public class AftersaleAllManager {
 	
 	public static Map<Integer,AftersaleAll> getAftersaleAllMap(List<AftersaleAll> list){
 		    Map<Integer,AftersaleAll> map = new HashMap<Integer,AftersaleAll>();
+		    
 		    if(null != list){
 		    	for(int i=0;i<list.size();i++){
 		    		AftersaleAll as = list.get(i);
 		    		AftersaleAll asm = map.get(as.getAs().getId());
+		    		//logger.info(asm);
 		    		if(null == asm){
-		    			asm = as ; 
-		    			map.put(as.getAs().getId(), as);
-		    		}else {
-		    			List<AfterSaleProduct> listap = as.getAsplist();
-		    			if(null != as.getAsp()){
-			    			listap.add(as.getAsp());
+		    			asm = new AftersaleAll() ; 
+		    			asm.setAs(as.getAs());  
+		    			asm.setAsplist(as.getAsplist()); 
+		    			map.put(as.getAs().getId(), asm); 
+		    		}else {   
+		    			List<AfterSaleProduct> listap = asm.getAsplist();
+		    			if(null != as.getAsplist()){ 
+		    				listap.addAll(as.getAsplist());
 			    		}
-		    		}
-		    		
-		    		
-		    		
-		    		
+		    		}	
 		    	}
 		    }
 	        return map ;
 		 }
-	 
-	 
+	 // 合并
+	public static List<AftersaleAll> getAftersaleList(List<AftersaleAll> list){
+		List<AftersaleAll> map = new ArrayList<AftersaleAll>();
+	    
+	    if(null != list){
+	    	for(int i=0;i<list.size();i++){
+	    		AftersaleAll as = list.get(i);
+	    		boolean flag = true ;
+	    		for(int j=0;j<map.size();j++){
+	    			AftersaleAll asj = map.get(j);
+	    			if(as.getAs().getId() == asj.getAs().getId()){
+	    				asj.setAsplist(as.getAsplist());
+	    				flag = false ;
+	    			}
+	    		}
+	    		
+	    		if(flag){
+	    			map.add(as); 
+	    		}
+	    	}
+	    }
+        return map ;
+	 }
+	
 	 public static  AftersaleAll  getAfterSaleID(User user ,String id){
 		 AftersaleAll af = new AftersaleAll();
 		   
@@ -202,8 +228,8 @@ public class AftersaleAllManager {
 logger.info(sql); 		      
 			   ResultSet rs = DB.getResultSet(stmt, sql); 
 					try {  
-						while (rs.next()) {
-							af = gerAftersaleAllFromRs(rs);
+						while (rs.next()) { 
+							af = gerAftersaleAllFromRs(af,rs);
 						} 
 					} catch (SQLException e) { 
 						e.printStackTrace();
@@ -258,31 +284,57 @@ logger.info(sql);
 		String sql  = "update mdaftersaleproduct  set result = 2  where id in  "+ id + " and result = 1 ; ";
 		  
 		DBUtill.sava(sql);    
-	}  
+	}   
 	 
 	public static void chargestatuesmatain(String id){ 
-		String sql  = "update mdaftersaleproduct  set result =3  where id in  "+ id + " and result = 2; ";
-		  
+		//String sql  = "update mdaftersaleproduct  set result =3  where id in  ("+ id + ") and result = 2; ";
+		String sql  = "update mdaftersaleproduct  set result =3  where asid in  ("+ id + ") and result = 2; ";
 		DBUtill.sava(sql);    
 	}  
 	
 	public static void delete(String id ){
-		String sql = "delete from mdaftersale  where id = "+ id;
-		DBUtill.sava(sql); 
+		//List<String> sql = new ArrayList<String>();
+		
+		//String sql1 = "delete from mdaftersale  where id = "+ id;
+		//String sql2 = "delete from mdaftersaleproduct where asid = "+ id;
+		//sql.add(sql1);
+		//sql.add(sql2);  
+		//String sql = " update mdaftersale set statues = 2 where id ="+id ; 
+		String sql = " update mdaftersale set nexttime = null  where id ="+id ; 
+		DBUtill.sava(sql);  
 	}  
 	
-	public static AftersaleAll gerAftersaleAllFromRs(ResultSet rs){
-		 AftersaleAll afs = new AftersaleAll();
+	public static String getlasttime(AftersaleAll asf,int tid){
+		String lasttime = asf.getAs().getAndate();
+		List<AfterSaleProduct> list = asf.getAsplist();
+		//logger.info(tid);  
+		for(int i=0;i<list.size();i++){
+			AfterSaleProduct asp = list.get(i);
+			// logger.info(asp.getDealtime()); 
+			//logger.info(asp.getResult());
+			//logger.info(asp.getCid());
+			if(asp.getTid() == tid && asp.getResult() != 0 ){
+				String time = asp.getDealtime();
+				//logger.info(time); 
+                if(TimeUtill.compare(time, lasttime)){
+        			lasttime = time ;
+        		} 
+			}
+		}
+		return lasttime ;
+	}
+	public static AftersaleAll gerAftersaleAllFromRs(AftersaleAll afs ,ResultSet rs){
 		  try { 
-		  
+		   
 		    AfterSale p = AfterSaleManager.getAfterSaleFromRs(rs);
 		    AfterSaleProduct pp = AfterSaleProductManager.gerAfterSaleProductFromRs(rs);
  //logger.info(StringUtill.GetJson(pp));   
-		    afs.setAs(p); 
-		    afs.setAsp(pp);
-            List<AfterSaleProduct> list = null;
+		    afs.setAs(p);   
             if(null != pp){
-            	list = new ArrayList<AfterSaleProduct>();
+            	List<AfterSaleProduct> list = afs.getAsplist();
+            	if(null == list){
+            		list = new ArrayList<AfterSaleProduct>();
+            	}
             	list.add(pp); 
     			afs.setAsplist(list);
             }

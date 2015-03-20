@@ -25,6 +25,11 @@ public class AfterSaleProductManager {
 		   if(!StringUtill.isNull(as.getThistime())){
 			   as.setThistime("'"+as.getThistime()+"'"); 
 		   }
+		   
+		   if(!StringUtill.isNull(as.getNexttime())){
+			   as.setNexttime("'"+as.getNexttime()+"'"); 
+		   }
+		    
 		   List<String> list = new ArrayList<String>();
 		   String sql= "insert into mdaftersaleproduct (id,asid,type,cause,cid,tid,prince,dealid,dealtime,result,statues,detail,nexttime,thistime) " + 
 				   		"values ("+as.getId()+","+as.getAsid()+","+as.getType()+",'"+as.getCause()+"','"+as.getCid()+"','"+as.getTid()+"','"+as.getPrince()+"','"+as.getDealid()+"',"+as.getDealtime()+",'"+as.getResult()+"','"+as.getStatues()+"','"+as.getDetail()+"',"+as.getNexttime()+","+as.getThistime()+") ;" ;
@@ -46,7 +51,7 @@ public class AfterSaleProductManager {
 		}
 		   
 		str = "("+str.substring(0,str.length()-1)+")";
-		logger.info(str); 
+		// logger.info(str); 
 		String sql = "update mdaftersaleproduct set dealsendid = " + uid +" where id  in "+ str ;
 		
 		logger.info(sql);
@@ -235,9 +240,9 @@ public class AfterSaleProductManager {
                 p.setDealresult(rs.getString("dealresult")); 
 			} catch (SQLException e) {
 				p = null;
-				logger.info(e);
+				//logger.info(e); 
 				return p ;
-				
+				 
 			} 
 			return p ;  
 	   }

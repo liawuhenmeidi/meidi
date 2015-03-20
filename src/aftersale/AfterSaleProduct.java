@@ -38,9 +38,17 @@ public class AfterSaleProduct {
    private String resultStr;   
    private String typeStr ;
    private String dealresult ;
+   private String price; 
    
-   
-   public String getDealresult() {
+   public String getPrice() {
+	return price;
+}
+
+public void setPrice(String price) {
+	this.price = price;
+}
+
+public String getDealresult() {
 	return dealresult;
 }
 
@@ -86,9 +94,14 @@ public void setResultStr(String resultStr) {
    
 public String getDealsendName() {
 	if(dealsendid != 0 ){ 
-		  
+	
+		  if(null != UserService.getMapId().get(dealsendid)){ 
+			  dealsendName = UserService.getMapId().get(dealsendid).getUsername();
+		  }else {
+			  dealsendName = "网点已过期";  
+		  }
 		//System.out.println(UserService.getMapId());  
-		dealsendName = UserService.getMapId().get(dealsendid).getUsername();
+		
 	}else {
 		dealsendName = ""; 
 	} 
@@ -101,11 +114,15 @@ public void setDealsendName(String dealsendName) {
 }
 
 
-public String getDealName() { 
+public String getDealName() {   
 	if(dealid != 0 ){ 
-  
+		if(null != UserService.getMapId().get(dealid)){ 
+			dealName = UserService.getMapId().get(dealid).getUsername();
+		  }else { 
+			  dealName= "网点已过期";   
+		  }
 		//System.out.println(UserService.getMapId());  
-		dealName = UserService.getMapId().get(dealid).getUsername();
+		
 	}else {
 		dealName = ""; 
 	}

@@ -2,7 +2,7 @@ package product;
 
 import category.CategoryManager;
 
-public class Product {
+public class Product { 
   public static int sale = 0;
    public static int unsale = 1;
    
@@ -13,9 +13,24 @@ public class Product {
    private String cname;
    private int statues ;  //  0  在销售   1  已无货
    private double size;
-   
+   private int mataintime;    // 单位是天 
+   private String matainids;
    private double stockprice;
+ 
+    
 
+public int getMataintime() {
+	return mataintime;
+}
+public void setMataintime(int mataintime) {
+	this.mataintime = mataintime;
+}
+public String getMatainids() {
+	return matainids;
+}
+public void setMatainids(String matainids) {
+	this.matainids = matainids;
+}
 public String getCname() {
 	if(this.getCategoryID() == 0 ){
 		cname = ""; 

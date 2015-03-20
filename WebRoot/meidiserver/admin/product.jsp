@@ -80,9 +80,9 @@ if(!StringUtill.isNull(categoryID)){
    
    <ul>   
       <% if(flag){ %>                                                                                               
-      <li><a href="productAdd.jsp?categoryID=<%=categoryID%>&method=add">添加产品</a></li>
+      <li><a href="productAdd.jsp?categoryID=<%=categoryID%>&method=add&ptype=<%=category.getPtype()%>">添加产品</a></li>
       <% }%>
-      <li><a href="category.jsp">返回</a></li>
+      <li><a href="category.jsp">返回</a></li> 
      </ul>
    </div> 
    <div class="table-list">
@@ -97,6 +97,7 @@ if(!StringUtill.isNull(categoryID)){
 			<th align="left">产品型号</th>
 			<th align="left">体积</th> 
 			<th align="left">售价(单位元)</th>
+			<th align="left">时间(单位天)</th>
 			<th align="left">修改</th>
 		</tr>
 	</thead>
@@ -106,7 +107,7 @@ if(!StringUtill.isNull(categoryID)){
 	  Product product = list.get(i) ;
 	  
 %>
-    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)" ondblclick="update('productAdd.jsp?productid=<%=product.getId() %>&method=update&categoryID=<%=categoryID%>')">
+    <tr id="<%=i%>" class="asc"  onclick="updateClass(this)" ondblclick="update('productAdd.jsp?productid=<%=product.getId() %>&method=update&categoryID=<%=categoryID%>&ptype=<%=category.getPtype()%>')">
         
 		<td align="left"><input type="radio" name="product" value="<%=product.getId() %>"></input></td>
 		
@@ -115,9 +116,10 @@ if(!StringUtill.isNull(categoryID)){
 		<td align="left"><%=product.getType() %></td> 
 		<td align="left"><%=product.getSize() %></td>  
 		<td align="left"><%=product.getStockprice()%></td> 
+		<td align="left"><%=product.getMataintime()%></td> 
 		<td align="left">
 		<%if(flag){ %>
-		<a href="productAdd.jsp?productid=<%=product.getId() %>&method=update&categoryID=<%=categoryID%>">[修改]</a>
+		<a href="productAdd.jsp?productid=<%=product.getId() %>&method=update&categoryID=<%=categoryID%>&ptype=<%=category.getPtype()%>">[修改]</a>
 		<%} %>
 		</td> 
     </tr>

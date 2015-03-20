@@ -11,26 +11,49 @@ String method = request.getParameter("method");
 
 String action = request.getParameter("action");
 String productID = request.getParameter("productid");
+String ptype = request.getParameter("ptype");
  
-Product p = new Product();
- 
+Product p = new Product(); 
+List<Product> listp = ProductService.getlistMatain() ;
+
 if("update".equals(method)){
 	p = ProductService.getIDmap().get(Integer.valueOf(productID));
 } 
 
-if("add".equals(action)){
+if("add".equals(action)){  
 	String productName = request.getParameter("name");
 	String sizes = request.getParameter("size");
-	if(!StringUtill.isNull(productName)){  
-		ProductManager.save(productName,categoryID,Double.valueOf(sizes));
+	String stockprice = request.getParameter("stockprice");
+	String mataintime = request.getParameter("mataintime");
+	String matainids = "";
+	String matainid[] = request.getParameterValues("matainids");
+	if(null != matainid && matainid.length > 0){
+		for(int i=0;i<matainid.length;i++){
+			matainids += matainid[i]+","; 
+		}
+		matainids = matainids.substring(0,matainids.length()-1);
+		//System.out.println(matainids);
+	}
+	if(!StringUtill.isNull(productName)){   
+		ProductManager.save(productName,categoryID,Double.valueOf(sizes),Double.valueOf(stockprice),mataintime,matainids);
 		response.sendRedirect("product.jsp?categoryID="+categoryID);
-	}  
-}else if("update".equals(action)){  
+	}   
+}else if("update".equals(action)){   
 	String productName = request.getParameter("name"); 
 	String sizes = request.getParameter("size");
 	String stockprice = request.getParameter("stockprice");
-	if(!StringUtill.isNull(productName)){   
-		ProductManager.update(productName,productID,Double.valueOf(sizes),Double.valueOf(stockprice));
+	String mataintime = request.getParameter("mataintime");
+	String matainids = "";
+	String matainid[] = request.getParameterValues("matainids");
+	if(null != matainid && matainid.length > 0){
+		for(int i=0;i<matainid.length;i++){
+			matainids += matainid[i]+",";
+		}
+		matainids = matainids.substring(0,matainids.length()-1);
+		//System.out.println(matainids);
+	}
+	if(!StringUtill.isNull(productName)){    
+		ProductManager.update(productName,productID,Double.valueOf(sizes),Double.valueOf(stockprice),mataintime,matainids);
 		response.sendRedirect("product.jsp?categoryID="+categoryID);
 	}
 }
@@ -102,19 +125,76 @@ if("add".equals(action)){
       <li><a href="product.jsp?categoryID=<%=categoryID %>">返回</a></li>
      </ul>
    </div>  
-  
+    
      <div >   
      <form action="productAdd.jsp"  method = "post"  onsubmit="return check()">
-      <input type="hidden" name="action" value="<%=method%>"/>  
+     <input type="hidden" name="action" value="<%=method%>"/>  
       <input type="hidden" name="categoryID" value="<%=categoryID%>"/>
       <input type="hidden" id="productid" name="productid" value="<%=productID%>"/>
       <input type="hidden" id="token" name="token" value="<%=token%>"/> 
+      
+     <table width="100%" id="table">  
+       <tr class="asc"><td> 产品型号:</td>
+       <td><input type="text"  id="name" name="name"  value="<%=p.getType()%>"/> <br /> </td>
+       </tr> 
+     <tr class="asc"><td>  产品体积:</td>
+       <td>  <input type="text"  id="size" name="size"  value="<%=p.getSize()%>"/>  <br />   <br /> </td>
+       </tr>
+       <tr class="asc"><td>  最低售价:</td>
+       <td> <input type="text"  id="stockprice" name="stockprice"  value="<%=p.getStockprice()%>"/>  <br />  <br /> </td>
+       </tr>
+       
+       <% if("0".equals(ptype)){ 
+    	   String matainids = p.getMatainids();
+    	   String[] ids= null;
+    	   if(!StringUtill.isNull(matainids)){
+    		   ids = matainids.split(",");
+    	   }
+    	      
+        %> 
+        <tr class="asc" >
+         <td>需保养配件</td>
+         <td>   
+         <table width="100%">
+        		   
+         <%  if(null != listp) { 
+        	// System.out.println(StringUtill.GetJson(listp));
+        	  for(int i=0;i<listp.size();i++){
+        		  String checked = "";
+        		  Product mp = listp.get(i);
+        		  if(null != ids){
+        			  for(int j=0;j<ids.length;j++){
+        				  if(Integer.valueOf(ids[j]) == mp.getId()){
+        					  checked = "checked=\"checked\"";
+        				  }
+        			  }
+        		  }
+        		// System.out.println(StringUtill.GetJson(mp));
+        		  %> 
+        		  <tr> 
+        		   <td><input type="checkbox" <%=checked %> name="matainids" value ="<%=mp.getId()%>"/><%= mp.getType()%></td>
+        		   </tr>
+        		  
+        		  <%
+        	  }
+         }%>
+         
+        		  </table>
+         </td>
+        </tr>
         
-     <div >     
-        产品型号:<input type="text"  id="name" name="name"  value="<%=p.getType()%>"/> <br /> 
-        产品体积:<input type="text"  id="size" name="size"  value="<%=p.getSize()%>"/>  <br />  
-        最低售价:<input type="text"  id="stockprice" name="stockprice"  value="<%=p.getStockprice()%>"/>  <br /> 
+       <% }else if("1".equals(ptype)){
+    	   
+       %> 
+       <tr class="asc">
+          <td> 配件更新周期(天)</td>
+          <td><input type="text"  id="mataintime" name="mataintime"  value="<%=p.getMataintime()%>"/></td>
+      </tr>
+        
+       <%} %> 
+     </table>
 
+     <div >     
         <%   if(UserManager.checkPermissions(user, Group.addprodoct,"w")){ %>
     <input type="submit" value="提  交" />
      <%} %> 

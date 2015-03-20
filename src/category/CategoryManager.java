@@ -145,7 +145,7 @@ logger.info(category.getName());
 				DB.close(stmt);
 				DB.close(conn);
 			}
-			logger.info(categorys.size());
+			//logger.info(categorys.size());
 			return categorys;
 		}
 		

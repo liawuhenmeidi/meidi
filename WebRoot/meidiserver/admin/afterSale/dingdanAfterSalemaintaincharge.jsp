@@ -67,7 +67,7 @@ position:fixed;
 	<jsp:param name="type" value="<%=statues%>"/> 
 </jsp:include> 
 
-<%  if(UserManager.checkPermissions(user, Group.aftersaleCharge,"w")){ %>
+<%  if(UserManager.checkPermissions(user, Group.aftersaleCharge,"q")){ %>
 <div class="btn">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <input type="submit" class="button" name="dosubmit" value="确认" onclick="winconfirm('<%=AfterSale.typeupdate%>')"></input> 

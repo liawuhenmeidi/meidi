@@ -190,19 +190,28 @@ public class OrderServiceServlet extends HttpServlet {
     	list = AftersaleAllManager.getOrderlist(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
 	    //count = OrderManager.getOrderlistcount(user,Integer.valueOf(type),Integer.valueOf(statues),Integer.valueOf(num),Integer.valueOf(page),sort,sear);
     	//logger.info(StringUtill.GetJson(list)); 
-    	Map<Integer,AftersaleAll> maps = AftersaleAllManager.getAftersaleAllMap(list);
+    	//Map<Integer,AftersaleAll> maps = AftersaleAllManager.getAftersaleAllMap(list);
     	//logger.info(maps.get(61).getAsplist().size()); 
-    	list = new ArrayList<AftersaleAll>();
-    	Set<Map.Entry<Integer,AftersaleAll>> mapentset = maps.entrySet(); 
+    	//logger.info(StringUtill.GetJson(maps));  
+    	//List<AftersaleAll> getAftersaleList
+    	list = AftersaleAllManager.getAftersaleList(list); 
+    	/*Set<Map.Entry<Integer,AftersaleAll>> mapentset = maps.entrySet(); 
     	Iterator<Map.Entry<Integer,AftersaleAll>> mapit = mapentset.iterator();
     	while(mapit.hasNext()){
     		Map.Entry<Integer,AftersaleAll> mapent = mapit.next();
     		AftersaleAll af = mapent.getValue();
+    		logger.info(af.getAs().getAndate()); 
     		list.add(af);    
-    	} 
+    	} */
+    	
     	String html = "";
     	String date = "";
-    	   
+    	//logger.info(list); 
+    	/*for(int i=0;i<list.size();i++){
+    		logger.info(list.get(i).getAs().getId());
+    		logger.info(list.get(i).getAs().toString());
+    		logger.info(StringUtill.GetJson(list.get(i))); 
+    	} */
     	date = StringUtill.GetJson(list);
     	//logger.info(date);
     	//Order.serach

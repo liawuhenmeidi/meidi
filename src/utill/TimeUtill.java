@@ -79,6 +79,21 @@ public class TimeUtill {
     	Date date = new Date();  
     	return date.getMonth() ; 
     }
+    
+    public static boolean compare(String date1,String date2){
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    	try {
+			Date d1 =sdf.parse(date1);
+			Date d2 =sdf.parse(date2);
+			if(d1.getTime() >=d2.getTime()){
+				return true;
+			}  
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return false ;
+    }
     public static String  dataAdd(String data,int count){    
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String putdate =  ""; 

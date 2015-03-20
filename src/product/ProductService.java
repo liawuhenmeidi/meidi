@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import utill.StringUtill;
+
+import category.Category;
+import category.CategoryService;
+
 public class ProductService {
    public static boolean flag = true ;
    public static Map<String,Product> typemap ;  // 
@@ -54,6 +59,24 @@ public class ProductService {
 		return listall;
 	}
   
+ public static List<Product> getlistMatain(){
+	 List<Category> list = CategoryService.getlistmaintain();
+	 List<Product> listp = new ArrayList<Product>();
+	 for(int i=0;i<listall.size();i++){ 
+		 if(null != list){ 
+			 for(int j=0;j<list.size();j++){
+				 if(list.get(j).getId() == listall.get(i).getCategoryID()){
+					 //System.out.println(list.get(j).getId()); 
+					 listp.add(listall.get(i));
+					// System.out.println(StringUtill.GetJson(listall.get(i)));  
+				 }
+			 }
+		 }
+		 
+	 }
+	 
+	 return listp ;
+ } 
 public static Map<Integer, Product> getIDmap() {
 	init();
 	if(idmap == null ){

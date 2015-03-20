@@ -33,7 +33,7 @@
 						  
 						for(var j=0;j<json.asplist.length;j++){
 							cname += json.asplist[j].cname+"<p>";
-							tname += json.asplist[j].tname; 
+							tname += json.asplist[j].tname+"<p>"; 
 							sta = json.asplist[j].statues;   
 							uname = json.asplist[j].dealName;
 							uuname = json.asplist[j].dealsendName;
@@ -93,7 +93,7 @@
 						  
 						for(var j=0;j<json.asplist.length;j++){
 							cname += json.asplist[j].cname+"<p>";
-							tname += json.asplist[j].tname; 
+							tname += json.asplist[j].tname+"<p>"; 
 							sta = json.asplist[j].statues;   
 							uname = json.asplist[j].dealName;
 							uuname = json.asplist[j].dealsendName;
@@ -217,7 +217,7 @@ function aftersalesearch(date,type){
 					  
 					for(var j=0;j<json.asplist.length;j++){
 						cname += json.asplist[j].cname+"<p>";
-						tname += json.asplist[j].tname; 
+						tname += json.asplist[j].tname+"<p>"; 
 						sta = json.asplist[j].statues;   
 						uname = json.asplist[j].dealName; 
 						uuname = json.asplist[j].dealsendName;
@@ -277,7 +277,7 @@ function aftersalerepare(date,type){
 					  
 					for(var j=0;j<json.asplist.length;j++){
 						cname += json.asplist[j].cname+"<p>";
-						tname += json.asplist[j].tname; 
+						tname += json.asplist[j].tname+"<p>"; 
 						sta = json.asplist[j].statues;   
 						uname = json.asplist[j].dealName; 
 						uuname = json.asplist[j].dealsendName;
@@ -298,7 +298,7 @@ function aftersalerepare(date,type){
 			html += '<td align="center">'+json.as.cName+'</td>';
 			html += '<td align="center">'+json.as.tName+'</td>'; 
 			html += '<td align="center">'+json.as.pcount+'</td>';
-			
+			 
 			html += '<td align="center">'+json.as.batchNumber+'</td>';
 			html += '<td align="center">'+json.as.barcode+'</td>';
 			html += '<td align="center">'+json.as.location+'</td>'; 

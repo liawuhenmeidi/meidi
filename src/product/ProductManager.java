@@ -367,28 +367,30 @@ logger.info(sql);
 		}
 
 		
-		public static void save(String type,String id ,double size){
+		public static void save(String type,String id ,double size,double stockprice,String mataintime,String matainids){
 			String sql = ""; 
-			Product p = getProductbyname(type); 
+			Product p = getProductbyname(type);   
 			if(null == p){
-				sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size) VALUES (null, null,'"+type+"','"+id+"',0,'"+size+"')";
-			}else { 
-				sql = "update mdproduct set pstatues = 0 where id = "+ p.getId();
+				sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size,stockprice,mataintime,matainids) VALUES (null, null,'"+type+"','"+id+"',0,'"+size+"',"+stockprice+","+mataintime+",'"+matainids+"')";
+			}else {  
+				sql = "update mdproduct set pstatues = 0 where id = "+ p.getId(); 
 			} 
 			//System.out.println("*****"+id);
 			DBUtill.sava(sql);
 			ProductService.flag = true ;
 		}
-		 
-		public static void update(String type,String id,double size,double stockprice ){	
+		  
+		public static void update(String type,String id,double size,double stockprice,String mataintime ,String matainids){	
 			Connection conn = DB.getConn(); 
-			String sql = "update mdproduct set ptype = ? , size = ? ,stockprice = ? where id = ?";
+			String sql = "update mdproduct set ptype = ? , size = ? ,stockprice = ? ,mataintime = ? ,matainids = ?  where id = ?";
 			PreparedStatement pstmt = DB.prepare(conn, sql);
 			try {
 				pstmt.setString(1, type);
 				pstmt.setDouble(2, size); 
-				pstmt.setDouble(3, stockprice); 
-				pstmt.setString(4, id); 
+				pstmt.setDouble(3, stockprice);
+				pstmt.setString(4, mataintime);
+				pstmt.setString(5, matainids);
+				pstmt.setString(6, id); 
 logger.info(pstmt); 				
 				pstmt.executeUpdate();
 				ProductService.flag = true ;
@@ -409,11 +411,13 @@ logger.info(pstmt);
 					p.setType(rs.getString("ptype"));   
 					p.setName(rs.getString("name"));   
 					p.setStatues(rs.getInt("pstatues"));
-					p.setSize(rs.getDouble("size"));    
+					p.setSize(rs.getDouble("size"));     
 					p.setStockprice(rs.getDouble("stockprice"));
+					p.setMatainids(rs.getString("matainids"));
+					p.setMataintime(rs.getInt("mataintime"));   
 				} catch (SQLException e) {  
 					e.printStackTrace();
-				} 
+				}  
 				return p;
 		   }
 		  

@@ -270,14 +270,14 @@ public class OrderProductManager {
         		JSONObject js = jsons.getJSONObject(i);
         		int opid = js.getInt("id"); 
         		String barcode = js.getString("barcode");
-        		String batchnumber = js.getString("batchnumber");  
+        		String batchnumber = js.getString("batchnumber");   
         		  
-        		String sql = "update mdorderproduct set barcode =  '"+barcode+"' , batchnumber = '"+ batchnumber+ "' and issubmit = 1 where id = "+opid  ;
+        		String sql = "update mdorderproduct set barcode =  '"+barcode+"' , batchnumber = '"+ batchnumber+ "' , issubmit = 1 where id = "+opid  ;
         	    
         		list.add(sql); 
         	}
         	OrderProductService.flag = true ;
-        	return list ;
+        	return list ; 
         	}catch(Exception e){
         		return null;
         	}
@@ -308,7 +308,8 @@ public class OrderProductManager {
 				p.setPrice(rs.getDouble("price")); 
 				p.setBarcode(rs.getString("barcode"));
 				p.setBatchNumber(rs.getString("batchNumber"));
-				p.setIsSubmit(rs.getInt("issubmit")); 
+				p.setIsSubmit(rs.getInt("issubmit"));  
+				p.setPrice(rs.getDouble("price")); 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
