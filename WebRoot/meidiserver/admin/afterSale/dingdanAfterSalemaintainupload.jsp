@@ -9,6 +9,11 @@
   
  String list = StringUtill.GetJson(UserService.getjsuser(listS ));  
   
+ String href = "adddetailonly.jsp";  
+ 
+ if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
+	 href = "adddetail.jsp";
+ }
 %>   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -88,7 +93,7 @@ sort= "andate asc";
 var id = ""; 
 var type = "<%=Group.aftersalerepare%>";
 var listuser = <%=list%>;   
-
+var href = "<%=href%>";
 $(function () { 
 	 fixation();
 	 initOrder(type,statues,num,page,sort,sear);
@@ -181,9 +186,9 @@ function winconfirm(typestatues){
 	        			
            } 
 }
- 
+  
 function detail(id,statues){  
-	winPar=window.open('adddetail.jsp?id='+id+'&statues='+statues, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+	winPar=window.open(href+'?id='+id+'&statues='+statues, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
 
 </script>

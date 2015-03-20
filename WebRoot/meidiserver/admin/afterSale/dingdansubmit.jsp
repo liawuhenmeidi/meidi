@@ -5,6 +5,8 @@
 List<Category> list = CategoryManager.getCategory(user,Category.sale); 
 String clist = StringUtill.GetJson(list);
  
+List<User> listu = UserService.getsend(user); 
+System.out.println(listu);
 HashMap<String,ArrayList<String>> listt = ProductService.gettypeName();
  
 String plist = StringUtill.GetJson(listt);
@@ -162,7 +164,7 @@ if(!StringUtill.isNull(id)){
 	 
 	 var locations = $("#locations").val();
 	 
-	 
+	 var dealsendid = $("#dealsendid").val();
 	 
 	 if(uname == "" || uname == null || uname == "null"){
 		 alert("顾客姓名不能为空");
@@ -228,13 +230,18 @@ if(!StringUtill.isNull(id)){
 		 
 	 if(locations == "" || locations == null || locations == "null"){
 		 alert("详细地址不能为空");
-		 return false;
+		 return false; 
 	 }
 	 
-	 
+	 if(dealsendid == 0 ){
+		 alert("送货安装人员不能为空");
+		 return false; 
+	 }  
+	   
+	// return false ;
 	 $("#submit").css("display","none"); 
 	 return true ; 
- }
+ } 
  
 </script>
 
@@ -319,11 +326,34 @@ if(!StringUtill.isNull(id)){
 
  </tr>
    <tr class="asc"> 
+    <td>送货安装人员</td>
+    <td>  
+    <select id="dealsendid" name="dealsendid">
+    <option value="0"></option>
+     <% if(null != listu){
+    	for(int i=0;i<listu.size();i++){
+    		User u = listu.get(i);
+    		%> 
+    		
+    		<option value="<%=u.getId()%>"><%=u.getUsername() %></option>
+    		
+    		
+    		<%
+    	}
+    } %> 
+    </select>
+    </td>
     <td >详细地址<span style="color:red">*</span></td>
     <td ><textarea  id="locations" name="locations" ></textarea></td>  
+     
+   
+   </tr>
+   <tr class="asc">
+   
     <td >备注</td>
     <td ><textarea  id="remark" name="remark" ></textarea></td>
-   
+    <td></td>
+    <td></td>
    </tr>
    <% if(!StringUtill.isNull(id) && UserManager.checkPermissions(user, Group.installOrderupload,"q")){
 	   %>

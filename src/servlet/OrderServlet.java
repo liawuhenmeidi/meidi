@@ -557,6 +557,7 @@ public class OrderServlet extends HttpServlet {
 			String statues = request.getParameter("statues");
 			String pritlnid = request.getParameter("printid");
 			String ptype = request.getParameter("ptype");
+			String dealsendid = request.getParameter("dealsendid"); 
 			//String opid = request.getParameter("opid");
 
 			if (StringUtill.isNull(pritlnid)) {
@@ -684,7 +685,7 @@ public class OrderServlet extends HttpServlet {
 						} else {
 							AfterSaleProduct asp = new AfterSaleProduct();
 							asp.setAsid(maxid);
-
+ 
 							asp.setCause(fault);
 							// asp.setType(AfterSaleProduct.maintain);
 							asp.setDealid(Integer.valueOf(uid));
@@ -734,7 +735,8 @@ public class OrderServlet extends HttpServlet {
 				asp.setResult(AfterSaleProduct.success);
 				// asp.setDealid(or.getDealsendId());
 				// asp.setDealsendid(!StringUtill.isNull(or.getSendId()+"")?or.getSendId():or.getInstallid());
-				asp.setDealid(user.getId());
+				asp.setDealid(user.getId()); 
+				asp.setDealsendid(Integer.valueOf(dealsendid)); 
 				List<String> listsql1 = AfterSaleProductManager.getsaveSQL(
 						user, asp);
 				listas.addAll(listsql1);

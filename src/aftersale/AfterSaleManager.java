@@ -118,9 +118,9 @@ public class AfterSaleManager {
 							asp.setType(AfterSaleProduct.install);
 							asp.setResult(AfterSaleProduct.success);
 							asp.setDealid(or.getDealsendId());  
-							//asp.setDealid(or.getDealsendId());
-							//asp.setDealsendid(!StringUtill.isNull(or.getSendId()+"")?or.getSendId():or.getInstallid());
-							  
+							//asp.setDealid(or.getDealsendId()); 
+							asp.setDealsendid(or.getInstallid() !=0?or.getInstallid():or.getSendId());
+							
 							List<String> listsql1 = AfterSaleProductManager.getsaveSQL(user, asp);  
 							list.addAll(listsql1);  
 							
@@ -132,7 +132,7 @@ public class AfterSaleManager {
    public static List<String> saveByOrderList(User user, Order or,String json){
 	   List<String> list = new ArrayList<String>();
 	   JSONArray jsons = null;
-	   logger.info(json);  
+	   logger.info(json);   
 	   try{
 		   jsons = JSONArray.fromObject(json); 
 			HashMap<Integer,Category> categorymap = CategoryService.getmap();
@@ -160,9 +160,9 @@ public class AfterSaleManager {
 								   		op.setBatchNumber(batchnumber);
 							   		}
 
-							   		
+							   		 
 							   	}
-								
+								 
 								//logger.info(maxid);  
 								as.setId(maxid); 
 								as.setOpid(op.getId());  
@@ -184,7 +184,7 @@ public class AfterSaleManager {
 								//System.out.println(pmap.get(Integer.valueOf(op.getSendType())).getName());
 								as.setUname(or.getUsername());
 								as.setSubmitTime(TimeUtill.getdateString());
-								as.setSubmitId(or.getDealsendId()); 
+								as.setSubmitId(or.getDealsendId());  
 								
 								List<String> listsql = AfterSaleManager.getsaveSQL(user, as);  
 								list.addAll(listsql);
@@ -194,9 +194,10 @@ public class AfterSaleManager {
 								asp.setType(AfterSaleProduct.install);
 								asp.setResult(AfterSaleProduct.success);
 								asp.setDealid(or.getDealsendId());  
-								//asp.setDealid(or.getDealsendId());
-								//asp.setDealsendid(!StringUtill.isNull(or.getSendId()+"")?or.getSendId():or.getInstallid());
-								  
+								//logger.info(or.getInstallid()); 
+								//logger.info(or.getSendId());   
+								asp.setDealsendid(or.getInstallid() !=0?or.getInstallid():or.getSendId());
+								       
 								List<String> listsql1 = AfterSaleProductManager.getsaveSQL(user, asp);  
 								list.addAll(listsql1);  
 								
@@ -252,9 +253,9 @@ public class AfterSaleManager {
 								asp.setType(AfterSaleProduct.install);
 								asp.setResult(AfterSaleProduct.success);
 								asp.setDealid(or.getDealsendId());  
-								//asp.setDealid(or.getDealsendId());
+								//asp.setDealid(or.getDealsendId()); 
 								//asp.setDealsendid(!StringUtill.isNull(or.getSendId()+"")?or.getSendId():or.getInstallid());
-								  
+								asp.setDealsendid(or.getInstallid() !=0?or.getInstallid():or.getSendId()); 
 								List<String> listsql1 = AfterSaleProductManager.getsaveSQL(user, asp);  
 								list.addAll(listsql1);  
 								

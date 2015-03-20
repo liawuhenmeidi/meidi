@@ -247,9 +247,10 @@ logger.info(sql);
 		String sql = "update mdaftersale set statues = 3 where id = "+ id;
 		DBUtill.sava(sql);   
 	}   
-	 
-	public static void updatecannotup(String id ){
+	  
+	public static void updatecannotup(String id ){ 
 		String sql = "update mdaftersale set statues = 4 where id = "+ id;
+		//String sql = "update mdaftersaleproduct  set statues = 3  where asid = "+ id + " and result = 1 ; ";
 		DBUtill.sava(sql); 
 	}  
 	 

@@ -266,13 +266,20 @@ function aftersalerepare(date,type){
 	for(var i=0;i<jsonlist.length;i++){ 
 		var json = jsonlist[i];
 		   if(null != json){ 
-			   var cname = "";
-				var tname = ""; 
+			   var color = 'class="asc"';
+			   //alert(json.as.statues); 
+			   if(json.as.statues == 4){ 
+				     color = 'bgcolor="red"';
+			   }   
+			   var cname = ""; 
+				var tname = "";  
 				var uname = "";
 				var uuname = "";
 				var resultStr = "";
 				var cause = "";
 				var typeStr = "";
+				
+				
 				if(null != json.asplist ){
 					  
 					for(var j=0;j<json.asplist.length;j++){
@@ -284,11 +291,16 @@ function aftersalerepare(date,type){
 						resultStr = json.asplist[j].resultStr;
 						cause = json.asplist[j].cause; 
 						typeStr= json.asplist[j].typeStr;
+						//alert(json.asplist[j].statues);
+						//if(json.asplist[j].statues == 3){  
+						//	   color = 'bgcolor="red"';
+						//   }
 					}  
 				}  
+				// alert(color);
 		//alert(json.submituser.username); 
-		//String tdcol = 'bgcolor="red"' ;     
-			html += '<tr id='+json.printid+'  class="asc"  onclick="updateClass(this)" ondblclick="detail('+json.as.id+',1)" >';  
+		//String tdcol = 'bgcolor="red"' ;      
+			html += '<tr id='+json.printid+'   '+color+'  onclick="updateClass(this)" ondblclick="detail('+json.as.id+',1)" >';  
 			html += '<td align="center" width="20"><input type="radio"   name ="id"  value="'+json.as.id+'"></input></td>';
 			html += '<td align="center">'+json.as.printid+'</td>';  
 			html += '<td align="center">'+json.as.uname+'</td>'; 

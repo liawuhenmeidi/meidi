@@ -539,7 +539,7 @@ if(!StringUtill.isNull(id)){
     <td ><textarea  id="remark" name="remark" ></textarea></td>
    </tr>     
  </tr>  
- <% if(UserManager.checkPermissions(user, Group.installOrderupload,"q") && !"2".equals(statues)){ %>
+ <% if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){ %>
    <tr class="asc">  
     <td colspan="4" style="background-color:orange" class="center"><input type="submit"  value="提  交" /></td>
    </tr> 

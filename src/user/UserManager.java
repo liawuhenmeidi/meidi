@@ -538,7 +538,7 @@ logger.info(sql);
 				 sql = "select * from  mduser where statues = 1  and usertype in (select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"') and  usertype in " + str ;
 			 }
 			
-		//logger.info(sql);	
+		logger.info(sql);	
 	 
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);

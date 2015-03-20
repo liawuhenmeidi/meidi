@@ -31,10 +31,10 @@ public class AfterSaleProductManager {
 		   }
 		    
 		   List<String> list = new ArrayList<String>();
-		   String sql= "insert into mdaftersaleproduct (id,asid,type,cause,cid,tid,prince,dealid,dealtime,result,statues,detail,nexttime,thistime) " + 
-				   		"values ("+as.getId()+","+as.getAsid()+","+as.getType()+",'"+as.getCause()+"','"+as.getCid()+"','"+as.getTid()+"','"+as.getPrince()+"','"+as.getDealid()+"',"+as.getDealtime()+",'"+as.getResult()+"','"+as.getStatues()+"','"+as.getDetail()+"',"+as.getNexttime()+","+as.getThistime()+") ;" ;
+		   String sql= "insert into mdaftersaleproduct (id,asid,type,cause,cid,tid,prince,dealid,dealsendid,dealtime,result,statues,detail,nexttime,thistime) " + 
+				   		"values ("+as.getId()+","+as.getAsid()+","+as.getType()+",'"+as.getCause()+"','"+as.getCid()+"','"+as.getTid()+"','"+as.getPrince()+"','"+as.getDealid()+"','"+as.getDealsendid()+"',"+as.getDealtime()+",'"+as.getResult()+"','"+as.getStatues()+"','"+as.getDetail()+"',"+as.getNexttime()+","+as.getThistime()+") ;" ;
 		     
-		   list.add(sql);
+		   list.add(sql); 
  
 		   return list ;
 		    

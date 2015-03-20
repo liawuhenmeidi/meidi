@@ -4,8 +4,14 @@
  <%  
  if(StringUtill.isNull(statues)){ 
 	 statues = Order.aftersalesearch +"";
- }
+ } 
+      
+ String href = "adddetailonly.jsp";  
     
+ if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
+	 href = "dingdanupdatemaintain.jsp";
+ }
+ 
 %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -38,7 +44,7 @@ position:fixed;
     height:30px;
     top:0;
     left:0;
-}
+} 
 #wrap{ 
     clear:both;
     position:relative;
@@ -88,7 +94,7 @@ var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>"; 
 var usermapstr = <%=usermapstr%> ;
 var inventory = "";  
-
+var href = "<%=href%>"; 
  
 $(function () { 
 	 fixation();
@@ -99,20 +105,15 @@ function addImage(src){
 	window.open(src, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 } 
 
-function detail(id){ 
-	winPar=window.open('dingdanupdatemaintain.jsp?id='+id, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
+function detail(id){   
+	winPar=window.open(href+'?id='+id, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
- 
+  
 }
 
 function searchlocate(id){
 	window.open('../adminmap.jsp?id='+id, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 
-}
-
- 
-function adddetail(src){ 
-	winPar=window.open(src, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
 
 function winconfirm(type){

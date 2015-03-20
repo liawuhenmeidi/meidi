@@ -5,16 +5,12 @@
  if(StringUtill.isNull(statues)){ 
 	 statues = Order.aftersale +"";  
  } 
-     
- String href = "adddetail.jsp"; 
+
+ String href = "adddetailonly.jsp";  
  
- /*
  if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){
 	 href = "adddetail.jsp";
- }else {  
-	 href = "dingdansubmit.jsp";
  }
- */
  
 %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -123,7 +119,7 @@ function searchlocate(id){
 function detail(id,statues){ 
 	winPar=window.open(href+'?id='+id+'&statues='+statues, 'detail', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 }
- 
+  
 function clickdetail(){
 	var attract = new Array();
 	var i = 0;

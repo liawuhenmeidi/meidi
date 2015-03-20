@@ -283,9 +283,9 @@ function reloadopned(src){
             <%
               if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){ 
             %> 
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmit.jsp')" >售后报单</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmit.jsp')" >自营售后报单</a></p>
 
-             <%   
+             <%     
              } 
             if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){  
              %>   

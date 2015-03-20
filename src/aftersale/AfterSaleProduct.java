@@ -31,7 +31,7 @@ public class AfterSaleProduct {
    private String dealsendName;
    private String dealtime ;   // 处理完成时间   
    private int result;  //    1 已处理  2 已上报    3  已结款
-   private int statues ;  // 处理结果        0 待处理  1   安装网点驳回      2 维修人员驳回 
+   private int statues ;  // 处理结果        0 待处理  1   安装网点驳回      2 维修人员驳回     3 文员驳回
    private String detail ;   // 处理备注  
    private String nexttime;   // 下次处理时间 
    private String thistime;   // 此次维护处理时间    

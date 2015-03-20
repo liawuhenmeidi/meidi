@@ -413,7 +413,7 @@ public class LogisticsServlet extends HttpServlet {
 					//listaf = AfterSaleManager.saveByOrderList(user,order,json); 
 					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
 				}  
-		    }else {
+		    }else { 
 		    	if(2 == statues){
 					sql = "update mdorder set deliveryStatues = "+statues+" , deliverytype = 1 , sendTime = '"+TimeUtill.gettime()+"' , installTime = '"+TimeUtill.gettime()+"' , installid = mdorder.sendId   where id = " + order.getId();
 				    listop = OrderProductManager.getsql(json);

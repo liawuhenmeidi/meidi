@@ -364,7 +364,12 @@ if(!StringUtill.isNull(id)){
 		 if(uid == "" || uid == null || uid == "null"){
 			 alert("维修单位不能为空");
 			 return false;
-		 } 
+		 }  
+		 if(nexttime == "" || nexttime == null || nexttime == "null"){
+			 alert("下次保养时间不能为空");
+			 return false;
+		 }  
+		 
 	}else  if( 0 == type){
 		 $("#thistime").val("");  
 		 $("#uid").val("");  
