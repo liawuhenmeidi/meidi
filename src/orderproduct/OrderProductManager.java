@@ -1,6 +1,4 @@
 package orderproduct;
-
-
 import group.Group;
 
 import java.sql.Connection;
@@ -19,11 +17,7 @@ import order.Order;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import product.ProductService;
-
-
-import servlet.OrderServlet;
 import user.User;
 import user.UserManager;
 import utill.NumbleUtill;
@@ -40,7 +34,7 @@ public class OrderProductManager {
 		   if(UserManager.checkPermissions(user, Group.dealSend)){
 			   Connection conn = DB.getConn();  
 			   if(!NumbleUtill.isNumeric(type)){
-				   type = ProductService.gettypemap().get(type).getId()+"";
+				   type = ProductService.gettypemap(user).get(type).getId()+"";
 			   }
 				String sql = "update mdorderproduct set saletype = '"+ type + "' , categoryID = "+categoryid+"  , count = "+count + " where orderid = " + oid + " and statues = 1 ";
 				logger.info(sql);     
@@ -293,11 +287,12 @@ public class OrderProductManager {
 				p.setId(rs.getInt("id"));
 				p.setCategoryId(rs.getInt("categoryID"));
 				p.setCount(rs.getInt("count"));
-				p.setSaleType(saletype);
-				p.setSendType(sendtype);
+				p.setSaleType(saletype); 
+				p.setSendType(sendtype); 
 				if(!StringUtill.isNull(saletype)){
 					p.setTypeName(ProductService.getIDmap().get(Integer.valueOf(saletype)).getType());
 				}else if(!StringUtill.isNull(sendtype)){    
+					// logger.info(sendtype);  
 					p.setTypeName(ProductService.getIDmap().get(Integer.valueOf(sendtype)).getType());
 				}
 				p.setOrderid(Integer.valueOf(rs.getString("orderid")));

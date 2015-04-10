@@ -1,30 +1,35 @@
-<%@ page language="java" import="java.util.*,category.*,group.*,user.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,category.*,group.*,branchtype.*,user.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 String action = request.getParameter("action");
   
+List<BranchType> list =  BranchTypeManager. getLocatelist(BranchType.sale);
+
 if("add".equals(action)){
 	String categoryName = request.getParameter("name");
 	String time = request.getParameter("time");
 	String id = request.getParameter("id");
+	String[] sales = request.getParameterValues("sales");
+	
 	if(!StringUtill.isNull(categoryName)){
 		System.out.println("category");
 		Category c = new Category();
 		c.setId(Integer.valueOf(id));
 		c.setName(categoryName );
-		c.setTime(time);   
-		boolean  me = CategoryManager.update(c);
+		c.setTime(time); 
+		c.setSales(StringUtill.getStr(sales, "_")); 
+		boolean  me = CategoryManager.update(c); 
 		if(me){
 			response.sendRedirect("category.jsp");
 			return ;
 		}
 	}
 }
- 
+String sales = "";
 String id = request.getParameter("id"); 
 Category category = CategoryManager.getCategory(id);
-
+sales = category.getSales();
 %>
 
 
@@ -44,8 +49,11 @@ Category category = CategoryManager.getCategory(id);
   <link href="../css/mobiscroll.android-ics-2.6.2.css" rel="stylesheet" type="text/css" />
   
 <script type="text/javascript">
-
+var sales = "<%=sales%>";
 $(function () {
+	init();
+	
+	
     var opt = { };		  
 		     $("#name").focus(function(){
 			    $("#name").css("background-color","#FFFFCC");
@@ -73,6 +81,15 @@ $(function () {
 			  
 			  });
  });
+  
+ function init(){
+	 if("" != sales && null != sales){
+		 sales = sales.split("_");
+		 for(var i=0;i<sales.length;i++){
+			 $("input[value="+sales[i]+"]").attr("checked",'checked');
+		 }
+	 } 
+ }
 function checkedd(){
 	 var name = $("#name").val();
 	 var time = $("#time").val();
@@ -136,6 +153,32 @@ function checkedd(){
                                         
                                         
                </td>
+      </tr>
+      <tr class="asc">
+       <td align="center">销售卖场</td>
+       <td>
+         <table>
+          <tr>
+          <% if(null != list){
+        	  for(int i=0;i<list.size();i++){
+        		  BranchType bt = list.get(i);
+        		  
+        		 %> 
+        		 <td> 
+            <input type="checkbox" name="sales" value="<%=bt.getId()%>"/><%=bt.getName()%>
+           </td>
+        		 <%
+        	  }
+          } %>
+           
+          
+          </tr>
+         
+         </table>
+       
+       
+       </td>
+       
       </tr>
       </table>
       

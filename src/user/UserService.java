@@ -17,6 +17,31 @@ public class UserService {
    public static HashMap<String,User>  usermapStr ;
    public static HashMap<String,List<User>>  usermapBranch ;
    
+   public static List<Integer> listids;  // user 子用户id
+ //获取二次配单元（工队）
+   public static List<User>  list ;
+
+   // 送货员
+   public static List<User>  listsend ;  
+   
+   public static List<User> listall ; 
+   
+   public static List<Integer> GetListson(User user){
+	   init(); 
+	   List<Integer> list = new ArrayList<Integer>();
+  	   if(null != listall){  
+  		   for(int i=0;i<listall.size();i++){ 
+  			   User u = listall.get(i);   
+  			   //System.out.println(u.getc); 
+  			   if(u.getCharge().equals(user.getId()+"")){
+  				   list.add(u.getId()); 
+  			   }   
+  		   }   
+  	   } 
+  	   list.add(user.getId()); 
+  	   return list ;
+   }
+    
    public static List<User> getjsuser(List<User> list){
 	   List<User> listn = new ArrayList<User>(); 
 	   if(null != list){
@@ -29,8 +54,7 @@ public class UserService {
 	   } 
 	   return listn;
    }
-  //获取二次配单元（工队）
-   public static List<User>  list ;   
+     
     
    public static HashMap<String,User> getmapSencd(List<User> list){
 	   HashMap<String,User> users = new HashMap<String,User>();
@@ -43,8 +67,7 @@ public class UserService {
 	    
 	   return users ; 
    }
-   // 送货员
-   public static List<User>  listsend ;  
+
    
  
    public static HashMap<Integer,User> getMapId(){
@@ -107,7 +130,8 @@ public static HashMap<String,List<User>> getMapBranchid(){
 		 usermapStr = UserManager.getMap(""); 
 		 usermapBranch = UserManager.getMapBranch();
 		 list = null ;
-		 listsend = null;
+		 listsend = null; 
+		 listall = UserManager.getUsers();
 	 }
 	 flag = false ;
  }

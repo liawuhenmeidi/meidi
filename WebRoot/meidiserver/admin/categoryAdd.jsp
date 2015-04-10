@@ -1,19 +1,22 @@
-<%@ page language="java" import="java.util.*,category.*,group.*,user.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,category.*,group.*,branchtype.*,user.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
-
-User user = (User)session.getAttribute("user");
+ 
+User user = (User)session.getAttribute("user"); 
 String action = request.getParameter("action");
-
+List<BranchType> list =  BranchTypeManager. getLocatelist(BranchType.sale);
 if("add".equals(action)){ 
 	String categoryName = request.getParameter("name");
 	String time = request.getParameter("time");
 	String ptype = request.getParameter("ptype");
+	String[] sales = request.getParameterValues("sales");
+	
 	if(!StringUtill.isNull(categoryName)){
 		Category c = new Category();
 		c.setName(categoryName );
 		c.setTime(time); 
 		c.setPtype(Integer.valueOf(ptype));
+		c.setSales(StringUtill.getStr(sales, "_")); 
 		boolean  me = CategoryManager.save(c);
 		if(me){
 			response.sendRedirect("category.jsp");
@@ -129,6 +132,31 @@ function checkedd(){
                维修配件    <input type="radio" name="ptype" value = 1 /> 
         </td>  
         </tr> 
+         <td align="center">销售卖场</td>
+       <td>
+         <table>
+          <tr>
+          <% if(null != list){
+        	  for(int i=0;i<list.size();i++){
+        		  BranchType bt = list.get(i);
+        		  
+        		 %> 
+        		 <td> 
+            <input type="checkbox" name="sales" value="<%=bt.getId()%>"/><%=bt.getName()%>
+           </td>
+        		 <%
+        	  }
+          } %>
+           
+          
+          </tr>
+         
+         </table>
+       
+       
+       </td>
+       
+      </tr>
       </table> 
 
       <input type="submit" value="提  交" />

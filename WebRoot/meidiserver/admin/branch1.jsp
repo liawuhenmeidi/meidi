@@ -127,6 +127,7 @@ function seletall(all){
 			 <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th>
 			<th align="left" width="40">门店号</th>
 			<th align="left">门店</th>
+			<th align="left">门店编码</th>
 			<th align="left">导购人数</th>
 			<th align="left">门店报装单所需信息</th>
 			<!-- <th align="left">是否做为总库</th> -->
@@ -140,14 +141,15 @@ if(list != null){
 	  //category.getId()
 	
 	  int count =map.get(category.getId()+"")==null?0:map.get(category.getId()+"").size();
-%>     
+%>       
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)" ondblclick="update('<%= category.getId()%>','<%=category.getId()%>','<%=branch.getIsSystem() %>')" >  
 		<td align="left">
 		<% if(category.getPid() != 2){ %>
 		<input type="checkbox" value="1" name="<%=category.getId() %>"></input>
 		<% }%></td> 
-		<td align="left"><%=i+1 %></td>   
+		<td align="left"><%=i+1 %></td>    
  		<td align="left"><%=category.getLocateName() %></td> 
+ 		<td align="left"><%=category.getEncoded()%></td> 
  		<td align="left"><%=count%></td>
 		<td align="left">  
 		        <%  

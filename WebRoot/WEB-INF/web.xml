@@ -5,6 +5,14 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
   <display-name></display-name>	
+   
+  <servlet>
+    <servlet-name>InitServlet</servlet-name>
+    <servlet-class>servlet.InitServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+</servlet> 
+  
+
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
@@ -84,6 +92,20 @@
 	        <servlet-name>OrderServlet</servlet-name>  
 	        <url-pattern>/meidiserver/user/OrderServlet</url-pattern>  
 	    </servlet-mapping>
+	    
+	    
+	    <servlet>  
+	        <servlet-name>OrderGoodsServlet</servlet-name>  
+	        <servlet-class>   
+	            servlet.OrderGoodsServlet  
+	        </servlet-class>  
+   </servlet>   
+	    <servlet-mapping>    
+	        <servlet-name>OrderGoodsServlet</servlet-name>  
+	        <url-pattern>/meidiserver/user/OrderGoodsServlet</url-pattern>  
+	    </servlet-mapping>
+	    
+	    
 	    
 	    
 	    <servlet>  
@@ -273,6 +295,10 @@
 	  		<param-name>changeFilePath</param-name>
 	  		<param-value>data/changeXLS</param-value>
 	  	</init-param>
+	  	<init-param> 
+	  		<param-name>productFilePath</param-name>
+	  		<param-value>data/productXLS</param-value>
+	  	</init-param>
 	  </servlet>
 	  <servlet-mapping>
 	  	<servlet-name>ExcelUpload</servlet-name>
@@ -290,7 +316,7 @@
 	  		<param-name>tichengmubanPath</param-name>
 	  		<param-value>data/model/tichengmuban.xls</param-value>
 	  	</init-param>
-	  	<init-param>
+	  	<init-param> 
 	  		<param-name>xiaoshoudanmubanPath</param-name>
 	  		<param-value>data/model/xiaoshoudanmuban.xls</param-value>
 	  	</init-param>
@@ -298,7 +324,14 @@
 	  		<param-name>changemubanPath</param-name>
 	  		<param-value>data/model/changeModel.xls</param-value>
 	  	</init-param>
+	  	<init-param> 
+	  		<param-name>productmubanPath</param-name>
+	  		<param-value>data/model/productmubanPath.xls</param-value>
+	  	</init-param>
 	  </servlet>
+	  
+	  
+	  
 	  <servlet-mapping>
 	  	<servlet-name>DownloadServlet</servlet-name>
 	  	<url-pattern>/meidiserver/DownloadServlet</url-pattern>

@@ -13,6 +13,7 @@ Branch branchold = null;
 String branchoidname = "";
 String message = null;
 String branchids = null;
+String encoded = null;
 String[] permission = null ;
 String[] branchid = null;
 if(!StringUtill.isNull(id)){
@@ -20,6 +21,7 @@ if(!StringUtill.isNull(id)){
 	branchoidname = branchold.getLocateName();
 	message = branchold.getMessage();
 	branchids = branchold.getBranchids();
+	encoded = branchold.getEncoded();
 	if(!StringUtill.isNull(message)){
 		permission = message.split("_");
 	}
@@ -35,7 +37,8 @@ if("add".equals(action)){
 	//System.out.println(branchname);
 	permission = request.getParameterValues("permission");
 	branchid = request.getParameterValues("branchid");
-    String messagenew = "";
+	encoded =  request.getParameter("encoded"); 
+    String messagenew = ""; 
     String branchidsnew = "";
     if(permission != null ){  
 		for(int i = 0;i<permission.length;i++){
@@ -56,15 +59,15 @@ if("add".equals(action)){
 	if(!StringUtill.isNull(id)){
 		branch.setId(Integer.valueOf(id)); 
 	}
-	
+	  
 	branch.setLocateName(branchname);
 	branch.setPid(Integer.valueOf(pid));
 	branch.setMessage(messagenew); 
 	branch.setBranchids(branchidsnew);  
-	                        
+	branch.setEncoded(encoded);                        
 	BranchManager.save(branch); 
 	response.sendRedirect("branch1.jsp?id="+pid); 
-}
+} 
 
 BranchType branch = BranchTypeManager.getLocate(Integer.valueOf(pid)); 
 
@@ -146,58 +149,78 @@ function changes(){
  <!--       -->     
  
    <div class="weizhi_head">现在位置：<%=branch.getName()%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="branch1.jsp?id=<%=pid %>"><font style="color:blue;font-size:20px;" >返回</font></a></div>     
+      
+      <% if(!"1".equals(type)){ %>
+      
+     <form action="branch1add.jsp"  method = "post"  onsubmit="return checkedd()">
+     <input type="hidden" name="action" value="add"/>
+      <input type="hidden" name="pid" value="<%=pid%>"/> 
+       <input type="hidden" name="id" value="<%=id%>"/> 
         
-     <div> 
-      <table width="60%"  cellspacing="1" id="table" >
-      <%  if(null != map){
+     <table id="table" width="100%"> 
+     <%  if(null != map){
     	      List<User> list = map.get(id);
     	      if(null != list){
     	    	  for(int i=0;i<list.size();i++){
     	    		  User u = list.get(i);
     	    		  %>
     	    		  <tr class="asc">
-    	    		      <td><%=u.getUsername() %></td>
-    	    		      <td><%=u.getPhone() %></td>
+    	    		      <td align="center"><%=u.getUsername() %></td>
+    	    		      <td align="center"><%=u.getPhone() %></td>
     	    		  </tr>
     	    		  <%
     	    	  }
     	      }
     	   
       } %>
-      
-      </table>
-      <br/>
-      
-      <% if(!"1".equals(type)){ %>
-      
-     <form action="branch1add.jsp"  method = "post"  onsubmit="return checkedd()">
-      <input type="hidden" name="action" value="add"/>
-      <input type="hidden" name="pid" value="<%=pid%>"/> 
-       <input type="hidden" name="id" value="<%=id%>"/> 
-          门店名称<span style="color:red">*</span>&nbsp;&nbsp;&nbsp;&nbsp;：
-      <input type="text"  id="locate" value="<%=branchoidname %>" name="locate" /> <br />     
-       门店报装单需要信息<span style="color:red">*</span>:  
-     <ul class="juese_add">  
+      <tr class="asc">
+      <td align="center">门店名称<span style="color:red">*</span></td>
+      <td align="center">
+       <input type="text"  id="locate" value="<%=branchoidname %>" name="locate" /> </td>
+      </tr>
+        <tr class="asc">
+      <td align="center">门店编码</td> 
+      <td align="center"><input type="text"  id="encoded" value="<%=encoded %>" name="encoded" /></td>
+      </tr>
+      <tr class="asc">
+      <td align="center"> 门店报装单需要信息<span style="color:red">*</span>:</td>
+      <td align="center"> <ul class="juese_add">  
         <li><input type="checkbox" value="pos" name = "permission" id="pos" />&nbsp;pos(厂送)单号</li>
         <li><input type="checkbox" value="sailId" name = "permission" id="sailId" />&nbsp;OMS订单号</li>
         <li><input type="checkbox" value="checked" name = "permission" id="checked" />&nbsp;验证码(联保单)</li>
      </ul> 
-     </p>  
-     允许门店可查看库存：
- <ul class="juese_add">  
+     </td>
+      </tr>
+      <tr class="asc">
+      <td align="center"> 允许门店可查看库存：</td>
+      <td align="center">
+          <table width="100%">
+          
+          
+        
         <% List<Branch> list = BranchManager.getLocate(1);
         for(int i =0 ;i<list.size();i++){
         	Branch b = list.get(i);
         %>      
-        <li><input type="checkbox" value="<%=b.getId() %>" name = "branchid" id="<%=b.getId() %>" /><%=b.getLocateName() %></li>
+        <tr><td ><input type="checkbox" value="<%=b.getId() %>" name = "branchid" id="<%=b.getId() %>" /><%=b.getLocateName() %></td></tr>
         <%
         }
         %>
         
-            </ul> 
-      <% if(UserManager.checkPermissions(user, Group.branch,"w")){%>      
+            </table> 
+            </td>
+      </tr>
+    
+      <tr class="asc">
+      <td align="center" colspan=2> <% if(UserManager.checkPermissions(user, Group.branch,"w")){%>      
       <input type="submit" value="提  交" />
-      <%}  %>
+      <%}  %></td>
+      
+      </tr>
+     </table>
+    
+ 
+     
  </form>
  <%} %>
      </div>

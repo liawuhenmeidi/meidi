@@ -73,17 +73,32 @@ if(!StringUtill.isNull(categoryID)){
   </jsp:include>
       
  <!--       -->    
-     
-     <div class="">
    <div class="weizhi_head">现在位置,类别：<%= category.getName()%></div>     
    <div class="main_r_tianjia"> 
-   
-   <ul>   
-      <% if(flag){ %>                                                                                               
-      <li><a href="productAdd.jsp?categoryID=<%=categoryID%>&method=add&ptype=<%=category.getPtype()%>">添加产品</a></li>
+     <form action="../ExcelUpload" method="post" enctype ="multipart/form-data" runat="server">
+     <input type="hidden" name="uploadType" value="5"/> 
+     <input type="hidden" name="categoryID" value="<%=categoryID%>"/> 
+     
+     <table width="100%">  
+     <tr> 
+      <td align="center" width="20%">
+      <% if(flag){ %>                                                                                                
+      <a href="productAdd.jsp?categoryID=<%=categoryID%>&method=add&ptype=<%=category.getPtype()%>"><font style="color:blue;font-size:20px;" >添加产品</font></a>
       <% }%>
-      <li><a href="category.jsp">返回</a></li> 
-     </ul>
+      </td>   
+      <td> <a href="../DownloadServlet?name=productmuban&type=model"><font style="color:blue;font-size:20px;" >模板</font> </a></td> 
+      <td align="center" > <font style="color:red;font-size:20px;" >导入数据 : </font></td>
+      <td align="center" ><input id="File1"   name="UpLoadFile" type="file" /> </td>
+      <td align="center" >
+       <input type="submit" name="Button1" value="提交文件" id="Button1" />
+      </td> 
+      <td align="center" ><a href="category.jsp"><font style="color:blue;font-size:20px;" >返回</font></a>
+      </td>
+     </tr> 
+     
+     </table> 
+  </form>
+
    </div> 
    <div class="table-list">
 <table width="100%"  cellspacing="1" id="table">
@@ -95,6 +110,7 @@ if(!StringUtill.isNull(categoryID)){
 			<th align="left">产品类别ID</th>  -->
 			<th align="left">产品序号</th>
 			<th align="left">产品型号</th>
+			<th align="left">产品编码</th>
 			<th align="left">体积</th> 
 			<th align="left">售价(单位元)</th>
 			<th align="left">时间(单位天)</th>
@@ -112,8 +128,9 @@ if(!StringUtill.isNull(categoryID)){
 		<td align="left"><input type="radio" name="product" value="<%=product.getId() %>"></input></td>
 		
 	<!-- 	<td align="left"><%=product.getId() %></td> -->
-		<td align="left"><%=i+1 %></td>  
+		<td align="left"><%=i+1 %></td>   
 		<td align="left"><%=product.getType() %></td> 
+		<td align="left"><%=product.getEncoded() %></td> 
 		<td align="left"><%=product.getSize() %></td>  
 		<td align="left"><%=product.getStockprice()%></td> 
 		<td align="left"><%=product.getMataintime()%></td> 
@@ -133,10 +150,6 @@ if(!StringUtill.isNull(categoryID)){
 <% }%>
 <div id="pages"></div>
 </div>  
-     
-  
-     </div>
-
 
 </div>
 

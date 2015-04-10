@@ -44,7 +44,7 @@ import utill.RemarkUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
 
-/**
+/** 
  * 核心请求处理类
  * 
  * @author liufeng
@@ -203,8 +203,8 @@ public class OrderServlet extends HttpServlet {
 
 						String price = request.getParameter("dingmaprize");
 
-						Product p = ProductService.gettypemap().get(saleType);
-
+						Product p = ProductService.gettypemap(user).get(saleType);
+ 
 						if (p != null) {
 							saleType = p.getId() + "";
 						} else {
@@ -246,7 +246,7 @@ public class OrderServlet extends HttpServlet {
 						String price = request.getParameter("prize"
 								+ producs[i]);
 
-						Product p = ProductService.gettypemap().get(sendType);
+						Product p = ProductService.gettypemap(user).get(sendType);
 
 						if (p != null) {
 							sendType = p.getId() + "";
@@ -662,8 +662,8 @@ public class OrderServlet extends HttpServlet {
 										+ producs[i]);
 								String ttname = request.getParameter("ordertype"
 										+ producs[i]);
-								// logger.info(ttname);
-								int tid = ProductService.gettypemap().get(ttname)
+								// logger.info(ttname); 
+								int tid = ProductService.gettypemap(user).get(ttname)
 										.getId();
 								// logger.info(tid);
 								asp.setAsid(maxid);

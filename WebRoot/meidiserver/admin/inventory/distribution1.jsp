@@ -108,17 +108,15 @@ td {
 	         data:"method=inventorydis&category="+category+"&type="+type,
 	         dataType: "",   
 	         success: function (data) { 
-	        	 var addstr =  '<thead>'+ 
-	     		  '<tr>'+
-	        		'<th align="left">门店</th>'+
-	     			'<th align="left">产品类别</th>'+
-	     			'<th align="left">产品型号</th>'+
-	     			'<th align="left">账面库存数量</th>'+
-	     			'<th align="left">实际库存数量</th>'+
-	     			'<th align="left">盘点</th>'+ 
-	     		  '</tr>'+
-	     			'</thead> ';
-	        	 var json =  $.parseJSON(data);
+	        	 var addstr = '<tr class="dsc">'
+	        		   + '<td >门店</td>'
+						+ '<td >产品类别</td>'
+						+ '<td >产品型号</td>'
+						+ '<td >'
+						+ '<table width="100%"><tr><td align="left">安装网点：账面库存数量</td></tr><tr><td align="left">销售门店：未入库数量</td></tr></table>'
+						+ '</td>' + '<td >实际库存数量</td>'
+						+ '<td >盘点</td>' + '</tr>';
+	        	 var json =  $.parseJSON(data); 
 	        	
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
@@ -132,7 +130,7 @@ td {
 		        		  
 		        		     ' <td>'+branchstr[str.branchid].locateName+'</td> ' + 
 		        		     ' <td>'+str.cateoryName+'</td> ' +   
-		        		     ' <td>'+str.type+'</td> ' +   
+		        		     ' <td>'+str.type+'</td> ' +    
 		        		     ' <td>'+str.papercount+'</td> ' +  
 		        		     // inventoryid
 		        		     ' <td>'+str.realcount+'</td> ' + 

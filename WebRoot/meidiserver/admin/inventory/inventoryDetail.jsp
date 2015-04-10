@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,utill.*,product.*,order.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,product.*,order.*,ordersgoods.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");  
@@ -92,8 +92,13 @@ function inventory(inventory,type){
 	 if(type == 0 || type == 1 || type == 3){
 		 //window.location.href='inventorysearch.jsp?id='+inventory;
 		 window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
-	 }else {
-		// window.location.href='dingdanDetail.jsp?id='+inventory;
+	 }else if(type == 13 || type == 15 ){  
+		 window.open('../receivegoods/receivegoodsdetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+		 
+	 }else if(type == 14){
+		 window.open('../ordergoods/ordergoodsdetail.jsp?id='+inventory+'&type=<%=OrderMessage.billing%>&statues=<%=OrderMessage.billing%>', 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 }else{ 
+		// window.location.href='dingdanDetail.jsp?id='+inventory; 
 		 window.open('dingdanDetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }
 } 
@@ -121,13 +126,13 @@ function inventory(inventory,type){
 
 <div id="wrap">
 <table  cellspacing="1" id="table" >
-		<tr id="th">  
+		<tr class="dsc">   
 			    <td align="center">单号</td>
-     			<td align="center">日期</td>
+     			<td align="center">日期</td> 
      			<td align="center">型号</td>
-     			<td align="center">上报状态</td> 
-     			<td align="center">操作类型</td>
-     			<td align="center">账面调拨数量</td>
+     			<td align="center">上报状态</td>   
+     			<td align="center">操作类型</td>  
+     			<td align="center">安装网点：账面调拨数量<P>销售门店：未入库数量</td>
      			<td align="center">账面库存数量</td> 
      			<td align="center">实际调拨数量</td>
      			<td align="center">实际库存数量</td>
@@ -151,32 +156,10 @@ function inventory(inventory,type){
 		        			realcount += in.getAllotRealcount();
 		        		}
             	   
-		        		 if(type == 0 ){ 
-		        			 strtype = branch+"出库";
-		        		 }else if(type == 1){ 
-		        			 strtype = branch+"入库";
-		        		 }else if(type == 3){ 
-		        			 strtype = branch+"账面调货";
-		        		 }else if(type == 2){ 
-		        			 strtype = usermap.get(in.getSendUser()).getBranchName()+"派工给"+usermap.get(in.getReceiveuser()).getBranchName();
-		        		 }else if(type == 20){
-		        			 strtype = usermap.get(in.getReceiveuser()).getBranchName()+"释放"; 
-		        		 }else if(type == 11){ 
-		        			 strtype =usermap.get(in.getSendUser()).getBranchName()+"派工给"+usermap.get(in.getReceiveuser()).getUsername();
-		        		 }else if(type == 6){   
-		        			// System.out.println(in.getReceiveuser());
-		        			 strtype = usermap.get(in.getReceiveuser()).getUsername()+"释放给"+usermap.get(in.getSendUser()).getBranchName();
-		        		 }else if(type == 7){     
-		        			 //strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回给"+usermap.get(in.getSendUser()).getBranchName();
-		        			 strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回给"+branchmap.get(in.getBranchid()).getLocateName();
-		        		 } else if(type == 8){    
-		        			 strtype = usermap.get(in.getSendUser()).getBranchName()+"同意"+usermap.get(in.getReceiveuser()).getBranchName()+"退货";
-		        		 } else if(type == 9 ) {
-		        			 strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"释放给"+usermap.get(in.getSendUser()).getBranchName();
-		        		 }else if(type == 12){
-		        			 strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回次品给"+usermap.get(in.getSendUser()).getBranchName();
-		        		 } 
+		        		
+		        			 strtype = in.getMessage(); 
 		        		 
+		        		  
 		        		 if(type == 10){
 		        			 %>
 		        			

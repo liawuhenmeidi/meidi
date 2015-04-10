@@ -66,16 +66,17 @@ logger.info(category.getName());
 				DB.close(conn);
 			}	
         	return flag;
-        }
-         
+        } 
+          
 		public static boolean  save(Category c){
 			Connection conn = DB.getConn();
-			String sql = "insert into mdcategory(id,categoryname,pid,time,cstatues,ptype) values (null, ?,null,?,0,?)";
+			String sql = "insert into mdcategory(id,categoryname,pid,time,cstatues,ptype,sales) values (null, ?,null,?,0,?,?)";
 			PreparedStatement pstmt = DB.prepare(conn, sql);
 			try {
 				pstmt.setString(1, c.getName()); 
 				pstmt.setString(2, c.getTime());
 				pstmt.setInt(3, c.getPtype());  
+				pstmt.setString(4, c.getSales());  
 				pstmt.executeUpdate(); 
 				CategoryService.flag = true ;
 			} catch (SQLException e) {
@@ -417,7 +418,6 @@ logger.info(sql);
 					u = new Category();
 					u.setId(rs.getInt("id"));
 					u.setName(rs.getString("name"));
-					
 				}
 				
 			} catch (SQLException e) {
@@ -433,12 +433,13 @@ logger.info(sql);
 		public static boolean update(Category user) {
 			boolean flag = false ;
 			Connection conn = DB.getConn();
-			String sql = "update mdcategory set categoryname = ?, time = ? where id = ?";
+			String sql = "update mdcategory set categoryname = ?, time = ? ,sales = ?  where id = ?";
 			PreparedStatement pstmt = DB.prepare(conn, sql);
-			try {
+			try {  
 				pstmt.setString(1, user.getName());
 				pstmt.setString(2, user.getTime());
-				pstmt.setInt(3, user.getId());
+				pstmt.setString(3, user.getSales());
+				pstmt.setInt(4, user.getId());
 				pstmt.executeUpdate();
 				CategoryService.flag = true ;
 				flag = true ;
@@ -454,15 +455,16 @@ logger.info(sql);
 		private static Category getCategoryFromRs(ResultSet rs){
 			Category c = new Category();
 			try { 
-				c.setId(rs.getInt("id")); 
-				c.setName(rs.getString("categoryname"));
-				c.setPid(rs.getInt("pid"));
-				c.setTime(rs.getString("time"));  
-				c.setStatues(rs.getInt("cstatues"));
-				c.setPtype(rs.getInt("ptype")); 
-			} catch (SQLException e) {
+				c.setId(rs.getInt("id"));  
+				c.setName(rs.getString("categoryname"));  
+				c.setPid(rs.getInt("pid"));  
+				c.setTime(rs.getString("time"));    
+				c.setStatues(rs.getInt("cstatues")); 
+				c.setPtype(rs.getInt("ptype"));    
+				c.setSales(rs.getString("sales"));   
+			} catch (SQLException e) { 
 				e.printStackTrace();
-			}	
+			}	 
 			return c ;
 		}
 }

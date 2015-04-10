@@ -2,7 +2,7 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
-    
+     
 List<BranchType> list =BranchTypeManager.getLocate() ;
 boolean flag = UserManager.checkPermissions(user, Group.branch,"w");  
 //System.out.println("list.size()"+list.size());
@@ -117,8 +117,13 @@ function seletall(all){
    
  <!--       -->    
  
-   <div class="weizhi_head">现在位置：门店管理</div>     
- 
+   <div class="weizhi_head">现在位置：门店系统管理</div>     
+   <div class="main_r_tianjia">
+    <ul>                                                                                                   
+     <li><a href="branchupdate.jsp">添加门店系统</a></li>
+     </ul>
+   
+   </div>
      
    <div class="table-list">
 <table width="100%" cellspacing="1" id="table">
@@ -126,10 +131,10 @@ function seletall(all){
 		<tr >
 			<th align="left" width="20">
 			 <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th>
-			<th align="left">门店序列号</th>
-			<th align="left">门店类别</th>
+			<th align="left">销售系统编号</th>
+			<th align="left">销售系统</th>
 			<th align="left">修改</th>  
-			<th align="left">查看具体门店</th>
+			<th align="left">系统内门店</th>
 			<th align="left">导购是否可见</th>   
 		</tr>
 	</thead>
@@ -146,11 +151,11 @@ if(list != null){
 	    	<% if(category.getId() != 1 && category.getId() != 2){%>
 	    <input type="checkbox" value="1" name="<%=category.getId() %>"></input>
 	    <% }%>
-	    </td> 
-		<td align="left"><%=i+1 %></td>
+	    </td>  
+		<td align="left"><%=category.getId() %></td>
 		<td align="left"><%=category.getName() %></td> 
 		
-		<td align="left">
+		<td align="left"> 
 		<% 
 		  if(flag){
 		  if(category.getIsSystem() == 0 ){%>
@@ -195,15 +200,7 @@ if(list != null){
 <!--  <input type="button" class="button" name="dosubmit" value="删除" onclick="winconfirm()"></input>  -->
 
 </div>
-<%if(flag){%>
-<div class="btn">  
-     
-     门店大类： <input type="text"  id="locate" name="locate" />  
-  <input type="button" onclick="changes()"  value="增加"/> </br>   
-  <input type="submit" class="button" name="dosubmit" value="删除"  onclick="winconfirm()"></input>
 
-</div>
-<%}  %>
 </div>
 
 

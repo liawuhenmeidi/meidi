@@ -72,7 +72,7 @@ function search(statues){
     	AftersaleAll o = itmap.next().getValue();
     	i++;
     	String col = "";
-    	if(i%2 == 0){
+    	if(i%2 == 0){ 
     		col = "style='background-color:yellow'";
     	}
   %>

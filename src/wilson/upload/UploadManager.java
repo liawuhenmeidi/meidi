@@ -31,12 +31,15 @@ import order.OrderManager;
 import orderPrint.OrderPrintlnService;
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductService;
+import product.Product;
+import product.ProductManager;
 import product.ProductService;
 import uploadtotal.UploadTotal;
 import uploadtotalgroup.UploadTotalGroup;
 import uploadtotalgroup.UploadTotalGroupManager;
 import user.User;
 import utill.BasicUtill;
+import utill.DBUtill;
 import utill.StringUtill;
 import wilson.matchOrder.AfterMatchOrder;
 
@@ -69,7 +72,19 @@ public class UploadManager {
 			return false;
 		}
 	}
-	  
+	   
+	public static boolean saveproductFileToDB(String path,String fileName,String categoryID){
+		List<Product> list = xlsreader.readProductXML(path,fileName,categoryID);
+		List<String> listsql = ProductManager.save(list);
+		if(DBUtill.sava(listsql)){  
+			logger.info("上传销售单保存成功"); 
+			return true;
+		}else{
+			logger.info("上传销售单保存失败");
+			return false;
+		}
+	}
+	
 	public static boolean savechangeFileToDB(String path,String fileName){
 		List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
 		UploadChangeAll bt = xlsreader.readchangeXML(path,fileName);
@@ -291,8 +306,8 @@ public class UploadManager {
 				String out = "";
 				for(int j = 0 ; j < tmp.size() ; j ++){
 					//MXG15-22:1:123.2,SS15T:2:155.0
-					
-					out += ProductService.gettypemap().get(tmp.get(j).getTypeName()).getId() + ":";
+					 
+					out += ProductService.gettypemap(user).get(tmp.get(j).getTypeName()).getId() + ":";
 					out += tmp.get(j).getCount() + ":";
 					out += tmp.get(j).getPrice() + ",";
 				}

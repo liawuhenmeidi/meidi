@@ -105,6 +105,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		return categorys;
 	}
 	
+
 	public static List<String> save(User user,Inventory inventory) {
 		 
 	     List<String> sqls = new ArrayList<String>(); 
@@ -219,7 +220,7 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		
 		int branchuid = uid;
 	    String time = TimeUtill.gettime();
-	   
+	    
 	    for(int i=0;i<listp.size();i++){      
 	    	OrderProduct or = listp.get(i); 
 	    	if(or.getStatues() == 0){       
@@ -556,6 +557,17 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		 return map;
 	}
 	
+	public static Map<String,InventoryBranch> getmapType(String branchid){
+		Map<String,InventoryBranch> map = new HashMap<String,InventoryBranch>();
+		 List<InventoryBranch>  listInventory = InventoryBranchManager.getCategoryid(branchid,""); 
+		 Iterator<InventoryBranch> it = listInventory.iterator();
+		 while(it.hasNext()){
+			 InventoryBranch in = it.next();
+			 map.put(in.getType(), in);
+		 }  
+		 //logger.info(map);  
+		 return map;
+	}
 	
 	public static InventoryBranch getInventoryID(User user ,int branchid,String type){
 		   
@@ -684,13 +696,14 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			c.setRealcount(rs.getInt("realcount")); 
 			c.setPapercount(rs.getInt("papercount")); 
 			c.setInventoryid(rs.getInt("inventoryid"));
-			c.setTypeid(rs.getString("type"));    
+			c.setTypeid(rs.getString("type"));      
 			c.setType(ProductService.getIDmap().get(Integer.valueOf(c.getTypeid())).getType());    
-		    c.setIsquery(rs.getInt("isquery"));
-		    c.setQuerymonth(rs.getString("querymonth"));
+		    c.setIsquery(rs.getInt("isquery"));    
+		    c.setQuerymonth(rs.getString("querymonth")); 
+		    c.setTypeStatues(rs.getInt("typestatues"));   
 		} catch (SQLException e) { 
 			e.printStackTrace();
-		}	
+		}	 
 		return c ;
 	}
 }

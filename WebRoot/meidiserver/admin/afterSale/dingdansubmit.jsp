@@ -1,6 +1,6 @@
 <%@ page language="java"  pageEncoding="UTF-8" import="aftersale.*" contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>  
-<%  
+<%   
       
 List<Category> list = CategoryManager.getCategory(user,Category.sale); 
 String clist = StringUtill.GetJson(list);

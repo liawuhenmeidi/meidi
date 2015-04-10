@@ -46,9 +46,9 @@ $(function () {
 		  
 		  
  });
- 
+  
  function gettime(){
-	 
+	  
 	 var newphone = $("#newphone").val();
 	 var branchid = $("#branch").val();
 	 
@@ -56,9 +56,9 @@ $(function () {
 		 alert("请您添加修改内容");
 		 return false ;
 	 }
-	 
+	  
      if(branchid == "" ||  branchid == null || ( newphone != null && newphone != "" )){
-    	var filter = /^1[3|4|5|8][0-9]\d{8}$/;  
+    	var filter = /^1[3|4|5|7|8][0-9]\d{8}$/;  
  	    var isPhone=/^((0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
  	    
  		 if(!filter.test(newphone) && !isPhone.test(newphone)){

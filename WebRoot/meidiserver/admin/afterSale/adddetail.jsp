@@ -23,12 +23,12 @@ AfterSale af = null ;
 String strorder= null;      
 String listap = null;  
 AftersaleAll asf = null;
-String matainids = "";
+String matainids = ""; 
 
 if(!StringUtill.isNull(id)){  
 	asf =  AftersaleAllManager.getAfterSaleID(user, id);
-	af = asf.getAs();
-	Product p = ProductService.gettypemap().get(af.gettName());
+	af = asf.getAs(); 
+	Product p = ProductService.gettypemap(user).get(af.gettName());
 	if(null != p){
 		matainids = p.getMatainids();
 	}

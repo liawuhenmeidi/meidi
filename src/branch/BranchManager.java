@@ -28,9 +28,9 @@ public class BranchManager {
         List<String> listsql = new ArrayList<String>();
 		String sql = "";  
 		if(branch.getId() == 0){   
-			sql = "insert into mdbranch(id,bname,pid,bmessage,relatebranch) values (null, '"+branch.getLocateName()+"','"+branch.getPid()+"','"+branch.getMessage()+"','"+branch.getBranchids()+"')";
+			sql = "insert into mdbranch(id,bname,pid,bmessage,relatebranch,encoded) values (null, '"+branch.getLocateName()+"','"+branch.getPid()+"','"+branch.getMessage()+"','"+branch.getBranchids()+"','"+branch.getEncoded()+"')";
 		}else{     
-			sql = "update mdbranch set bname = '"+branch.getLocateName()+"' , bmessage = '"+branch.getMessage()+"' , relatebranch = '"+branch.getBranchids()+"' where id = "+ branch.getId();
+			sql = "update mdbranch set bname = '"+branch.getLocateName()+"' , bmessage = '"+branch.getMessage()+"' , relatebranch = '"+branch.getBranchids()+"' , encoded = '"+branch.getEncoded()+"'  where id = "+ branch.getId();
 		}
 		
 		String sqlall = "delete from relatebranch where branchid = " + branch.getId();
@@ -88,7 +88,7 @@ public class BranchManager {
 			String sql = "select * from mdbranch where pid in "+ id ;
 			Statement stmt = DB.getStatement(conn); 
 			ResultSet rs = DB.getResultSet(stmt, sql);
-			try {  
+			try {   
 				while (rs.next()) { 
 					count++; 
 				}  
@@ -412,10 +412,11 @@ logger.info(sql);
 				branch.setLocateName(rs.getString("bname"));
 				branch.setPid(rs.getInt("pid")); 
 				branch.setMessage(rs.getString("bmessage")); 
-				branch.setStatues(rs.getInt("statues"));
+				branch.setStatues(rs.getInt("statues")); 
 				branch.setBranchids(rs.getString("relatebranch"));
-				branch.setDisable(rs.getInt("disable"));
-			} catch (SQLException e) {
+				branch.setDisable(rs.getInt("disable")); 
+				branch.setEncoded(rs.getString("Encoded")); 
+			} catch (SQLException e) { 
 				e.printStackTrace();
 			}	
 			return branch ;

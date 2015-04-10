@@ -26,7 +26,7 @@ public class DownloadServlet extends HttpServlet{
 	private static String tichengmubanPath = "";
 	private static String xiaoshoudanmubanPath = "";
 	private static String changemubanPath= ""; 
-	 
+	private static String productmubanPath= ""; 
 	private ServletConfig config = null;
 	private ServletContext sc;
 
@@ -34,13 +34,14 @@ public class DownloadServlet extends HttpServlet{
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		this.config = config;
+		this.config = config; 
 		sc = config.getServletContext();
 		suningmubanPath = config.getInitParameter("suningmubanPath");
 		tichengmubanPath = config.getInitParameter("tichengmubanPath");
 		xiaoshoudanmubanPath = config.getInitParameter("xiaoshoudanmubanPath");
 		changemubanPath = config.getInitParameter("changemubanPath");
-	} 
+		productmubanPath= config.getInitParameter("productmubanPath"); 
+	}  
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
@@ -85,6 +86,9 @@ public class DownloadServlet extends HttpServlet{
 				filename = "转换单模板.xls";
 				filePath = changemubanPath;
 				
+			}else if("productmuban".equals(name)){
+				filename = "上传产品模板.xls";
+				filePath = productmubanPath;
 			}
 			
 		}

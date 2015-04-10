@@ -15,6 +15,8 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import product.Product;
+
 import change.BranchTypeChange;
 import change.UploadChangeAll;
 
@@ -465,7 +467,7 @@ public class XLSReader {
 					
 					int j = 0 ;  
 					 
-					while(j < 2){ 
+					while(j < 2){  
 						String str = sheet0.getCell(j,i).getContents().trim();
 						if(StringUtill.isNull(str) ){
 							j++; 
@@ -491,6 +493,103 @@ public class XLSReader {
 	        wb.close();
 			
 			return all;
+		}
+		 
+		 
+		public List<Product> readProductXML(String path,String fileName,String categoryID){
+			List<Product> list = new ArrayList<Product>(); 
+			//Map<String, Set<String>> map = b.getMaplist();
+			if(fileName == null || path == null){
+				return null;  
+			}   
+			//logger.info(path); 
+			String filepath = path.replace("\\", "/");
+			logger.info(filepath);
+			//List<String> list =   new ArrayList<String>();
+			File srcFile = new File(filepath,fileName); 
+			Workbook wb = null; 
+			try { 
+				wb = Workbook.getWorkbook(srcFile);
+			} catch (BiffException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} 
+			
+			Sheet sheet0 = wb.getSheet(0);
+             
+			int row = sheet0.getRows();
+			int co = sheet0.getColumns();
+			//logger.info(row);  
+			//logger.info(co);   
+			//logger.info(sheet0.getColumns()); 
+			for(int i = 1 ; i < row; i ++){ 
+				Product p = new Product();
+				p.setCategoryID(Integer.valueOf(categoryID));
+				//boolean flag = false ;
+				try{
+
+					for(int j=0;j < co;j++){  
+						String str = sheet0.getCell(j,i).getContents().trim();
+						if(j==0){
+							if(StringUtill.isNull(str)){
+								p.setType("第"+j+1+"行,第"+i+"列型号不能为空");
+								return list;
+								//flag = true ;
+							}else {     
+	                        	p.setType(str);
+								
+							};
+						}else if(j == 1){
+							if(StringUtill.isNull(str)){
+								p.setType("第"+j+1+"行,第"+i+"列商品编码不能为空");
+								return list; 
+							}else {   
+								p.setEncoded(str);    
+							};
+						}else if(j == 2){
+							try{
+								 double b = Double.parseDouble(str);
+								  p.setSize(b);
+								}catch(Exception e)
+								{ 
+								  //flag = true;
+								} 
+						}else if(j == 3){
+							try{
+								 double b = Double.parseDouble(str);
+								  p.setStockprice(b);
+								}catch(Exception e)
+								{ 
+								  //flag = true;
+								}
+						}	
+					} 
+					
+					boolean flag = true ;
+					if(StringUtill.isNull(p.getType())){
+						flag = false;
+					}
+					for(int m=0;m<list.size();m++){
+						Product pro  = list.get(m);
+						if(pro.getType().equals(p.getType())){
+							//logger.info(3);
+							flag = false;
+							break ;  
+						}
+					} 	
+					
+					if(flag){
+						list.add(p);
+					}
+				
+
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+	        wb.close();
+			return list;
 		}
 		
 }

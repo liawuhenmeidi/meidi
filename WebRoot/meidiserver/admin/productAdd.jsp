@@ -5,8 +5,10 @@
 <%
 
 String categoryID = request.getParameter("categoryID");
+
 List<String> lists = ProductService.getlist(Integer.valueOf(categoryID));
 String list = StringUtill.GetJson(lists);
+
 String method = request.getParameter("method");
 
 String action = request.getParameter("action");
@@ -27,6 +29,8 @@ if("add".equals(action)){
 	String mataintime = request.getParameter("mataintime");
 	String matainids = "";
 	String matainid[] = request.getParameterValues("matainids");
+	String encoded = request.getParameter("encoded");
+	
 	if(null != matainid && matainid.length > 0){
 		for(int i=0;i<matainid.length;i++){
 			matainids += matainid[i]+","; 
@@ -35,7 +39,7 @@ if("add".equals(action)){
 		//System.out.println(matainids);
 	}
 	if(!StringUtill.isNull(productName)){   
-		ProductManager.save(productName,categoryID,Double.valueOf(sizes),Double.valueOf(stockprice),mataintime,matainids);
+		ProductManager.save(productName,categoryID,Double.valueOf(sizes),Double.valueOf(stockprice),mataintime,matainids,encoded);
 		response.sendRedirect("product.jsp?categoryID="+categoryID);
 	}   
 }else if("update".equals(action)){   
@@ -45,6 +49,7 @@ if("add".equals(action)){
 	String mataintime = request.getParameter("mataintime");
 	String matainids = "";
 	String matainid[] = request.getParameterValues("matainids");
+	String encoded = request.getParameter("encoded");
 	if(null != matainid && matainid.length > 0){
 		for(int i=0;i<matainid.length;i++){
 			matainids += matainid[i]+",";
@@ -53,7 +58,7 @@ if("add".equals(action)){
 		//System.out.println(matainids);
 	}
 	if(!StringUtill.isNull(productName)){    
-		ProductManager.update(productName,productID,Double.valueOf(sizes),Double.valueOf(stockprice),mataintime,matainids);
+		ProductManager.update(productName,productID,Double.valueOf(sizes),Double.valueOf(stockprice),mataintime,matainids,encoded);
 		response.sendRedirect("product.jsp?categoryID="+categoryID);
 	}
 }
@@ -142,6 +147,9 @@ if("add".equals(action)){
        </tr>
        <tr class="asc"><td>  最低售价:</td>
        <td> <input type="text"  id="stockprice" name="stockprice"  value="<%=p.getStockprice()%>"/>  <br />  <br /> </td>
+       </tr>
+       <tr class="asc"><td> 产品编码:</td> 
+       <td> <input type="text"  id="encoded" name="encoded"  value="<%=p.getEncoded()%>"/>  <br />  <br /> </td>
        </tr>
        
        <% if("0".equals(ptype)){ 

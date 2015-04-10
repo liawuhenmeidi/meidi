@@ -38,9 +38,11 @@ function clear(){
 <ul class="door"> 
    <%  
      if(UserManager.checkPermissions(user, Group.sale,"w")){ 	 
-   %>        
+   %>         
    <li><a href="order.jsp">报装 </a></li> 
-    <%       
+   <li><a href="OrderGoods/ordergoods.jsp">订货 </a></li> 
+   <li><a href="OrderGoods/ordergoodsall.jsp">查看订货单 </a></li> 
+    <%        
      }  
    if(UserManager.checkPermissions(user, Group.sale,"r")){
       %>    
@@ -55,12 +57,13 @@ function clear(){
    if(UserManager.checkPermissions(user,Group.inventoryquery)){
 	%>     
    <li><a href="inventory/inventory.jsp">库存查询</a></li>
-	    <%	  
-	}
+	    <%	   
+	} 
    if(UserManager.checkPermissions(user,Group.send)){ 	 
    %>
    <li><a href="../admin/sendExport.jsp">送货结款</a></li>
    <li><a href="<%=realPath %>songhuo.jsp">送货单</a></li>
+    <li><a href="<%=realPath %>maintain.jsp">维修保养单</a> </li> 
    <li><a href="<%=realPath %>tuihuo.jsp">退货单</a></li> 
    <%
      }
@@ -71,7 +74,7 @@ function clear(){
      }  
    %> 
     
-    <li><a href="<%=realPath %>maintain.jsp">维修保养单</a> </li> 
+   
  
     <li> <a href="javascript:clear()">退出登陆</a></li>
    </ul>

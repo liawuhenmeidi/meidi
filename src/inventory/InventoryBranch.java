@@ -5,107 +5,117 @@ import java.util.Date;
 import utill.StringUtill;
 import utill.TimeUtill;
 
-public class InventoryBranch {  
-  private int id ;     
-  private int inventoryid;  // 所包含的产品类别id
-  private int branchid ;  
-      
-  private String type ;   
+public class InventoryBranch {
+	private int id;
+	private int inventoryid; // 所包含的产品类别id
+	private int branchid;
+
+	private String type;
+  
+	private int typeStatues; // 1常规 2 特价 3 样机 4 换货 5 赠品 
    
-  private String typeid ;
+	private String typeid;
 
-  private int realcount ;  
-  
-  private int papercount;
-  
-  private int isquery;   // 1 为已盘点
-   
-  private String querymonth;
-  
-  public boolean isquery(){
-	  boolean flag = false ;
-	  int month = TimeUtill.getMonth();
-	  String format = "yyyy-MM-dd";  
-	  if(!StringUtill.isNull(querymonth)){
-		  Date date = TimeUtill.StringToDate(querymonth,format);
-		  if(month == date.getMonth() && isquery == 1){
-			  flag = true ;
-		  }
-	  }
-		  
-	  return flag ;
-  }
-  
- public int getIsquery() {
-	return isquery;
-}
+	private int realcount;
 
-public void setIsquery(int isquery) {
-	this.isquery = isquery;
-}
+	private int papercount;
 
+	private int isquery; // 1 为已盘点
 
+	private String querymonth;
+
+	public boolean isquery() {
+		boolean flag = false;
+		int month = TimeUtill.getMonth();
+		String format = "yyyy-MM-dd";
+		if (!StringUtill.isNull(querymonth)) {
+			Date date = TimeUtill.StringToDate(querymonth, format);
+			if (month == date.getMonth() && isquery == 1) {
+				flag = true;
+			}
+		}
+
+		return flag;
+	}
+
+	public int getIsquery() {
+		return isquery;
+	}
+
+	public void setIsquery(int isquery) {
+		this.isquery = isquery;
+	}
 
 	public String getQuerymonth() {
-	return querymonth;
-}
+		return querymonth;
+	}
 
-public void setQuerymonth(String querymonth) {
-	this.querymonth = querymonth;
-}
+	public void setQuerymonth(String querymonth) {
+		this.querymonth = querymonth;
+	}
 
 	public int getId() {
 		return id;
 	}
-	
-public void setId(int id) {
-	this.id = id;
-}
 
-public String getTypeid() {
-	return typeid;
-}
+	public void setId(int id) {
+		this.id = id;
+	}
 
-public void setTypeid(String typeid) {
-	this.typeid = typeid;
-}
+	public String getTypeid() {
+		return typeid;
+	}
 
-public int getInventoryid() {  
-	return inventoryid;
-} 
-public void setInventoryid(int inventoryid) {
-	this.inventoryid = inventoryid;
-}
+	public void setTypeid(String typeid) {
+		this.typeid = typeid;
+	}
 
-public int getBranchid() {
-	return branchid;
-} 
-public void setBranchid(int branchid) {
-	this.branchid = branchid;
-}
-public String getType() {
-	return type;
-}
-public void setType(String type) {
-	this.type = type;
-}
+	public int getInventoryid() {
+		return inventoryid;
+	}
 
-public int getRealcount() {
-	return realcount;
-}
+	public void setInventoryid(int inventoryid) {
+		this.inventoryid = inventoryid;
+	}
 
-public void setRealcount(int realcount) {
-	this.realcount = realcount;
-}
+	public int getBranchid() {
+		return branchid;
+	}
 
-public int getPapercount() {
-	return papercount;
-}
+	public void setBranchid(int branchid) {
+		this.branchid = branchid;
+	}
 
-public void setPapercount(int papercount) {
-	this.papercount = papercount;
-}
+	public String getType() {
+		return type;
+	}
 
-      
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public int getRealcount() {
+		return realcount;
+	}
+
+	public void setRealcount(int realcount) {
+		this.realcount = realcount;
+	}
+
+	public int getPapercount() {
+		return papercount;
+	}
+
+	public void setPapercount(int papercount) {
+		this.papercount = papercount;
+	}
+
+	public int getTypeStatues() {
+		return typeStatues;
+	}
  
+	public void setTypeStatues(int typeStatues) {
+		this.typeStatues = typeStatues;
+	}
+
 }

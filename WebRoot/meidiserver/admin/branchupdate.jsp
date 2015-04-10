@@ -1,9 +1,17 @@
-<%@ page language="java" import="java.util.*,category.*,branchtype.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,category.*,branchtype.*,utill.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
+BranchType list = new BranchType(); 
+   
 String id = request.getParameter("id");
-BranchType list =BranchTypeManager.getLocate(Integer.valueOf(id)) ;
+int typestatues = 0; 
+
+if(!StringUtill.isNull(id)){
+	list =BranchTypeManager.getLocate(Integer.valueOf(id)) ;
+	typestatues = list.getTypestatues();
+}  
+
       
 %> 
   
@@ -11,21 +19,39 @@ BranchType list =BranchTypeManager.getLocate(Integer.valueOf(id)) ;
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>产品管理</title>
+<title>产品管理</title> 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 
 <script type="text/javascript">
 var bid = "<%=id%>";
-function changes(){
+var statues = "<%=typestatues%>";
+$(function (){
+	init(); 
+});
+ 
+function init(){  
+	$("input[value="+statues+"]").attr("checked",'checked');
+}   
+  
+function changes(){ 
 	var str1 = $("#locate").val();
-	if(str1 == null || str1 == ""){
+	var typestatues = $('input[name="typestatues"]:checked').val();
+	//alert(typestatues); 
+	if(str1 == null || str1 == ""){ 
+		
 		alert("不能为空");
+		return ;
 	}  
-	$.ajax({ 
-        type: "post", 
+	 
+	if( "" == typestatues || null == typestatues){
+		alert("门店属性不能为空");
+		return ; 
+	}   
+	$.ajax({  
+        type: "post",  
          url: "server.jsp",
-         data:"method=branchtypeupdate&id="+str1+"&bid="+bid,
+         data:"method=branchtypeupdate&id="+str1+"&bid="+bid+"&typestatues="+typestatues,
          dataType: "",  
          success: function (data) {
            window.location.href="branch.jsp";
@@ -43,36 +69,28 @@ function changes(){
 <!--   头部开始   -->
  <jsp:include flush="true" page="head.jsp">
   <jsp:param name="dmsn" value="" />
-  </jsp:include>
+  </jsp:include> 
 
-<!--   头部结束   -->
-   
- <!--       -->    
 
    <div class="weizhi_head">现在位置：门店类别管理</div>     
-
-     
-   <div class="table-list">
-<table width="100%" cellspacing="0">
-	<thead>
-		
-	</thead>
-
+ <br/>
+<table width="80%" cellspacing="1" id="table" >
+<tr class="asc"> 
+<td align=center>门店名称：</td>
+<td align=center> <input type="text"  id="locate" value= "<%=list.getName() %>" name="locate" value= ""/>  </td>
+</tr>  
+<tr class="asc">    
+<td align=center>门店属性</td> 
+<td align=center>  
+ <input   type="radio"  name="typestatues" value="<%=BranchType.sale%>"/>销售卖场
+ <input   type="radio" name="typestatues" value="<%=BranchType.install%>"/>售后网点
+</td>  
+</tr> 
+<tr class="asc"  >
+<td align=center colspan=2><input type="button" onclick="changes()"  value="提交"/>  </td>
+</tr>
 </table>
-
-<div class="btn">
-
-<!--  <input type="button" class="button" name="dosubmit" value="删除" onclick="winconfirm()"></input>  -->
-
-</div>
-<div class="btn">   
-     
-      门店名称： <input type="text"  id="locate" value= "<%=list.getName() %>" name="locate" value= ""/>  
-  <input type="button" onclick="changes()"  value="修改"/> </br>   
-
-</div>
-</div>
-
+ 
 
 
 </body>

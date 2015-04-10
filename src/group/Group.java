@@ -49,6 +49,10 @@ public class Group {
    public static int faultOrder = 37;    // 维修单   
    public static int aftersaleCharge= 39;    // 售后结款    
    public static int change = 38;    // 型号转化与门店转化权限  
+   
+   
+   public static int ordergoods = 40;  //  订货单权限    w  可提交    q 审核       r  查看
+    
     //   从 15开始  
    private int id ;  
    private String name;

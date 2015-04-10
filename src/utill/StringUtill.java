@@ -40,12 +40,13 @@ public class StringUtill {
     } 
     
     public static String GetJson(List list){ 
-    	   
+    	//long start= System.currentTimeMillis(); 
     	if(null != list){
     	 JSONArray jsonArray = JSONArray.fromObject(list);
     	 //logger.info(list.toString());
+    	// logger.info("qa"+(System.currentTimeMillis() - start)); 
        	 return jsonArray.toString();
-    	}  
+    	}   
     	 return "[]"; 
     }
     
@@ -143,11 +144,56 @@ public class StringUtill {
     	} 
     	return str ;
     }
+    
+    public static String getStr(String[] list,String separator){
+    	String str = "";
+    	if(null != list && list.length != 0){
+    		for(int i=0;i<list.length;i++){
+    			str += separator+list[i];
+    		} 
+    		//logger.info(str);
+    		str = str.substring(1,str.length());
+    	} 
+    	return str ;
+    }
+    
     public static void main(String args[]){
     	String str1 = "MRO201-4（智能型）净水机";
     	String str2 = "空壳MRO201-4(豪华型）美的净水机 空壳样机";
     	System.out.println(getStringNocn(str1));
     	System.out.println(getStringNocn(str2)); 
     	System.out.print(getStringNocn(str2).equals(getStringNocn(str1)));  
+    }
+    
+    
+    public static String toUtf8String(String s){
+    	StringBuffer sb = new StringBuffer();
+    	for (int i=0;i<s.length();i++){
+    	char c = s.charAt(i);
+    	if (c >= 0 && c <= 255){sb.append(c);}
+    	else{
+    	byte[] b;
+    	try { b = Character.toString(c).getBytes("utf-8");}
+    	catch (Exception ex) {
+    	System.out.println(ex);
+    	b = new byte[0];
+    	}
+    	for (int j = 0; j < b.length; j++) {
+    	int k = b[j];
+    	if (k < 0) k += 256;
+    	sb.append("%" + Integer.toHexString(k).toUpperCase());
+    	}
+    	}
+    	}
+    	return sb.toString();
+    	}
+    
+    
+    public static String getNotNUll(String str){
+    	String strs = "";
+    	if(StringUtill.isNull(str)){
+    		return strs;
+    	} 
+    	return str ;
     }
 }

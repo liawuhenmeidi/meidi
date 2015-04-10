@@ -76,7 +76,7 @@ public class InventoryServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		String type = request.getParameter("type");
 //System.out.println(type+"type"); 
-		String sql = ""; 
+		String sql = "";  
 		boolean flag =  InventoryManager.check(method,id); 
 		if(method.equals("outbranch")){
 			sql = "update inventory set outstatues = 1 where id = "+ id ;
@@ -141,8 +141,8 @@ public class InventoryServlet extends HttpServlet {
 		for(int i=0;i<producs.length;i++){      
 			InventoryMessage inven = new InventoryMessage();  
 			String type = request.getParameter("orderproductType"+producs[i]);
-			Product p = ProductService.gettypemap().get(type);
-			int categoryId = p.getCategoryID();
+			Product p = ProductService.gettypemap(user).get(type);
+			int categoryId = p.getCategoryID(); 
 			type = p.getId()+""; 
 			String count = request.getParameter("orderproductNum"+producs[i]);
 			inven.setProductId(type);   

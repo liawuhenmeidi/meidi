@@ -8,12 +8,10 @@
  String oid = request.getParameter("oid");
    
 String mark = request.getParameter("mark");
-
- if(!StringUtill.isNull(mark)){ 
+  
+ if(!StringUtill.isNull(mark)){  
 		resCode = RemarkUtill.getMessage(Integer.valueOf(mark));
  }
-
- 
  // System.out.println("oid"+oid);
 %>
 
@@ -87,8 +85,12 @@ function checkedd(){
 	%>
 	<div class="s_main_tit">登陆结果<span class="qiangdan"><a href="dengluN.jsp">登陆</a></span></div>
 	
-	<%
-}
+	<% 
+}else if("ordergoodsadd".equals(type)){
+	%>
+	<div class="s_main_tit"><span class="qiangdan"><a href="user/welcom.jsp">返回</a></span></div>
+<%
+} 
 
 %>
 <body>

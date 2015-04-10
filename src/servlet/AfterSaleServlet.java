@@ -175,14 +175,14 @@ public class AfterSaleServlet extends HttpServlet {
 		return count ;
 		 
 	} 
-	 
+	  
 	public synchronized static boolean maintain(User user,String statues,String afid,String message,String cause,String barcode,String batchNumber){
 		AftersaleAll af = AftersaleAllManager.getAfterSaleID(user, afid);
 		List<AfterSaleProduct> list = af.getAsplist();        
-		List<String> sqls = AfterSaleProductManager.getupdatemaintain(list, statues,message,cause,barcode,batchNumber);  
+		List<String> sqls = AfterSaleProductManager.getupdatemaintain(user,list, statues,message,cause,barcode,batchNumber);  
 		boolean count = DBUtill.sava(sqls);   
 		return count ;
-		 
+		  
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)

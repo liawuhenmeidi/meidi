@@ -165,12 +165,12 @@ public class GroupManager {
                 
                  // listsql.add(pstmt); 	
 				  Grouptype gtype = GrouptypeManager.getGrouptype(group.getPtype());	
-                  if(gtype.getType() == 8){
-                	int type = GrouptypeManager.getgrouptype(Group.send);  
-                  	String sql2 = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,ptype) VALUES ("+maxid*1+1+",'"+group.getName()+"员工','"+group.getDetail()+"','"+group.getStatues()+"','2-w_','"+group.getProducts()+"','"+type+"')";
-                  	String sql = " insert into mdrelategroup (id,groupid,pgroupid) values (null,"+maxid*1+1+","+maxid+") "; 
+                  if(gtype.getType() == 8){  
+                	int type = GrouptypeManager.getgrouptype(Group.send);    
+                  	String sql2 = "insert into  mdgroup( id ,groupname, detail,statues, permissions, products,ptype) VALUES ("+(maxid*1+1*1)*1+",'"+group.getName()+"员工','"+group.getDetail()+"','"+group.getStatues()+"','2-w_','"+group.getProducts()+"','"+type+"')";
+                  	String sql = " insert into mdrelategroup (id,groupid,pgroupid) values (null,"+(maxid*1+1*1)*1+","+maxid+") ";  
 					String sql3 = "insert into mdbranch(id,bname,pid,bmessage,relatebranch) values (null, '"+group.getName()+"',1,'','')";
-					 
+					  
 					BranchService.flag = true ;
 					
 					sqls.add(sql2);

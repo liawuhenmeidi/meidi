@@ -80,8 +80,8 @@ border-right:1px #000 solid;
  
    /*#4F9D9D  */   
 .asc{ background-color:#c4e1e1;} 
- 
-.bsc{ background-color:#c4e1e1;} 
+  
+.bsc{ background-color:orange;} 
  
 .dsc{ background-color:white;} 
   
@@ -109,6 +109,11 @@ border-right:1px #000 solid;
 
 #Ntable {  
      background-color:black;
+     table-layout:fixed ;
+} 
+   
+#Wtable {       
+     background-color:white;
      table-layout:fixed ;
 }
 

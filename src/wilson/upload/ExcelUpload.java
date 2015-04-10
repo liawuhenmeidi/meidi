@@ -38,10 +38,19 @@ public class ExcelUpload extends HttpServlet {
 	private static String salaryFilePath = "data/salaryModelXLS";
 	private static String salesFilePath = "data/salesXLS";
 	private static String changeFilePath = "data/changeXLS";
-	 
-	private ServletContext sc;
+	private static String productFilePath = "data/productXLS";
+	  
+	public static String getProductFilePath() {
+		return productFilePath;
+	}
 
-	// BLOB
+	public static void setProductFilePath(String productFilePath) {
+		ExcelUpload.productFilePath = productFilePath;
+	}
+
+	private ServletContext sc;
+    
+	// BLOB 
 	private static final Log log = LogFactory.getLog(ExcelUpload.class);  
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -51,7 +60,8 @@ public class ExcelUpload extends HttpServlet {
 		salaryFilePath = sc.getRealPath("/") + config.getInitParameter("salaryFilePath");
 		salesFilePath = sc.getRealPath("/") + config.getInitParameter("salesFilePath");
 		changeFilePath = sc.getRealPath("/") + config.getInitParameter("changeFilePath");
-	}
+		productFilePath = sc.getRealPath("/") + config.getInitParameter("productFilePath");
+	} 
  
 	private ServletConfig config = null;
         
@@ -93,7 +103,7 @@ public class ExcelUpload extends HttpServlet {
 		String type = "";
 		String directUrl = "";
 		String filePath = "";
-		
+		String parame = "";
 		
 		
 		try {
@@ -120,18 +130,27 @@ public class ExcelUpload extends HttpServlet {
 							filePath = salesFilePath;
 						}else if(type.equals("4")){
 							//销售单上传 
-							log.info(4);
+							//log.info(4);
 							directUrl = "./admin/uploadequal.jsp?fileName=";
 							filePath = changeFilePath;
-						}else{
+						}else if(type.equals("5")){
+							//产品上传 
+							//log.info(4); 
+							directUrl = "./admin/upload/uploadproduct.jsp?fileName=";
+							filePath = productFilePath;
+						}else{ 
+							 
 							directUrl = "./admin/uploadManage.jsp?fileName=";
 							res.sendRedirect(directUrl+fileName);
-							return;
+							return; 
 						}
+					}else if(item.getFieldName().equals("categoryID")){
+						String t = item.getString("UTF-8");
+						parame = "&categoryID="+t;
 					}
-				}
-			}
-			
+				} 
+			} 
+			System.out.println(parame);
 			iter = fileItems.iterator();
 
 			while (iter.hasNext()) {
@@ -139,7 +158,7 @@ public class ExcelUpload extends HttpServlet {
 				
 				if (item.isFormField()) {
 					log.info("表单参数名:" + item.getFieldName() + "，表单参数值:" + item.getString("UTF-8"));
-				}
+				}   
 				// 忽略其他不是文件域的所有表单信息 
 				if (!item.isFormField()) { 
  
@@ -177,9 +196,9 @@ public class ExcelUpload extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.info(("upload.message" + "文件上传错误！"));
-		} 
-		res.sendRedirect(directUrl+fileName);
-		log.info(""+directUrl+fileName);
+		}   
+		res.sendRedirect(directUrl+fileName+parame); 
+		log.info(""+directUrl+fileName+parame);
 		//req.getRequestDispatcher("/meidiserver/admin/updateExcel.jsp").forward(req, res);
 	}
 

@@ -111,11 +111,13 @@ boolean flag = UserManager.checkPermissions(user, Group.addprodoct,"w");
      }
    %>  
    <div class="table-list">
+  
 <table width="100%" cellspacing="1" id="table">
 	<thead>
 		<tr >
 			<!--<th align="left" width="20">
 			 <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th> -->
+			<th align="left">编号</th>
 			<th align="left">产品列别描述</th>
 			<th align="left">预约安装截止日期</th>
 			<th align="left">是否已断货</th> 
@@ -125,10 +127,11 @@ boolean flag = UserManager.checkPermissions(user, Group.addprodoct,"w");
 <tbody>
 <% 
   for(int i =0 ;i<list.size();i++){
-	  Category category = list.get(i) ;
+	  Category category = list.get(i) ; 
 %>
     <tr id="<%=i%>" class="asc"  onclick="updateClass(this)"  ondblclick="detatil('<%=category.getId() %>')">
 		<!--  <td align="left"><input type="checkbox" value="1" name="<%=category.getId() %>"></input></td> -->
+		<td align="left"><%=category.getId() %></td> 
 		<td align="left"><%=category.getName() %></td> 
 		<td align="left"><%=category.getTime() %></td>
 		<td align="left">

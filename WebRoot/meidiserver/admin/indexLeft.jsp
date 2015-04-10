@@ -158,8 +158,23 @@ function reloadopned(src){
             <div class="list-item none">
               <p ><a href="javascript:void(0);"  onclick="reloadopned('huiyuan.jsp')">职工管理</a></p>
             </div>
+          </li>
+          <%} %>
+          <li >  
+            <h4 >调货单管理</h4> 
+            <div class="list-item none">
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoods.jsp')">增加调货单</a></p> 
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodsall.jsp')">调货单审核</a></p> 
+           <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodexamine.jsp')">调货单生成订单</a></p> 
+           <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodbilling.jsp')">查看订单</a></p> 
+           <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssend.jsp')">开单发货</a></p> 
+           <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssended.jsp')">修改实收数量</a></p> 
+           <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssendhistory.jsp')">历史订货单</a></p> 
+                      <p ><a href="javascript:void(0);"  onclick="reloadopned('receivegoods/receivegoods.jsp')">收货记录</a></p> 
+            </div> 
           </li> 
-          <% } 
+            
+          <%  
          if(UserManager.checkPermissions(user,Group.inventory) || UserManager.checkPermissions(user, Group.inventoryquery) || UserManager.checkPermissions(user, Group.inventoryreserve)){
          %>
        <li > 
@@ -187,12 +202,14 @@ function reloadopned(src){
 
             </div>
           </li>  
+          
+          
          <% 
           }
          if(UserManager.checkPermissions(user, Group.juese)){
          %>
             <li >
-            <h4 >岗位管理</h4>
+            <h4 >岗位管理</h4> 
             <div class="list-item none">
               <p ><a href="javascript:void(0);"  onclick="reloadopned('juesetype.jsp')">岗位管理</a></p>
             </div>
@@ -200,6 +217,11 @@ function reloadopned(src){
             <%
          } 
          
+         %>
+          
+          
+            
+          <%
          if(UserManager.checkPermissions(user, Group.addprodoct)){
     
           %>
@@ -218,9 +240,9 @@ function reloadopned(src){
         
            %>
           <li >
-            <h4 >门店管理</h4>
+            <h4 >门店管理</h4>  
             <div class="list-item none">
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('branch.jsp')">门店管理</a></p>
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('branch.jsp')">门店(销售系统)管理</a></p>
             </div>
           </li> 
           
@@ -269,6 +291,7 @@ function reloadopned(src){
               <p ><a href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdancallback.jsp')" >客服未回访页</a></p>
               <p ><a href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdan_charge.jsp')" >安装结款</a></p>
               <p ><a href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdan_chargeall.jsp')" >送货安装结款</a></p> 
+              
             </div>        
           </li> 
  	 

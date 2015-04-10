@@ -10,7 +10,7 @@ public class GroupService {
      public static List<Group> list ;
      public static boolean flag = false ; 
      public static Map<Integer,List<Integer>> mappid ; 
-      
+    
      public static Map<String,List<Group>> getPidMap(){
     	 init();
     	 if(map == null ){

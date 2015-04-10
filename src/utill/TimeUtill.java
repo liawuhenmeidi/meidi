@@ -118,8 +118,8 @@ public class TimeUtill {
     
     public static String getsearchtime(String starttime,String endtime){
     	boolean flag = false ;
-    	String str = "";
-    	logger.info(starttime+endtime);
+    	String str = ""; 
+    	//logger.info(starttime+endtime);
     	if(starttime != null && starttime != "" && starttime != "null"){
    		   str += " and time  BETWEEN  '" + starttime + "'  and  ";
    	       flag = true ;

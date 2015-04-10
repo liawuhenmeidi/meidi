@@ -118,7 +118,6 @@ function winconfirm(){
 	   		}
 	   	}); 
 
-
 		$.ajax({ 
 			type: "post", 
 	         url: "../user/OrderServlet", 

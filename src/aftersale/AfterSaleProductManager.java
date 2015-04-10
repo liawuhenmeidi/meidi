@@ -79,7 +79,7 @@ public class AfterSaleProductManager {
 		return listsql; 
 	}
 	
-	public static List<String> getupdatemaintain(List<AfterSaleProduct> list,String statues,String message,String cause,String barcode,String batchNumber){
+	public static List<String> getupdatemaintain(User user ,List<AfterSaleProduct> list,String statues,String message,String cause,String barcode,String batchNumber){
 		List<String> listsql = new ArrayList<String>();
 		String str = ""; 
 		AfterSaleProduct as = null;
@@ -90,11 +90,11 @@ public class AfterSaleProductManager {
 		} 
 		    
 		str = "("+str.substring(0,str.length()-1)+")"; 
-		String sql = "";
+		String sql = ""; 
 		logger.info(str);
 		//logger.info(message);
 		if(1 == Integer.valueOf(statues)){
-			if(!StringUtill.isNull(message)){
+			if(!StringUtill.isNull(message)){ 
 				String[] strs =  message.split(",");
 				for(int i=0;i<strs.length;i++){
 					String oids = strs[i];
@@ -103,7 +103,7 @@ public class AfterSaleProductManager {
 					    String cid = oidss[0];
 						String oname =oidss[1];    
 					//	logger.info(oname); 
-						int tid = ProductService.gettypemap().get(oname).getId();
+						int tid = ProductService.gettypemap(user).get(oname).getId();
 						String sql2 = "delete from mdaftersaleproduct  where id = "+as.getId();
 						  
 						String sql1= "insert into mdaftersaleproduct (id,asid,type,cause,cid,tid,prince,dealid,dealsendid,dealtime,result,statues,detail,nexttime,thistime,dealresult) " +  

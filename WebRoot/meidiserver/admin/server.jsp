@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,orderproduct.*,saledealsend.*,uploadtotalgroup.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*,orderproduct.*,httpClient.*,saledealsend.*,uploadtotalgroup.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;" pageEncoding="utf-8"%>
 <%
 
 request.setCharacterEncoding("utf-8");
@@ -51,16 +51,12 @@ if("deleOrder".equals(method)){
 	boolean flag = BranchManager.isname(locateName);  
 	response.getWriter().write(""+flag);
 	response.getWriter().flush(); 
-	response.getWriter().close();  
-}else if("branchtype".equals(method)){ 
-	String locateName = request.getParameter("id");
-	System.out.println(locateName);  
-	BranchTypeManager.save(locateName);  
-	//branchtypeupdate
-}else if("branchtypeupdate".equals(method)){  
-	String bid = request.getParameter("bid");
-	String c = request.getParameter("id");
-	BranchTypeManager.update(c, bid) ; 
+	response.getWriter().close();   
+}else if("branchtypeupdate".equals(method)){   
+	String bid = request.getParameter("bid");  
+	String c = request.getParameter("id");   
+	String typestatues= request.getParameter("typestatues");
+	BranchTypeManager.update(c, bid,typestatues) ;  
 	//branchinventory
 }else if("branchinventory".equals(method)){  
 	String bid = request.getParameter("bid");
@@ -675,9 +671,9 @@ if("deleOrder".equals(method)){
 	UploadTotalGroupManager.save(up);
 	}catch(Exception e){ 
 		UploadTotalGroupManager.delete ();
-	}
+	} 
 	response.sendRedirect("../jieguo.jsp?type=updated"); 
-	// 
+	//  
 }else if("getopjson".equals(method)){
 	String id = request.getParameter("oid");
 	Order or = OrderManager.getOrderID(user, Integer.valueOf(id));
@@ -685,6 +681,32 @@ if("deleOrder".equals(method)){
 	response.getWriter().write(str);   
 	response.getWriter().flush(); 
 	response.getWriter().close(); //inventory
+}else if("getproduct".equals(method)){
+	String branch = request.getParameter("branch"); 
+	//System.out.println(branch);
+	//List<String> listallp = ProductService.getlistall(BranchService.getNameMap().get(branch));
+	List<String> listallp = ProductService.getlistall(BranchService.getNameMap().get(branch));
+	//System.out.println(StringUtill.GetJson(listallp)); 
+	response.getWriter().write(StringUtill.GetJson(listallp));   
+	response.getWriter().flush();  
+	response.getWriter().close(); //inventory 
+}else if("InventorySN".equals(method)){
+	String branch = request.getParameter("branch");
+	String tname = request.getParameter("tname");
+	System.out.println(branch+tname);  
+	List<String> s = InventorySN.getinventoryByName(tname,branch);
+	response.getWriter().write(StringUtill.GetJson(s));   
+	response.getWriter().flush();   
+	response.getWriter().close(); //inventory
+}else if("getInventoryMapByBranch".equals(method)){ 
+	MyMainClient.getinstance().run(); 
+	String branch = request.getParameter("branch"); 
+	String branchid = BranchService.getNameMap().get(branch).getId()+"";
+	Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(branchid);
+	//System.out.println(map);
+	response.getWriter().write(StringUtill.GetJson(map));   
+	response.getWriter().flush();  
+	response.getWriter().close(); //
 } 
 
 %>
