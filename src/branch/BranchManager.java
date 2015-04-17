@@ -28,13 +28,13 @@ public class BranchManager {
         List<String> listsql = new ArrayList<String>();
 		String sql = "";  
 		if(branch.getId() == 0){   
-			sql = "insert into mdbranch(id,bname,pid,bmessage,relatebranch,encoded) values (null, '"+branch.getLocateName()+"','"+branch.getPid()+"','"+branch.getMessage()+"','"+branch.getBranchids()+"','"+branch.getEncoded()+"')";
-		}else{     
-			sql = "update mdbranch set bname = '"+branch.getLocateName()+"' , bmessage = '"+branch.getMessage()+"' , relatebranch = '"+branch.getBranchids()+"' , encoded = '"+branch.getEncoded()+"'  where id = "+ branch.getId();
-		}
-		
+			sql = "insert into mdbranch(id,bname,pid,bmessage,relatebranch,encoded,namesn) values (null, '"+branch.getLocateName()+"','"+branch.getPid()+"','"+branch.getMessage()+"','"+branch.getBranchids()+"','"+branch.getEncoded()+"','"+branch.getNameSN()+"')";
+		}else{      
+			sql = "update mdbranch set bname = '"+branch.getLocateName()+"' , bmessage = '"+branch.getMessage()+"' , relatebranch = '"+branch.getBranchids()+"' , encoded = '"+branch.getEncoded()+"',namesn = '"+branch.getNameSN()+"'  where id = "+ branch.getId();
+		} 
+		 
 		String sqlall = "delete from relatebranch where branchid = " + branch.getId();
-		
+		 
 		listsql.add(sqlall);
 		
 		if(!StringUtill.isNull(branch.getBranchids())){
@@ -43,15 +43,15 @@ public class BranchManager {
 				String id = strlist[i];
 				String sql1 = "insert into relatebranch (id,branchid,relatebranchid) values (null,"+branch.getId()+",'"+id+"') ";
 			    listsql.add(sql1);
-			}
-		}
+			} 
+		} 
 		
 	    listsql.add(sql);
 	    
 	    DBUtill.sava(listsql);
 		BranchService.flag = true ;
 		
-	   return true;
+	   return true; 
 	}
 	 
 	 public static String save(){
@@ -415,8 +415,10 @@ logger.info(sql);
 				branch.setStatues(rs.getInt("statues")); 
 				branch.setBranchids(rs.getString("relatebranch"));
 				branch.setDisable(rs.getInt("disable")); 
-				branch.setEncoded(rs.getString("Encoded")); 
-			} catch (SQLException e) { 
+				branch.setEncoded(rs.getString("encoded")); 
+				branch.setNameSN(rs.getString("namesn")); 
+				 
+			} catch (SQLException e) {  
 				e.printStackTrace();
 			}	
 			return branch ;

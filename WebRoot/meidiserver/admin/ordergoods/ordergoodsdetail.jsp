@@ -2,7 +2,7 @@
 <%@ include file="../../common.jsp"%>
     
 <%        
-
+  
 OrderGoodsAll oa = null;  
 List<OrderGoods> list = null; 
 String id = request.getParameter("id"); 
@@ -10,27 +10,31 @@ String statues = request.getParameter("statues");
 String type = request.getParameter("type");
 String branchname = ""; 
 String remark = ""; 
-String message = "导购订货单"; 
-
-System.out.println(statues+"&&"+type);
-
+String message = "导购订货单";  
+ 
+//System.out.println(statues+"&&"+type);
+ 
 if("0".equals(statues)){
 	message = "调货单审核";
 }
-  
+    
 if("1".equals(type)){
-	message = "订单生成";
+	message = "订单生成"; 
 }else if("2".equals(type)){
 	message = "开单发货";
-}
- 
+}else if("3".equals(type)){
+	message = "历史订单";
+}   
+   
 if(!StringUtill.isNull(id)){ 
-	if((OrderMessage.billing+"").equals(type)){   
+	if((OrderMessage.billing+"").equals(type)){    
 		oa = OrderGoodsAllManager.getOrderGoodsAllBySendid(user,id,statues); 
-	}else { 
+	}else if(("3").equals(type)){
+		oa = OrderGoodsAllManager.getOrderGoodsAllByid(user, id); 
+	}else{ 
 		oa = OrderGoodsAllManager.getOrderGoodsAllByid(user,id,Integer.valueOf(statues),type);
 	}
-	
+	System.out.println(oa); 
 	branchname = oa.getOm().getBranchname();
 	remark = oa.getOm().getRemark(); 
 	list = oa.getList(); 
@@ -38,15 +42,13 @@ if(!StringUtill.isNull(id)){
 
 String branchid = BranchService.getNameMap().get(branchname).getId()+"";
 Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(branchid);
-String jsoninventory = StringUtill.GetJson(map);
+String jsoninventory = StringUtill.GetJson(map); 
 String json = StringUtill.GetJson(list); 
 // System.out.println(json); 
-%> 
+%>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=yes"/> 
-
+<head> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>

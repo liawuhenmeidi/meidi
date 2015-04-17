@@ -11,7 +11,8 @@ public class OrderMessage {
 	public static int unexamine = 0; // 未审核
 	public static int examine = 1; // 已审核
 	public static int billing = 2;// 已开单 
-
+	public static int all = 3;// 已开单  
+	
 	private int id;
 	private String oid; // 订单号
 	private int submitid; // 提交订单人
@@ -22,7 +23,7 @@ public class OrderMessage {
 	private String branchname;
 	private Branch branch;
 	private User user; 
-    private String supply = "10056027"; // 供应商编码
+   
     
 	public User getUser() {
 		if (submitid != 0) {
@@ -98,7 +99,8 @@ public class OrderMessage {
 	}
 
 	public String getBranchname() {
-		if(branchid != 0 ){ 
+		if(branchid != 0 ){  
+			System.out.println("branchid"+branchid);
 			branchname = BranchService.getMap().get(branchid).getLocateName();
 		}  
 		return branchname; 
@@ -118,13 +120,6 @@ public class OrderMessage {
 	public void setBranch(Branch branch) {
 		this.branch = branch;
 	}
-
-	public String getSupply() {
-		return supply;
-	}
-
-	public void setSupply(String supply) {
-		this.supply = supply;
-	}
-
+ 
+	
 }

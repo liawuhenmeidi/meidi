@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -105,6 +106,30 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		return categorys;
 	}
 	
+public static List<InventoryBranch> getByBranchids(String branch) {  
+	//System.out.println(branch);
+	List<InventoryBranch> categorys = new ArrayList<InventoryBranch>();
+	Connection conn = DB.getConn(); 
+	String sql = ""; 
+	sql = "select * from mdinventorybranch where  branchid in ( select branchid from mdordermessage where id in"+branch+") and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
+logger.info(sql);	 
+	Statement stmt = DB.getStatement(conn);
+	ResultSet rs = DB.getResultSet(stmt, sql);
+	try {    
+		while (rs.next()) {
+			InventoryBranch u = getCategoryFromRs(rs);
+			categorys.add(u);
+		}
+	} catch (SQLException e) {
+		logger.error(e);
+	} finally {
+		DB.close(rs);
+		DB.close(stmt);
+		DB.close(conn);
+	} 
+	return categorys;
+}
+
 
 	public static List<String> save(User user,Inventory inventory) {
 		 
@@ -213,6 +238,17 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			 return sqls; 
 	   } 
 	  
+	
+	// 更新苏宁信息
+		public static String updateSNMessage(Set<Integer> setb ,Set<Integer> sett,String oid ,String time ){
+			String strb = StringUtill.getStr(setb);
+			String strt =StringUtill.getStr(sett);  
+			 
+			String sql = "update mdinventorybranch set ordernumsn = '"+oid+"' , activetime = '"+time+"' where type in "+strt +" and branchid in "+strb ;
+			return sql;
+		} 
+		
+		
 	public static List<String> chage(User user ,String method , int uid ,Order order ){
 		List<String> listsql = new ArrayList<String>(); 
 		
@@ -568,6 +604,20 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		 //logger.info(map);  
 		 return map;
 	}
+	 
+	public static Map<String,InventoryBranch> getmapTypeBranch(String branchid){
+		//logger.info(branchid);   
+		Map<String,InventoryBranch> map = new HashMap<String,InventoryBranch>();
+		 List<InventoryBranch>  listInventory = InventoryBranchManager.getByBranchids(branchid); 
+		 Iterator<InventoryBranch> it = listInventory.iterator(); 
+		 while(it.hasNext()){  
+			 InventoryBranch in = it.next();  
+			// logger.info(in.getTypeid()+"_"+in.getBranchid()); 
+			 map.put(in.getTypeid()+"_"+in.getBranchid(), in);
+		 }  
+		 //logger.info(map);  
+		 return map;
+	}
 	
 	public static InventoryBranch getInventoryID(User user ,int branchid,String type){
 		   
@@ -699,8 +749,10 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 			c.setTypeid(rs.getString("type"));      
 			c.setType(ProductService.getIDmap().get(Integer.valueOf(c.getTypeid())).getType());    
 		    c.setIsquery(rs.getInt("isquery"));    
-		    c.setQuerymonth(rs.getString("querymonth")); 
-		    c.setTypeStatues(rs.getInt("typestatues"));   
+		    c.setQuerymonth(rs.getString("querymonth"));  
+		    c.setTypeStatues(rs.getInt("typestatues")); 
+		    c.setOrderNUmSN(rs.getString("ordernumsn"));
+		    c.setActivetime(rs.getString("activetime")); 
 		} catch (SQLException e) { 
 			e.printStackTrace();
 		}	 

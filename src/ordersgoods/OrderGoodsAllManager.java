@@ -1,5 +1,5 @@
 package ordersgoods;
-
+ 
 import inventory.InventoryBranchManager;
 
 import java.sql.Connection;
@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,13 +26,13 @@ import user.UserService;
 import utill.DBUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
-
+ 
 public class OrderGoodsAllManager {
 	protected static Log logger = LogFactory.getLog(OrderGoodsAllManager.class);
-
+   
 	public static boolean save(User user, OrderGoodsAll oa) {
 		List<String> listsql = new ArrayList<String>();
-		List<String> sqlom = OrderMessageManager.save(oa.getOm());
+		List<String> sqlom = OrderMessageManager.save(oa); 
 		List<String> listog = OrderGoodsManager.save(user, oa);
 		listsql.addAll(sqlom);
 		listsql.addAll(listog);
@@ -356,13 +357,13 @@ public class OrderGoodsAllManager {
 		List<Integer> listids = UserService.GetListson(user);
 		// logger.info(listids);
 		Connection conn = DB.getConn();
-
-		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.mid = mdordermessage.id and  mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
+ 
+		String sql = " select * from mdordergoods,mdordermessage  where  mdordergoods.mid = mdordermessage.id  and mdordergoods.uuid != 'null' and  mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
 						listids.toString().length() - 1) + " )";
-
+ 
 		logger.info(sql);
-		Statement stmt = DB.getStatement(conn);
+		Statement stmt = DB.getStatement(conn); 
 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		// logger.info(rs);
@@ -658,148 +659,235 @@ public class OrderGoodsAllManager {
 
 	}
 
-	public static List<String> updateSendcount(User user, Map<Integer, Map<Integer, OrderGoodsAll>> map) {
+	public static List<String> updateSendcount(User user,
+			Map<Integer, Map<Integer, OrderGoodsAll>> map) {
+		Set<String> setinit = new HashSet<String>(); 
 		List<String> listsql = new ArrayList<String>();
-         if(null != map){ 
-        	 Set<Map.Entry<Integer, Map<Integer, OrderGoodsAll>>> set =  map.entrySet();
-        	 Iterator<Map.Entry<Integer, Map<Integer, OrderGoodsAll>>> it = set.iterator();
-        	 while(it.hasNext()){
-        		 Map.Entry<Integer, Map<Integer, OrderGoodsAll>> en = it.next();
-        		 Map<Integer, OrderGoodsAll> mapson = en.getValue(); 
-        		 Set<Map.Entry<Integer, OrderGoodsAll>> setson = mapson.entrySet();
-        		 Iterator<Map.Entry<Integer, OrderGoodsAll>> itson =  setson.iterator();
-        		 while(itson.hasNext()){
-        			 Map.Entry<Integer, OrderGoodsAll> enson = itson.next();
-        			 OrderGoodsAll oa = enson.getValue();
-        			 List<OrderGoods> list = oa.getList();
-        				if (null != list) {
-        					for (int i = 0; i < list.size(); i++) {
-        						OrderGoods og = list.get(i);
-        						int operatortype = 14;
-        						int realsendnum = og.getRealnum();
-        						if (og.getStatues() == 6 || og.getStatues() == 7
-        								|| og.getStatues() == 8 || og.getStatues() == 9) {
-        							realsendnum = -realsendnum;
-        							operatortype = 16;
-        						}
+		  		 
+		if (null != map) {  
+			Set<Map.Entry<Integer, Map<Integer, OrderGoodsAll>>> set = map
+					.entrySet();
+			Iterator<Map.Entry<Integer, Map<Integer, OrderGoodsAll>>> it = set
+					.iterator();
+			while (it.hasNext()) {
+				Map.Entry<Integer, Map<Integer, OrderGoodsAll>> en = it.next();
+				Map<Integer, OrderGoodsAll> mapson = en.getValue();
+				Set<Map.Entry<Integer, OrderGoodsAll>> setson = mapson
+						.entrySet();
+				Iterator<Map.Entry<Integer, OrderGoodsAll>> itson = setson
+						.iterator();
+				while (itson.hasNext()) {
+					Map.Entry<Integer, OrderGoodsAll> enson = itson.next();
+					OrderGoodsAll oa = enson.getValue();
+					List<OrderGoods> list = oa.getList();
+					if (null != list) {  
+						for (int i = 0; i < list.size(); i++) {
+							OrderGoods og = list.get(i);
+							String uuid = og.getTid()+"_"+oa.getOm().getBranchid();
+							    
+							boolean flag = setinit.contains(uuid);
+							if(!flag){       
+								//logger.info(uuid);
+								setinit.add(uuid);  
+							}    
+							int operatortype = 14;
+							int realsendnum = og.getRealnum();
+							if (og.getStatues() == 6 || og.getStatues() == 7
+									|| og.getStatues() == 8
+									|| og.getStatues() == 9) {
+								realsendnum = -realsendnum;
+								operatortype = 16;
+							} 
+ 
+							String sqlIB = "";
+							String sqlIBM = "";
+                           if(og.getStatues() != 5){
+                        	   if (null == InventoryBranchManager.getInventoryID(
+   									user, oa.getOm().getBranchid(), og.getTid()
+   											+ "") && !flag ) {
+   								sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)"
+   										+ "  values ( null,"
+   										+ og.getCid()
+   										+ ", '"
+   										+ og.getTid()
+   										+ "', '"
+   										+ 0
+   										+ "', '"
+   										+ realsendnum
+   										+ "',"
+   										+ oa.getOm().getBranchid() + ")";
 
-        						String sqlIB = "";
-        						String sqlIBM = "";
+   								sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+   										+ "  values ( null, '"
+   										+ oa.getOm().getBranchid()
+   										+ "', '"
+   										+ oa.getOm().getId()
+   										+ "','"
+   										+ oa.getOm().getId()
+   										+ "','"
+   										+ TimeUtill.gettime()
+   										+ "','"
+   										+ og.getTid()
+   										+ "',"
+   										+ 0
+   										+ ",'"
+   										+ realsendnum
+   										+ "',"
+   										+ operatortype
+   										+ ","
+   										+ 0
+   										+ ","
+   										+ realsendnum
+   										+ ","
+   										+ 1
+   										+ ","
+   										+ oa.getOm().getBranchid()
+   										+ ",-1,0,0)";
+   							} else {
 
-        						if (null == InventoryBranchManager.getInventoryID(user, oa
-        								.getOm().getBranchid(), og.getTid() + "")) {
-        							sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)"
-        									+ "  values ( null,"
-        									+ og.getCid()
-        									+ ", '"
-        									+ og.getTid()
-        									+ "', '"
-        									+ 0
-        									+ "', '"
-        									+ realsendnum
-        									+ "'," + oa.getOm().getBranchid() + ")";
+   								sqlIB = "update mdinventorybranch set  papercount =  ((mdinventorybranch.papercount)*1 + "
+   										+ realsendnum
+   										+ ")*1  where  branchid = "
+   										+ oa.getOm().getBranchid()
+   										+ " and  type = '" + og.getTid() + "'";
 
-        							sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
-        									+ "  values ( null, '"
-        									+ oa.getOm().getBranchid()
-        									+ "', '"
-        									+ oa.getOm().getId()
-        									+ "','"
-        									+ oa.getOm().getId()
-        									+ "','"
-        									+ TimeUtill.gettime()
-        									+ "','"
-        									+ og.getTid()
-        									+ "',"
-        									+ 0
-        									+ ",'"
-        									+ realsendnum
-        									+ "',"
-        									+ operatortype
-        									+ ","
-        									+ 0
-        									+ ","
-        									+ realsendnum
-        									+ ","
-        									+ 1 + "," + oa.getOm().getBranchid() + ",-1,0,0)";
-        						} else {
+   								sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+   										+ "  values ( null, '"
+   										+ oa.getOm().getBranchid()
+   										+ "', '"
+   										+ oa.getOm().getId()
+   										+ "','"
+   										+ oa.getOm().getId()
+   										+ "','"
+   										+ TimeUtill.gettime()
+   										+ "','"
+   										+ og.getTid()
+   										+ "','"
+   										+ 0
+   										+ "','"
+   										+ realsendnum
+   										+ "',"
+   										+ operatortype
+   										+ ",(select realcount from mdinventorybranch where branchid = "
+   										+ oa.getOm().getBranchid()
+   										+ " and  type = '"
+   										+ og.getTid()
+   										+ "')*1,(select papercount from mdinventorybranch where branchid = "
+   										+ oa.getOm().getBranchid()
+   										+ " and  type = '"
+   										+ og.getTid()
+   										+ "')*1,"
+   										+ 1
+   										+ ","
+   										+ oa.getOm().getBranchid()
+   										+ ",-1,(select realcount from mdinventorybranch where branchid = "
+   										+ oa.getOm().getBranchid()
+   										+ " and  type = '"
+   										+ og.getTid()
+   										+ "')*1"
+   										// + -Integer.valueOf(realsendnum)
+   										+ ",(select papercount from mdinventorybranch where branchid = "
+   										+ oa.getOm().getBranchid()
+   										+ " and  type = '"
+   										+ og.getTid() 
+   										+ "')*1" 
+   										+ Integer.valueOf(realsendnum) + ")";
 
-        							sqlIB = "update mdinventorybranch set  papercount =  ((mdinventorybranch.papercount)*1 + "
-        									+ realsendnum
-        									+ ")*1  where  branchid = "
-        									+ oa.getOm().getBranchid()
-        									+ " and  type = '"
-        									+ og.getTid() + "'";
+   							}
+   							listsql.add(sqlIB);
+   							listsql.add(sqlIBM);
+                           }
+							
 
-        							sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
-        									+ "  values ( null, '"
-        									+ oa.getOm().getBranchid()
-        									+ "', '"
-        									+ oa.getOm().getId()
-        									+ "','"
-        									+ oa.getOm().getId()
-        									+ "','"
-        									+ TimeUtill.gettime()
-        									+ "','"
-        									+ og.getTid()
-        									+ "','"
-        									+ 0
-        									+ "','"
-        									+ realsendnum
-        									+ "',"
-        									+ operatortype
-        									+ ",(select realcount from mdinventorybranch where branchid = "
-        									+ oa.getOm().getBranchid()
-        									+ " and  type = '"
-        									+ og.getTid()
-        									+ "')*1,(select papercount from mdinventorybranch where branchid = "
-        									+ oa.getOm().getBranchid()
-        									+ " and  type = '"
-        									+ og.getTid()
-        									+ "')*1,"
-        									+ 1
-        									+ ","
-        									+ oa.getOm().getBranchid()
-        									+ ",-1,(select realcount from mdinventorybranch where branchid = "
-        									+ oa.getOm().getBranchid()
-        									+ " and  type = '"
-        									+ og.getTid()
-        									+ "')*1"
-        									// + -Integer.valueOf(realsendnum)
-        									+ ",(select papercount from mdinventorybranch where branchid = "
-        									+ oa.getOm().getBranchid()
-        									+ " and  type = '"
-        									+ og.getTid()
-        									+ "')*1"
-        									+ -Integer.valueOf(realsendnum) + ")";
-
-        						}
-        						listsql.add(sqlIB);
-        						listsql.add(sqlIBM);
-
-        					}
-        				}
-        		 }
-        	 }
-         }
-		
-		
+						}
+					} 
+				}
+			}
+		}
 
 		return listsql;
 
 	}
 
-	public static List<OrderGoodsAll> getlist(User user, int opstatues,
-			String oid) {
-		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
+	/*
+	 * public static List<String> updateSendcount(User user, Map<Integer,
+	 * Map<Integer, OrderGoodsAll>> map) { List<String> listsql = new
+	 * ArrayList<String>(); if(null != map){ Set<Map.Entry<Integer, Map<Integer,
+	 * OrderGoodsAll>>> set = map.entrySet(); Iterator<Map.Entry<Integer,
+	 * Map<Integer, OrderGoodsAll>>> it = set.iterator(); while(it.hasNext()){
+	 * Map.Entry<Integer, Map<Integer, OrderGoodsAll>> en = it.next();
+	 * Map<Integer, OrderGoodsAll> mapson = en.getValue();
+	 * Set<Map.Entry<Integer, OrderGoodsAll>> setson = mapson.entrySet();
+	 * Iterator<Map.Entry<Integer, OrderGoodsAll>> itson = setson.iterator();
+	 * while(itson.hasNext()){ Map.Entry<Integer, OrderGoodsAll> enson =
+	 * itson.next(); OrderGoodsAll oa = enson.getValue(); List<OrderGoods> list
+	 * = oa.getList(); if (null != list) { for (int i = 0; i < list.size(); i++)
+	 * { OrderGoods og = list.get(i); int operatortype = 14; int realsendnum =
+	 * og.getRealnum(); if (og.getStatues() == 6 || og.getStatues() == 7 ||
+	 * og.getStatues() == 8 || og.getStatues() == 9) { realsendnum =
+	 * -realsendnum; operatortype = 16; }
+	 * 
+	 * String sqlIB = ""; String sqlIBM = "";
+	 * 
+	 * if (null == InventoryBranchManager.getInventoryID(user, oa
+	 * .getOm().getBranchid(), og.getTid() + "")) { sqlIB =
+	 * "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)"
+	 * + "  values ( null," + og.getCid() + ", '" + og.getTid() + "', '" + 0 +
+	 * "', '" + realsendnum + "'," + oa.getOm().getBranchid() + ")";
+	 * 
+	 * sqlIBM =
+	 * "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+	 * + "  values ( null, '" + oa.getOm().getBranchid() + "', '" +
+	 * oa.getOm().getId() + "','" + oa.getOm().getId() + "','" +
+	 * TimeUtill.gettime() + "','" + og.getTid() + "'," + 0 + ",'" + realsendnum
+	 * + "'," + operatortype + "," + 0 + "," + realsendnum + "," + 1 + "," +
+	 * oa.getOm().getBranchid() + ",-1,0,0)"; } else {
+	 * 
+	 * sqlIB =
+	 * "update mdinventorybranch set  papercount =  ((mdinventorybranch.papercount)*1 + "
+	 * + realsendnum + ")*1  where  branchid = " + oa.getOm().getBranchid() +
+	 * " and  type = '" + og.getTid() + "'";
+	 * 
+	 * sqlIBM =
+	 * "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+	 * + "  values ( null, '" + oa.getOm().getBranchid() + "', '" +
+	 * oa.getOm().getId() + "','" + oa.getOm().getId() + "','" +
+	 * TimeUtill.gettime() + "','" + og.getTid() + "','" + 0 + "','" +
+	 * realsendnum + "'," + operatortype +
+	 * ",(select realcount from mdinventorybranch where branchid = " +
+	 * oa.getOm().getBranchid() + " and  type = '" + og.getTid() +
+	 * "')*1,(select papercount from mdinventorybranch where branchid = " +
+	 * oa.getOm().getBranchid() + " and  type = '" + og.getTid() + "')*1," + 1 +
+	 * "," + oa.getOm().getBranchid() +
+	 * ",-1,(select realcount from mdinventorybranch where branchid = " +
+	 * oa.getOm().getBranchid() + " and  type = '" + og.getTid() + "')*1" // +
+	 * -Integer.valueOf(realsendnum) +
+	 * ",(select papercount from mdinventorybranch where branchid = " +
+	 * oa.getOm().getBranchid() + " and  type = '" + og.getTid() + "')*1" +
+	 * -Integer.valueOf(realsendnum) + ")";
+	 * 
+	 * } listsql.add(sqlIB); listsql.add(sqlIBM);
+	 * 
+	 * } } } } }
+	 * 
+	 * 
+	 * 
+	 * return listsql;
+	 * 
+	 * }
+	 */
 
+	public static List<OrderGoodsAll> getlist(User user, int opstatues,
+			String oid,String ids) {
+		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
+ 
 		List<Integer> listids = UserService.GetListson(user);
 		// logger.info(listids);
 		Connection conn = DB.getConn();
-
+ 
 		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.uuid = '"
-				+ oid
-				+ "' and mdordergoods.mid = mdordermessage.id  and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
+				+ oid  
+				+ "' and mdordergoods.mid = mdordermessage.id  and mdordermessage.id in "+ ids+"  and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
 						listids.toString().length() - 1) + " ) ";
 		logger.info(sql);
@@ -823,6 +911,40 @@ public class OrderGoodsAllManager {
 		return list;
 	}
 
+	public static List<OrderGoodsAll> getlist(User user, int opstatues,
+			String oid) {
+		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
+ 
+		List<Integer> listids = UserService.GetListson(user);
+		// logger.info(listids);
+		Connection conn = DB.getConn();
+ 
+		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.uuid = '"
+				+ oid  
+				+ "' and mdordergoods.mid = mdordermessage.id    and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
+				+ listids.toString().substring(1,
+						listids.toString().length() - 1) + " ) ";
+		logger.info(sql);
+		Statement stmt = DB.getStatement(conn);
+
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		// logger.info(rs);
+		try {
+			while (rs.next()) {
+
+				OrderGoodsAll og = getOrderGoodsAllFromRs(rs);
+				list.add(og);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return list;
+	}
+	
 	public static OrderGoodsAll getOrderGoodsAllFromRs(ResultSet rs) {
 		OrderGoodsAll oa = new OrderGoodsAll();
 		OrderMessage om = OrderMessageManager.getOrderMessageFromRs(rs);

@@ -10,9 +10,8 @@ public class OrderGoods {
 	public static int prototype = 3;
 	public static int change = 4;
 	public static int gift = 5;
- 
 	public static int audit = 1;
- 
+  
 	private int id; // 订单编号
 	private String oid; // 订单号
 	private int submitid; // 提交订单人
@@ -22,11 +21,11 @@ public class OrderGoods {
 	private int cid; // 产品类别id
 
 	private String tname; 
-	private Product product; 
+	private Product product;  
     
 	private int statues; // 1常规 2 特价 3 样机 4 换货 5 赠品    6 店外退货    7 已入库常规退货   8 已入库特价退货    9 已入库样机退货
 	private int ordernum; 
-	private int realnum; // 送货数量
+	private int realnum; // 送货数量 
 	private int opstatues; // 0 未生成订单 1 生成订单 2 已导出订单
 	private int billingstatues; // 0 未发货 1 已发货
 	private String uuidtime;
@@ -36,7 +35,8 @@ public class OrderGoods {
 	private String billingtime;
 	private int realsendnum;
 	private String effectiveendtime;
-
+    private String serialnumber;    
+      
 	public int getRealsendnum() {
 		return realsendnum;
 	}
@@ -166,21 +166,27 @@ public class OrderGoods {
 		this.product = product;
 	}
 
-	public String getBranch() {
-		if (1 == statues) {
+	public String getBranch() { 
+		if (1 == statues) { 
 			Branch = "0001";
-		} else if (2 == statues) {
+		} else if (2 == statues) { 
 			Branch = "0002";
 		} else if (3 == statues) {
 			Branch = "样机";
-		} else {
+		} else if(7 == statues){
+			Branch = "0001";
+		} else if(8 == statues){
+			Branch = "0002";
+		}else if(9 == statues){
+			Branch = "样机"; 
+		}else { 
 			Branch = "";
 		}
 		return Branch;
 	}
 
-	public String getStatuesName() {
-		if (1 == statues) {
+	public String getStatuesName() { 
+		if (1 == statues) {  
 			statuesName = "常规机订货"; 
 		} else if (2 == statues) {
 			statuesName = "特价机订货";
@@ -271,6 +277,14 @@ public class OrderGoods {
 
 	public void setCid(int cid) {
 		this.cid = cid;
+	}
+
+	public String getSerialnumber() {
+		return serialnumber;
+	}
+ 
+	public void setSerialnumber(String serialnumber) {
+		this.serialnumber = serialnumber;
 	}
 
 }

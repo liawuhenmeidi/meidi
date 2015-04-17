@@ -65,7 +65,7 @@ function check(){
 		<table width="100%" border="0" cellspacing="1" id="table">
 			<tr class="dsc">
 				<td colspan=10> 
-					<table width="100%">   
+					<table width="100%">    
 						<tr> 
 							<td colspan=2 align="center"></td>
 							<td colspan=2 align="center"></td>

@@ -32,17 +32,40 @@ public class OrderMessageManager {
 		list.add(sql);   
 		return list ;
 		 
-	} 
+	}  
 	  
+	public static List<String> save(OrderGoodsAll oa){ 
+		OrderMessage om = oa.getOm();
+		
+		List<String> list  = new ArrayList<String>();  
+		String sqld = "delete from mdordermessage  where id = "+om.getId();
+		list.add(sqld); 
+		if(oa.getList().size()>0){
+			String sql = " insert into mdordermessage(id,oid,submitid,submittime,opstatues,branchid,remark) values ("+om.getId()+",'"+om.getOid()+"',"+om.getSubmitid()+",'"+om.getSubmittime()+"',"+om.getOpstatues()+","+om.getBranchid()+",'"+om.getRemark()+"')";
+			list.add(sql); 
+		}  
+		  
+		return list ;
+		 
+	}  
+	
 	public static String billing(String name,String ids,String statues,String branchtype){
-		List<Integer> listbids = BranchService.getListids(Integer.valueOf(branchtype));
+		List<Integer> listbids = BranchService.getListids(Integer.valueOf(branchtype)); 
    
+       // logger.info(uuid);  
 		String sql = " update mdordergoods,mdordermessage set mdordergoods.uuid = '"+name+"' ,mdordergoods.uuidtime = '"+TimeUtill.getdateString()+"', mdordergoods.opstatues = 1  where mdordergoods.mid = mdordermessage.id  and mdordermessage.branchid in ("+listbids.toString().substring(1,   
 						listbids.toString().length() - 1)+")  and mdordermessage.id in "+ ids+" and mdordergoods.statues in"+statues; 
 	    return sql; 
 	     
 	}   
 	 
+	public static String billing(String ids,String statues){
+    
+		String sql = " update mdordergoods,mdordermessage set mdordergoods.uuidtime = '"+TimeUtill.getdateString()+"', mdordergoods.opstatues = 1  where mdordergoods.mid = mdordermessage.id and mdordermessage.id in ("+ ids+") and mdordergoods.statues in ("+statues+")"; 
+	    return sql;  
+	      
+	}   
+	
 	public static String billingprint(String name){
 		
 		String sql = " update mdordergoods set opstatues = 2 where uuid = '"+name+"'";

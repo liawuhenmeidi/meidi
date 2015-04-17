@@ -51,7 +51,7 @@ function check(){
 	return flag;
 }
 
-</script> 
+</script>  
 </head>
 
 <body> 
@@ -60,7 +60,11 @@ function check(){
   <jsp:param name="dmsn" value="" />
   </jsp:include>   
  </div>      
-<!--  头 单种类  -->    
+ 
+ <div class="weizhi_head">
+			现在位置：历史订单</div>
+ 
+<!--  头 单种类  -->     
 <form action="ordergoodsenddetail.jsp"  method = "post"  onsubmit="return check()">
 <input type="hidden" name="statues" value="2">
 <table width="100%" border="0" cellspacing="1"  id="Ntable"> 
@@ -80,10 +84,10 @@ function check(){
 			Map.Entry<String,OrderGoodsAll> en =  itmap.next();
 			OrderGoodsAll o =en.getValue(); 
 			String sendtime = o.getList().get(0).getBillingtime();
-			String key = en.getKey(); 
+			String key = en.getKey();  
 			;  
-  %>               
-<tr class="asc" ondblclick="detail('ordergoodsdetail.jsp?id=<%=key%>&type=<%=OrderMessage.billing%>&statues=<%=OrderMessage.billing%>')">  
+  %>                
+<tr class="asc" ondblclick="detail('ordergoodsdetail.jsp?id=<%=key%>&type=<%=OrderMessage.all%>&statues=<%=OrderMessage.billing%>')">  
 	 <td align="center"><input type="checkbox"  value="<%=o.getOm().getId() %>"  name="omid" id="check_box"></input></td>
 	 <td align="center"><%=o.getOm().getBranchname()%></td>   
      <td align="center"><%=o.getOm().getUser().getUsername()%></td> 

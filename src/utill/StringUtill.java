@@ -3,8 +3,10 @@ package utill;
 import group.Group;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -144,6 +146,22 @@ public class StringUtill {
     	} 
     	return str ;
     }
+         
+    public static String getStr(Set<Integer> set){
+    	String str = ""; 
+    	if(null != set){ 
+    		Iterator<Integer> it = set.iterator();
+    		while(it.hasNext()){
+    			int s = it.next();
+    			str += ","+s;
+    		} 
+    		str = "("+str.substring(1,str.length())+")";
+    	}
+    	
+    	return str ;
+    }
+      
+    
     
     public static String getStr(String[] list,String separator){
     	String str = "";
@@ -166,6 +184,28 @@ public class StringUtill {
     }
     
     
+    public static String toGBKString(String s){
+    	StringBuffer sb = new StringBuffer();
+    	for (int i=0;i<s.length();i++){ 
+    	char c = s.charAt(i); 
+    	if (c >= 0 && c <= 255){sb.append(c);}
+    	else{ 
+    	byte[] b; 
+    	try { b = Character.toString(c).getBytes("GBK");}
+    	catch (Exception ex) {
+    	System.out.println(ex); 
+    	b = new byte[0];
+    	} 
+    	for (int j = 0; j < b.length; j++) {
+    	int k = b[j];
+    	if (k < 0) k += 256;
+    	sb.append("%" + Integer.toHexString(k).toUpperCase());
+    	}
+    	}
+    	}
+    	return sb.toString();
+    	}
+    
     public static String toUtf8String(String s){
     	StringBuffer sb = new StringBuffer();
     	for (int i=0;i<s.length();i++){
@@ -187,7 +227,6 @@ public class StringUtill {
     	}
     	return sb.toString();
     	}
-    
     
     public static String getNotNUll(String str){
     	String strs = "";

@@ -66,6 +66,8 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.util.Region;
 import org.apache.poi.ss.usermodel.Font;
 
+import company.Company;
+
 import branch.Branch;
 
 import category.Category;
@@ -907,9 +909,14 @@ public class PrintServlet extends HttpServlet {
 		User user = (User) request.getSession().getAttribute("user");
 
 		String name = request.getParameter("name");
-		// logger.info(name);
+		String ids = request.getParameter("ids");
+		String branchtype = request.getParameter("branchtype");
+		String statue = request.getParameter("statues");
+		String typestatues = request.getParameter("typestatues");
+		
+		// logger.info(name); 
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, name);
+				OrderMessage.billing, name,ids);
 
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -1170,7 +1177,8 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellValue(og.getProduct().getType());
 				cell.setCellStyle(style);
 				cell = row.createCell((short) y++);
-				cell.setCellValue(og.getOrdernum()); 
+// logger.info(og.getOrdernum());  
+				cell.setCellValue(og.getOrdernum());  
 				cell.setCellStyle(style);
 				cell = row.createCell((short) y++);
 				cell.setCellValue(branch.getEncoded());
@@ -1182,7 +1190,7 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellValue(TimeUtill.getdateString());
 				cell.setCellStyle(style);
 				cell = row.createCell((short) y++);
-				cell.setCellValue(o.getOm().getSupply());
+				cell.setCellValue(Company.supply);
 				cell.setCellStyle(style);
 				// 第四步，创建单元格，并设置值
 
@@ -1213,11 +1221,12 @@ public class PrintServlet extends HttpServlet {
 	public void exportOrderGoodsreturn(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
-
+ 
 		String name = request.getParameter("name");
-		// logger.info(name);
+		String ids = request.getParameter("ids");
+		// logger.info(name); 
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, name);
+				OrderMessage.billing, name,ids);
 
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -1431,10 +1440,13 @@ public class PrintServlet extends HttpServlet {
 			OrderGoodsAll o = list.get(i);
 			Branch branch = o.getOm().getBranch();
 			List<OrderGoods> listog = o.getList();
-
+            
 			for (int j = 0; j < listog.size(); j++) {
 				OrderGoods og = listog.get(j);
-
+				String serialnumber = og.getSerialnumber();
+				if(StringUtill.isNull(serialnumber)){
+					serialnumber =Company.supply;
+				} 
 				row = sheet.createRow((int) count);
 				count++;
 				int y = 0;
@@ -1443,7 +1455,7 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellStyle(style);
 				cell = row.createCell((short) y++);
 				cell.setCellValue(og.getProduct().getType());
-				cell.setCellStyle(style);
+				cell.setCellStyle(style); 
 				cell = row.createCell((short) y++);
 				cell.setCellValue(og.getRealnum());
 				cell.setCellStyle(style);
@@ -1452,12 +1464,12 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellStyle(style);
 				cell = row.createCell((short) y++);
 				cell.setCellValue(og.getBranch());
-				cell.setCellStyle(style);
+				cell.setCellStyle(style); 
 				cell = row.createCell((short) y++);
 				cell.setCellValue(TimeUtill.getdateString());
-				cell.setCellStyle(style);
+				cell.setCellStyle(style); 
 				cell = row.createCell((short) y++);
-				cell.setCellValue(o.getOm().getSupply());
+				cell.setCellValue(serialnumber); 
 				cell.setCellStyle(style);
 				// 第四步，创建单元格，并设置值
 
@@ -1648,7 +1660,7 @@ public class PrintServlet extends HttpServlet {
 			// FileOutputStream("E:/报装单"+printlntime+".xls");
 			wb.write(response.getOutputStream());
 			response.getOutputStream().close();
-			if("0".equals(statues)){
+			if("0".equals(statues)){ 
 				List<String> listsql = new ArrayList<String>();
 				//String sqlsend =   
 				String sql = OrderMessageManager.sendprint(ids);
@@ -1666,27 +1678,34 @@ public class PrintServlet extends HttpServlet {
 
 	public void OrderGoodsbilling(HttpServletRequest request,
 			HttpServletResponse response) {
-
-		String name = request.getParameter("name");
+        String uuid = TimeUtill.gettimeString();  
+		String name = request.getParameter("name"); 
 		String ids = request.getParameter("ids");
 		String branchtype = request.getParameter("branchtype");
 		String statue = request.getParameter("statues");
 		String typestatues = request.getParameter("typestatues");
-		String sql = OrderMessageManager.billing(name, ids, statue, branchtype);
-		if (DBUtill.sava(sql)) {
-			if ("0".equals(typestatues)) {
-				exportOrderGoods(request, response);
-			}else if("1".equals(typestatues)){
-				exportOrderGoodsreturn(request, response);
-			} else {
-				try {
-					response.sendRedirect("jieguo.jsp?type=type=updated&mark=" + 1);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		if("2".equals(typestatues)){ 
+			String sql = OrderMessageManager.billing(ids, statue); 
+			DBUtill.sava(sql); 
+		}else { 
+			String sql = OrderMessageManager.billing(name, ids, statue, branchtype); 
+			//	logger.info(typestatues); 
+				if (DBUtill.sava(sql)) {
+					if ("0".equals(typestatues)) {
+						exportOrderGoods(request, response);
+					}else if("1".equals(typestatues)){
+						exportOrderGoodsreturn(request, response);
+					} else {
+						try {
+							response.sendRedirect("jieguo.jsp?type=type=updated&mark=" + 1);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 				}
-			}
 		}
+		
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)

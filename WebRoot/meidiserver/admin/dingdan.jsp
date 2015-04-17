@@ -5,7 +5,7 @@
  if(StringUtill.isNull(statues)){ 
 	 statues = Order.orderDispatching +"";
  }
-  
+   
 %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -81,7 +81,7 @@ position:fixed;
 sort= "andate asc";
 var id = "";
 var type = "<%=Group.dealSend%>";
-
+ 
 var pgroup = "<%=pgroup%>";
 var opstatues = "<%=opstatues%>"; 
 var usermapstr = <%=usermapstr%> ;
@@ -123,11 +123,10 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	              
 	                question = confirm("您确定要配单并打印吗？\n"+branch+":\n"+data);
 	        		if (question != "0"){  
-	        			//alert(deliveryStatues);
 	        			$.ajax({ 
 	        		        type: "post", 
 	        		         url: "../LogisticsServlet",
-	        		         data:"method=peidan&oid="+oid+"&uid="+uid,
+	        		         data:"method=peidan&oid="+oid+"&uid="+uid+"&token=<%=token%>",
 	        		         dataType: "", 
 	        		         success: function (data) {
 	        		            if(data == 8){
@@ -153,12 +152,12 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 		uid = 0; 
 		$.ajax({ 
 	        type: "post", 
-	         url: "../LogisticsServlet",
-	         data:"method=peidan&oid="+oid+"&uid="+uid,
+	         url: "../LogisticsServlet", 
+	         data:"method=peidan&oid="+oid+"&uid="+uid+"&token=<%=token%>", 
 	         dataType: "",  
 	         success: function (data) { 
 	            if(data == 8){
-	            	alert("导购修改中。稍后重试"); 
+	            	alert("导购修改中。稍后重试");  
 	            }else{
 	            	if(str1 != 0){ 
 	            	   window.location.href="print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues+"&dingma="+str1;  
@@ -260,7 +259,7 @@ function changes(opid,oid,conmited,dealsendid,printlnstateus,Returnstatuse,types
 	           }, 
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 	            } 
-	           });
+	           }); 
 	} 
  
 		

@@ -11,6 +11,7 @@ public class Branch {
 	private String branchids;
 	private int disable;
 	private String encoded;
+	private String nameSN;
 
 	public int getDisable() {
 		return disable;
@@ -79,6 +80,17 @@ public class Branch {
 		this.encoded = encoded;
 	}
 
+	public String getNameSN() {
+		if(StringUtill.isNull(nameSN)){
+			nameSN = ""; 
+		}
+		return nameSN;
+	}
+
+	public void setNameSN(String nameSN) {
+		this.nameSN = nameSN;
+	}
+ 
 	
 
 }

@@ -33,9 +33,9 @@ function search(statues){
 	window.location.href="maintain.jsp?statues="+statues;
 }
 
-function check(){
-	var flag = false;
-	
+function check(){ 
+	var flag = false; 
+	$("#submit").css("display","none"); 
 	$("input[type='checkbox'][id='check_box']").each(function(){          
    		if($(this).attr("checked")){
    				var str = this.value; 
@@ -63,7 +63,7 @@ function check(){
   <div class="weizhi_head">现在位置：开单发货</div>
 <!--  头 单种类  -->    
 <form action="ordergoodsenddetail.jsp"  method = "post"  onsubmit="return check()">
-<input type="hidden" name="statues" value="1">
+<input type="hidden" name="statues" value="0"> 
 <input type="hidden" name="token" value="<%=token%>" />
 
 <table width="100%" border="0" cellspacing="1"  id="Ntable"> 

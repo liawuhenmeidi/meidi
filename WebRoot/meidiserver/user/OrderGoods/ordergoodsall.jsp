@@ -4,8 +4,8 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");  
 Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.unexamine); 
  // System.out.println(StringUtill.GetJson(map));    
-%>      
-<!DOCTYPE html>
+%>        
+<!DOCTYPE html>   
 <html>  
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -26,36 +26,37 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.u
 $(function () {  
 	//$("#"+type).css("color","red");
 }); 
- 
+  
 function detail(src){
 	window.location.href=src;
-}
-  
+} 
+    
 function search(statues){
-	window.location.href="maintain.jsp?statues="+statues;
-}
-</script> 
+	window.location.href="ordergoodsall.jsp?statues="+statues;
+}  
+</script>  
 </head>
 
 <body>
 <div class="s_main">
 <jsp:include flush="true" page="../../head.jsp">
   <jsp:param name="dmsn" value="" />
-  </jsp:include>  
-  
-<!--  头 单种类  --> 
-<div class="s_main_tit"><span class="qiangdan"><a href="../welcom.jsp">返回</a></span></div>
-<div class="s_main_tit"><span style="cursor:hand" id="<%=AfterSaleProduct.pending%>" onclick="search('<%=AfterSaleProduct.pending%>')">待审批</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=AfterSaleProduct.success%>" onclick="search('<%=AfterSaleProduct.success%>')">已审批</span>&nbsp;&nbsp;</div>
+  </jsp:include>   
    
+<!--  头 单种类  -->  
+<div class="s_main_tit"><span class="qiangdan"><a href="../welcom.jsp">返回</a></span></div>
+<!-- 
+<div class="s_main_tit"><span style="cursor:hand" id="<%=AfterSaleProduct.pending%>" onclick="search('<%=AfterSaleProduct.pending%>')">待审批</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="<%=AfterSaleProduct.success%>" onclick="search('<%=AfterSaleProduct.success%>')">已审批</span>&nbsp;&nbsp;</div>
+    -->
 <!--  订单详情  --> 
 <div >
 <table width="100%" border="0" cellspacing="1"  > 
   <tr >  
+   <td width="30%" class="s_list_m" align="center">订单时间</td>
    <td width="40%" class="s_list_m"  align="center">备注</td>
-    <td width="30%" class="s_list_m"  align="center">订单号</td>
-    <td width="30%" class="s_list_m" align="center">订单时间</td>
-  </tr> 
-   <%  
+    
+  </tr>  
+   <%   
    if(null != map){   
 	   Set<Map.Entry<String,OrderGoodsAll>> mapent = map.entrySet();
 		Iterator<Map.Entry<String,OrderGoodsAll>> itmap = mapent.iterator();
@@ -70,12 +71,12 @@ function search(statues){
 	    		col = "style='background-color:yellow'";
 	    	}  
 	    	
-  %>     
+  %>       
    
- <tr <%=col %> onclick="detail('ordergoods.jsp?id=<%=key%>')">  
+ <tr <%=col %> onclick="detail('ordergoods.jsp?id=<%=key%>')"> 
+ <td align="center"><%= o.getOm().getSubmittime()%></td> 
      <td align="center"><%=o.getOm().getRemark()%></td> 
-	<td align="center"><%= o.getOm().getOid()%></td>
-    <td align="center"><%= o.getOm().getOid()%></td>
+    
 
   </tr>
    

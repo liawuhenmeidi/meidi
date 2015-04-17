@@ -1,14 +1,18 @@
 package ordersgoods;
 
 
+import httpClient.InventorySN;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.logging.Log;
@@ -48,20 +52,38 @@ public class OrderGoodsManager {
 	   //boolean flag = false ;   
 	   List<OrderGoods> ogs = oa.getList();
 	   List<String> list = new ArrayList<String>();
-	   String sqld = ""; 
-	   if(2 == ogs.get(0).getBillingstatues()){ 
+	   String sqld = "";   
+	   if(null == ogs || ogs.size() == 0 ||null == ogs.get(0)){   
 		   sqld = "delete from mdordergoods where mid = "+oa.getOm().getId();
 	   }else {
-		   sqld = "delete from mdordergoods where mid = "+oa.getOm().getId() +" and opstatues = 0 ";
+		   if(2 == ogs.get(0).getBillingstatues()){
+			   sqld = "delete from mdordergoods where mid = "+oa.getOm().getId();
+		   }else {
+			   sqld = "delete from mdordergoods where mid = "+oa.getOm().getId() +" and opstatues = 0 ";
+		   }
 	   }
+	   
 	   
 	   list.add(sqld);   
 	       
-	   for(int i=0;i<ogs.size();i++){ 
+	   for(int i=0;i<ogs.size();i++){    
 		   OrderGoods og = ogs.get(i);  
-		   String sql = "insert into mdordergoods (id,oid,submitid,submittime,cid,tid,statues,ordernum,realnum,opstatues,uuid,mid,billingstatues) " +
-				   		"values ("+og.getId()+","+og.getOid()+",'"+og.getSubmitid()+"','"+og.getSubmittime()+"','"+og.getCid()+"','"+og.getTid()+"','"+og.getStatues()+"','"+og.getOrdernum()+"','"+og.getRealnum()+"','"+og.getOpstatues()+"','"+og.getUuid()+"',"+oa.getOm().getId()+","+og.getBillingstatues()+") ;" ; 
+		    String value = "";   
+		    if(og.getStatues() == 9){ 
+		    	Map<String,String> map = new HashMap<String,String>(); 
+				//System.out.println(branch+tname+statues);         
+				InventorySN.getinventoryByName(og.getTid()+"",og.getBranch(),"9",map,"ID");
+				 Set<Map.Entry<String,String>> set = map.entrySet();   
+				  Iterator<Map.Entry<String,String>> it = set.iterator();
+				  while(it.hasNext()){
+					  Map.Entry<String,String> mapent = it.next();
+					  value = mapent.getValue(); 
+				  } 
+		    }
 		     
+			DBUtill.sava(list);
+		   String sql = "insert into mdordergoods (id,oid,submitid,submittime,cid,tid,statues,ordernum,realnum,opstatues,uuid,mid,billingstatues,serialnumber) " +
+				   		"values ("+og.getId()+","+og.getOid()+",'"+og.getSubmitid()+"','"+og.getSubmittime()+"','"+og.getCid()+"','"+og.getTid()+"','"+og.getStatues()+"','"+og.getOrdernum()+"','"+og.getRealnum()+"','"+og.getOpstatues()+"','"+og.getUuid()+"',"+oa.getOm().getId()+","+og.getBillingstatues()+",'"+value+"') ;" ; 
 		   list.add(sql); 
 	   }   
    return list ;
@@ -134,6 +156,21 @@ public class OrderGoodsManager {
 	  String sql = " update mdordergoods set oid = "+oid + " , effectiveendtime = "+time+"  where uuid = '" + name+"' and statues = "+type;
 	  return sql ;  
   }   
+   
+  public static List<String> Updateserialnumber(Map<String,String> map){
+	  List<String> listsql = new ArrayList<String>();
+	  Set<Map.Entry<String,String>> set = map.entrySet();
+	  Iterator<Map.Entry<String,String>> it = set.iterator();
+	  while(it.hasNext()){
+		  Map.Entry<String,String> mapent = it.next();
+		  String key = mapent.getKey();
+		  String value = mapent.getValue(); 
+		  String sql = "update mdordergoods set serialnumber = '" +value+"' where id = "+key;
+		  listsql.add(sql);
+	  }
+	  return listsql ; 
+  }
+  
   
   public static OrderGoods getbyid(int id){
 	  OrderGoods og = new OrderGoods();
@@ -207,7 +244,7 @@ public class OrderGoodsManager {
 		 }
 		return id;
 
-  }
+  } 
    
    public static OrderGoods getOrderGoodsFromRs(ResultSet rs){
 	   OrderGoods p = null;
@@ -227,9 +264,10 @@ public class OrderGoodsManager {
 			p.setUuidtime(rs.getString("mdordergoods.uuidtime"));
 			p.setRealsendnum(rs.getInt("mdordergoods.realsendnum"));
 			p.setEffectiveendtime(rs.getString("effectiveendtime"));
-			p.setCid(rs.getInt("cid"));  
+			p.setSerialnumber(rs.getString("serialnumber"));   
+			p.setCid(rs.getInt("cid"));    
 		    //p.setNexttime(rs.getString("nexttime"));
-		} catch (SQLException e) {   
+		} catch (SQLException e) {    
 			e.printStackTrace();
 		}  
 		return p;  

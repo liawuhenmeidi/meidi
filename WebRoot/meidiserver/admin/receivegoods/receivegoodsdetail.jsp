@@ -6,7 +6,8 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 String id = request.getParameter("id");
 GoodsReceipt gr =  GoodsReceitManager.getByid(id);  
- //System.out.println(StringUtill.GetJson(set));
+ //System.out.println(StringUtill.GetJson(set)); 
+
 %>
 <!DOCTYPE html>
 <html>
@@ -55,11 +56,12 @@ GoodsReceipt gr =  GoodsReceitManager.getByid(id);
 		 
 		<table width="100%" border="0" cellspacing="1" id="Ntable">
 			<tr class="dsc">
-				<td align="center">苏宁收货单号<p>苏宁发货单号</td>
-				<td align="center">收货日期<p>苏宁发货日期</td>
-				<td align="center">供应商发货单号</td>
-				<td align="center">采购订单号<p>退货订单号</td>
-				<td align="center">订单类型<P>退货订单类型</td>
+				<td align="center">苏宁收发货单号</td>
+				<td align="center">操作类型</td>
+				<td align="center">苏宁收发货日期</td> 
+				<td align="center">供应商发货单号</td> 
+				<td align="center">采购/退货订单号</td>
+				<td align="center">订单类型</td> 
 				<td align="center">商品代码</td>
 				<td align="center">商品名称</td>
 				<td align="center">实收数量</td>
@@ -67,9 +69,10 @@ GoodsReceipt gr =  GoodsReceitManager.getByid(id);
 				<td align="center">地点名称</td>
 			</tr>
 			
-
+ 
 			<tr class="asc">
 				<td align="center"><%=gr.getReceveid()%></td>
+				<td align="center"><%= gr.getStatuesName()%></td>
 				<td align="center"><%=gr.getReceveTime()%></td>
 				<td align="center"><%=gr.getSendid()%></td>
 				<td align="center"><%=gr.getBuyid()%></td>

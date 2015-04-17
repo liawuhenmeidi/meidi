@@ -8,7 +8,9 @@ public class Company {
   private int usercount ;
  
   private String username; 
-
+  // 苏宁供应商编码 
+  public static String supply = "10056027"; // 供应商编码
+  
 public int getUsercount() {
 	return usercount;
 }

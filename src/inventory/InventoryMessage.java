@@ -1,5 +1,8 @@
 package inventory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import utill.StringUtill;
 
 
@@ -89,8 +92,22 @@ public int getInventoryId() {
 public void setInventoryId(int inventoryId) {
 	this.inventoryId = inventoryId;
 }
+	  
+public static Map<String,String> getDeliveryStatuesMap(){
+	Map<String,String> map = new HashMap<String,String>();
+	map.put(0+"", "需配送安装");
+	map.put(1+"", "已送货");
+	map.put(8+"", "已自提 ");
+	map.put(9+"", "只安装(门店提货)");
+	map.put(10+"", "只安装(顾客已提) ");
+	map.put(-1+"", "调拨单"); 
+	map.put(20+"", "换货单");
+	map.put(21+"", "网上数据");  
+	//map.put(20+"", "换货单");
+	return map ;
 	
 	
+}	
 	
 	
 	

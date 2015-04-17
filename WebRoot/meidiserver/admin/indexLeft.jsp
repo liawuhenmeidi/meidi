@@ -18,10 +18,44 @@ User user = (User)session.getAttribute("user");
 
  <script type = "text/javascript" language = "javascript"> 
  
+ var date = 0;
 function reloadopned(src){   
 	$("#main",window.parent.document).find("#contentpage").attr("src",src);
 		//$("#contentpage").attr("src");
-  }  
+  }    
+   
+function getInventory(){
+	
+	var mydate = new Date(); 
+	var dates = mydate.getTime();  
+	//alert((dates - date)/1000/60); 
+	if((dates - date)/1000/60<5){  
+		alert("您的操作过于频繁，请稍后重试");
+		return ;
+	}   
+	$("#initInventory").html("正在刷新");
+	//alert(dates - date);
+	$("#initInventory").attr("disabled","true");
+	    
+		 $.ajax({    
+		        type: "post",   
+		         url: "server.jsp",
+		         data:"method=InitInventorySN", 
+		         dataType: "",       
+		         success: function (data) { 
+		        	 date = dates;
+		        	 $("#initInventory").html("库存刷新");
+		        	 $("#initInventory").removeAttr("disabled"); 
+		           }, 
+		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+		        // alert(errorThrown); 
+		            } 
+		           });
+	 } 
+  
+  
+  
+  
   </script>
 </head>
 
@@ -162,17 +196,51 @@ function reloadopned(src){
           <%} %>
           <li >  
             <h4 >调货单管理</h4> 
-            <div class="list-item none">
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoods.jsp')">增加调货单</a></p> 
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodsall.jsp')">调货单审核</a></p> 
-           <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodexamine.jsp')">调货单生成订单</a></p> 
-           <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodbilling.jsp')">查看订单</a></p> 
-           <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssend.jsp')">开单发货</a></p> 
-           <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssended.jsp')">修改实收数量</a></p> 
+            <div class="list-item none">   
+           <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">库存刷新</a></p> 
+           <%
+           if(UserManager.checkPermissions(user, Group.ordergoods,"w")){
+           %>
+            <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoods.jsp')">增加调货单</a></p> 
+           <%
+           }
+           if(UserManager.checkPermissions(user, Group.ordergoods,"q")){
+               %>
+                  <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodsall.jsp')">调货单审核</a></p> 
+               <%
+               }
+           if(UserManager.checkPermissions(user, Group.ordergoods,"c")){
+               %>
+                 <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodexamine.jsp')">调货单生成订单</a></p> 
+               <%
+               }
+           if(UserManager.checkPermissions(user, Group.ordergoods,"r")){
+               %>
+                  <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodbilling.jsp')">查看订单</a></p> 
+               <%
+               }
+           if(UserManager.checkPermissions(user, Group.ordergoods,"c")){
+               %>
+                 <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssend.jsp')">开单发货</a></p> 
+               <%
+               }
+           if(UserManager.checkPermissions(user, Group.ordergoods,"e")){
+               %>
+                <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssended.jsp')">修改实收数量</a></p> 
+               <%
+               } 
+           %>
+           
+          
+           
+          
+           
+          
            <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssendhistory.jsp')">历史订货单</a></p> 
                       <p ><a href="javascript:void(0);"  onclick="reloadopned('receivegoods/receivegoods.jsp')">收货记录</a></p> 
+                         <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventory.jsp')">库存查询</a></p>
             </div> 
-          </li> 
+          </li>  
             
           <%  
          if(UserManager.checkPermissions(user,Group.inventory) || UserManager.checkPermissions(user, Group.inventoryquery) || UserManager.checkPermissions(user, Group.inventoryreserve)){

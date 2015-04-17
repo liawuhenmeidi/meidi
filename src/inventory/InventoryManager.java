@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,6 +27,7 @@ import orderproduct.OrderProductManager;
 import user.User;
 import user.UserManager;
 import utill.DBUtill;
+import utill.StringUtill;
 
 import database.DB;
 
@@ -74,6 +76,7 @@ public class InventoryManager {
 		String sql = "update inventory set outstatues = 1 where id = "+ id ;
 		return DBUtill.sava(sql);
 	}
+	 
 	
 	public static List<Inventory> getCategoryAnalyze(User user,String statues) { 
 		List<Inventory> categorys = new ArrayList<Inventory>();

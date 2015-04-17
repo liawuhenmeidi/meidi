@@ -155,7 +155,27 @@ public class ProductService {
 		// logger.info(System.currentTimeMillis() - start);
 		return list;
 	}
+   
+	public static List<Product> getlistallObject(User user) {
+		init();
+		List<Product> list = new ArrayList<Product>();
+		// long start = System.currentTimeMillis();
+		String[] p = GroupService.getidMap().get(user.getUsertype())
+				.getProducts().split("_");
 
+		List<String> li = Arrays.asList(p);
+		if (null != listall) {
+			for (int i = 0; i < listall.size(); i++) {
+				Product op = listall.get(i);
+				if (li.contains(op.getCategoryID() + "")) {
+					list.add(op);
+				} 
+			}
+		}
+		// logger.info(System.currentTimeMillis() - start);
+		return list;
+	}
+	
 	public static List<String> getlistall(Branch branch) {
 		init();
 		List<String> list = new ArrayList<String>();

@@ -1,8 +1,8 @@
 <%@ page language="java"
-	import="java.util.*,ordersgoods.*,product.*,branch.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;"
+	import="java.util.*,ordersgoods.*,product.*,branch.*,org.apache.commons.logging.*,company.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <%
-	request.setCharacterEncoding("utf-8");
+	request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user"); 
 String name = request.getParameter("name"); 
    
@@ -86,9 +86,9 @@ function check(){
 						<tr>
 							<td colspan=2 align="center">订单名称：<%=name%></td>
 							<td colspan=2 align="center"></td>
-							<td align="center" colspan=4>
+							<td align="center" colspan=4> 
 								<form action="../../Print" method="post"
-									onsubmit="return check()">
+									onsubmit="return check()"> 
 									<input type="hidden" value="OrderGoods" name="method">
 									<input type="hidden" value="<%=name%>" id="name" name="name">
 									<input type="submit" value="导出" style="color:red">
@@ -117,6 +117,9 @@ function check(){
 											String[] strs = str.split("_");
 											String i = strs[0];
 											String oid = strs[1];
+											if(StringUtill.isNull(oid)){
+												oid = ""; 
+											}
 								%>  
 								<td align="center"><%=OrderGoods.getStatuesName(Integer.valueOf(i))%>(订单号)</td>
 								<td align="center"><input type="text" name="oid<%=i %>" value="<%=oid %>" />
@@ -135,12 +138,12 @@ function check(){
 							</tr>
 						</table>
 					</form></td>
-			</tr>
+			</tr> 
 			<tr class="dsc">
 				<td align="center">商品编码</td>
 				<td align="center">商品名称</td>
 				<td align="center">订货数量</td>
-				<td align="center">订货门店</td>
+				<td align="center">订货门店</td> 
 				<td align="center">订货门店编码</td>
 				<td align="center">库位</td>
 				<td align="center">日期</td>
@@ -154,7 +157,11 @@ function check(){
 						List<OrderGoods> listog = o.getList();
 						for (int j = 0; j < listog.size(); j++) {
 							OrderGoods og = listog.get(j);
-			%>
+							 String serialnumber = og.getSerialnumber();
+								if(StringUtill.isNull(serialnumber)){
+									serialnumber =Company.supply;
+								}
+			%>  
 
 			<tr class="asc">
 
@@ -165,7 +172,7 @@ function check(){
 				<td align="center"><%=branch.getEncoded()%></td>
 				<td align="center"><%=og.getStatuesName()%></td>
 				<td align="center"><%=TimeUtill.getdateString()%></td>
-				<td align="center"><%=o.getOm().getSupply()%></td>
+				<td align="center"><%=serialnumber%></td>
 			</tr>
 
 			<%

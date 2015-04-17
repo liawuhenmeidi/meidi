@@ -24,7 +24,7 @@ if(saledateStart != null && saledateStart != "" && saledateStart != "null"){
 	sear += " and saledate BETWEEN '" + saledateStart + "'  and  ";
     flag = true ;
 }    
-  
+     
 if(saledateEnd != null && saledateEnd != "" && saledateEnd != "null"){
 	sear += " ' " + saledateEnd + "'";
 }else if(flag){

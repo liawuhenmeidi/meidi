@@ -28,10 +28,10 @@ public class InventoryBranchMessage {
 	private String typeid;
 
 	private int sendUser;
-
+ 
 	private int receiveuser;
 
-	private int devidety;
+	private int devidety;  // 
 
 	private String inventoryString;
 

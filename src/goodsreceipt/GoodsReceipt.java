@@ -23,8 +23,8 @@ public class GoodsReceipt {
 	private int refusenum;// 拒收数量
 	private String branchid; // 地点
 	private String branchName; // 地点名称   || 地点(仓库)名称
-    private String uuid ;  // 唯一码 
-    private int statues ;  // 0 入库   1  退货 
+    private String uuid ;  // 唯一码  
+    private int statues ;  // 0 入库   1  退货  
     private int disable ;   //  0 起作用  1  不起作用 
  
 	public int getId() {
@@ -74,7 +74,16 @@ public class GoodsReceipt {
 	public void setOrdertype(String ordertype) {
 		this.ordertype = ordertype;
 	}
- 
+    public String getStatuesName(){
+    	String str = "";
+    	if(1 == statues){ 
+    		str = "退货";
+    	}else if(0 == statues){
+    		str = "入库";
+    	} 
+    	return str;
+    }
+    
 	public String getGoodsnum() {
 		if(StringUtill.isNull(goodsnum)){
 			Branch b = BranchService.getNameMap().get(goodsName);
@@ -129,14 +138,14 @@ public class GoodsReceipt {
 
 	public String getBranchid() {
 		if(StringUtill.isNull(branchid)){
-			Branch b = BranchService.getNameMap().get(branchName); 
+			Branch b = BranchService.getNameSNMap().get(branchName); 
 			if(null != b ){
 				branchid = b.getEncoded();
-			}
-		} 
-		return branchid;
-	}
-
+			} 
+		}  
+		return branchid; 
+	} 
+ 
 	public void setBranchid(String branchid) {
 		this.branchid = branchid;
 	}

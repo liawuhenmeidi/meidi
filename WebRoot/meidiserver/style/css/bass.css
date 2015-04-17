@@ -117,7 +117,9 @@ border-right:1px #000 solid;
      table-layout:fixed ;
 }
 
-
+td{ 
+	word-break:break-all 
+}
 #table td { 
     width:100px;
     line-height:15px;

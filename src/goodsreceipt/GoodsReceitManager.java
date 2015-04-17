@@ -103,7 +103,7 @@ public class GoodsReceitManager {
 						+ ","
 						+ -gr.getRecevenum()
 						+ ","
-						+ 1 + "," + gr.getBid() + ",-1,0,0)";
+						+ 1 + "," + gr.getBid() + ",21,0,0)";
 			} else {
 
 				sqlIB = "update mdinventorybranch set papercount =  ((mdinventorybranch.papercount)*1 - "
@@ -142,7 +142,7 @@ public class GoodsReceitManager {
 						+ 1
 						+ ","
 						+ gr.getBid()
-						+ ",-1,(select realcount from mdinventorybranch where branchid = "
+						+ ",21,(select realcount from mdinventorybranch where branchid = "
 						+ gr.getTid()
 						+ " and  type = '"
 						+ gr.getTid()
@@ -169,14 +169,14 @@ public class GoodsReceitManager {
 		User user = new User();
 		boolean flag = true;
 		List<String> list = new ArrayList<String>();
-
-		logger.info(gr.getTid() + "***" + gr.getBid());
+  
+		//logger.info(gr.getTid() + "***" + gr.getBid());
 		if (gr.getTid() == 0 || gr.getBid() == 0) {
 			gr.setDisable(1);
 			flag = false;
 		}
 
-		String sql = " insert into goodsreceipt (id,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,recevenum,refusenum,branchid,branchname,uuid,disable)"
+		String sql = " insert into goodsreceipt (id,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,recevenum,refusenum,branchid,branchname,uuid,disable,statues)"
 				+ " values ('"
 				+ gr.getId()
 				+ "','"
@@ -200,10 +200,10 @@ public class GoodsReceitManager {
 				+ gr.getRefusenum()
 				+ "','"
 				+ gr.getBranchid() 
-				+ "','"
-				+ gr.getBranchName()
 				+ "','" 
-				+ gr.getUuid() + "'," + gr.getDisable() + ");";
+				+ gr.getBranchName()
+				+ "','"  
+				+ gr.getUuid() + "'," + gr.getDisable() + ","+gr.getStatues()+");";
 		if (flag) {
 
 			String sqlIB = "";
@@ -242,7 +242,7 @@ public class GoodsReceitManager {
 						+ ","
 						+ gr.getRecevenum()
 						+ ","
-						+ 1 + "," + gr.getBid() + ",-1,0,0)";
+						+ 1 + "," + gr.getBid() + ",21,0,0)";
 			} else {
 
 				sqlIB = "update mdinventorybranch set papercount =  ((mdinventorybranch.papercount)*1 + "
@@ -281,7 +281,7 @@ public class GoodsReceitManager {
 						+ 1
 						+ ","
 						+ gr.getBid()
-						+ ",-1,(select realcount from mdinventorybranch where branchid = "
+						+ ",21,(select realcount from mdinventorybranch where branchid = "
 						+ gr.getTid()
 						+ " and  type = '"
 						+ gr.getTid()
@@ -305,11 +305,12 @@ public class GoodsReceitManager {
 	}
 
 	public static List<String> saveDisable(GoodsReceipt gr) {
-		User user = new User();
-		String papermark = "-";
+		User user = new User(); 
+		String papermark = "-"; 
 		String realmark = "+";
-		int type = 13;
-		if (gr.getStatues() == 1) {
+		int type = 13; 
+		if (gr.getStatues() == 1) { 
+			logger.info(123); 
 			papermark = "+";
 			realmark = "-";
 			type = 15;
@@ -374,7 +375,7 @@ public class GoodsReceitManager {
 						+ 1
 						+ ","
 						+ gr.getBid()
-						+ ",-1,0,0)";
+						+ ",21,0,0)";
 			} else {
 
 				sqlIB = "update mdinventorybranch set papercount =  ((mdinventorybranch.papercount)*1  "
@@ -418,7 +419,7 @@ public class GoodsReceitManager {
 						+ 1  
 						+ ","
 						+ gr.getBid() 
-						+ ",-1,(select realcount from mdinventorybranch where branchid = "
+						+ ",21,(select realcount from mdinventorybranch where branchid = "
 						+ gr.getTid()
 						+ " and  type = '"
 						+ gr.getTid() 
@@ -502,6 +503,7 @@ public class GoodsReceitManager {
 		try {
 			while (rs.next()) {
 				GoodsReceipt as = getGoodsReceitFromRs(rs);
+				// logger.info(as.getStatues()); 
 				map.put(as.getUuid(), as);
 			}
 		} catch (SQLException e) {
@@ -533,7 +535,7 @@ public class GoodsReceitManager {
 				Elements td = e.getElementsByTag("td");
 
 				if (!td.isEmpty()) {
-
+ 
 					Iterator<Element> tdit = td.iterator();
 					int i = 0;
 					GoodsReceipt gr = null;
@@ -623,7 +625,8 @@ public class GoodsReceitManager {
 							gr = map.get(receveid + "_" + rows);
 							if (null == gr) {
 								gr = new GoodsReceipt();
-								gr.setId(id);
+								gr.setId(id);  
+								gr.setStatues(1); 
 								id++;
 								map.put(receveid + "_" + rows, gr);
 							}
@@ -634,9 +637,7 @@ public class GoodsReceitManager {
 						} else if (i == 6) {
 							gr.setGoodsnum(str);
 
-						} else if (i == 6) {
-							gr.setReceveTime(str);
-						} else if (i == 7) {
+						}  else if (i == 7) {
 							gr.setGoodsName(str);
 
 						} else if (i == 8) {
@@ -661,6 +662,75 @@ public class GoodsReceitManager {
 		return flag;
 	}
 
+	public static boolean saveOutModel(Elements en,String starttime, String endtime) {
+		int id = getMaxid();
+
+		Map<String, GoodsReceipt> map = new HashMap<String, GoodsReceipt>();
+		boolean flag = true;
+		if (!en.isEmpty()) {
+			Iterator<Element> it = en.iterator();
+			while (it.hasNext()) {
+				Element e = it.next();
+				// logger.info(e);
+				Elements td = e.getElementsByTag("td");
+ 
+				if (!td.isEmpty()) {
+
+					Iterator<Element> tdit = td.iterator();
+					int i = 0;
+					GoodsReceipt gr = null;
+					String rows = "";
+					String receveid = "";
+					while (tdit.hasNext()) {
+						i++;
+						Element tde = tdit.next();
+						String str = tde.text();
+						// logger.info(str);
+						if (i == 1) {
+							receveid = str;
+						} else if (i == 2) {
+							rows = str;
+							gr = map.get(receveid + "_" + rows);
+							if (null == gr) {
+								gr = new GoodsReceipt();
+								gr.setId(id);  
+								gr.setStatues(1); 
+								id++;
+								map.put(receveid + "_" + rows, gr);
+							}
+							gr.setReceveid(receveid);
+							gr.setUuid(receveid + "_" + rows);
+						} else if (i == 3) {
+							gr.setBuyid(str);
+						} else if (i == 5) {
+							gr.setGoodsnum(str);
+
+						} else if (i == 6) { 
+							gr.setGoodsName(str);
+
+						} else if (i == 7) {
+							double realnum = Double.valueOf(str);
+							int re = (int) realnum;
+							gr.setRecevenum(re);
+						} else if (i == 8) {
+							gr.setOrdertype(str);
+						} else if (i == 9) {
+							gr.setBranchName(str);
+						} else if (i == 10) { 
+							gr.setReceveTime(str);
+						}
+					}
+				}
+			}
+		}
+		// logger.info(map); 
+		flag = saveOut(map,starttime, endtime);   
+		// GoodsReceitManager.map = map; 
+		// logger.info(StringUtill.GetJson(map));
+		return flag;
+	}
+
+	
 	public static boolean save(Map<String, GoodsReceipt> map,String starttime, String endtime) {
 		boolean flag = false; 
 		List<String> list = new ArrayList<String>();
@@ -749,8 +819,9 @@ public class GoodsReceitManager {
 			p.setSendid(rs.getString("sendid"));
 			p.setUuid(rs.getString("uuid"));
 			p.setDisable(rs.getInt("disable"));
+			p.setStatues(rs.getInt("statues")); 
 		} catch (SQLException e) {
-			p = null;
+			p = null; 
 			// logger.info(e); 
 			return p;
 

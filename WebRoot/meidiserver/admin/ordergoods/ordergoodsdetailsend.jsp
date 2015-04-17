@@ -10,19 +10,8 @@ String statues = request.getParameter("statues");
 String type = request.getParameter("type");
 String branchname = ""; 
 String remark = ""; 
-String message = "导购订货单"; 
+String message = "修改实收数量"; 
 
-System.out.println(statues+"&&"+type);
-
-if("0".equals(statues)){
-	message = "调货单审核";
-}
-  
-if("1".equals(type)){
-	message = "订单生成";
-}else if("2".equals(type)){
-	message = "开单发货";
-}
  
 if(!StringUtill.isNull(id)){ 
 	if((OrderMessage.billing+"").equals(type)){   
@@ -166,13 +155,13 @@ String json = StringUtill.GetJson(list);
    <ul>                                                                                                          
      <li><a href="javascript:history.go(-1);">返回</a></li>
      </ul>   
-   </div>      
+   </div>       
     
    
     <form action="../../user/OrderGoodsServlet"  method = "post"  onsubmit="return check()">
        <input type="hidden" name="method" value="updaterealsendnum"/>   
        <input type="hidden" name="token" value="<%=token%>"/>   
-       <input type="hidden" name="id" id="id" value="<%=id%>"/>   
+       <input type="hidden" name="id" id="id" value="<%=id%>"/>    
         <input type="hidden" name="statues" id="statues" value="<%=statues%>"/> 
         <input type="hidden" name="type" id="type" value="<%=type%>"/>  
                 
@@ -209,15 +198,16 @@ String json = StringUtill.GetJson(list);
        </tr>
   
        <tr class="asc" >
+       <!--  
        <td align=center colspan=2>
        <font style="color:blue;font-size:20px;" >合计:</font>
        <font style="color:blue;font-size:20px;" >
              <span style="color:red;font-size:20px;" id="addcount" ></span>
              (台)
         </font>    
-       </td>
-                             
-       <td align=center colspan=2>  备注：<input id="remark" name="remark" value="<%=remark%>"></input></td>
+       </td> 
+          -->                   
+       <td align=center colspan=4>  备注：<input id="remark" name="remark" value="<%=remark%>"></input></td>
        </tr>
         
         <tr class="asc">

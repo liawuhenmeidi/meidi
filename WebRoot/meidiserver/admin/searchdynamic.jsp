@@ -4,7 +4,9 @@
  
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
+TokenGen.getInstance().saveToken(request);
  
+String token = (String)session.getAttribute("token"); 
 //Cookie Cookies[]=request.getCookies();
 
 //String sear = "";

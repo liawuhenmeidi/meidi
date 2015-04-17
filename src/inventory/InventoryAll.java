@@ -1,5 +1,7 @@
 package inventory;
 
+import product.Product;
+
 public class InventoryAll {
 	public int categoryid;
    
@@ -9,9 +11,20 @@ public class InventoryAll {
    private Boolean isquery ;   // 是否已盘点
    private String time ;
    private int papercount;
-   private int realcount;
-   private int branchid ;
-   
+   private int realcount; 
+   public Product getProduct() {
+	return product;
+}
+public void setProduct(Product product) {
+	this.product = product;
+}
+private int branchid ; 
+   private Product product;
+// 小电苏宁订单号
+	private String orderNUmSN;
+	// 订单过期时间
+	private String activetime ;
+	
    
    public String getTime() {
 	return time;
@@ -70,4 +83,18 @@ public int getRealcount() {
 public void setRealcount(int realcount) {
 	this.realcount = realcount;
 }
+public String getOrderNUmSN() { 
+	return orderNUmSN;
+}
+public void setOrderNUmSN(String orderNUmSN) {
+	this.orderNUmSN = orderNUmSN;
+}
+public String getActivetime() {
+	return activetime; 
+}
+public void setActivetime(String activetime) {
+	this.activetime = activetime;
+}
+
+
 }

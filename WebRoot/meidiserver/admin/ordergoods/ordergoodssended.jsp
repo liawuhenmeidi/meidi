@@ -81,7 +81,7 @@ function check(){
 			OrderGoodsAll o =en.getValue(); 
 			String sendtime = o.getList().get(0).getBillingtime();
 			String key = en.getKey(); 
-			;  
+			;   
   %>              
  <tr class="asc" ondblclick="detail('ordergoodsdetailsend.jsp?id=<%=key%>&type=<%=OrderMessage.billing%>&statues=<%=OrderMessage.examine%>')">  
 	 <td align="center"><%=o.getOm().getBranchname()%></td>  

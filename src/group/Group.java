@@ -19,12 +19,9 @@ public class Group {
    public static int locate = 10; 
    public static int println = 11;  
    
-   
    public static int inventoryquery = 12;    // 库存查询 
    public static int inventory = 13;    // 调货单权限    w
    public static int inventoryreserve = 28;    // 预约调货单权限    w
-   
-   
    public static int tuihuo = 14;       // 导购提交退货申请
    public static int queryOrder = 15;       // 查询手机端导购员报装单
    public static int huanhuo = 16;       // 提交换货单 
@@ -49,10 +46,12 @@ public class Group {
    public static int faultOrder = 37;    // 维修单   
    public static int aftersaleCharge= 39;    // 售后结款    
    public static int change = 38;    // 型号转化与门店转化权限  
-   
-   
-   public static int ordergoods = 40;  //  订货单权限    w  可提交    q 审核       r  查看
     
+   public static int ordergoods = 40;  //  订货单权限    w  可提交    q 审核       r  查看
+    //  c  生成苏宁订单      d  开单发货     e 修改实收数量    
+   
+   
+   
     //   从 15开始  
    private int id ;  
    private String name;

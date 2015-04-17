@@ -186,23 +186,7 @@ public class OrderManager {
 		
 		
 	}
-	
-	
-	public static Map<String,String> getDeliveryStatuesMap(){
-		Map<String,String> map = new HashMap<String,String>();
-		map.put(0+"", "需配送安装");
-		map.put(1+"", "已送货");
-		map.put(8+"", "已自提 ");
-		map.put(9+"", "只安装(门店提货)");
-		map.put(10+"", "只安装(顾客已提) ");
-		map.put(-1+"", "调拨单"); 
-		map.put(20+"", "换货单"); 
-		
-		return map ;
-		
-		
-	}
-	  
+	 
 	//by wilsonlee
 	/*public static int updateStatues(String method ,String statues,String id) {
 		return updateStatues(new User(),method,statues,id);
@@ -629,6 +613,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 			   } 
 		   }else if(Group.sale == type){
 			   if(Order.serach == statues){
+				  
 				   sql = "select * from  mdorder where  1 =1 "+ str + " order by id desc ";
 			   }
 		   }else if(Group.dealSend == type){ 
@@ -694,12 +679,12 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   sql = "select * from  mdorder where  ( deliveryStatues in (0,9,10) and sendid != 0  or  installid  != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0 ) and printSatuesp = 1   order by " + sort+str;
 					   //returnid = "+user.getId() + " and returnstatues =0  and returnprintstatues = 1 
 				   }            
-		     } 
-		 }else{        
+		     }  
+		 }else{         
 			   if(flag && Group.send == type){ 
 				   if(!StringUtill.isNull(search)){
 					   sql = "select * from  mdorder where ( sendId = "+user.getId() + " or  installid = "+user.getId()+ " ) " +  search;
-				   }else { 
+				   }else {  
 					   if(Order.serach == statues){ // 待送货 
 						   sql = "select * from  mdorder where  sendId = "+user.getId() + " and deliveryStatues in (0,9)   and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (1,10)  and printSatuesp = 1   "+search+"  order by "+sort + str;
 					   }else if(Order.orderDispatching == statues){   // 待安装
@@ -709,23 +694,23 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   }else if(Order.returns == statues){ // 已安装
 						   sql = "select * from  mdorder where  (sendId = "+user.getId() + " and installid = 0  or  installid = "+user.getId() + " )  and deliveryStatues in (2,5)    " +search+"  order by "+sort + str;
 					   }
-				   }
-				   
-			   }else if(flag && Group.sale == type){
-				   if(!StringUtill.isNull(search)){ 
-					   sql = "select * from  mdorder where  orderbranch = "+  user.getBranch() +search+"  order by "+sort + str;
-				   }else { 
+				   } 
+			   }else if(flag && Group.sale == type){      
+				   String products = user.getProductIDS();  
+				   if(!StringUtill.isNull(search)){  
+					   sql = "select * from  mdorder where  orderbranch = "+  user.getBranch() +search+"  and id in (select orderid from mdorderproduct where categoryID in ("+products+")) order by "+sort + str;
+				   }else {   
 					   if(Order.serach == statues){
-						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (0,9,10) " +search+"  order by "+sort + str;
+						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and id in (select orderid from mdorderproduct where categoryID in ("+products+"))  and deliveryStatues in (0,9,10) " +search+"  order by "+sort + str;
 					   }else if(Order.orderDispatching == statues){ 
-						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (1)  "+search+"  order by "+sort + str;
+						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and id in (select orderid from mdorderproduct where categoryID in ("+products+"))  and deliveryStatues in (1)  "+search+"  order by "+sort + str;
 					   }else if(Order.over == statues){
-						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (2)  "+search+"  order by "+sort + str;
+						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and id in (select orderid from mdorderproduct where categoryID in ("+products+"))  and deliveryStatues in (2)  "+search+"  order by "+sort + str;
 					   }else if(Order.returns == statues){
-						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (3,4,5,11,12,13)  "+search+"  order by "+sort + str;
+						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and id in (select orderid from mdorderproduct where categoryID in ("+products+"))  and deliveryStatues in (3,4,5,11,12,13)  "+search+"  order by "+sort + str;
 					   }else if(Order.come == statues){
-						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (8)  "+search+"  order by "+sort + str; 
-					   } 
+						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and id in (select orderid from mdorderproduct where categoryID in ("+products+"))  and deliveryStatues in (8)  "+search+"  order by "+sort + str; 
+					   }  
 				   }
 				  
 			   }else if(flag && Group.tuihuo == type){

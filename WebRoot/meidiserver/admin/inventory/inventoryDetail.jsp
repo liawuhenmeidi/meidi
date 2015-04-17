@@ -21,10 +21,10 @@ if(!StringUtill.isNull(branchid)){
 
 Map<Integer,Branch> branchmap = BranchManager.getIdMap();
 List<InventoryBranchMessage > list = InventoryBranchMessageManager.getCategory(ctype,branchid,starttime,endtime);  
-Map<Integer,User> usermap = UserService.getMapId(); 
-Map<String,String> mapdevity = OrderManager.getDeliveryStatuesMap();
-
-int papercount = 0 ;
+Map<Integer,User> usermap = UserService.getMapId();  
+Map<String,String> mapdevity = InventoryMessage.getDeliveryStatuesMap(); 
+ 
+int papercount = 0 ; 
 int realcount = 0 ;
 Set<Integer> bidset = new HashSet<Integer>();
 for(int i=0;i<list.size();i++){
@@ -94,9 +94,9 @@ function inventory(inventory,type){
 		 window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }else if(type == 13 || type == 15 ){  
 		 window.open('../receivegoods/receivegoodsdetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
-		 
-	 }else if(type == 14){
-		 window.open('../ordergoods/ordergoodsdetail.jsp?id='+inventory+'&type=<%=OrderMessage.billing%>&statues=<%=OrderMessage.billing%>', 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+		  
+	 }else if(type == 14 || type == 16){ 
+		 window.open('../ordergoods/ordergoodsdetail.jsp?id='+inventory+'&type=<%=OrderMessage.all%>&statues=<%=OrderMessage.billing%>', 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }else{ 
 		// window.location.href='dingdanDetail.jsp?id='+inventory; 
 		 window.open('dingdanDetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');

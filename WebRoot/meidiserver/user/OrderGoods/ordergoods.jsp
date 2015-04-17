@@ -15,7 +15,9 @@ if(!StringUtill.isNull(id)){
 	list = oa.getList(); 
 	remark = oa.getOm().getRemark();
 } 
-
+ 
+Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user.getBranch());
+String jsoninventory = StringUtill.GetJson(map);
 String json = StringUtill.GetJson(list); 
 // System.out.println(json); 
 %> 
@@ -39,8 +41,8 @@ String json = StringUtill.GetJson(list);
 //alert(listallp);  
  var jsonallp = <%=listallpp%>; 
   var jsons = <%=json%>;
- //alert(listall);
-   
+ //alert(listall); 
+   var jsoninventory = <%=jsoninventory%>;
  var row = 10;   
  var rows = new Array();
  var count = 1 ; 
@@ -119,17 +121,20 @@ String json = StringUtill.GetJson(list);
 	     ' <td colspan=2 align=center ><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
 	     '<td rowspan=2 align=center ><select name="statues'+row+'" id="statues'+row+'">'+
 	     '<option value=""></option>'+  
-	     '<option value="1">常规机</option>'+
-	      '<option value="2">特价</option>'+ 
-	      '<option value="3">样机</option>'+
-	      '<option value="4">换货</option>'+
-	      '<option value="5">赠品</option>'+
+	     '<option value="1">常规机订货</option>'+
+	      '<option value="2">特价机订货</option>'+ 
+	      '<option value="3">样机订货</option>'+
+	      '<option value="4">换货订货</option>'+
+	      '<option value="5">赠品订货</option>'+
+	      '<option value="6">店外退货 </option>'+
+	      '<option value="7">已入库退货</option>'+
+	      '<option value="9">已入库样机退货</option>'+
 	     
 	     '<select></td>'+   
 	     ' <td rowspan=2 align=center><input type="button" value="删除" onclick="delet('+row+')"/></td> ' +   
 	     ' </tr>'+ 
-	     '<tr '+cl+'>'+ 
-	     '<td align=center>0</td>'+
+	     '<tr '+cl+'>'+  
+	     '<td align=center><span style="color:red;font-size:15px;" id="papercount'+row+'" name="papercount'+row+'"></span></td>'+
 	     ' <td align=center ><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'"  placeholder="订单数"  style="border-style:none;width:50px;"   onBlur="addcount()" /></td> ' +
 	     
 	     '</tr>'
@@ -144,14 +149,16 @@ String json = StringUtill.GetJson(list);
 	    });   
 	 
 	$("#product"+row).blur(function (){
+		initctypes(row); 
 		addresultp(row);
 	});
-	 
+	  
 	$("#product"+row).keydown(function (){
 		initctypes();
-	}); 
-	   
+	});
+	    
 	$("#statues"+row).blur(function (){
+		initctypes(row); 
 		addresults(row); 
 	});
 	
@@ -167,9 +174,17 @@ String json = StringUtill.GetJson(list);
 	 var statues = $("#statues"+row).val();
 	 if(ctype == ""){      
 		// alert("型号不能为空");   
-		 return false ;  
-	 }else {    
+		 return false ;    
+	 }else {      
 		 if($.inArray(ctype,jsonallp) != -1){ 
+			 
+			 var ishava = jsoninventory[ctype];
+			 if(null != ishava && ""!= ishava && undefined  != ishava){
+				 $("#papercount"+row).html(jsoninventory[ctype].papercount);
+			 }else {
+				 $("#papercount"+row).html(0);
+			 }
+			 
 			 if("" != statues && null != statues){
 				 var only = ctype+"_"+statues;
 				 if($.inArray(only,ctypes) != -1){
@@ -177,10 +192,12 @@ String json = StringUtill.GetJson(list);
 					 $("#product"+row).val("");
 					 return ;   
 				 }else{     
-					 rows.push(row); 
+					 rows.push(row);
+					
+					
 					 initctypes();
 				 }   
-			 }
+			 } 
 			 
 		 }else { 
 			 alert("您输入的产品不存在，请重新输入");
@@ -203,14 +220,22 @@ String json = StringUtill.GetJson(list);
 		 }else {  
 			 if($.inArray(ctype,jsonallp) != -1){
 				 var only = ctype+"_"+statues; 
-				// alert(only);
-				 //alert(ctypes); 
+				// alert(only); 
+				 //alert(ctypes);  
 				 if($.inArray(only,ctypes) != -1){
 					 alert("您已添加此型号");    
 					// $("#product"+row).val("");
 					$("#statues"+row).val(""); 
 					 return ;  
-				 }else{       
+				 }else{
+					 
+					// var ishava = jsoninventory[ctype];
+					 //if(null != ishava && ""!= ishava && undefined  != ishava){
+					//	 $("#papercount"+row).html(jsoninventory[ctype].papercount);
+					// }else {
+					//	 $("#papercount"+row).html(0);
+					// }
+					
 					 rows.push(row);
 					 initctypes();  
 				 }   
@@ -222,29 +247,34 @@ String json = StringUtill.GetJson(list);
 		 }
 	} 
 	 
- } 
-   
- function  initctypes(){   
+ }
+  
+ 
+  function  initctypes(row){  
 	   rows.deleteEle(); 
 	   ctypes = new Array();   
 	   for(var i=0;i<rows.length;i++){
-		   var ctype = $("#product"+rows[i]).val();
-		   var statues = $("#statues"+rows[i]).val();
-		   if($.inArray(ctype,jsonallp) != -1  && statues != ""){
-			   var only = ctype+"_"+statues;
-			   alert(only);
-			   ctypes.push(only);     
+		   if(i != row){  
+			   var ctype = $("#product"+rows[i]).val();
+			   var statues = $("#statues"+rows[i]).val();
+			   if($.inArray(ctype,jsonallp) != -1  && statues != ""){
+				   var only = ctype+"_"+statues;
+				   ctypes.push(only);     
+			   }
 		   }
-		   
 	   } 
-} 
+  } 
+    
   
- function delet(row){   
-	 $("#product"+row).val("");
-	 $("#orderproductNum"+row).val("");
-	 // alert(rows);   
-	 rows.splice($.inArray(row,rows),1);  
- }
+  function delet(row){   
+		 $("#product"+row).val("");
+		 $("#orderproductNum"+row).val("");
+		 $("#statues"+row).val(""); 
+		 rows.splice($.inArray(row,rows),1); 
+		 initctypes();
+		 addcount(); 
+	 }
+	  
  
  function check(){
 	 ctypes = new Array();  

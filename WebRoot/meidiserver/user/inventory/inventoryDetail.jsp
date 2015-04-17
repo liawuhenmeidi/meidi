@@ -1,5 +1,5 @@
-<%@ page language="java" import="java.util.*,utill.*,product.*,order.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%
+<%@ page language="java" import="java.util.*,utill.*,product.*,ordersgoods.*,order.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<% 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");  
 String ctype = request.getParameter("ctype");
@@ -30,22 +30,21 @@ if(branchmap != null){
         int s =  it.next();
         newbranchmap.put(s+"", branchmap.get(s));
     }
-	
 }
-
+ 
 String branchstr = StringUtill.GetJson(newbranchmap);
    
 Map<String,User> usermap = UserService.getuserIdStr();
-
+ 
 String usermapstr = StringUtill.GetJson(usermap);
-
-Map<String,String> mapdevity = OrderManager.getDeliveryStatuesMap();
+  
+Map<String,String> mapdevity = InventoryMessage.getDeliveryStatuesMap();
 String mapdevitystr = StringUtill.GetJson(mapdevity);
-%>
+%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<style type="text/css">
+<style type="text/css"> 
 .fixedHead { 
 position:fixed;
 }  
@@ -110,19 +109,22 @@ var mapdevity = <%=mapdevitystr%>;
 		 }
 	 }else if(flag){
 		 str += "now()";
-	 } 
-	 //alert(str);
+	 }  
 	  search(ctype,branchid,str);        
-
- });
- 
+ });  
+  
  function inventory(inventory,type){
-	 if(type == 0 || type == 1){
-		 window.location.href='inventorysearch.jsp?id='+inventory;
-		 //window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
-	 }else {
-		 window.location.href='dingdanDetail.jsp?id='+inventory;
-		 //window.open('dingdanDetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 if(type == 0 || type == 1 || type == 3){
+		 //window.location.href='inventorysearch.jsp?id='+inventory;
+		 window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 }else if(type == 13 || type == 15 ){  
+		 window.open('../../admin/receivegoods/receivegoodsdetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+		   
+	 }else if(type == 14 || type == 16){ 
+		 window.open('../../admin/ordergoods/ordergoodsdetail.jsp?id='+inventory+'&type=<%=OrderMessage.all%>&statues=<%=OrderMessage.billing%>', 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 }else{  
+		// window.location.href='dingdanDetail.jsp?id='+inventory; 
+		 window.open('dingdanDetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }
  } 
  

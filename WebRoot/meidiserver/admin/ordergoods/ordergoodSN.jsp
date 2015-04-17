@@ -1,11 +1,14 @@
-<%@ page language="java"  import="java.util.*,ordersgoods.*,product.*,branch.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%   
+<%@ page language="java"   pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ include file="../../common.jsp"%>
+<%    
 request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user");
-String type = request.getParameter("type");
+String type = request.getParameter("type"); 
+//System.out.println(type);  
 String branchtype = request.getParameter("branchtype");
 String[] ids = request.getParameterValues("omid");        
-String[] statues = request.getParameterValues("statues");    
+String[] statues = request.getParameterValues("statues");  
+    
+Map<String,InventoryBranch> map = InventoryBranchManager.getmapTypeBranch(StringUtill.getStr(ids));
 List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.examine,ids,statues,branchtype);  
  // System.out.println(StringUtill.GetJson(map));      
 %>           
@@ -38,8 +41,8 @@ function search(statues){
 }
 
 function check(num){ 
-	$("#typestatues").val(num);
-	if(1 == num){
+	// $("#typestatues").val(num);
+	if(1 == num){ 
 		var name=$("#name").val();
 		if("" == name || null == name){
 			alert("订单名称不能为空");
@@ -61,20 +64,20 @@ function check(num){
 <div class="weizhi_head">现在位置：订单生成</div>
 <!--  头 单种类  -->   
 <form action="../../Print"  id="post"  method = "post"  >
-  <input type="hidden"  value="billing"  name="method">      
+  <input type="hidden"  value="billing"  name="method">       
   <input type="hidden" name="ids" value="<%=StringUtill.getStr(ids)%>"/>    
   <input type="hidden" name="statues" value="<%=StringUtill.getStr(statues)%>"/>
   <input type="hidden" name="branchtype" value="<%=branchtype%>"/> 
   <input type="hidden" name="typestatues" id="typestatues" value="<%=type%>"/>
   
 <table width="100%" border="0" cellspacing="1"  id="table"> 
- <tr class="dsc" > 
- <td colspan=8>
+ <tr class="dsc" >  
+ <td colspan=10>  
   <table>
    <tr>
      <td  align="center">请输入订单名称</td>
- <td  align="center">  
-  <input type="text" name="name" id="name" value=""  />
+ <td  align="center">   
+  <input type="text" name="name" id="name" value=""  placeholder="订退单名称不能重复" />
    </td> 
      <td align="center"><input type="button" value="导出"  onclick="check(1)" style="color:red"></td>
     <!-- 
@@ -87,9 +90,11 @@ function check(num){
     
  </tr>
   <tr class="dsc">   
-     <td    align="center">商品编码</td>
+     <td    align="center">商品编码</td> 
      <td   align="center">商品名称</td>
-     <td  align="center">订货数量</td>
+     <td align=center width="10%">未入库数量</td>  
+           <td align=center width="20%"> 订货数</td>  
+            <td align=center width="20%">订单数</td>  
       <td   align="center">订货门店</td>
     <td   align="center">订货门店编码</td>
      <td  align="center">库位</td>
@@ -102,9 +107,20 @@ function check(num){
 			OrderGoodsAll o =list.get(i);
 			Branch branch = o.getOm().getBranch();
 			List<OrderGoods> listog = o.getList();
-			for(int j=0;j<listog.size();j++){
-				OrderGoods og = listog.get(j);
-				String supply = o.getOm().getSupply();
+			for(int j=0;j<listog.size();j++){     
+				OrderGoods og = listog.get(j);    
+				//System.out.println(og.getTid()+"_"+o.getOm().getBranchid());
+				 InventoryBranch in = map.get(og.getTid()+"_"+o.getOm().getBranchid());
+				 String serialnumber = og.getSerialnumber();
+					if(StringUtill.isNull(serialnumber)){
+						serialnumber =Company.supply; 
+					}
+				
+				int InNum = 0;
+				
+	        	  if(null != in){
+	        		  InNum = in.getPapercount();
+	        	  }
 				if(og.getStatues() == 9 ){
 					
 				}
@@ -113,13 +129,17 @@ function check(num){
 <tr class="asc" >     
 	 
     <td align="center"><%= og.getProduct().getEncoded()%></td> 
-     <td align="center"><%= og.getProduct().getType()%></td>  
-    <td align="center"><%=og.getOrdernum()%></td> 
-    <td align="center"><%=branch.getLocateName()%></td>  
+     <td align="center"><%= og.getProduct().getType()%></td>   
+    <td align=center><%=  InNum %></td>   
+	     <td align=center ><%= og.getRealnum() %></td> 
+	     <td align=center ><%= og.getOrdernum()%></td> 
+    
+    
+    <td align="center"><%=branch.getNameSN()%></td>  
     <td align="center"><%=branch.getEncoded()%></td>  
      <td align="center"><%=og.getStatuesName()%></td>   
       <td align="center"><%=TimeUtill.getdateString()%></td> 
-       <td align="center"><%=supply%></td> 
+       <td align="center"><%=serialnumber%></td>  
   </tr> 
 				
 				<%

@@ -3,17 +3,12 @@
 <%@ include file="../../common.jsp"%>
 
 <%
-	List<String> listbranchp = BranchService.getListStr(); 
-String listall = StringUtill.GetJson(listbranchp); 
- 
 
+List<BranchType> listgt = BranchTypeManager.getLocate(); 
 String id = request.getParameter("id"); 
 String statues = request.getParameter("statues");
 String type = request.getParameter("type");
-String message = "导购订货单"; 
-if("0".equals(statues)){
-	message = "调货单审核";
-}
+String message = "导购订货单";  
 //System.out.println(statues+"&&"+type);
 OrderGoodsAll oa = null;  
 List<OrderGoods> list = null; 
@@ -24,15 +19,17 @@ if(!StringUtill.isNull(id)){
 		oa = OrderGoodsAllManager.getOrderGoodsAllBySendid(user,id,statues); 
 	}else {  
 		oa = OrderGoodsAllManager.getOrderGoodsAllByid(user,id,Integer.valueOf(statues),type);
-	}
+	} 
 	
 	branchname = oa.getOm().getBranchname();
 	remark = oa.getOm().getRemark(); 
 	list = oa.getList(); 
 } 
-
-String json = StringUtill.GetJson(list); 
-// System.out.println(json);
+  
+Map<String, List<String>> map = BranchService.getPtypeMap();
+String branchtype = StringUtill.GetJson(map);
+String json = StringUtill.GetJson(list);  
+// System.out.println(json); 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -55,27 +52,26 @@ String json = StringUtill.GetJson(list);
 //alert(listallp);  
   var jsonallp = null;
   var jsoninventory = null;
-  var jsons = <%=json%>; 
+  var jsons = <%=json%>;  
  //alert(listall);
-   
- var row = 10;   
+   var map = <%=branchtype%>
+ var row = 10;    
  var rows = new Array();
- var count = 1 ;  
+ var count = 1 ;    
  var inventory = new Array();  
- var ctypes = new Array();  
- var jsonall = <%=listall%>;
- 
- $(function () { 
-	
+ var ctypes = new Array();   
+   
+ $(function () {     
+	 $("#branchtype").change(function(){
+		 //var str = $("#branchid").find("option:selected").text();
+		var branchtype = $("#branchtype").val();
+		// alert(map[branchtype]);
+		 $("#branchid").autocomplete({ 
+			 source: map[branchtype]
+		    }); 
+	 });  
+	   
 	 
-	 $("#branchid").change(function(){
-		 var str = $("#branchid").find("option:selected").text();
-		 $("#branchid").val(str);
-	 });
-	 
-	 $("#branchid").autocomplete({ 
-		 source: jsonall
-	    }); 
 	 
 	 var num = jsons.length;
 	  
@@ -247,7 +243,7 @@ String json = StringUtill.GetJson(list);
 	     '<tr '+cl+'><td colspan=6><table width="100%" id="table'+row+'"></table></td></tr>'
 	     ;  
 	          
-	$("#Wtable").append(str);
+	$("#Wtable").append(str); 
 	 
 	//alert($("#td"+row).css("width")-10);
 	//$("#product"+row).css("width",$("#td"+row).css("width"));
@@ -438,10 +434,10 @@ String json = StringUtill.GetJson(list);
 
 	<div class="main">
 		<div class="weizhi_head">
-			现在位置：<%=message%></div>
+			现在位置：<%=message%></div> 
 		<div>
 			<form action="../../user/OrderGoodsServlet" method="post"
-				onsubmit="return check()">
+				onsubmit="return check()"> 
 				<input type="hidden" name="method" value="add" /> <input
 					type="hidden" name="token" value="<%=token%>" /> <input
 					type="hidden" name="id" id="id" value="<%=id%>" /> <input
@@ -450,6 +446,22 @@ String json = StringUtill.GetJson(list);
 				<input type="hidden" name="type" id="type" value="<%=type%>" />
 				<table style="width:100% ">
 					<tr class="asc">
+					<td>销售系统： <select id="branchtype" name="branchtype">
+										<option></option>
+										<%
+											if (null != listgt) {
+												for (int i = 0; i < listgt.size(); i++) {
+													BranchType bt = listgt.get(i);
+													if (bt.getTypestatues() == 1) {
+										%>
+										<option value="<%=bt.getId()%>"><%=bt.getName()%></option>
+										<%
+											}
+												}
+											}
+										%>
+								</select></td>
+								
 						<td align=center>门店</td>
 						<td align=center>
 							<%
@@ -467,7 +479,7 @@ String json = StringUtill.GetJson(list);
 						<td align=center>日期：<%=TimeUtill.getdateString()%></td>
 					</tr>
 					<tr class="asc">
-						<td colspan=4 align=center>
+						<td colspan=5 align=center>
 							<table style="width:100% " id="Wtable">
 								<tr class="dsc">
 									<td align=center width="5%">编号</td>

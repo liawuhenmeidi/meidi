@@ -34,7 +34,18 @@ public class BranchService {
 		}
 		return map;
 	}
+ 
+	public static Map<String, Branch> getNameSNMap() {
+		init();
+		Map<String, Branch> map = new HashMap<String, Branch>();
 
+		for (int i = 0; i < list.size(); i++) {
+			Branch b = list.get(i);
+			map.put(b.getNameSN(), b);
+		}
+		return map;
+	}
+	
 	public static Map<String, Branch> getNumMap() {
 		init();
 		Map<String, Branch> map = new HashMap<String, Branch>();
@@ -46,7 +57,24 @@ public class BranchService {
 
 		return map;
 	}
+ 
+	public static Map<String, List<String>> getPtypeMap() {
+		init();
+		Map<String, List<String>> map = new HashMap<String, List<String>>();
+  
+		for (int i = 0; i < list.size(); i++) {
+			Branch b = list.get(i); 
+			List<String> list = map.get(b.getPid()+"");
+			if(null == list){   
+				list = new ArrayList<String>();   
+				map.put(b.getPid()+"", list); 
+			}
+			list.add(b.getLocateName());
+		}
 
+		return map;
+	}
+	
 	public static Branch gerBranchByname(String name) {
 		return getNameMap().get(name);
 	}

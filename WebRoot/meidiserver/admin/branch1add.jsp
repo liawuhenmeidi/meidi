@@ -11,6 +11,7 @@ HashMap<String,List<User>> map = UserService.getMapBranchid();
 System.out.println(StringUtill.GetJson(map.get(id)));
 Branch branchold = null;
 String branchoidname = "";
+String nameSN = "";
 String message = null;
 String branchids = null;
 String encoded = null;
@@ -22,6 +23,7 @@ if(!StringUtill.isNull(id)){
 	message = branchold.getMessage();
 	branchids = branchold.getBranchids();
 	encoded = branchold.getEncoded();
+	nameSN = branchold.getNameSN();
 	if(!StringUtill.isNull(message)){
 		permission = message.split("_");
 	}
@@ -38,6 +40,7 @@ if("add".equals(action)){
 	permission = request.getParameterValues("permission");
 	branchid = request.getParameterValues("branchid");
 	encoded =  request.getParameter("encoded"); 
+	nameSN = request.getParameter("nameSN");
     String messagenew = ""; 
     String branchidsnew = "";
     if(permission != null ){  
@@ -64,7 +67,8 @@ if("add".equals(action)){
 	branch.setPid(Integer.valueOf(pid));
 	branch.setMessage(messagenew); 
 	branch.setBranchids(branchidsnew);  
-	branch.setEncoded(encoded);                        
+	branch.setEncoded(encoded);
+	branch.setNameSN(nameSN);
 	BranchManager.save(branch); 
 	response.sendRedirect("branch1.jsp?id="+pid); 
 } 
@@ -177,6 +181,11 @@ function changes(){
       <td align="center">门店名称<span style="color:red">*</span></td>
       <td align="center">
        <input type="text"  id="locate" value="<%=branchoidname %>" name="locate" /> </td>
+      </tr>
+       <tr class="asc">
+      <td align="center">卖场别名<span style="color:red">*</span></td>
+      <td align="center">
+       <input type="text"  id="nameSN" value="<%=nameSN %>" name="nameSN" /> </td>
       </tr>
         <tr class="asc">
       <td align="center">门店编码</td> 

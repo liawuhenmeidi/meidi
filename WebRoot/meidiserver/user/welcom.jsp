@@ -1,12 +1,12 @@
 <%@ page language="java" import="java.util.*,category.*,inventory.*,user.*,group.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <% 
 request.setCharacterEncoding("utf-8");
-boolean flag = true ;
+boolean flag = true ; 
 User user = (User)session.getAttribute("user");
 List<Inventory> invetorylist = InventoryManager.getCategory(user,"unconfirmed");  
 String path = request.getContextPath();
 String realPath = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+request.getServletPath().substring(0,request.getServletPath().lastIndexOf("/")+1);    
-%> 
+%>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,12 +38,21 @@ function clear(){
 <ul class="door"> 
    <%  
      if(UserManager.checkPermissions(user, Group.sale,"w")){ 	 
-   %>         
-   <li><a href="order.jsp">报装 </a></li> 
-   <li><a href="OrderGoods/ordergoods.jsp">订货 </a></li> 
-   <li><a href="OrderGoods/ordergoodsall.jsp">查看订货单 </a></li> 
-    <%        
+   %>          
+   <li><a href="order.jsp">报装 </a></li>  
+    <%          
      }  
+   if(UserManager.checkPermissions(user, Group.ordergoods,"w")){ 	 
+	   %>          
+	   <li><a href="OrderGoods/ordergoods.jsp">订货 </a></li> 
+	   <li><a href="OrderGoods/ordergoodsall.jsp">未审核订单 </a></li> 
+	    <%          
+	     }  
+   if(UserManager.checkPermissions(user, Group.ordergoods,"r")){ 	 
+	   %>          
+	  <li><a href="inventory/inventorycome.jsp">查看入库单号 </a></li> 
+	    <%          
+	     }  
    if(UserManager.checkPermissions(user, Group.sale,"r")){
       %>    
     	     <li><a href="serch_list.jsp">查看报装单</a></li>

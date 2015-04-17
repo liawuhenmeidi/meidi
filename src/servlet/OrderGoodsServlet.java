@@ -1,13 +1,16 @@
 package servlet;
-
+  
 import inventory.InventoryBranchManager;
+import inventory.InventoryManager;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import java.util.List;
@@ -33,7 +36,7 @@ import branch.BranchService;
 
 import product.Product;
 import product.ProductService;
-
+  
 /**
  * 核心请求处理类
  * 
@@ -88,15 +91,13 @@ public class OrderGoodsServlet extends HttpServlet {
 		OrderGoodsAll oa = new OrderGoodsAll();
 		List<OrderGoods> list = new ArrayList<OrderGoods>();
 		String rows = request.getParameter("rows");
-		String[] rowss = rows.split(",");
 		OrderMessage om = new OrderMessage();
-
 		if (StringUtill.isNull(id)) {
 			id = OrderMessageManager.getMaxid() + "";
 			om.setId(Integer.valueOf(id));
-			// om.setOid(oid);
-			om.setSubmitid(user.getId());
-			om.setSubmittime(TimeUtill.getdateString());
+			// om.setOid(oid); 
+			om.setSubmitid(user.getId()); 
+			om.setSubmittime(TimeUtill.gettime()); 
 			if (!StringUtill.isNull(branchid)) {
 				om.setBranchid(BranchService.getNameMap().get(branchid).getId());
 				statues = 1;
@@ -121,58 +122,75 @@ public class OrderGoodsServlet extends HttpServlet {
 
 		om.setRemark(remark);
 		if (!StringUtill.isNull(opstatues)) {
-			om.setOpstatues(Integer.valueOf(OrderMessage.examine));
+			om.setOpstatues(Integer.valueOf(opstatues)); 
 		} else {
 			om.setOpstatues(Integer.valueOf(0));
 		}
+		
+		
+		
+		
+		if(StringUtill.isNull(rows)){
+			
+		}else {
+			String[] rowss = rows.split(",");
 
-		for (int i = 0; i < rowss.length; i++) {
-			String row = rowss[i];
-			String type = request.getParameter("product" + row);
-			Product p = ProductService.gettypemap(user).get(type);
-			int cid = p.getCategoryID();
-			int itype = p.getId();
-			String sta = request.getParameter("statues" + row);
-			String num = request.getParameter("orderproductNum" + row);
-			String invenNum = request.getParameter("papercount" + row);
-
-			if (StringUtill.isNull(num)) {
-				num = 0 + "";
-			}
-
-			if (StringUtill.isNull(invenNum)) {
-				invenNum = "0";
-			}
-			if (!StringUtill.isNull(type) && !StringUtill.isNull(sta)) {
-				OrderGoods op = new OrderGoods();
-				// op.setOid(oid);
-				// op.setOpstatues(Integer.valueOf(opstatues));
-				op.setOrdernum(Integer.valueOf(num) + Integer.valueOf(invenNum));
-				op.setRealnum(Integer.valueOf(num));
-				op.setStatues(Integer.valueOf(sta));
-				op.setSubmitid(user.getId());
-				op.setSubmittime(TimeUtill.getdateString());
-				op.setCid(cid);
-				op.setTid(Integer.valueOf(itype));
-				op.setMid(Integer.valueOf(id));
-				if ((OrderMessage.billing + "").equals(types)) {
-					op.setBillingstatues(OrderMessage.billing);
+			for (int i = 0; i < rowss.length; i++) {
+				String row = rowss[i];
+				String type = request.getParameter("product" + row);
+				Product p = ProductService.gettypemap(user).get(type);
+				int cid = p.getCategoryID();
+				int itype = p.getId();
+				String sta = request.getParameter("statues" + row);
+				String num = request.getParameter("orderproductNum" + row);
+				String invenNum = request.getParameter("papercount" + row);
+	           // logger.info(invenNum);  
+				if (StringUtill.isNull(num)) {
+					num = 0 + "";
 				}
-				// op.setUuid(uuid);
-				list.add(op);
-			}
 
+				if (StringUtill.isNull(invenNum)) {
+					invenNum = "0";
+				}
+				if (!StringUtill.isNull(type) && !StringUtill.isNull(sta)) {
+					OrderGoods op = new OrderGoods();
+					// op.setOid(oid);
+					// op.setOpstatues(Integer.valueOf(opstatues));
+					op.setOrdernum(Integer.valueOf(num) + Integer.valueOf(invenNum));
+					op.setRealnum(Integer.valueOf(num));
+					op.setStatues(Integer.valueOf(sta));
+					op.setSubmitid(user.getId());
+					op.setSubmittime(TimeUtill.getdateString());
+					op.setCid(cid);
+					op.setTid(Integer.valueOf(itype));
+					op.setMid(Integer.valueOf(id));
+					if ((OrderMessage.billing + "").equals(types)) {
+						op.setBillingstatues(OrderMessage.billing);
+					}  
+					// op.setUuid(uuid);
+					list.add(op);
+				}
+
+			}
 		}
+		
 
 		oa.setOm(om);
 		oa.setList(list);
 
 		if (OrderGoodsAllManager.save(user, oa)) {
 			try {
+				//logger.info(statues);
 				if (0 == statues) {
 					response.sendRedirect("../jieguo.jsp?type=ordergoodsadd&mark=" + 1);
-				} else {
-					response.sendRedirect("../jieguo.jsp?type=updated&mark=" + 1);
+				} else {    
+					logger.info(opstatues); 
+					if (!StringUtill.isNull(opstatues) && Integer.valueOf(opstatues) == 0 ) {
+						response.sendRedirect("../admin/ordergoods/ordergoodsupdate.jsp?id="+id+"&type="+OrderMessage.unexamine+"&statues="+OrderMessage.unexamine);
+					}else{     
+						response.sendRedirect("../jieguo.jsp?type=updated&mark=" + 1); 
+					}
+					
 				}
 
 				// response.getWriter().write(""+statues);
@@ -219,9 +237,9 @@ public class OrderGoodsServlet extends HttpServlet {
 				} 
 				
 				String sql = OrderGoodsManager.updaterealsendnum(user,
-						ogid, realsendnum);
-				listsql.add(sql);  
-				if (og.getRealnum() != Integer.valueOf(realsendnum)) {
+						ogid, realsendnum);  
+				listsql.add(sql);   
+				if (og.getRealnum() != Integer.valueOf(realsendnum) && og.getStatues() != 5 ) {
 					realcont = (Integer.valueOf(realsendnum) - og.getRealnum());
 
 					if (og.getStatues() == 6 || og.getStatues() == 7
@@ -230,10 +248,8 @@ public class OrderGoodsServlet extends HttpServlet {
 						operatortype = 16;
 					}
 
-					
-
 					String sqlIB = "";
-					String sqlIBM = "";
+					String sqlIBM = ""; 
 
 					if (null == InventoryBranchManager.getInventoryID(user, oa
 							.getOm().getBranchid(), og.getTid() + "")) {
@@ -243,7 +259,7 @@ public class OrderGoodsServlet extends HttpServlet {
 								+ ", '"
 								+ og.getTid()
 								+ "', '"
-								+ 0
+								+ 0 
 								+ "', '"
 								+ realcont
 								+ "'," + oa.getOm().getBranchid() + ")";
@@ -265,12 +281,12 @@ public class OrderGoodsServlet extends HttpServlet {
 								+ realcont
 								+ "',"
 								+ operatortype
-								+ ","
-								+ 0
+								+ "," 
+								+ 0 
 								+ ","
 								+ realcont
 								+ ","
-								+ 1
+								+ 1 
 								+ ","
 								+ oa.getOm().getBranchid()
 								+ ",-1,0,0)";
@@ -280,7 +296,7 @@ public class OrderGoodsServlet extends HttpServlet {
 								+ realcont
 								+ ")*1  where  branchid = "
 								+ oa.getOm().getBranchid()
-								+ " and  type = '"
+								+ " and  type = '" 
 								+ og.getTid() + "'";
 
 						sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
@@ -351,6 +367,78 @@ public class OrderGoodsServlet extends HttpServlet {
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
 				OrderMessage.billing, name);
 		// logger.info(list.size());
+		// 状态 ，型号 ，门店 
+		Map<Integer,Set<Integer>> mapb = new HashMap<Integer,Set<Integer>>();
+		Map<Integer,Set<Integer>> mapt = new HashMap<Integer,Set<Integer>>(); 
+		//Map<Integer,Map<Set<String>,Set<String>>> mapT = new HashMap<Integer,Map<Set<String>,Set<String>>>();
+		Set<Integer> set = new HashSet<Integer>(); 
+		if (null != list) {
+			for (int i = 0; i < list.size(); i++) {
+				OrderGoodsAll o = list.get(i);  
+				List<OrderGoods> listog = o.getList();
+				
+				for (int j = 0; j < listog.size(); j++) { 
+					OrderGoods og = listog.get(j);
+					
+					Set<Integer> setb = mapb.get(og.getStatues());
+					Set<Integer> sett = mapt.get(og.getStatues());
+					if(null == setb){ 
+						setb = new HashSet<Integer>();
+						mapb.put(og.getStatues(), setb);
+					} 
+					if(null == sett){ 
+						sett = new HashSet<Integer>(); 
+						mapt.put(og.getStatues(), sett);
+					} 
+					
+					setb.add(o.getOm().getBranchid());
+					sett.add(og.getTid());
+					set.add(og.getStatues());
+				} 
+			}
+		}
+
+		 
+		if (null != set) {
+			Iterator<Integer> it = set.iterator();
+			String time = request.getParameter("effectiveendtime");
+			while (it.hasNext()) {
+				int type = it.next();
+				String oid = request.getParameter("oid" + type);
+				Set<Integer> setb = mapb.get(type);
+				Set<Integer> sett = mapt.get(type);
+				     
+				String sqlinvent = InventoryBranchManager.updateSNMessage(setb,sett,oid, time); 
+				 
+				String sql = OrderGoodsManager.updateIOS(name, type, oid, time);
+				listsql.add(sqlinvent); 
+				listsql.add(sql);
+			}
+		}
+		try {
+			if (listsql.size() == 0) {
+				response.sendRedirect("../jieguo.jsp?type=updated&mark=" + 1);
+			} else {
+				if (DBUtill.sava(listsql)) {
+
+					response.sendRedirect("../jieguo.jsp?type=updated&mark=" + 1);
+
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/*public void updateIOS(HttpServletRequest request,
+			HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+		List<String> listsql = new ArrayList<String>();
+		String name = request.getParameter("name");
+		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
+				OrderMessage.billing, name);
+		// logger.info(list.size());
 		Set<Integer> set = new HashSet<Integer>();
 		if (null != list) {
 			for (int i = 0; i < list.size(); i++) {
@@ -388,8 +476,8 @@ public class OrderGoodsServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
+	}*/
+	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 		// 将请求、响应的编码均设置为UTF-8（防止中文乱码）
 		try {

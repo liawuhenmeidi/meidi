@@ -127,6 +127,7 @@ function seletall(all){
 			 <input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th>
 			<th align="left" width="40">门店号</th>
 			<th align="left">门店</th>
+			<th align="left">卖场别名</th>
 			<th align="left">门店编码</th>
 			<th align="left">导购人数</th>
 			<th align="left">门店报装单所需信息</th>
@@ -149,7 +150,8 @@ if(list != null){
 		<% }%></td> 
 		<td align="left"><%=i+1 %></td>    
  		<td align="left"><%=category.getLocateName() %></td> 
- 		<td align="left"><%=category.getEncoded()%></td> 
+ 			<td align="left"><%=category.getNameSN() %></td> 
+ 		<td align="left"><%=category.getEncoded()%></td>  
  		<td align="left"><%=count%></td>
 		<td align="left">  
 		        <%  
