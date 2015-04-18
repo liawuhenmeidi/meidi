@@ -1,5 +1,6 @@
 package user;
 
+import group.Group;
 import group.GroupService;
 import utill.StringUtill;
 
@@ -153,15 +154,20 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
-      
+        
 	public String getProductIDS(){
-		String str = ""; 
+		String str = "";      
+		//System.out.println(this.getId()); 
 		//System.out.println(this.getUsertype());  
+		Group g = GroupService.getidMap().get(this.getUsertype());
+		if(null != g){
+			String prodectsp = GroupService.getidMap().get(this.getUsertype()).getProducts();  
+			//System.out.println(prodectsp);  
+			String pp = prodectsp.replace("_", ",");  
+			str = "( "+pp+" ) "; 
+		}
 		//System.out.println(GroupService.getidMap().get(this.getUsertype()));
-		String prodectsp = GroupService.getidMap().get(this.getUsertype()).getProducts();  
-		//System.out.println(prodectsp);  
-		String pp = prodectsp.replace("_", ",");  
-		str = "( "+pp+" ) "; 
+		
 		return str ; 
 	}
 }

@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 String inventoryid = request.getParameter("id");
 Map<Integer,Branch> branchmap = BranchService.getMap();
-
+ 
 HashMap<Integer,Category> mapc = CategoryManager.getCategoryMap();
 
 Inventory inventory = InventoryManager.getInventoryID(user, Integer.valueOf(inventoryid));  

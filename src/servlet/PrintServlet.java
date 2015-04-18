@@ -1224,24 +1224,30 @@ public class PrintServlet extends HttpServlet {
 	public void exportOrderGoodsGM(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
- 
+  
 		String name = request.getParameter("name");
 		String ids = request.getParameter("ids");
 		String branchtype = request.getParameter("branchtype");
 		String statue = request.getParameter("statues");
 		String typestatues = request.getParameter("typestatues");
- 
+   
 		// logger.info(name);
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
 				OrderMessage.billing, name, ids);
-       /* Map<String,List<OrderGoodsAll> > map = new HashMap<String,List<OrderGoodsAll>>();
+       /* Map<String,Map<String,List<OrderGoodsAll>>> map = new HashMap<String,List<OrderGoodsAll>>();
         
         for(int i=0;i<listAll.size();i++){
         	OrderGoodsAll oa = listAll.get(i);
-        	
-        	//OrderGoodsAll o = list.get(i);
-			Branch branch = o.getOm().getBranch();
-			List<OrderGoods> listog = o.getList();
+			List<OrderGoods> listog = oa.getList();
+			if(null != listog){
+				for(int m=0;i<listog.size();m++){
+					OrderGoods og = listog.get(m);
+					List<OrderGoodsAll> list = map.get(og.getCid());
+					
+				}
+			}
+			
+			
         	
         	
         }*/

@@ -89,6 +89,7 @@ public class UserService {
    }
    
 public static  List<User> getsencondDealsend(User user){
+	 init();
 	   if(null == list){ 
 		   list = UserManager.getUsers(user,Group.sencondDealsend);
 	   }
@@ -97,7 +98,7 @@ public static  List<User> getsencondDealsend(User user){
    }
 
 public static  List<User> getsend(User user){
-	    
+	 init();
 	   if(null == listsend){ 
 		   listsend =UserManager.getUsers(user,Group.send);
 	   }

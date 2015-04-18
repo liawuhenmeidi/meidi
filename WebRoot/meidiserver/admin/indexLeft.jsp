@@ -197,7 +197,7 @@ function getInventory(){
           <li >  
             <h4 >调货单管理</h4> 
             <div class="list-item none">   
-           <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">库存刷新</a></p> 
+         
            <%
            if(UserManager.checkPermissions(user, Group.ordergoods,"w")){
            %>
@@ -229,16 +229,23 @@ function getInventory(){
                 <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssended.jsp')">修改实收数量</a></p> 
                <%
                } 
-           %>
-           
-          
-           
-          
-           
-          
-           <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssendhistory.jsp')">历史订货单</a></p> 
+           if(UserManager.checkPermissions(user, Group.ordergoods,"r")){
+               %>
+                 <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">库存刷新</a></p> 
+                <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssendhistory.jsp')">历史订货单</a></p> 
                       <p ><a href="javascript:void(0);"  onclick="reloadopned('receivegoods/receivegoods.jsp')">收货记录</a></p> 
                          <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventory.jsp')">库存查询</a></p>
+               <%
+               } 
+           %>
+      
+           
+          
+           
+          
+           
+          
+          
             </div> 
           </li>  
             

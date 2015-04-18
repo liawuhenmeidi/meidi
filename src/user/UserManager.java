@@ -1031,7 +1031,7 @@ logger.info(sql);
 			u.setUsername(rs.getString("username"));
 			u.setNickusername((rs.getString("nickusername")));
 			u.setUserpassword(rs.getString("userpassword"));
-			u.setUsertype((rs.getInt("Usertype")));
+			u.setUsertype((rs.getInt("usertype"))); 
 			u.setProducts(rs.getString("products"));
 			u.setEntryTime(rs.getString("entryTime")); 
 			u.setBranch(branch);

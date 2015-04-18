@@ -3,7 +3,7 @@
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");  
 String ctype = request.getParameter("ctype");
-
+ 
 String branchName = request.getParameter("branch");
 String starttime = request.getParameter("starttime");
 
@@ -55,9 +55,8 @@ if(!StringUtill.isNull(branchid) && !StringUtill.isNull(starttime)  && !StringUt
 //System.out.println(list);
 HashMap<Integer,Category>  mapc = CategoryManager.getCategoryMap();
 Map<Integer,Branch> branchmap = BranchManager.getIdMap();
-Map<Integer,User> usermap = UserService.getMapId(); 
-Map<String,String> mapdevity = OrderManager.getDeliveryStatuesMap();
-
+Map<Integer,User> usermap = UserService.getMapId();  
+ 
 List<String> listbranchp = BranchManager.getLocateAll();  
 String listall = StringUtill.GetJson(listbranchp); 
 
@@ -123,7 +122,7 @@ width:150px;
 <script type="text/javascript" src="../../js/jquery-ui.js"></script>
 
 <script type="text/javascript">
-var jsonall = <%=listall%>;
+var jsonall = <%=listall%>; 
 var count = "<%=countt%>";
 $(function () { 
 		 $("#branch").autocomplete({ 

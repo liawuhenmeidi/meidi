@@ -97,7 +97,7 @@ public class EncodingFilter implements Filter {
                 "table|grant|group_concat|column_name|" +   
                 "information_schema.columns|table_schema|union|*|" +  
                 "--|//|#";//过滤掉的sql关键字，可以手动添加  
-         
+          
         String[] badStrs = badStr.split("\\|");  
         for (int i = 0; i < badStrs.length; i++) {  
             if (str.indexOf(badStrs[i]) >= 0) { 
