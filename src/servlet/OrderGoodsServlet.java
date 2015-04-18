@@ -184,7 +184,7 @@ public class OrderGoodsServlet extends HttpServlet {
 				if (0 == statues) {
 					response.sendRedirect("../jieguo.jsp?type=ordergoodsadd&mark=" + 1);
 				} else {    
-					logger.info(opstatues); 
+					//logger.info(opstatues); 
 					if (!StringUtill.isNull(opstatues) && Integer.valueOf(opstatues) == 0 ) {
 						response.sendRedirect("../admin/ordergoods/ordergoodsupdate.jsp?id="+id+"&type="+OrderMessage.unexamine+"&statues="+OrderMessage.unexamine);
 					}else{     

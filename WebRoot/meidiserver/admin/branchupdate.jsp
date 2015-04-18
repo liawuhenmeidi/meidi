@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,category.*,branchtype.*,utill.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,category.*,exportModel.*,branchtype.*,utill.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
@@ -6,10 +6,11 @@ BranchType list = new BranchType();
    
 String id = request.getParameter("id");
 int typestatues = 0; 
-
+int modelstatues = 0 ; 
 if(!StringUtill.isNull(id)){
 	list =BranchTypeManager.getLocate(Integer.valueOf(id)) ;
 	typestatues = list.getTypestatues();
+	modelstatues = list.getExportmodel();
 }  
 
       
@@ -26,24 +27,27 @@ if(!StringUtill.isNull(id)){
 <script type="text/javascript">
 var bid = "<%=id%>";
 var statues = "<%=typestatues%>";
-$(function (){
+var modelstatues = "<%=modelstatues%>";
+$(function (){ 
 	init(); 
-});
- 
-function init(){  
-	$("input[value="+statues+"]").attr("checked",'checked');
-}   
+}); 
   
-function changes(){ 
-	var str1 = $("#locate").val();
+function init(){    
+	$("input[value="+statues+"][name=typestatues]").attr("checked",'checked');
+	$("input[value="+modelstatues+"][name=modelstatues]").attr("checked",'checked');
+}   
+   
+function changes(){    
+	var str1 = $("#locate").val(); 
+	var modelstatues = $('input[name="modelstatues"]:checked').val();
 	var typestatues = $('input[name="typestatues"]:checked').val();
 	//alert(typestatues); 
-	if(str1 == null || str1 == ""){ 
-		
+	if(str1 == null || str1 == ""){  
+		 
 		alert("不能为空");
 		return ;
 	}  
-	 
+	  
 	if( "" == typestatues || null == typestatues){
 		alert("门店属性不能为空");
 		return ; 
@@ -51,7 +55,7 @@ function changes(){
 	$.ajax({  
         type: "post",  
          url: "server.jsp",
-         data:"method=branchtypeupdate&id="+str1+"&bid="+bid+"&typestatues="+typestatues,
+         data:"method=branchtypeupdate&id="+str1+"&bid="+bid+"&typestatues="+typestatues+"&modelstatues="+modelstatues,
          dataType: "",  
          success: function (data) {
            window.location.href="branch.jsp";
@@ -86,6 +90,25 @@ function changes(){
  <input   type="radio" name="typestatues" value="<%=BranchType.install%>"/>售后网点
 </td>  
 </tr> 
+<tr class="asc">    
+<td align=center>订单模型</td>   
+<td align=center> 
+<%   
+   
+   ExportModel.Model[] models = ExportModel.Model.values();
+   int num = models.length;     
+   for(int i=0;i<num;i++){     
+	   ExportModel.Model model = models[i];              
+	   %> 
+	   <input   type="radio"  name="modelstatues"  value="<%=model.getValue()%>"/><%=model.name() %>
+	   
+	   <%
+	   
+   }
+%> 
+</td>  
+</tr> 
+
 <tr class="asc"  >
 <td align=center colspan=2><input type="button" onclick="changes()"  value="提交"/>  </td>
 </tr>

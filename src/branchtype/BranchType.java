@@ -14,6 +14,8 @@ public class BranchType {
 	private int isSystem; 
 
 	private int typestatues;  // 1 是卖场 2 售后网点
+	
+	private int exportmodel ;  
 
 	public int getIsSystem() {
 		return isSystem;
@@ -56,6 +58,14 @@ public class BranchType {
 
 	public void setTypestatues(int typestatues) {
 		this.typestatues = typestatues;
+	}
+
+	public int getExportmodel() {
+		return exportmodel;
+	}
+
+	public void setExportmodel(int exportmodel) {
+		this.exportmodel = exportmodel;
 	}
 
 }

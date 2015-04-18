@@ -21,15 +21,15 @@ import branch.BranchManager;
 import database.DB;
   
 public class BranchTypeManager {
-	
+	  
 	 protected static Log logger = LogFactory.getLog(BranchTypeManager.class);
 	
-	 public static boolean  update(String  c ,String bid ,String typestatues){
-			String sql = ""; 
-			if(StringUtill.isNull(bid)){  
-				sql = "insert into mdbranchtype(id,bname,typestatues) values (null, '"+c+"',"+typestatues+")";
-			}else {   
-				sql = "update mdbranchtype set bname = '"+c+"', typestatues = '"+typestatues+"' where id = " +bid;
+	 public static boolean  update(String  c ,String bid ,String typestatues,String exportmodel){
+			String sql = "";   
+			if(StringUtill.isNull(bid)){    
+				sql = "insert into mdbranchtype(id,bname,typestatues,exportmodel) values (null, '"+c+"',"+typestatues+","+exportmodel+")";
+			}else {    
+				sql = "update mdbranchtype set bname = '"+c+"', typestatues = '"+typestatues+"',exportmodel = "+exportmodel+" where id = " +bid;
 			}    
 			      
 			DBUtill.sava(sql);
@@ -146,8 +146,9 @@ logger.info(sql);
 				branch.setName(rs.getString("bname"));
 				branch.setStatues(rs.getInt("statues")); 
 				branch.setIsSystem(rs.getInt("isSystem"));
-				branch.setTypestatues(rs.getInt("typestatues"));  
-			} catch (SQLException e) { 
+				branch.setTypestatues(rs.getInt("typestatues")); 
+				branch.setExportmodel(rs.getInt("exportmodel")); 
+			} catch (SQLException e) {  
 				e.printStackTrace();
 			}	
 			return branch ;

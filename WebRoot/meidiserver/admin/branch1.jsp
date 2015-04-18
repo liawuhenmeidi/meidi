@@ -129,6 +129,7 @@ function seletall(all){
 			<th align="left">门店</th>
 			<th align="left">卖场别名</th>
 			<th align="left">门店编码</th>
+			<th align="left">库位名称</th>   
 			<th align="left">导购人数</th>
 			<th align="left">门店报装单所需信息</th>
 			<!-- <th align="left">是否做为总库</th> -->
@@ -152,6 +153,7 @@ if(list != null){
  		<td align="left"><%=category.getLocateName() %></td> 
  			<td align="left"><%=category.getNameSN() %></td> 
  		<td align="left"><%=category.getEncoded()%></td>  
+ 			<td align="left"><%=category.getReservoir()%></td>  
  		<td align="left"><%=count%></td>
 		<td align="left">  
 		        <%  

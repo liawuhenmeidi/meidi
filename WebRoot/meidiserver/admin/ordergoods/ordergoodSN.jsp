@@ -89,12 +89,12 @@ function check(num){
  </td>
     
  </tr>
-  <tr class="dsc">   
-     <td    align="center">商品编码</td> 
-     <td   align="center">商品名称</td>
-     <td align=center width="10%">未入库数量</td>  
-           <td align=center width="20%"> 订货数</td>  
-            <td align=center width="20%">订单数</td>  
+  <tr class="dsc">    
+     <td    align="center">商品编码</td>  
+     <td   align="center">商品名称</td>  
+     <td align=center width="10%">未入库数量</td>   
+           <td align=center width="20%"> 订货数</td>   
+            <td align=center width="20%">订单数</td>   
       <td   align="center">订货门店</td>
     <td   align="center">订货门店编码</td>
      <td  align="center">库位</td>
@@ -130,16 +130,16 @@ function check(num){
 	 
     <td align="center"><%= og.getProduct().getEncoded()%></td> 
      <td align="center"><%= og.getProduct().getType()%></td>   
-    <td align=center><%=  InNum %></td>   
+    <td align=center><%=  InNum %></td>    
 	     <td align=center ><%= og.getRealnum() %></td> 
 	     <td align=center ><%= og.getOrdernum()%></td> 
-    
-    
+     
+     
     <td align="center"><%=branch.getNameSN()%></td>  
     <td align="center"><%=branch.getEncoded()%></td>  
-     <td align="center"><%=og.getStatuesName()%></td>   
+     <td align="center"><%=og.getStatuesName()%></td>    
       <td align="center"><%=TimeUtill.getdateString()%></td> 
-       <td align="center"><%=serialnumber%></td>  
+       <td align="center"><%=serialnumber%></td>   
   </tr> 
 				
 				<%

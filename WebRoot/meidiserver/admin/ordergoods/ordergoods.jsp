@@ -505,8 +505,8 @@ String json = StringUtill.GetJson(list);
 						</td>
 					</tr>
 
-					<tr class="asc">
-						<td align=center colspan=4>
+					<tr class="asc"> 
+						<td align=center colspan=5>
 							<%
 								if ("0".equals(statues)) {
 							%> <input type="submit" id="submit" value="审核通过" /> <%

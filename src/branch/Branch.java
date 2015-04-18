@@ -10,8 +10,9 @@ public class Branch {
 	private int statues; // 是否作为总库
 	private String branchids;
 	private int disable;
-	private String encoded;
-	private String nameSN;
+	private String encoded; 
+	private String nameSN;  // 苏宁国美别名
+	private String Reservoir; // 库位名称 
 
 	public int getDisable() {
 		return disable;
@@ -89,6 +90,17 @@ public class Branch {
 
 	public void setNameSN(String nameSN) {
 		this.nameSN = nameSN;
+	}
+  
+	public String getReservoir() {
+		if(StringUtill.isNull(Reservoir)){
+			Reservoir = "";
+		}
+		return Reservoir;
+	}
+
+	public void setReservoir(String reservoir) {
+		Reservoir = reservoir;
 	}
  
 	

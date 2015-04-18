@@ -6,10 +6,11 @@ public class Company {
   private String locate;  // 地区 
   private String location; // 详细地址
   private int usercount ;
- 
-  private String username; 
-  // 苏宁供应商编码 
+  
+  private String username;  
+  // 苏宁供应商编码  
   public static String supply = "10056027"; // 供应商编码
+  public static String supplyGM = "10003699"; //国美 
   
 public int getUsercount() {
 	return usercount;

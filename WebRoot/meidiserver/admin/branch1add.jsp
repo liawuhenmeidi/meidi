@@ -15,6 +15,7 @@ String nameSN = "";
 String message = null;
 String branchids = null;
 String encoded = null;
+String Reservoir = "";
 String[] permission = null ;
 String[] branchid = null;
 if(!StringUtill.isNull(id)){
@@ -24,9 +25,11 @@ if(!StringUtill.isNull(id)){
 	branchids = branchold.getBranchids();
 	encoded = branchold.getEncoded();
 	nameSN = branchold.getNameSN();
+	Reservoir = branchold.getReservoir(); 
 	if(!StringUtill.isNull(message)){
 		permission = message.split("_");
 	}
+	
 } 
  
 
@@ -41,6 +44,7 @@ if("add".equals(action)){
 	branchid = request.getParameterValues("branchid");
 	encoded =  request.getParameter("encoded"); 
 	nameSN = request.getParameter("nameSN");
+	Reservoir = request.getParameter("Reservoir");
     String messagenew = ""; 
     String branchidsnew = "";
     if(permission != null ){  
@@ -69,6 +73,7 @@ if("add".equals(action)){
 	branch.setBranchids(branchidsnew);  
 	branch.setEncoded(encoded);
 	branch.setNameSN(nameSN);
+	branch.setReservoir(Reservoir);
 	BranchManager.save(branch); 
 	response.sendRedirect("branch1.jsp?id="+pid); 
 } 
@@ -190,6 +195,10 @@ function changes(){
         <tr class="asc">
       <td align="center">门店编码</td> 
       <td align="center"><input type="text"  id="encoded" value="<%=encoded %>" name="encoded" /></td>
+      </tr>
+      <tr class="asc">
+      <td align="center">库位名称</td> 
+      <td align="center"><input type="text"  id="Reservoir" value="<%=Reservoir %>" name="Reservoir" /></td>
       </tr>
       <tr class="asc">
       <td align="center"> 门店报装单需要信息<span style="color:red">*</span>:</td>

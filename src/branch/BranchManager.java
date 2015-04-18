@@ -28,14 +28,14 @@ public class BranchManager {
         List<String> listsql = new ArrayList<String>();
 		String sql = "";  
 		if(branch.getId() == 0){   
-			sql = "insert into mdbranch(id,bname,pid,bmessage,relatebranch,encoded,namesn) values (null, '"+branch.getLocateName()+"','"+branch.getPid()+"','"+branch.getMessage()+"','"+branch.getBranchids()+"','"+branch.getEncoded()+"','"+branch.getNameSN()+"')";
+			sql = "insert into mdbranch(id,bname,pid,bmessage,relatebranch,encoded,namesn,reservoir) values (null, '"+branch.getLocateName()+"','"+branch.getPid()+"','"+branch.getMessage()+"','"+branch.getBranchids()+"','"+branch.getEncoded()+"','"+branch.getNameSN()+"','"+branch.getReservoir()+"')";
 		}else{      
-			sql = "update mdbranch set bname = '"+branch.getLocateName()+"' , bmessage = '"+branch.getMessage()+"' , relatebranch = '"+branch.getBranchids()+"' , encoded = '"+branch.getEncoded()+"',namesn = '"+branch.getNameSN()+"'  where id = "+ branch.getId();
+			sql = "update mdbranch set bname = '"+branch.getLocateName()+"' , bmessage = '"+branch.getMessage()+"' , relatebranch = '"+branch.getBranchids()+"' , encoded = '"+branch.getEncoded()+"',namesn = '"+branch.getNameSN()+"',reservoir = '"+branch.getReservoir()+"'  where id = "+ branch.getId();
 		} 
-		 
+		  
 		String sqlall = "delete from relatebranch where branchid = " + branch.getId();
 		 
-		listsql.add(sqlall);
+		listsql.add(sqlall); 
 		
 		if(!StringUtill.isNull(branch.getBranchids())){
 			String[] strlist = branch.getBranchids().split("_");
@@ -402,8 +402,7 @@ logger.info(sql);
 				DB.close(conn);
 			}
 			return flag; 
-		}
-		
+		} 
 		
 		private static Branch getBranchFromRs(ResultSet rs){
 			Branch branch= new Branch();
@@ -415,10 +414,10 @@ logger.info(sql);
 				branch.setStatues(rs.getInt("statues")); 
 				branch.setBranchids(rs.getString("relatebranch"));
 				branch.setDisable(rs.getInt("disable")); 
-				branch.setEncoded(rs.getString("encoded")); 
-				branch.setNameSN(rs.getString("namesn")); 
-				 
-			} catch (SQLException e) {  
+				branch.setEncoded(rs.getString("encoded"));  
+				branch.setNameSN(rs.getString("namesn"));  
+				 branch.setReservoir(rs.getString("reservoir"));
+			} catch (SQLException e) {   
 				e.printStackTrace();
 			}	
 			return branch ;

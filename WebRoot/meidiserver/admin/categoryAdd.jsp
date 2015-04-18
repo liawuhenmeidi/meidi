@@ -131,8 +131,9 @@ function checkedd(){
                 &nbsp;  &nbsp;  &nbsp;  &nbsp;
                维修配件    <input type="radio" name="ptype" value = 1 /> 
         </td>  
-        </tr> 
-         <td align="center">销售卖场</td>
+        </tr>  
+        <tr class="asc">
+         <td align="center" >销售卖场</td>
        <td>
          <table>
           <tr>

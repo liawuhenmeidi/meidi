@@ -56,9 +56,10 @@
 		response.getWriter().close();
 	} else if ("branchtypeupdate".equals(method)) {
 		String bid = request.getParameter("bid");
-		String c = request.getParameter("id");
+		String c = request.getParameter("id"); 
 		String typestatues = request.getParameter("typestatues");
-		BranchTypeManager.update(c, bid, typestatues);
+		String exportmodel = request.getParameter("modelstatues");
+		BranchTypeManager.update(c, bid, typestatues,exportmodel);
 		//branchinventory
 	} else if ("branchinventory".equals(method)) {
 		String bid = request.getParameter("bid");

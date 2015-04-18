@@ -1,5 +1,6 @@
 package servlet;
 
+import exportModel.ExportModel;
 import gift.Gift;
 import gift.GiftManager;
 import gift.GiftService;
@@ -69,6 +70,8 @@ import org.apache.poi.ss.usermodel.Font;
 import company.Company;
 
 import branch.Branch;
+import branchtype.BranchType;
+import branchtype.BranchTypeManager;
 
 import category.Category;
 import category.CategoryManager;
@@ -100,7 +103,7 @@ public class PrintServlet extends HttpServlet {
 				|| "typetotal".equals(method)) {
 			exporttotalExport(request, response);
 		} else if ("OrderGoods".equals(method)) {
-			exportOrderGoods(request, response);
+			exportOrderGoodsSN(request, response);
 		} else if ("OrderGoodssend".equals(method)) {
 			OrderGoodssend(request, response);
 		} else if ("billing".equals(method)) {
@@ -904,7 +907,7 @@ public class PrintServlet extends HttpServlet {
 		}
 	}
 
-	public void exportOrderGoods(HttpServletRequest request,
+	public void exportOrderGoodsSN(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 
@@ -913,10 +916,10 @@ public class PrintServlet extends HttpServlet {
 		String branchtype = request.getParameter("branchtype");
 		String statue = request.getParameter("statues");
 		String typestatues = request.getParameter("typestatues");
-		
-		// logger.info(name); 
+
+		// logger.info(name);
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, name,ids);
+				OrderMessage.billing, name, ids);
 
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -1177,8 +1180,8 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellValue(og.getProduct().getType());
 				cell.setCellStyle(style);
 				cell = row.createCell((short) y++);
-// logger.info(og.getOrdernum());  
-				cell.setCellValue(og.getOrdernum());  
+				// logger.info(og.getOrdernum());
+				cell.setCellValue(og.getOrdernum());
 				cell.setCellStyle(style);
 				cell = row.createCell((short) y++);
 				cell.setCellValue(branch.getEncoded());
@@ -1217,16 +1220,174 @@ public class PrintServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-    
-	public void exportOrderGoodsreturn(HttpServletRequest request,
+
+	public void exportOrderGoodsGM(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
  
 		String name = request.getParameter("name");
 		String ids = request.getParameter("ids");
-		// logger.info(name); 
+		String branchtype = request.getParameter("branchtype");
+		String statue = request.getParameter("statues");
+		String typestatues = request.getParameter("typestatues");
+ 
+		// logger.info(name);
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, name,ids);
+				OrderMessage.billing, name, ids);
+       /* Map<String,List<OrderGoodsAll> > map = new HashMap<String,List<OrderGoodsAll>>();
+        
+        for(int i=0;i<listAll.size();i++){
+        	OrderGoodsAll oa = listAll.get(i);
+        	
+        	//OrderGoodsAll o = list.get(i);
+			Branch branch = o.getOm().getBranch();
+			List<OrderGoods> listog = o.getList();
+        	
+        	
+        }*/
+        
+		// 第一步，创建一个webbook，对应一个Excel文件 
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("订单");
+
+		HSSFCellStyle style = wb.createCellStyle();
+
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+		style.setWrapText(true);
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		style.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
+		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+		style.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
+		style.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+
+		sheet.setDefaultColumnWidth(15);
+		sheet.setDefaultRowHeightInPoints(30);
+		sheet.setColumnWidth(1, 20 * 256);
+
+		// 第三步，在sheet中添加表头第0行,注意 老版本poi对Excel的行数列数有限制short
+		int count = 0;
+		HSSFRow row = sheet.createRow((int) count);
+		row.setHeight((short) (2 * 256));
+
+		// row.setRowStyle(style);
+		HSSFCell cell = null;
+		count++;
+		row = sheet.createRow((int) count);
+		row.setHeight((short) (3 * 256));
+		count++;
+		row = sheet.createRow((int) count);
+		// 第四步，创建单元格，并设置值表头 设置表头居中
+		count++;
+		int x = 0;
+		cell = row.createCell((short) x++);
+		cell.setCellValue("供应商代码");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("订货商品编码");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("订货商品名称");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("订货门店");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("订货门店编码");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("库区代码");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("订货数量");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("定货库区（特价 正常）");
+		cell.setCellStyle(style);
+		// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
+
+		for (int i = 0; i < list.size(); i++) {
+
+			OrderGoodsAll o = list.get(i);
+			Branch branch = o.getOm().getBranch();
+			List<OrderGoods> listog = o.getList();
+
+			for (int j = 0; j < listog.size(); j++) {
+				OrderGoods og = listog.get(j);
+                String message = "";
+                if(og.getStatues() == 1){
+                	message = "正常";
+                }else if(og.getStatues() ==2){
+                	message = "一步到位机";
+                } 
+				row = sheet.createRow((int) count);
+				count++;
+				int y = 0;
+				cell = row.createCell((short) y++);
+				cell.setCellValue(Company.supplyGM);
+				cell.setCellStyle(style);
+				cell = row.createCell((short) y++);
+				cell.setCellValue(og.getProduct().getEncoded());
+				cell.setCellStyle(style);
+				cell = row.createCell((short) y++);
+				cell.setCellValue(og.getProduct().getType());
+				cell.setCellStyle(style);
+				cell = row.createCell((short) y++);
+				cell.setCellValue(branch.getNameSN());
+				cell.setCellStyle(style);
+				cell = row.createCell((short) y++);
+				cell.setCellValue(branch.getEncoded());
+				cell.setCellStyle(style);
+				cell = row.createCell((short) y++);
+				cell.setCellValue(branch.getReservoir());
+				cell.setCellStyle(style); 
+				cell = row.createCell((short) y++);
+				cell.setCellValue(og.getBranch());
+				cell.setCellStyle(style);
+				cell = row.createCell((short) y++);
+				// logger.info(og.getOrdernum());
+				cell.setCellValue(og.getOrdernum());
+				cell.setCellStyle(style);
+				cell = row.createCell((short) y++);
+				// logger.info(og.getOrdernum());
+				cell.setCellValue(og.getOrdernum());
+				cell.setCellStyle(style);
+				// 第四步，创建单元格，并设置值
+
+			}
+
+		}
+		// System.out.println(count);
+		// 第六步，将文件存到指定位置
+		try {
+			response.setContentType("APPLICATION/OCTET-STREAM");
+			response.setCharacterEncoding("UTF-8");
+			response.setHeader("Content-Disposition", "attachment; filename=\""
+					+ StringUtill.toUtf8String(name) + ".xls\"");
+			// FileOutputStream fout = new
+			// FileOutputStream("E:/报装单"+printlntime+".xls");
+			wb.write(response.getOutputStream());
+			response.getOutputStream().close();
+
+			String sql = OrderMessageManager.billingprint(name);
+			DBUtill.sava(sql);
+			// logger.info(123);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void exportOrderGoodsreturnSN(HttpServletRequest request,
+			HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+
+		String name = request.getParameter("name");
+		String ids = request.getParameter("ids");
+		// logger.info(name);
+		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
+				OrderMessage.billing, name, ids);
 
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -1382,7 +1543,6 @@ public class PrintServlet extends HttpServlet {
 			}
 		}
 
-		
 		sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 2));
 		sheet.addMergedRegion(new Region(count, (short) 5, count, (short) 6));
 		row = sheet.createRow((int) count);
@@ -1440,13 +1600,13 @@ public class PrintServlet extends HttpServlet {
 			OrderGoodsAll o = list.get(i);
 			Branch branch = o.getOm().getBranch();
 			List<OrderGoods> listog = o.getList();
-            
+
 			for (int j = 0; j < listog.size(); j++) {
 				OrderGoods og = listog.get(j);
 				String serialnumber = og.getSerialnumber();
-				if(StringUtill.isNull(serialnumber)){
-					serialnumber =Company.supply;
-				} 
+				if (StringUtill.isNull(serialnumber)) {
+					serialnumber = Company.supply;
+				}
 				row = sheet.createRow((int) count);
 				count++;
 				int y = 0;
@@ -1455,7 +1615,7 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellStyle(style);
 				cell = row.createCell((short) y++);
 				cell.setCellValue(og.getProduct().getType());
-				cell.setCellStyle(style); 
+				cell.setCellStyle(style);
 				cell = row.createCell((short) y++);
 				cell.setCellValue(og.getRealnum());
 				cell.setCellStyle(style);
@@ -1464,12 +1624,12 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellStyle(style);
 				cell = row.createCell((short) y++);
 				cell.setCellValue(og.getBranch());
-				cell.setCellStyle(style); 
+				cell.setCellStyle(style);
 				cell = row.createCell((short) y++);
 				cell.setCellValue(TimeUtill.getdateString());
-				cell.setCellStyle(style); 
+				cell.setCellStyle(style);
 				cell = row.createCell((short) y++);
-				cell.setCellValue(serialnumber); 
+				cell.setCellValue(serialnumber);
 				cell.setCellStyle(style);
 				// 第四步，创建单元格，并设置值
 
@@ -1497,7 +1657,6 @@ public class PrintServlet extends HttpServlet {
 		}
 	}
 
-	 
 	public void OrderGoodssend(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
@@ -1505,18 +1664,18 @@ public class PrintServlet extends HttpServlet {
 		String ids = request.getParameter("ids");
 		String statues = request.getParameter("statues");
 		// logger.info(name);
-		// List<OrderGoodsAll> list =    
+		// List<OrderGoodsAll> list =
 		// OrderGoodsAllManager.getsendlist(user,OrderMessage.unexamine,ids);
 		Map<Integer, Map<Integer, OrderGoodsAll>> map = OrderGoodsAllManager
-				.getsendMap(user, Integer.valueOf(statues), ids);   
-		  
-		// 第一步，创建一个webbook，对应一个Excel文件 
-		HSSFWorkbook wb = new HSSFWorkbook();  
-		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet 
-		HSSFSheet sheet = wb.createSheet("订单");  
-		sheet.setDefaultColumnWidth(15);  
-		sheet.setDefaultRowHeightInPoints(30);  
-		sheet.setColumnWidth(1, 20 * 256); 
+				.getsendMap(user, Integer.valueOf(statues), ids);
+
+		// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("订单");
+		sheet.setDefaultColumnWidth(15);
+		sheet.setDefaultRowHeightInPoints(30);
+		sheet.setColumnWidth(1, 20 * 256);
 
 		HSSFCellStyle style = wb.createCellStyle();
 
@@ -1592,14 +1751,14 @@ public class PrintServlet extends HttpServlet {
 
 					for (int j = 0; j < listog.size(); j++) {
 						OrderGoods og = listog.get(j);
-   
-						row = sheet.createRow((int) count); 
-						if(j == 0 ){  
-							//logger.info(count+"___"+(count+listog.size()-1));
+
+						row = sheet.createRow((int) count);
+						if (j == 0) {
+							// logger.info(count+"___"+(count+listog.size()-1));
 							sheet.addMergedRegion(new Region(count, (short) 9,
-									count + listog.size()-1, (short) 9));
+									count + listog.size() - 1, (short) 9));
 						}
-						
+
 						count++;
 						int y = 0;
 						cell = row.createCell((short) y++);
@@ -1629,14 +1788,14 @@ public class PrintServlet extends HttpServlet {
 						cell = row.createCell((short) y++);
 						cell.setCellValue(StringUtill.getNotNUll(og.getOid()));
 						cell.setCellStyle(style);
-						if (j == 0) { 
+						if (j == 0) {
 							cell = row.createCell((short) y++);
 
 							cell.setCellValue(o.getOm().getRemark());
 							cell.setCellStyle(style);
 						} else {
 							cell = row.createCell((short) y++);
- 
+
 							cell.setCellValue("");
 							cell.setCellStyle(style);
 						}
@@ -1660,52 +1819,63 @@ public class PrintServlet extends HttpServlet {
 			// FileOutputStream("E:/报装单"+printlntime+".xls");
 			wb.write(response.getOutputStream());
 			response.getOutputStream().close();
-			if("0".equals(statues)){ 
+			if ("0".equals(statues)) {
 				List<String> listsql = new ArrayList<String>();
-				//String sqlsend =   
+				// String sqlsend =
 				String sql = OrderMessageManager.sendprint(ids);
-				listsql.add(sql); 
-				List<String> sqlinventory = OrderGoodsAllManager.updateSendcount(user, map); 
+				listsql.add(sql);
+				List<String> sqlinventory = OrderGoodsAllManager
+						.updateSendcount(user, map);
 				listsql.addAll(sqlinventory);
-				DBUtill.sava(listsql); 
-			} 
-             
-			// logger.info(123); 
+				DBUtill.sava(listsql);
+			}
+
+			// logger.info(123);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
-	} 
+		}
+	}
 
 	public void OrderGoodsbilling(HttpServletRequest request,
 			HttpServletResponse response) {
-        String uuid = TimeUtill.gettimeString();  
-		String name = request.getParameter("name"); 
+		String uuid = TimeUtill.gettimeString();
+		String name = request.getParameter("name");
 		String ids = request.getParameter("ids");
 		String branchtype = request.getParameter("branchtype");
+		BranchType bt = BranchTypeManager
+				.getLocate(Integer.valueOf(branchtype));
+		logger.info(bt.getExportmodel());
 		String statue = request.getParameter("statues");
 		String typestatues = request.getParameter("typestatues");
-		if("2".equals(typestatues)){ 
-			String sql = OrderMessageManager.billing(ids, statue); 
-			DBUtill.sava(sql); 
-		}else { 
-			String sql = OrderMessageManager.billing(name, ids, statue, branchtype); 
-			//	logger.info(typestatues); 
-				if (DBUtill.sava(sql)) {
-					if ("0".equals(typestatues)) {
-						exportOrderGoods(request, response);
-					}else if("1".equals(typestatues)){
-						exportOrderGoodsreturn(request, response);
-					} else {
-						try {
-							response.sendRedirect("jieguo.jsp?type=type=updated&mark=" + 1);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+		if ("2".equals(typestatues)) {
+			// 忽略
+			String sql = OrderMessageManager.billing(ids, statue);
+			DBUtill.sava(sql);
+		} else {
+			String sql = OrderMessageManager.billing(name, ids, statue,
+					branchtype);
+			// logger.info(typestatues);
+			if (DBUtill.sava(sql)) {
+				if ("0".equals(typestatues)) {
+					if (ExportModel.SuNing == bt.getExportmodel()) {
+						exportOrderGoodsSN(request, response);
+					} else if (ExportModel.GuoMei == bt.getExportmodel()) {
+						exportOrderGoodsGM(request, response);
+					}
+
+				} else if ("1".equals(typestatues)) {
+					exportOrderGoodsreturnSN(request, response);
+				} else {
+					try {
+						response.sendRedirect("jieguo.jsp?type=type=updated&mark=" + 1);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
+			}
 		}
-		
+
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
