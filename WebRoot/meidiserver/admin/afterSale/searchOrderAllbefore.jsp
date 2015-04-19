@@ -141,23 +141,23 @@ function checkedd(){
 <table  cellspacing="1" style="margin:auto;background-color:black; width:95%;height:300px;">  
 		   
 		
-		
-		<tr class="bsc">
+		 
+		<tr class="asc">
 		    <td align="center" >顾客姓名</td>
-			<td align="center" >
+			<td align="center" > 
 	        <input type="text"  name="username" id="username" value=""  />
 			</td>
 			<td align="center" >顾客电话</td>
 			<td align="center" >
 	        <input type="text"  name="phone1" id="phone1" value=""  />
-			</td>
+			</td> 
 			<td align="center" >安装网点</td>
 			<td align="center" >
 	        <input type="text"  name="dealSendid" id="dealSendid" value=""  />
 			</td>	 
 		</tr>
 		
-		<tr class="bsc">
+		<tr class="asc">
 		   <td align="center" >送货型号</td>
 			<td align="center" >
 	        <input type="text"  name="sendtype" id="sendtype" value=""  />
@@ -169,7 +169,7 @@ function checkedd(){
 		</tr>
 		
 		
-		<tr class="bsc">
+		<tr class="asc">
 		    <td align="center" >送货名称</td>
 			<td align="center" id="sendcategorynamecd" colspan=5>
 			</td>
@@ -177,7 +177,7 @@ function checkedd(){
 		
 
 
-		<tr class="bsc">
+		<tr class="asc">
 		    <td width="33%" class="center" colspan="2"><input type="button" onclick="checkinit()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="清除" /></td>
 			<td width="33%" class="center" colspan="2"><input type="button" onclick="tuichu()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="退出" /></td>
 			<td width="34%" class="center" colspan="2"><input type="button" onclick="checkedd()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="搜索" /></td>
@@ -191,7 +191,7 @@ function checkedd(){
 <div >
 <table  cellspacing="1" style="margin:auto;background-color:black; width:95%;heigth:95%;"> 
  
-		<tr class="bsc"> 
+		<tr class="asc"> 
 		    <td align="center" >数据加载中......,请等待</td>
 		</tr> 
 </table> 

@@ -95,7 +95,7 @@ function intsearch(){
 
 <table  cellspacing="1" style="margin:auto;background-color:black; width:95%;height:300px;">  
  
-		<tr class="bsc">
+		<tr class="asc">
 		   	<td align="center" >单号</td> 
 			<td align="center" >
 	        <input type="text"  name="printid" id="printid" value=""  />
@@ -110,7 +110,7 @@ function intsearch(){
 			</td>
 		</tr>
 		
-		<tr class="bsc">
+		<tr class="asc">
 		    <td align="center" >顾客姓名</td>
 			<td align="center" >
 	        <input type="text"  name="uname" id="uname" value=""  />
@@ -124,7 +124,7 @@ function intsearch(){
 	        <input type="text"  name="barcode" id="barcode" value=""  />
 			</td>	 
 		</tr>
-		<tr class="bsc">
+		<tr class="asc">
 		    <td align="center" colspan=2>地址</td>
 			<td align="center"  colspan=4>
 			<input type="text"  name="location" id="location" value=""  />
@@ -132,7 +132,7 @@ function intsearch(){
  
 		</tr> 
 		
-		<tr class="bsc">
+		<tr class="asc">
 			<td align="center" colspan=2>安装日期</td>
 			<td align="center" colspan=4 > 
 			<input class="date2" name="andatestart" type="text" id="andatestart" onclick="new Calendar().show(this);" />
@@ -141,7 +141,7 @@ function intsearch(){
 			</td>	 
 		</tr>
 		
-		<tr class="bsc">
+		<tr class="asc">
 		    <td align="center" >产品品类</td>
 			<td align="center" >
 	        <input type="text"  name="categoryname" id="categoryname" value=""  />
@@ -154,7 +154,7 @@ function intsearch(){
 			<td align="center" >
 			</td>	 
 		</tr>
-		<tr class="bsc">
+		<tr class="asc">
 		    <td width="33%" class="center" colspan="2"><input type="button" onclick="checkinit()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="清除" /></td>
 			<td width="33%" class="center" colspan="2"><input type="button" onclick="tuichu()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="退出" /></td>
 			<td width="34%" class="center" colspan="2"><input type="button" onclick="checkedd()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="搜索" /></td>

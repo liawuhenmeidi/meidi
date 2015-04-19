@@ -140,7 +140,7 @@ function checkedd(){
 <div >
 <table  cellspacing="1" style="margin:auto;background-color:black; width:95%;height:450px;">  
 		   
-		<tr class="bsc">
+		<tr class="asc">
 		   	<td align="center" >单号</td> 
 			<td align="center" >
 	        <input type="text"  name="printlnid" id="printlnid" value=""  />
@@ -154,7 +154,7 @@ function checkedd(){
 	        <input type="text"  name="saleID" id="saleID" value=""  />
 			</td>
 		</tr>
-		<tr class="bsc">	 
+		<tr class="asc">	 
 			<td align="center" >pos(厂送)单号</td>
 			<td align="center" >
 	        <input type="text"  name="pos" id="pos" value=""  />
@@ -170,7 +170,7 @@ function checkedd(){
 			
 		</tr>
 		
-		<tr class="bsc">
+		<tr class="asc">
 		    <td align="center" >顾客姓名</td>
 			<td align="center" >
 	        <input type="text"  name="username" id="username" value=""  />
@@ -185,7 +185,7 @@ function checkedd(){
 			</td>	 
 		</tr>
 		
-		<tr class="bsc">
+		<tr class="asc">
 		<td align="center" >开票日期</td>
 			<td align="center" colspan=2 >
 			<input class="date2" name="saledatestart" type="text" id="saledatestart" onclick="new Calendar().show(this);" />
@@ -200,20 +200,20 @@ function checkedd(){
 			</td>	 
 		</tr>
 		
-		<tr class="bsc">
+		<tr class="asc">
 		    <td align="center" >送货名称</td>
 			<td align="center" id="sendcategorynamecd" colspan=5>
 			</td>
  
 		</tr> 
 
-		<tr class="bsc">
+		<tr class="asc">
 		<td align="center" >票面名称</td>
 			<td align="center" colspan=5 id="salecategorynamecd">
 			</td>	
 		
 		</tr>
-		<tr class="bsc">
+		<tr class="asc">
 		<td align="center" >送货型号</td>
 			<td align="center" >
 	        <input type="text"  name="sendtype" id="sendtype" value=""  />
@@ -229,7 +229,7 @@ function checkedd(){
 	                           任意<input type="radio"  name="statues4"  value=""  id="statues4"/>
 			</td>	
 		</tr>
-		 <tr class="bsc">
+		 <tr class="asc">
 		    <td align="center" >赠品</td>
 			<td align="center" > 
 	        <input type="text"  name="giftName" id="giftName" value=""  />
@@ -247,7 +247,7 @@ function checkedd(){
 	                           任意<input type="radio"  name="deliverytype"  value=""  id="deliverytype"/>
 			</td>	 
 		</tr>
-		<tr class="bsc">
+		<tr class="asc">
 			<td align="center" >预约日期</td>
 			<td align="center" ><input class="date2" name="andate" type="text" id="andate" onclick="new Calendar().show(this);" /></td>
 			<td align="center" >送货地区</td>
@@ -256,7 +256,7 @@ function checkedd(){
 			<td align="center" ><input type="text"  name="locateDetail" id="locateDetail" value=""  /></td>
 		</tr>
 		
-		<tr class="bsc">	 
+		<tr class="asc">	 
 			<td align="center" >上报状态</td>
 			<td align="center" colspan=5>
 	                         <input type="checkbox"  name="oderStatus"  value="0"  id="oderStatus0"/>需派送&nbsp;&nbsp;
@@ -267,7 +267,7 @@ function checkedd(){
 	                                
 			</td>
 		</tr>
-		<tr class="bsc">	  
+		<tr class="asc">	  
 			<td align="center" >送货状态</td>  
 			<td align="center" colspan=3> 
 			<input type="checkbox"  name="deliveryStatues" value="8"  id="deliveryStatues8" />已自提&nbsp;&nbsp;
@@ -281,7 +281,7 @@ function checkedd(){
 			<td> <input type="text"  name="remark" id="remark" value=""  /></td>
 		</tr>
 		
-		<tr class="bsc">
+		<tr class="asc">
 		    <td align="center" >厂送票是否已回</td>
 			<td align="center" >
 	                  是<input type="radio"  name="statues1"  value="1"  id="statues11"/>
@@ -303,7 +303,7 @@ function checkedd(){
 			</td>	 
 		</tr>
 
-		<tr class="bsc">
+		<tr class="asc">
 		    <td width="33%" class="center" colspan="2"><input type="button" onclick="checkinit()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="清除" /></td>
 			<td width="33%" class="center" colspan="2"><input type="button" onclick="tuichu()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="退出" /></td>
 			<td width="34%" class="center" colspan="2"><input type="button" onclick="checkedd()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="搜索" /></td>
@@ -317,7 +317,7 @@ function checkedd(){
 <div >
 <table  cellspacing="1" style="margin:auto;background-color:black; width:95%;heigth:95%;"> 
  
-		<tr class="bsc"> 
+		<tr class="asc"> 
 		    <td align="center" >数据加载中......,请等待</td>
 		</tr> 
 </table> 

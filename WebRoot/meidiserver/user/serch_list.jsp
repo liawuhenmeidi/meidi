@@ -1,13 +1,13 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="searchdynamic.jsp"%>  
 
-<%     
+<%      
 List<Order> list = OrderManager.getOrderlist(user,Group.sale,Integer.valueOf(type),-1,0,sort,sear); 
 Map<Integer,List<OrderProduct>> mapOP =OrderProductService.getStaticOrderStatuesM(); 
 HashMap<Integer,User> usermap = UserService.getMapId();  // 获取送货员 
 HashMap<Integer,Category> categorymap = CategoryService.getmap();
 
-%> 
+%>  
 <!DOCTYPE html>
 <html>
 <head>

@@ -137,7 +137,7 @@ function intsearch(){
 <div >
 <table  cellspacing="1" style="margin:auto;background-color:black; width:95%;height:450px;">  
 		   
-		<tr class="bsc">
+		<tr class="asc">
 		   	<td align="center" >单号</td> 
 			<td align="center" >
 	        <input type="text"  name="printlnid" id="printlnid" value=""  />
@@ -152,7 +152,7 @@ function intsearch(){
 			</td>
 		</tr>
 		
-		<tr class="bsc">
+		<tr class="asc">
 		    <td align="center" >顾客姓名</td>
 			<td align="center" >
 	        <input type="text"  name="username" id="username" value=""  />
@@ -166,14 +166,14 @@ function intsearch(){
 	        <input type="text"  name="sendId" id="sendId" value=""  />
 			</td>	 
 		</tr>
-		<tr class="bsc">
+		<tr class="asc">
 		    <td align="center" >送货名称</td>
 			<td align="center" id="sendcategorynamecd" colspan=5>
 			</td>
  
 		</tr> 
 		
-		<tr class="bsc">
+		<tr class="asc">
 		<td align="center" >开票日期</td>
 			<td align="center" colspan=2 >
 			<input class="date2" name="saledatestart" type="text" id="saledatestart" onclick="new Calendar().show(this);" />
@@ -188,7 +188,7 @@ function intsearch(){
 			</td>	 
 		</tr>
 		
-		<tr class="bsc">
+		<tr class="asc">
 		    <td align="center" >送货品类</td>
 			<td align="center" >
 	        <input type="text"  name="categoryname" id="categoryname" value=""  />
@@ -203,7 +203,7 @@ function intsearch(){
 			</td>	 
 		</tr>
 		
-		<tr class="bsc">
+		<tr class="asc">
 		<td align="center" >是否收到公司安装费用</td>
 			<td align="center"  >
 			   是<input type="radio"  name="statues4"  value="1"  id="statues41" />
@@ -221,7 +221,7 @@ function intsearch(){
 	                           任意<input type="radio"  name="statuescallback"  value=""  id="statuescallback"/>
 			</td>
 		</tr>
-		 <tr class="bsc">
+		 <tr class="asc">
 		    <td align="center" >赠品</td>
 			<td align="center" >
 	        <input type="text"  name="username" id="username" value=""  />
@@ -239,7 +239,7 @@ function intsearch(){
 	                           任意<input type="radio"  name="deliverytype"  value=""  id="deliverytype"/>
 			</td>	 
 		</tr>
-		<tr class="bsc">
+		<tr class="asc">
 		    <td align="center" >是否给送货员点结款</td>
 			<td align="center"  >
 			   是<input type="radio"  name="statuesPaigong"  value="1"  id="statuesPaigong1" />
@@ -261,7 +261,7 @@ function intsearch(){
 		
 		</tr>
 		
-		<tr class="bsc">	 
+		<tr class="asc">	 
 			<td align="center" >上报状态</td>
 			<td align="center" colspan=5>
 	                         需派送<input type="checkbox"  name="oderStatus"  value="0"  id="oderStatus0"/>
@@ -272,7 +272,7 @@ function intsearch(){
 	                                
 			</td>
 		</tr>
-		<tr class="bsc">	 
+		<tr class="asc">	 
 			<td align="center" >送货状态</td>  
 			<td align="center" colspan=5>
 	                           已送货<input type="checkbox"  name="deliveryStatues" value="1"  id="deliveryStatues1" />
@@ -285,7 +285,7 @@ function intsearch(){
 		
 		
 
-		<tr class="bsc">
+		<tr class="asc">
 		    <td width="33%" class="center" colspan="2"><input type="button" onclick="checkinit()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="清除" /></td>
 			<td width="33%" class="center" colspan="2"><input type="button" onclick="tuichu()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="退出" /></td>
 			<td width="34%" class="center" colspan="2"><input type="button" onclick="checkedd()"  style="background-color:#ACD6FF;font-size:25px;width:200px"  value="搜索" /></td>
