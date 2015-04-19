@@ -38,22 +38,23 @@ import database.DB;
 public class InventoryBranchManager {  
 	protected static Log logger = LogFactory.getLog(InventoryBranchManager.class);
 	
-	public static List<InventoryBranch> getCategory(String branch , String type) { 
+	public static List<InventoryBranch> getCategory(User user ,String branch , String type) { 
 		
 		List<InventoryBranch> categorys = new ArrayList<InventoryBranch>();
 		Connection conn = DB.getConn();
-		String sql = "";
+		String sql = ""; 
+		String products = user.getProductIDS(); 
 		if(!StringUtill.isNull(type) && !StringUtill.isNull(branch)){ 
 			//type = ProductService.gettypemap().get(type).getId()+""; 
-			sql = "select * from mdinventorybranch where type = '"+type +"' and branchid in (select id from mdbranch where bname = '"+branch+"') and branchid not in (select id from mdbranch where statues = 1 )";  
+			sql = "select * from mdinventorybranch where type = '"+type +"' and inventoryid in "+products+" and branchid in (select id from mdbranch where bname = '"+branch+"') and branchid not in (select id from mdbranch where statues = 1 )";  
 		}else if(!StringUtill.isNull(type) && StringUtill.isNull(branch)){
 			//type = ProductService.gettypemap().get(type).getId()+""; 
-			sql = "select * from mdinventorybranch where type = '"+type +"' and branchid not in (select id from mdbranch where statues = 1 )";  
+			sql = "select * from mdinventorybranch where type = '"+type +"' and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 )";  
 		}else if(StringUtill.isNull(type) && !StringUtill.isNull(branch)){ 
-			sql = "select * from mdinventorybranch where  branchid in ("+branch+") and branchid not in (select id from mdbranch where statues = 1 )";  
+			sql = "select * from mdinventorybranch where  branchid in ("+branch+") and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 )";  
 		}else if(StringUtill.isNull(type) && StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where branchid not in (select id from mdbranch where statues = 1 )";    
-		}
+			sql = "select * from mdinventorybranch where branchid not in (select id from mdbranch where statues = 1 ) and inventoryid in "+products+" ";    
+		} 
 	logger.info(sql);	
 		Statement stmt = DB.getStatement(conn);
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -74,20 +75,21 @@ public class InventoryBranchManager {
 	} 
 	 
 
-public static List<InventoryBranch> getCategoryid(String branch , String categoryid) {  
-		//System.out.println(branch);
+public static List<InventoryBranch> getCategoryid(User user,String branch , String categoryid) {  
+		//System.out.println(branch); 
 		List<InventoryBranch> categorys = new ArrayList<InventoryBranch>();
-		Connection conn = DB.getConn();
+		Connection conn = DB.getConn(); 
+		String products = user.getProductIDS(); 
 		String sql = ""; 
 		if(!StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and branchid in ("+branch+")  and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
+			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and inventoryid in "+products+" and  branchid in ("+branch+")  and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
 		}else if(!StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
+			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
 		}else if(StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where  branchid in ("+branch+") and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
+			sql = "select * from mdinventorybranch where  branchid in ("+branch+") and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
 		}else if(StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where 1= 1 and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";    
-		}  
+			sql = "select * from mdinventorybranch where 1= 1 and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";    
+		}   
 	logger.info(sql);	
 		Statement stmt = DB.getStatement(conn);
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -580,22 +582,22 @@ logger.info(sql);
 		 }
 		return order; 
 
-  }
-	
-	public static Map<String,InventoryBranch> getmapType(String branchid,String type){
+  }  
+	 
+	public static Map<String,InventoryBranch> getmapType(User user ,String branchid,String type){
 		Map<String,InventoryBranch> map = new HashMap<String,InventoryBranch>();
-		 List<InventoryBranch>  listInventory = InventoryBranchManager.getCategoryid(branchid,type);
+		 List<InventoryBranch>  listInventory = InventoryBranchManager.getCategoryid(user,branchid,type);
 		 Iterator<InventoryBranch> it = listInventory.iterator();
-		 while(it.hasNext()){
+		 while(it.hasNext()){ 
 			 InventoryBranch in = it.next();
 			 map.put(in.getType(), in);
 		 } 
 		 return map;
-	}
-	
-	public static Map<String,InventoryBranch> getmapType(String branchid){
-		Map<String,InventoryBranch> map = new HashMap<String,InventoryBranch>();
-		 List<InventoryBranch>  listInventory = InventoryBranchManager.getCategoryid(branchid,""); 
+	} 
+	 
+	public static Map<String,InventoryBranch> getmapType(User user,String branchid){
+		Map<String,InventoryBranch> map = new HashMap<String,InventoryBranch>(); 
+		 List<InventoryBranch>  listInventory = InventoryBranchManager.getCategoryid(user,branchid,""); 
 		 Iterator<InventoryBranch> it = listInventory.iterator();
 		 while(it.hasNext()){
 			 InventoryBranch in = it.next();

@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.unexamine); 
  // System.out.println(StringUtill.GetJson(map));     
-%>          
+%>           
 <!DOCTYPE html>  
 <html> 
 <head>

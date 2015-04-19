@@ -2,18 +2,19 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
-String userbranch = user.getBranch();
+String userbranch = user.getBranch(); 
 String category = request.getParameter("category");
-String branchid = request.getParameter("branchid");
+String branchid = request.getParameter("branchid"); 
 
 Category c = CategoryManager.getCategory(category);
-
+ 
 List<String> listp = ProductService.getlist(Integer.valueOf(category));
 
 String allp = StringUtill.GetJson(listp); 
 
-List<String> listbranchp = BranchManager.getLocateAll();  
-String listall = StringUtill.GetJson(listbranchp); 
+List<String> listbranchp = BranchService.getListStr(); 
+String listall = StringUtill.GetJson(listbranchp);  
+  
  
 List<Branch> listbranch = BranchManager.getLocate(); 
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
@@ -125,7 +126,7 @@ td {
 <script type="text/javascript" src="../../js/common.js"></script>
 
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
-<link rel="stylesheet" href="../../css/jquery-ui.css"/>
+<link rel="stylesheet" href="../../css/jquery-ui.css"/> 
 <script type="text/javascript" src="../../js/jquery-ui.js"></script>
 
 <script type="text/javascript">
@@ -329,9 +330,7 @@ function pandian(type,branchid){
 	           <td>
 	                                         现在位置：<%=c.getName() %>库存
 	           </td>
-	               <%
-                   if(UserManager.checkPermissions(user, Group.dealSend)){
-    	          %>
+	               
 	              <td> 
 	              <a href="javascript:distri();"> 查看分布</a>
 	              
@@ -350,14 +349,12 @@ function pandian(type,branchid){
 				         <option value=0 >只显示库存不为0</option>
      				</select> 
 	               
-	               
+	                
 	               </td>
 	           <td>
 	            <input type="button" name="" value="查询" onclick="add()"/>   
 	           </td>
-	          <%
-	            }  
-                %>
+	         
                 <td>
                  <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>  
                 

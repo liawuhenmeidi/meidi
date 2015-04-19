@@ -2,7 +2,7 @@
 	contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>
 
-<%
+<% 
 
 List<BranchType> listgt = BranchTypeManager.getLocate(); 
 String id = request.getParameter("id"); 

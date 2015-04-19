@@ -220,7 +220,7 @@
 		String time = request.getParameter("time");
 
 		List<InventoryBranch> list = InventoryBranchManager
-				.getCategory(branch, ctype);
+				.getCategory(user,branch, ctype);
 		System.out.println(time + "time");
 		if (!StringUtill.isNull(time)) {
 			session.setAttribute("inventorytime", time);
@@ -289,13 +289,13 @@
 		SaledealsendManager.save(user, sa, flag, method);
 		//System.out.print(name+"**"+branchid+"*"+id+"*"+message);
 	} else if ("inventoryall".equals(method)) {
-		String str = ""; 
+		String str = "";  
 		String branch = request.getParameter("branch");
 		String category = request.getParameter("category");
 		String product = request.getParameter("product");
 		String isSN = request.getParameter("isSN");
 		//System.out.println(product);      
-		Collection<InventoryAll> c = InventoryAllManager.getMap(branch,
+		Collection<InventoryAll> c = InventoryAllManager.getMap(user,branch,
 				category, product,isSN);     
 		str = StringUtill.GetJson(c); 
 		//System.out.println(str+""); 
@@ -307,9 +307,9 @@
 		String branch = request.getParameter("branch");
 		String category = request.getParameter("category");
 		String product = request.getParameter("product");
-		String isSN = request.getParameter("isSN"); 
-		//System.out.println(product);      
-		Map<String,List<InventoryAll>> c = InventoryAllManager.getMapSN(branch,
+		String isSN = request.getParameter("isSN");  
+		//System.out.println(product);       
+		Map<String,List<InventoryAll>> c = InventoryAllManager.getMapSN(user,branch,
 				category, product,isSN); 
 		// System.out.println(c);
 		str = StringUtill.GetJson(c);  
@@ -322,9 +322,9 @@
 		String branch = request.getParameter("branch");
 		String category = request.getParameter("category");
 		String type = request.getParameter("type");
-		if (StringUtill.isNull(type)) {
+		if (StringUtill.isNull(type)) { 
 			List<InventoryBranch> list = InventoryBranchManager
-					.getCategoryid(branch, category);
+					.getCategoryid(user,branch, category);
 			Map<String, InventoryAll> map = new HashMap<String, InventoryAll>();
 
 			for (int i = 0; i < list.size(); i++) {
@@ -358,7 +358,7 @@
 			}
 		} else {
 			List<InventoryBranch> list = InventoryBranchManager
-					.getCategory(branch, type);
+					.getCategory(user,branch, type);
 			Map<String, InventoryAll> map = new HashMap<String, InventoryAll>();
 
 			for (int i = 0; i < list.size(); i++) {
@@ -412,14 +412,14 @@
 		response.getWriter().write(str);
 		response.getWriter().flush();
 		response.getWriter().close(); //inventory
-	} else if ("getinventory".equals(method)) {
+	} else if ("getinventory".equals(method)) { 
 		String types = request.getParameter("types");
 		String uid = request.getParameter("uid");
 		Map<String, String> map = new HashMap<String, String>();
 		if (!StringUtill.isNull(types) && !StringUtill.isNull(uid)) {
 			User u = UserManager.getUesrByID(uid);
 			List<InventoryBranch> list = InventoryBranchManager
-					.getCategory(u.getBranch(), "");
+					.getCategory(user,u.getBranch(), ""); 
 			String[] type = types.split("</p>");
 			for (int i = 0; i < type.length; i++) {
 				if (!StringUtill.isNull(type[i])) {
@@ -693,7 +693,7 @@
 		// System.out.println(StringUtill.GetJson(map)); 
 		response.getWriter().write(StringUtill.GetJson(s));
 		response.getWriter().flush();
-		response.getWriter().close(); //inventory 
+		response.getWriter().close(); //inventory  
 	} else if ("getInventoryMapByBranch".equals(method)) {
 		//	MyMainClient.getinstance().run();  
 		String branch = request.getParameter("branch");
@@ -701,8 +701,8 @@
 				.getId()
 				+ "";
 		Map<String, InventoryBranch> map = InventoryBranchManager
-				.getmapType(branchid);
-		//System.out.println(map);
+				.getmapType(user,branchid);
+		//System.out.println(map); 
 		response.getWriter().write(StringUtill.GetJson(map));
 		response.getWriter().flush();
 		response.getWriter().close(); //

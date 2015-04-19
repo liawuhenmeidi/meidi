@@ -16,14 +16,15 @@ import product.ProductService;
 import branch.Branch;
 import branch.BranchManager;
 
+import user.User;
 import utill.NumbleUtill;
 import utill.StringUtill;
   
 public class InventoryAllManager {
 	 
 	
-	public static  Collection<InventoryAll> getMap(String branch,String category,String product,String isSN){ 
-		List<InventoryBranch> list = null ;
+	public static  Collection<InventoryAll> getMap(User user,String branch,String category,String product,String isSN){ 
+		List<InventoryBranch> list = null ; 
 		Collection<InventoryAll> clist  = null; 
 		if(StringUtill.isNull(product)){ 
 	    	if(!StringUtill.isNull(branch)){
@@ -32,9 +33,9 @@ public class InventoryAllManager {
 	    			branch = b.getId()+"";
 	    		}  
 	    	}
-	    	
-	    	list = InventoryBranchManager.getCategoryid(branch, category);  
-	    }else {
+	    	 
+	    	list = InventoryBranchManager.getCategoryid(user,branch, category);  
+	    }else { 
 	    	if(!NumbleUtill.isNumeric(product)){
 				Product p = ProductService.gettypemap().get(product);
 				product = p.getId()+"";
@@ -49,9 +50,9 @@ public class InventoryAllManager {
 	    			branch = b.getLocateName();
 	    		}  
 	    		 
-	    		list = InventoryBranchManager.getCategory(branch, product);  
+	    		list = InventoryBranchManager.getCategory(user,branch, product);  
 	    	}else { 
-	    		list = InventoryBranchManager.getCategory(branch, product);
+	    		list = InventoryBranchManager.getCategory(user,branch, product);
 	    	}
 	    }
 		 
@@ -120,13 +121,13 @@ public class InventoryAllManager {
 		    clist = map.values();
 		}      
 		  
-		return clist ;
+		return clist ; 
 	}   
 	
-	public static  Map<String,List<InventoryAll>> getMapSN(String branch,String category,String product,String isSN){ 
+	public static  Map<String,List<InventoryAll>> getMapSN(User user,String branch,String category,String product,String isSN){ 
 		Map<String,List<InventoryAll>> map = new HashMap<String,List<InventoryAll>>();
 		 
-		Collection<InventoryAll> c = InventoryAllManager.getMap(branch,
+		Collection<InventoryAll> c = InventoryAllManager.getMap(user,branch,
 				category, product,isSN);   
 		 
 		if(!c.isEmpty()){

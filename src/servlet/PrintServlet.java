@@ -1,13 +1,9 @@
 package servlet;
 
 import exportModel.ExportModel;
-import gift.Gift;
-import gift.GiftManager;
-import gift.GiftService;
 import group.Group;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,12 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 import order.Order;
 import order.OrderManager;
-import order.OrderStatues;
-import orderPrint.OrderPrintln;
-import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
-import orderproduct.OrderProductManager;
-import orderproduct.OrderProductService;
 import ordersgoods.OrderGoods;
 import ordersgoods.OrderGoodsAll;
 import ordersgoods.OrderGoodsAllManager;
@@ -42,7 +33,6 @@ import uploadtotalgroup.UploadTotalGroup;
 import uploadtotalgroup.UploadTotalGroupManager;
 import user.User;
 import user.UserManager;
-import utill.BasicUtill;
 import utill.DBUtill;
 import utill.DoubleUtill;
 import utill.HttpRequestUtill;
@@ -50,11 +40,6 @@ import utill.StringUtill;
 import utill.TimeUtill;
 import wilson.upload.UploadManager;
 import wilson.upload.UploadSalaryModel;
-
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -67,14 +52,15 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.util.Region;
 import org.apache.poi.ss.usermodel.Font;
 
+import category.Category;
+import category.CategoryService;
+
 import company.Company;
 
 import branch.Branch;
+import branch.BranchService;
 import branchtype.BranchType;
 import branchtype.BranchTypeManager;
-
-import category.Category;
-import category.CategoryManager;
 
 /**
  * 核心请求处理类
@@ -116,6 +102,7 @@ public class PrintServlet extends HttpServlet {
 	 * 处理微信服务器发来的消息
 	 */
 
+	@SuppressWarnings("deprecation")
 	public void exporttotalExport(HttpServletRequest request,
 			HttpServletResponse response) {
 		String id = request.getParameter("said");
@@ -1224,146 +1211,177 @@ public class PrintServlet extends HttpServlet {
 	public void exportOrderGoodsGM(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
-  
+
 		String name = request.getParameter("name");
 		String ids = request.getParameter("ids");
 		String branchtype = request.getParameter("branchtype");
 		String statue = request.getParameter("statues");
 		String typestatues = request.getParameter("typestatues");
-   
+
 		// logger.info(name);
-		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
+		List<OrderGoodsAll> listAll = OrderGoodsAllManager.getlist(user,
 				OrderMessage.billing, name, ids);
-       /* Map<String,Map<String,List<OrderGoodsAll>>> map = new HashMap<String,List<OrderGoodsAll>>();
-        
-        for(int i=0;i<listAll.size();i++){
-        	OrderGoodsAll oa = listAll.get(i);
+		Map<Integer, Map<Integer, Map<Integer, OrderGoods>>> map = new HashMap<Integer, Map<Integer, Map<Integer, OrderGoods>>>();
+
+		for (int i = 0; i < listAll.size(); i++) {
+			OrderGoodsAll oa = listAll.get(i);
 			List<OrderGoods> listog = oa.getList();
-			if(null != listog){
-				for(int m=0;i<listog.size();m++){
+			int bid = oa.getOm().getBranchid();
+			if (null != listog) { 
+				for (int m = 0; m < listog.size(); m++) {
 					OrderGoods og = listog.get(m);
-					List<OrderGoodsAll> list = map.get(og.getCid());
-					
+					Map<Integer, Map<Integer, OrderGoods>> mapc = map.get(og
+							.getCid());
+					if (null == mapc) {
+						mapc = new HashMap<Integer, Map<Integer, OrderGoods>>();
+						map.put(og.getCid(), mapc);
+					}
+
+					Map<Integer, OrderGoods> mapb = mapc.get(bid);
+					if (null == mapb) {
+						mapb = new HashMap<Integer, OrderGoods>();
+						mapc.put(bid, mapb);
+					}
+
+					OrderGoods ogm = mapb.get(og.getTid());
+					if (null == ogm) {
+						mapb.put(og.getTid(), ogm);
+					} else {
+						ogm.setOrdernum(ogm.getOrdernum() + og.getOrdernum());
+					}
 				}
 			}
-			
-			
-        	
-        	
-        }*/
-        
-		// 第一步，创建一个webbook，对应一个Excel文件 
-		HSSFWorkbook wb = new HSSFWorkbook();
-		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
-		HSSFSheet sheet = wb.createSheet("订单");
-
-		HSSFCellStyle style = wb.createCellStyle();
-
-		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
-		style.setWrapText(true);
-		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
-		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-		style.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
-		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
-		style.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
-		style.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
-
-		sheet.setDefaultColumnWidth(15);
-		sheet.setDefaultRowHeightInPoints(30);
-		sheet.setColumnWidth(1, 20 * 256);
-
-		// 第三步，在sheet中添加表头第0行,注意 老版本poi对Excel的行数列数有限制short
-		int count = 0;
-		HSSFRow row = sheet.createRow((int) count);
-		row.setHeight((short) (2 * 256));
-
-		// row.setRowStyle(style);
-		HSSFCell cell = null;
-		count++;
-		row = sheet.createRow((int) count);
-		row.setHeight((short) (3 * 256));
-		count++;
-		row = sheet.createRow((int) count);
-		// 第四步，创建单元格，并设置值表头 设置表头居中
-		count++;
-		int x = 0;
-		cell = row.createCell((short) x++);
-		cell.setCellValue("供应商代码");
-		cell.setCellStyle(style);
-		cell = row.createCell((short) x++);
-		cell.setCellValue("订货商品编码");
-		cell.setCellStyle(style);
-		cell = row.createCell((short) x++);
-		cell.setCellValue("订货商品名称");
-		cell.setCellStyle(style);
-		cell = row.createCell((short) x++);
-		cell.setCellValue("订货门店");
-		cell.setCellStyle(style);
-		cell = row.createCell((short) x++);
-		cell.setCellValue("订货门店编码");
-		cell.setCellStyle(style);
-		cell = row.createCell((short) x++);
-		cell.setCellValue("库区代码");
-		cell.setCellStyle(style);
-		cell = row.createCell((short) x++);
-		cell.setCellValue("订货数量");
-		cell.setCellStyle(style);
-		cell = row.createCell((short) x++);
-		cell.setCellValue("定货库区（特价 正常）");
-		cell.setCellStyle(style);
-		// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
-
-		for (int i = 0; i < list.size(); i++) {
-
-			OrderGoodsAll o = list.get(i);
-			Branch branch = o.getOm().getBranch();
-			List<OrderGoods> listog = o.getList();
-
-			for (int j = 0; j < listog.size(); j++) {
-				OrderGoods og = listog.get(j);
-                String message = "";
-                if(og.getStatues() == 1){
-                	message = "正常";
-                }else if(og.getStatues() ==2){
-                	message = "一步到位机";
-                } 
-				row = sheet.createRow((int) count);
-				count++;
-				int y = 0;
-				cell = row.createCell((short) y++);
-				cell.setCellValue(Company.supplyGM);
-				cell.setCellStyle(style);
-				cell = row.createCell((short) y++);
-				cell.setCellValue(og.getProduct().getEncoded());
-				cell.setCellStyle(style);
-				cell = row.createCell((short) y++);
-				cell.setCellValue(og.getProduct().getType());
-				cell.setCellStyle(style);
-				cell = row.createCell((short) y++);
-				cell.setCellValue(branch.getNameSN());
-				cell.setCellStyle(style);
-				cell = row.createCell((short) y++);
-				cell.setCellValue(branch.getEncoded());
-				cell.setCellStyle(style);
-				cell = row.createCell((short) y++);
-				cell.setCellValue(branch.getReservoir());
-				cell.setCellStyle(style); 
-				cell = row.createCell((short) y++);
-				cell.setCellValue(og.getBranch());
-				cell.setCellStyle(style);
-				cell = row.createCell((short) y++);
-				// logger.info(og.getOrdernum());
-				cell.setCellValue(og.getOrdernum());
-				cell.setCellStyle(style);
-				cell = row.createCell((short) y++);
-				// logger.info(og.getOrdernum());
-				cell.setCellValue(og.getOrdernum());
-				cell.setCellStyle(style);
-				// 第四步，创建单元格，并设置值
-
-			}
-
 		}
+
+		// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		
+
+		if (!map.isEmpty()) {
+			Set<Map.Entry<Integer, Map<Integer, Map<Integer, OrderGoods>>>> setmap = map
+					.entrySet();
+			Iterator<Map.Entry<Integer, Map<Integer, Map<Integer, OrderGoods>>>> itmap = setmap
+					.iterator();
+			Map<Integer, Category> cmap = CategoryService.getmap();
+			Map<Integer, Branch> bmap = BranchService.getMap();
+			while (itmap.hasNext()) {
+				Map.Entry<Integer, Map<Integer, Map<Integer, OrderGoods>>> mape = itmap
+						.next();
+				int cid = mape.getKey();
+				Category c = cmap.get(cid);
+   
+				HSSFSheet sheet = wb.createSheet(c.getName());
+				HSSFCellStyle style = wb.createCellStyle();
+
+				style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+				style.setWrapText(true);
+				style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+				style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+				style.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
+				style.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+				style.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
+				style.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+				
+				sheet.setDefaultColumnWidth(15);
+				sheet.setDefaultRowHeightInPoints(30);
+				sheet.setColumnWidth(1, 20 * 256);
+				// 第三步，在sheet中添加表头第0行,注意 老版本poi对Excel的行数列数有限制short
+				int count = 0;
+				HSSFRow row = sheet.createRow((int) count);
+				row.setHeight((short) (2 * 256));
+				// row.setRowStyle(style);
+				HSSFCell cell = null;
+				count++;
+				int x = 0;
+				cell = row.createCell((short) x++);
+				cell.setCellValue("供应商代码");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("订货商品编码");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("订货商品名称");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("订货门店");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("订货门店编码");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("库区代码");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("订货数量");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("定货库区（特价 正常）");
+				cell.setCellStyle(style);
+				// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
+
+				Map<Integer, Map<Integer, OrderGoods>> mapc = mape.getValue();
+				Set<Map.Entry<Integer, Map<Integer, OrderGoods>>> setmapb = mapc
+						.entrySet();
+				Iterator<Map.Entry<Integer, Map<Integer, OrderGoods>>> itb = setmapb
+						.iterator();
+				while (itb.hasNext()) {
+					Map.Entry<Integer, Map<Integer, OrderGoods>> mapeb = itb
+							.next();
+					int bid = mapeb.getKey();
+					Branch branch = bmap.get(bid);
+					Map<Integer, OrderGoods> mapb = mapeb.getValue();
+					Set<Map.Entry<Integer, OrderGoods>> sett = mapb.entrySet();
+					Iterator<Map.Entry<Integer, OrderGoods>> itt = sett
+							.iterator();
+					while (itt.hasNext()) {
+						Map.Entry<Integer, OrderGoods> mapet = itt.next();
+						OrderGoods og = mapet.getValue();
+
+						String message = "";
+						if (og.getStatues() == 1) {
+							message = "正常";
+						} else if (og.getStatues() == 2) {
+							message = "一步到位机";
+						}
+						row = sheet.createRow((int) count);
+						count++;  
+						int y = 0;  
+						cell = row.createCell((short) y++);
+						cell.setCellValue(Company.supplyGM);
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						cell.setCellValue(og.getProduct().getEncoded());
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						cell.setCellValue(og.getProduct().getType());
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						cell.setCellValue(branch.getNameSN());
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						cell.setCellValue(branch.getEncoded());
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						cell.setCellValue(branch.getReservoir());
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						cell.setCellValue(og.getBranch());
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						// logger.info(og.getOrdernum());
+						cell.setCellValue(og.getOrdernum());
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						// logger.info(og.getOrdernum());
+						cell.setCellValue(og.getOrdernum());
+						cell.setCellStyle(style);
+					}
+				}
+			}
+		}
+
+		// 第四步，创建单元格，并设置值
+
 		// System.out.println(count);
 		// 第六步，将文件存到指定位置
 		try {

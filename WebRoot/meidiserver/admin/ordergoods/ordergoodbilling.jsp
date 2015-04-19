@@ -1,7 +1,7 @@
 <%@ page language="java"  import="java.util.*,ordersgoods.*,product.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%   
+<%    
 request.setCharacterEncoding("utf-8");  
-User user = (User)session.getAttribute("user");     
+User user = (User)session.getAttribute("user");      
 //Map<String,List<OrderGoods>> map  = OrderGoodsAllManager.getbillingmap(user,OrderMessage.billing); 
  // System.out.println(StringUtill.GetJson(map));
  Map<String,Map<String,List<OrderGoods>>> map  = OrderGoodsAllManager.getbillingmap(user,OrderMessage.billing); 

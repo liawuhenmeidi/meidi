@@ -1,7 +1,7 @@
 <%@ page language="java" 
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 	<%@ include file="../../common.jsp"%>
-<%   
+<%    
 	request.setCharacterEncoding("utf-8"); 
 String[] ids = request.getParameterValues("omid");   
 String statues = request.getParameter("statues"); 

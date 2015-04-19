@@ -2,13 +2,12 @@
 	import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <%
-	request.setCharacterEncoding("utf-8");
+request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
-
-List<String> listbranchp = BranchManager.getLocateAll();  
-String listall = StringUtill.GetJson(listbranchp); 
-
-
+ 
+List<String> listbranchp = BranchService.getListStr(); 
+String listall = StringUtill.GetJson(listbranchp);  
+ 
 String branchid = "";
 Branch branch = null;   
 if(UserManager.checkPermissions(user, Group.Manger)){
@@ -16,14 +15,8 @@ if(UserManager.checkPermissions(user, Group.Manger)){
 }else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale) && !UserManager.checkPermissions(user, Group.dealSend)){
 	branchid = user.getBranch()+"";   
 	branch = BranchManager.getLocatebyid(branchid);
-} 
-  
-
-
-  
-List<Branch> listbranch = BranchService.getList(); 
-
-HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
+}  
+HashMap<Integer,Category> categorymap = CategoryService.getmap();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -51,7 +44,7 @@ td {
  var categoryid = "";
  $(function () { 
 	 $("#branch").autocomplete({ 
-		 source: jsonall
+		 source: jsonall 
 	    }); 
 	 add();
  }); 
@@ -88,8 +81,7 @@ td {
 			branch = b;
 		}
 		//alert(branch);
-		$
-				.ajax({
+		$.ajax({
 					type : "post",
 					url : "../server.jsp",
 					data : "method=inventoryall&branch=" + branch,
@@ -146,14 +138,11 @@ td {
 	<jsp:include flush="true" page="../head.jsp">
 		<jsp:param name="dmsn" value="" />
 	</jsp:include>
-
+ 
 	<!--   头部结束   -->
 	<div class="main">
 		<div class="weizhi_head">
 			现在位置：库存查询 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<%
-				if (UserManager.checkPermissions(user, Group.dealSend)) {
-			%>
 
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="javascript:distri();">
 				查看分布</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 仓库: <input type="text"
@@ -162,9 +151,6 @@ td {
 				<option value="-1">全部显示</option>
 				<option value=0>只显示库存不为0</option>
 			</select> <input type="button" name="" value="查询" onclick="add()" />
-			<%
-				}
-			%>
 
 		</div>
 		<div class="table-list">
