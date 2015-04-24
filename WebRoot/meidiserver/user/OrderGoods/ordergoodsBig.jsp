@@ -3,19 +3,19 @@
     
 <%      
 //long start= System.currentTimeMillis();  
-List<String> listallp = ProductService.getlistall(user);
-//System.out.println("qa"+(System.currentTimeMillis() - start));  
+List<String> listallp = ProductService.getlistall(user); 
+//System.out.println("qa"+(System.currentTimeMillis() - start));   
 String listallpp = StringUtill.GetJson(listallp);  
 OrderGoodsAll oa = null;
-List<OrderGoods> list = null;
+List<OrderGoods> list = null; 
 String id = request.getParameter("id"); 
 String remark = "";
 if(!StringUtill.isNull(id)){
 	oa = OrderGoodsAllManager.getOrderGoodsAllByid(user,id);
 	list = oa.getList(); 
-	remark = oa.getOm().getRemark();
+	remark = oa.getOm().getRemark(); 
 } 
-Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user.getBranch());
+Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,user.getBranch());
 String jsoninventory = StringUtill.GetJson(map);
 String json = StringUtill.GetJson(list); 
 // System.out.println(json); 

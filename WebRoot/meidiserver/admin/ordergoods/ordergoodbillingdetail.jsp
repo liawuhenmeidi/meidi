@@ -1,23 +1,35 @@
 <%@ page language="java"
 	import="java.util.*,ordersgoods.*,product.*,branch.*,org.apache.commons.logging.*,company.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
-<% 
+<%
 	request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user"); 
 String name = request.getParameter("name"); 
-   
+String orderid = request.getParameter("orderid");  
+String exportuuid = "";   
 List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.billing,name); 
 Set<String> set = new HashSet<String>();
 String endtime = "";
 if (null != list) { 
 	for (int i = 0; i < list.size(); i++) {
 		OrderGoodsAll o = list.get(i);
-		Branch branch = o.getOm().getBranch();
+		Branch branch = o.getOm().getBranch(); 
 		List<OrderGoods> listog = o.getList();
 		for (int j = 0; j < listog.size(); j++) {
 	        OrderGoods og = listog.get(j);
-	        set.add(og.getStatues()+"_"+og.getOid());
+	       //   System.out.println(og);   
+	        if(!StringUtill.isNull(orderid)){ 
+	        	if(og.getOid().equals(orderid)){
+	        		set.add(og.getStatues()+"_"+og.getOid());
 	        endtime = StringUtill.getNotNUll(og.getEffectiveendtime());
+	        exportuuid = og.getExportuuid();
+	        	}
+	        } else {
+	        	set.add(og.getStatues()+"_"+og.getOid());
+		        endtime = StringUtill.getNotNUll(og.getEffectiveendtime());
+		        exportuuid = og.getExportuuid();
+	        }
+	         
 		}
 	} 
 } 
@@ -35,36 +47,33 @@ if (null != list) {
 
 <link rel="stylesheet" type="text/css" rev="stylesheet"
 	href="../../style/css/bass.css" />
-<script type="text/javascript" src="../../js/calendar.js"></script> 
+<script type="text/javascript" src="../../js/calendar.js"></script>
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
-<script type="text/javascript"> 
-  
+<script type="text/javascript">
+	$(function() {
+		//alert(1);
+		//$("#"+type).css("color","red");
+	});
 
-$(function () {  
-	//alert(1);
-	//$("#"+type).css("color","red");
-}); 
- 
-function detail(src){
-	window.location.href=src;
-}
-  
-function search(statues){
-	window.location.href="maintain.jsp?statues="+statues;
-}
+	function detail(src) {
+		window.location.href = src;
+	}
 
-function check(){
-	var name=$("#name").val();
-	if("" == name || null == name){
-		alert("订单名称不能为空");
-		return false;
+	function search(statues) {
+		window.location.href = "maintain.jsp?statues=" + statues;
+	}
+
+	function check() {
+		var name = $("#name").val();
+		if ("" == name || null == name) {
+			alert("订单名称不能为空");
+			return false;
+		}
 	} 
-}
-
 </script>
 </head>
-
+ 
 <body>
 	<div class="s_main">
 		<jsp:include flush="true" page="../head.jsp">
@@ -74,8 +83,7 @@ function check(){
 
 		<div class="main_r_tianjia">
 			<ul>
-				<li><a href="javascript:history.go(-1);">返回</a>
-				</li>
+				<li><a href="javascript:history.go(-1);">返回</a></li>
 			</ul>
 		</div>
 		<!--  头 单种类  -->
@@ -86,25 +94,22 @@ function check(){
 						<tr>
 							<td colspan=2 align="center">订单名称：<%=name%></td>
 							<td colspan=2 align="center"></td>
-							<td align="center" colspan=4> 
-								<form action="../../Print" method="post"
-									onsubmit="return check()"> 
-									<input type="hidden" value="OrderGoods" name="method">
-									<input type="hidden" value="<%=name%>" id="name" name="name">
-									<input type="submit" value="导出" style="color:red">
-								</form></td>
+							<td align="center" colspan=4><a
+								href="../../../data/exportOrderGM/<%=exportuuid%>.xls"><font
+									style="color:blue;font-size:20px;">导出</font> </a>
+							</td>
 						</tr>
 
-					</table></td>
-
-			</tr> 
+					</table>
+				</td>
+			</tr>
 			<tr class="dsc">
 				<td colspan=8>
 					<form action="../../user/OrderGoodsServlet" method="post">
 
-						<input type="hidden" value="updateIOS" name="method">
-						<input type="hidden" value="<%=name%>" id="name" name="name">
-						
+						<input type="hidden" value="updateIOS" name="method"> <input
+							type="hidden" value="<%=name%>" id="name" name="name">
+
 						<table>
 
 							<tr>
@@ -117,33 +122,36 @@ function check(){
 											String[] strs = str.split("_");
 											String i = strs[0];
 											String oid = strs[1];
-											if(StringUtill.isNull(oid)){
-												oid = ""; 
+											if (StringUtill.isNull(oid)) {
+												oid = "";
 											}
-								%>  
+								%>
 								<td align="center"><%=OrderGoods.getStatuesName(Integer.valueOf(i))%>(订单号)</td>
-								<td align="center"><input type="text" name="oid<%=i %>" value="<%=oid %>" />
-								</td>
+								<td align="center"><input type="text" name="oid<%=i%>"
+									value="<%=oid%>" /></td>
 								<%
 									}
 									}
 								%>
-								   
+
 								<td align="center">订单截止日期</td>
-								<td align="center"><input type="text" name="effectiveendtime" onclick="new Calendar().show(this);" value="<%=endtime %>" />
-								</td> 
-								
+								<td align="center"><input type="text"
+									name="effectiveendtime" onclick="new Calendar().show(this);"
+									value="<%=endtime%>" /></td>
+
 								<td align="center"><input type="submit" value="保存"
-									style="color:red"></td>
+									style="color:red">
+								</td>
 							</tr>
 						</table>
-					</form></td>
-			</tr> 
+					</form>
+				</td>
+			</tr>
 			<tr class="dsc">
 				<td align="center">商品编码</td>
 				<td align="center">商品名称</td>
 				<td align="center">订货数量</td>
-				<td align="center">订货门店</td> 
+				<td align="center">订货门店</td>
 				<td align="center">订货门店编码</td>
 				<td align="center">库位</td>
 				<td align="center">日期</td>
@@ -157,11 +165,16 @@ function check(){
 						List<OrderGoods> listog = o.getList();
 						for (int j = 0; j < listog.size(); j++) {
 							OrderGoods og = listog.get(j);
-							 String serialnumber = og.getSerialnumber();
-								if(StringUtill.isNull(serialnumber)){
-									serialnumber =Company.supply;
-								}
-			%>  
+							//System.out.println(og.getOid()); 
+							//	System.out.println(orderid);  
+							if (!StringUtill.isNull(orderid)
+									&& og.getOid().equals(orderid)
+									|| StringUtill.isNull(orderid)) {
+								String serialnumber = og.getSerialnumber();
+								if (StringUtill.isNull(serialnumber)) {
+									serialnumber = Company.supply;
+								} 
+			%> 
 
 			<tr class="asc">
 
@@ -177,11 +190,9 @@ function check(){
 
 			<%
 				}
-			%>
+						}
 
-
-			<%
-				}
+					}
 				}
 			%>
 

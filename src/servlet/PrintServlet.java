@@ -3,6 +3,9 @@ package servlet;
 import exportModel.ExportModel;
 import group.Group;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -40,6 +44,7 @@ import utill.StringUtill;
 import utill.TimeUtill;
 import wilson.upload.UploadManager;
 import wilson.upload.UploadSalaryModel;
+import writeExcel.WriteExcel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -80,7 +85,7 @@ public class PrintServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-
+ 
 		String method = request.getParameter("method");
 		logger.info(method);
 		if ("exportall".equals(method)) {
@@ -88,13 +93,11 @@ public class PrintServlet extends HttpServlet {
 		} else if ("total".equals(method) || "totalcategory".equals(method)
 				|| "typetotal".equals(method)) {
 			exporttotalExport(request, response);
-		} else if ("OrderGoods".equals(method)) {
-			exportOrderGoodsSN(request, response);
-		} else if ("OrderGoodssend".equals(method)) {
+		}else if ("OrderGoodssend".equals(method)) {
 			OrderGoodssend(request, response);
 		} else if ("billing".equals(method)) {
 			OrderGoodsbilling(request, response);
-
+ 
 		}
 	}
 
@@ -903,11 +906,18 @@ public class PrintServlet extends HttpServlet {
 		String branchtype = request.getParameter("branchtype");
 		String statue = request.getParameter("statues");
 		String typestatues = request.getParameter("typestatues");
-
-		// logger.info(name);
-		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, name, ids);
-
+          
+		List<OrderGoodsAll> list = null; 
+		if(StringUtill.isNull(ids)){
+		 list = OrderGoodsAllManager.getlist(user,OrderMessage.billing,name); 
+		}else {
+			list = OrderGoodsAllManager.getlist(user, 
+					OrderMessage.billing, name, ids);
+		}
+		// logger.info(name); 
+		/*List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
+				OrderMessage.billing, name, ids);*/ 
+		
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
@@ -1211,13 +1221,13 @@ public class PrintServlet extends HttpServlet {
 	public void exportOrderGoodsGM(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
-
+		String uuid = UUID.randomUUID().toString();
 		String name = request.getParameter("name");
 		String ids = request.getParameter("ids");
 		String branchtype = request.getParameter("branchtype");
 		String statue = request.getParameter("statues");
 		String typestatues = request.getParameter("typestatues");
-
+		String exportuuid = (String)request.getAttribute("exportuuid"); 
 		// logger.info(name);
 		List<OrderGoodsAll> listAll = OrderGoodsAllManager.getlist(user,
 				OrderMessage.billing, name, ids);
@@ -1244,9 +1254,9 @@ public class PrintServlet extends HttpServlet {
 					}
 
 					OrderGoods ogm = mapb.get(og.getTid());
-					if (null == ogm) {
-						mapb.put(og.getTid(), ogm);
-					} else {
+					if (null == ogm) { 
+						mapb.put(og.getTid(), og); 
+					} else {          
 						ogm.setOrdernum(ogm.getOrdernum() + og.getOrdernum());
 					}
 				}
@@ -1256,7 +1266,7 @@ public class PrintServlet extends HttpServlet {
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();
 		
-
+//logger.info(map); 
 		if (!map.isEmpty()) {
 			Set<Map.Entry<Integer, Map<Integer, Map<Integer, OrderGoods>>>> setmap = map
 					.entrySet();
@@ -1310,7 +1320,7 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellStyle(style);
 				cell = row.createCell((short) x++);
 				cell.setCellValue("库区代码");
-				cell.setCellStyle(style);
+				cell.setCellStyle(style); 
 				cell = row.createCell((short) x++);
 				cell.setCellValue("订货数量");
 				cell.setCellStyle(style);
@@ -1318,7 +1328,7 @@ public class PrintServlet extends HttpServlet {
 				cell.setCellValue("定货库区（特价 正常）");
 				cell.setCellStyle(style);
 				// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
-
+ 
 				Map<Integer, Map<Integer, OrderGoods>> mapc = mape.getValue();
 				Set<Map.Entry<Integer, Map<Integer, OrderGoods>>> setmapb = mapc
 						.entrySet();
@@ -1326,7 +1336,7 @@ public class PrintServlet extends HttpServlet {
 						.iterator();
 				while (itb.hasNext()) {
 					Map.Entry<Integer, Map<Integer, OrderGoods>> mapeb = itb
-							.next();
+							.next(); 
 					int bid = mapeb.getKey();
 					Branch branch = bmap.get(bid);
 					Map<Integer, OrderGoods> mapb = mapeb.getValue();
@@ -1336,7 +1346,7 @@ public class PrintServlet extends HttpServlet {
 					while (itt.hasNext()) {
 						Map.Entry<Integer, OrderGoods> mapet = itt.next();
 						OrderGoods og = mapet.getValue();
-
+// logger.info(og);   
 						String message = "";
 						if (og.getStatues() == 1) {
 							message = "正常";
@@ -1364,16 +1374,236 @@ public class PrintServlet extends HttpServlet {
 						cell = row.createCell((short) y++);
 						cell.setCellValue(branch.getReservoir());
 						cell.setCellStyle(style);
-						cell = row.createCell((short) y++);
-						cell.setCellValue(og.getBranch());
-						cell.setCellStyle(style);
+						 
 						cell = row.createCell((short) y++);
 						// logger.info(og.getOrdernum());
 						cell.setCellValue(og.getOrdernum());
+						cell.setCellStyle(style); 
+						cell = row.createCell((short) y++); 
+						cell.setCellValue(og.getBranchGM());
+						cell.setCellStyle(style);
+					}
+				}
+			}
+		}
+
+		// 第四步，创建单元格，并设置值
+
+		// System.out.println(count);
+		// 第六步，将文件存到指定位置
+		try {   
+			    
+			String tempPath = request.getSession().getServletContext().getRealPath("/")
+					+ "data" + File.separator + "exportOrderGM";
+			logger.info(tempPath); 
+			
+			File file  = new File(tempPath);  
+			if (!file.exists()) {  
+				file.mkdirs();   
+			}   
+			    
+			File file2  = new File(tempPath+File.separator+exportuuid+ ".xls"); 
+			file2.createNewFile();    
+			FileOutputStream fo = new FileOutputStream (file2);
+			//FileWriter fileWriter = new FileWriter(file2); 
+			wb.write(fo); 
+			fo.close();  
+		    
+			response.setContentType("APPLICATION/OCTET-STREAM");
+			response.setCharacterEncoding("UTF-8");
+			response.setHeader("Content-Disposition", "attachment; filename=\""
+					+ StringUtill.toUtf8String(name) + ".xls\"");
+			// FileOutputStream fout = new  
+			// FileOutputStream("E:/报装单"+printlntime+".xls");
+			
+			//WriteExcel.uploadOnly(request, response);   
+			wb.write(response.getOutputStream());
+			
+			response.getOutputStream().close();
+		
+			//String sql = OrderMessageManager.billingprint(name);
+			//DBUtill.sava(sql);
+			// logger.info(123);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+    
+	public void exportOrderGoodsreturnGM(HttpServletRequest request,
+			HttpServletResponse response) { 
+		User user = (User) request.getSession().getAttribute("user");
+
+		String name = request.getParameter("name");
+		String ids = request.getParameter("ids");
+		String branchtype = request.getParameter("branchtype");
+		String statue = request.getParameter("statues");
+		String typestatues = request.getParameter("typestatues");
+
+		// logger.info(name);
+		List<OrderGoodsAll> listAll = OrderGoodsAllManager.getlist(user,
+				OrderMessage.billing, name, ids);
+		Map<Integer, Map<Integer, Map<Integer, OrderGoods>>> map = new HashMap<Integer, Map<Integer, Map<Integer, OrderGoods>>>();
+
+		for (int i = 0; i < listAll.size(); i++) {
+			OrderGoodsAll oa = listAll.get(i);
+			List<OrderGoods> listog = oa.getList();
+			int bid = oa.getOm().getBranchid();
+			if (null != listog) { 
+				for (int m = 0; m < listog.size(); m++) {
+					OrderGoods og = listog.get(m);
+					Map<Integer, Map<Integer, OrderGoods>> mapc = map.get(og
+							.getCid());
+					if (null == mapc) {
+						mapc = new HashMap<Integer, Map<Integer, OrderGoods>>();
+						map.put(og.getCid(), mapc);
+					}
+
+					Map<Integer, OrderGoods> mapb = mapc.get(bid);
+					if (null == mapb) {
+						mapb = new HashMap<Integer, OrderGoods>();
+						mapc.put(bid, mapb);
+					}
+
+					OrderGoods ogm = mapb.get(og.getTid());
+					if (null == ogm) { 
+						mapb.put(og.getTid(), og); 
+					} else {          
+						ogm.setOrdernum(ogm.getOrdernum() + og.getOrdernum());
+					}
+				}
+			}
+		}
+
+		// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		
+//logger.info(map); 
+		if (!map.isEmpty()) {
+			Set<Map.Entry<Integer, Map<Integer, Map<Integer, OrderGoods>>>> setmap = map
+					.entrySet();
+			Iterator<Map.Entry<Integer, Map<Integer, Map<Integer, OrderGoods>>>> itmap = setmap
+					.iterator();
+			Map<Integer, Category> cmap = CategoryService.getmap();
+			Map<Integer, Branch> bmap = BranchService.getMap();
+			while (itmap.hasNext()) {
+				Map.Entry<Integer, Map<Integer, Map<Integer, OrderGoods>>> mape = itmap
+						.next();
+				int cid = mape.getKey();
+				Category c = cmap.get(cid);
+   
+				HSSFSheet sheet = wb.createSheet(c.getName());
+				HSSFCellStyle style = wb.createCellStyle();
+
+				style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+				style.setWrapText(true);
+				style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+				style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+				style.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
+				style.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+				style.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
+				style.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+				
+				sheet.setDefaultColumnWidth(15);
+				sheet.setDefaultRowHeightInPoints(30);
+				sheet.setColumnWidth(1, 20 * 256);
+				// 第三步，在sheet中添加表头第0行,注意 老版本poi对Excel的行数列数有限制short
+				int count = 0;
+				HSSFRow row = sheet.createRow((int) count);
+				row.setHeight((short) (2 * 256));
+				// row.setRowStyle(style);
+				HSSFCell cell = null;  
+				count++; 
+				int x = 0;
+				cell = row.createCell((short) x++);
+				cell.setCellValue("圣荣小电商品退单明细");
+				cell.setCellStyle(style); 
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (2 * 256));
+				// row.setRowStyle(style);
+				cell = null;    
+				count++; 
+				x = 0;
+				cell = row.createCell((short) x++);
+				cell.setCellValue("供应商代码");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("退货门店");
+				
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("退货商品代码");
+				 
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("退货商品名称");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("退货门店编码");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("库区代码");
+				cell.setCellStyle(style); 
+				cell = row.createCell((short) x++);
+				cell.setCellValue("订货数量");
+				cell.setCellStyle(style); 
+				cell = row.createCell((short) x++);
+				cell.setCellValue("退货库区（特价 正常）");
+				cell.setCellStyle(style);
+				// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
+ 
+				Map<Integer, Map<Integer, OrderGoods>> mapc = mape.getValue();
+				Set<Map.Entry<Integer, Map<Integer, OrderGoods>>> setmapb = mapc
+						.entrySet();
+				Iterator<Map.Entry<Integer, Map<Integer, OrderGoods>>> itb = setmapb
+						.iterator();
+				while (itb.hasNext()) {
+					Map.Entry<Integer, Map<Integer, OrderGoods>> mapeb = itb
+							.next(); 
+					int bid = mapeb.getKey();
+					Branch branch = bmap.get(bid);
+					Map<Integer, OrderGoods> mapb = mapeb.getValue();
+					Set<Map.Entry<Integer, OrderGoods>> sett = mapb.entrySet();
+					Iterator<Map.Entry<Integer, OrderGoods>> itt = sett
+							.iterator();
+					while (itt.hasNext()) {
+						Map.Entry<Integer, OrderGoods> mapet = itt.next();
+						OrderGoods og = mapet.getValue();
+// logger.info(og);   
+						String message = "";
+						if (og.getStatues() == 1) {
+							message = "正常";
+						} else if (og.getStatues() == 2) {
+							message = "一步到位机";
+						}
+						row = sheet.createRow((int) count);
+						count++;  
+						int y = 0;  
+						cell = row.createCell((short) y++);
+						cell.setCellValue(Company.supplyGM);
 						cell.setCellStyle(style);
 						cell = row.createCell((short) y++);
+						cell.setCellValue(branch.getNameSN());
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						cell.setCellValue(og.getProduct().getEncoded());
+						
+						cell.setCellStyle(style); 
+						cell = row.createCell((short) y++); 
+						cell.setCellValue(og.getProduct().getType());
+						cell.setCellStyle(style); 
+						cell = row.createCell((short) y++);
+						cell.setCellValue(branch.getEncoded());
+						cell.setCellStyle(style); 
+						cell = row.createCell((short) y++);
+						cell.setCellValue(branch.getReservoir());
+						cell.setCellStyle(style);  
+						cell = row.createCell((short) y++); 
 						// logger.info(og.getOrdernum());
 						cell.setCellValue(og.getOrdernum());
+						cell.setCellStyle(style); 
+						cell = row.createCell((short) y++); 
+						cell.setCellValue(og.getBranchGM());
 						cell.setCellStyle(style);
 					}
 				}
@@ -1393,16 +1623,16 @@ public class PrintServlet extends HttpServlet {
 			// FileOutputStream("E:/报装单"+printlntime+".xls");
 			wb.write(response.getOutputStream());
 			response.getOutputStream().close();
-
-			String sql = OrderMessageManager.billingprint(name);
-			DBUtill.sava(sql);
+ 
+			//String sql = OrderMessageManager.billingprint(name);
+			//DBUtill.sava(sql);
 			// logger.info(123);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public void exportOrderGoodsreturnSN(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
@@ -1839,7 +2069,7 @@ public class PrintServlet extends HttpServlet {
 			response.setHeader("Content-Disposition",
 					"attachment; filename=\"" + StringUtill.toUtf8String("开单")
 							+ TimeUtill.getdateString() + ".xls\"");
-			// FileOutputStream fout = new
+			// FileOutputStream fout = new 
 			// FileOutputStream("E:/报装单"+printlntime+".xls");
 			wb.write(response.getOutputStream());
 			response.getOutputStream().close();
@@ -1866,29 +2096,39 @@ public class PrintServlet extends HttpServlet {
 		String name = request.getParameter("name");
 		String ids = request.getParameter("ids");
 		String branchtype = request.getParameter("branchtype");
-		BranchType bt = BranchTypeManager
-				.getLocate(Integer.valueOf(branchtype));
-		logger.info(bt.getExportmodel());
+		BranchType bt = null ; 
+		if(!StringUtill.isNull(branchtype)){
+			bt = BranchTypeManager 
+					.getLocate(Integer.valueOf(branchtype));
+		} 
+           
+		//logger.info(bt.getExportmodel());  
 		String statue = request.getParameter("statues");
 		String typestatues = request.getParameter("typestatues");
-		if ("2".equals(typestatues)) {
-			// 忽略
-			String sql = OrderMessageManager.billing(ids, statue);
+		String exportuuid = UUID.randomUUID().toString();
+		request.setAttribute("exportuuid", exportuuid);
+		logger.info(typestatues);   
+		if ("2".equals(typestatues)) { 
+			// 忽略    
+			String sql = OrderMessageManager.billing(exportuuid,ids, statue);
 			DBUtill.sava(sql);
-		} else {
-			String sql = OrderMessageManager.billing(name, ids, statue,
+		} else { 
+			String sql = OrderMessageManager.billing(exportuuid,name, ids, statue,
 					branchtype);
 			// logger.info(typestatues);
-			if (DBUtill.sava(sql)) {
-				if ("0".equals(typestatues)) {
+			if (DBUtill.sava(sql)) {   
+				if ("0".equals(typestatues)) {  
 					if (ExportModel.SuNing == bt.getExportmodel()) {
 						exportOrderGoodsSN(request, response);
 					} else if (ExportModel.GuoMei == bt.getExportmodel()) {
 						exportOrderGoodsGM(request, response);
 					}
-
 				} else if ("1".equals(typestatues)) {
-					exportOrderGoodsreturnSN(request, response);
+					if (ExportModel.SuNing == bt.getExportmodel()) {
+						exportOrderGoodsreturnSN(request, response);
+					} else if (ExportModel.GuoMei == bt.getExportmodel()) {
+						exportOrderGoodsreturnGM(request, response);
+					}  
 				} else {
 					try {
 						response.sendRedirect("jieguo.jsp?type=type=updated&mark=" + 1);

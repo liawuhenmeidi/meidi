@@ -667,13 +667,13 @@
 		Order or = OrderManager.getOrderID(user, Integer.valueOf(id));
 		String str = or.getSendTypejson(0);
 		response.getWriter().write(str);
-		response.getWriter().flush();
+		response.getWriter().flush(); 
 		response.getWriter().close(); //inventory
 	} else if ("getproduct".equals(method)) {
 		String branch = request.getParameter("branch");
-		//System.out.println(branch);
+		//System.out.println(branch); 
 		//List<String> listallp = ProductService.getlistall(BranchService.getNameMap().get(branch));
-		List<String> listallp = ProductService.getlistall(BranchService
+		List<String> listallp = ProductService.getlistsale(BranchService
 				.getNameMap().get(branch));
 		//System.out.println(StringUtill.GetJson(listallp)); 
 		response.getWriter().write(StringUtill.GetJson(listallp));
@@ -683,9 +683,9 @@
 		String branch = request.getParameter("branch");
 		String tname = request.getParameter("tname");
 		String statues = request.getParameter("statues");
-		String id = request.getParameter("id");
+		String id = request.getParameter("id");  
 		Map<String, String> map = new HashMap<String, String>();
-		//System.out.println(branch+tname+statues);      
+		//System.out.println("branch"+branch+"tname"+tname+"statues"+statues);       
 		List<String> s = InventorySN.getinventoryByName(tname, branch,
 				statues, map, id);
 		//List<String> list = OrderGoodsManager.Updateserialnumber(map);

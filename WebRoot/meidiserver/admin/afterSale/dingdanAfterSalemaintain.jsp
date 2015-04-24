@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
-<%@ include file="../searchdynamic.jsp"%>       
+<%@ include file="searchdynamic.jsp"%>       
  <%    
  if(StringUtill.isNull(statues)){ 
 	  // 网点配工

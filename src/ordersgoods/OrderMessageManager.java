@@ -47,23 +47,23 @@ public class OrderMessageManager {
 		  
 		return list ;
 		 
-	}  
+	}   
 	
-	public static String billing(String name,String ids,String statues,String branchtype){
+	public static String billing(String exportuuid,String name,String ids,String statues,String branchtype){
 		List<Integer> listbids = BranchService.getListids(Integer.valueOf(branchtype)); 
-   
+    
        // logger.info(uuid);  
-		String sql = " update mdordergoods,mdordermessage set mdordergoods.uuid = '"+name+"' ,mdordergoods.uuidtime = '"+TimeUtill.getdateString()+"', mdordergoods.opstatues = 1  where mdordergoods.mid = mdordermessage.id  and mdordermessage.branchid in ("+listbids.toString().substring(1,   
+		String sql = " update mdordergoods,mdordermessage set mdordergoods.uuid = '"+name+"' ,mdordergoods.exportuuid = '"+exportuuid+"',mdordergoods.uuidtime = '"+TimeUtill.getdateString()+"', mdordergoods.opstatues = 1  where mdordergoods.mid = mdordermessage.id  and mdordermessage.branchid in ("+listbids.toString().substring(1,   
 						listbids.toString().length() - 1)+")  and mdordermessage.id in "+ ids+" and mdordergoods.statues in"+statues; 
 	    return sql; 
 	     
 	}   
 	 
-	public static String billing(String ids,String statues){
+	public static String billing(String exportuuid,String ids,String statues){
     
-		String sql = " update mdordergoods,mdordermessage set mdordergoods.uuidtime = '"+TimeUtill.getdateString()+"', mdordergoods.opstatues = 1  where mdordergoods.mid = mdordermessage.id and mdordermessage.id in ("+ ids+") and mdordergoods.statues in ("+statues+")"; 
+		String sql = " update mdordergoods,mdordermessage set mdordergoods.uuidtime = '"+TimeUtill.getdateString()+"',mdordergoods.exportuuid = '"+exportuuid+"', mdordergoods.opstatues = 1  where mdordergoods.mid = mdordermessage.id and mdordermessage.id in ("+ ids+") and mdordergoods.statues in ("+statues+")"; 
 	    return sql;  
-	      
+	       
 	}   
 	
 	public static String billingprint(String name){

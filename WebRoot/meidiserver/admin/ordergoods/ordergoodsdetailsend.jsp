@@ -104,13 +104,35 @@ String json = StringUtill.GetJson(list);
 	     ' <td  align=center >'+json.tname+'</td> ' +    
 	     '<td  align=center >'+json.statuesName+'</td>'+    
 	     '<td align=center>0</td>'+  
-	     '<td align=center >'+json.realnum+'</td> ' + 
-	     '<td align=center >'+   
+	     '<td align=center >'+json.realnum+'</td> ';
+	      
+	     if(json.statues == 6 || json.statues == 7 || json.statues == 8 || json.statues == 9){ 
+	    	//alert(json.statues); 
+	    	 str += '<td align=center >'+
+	    	 '</td> '+  
+	    		 '<td align=center  bgcolor="red">'+   
+			    // '<input type="hidden" name="id" value='+json.id+'>'+
+			     '<input type="text" name="returnrealsendnum'+json.id+'" id="returnrealsendnum'+json.id+'" value='+json.realnum+'>'+
+			     '</td> ';  
+	     }else if(json.statues == 4){   
+	    	 str += '<td align=center >'+ 
+	    		 '<input type="text" name="realsendnum'+json.id+'" id="realsendnum'+json.id+'" value='+json.realnum+'>'+
+		     '</td> ' +  
+		     '<td align=center  bgcolor="red" >'+     
+			    // '<input type="hidden" name="id" value='+json.id+'>'+
+			     '<input type="text" name="returnrealsendnum'+json.id+'" id="returnrealsendnum'+json.id+'" value='+json.realnum+'>'+
+			     '</td> ' ;  
+	     }else {  
+	    	 str += '<td align=center >'+
+	    	 '<input type="text" name="realsendnum'+json.id+'" id="realsendnum'+json.id+'" value='+json.realnum+'>'+
+		     '</td> '+
+		     '<td align=center >'+ 
+	    	 '</td> ';
+	     }
 	    // '<input type="hidden" name="id" value='+json.id+'>'+
-	     '<input type="text" name="realsendnum'+json.id+'" id="realsendnum'+json.id+'" value='+json.realnum+'>'+
-	     '</td> ' +
-	     '</tr>'
-	     ;  
+	     
+		      
+	     str += '</tr>';  
 	              
 	$("#Ntable").append(str); 
 	
@@ -191,6 +213,7 @@ String json = StringUtill.GetJson(list);
            <td align=center width="10%">未入库数量</td>  
            <td align=center width="20%"> 订货数</td>  
            <td align=center width="20%">实收货数量</td> 
+           <td align=center width="20%" bgcolor="red">退货数量</td> 
           </tr> 
         </table> 
        </td>

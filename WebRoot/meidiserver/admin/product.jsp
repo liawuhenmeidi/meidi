@@ -85,7 +85,7 @@ if(!StringUtill.isNull(categoryID)){
       <% if(flag){ %>                                                                                                
       <a href="productAdd.jsp?categoryID=<%=categoryID%>&method=add&ptype=<%=category.getPtype()%>"><font style="color:blue;font-size:20px;" >添加产品</font></a>
       <% }%>
-      </td>   
+      </td>    
       <td> <a href="../DownloadServlet?name=productmuban&type=model"><font style="color:blue;font-size:20px;" >模板</font> </a></td> 
       <td align="center" > <font style="color:red;font-size:20px;" >导入数据 : </font></td>
       <td align="center" ><input id="File1"   name="UpLoadFile" type="file" /> </td>

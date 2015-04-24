@@ -49,7 +49,8 @@ public class DownloadServlet extends HttpServlet{
 		 
 		String name = request.getParameter("name");
 		String type = request.getParameter("type");
-		
+		//System.out.println("name = " +name);  
+		//System.out.println("type = " +type);   
 		String filename = "";
 		String filePath = "";
 		
@@ -60,14 +61,14 @@ public class DownloadServlet extends HttpServlet{
 		if(type == null || type.equals("")){
 			return;
 		}
-		
+		 
 		if(type.equals("uploadorder")){
 			//已经上传文件的下载
 			name = URLDecoder.decode(name,"utf-8");
 			filename = name + ".xls";
 			filePath = ExcelUpload.getSalesFilePath() + File.separator + UploadManager.getOrdersByName(name).get(0).getFileName();
 		}else if(type.equals("salarymodel")){
-			//已经上传文件的下载
+			//已经上传文件的下载 
 			name = URLDecoder.decode(name,"utf-8");
 			filename = name + ".xls";
 			filePath = ExcelUpload.getSalaryFilePath() + File.separator + UploadManager.getSalaryModelsByName(name).get(0).getFileName();
@@ -77,7 +78,7 @@ public class DownloadServlet extends HttpServlet{
 				filename = "系统对比模板.xls";
 				filePath = suningmubanPath;
 			}else if(name.equals("tichengmuban")){
-				filename = "提成标准模板.xls";
+				filename = "提成标准模板.xls"; 
 				filePath = tichengmubanPath;
 			}else if (name.equals("xiaoshoudanmuban")){
 				filename = "销售单模板.xls";
@@ -89,8 +90,12 @@ public class DownloadServlet extends HttpServlet{
 			}else if("productmuban".equals(name)){
 				filename = "上传产品模板.xls";
 				filePath = productmubanPath;
+			}else if("exportOrderGM".equals(name)){
+				String exportuuid = request.getParameter("exportuuid");
+				filename = exportuuid+".xls";
+				filePath = name;
 			}
-			
+			 
 		}
 	
 		System.out.println("path = " + filePath);
@@ -101,14 +106,14 @@ public class DownloadServlet extends HttpServlet{
 		response.setHeader("content-type", "application/xls");
 		response.addHeader("content-disposition", "attachment;filename="+filename);
 		InputStream is = sc.getResourceAsStream(filePath);
-		   
+		    
 	    int read = 0;
 	    byte[] bytes = new byte[1024];
-	   
+	     
 	    OutputStream os = response.getOutputStream();
 	    while((read = is.read(bytes)) != -1) {
 	        os.write(bytes, 0, read);
-	    }
+	    } 
 	    os.flush();
 	    os.close();
     }

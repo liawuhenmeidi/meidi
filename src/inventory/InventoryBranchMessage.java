@@ -12,15 +12,15 @@ public class InventoryBranchMessage {
 	private Branch branch;
 	private String time;
 
-	private String type; 
+	private String type;  
  
 	private int allotRealcount; 
    
 	private int allotPapercount; 
      
-	private int operatortype; // 0 表示出货 1 表示入库 ,收货 2 文员派单 4 安装公司释放
+	private int operatortype; // 0 表示出货 1 表示入库 ,收货 2 文员派单 4 安装公司释放 
 	// 11 安装公司派送货员 6 送货员释放 7 退货员拉回 8 文员同意退货 9 退货员释放 10 盘点记录 12 换货员确认换货
-	// 13 卖场入库    14  导购收货       15 卖场退货     16 导购退货 
+	// 13 卖场入库    14  导购收货       15 卖场退货     16 导购退货    17导购换货    18 实发退货库存修正  
 	private int realcount; // 实际库存
 
 	private int papercount; // 虚拟库存
@@ -227,8 +227,12 @@ public class InventoryBranchMessage {
 			 strtype = "导购收货";      
 		 }else if(operatortype == 16){ 
 			 strtype = "导购退货";    
-		 }else if(operatortype == 15){  
+		 }else if(operatortype == 15){   
 			 strtype = "卖场退货";
+		 }else if(operatortype == 17){  
+			 strtype = "导购换货";
+		 }else if(operatortype == 18){
+			 strtype = " 实发退货库存修正 ";
 		 }    
 
 		return strtype ;

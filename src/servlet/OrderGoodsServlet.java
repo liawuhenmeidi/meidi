@@ -81,6 +81,9 @@ public class OrderGoodsServlet extends HttpServlet {
 		int statues = -1;
 		// String oid = request.getParameter("oid");
 		String branchid = request.getParameter("branchid");
+		if(StringUtill.isNull(branchid)){ 
+			branchid = user.getBranchName(); 
+		} 
 		String id = request.getParameter("id");
 		String remark = request.getParameter("remark");
 		String opstatues = request.getParameter("opstatues");
@@ -134,13 +137,14 @@ public class OrderGoodsServlet extends HttpServlet {
 			
 		}else {
 			String[] rowss = rows.split(",");
-
+ 
 			for (int i = 0; i < rowss.length; i++) {
-				String row = rowss[i];
+				String row = rowss[i];   
 				String type = request.getParameter("product" + row);
-				Product p = ProductService.gettypemap(user).get(type);
-				int cid = p.getCategoryID();
-				int itype = p.getId();
+				
+				Product p = ProductService.gettypemap(user,branchid).get(type);
+				int cid = p.getCategoryID();  
+				int itype = p.getId(); 
 				String sta = request.getParameter("statues" + row);
 				String num = request.getParameter("orderproductNum" + row);
 				String invenNum = request.getParameter("papercount" + row);
@@ -169,7 +173,7 @@ public class OrderGoodsServlet extends HttpServlet {
 					}  
 					// op.setUuid(uuid);
 					list.add(op);
-				}
+				} 
 
 			}
 		}
@@ -177,7 +181,7 @@ public class OrderGoodsServlet extends HttpServlet {
 
 		oa.setOm(om);
 		oa.setList(list);
-
+// logger.info("one");   
 		if (OrderGoodsAllManager.save(user, oa)) {
 			try {
 				//logger.info(statues);
@@ -220,34 +224,41 @@ public class OrderGoodsServlet extends HttpServlet {
 			} else {
 				oa = OrderGoodsAllManager.getOrderGoodsAllByid(user, id,
 						Integer.valueOf(statues), type);
-			}
+			} 
 
 			list = oa.getList();
 		}
-
-		if (null != list) {
+		if (null != list) { 
 			for (int i = 0; i < list.size(); i++) {
-				OrderGoods og = list.get(i);
-				int ogid = og.getId();
-				int operatortype = 14;
+				OrderGoods og = list.get(i); 
+				int ogid = og.getId(); 
+				int operatortype = 18; 
 				String realsendnum = request.getParameter("realsendnum" + ogid);
+				String returnrealsendnum = request.getParameter("returnrealsendnum" + ogid);
+ 
 				int realcont = 0;
 				if (StringUtill.isNull(realsendnum)) {
 					realsendnum = "0";
 				} 
-				
+				if (StringUtill.isNull(returnrealsendnum)) {
+					returnrealsendnum = "0";  
+				}   
 				String sql = OrderGoodsManager.updaterealsendnum(user,
-						ogid, realsendnum);  
-				listsql.add(sql);   
-				if (og.getRealnum() != Integer.valueOf(realsendnum) && og.getStatues() != 5 ) {
-					realcont = (Integer.valueOf(realsendnum) - og.getRealnum());
-
-					if (og.getStatues() == 6 || og.getStatues() == 7
-							|| og.getStatues() == 8 || og.getStatues() == 9) {
-						realcont = -realcont;
-						operatortype = 16;
+						ogid, realsendnum,returnrealsendnum);  
+				 
+				listsql.add(sql);    
+				if ((og.getRealnum() != Integer.valueOf(realsendnum) || og.getStatues() == 4) && og.getStatues() != 5 ) {
+					   
+					if (og.getStatues() == 6 || og.getStatues() == 7 
+							|| og.getStatues() == 8 || og.getStatues() == 9) { 
+						realcont = -(Integer.valueOf(returnrealsendnum) - og.getRealnum());   
+					}else if(og.getStatues() == 4 ){  
+						realcont = (Integer.valueOf(realsendnum) - og.getRealnum() - Integer.valueOf(returnrealsendnum) );
+						   
+					} else {   
+						realcont = (Integer.valueOf(realsendnum) - og.getRealnum());
 					}
-
+  
 					String sqlIB = "";
 					String sqlIBM = ""; 
 

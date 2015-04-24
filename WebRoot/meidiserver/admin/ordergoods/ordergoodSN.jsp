@@ -1,13 +1,13 @@
 <%@ page language="java"   pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>
-<%    
+<%     
 request.setCharacterEncoding("utf-8");
 String type = request.getParameter("type"); 
 //System.out.println(type);  
 String branchtype = request.getParameter("branchtype");
 String[] ids = request.getParameterValues("omid");        
 String[] statues = request.getParameterValues("statues");  
-    
+     
 Map<String,InventoryBranch> map = InventoryBranchManager.getmapTypeBranch(StringUtill.getStr(ids));
 List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.examine,ids,statues,branchtype);  
  // System.out.println(StringUtill.GetJson(map));      
@@ -112,9 +112,22 @@ function check(num){
 				//System.out.println(og.getTid()+"_"+o.getOm().getBranchid());
 				 InventoryBranch in = map.get(og.getTid()+"_"+o.getOm().getBranchid());
 				 String serialnumber = og.getSerialnumber();
-					if(StringUtill.isNull(serialnumber)){
-						serialnumber =Company.supply; 
-					}
+				 BranchType bt = null ; 
+					if(!StringUtill.isNull(branchtype)){
+						bt = BranchTypeManager 
+								.getLocate(Integer.valueOf(branchtype));
+					} 
+					 
+				 if (ExportModel.SuNing == bt.getExportmodel()) {
+					 if(StringUtill.isNull(serialnumber)){
+							serialnumber =Company.supply; 
+						}
+					} else if (ExportModel.GuoMei == bt.getExportmodel()) {
+						if(StringUtill.isNull(serialnumber)){
+							serialnumber =Company.supplyGM; 
+						}
+					} 
+					
 				
 				int InNum = 0;
 				

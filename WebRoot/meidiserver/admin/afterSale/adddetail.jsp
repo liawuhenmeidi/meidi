@@ -1,5 +1,5 @@
 <%@ page language="java"  pageEncoding="UTF-8" import="aftersale.*" contentType="text/html;charset=utf-8"%>
-<%@ include file="../../common.jsp"%>  
+<%@ include file="../../common.jsp"%>   
 <%  
 List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend); //UserService.getsencondDealsend(user);
     

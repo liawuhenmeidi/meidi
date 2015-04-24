@@ -33,10 +33,12 @@ public class OrderGoods {
 	private String statuesName;
 	private String Branch;
 	private String billingtime;
-	private int realsendnum;
+	private int realsendnum; 
+	private int returnrealsendnum;
 	private String effectiveendtime;
     private String serialnumber;    
-      
+    private String exportuuid; 
+    
 	public int getRealsendnum() {
 		return realsendnum;
 	}
@@ -185,6 +187,17 @@ public class OrderGoods {
 		return Branch;
 	}
 
+	public String getBranchGM() { 
+		if (1 == statues) { 
+			Branch = "正常";
+		} else if (2 == statues) { 
+			Branch = "一步到位机";
+		} else { 
+			Branch = ""; 
+		}
+		return Branch; 
+	}
+	
 	public String getStatuesName() { 
 		if (1 == statues) {  
 			statuesName = "常规机订货"; 
@@ -285,6 +298,22 @@ public class OrderGoods {
  
 	public void setSerialnumber(String serialnumber) {
 		this.serialnumber = serialnumber;
+	}
+
+	public int getReturnrealsendnum() {
+		return returnrealsendnum;
+	}
+
+	public void setReturnrealsendnum(int returnrealsendnum) {
+		this.returnrealsendnum = returnrealsendnum;
+	}
+
+	public String getExportuuid() {
+		return exportuuid;
+	}
+ 
+	public void setExportuuid(String exportuuid) {
+		this.exportuuid = exportuuid;
 	}
 
 }

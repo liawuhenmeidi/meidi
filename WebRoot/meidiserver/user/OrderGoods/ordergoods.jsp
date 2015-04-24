@@ -1,9 +1,9 @@
 <%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>
-    
-<%      
-//long start= System.currentTimeMillis();  
-List<String> listallp = ProductService.getlistall(user);
+     
+<%         
+//long start= System.currentTimeMillis();     
+List<String> listallp = ProductService.getlistsale(user); 
 //System.out.println("qa"+(System.currentTimeMillis() - start));  
 String listallpp = StringUtill.GetJson(listallp);  
 OrderGoodsAll oa = null;
@@ -14,9 +14,9 @@ if(!StringUtill.isNull(id)){
 	oa = OrderGoodsAllManager.getOrderGoodsAllByid(user,id);
 	list = oa.getList(); 
 	remark = oa.getOm().getRemark();
-} 
+}  
  
-Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user.getBranch());
+Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,user.getBranch());
 String jsoninventory = StringUtill.GetJson(map);
 String json = StringUtill.GetJson(list); 
 // System.out.println(json); 
@@ -275,18 +275,17 @@ String json = StringUtill.GetJson(list);
 		 addcount(); 
 	 }
 	  
- 
- function check(){
+    
+ function check(){   
 	 ctypes = new Array();  
-	if(rows.length <1){ 
+	if(rows.length <1){  
 		alert("没有记录可以提交");  
-		return false ;
-	}else {
-		for(var i=0;i<row;i++){ 
+		return false ; 
+	}else {  
+		for(var i=0;i<row;i++){  
 			if($.inArray(i,rows) == -1){
-				var type =  $("#product"+i).val();
-				//alert(type);
-				if("" != type){  
+				var type =  $("#product"+i).val(); 
+				if("" != type){   
 					alert("您有产品未选择状态，请检查");
 					return false;
 				}

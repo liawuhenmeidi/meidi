@@ -421,7 +421,7 @@ public class LogisticsServlet extends HttpServlet {
 		    	}else if(1 == statues) {  
 					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 ,  printSatuesp = 0 , sendTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
 				}else if( 4 == statues ){
-					statues = 2 ;    
+					statues = 2 ;     
 					sql = "update mdorder set deliveryStatues = "+statues+"  , deliverytype = 2 , installTime = '"+TimeUtill.gettime()+"'  where id = " + order.getId();
 				}else if( 9 == statues || 10 == statues){
 					listop = OrderProductManager.getsql(json);

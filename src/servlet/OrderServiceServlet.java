@@ -105,9 +105,9 @@ public class OrderServiceServlet extends HttpServlet {
     		if(Integer.valueOf(statues) == Order.over){  
     			html = OrderService.getHtmlOver(user,list);
     		}else if(Integer.valueOf(statues) == Order.serach){
-    			long start = System.currentTimeMillis();
+    			//long start = System.currentTimeMillis(); 
     			html = OrderService.getHtmlSearch(user,list);
-    			logger.info(System.currentTimeMillis() - start); 
+    			//logger.info(System.currentTimeMillis() - start); 
     		}else if(Integer.valueOf(statues) == Order.orderDispatching || Integer.valueOf(statues) == Order.returns || Integer.valueOf(statues) == Order.neworder || Integer.valueOf(statues) == Order.release){
     			html = OrderService.getHtmlDispatching(user,list);
     		}else if(Integer.valueOf(statues) == Order.repareorderDispatching){

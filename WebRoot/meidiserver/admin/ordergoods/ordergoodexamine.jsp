@@ -8,7 +8,7 @@ List<BranchType> listgt = BranchTypeManager.getLocate();
 //System.out.println(StringUtill.GetJson(listgt ));  
 Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.examine); 
  // System.out.println(StringUtill.GetJson(map));
-%>
+%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -83,13 +83,15 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 		if(2 == num){
 			var id = attract.toString();
 			 var statues = attracts.toString();
-			//alert(id);  
-			//alert(statues);
-			 
-			//return ; 
-			 $.ajax({   
-			        type: "post",  
-			         url: "../../Print",  
+			//alert(id);    
+			//alert(statues);  
+			 $("input[type='button'][name='button']").each(function() {
+				 $(this).css("display","none");
+			 });  
+			//return ;    
+			 $.ajax({    
+			        type: "post",   
+			         url: "../../Print",   
 			         data:"method=billing&ids="+id+"&statues="+statues+"&typestatues=2", 
 			         dataType: "",   
 			         success: function (data) { 
@@ -210,7 +212,7 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 									
 									<%
 								}
-							}
+							} 
 				%>
 				<tr class="asc"
 					ondblclick="detail('ordergoodsdetail.jsp?id=<%=key%>&type=<%=OrderMessage.examine%>&statues=<%=OrderMessage.unexamine%>')">
@@ -227,11 +229,11 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 					}
 					}
 				%>
-
-				<tr class="asc">
-					<td align="center" colspan=5><input type="button" value="生成订单"
-						onclick="check(0)" /> <input type="button" value="生成退货单"
-						onclick="check(1)" /> <input type="button" value="忽略"
+ 
+				<tr class="asc"> 
+					<td align="center" colspan=5><input type="button" name="button" value="生成订单"
+						onclick="check(0)" /> <input type="button" name="button" value="生成退货单"
+						onclick="check(1)" /> <input type="button" name="button" value="忽略"
 						onclick="check(2)" />
 					</td>
 				</tr>

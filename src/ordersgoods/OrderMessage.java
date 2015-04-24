@@ -99,8 +99,8 @@ public class OrderMessage {
 	}
 
 	public String getBranchname() {
-		if(branchid != 0 ){  
-			System.out.println("branchid"+branchid);
+		if(branchid != 0 ){   
+			//System.out.println("branchid"+branchid);
 			branchname = BranchService.getMap().get(branchid).getLocateName();
 		}  
 		return branchname; 

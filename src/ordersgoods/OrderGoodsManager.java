@@ -79,9 +79,9 @@ public class OrderGoodsManager {
 					  Map.Entry<String,String> mapent = it.next();
 					  value = mapent.getValue(); 
 				  } 
-		    }
-		     
-			DBUtill.sava(list);
+		    } 
+		       
+			// DBUtill.sava(list);
 		   String sql = "insert into mdordergoods (id,oid,submitid,submittime,cid,tid,statues,ordernum,realnum,opstatues,uuid,mid,billingstatues,serialnumber) " +
 				   		"values ("+og.getId()+","+og.getOid()+",'"+og.getSubmitid()+"','"+og.getSubmittime()+"','"+og.getCid()+"','"+og.getTid()+"','"+og.getStatues()+"','"+og.getOrdernum()+"','"+og.getRealnum()+"','"+og.getOpstatues()+"','"+og.getUuid()+"',"+oa.getOm().getId()+","+og.getBillingstatues()+",'"+value+"') ;" ; 
 		   list.add(sql); 
@@ -141,10 +141,10 @@ public class OrderGoodsManager {
 	   return list ;
    }
     
-  public static String updaterealsendnum(User user ,int ogid,String realsendnum){
-	   
-	  String sql = " update mdordergoods set realsendnum = "+realsendnum + " ,billingstatues = 2  where id = " + ogid;
-	  return sql ; 
+  public static String updaterealsendnum(User user ,int ogid,String realsendnum,String returnrealsendnum){
+	    
+	  String sql = " update mdordergoods set realsendnum = "+realsendnum + " ,returnrealsendnum = "+returnrealsendnum+" ,billingstatues = 2  where id = " + ogid;
+	  return sql ;  
   }   
     
   public static String updateIOS(String name,int type ,String oid,String time){ 
@@ -253,19 +253,21 @@ public class OrderGoodsManager {
 			p.setId(rs.getInt("mdordergoods.id")); 
 			p.setOid(rs.getString("mdordergoods.oid")); 
 			p.setOpstatues(rs.getInt("mdordergoods.opstatues"));
-			p.setBillingstatues(rs.getInt("mdordergoods.billingstatues"));
-			p.setOrdernum(rs.getInt("mdordergoods.ordernum"));
-			p.setRealnum(rs.getInt("mdordergoods.realnum"));
-			p.setStatues(rs.getInt("mdordergoods.statues"));
-			p.setSubmitid(rs.getInt("mdordergoods.submitid"));
-			p.setSubmittime(rs.getString("submittime"));
-			p.setUuid(rs.getString("mdordergoods.uuid"));
-			p.setTid(rs.getInt("mdordergoods.tid")); 
-			p.setUuidtime(rs.getString("mdordergoods.uuidtime"));
+			p.setBillingstatues(rs.getInt("mdordergoods.billingstatues")); 
+			p.setOrdernum(rs.getInt("mdordergoods.ordernum")); 
+			p.setRealnum(rs.getInt("mdordergoods.realnum")); 
+			p.setStatues(rs.getInt("mdordergoods.statues"));  
+			p.setSubmitid(rs.getInt("mdordergoods.submitid")); 
+			p.setSubmittime(rs.getString("submittime"));   
+			p.setUuid(rs.getString("mdordergoods.uuid"));  
+			p.setTid(rs.getInt("mdordergoods.tid"));   
+			p.setUuidtime(rs.getString("mdordergoods.uuidtime")); 
 			p.setRealsendnum(rs.getInt("mdordergoods.realsendnum"));
 			p.setEffectiveendtime(rs.getString("effectiveendtime"));
 			p.setSerialnumber(rs.getString("serialnumber"));   
-			p.setCid(rs.getInt("cid"));    
+			p.setCid(rs.getInt("cid"));            
+			p.setReturnrealsendnum(rs.getInt("returnrealsendnum"));
+			p.setExportuuid(rs.getString("exportuuid")); 
 		    //p.setNexttime(rs.getString("nexttime"));
 		} catch (SQLException e) {    
 			e.printStackTrace();

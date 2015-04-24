@@ -697,11 +697,13 @@ public class OrderGoodsAllManager {
 									|| og.getStatues() == 9) {
 								realsendnum = -realsendnum;
 								operatortype = 16;
+							}else if(og.getStatues() == 4){
+								operatortype = 17;
 							} 
  
-							String sqlIB = "";
-							String sqlIBM = "";
-                           if(og.getStatues() != 5){
+							String sqlIB = "";  
+							String sqlIBM = "";  
+                           if(og.getStatues() != 5){  
                         	   if (null == InventoryBranchManager.getInventoryID(
    									user, oa.getOm().getBranchid(), og.getTid()
    											+ "") && !flag ) {

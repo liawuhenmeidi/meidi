@@ -94,8 +94,8 @@ function inventory(inventory,type){
 		 window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }else if(type == 13 || type == 15 ){  
 		 window.open('../receivegoods/receivegoodsdetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
-		  
-	 }else if(type == 14 || type == 16){ 
+		    
+	 }else if(type == 14 || type == 16 || type == 17 || type == 18 ){ 
 		 window.open('../ordergoods/ordergoodsdetail.jsp?id='+inventory+'&type=<%=OrderMessage.all%>&statues=<%=OrderMessage.billing%>', 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }else{ 
 		// window.location.href='dingdanDetail.jsp?id='+inventory; 

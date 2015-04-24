@@ -1,7 +1,7 @@
 package aftersale;
 
 import group.Group; 
-
+ 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException; 
@@ -154,11 +154,17 @@ public class AfterSaleManager {
 					// logger.info(maxid);
 					if (null == as) {
 						as = new AfterSale();
+						String time = TimeUtill.getdateString();
+						if(!StringUtill.isNull(or.getInstalltime())){
+							time = or.getInstalltime();
+						}else if(!StringUtill.isNull(or.getSendtime())){
+							time = or.getSendtime();
+						}
 						as.setId(maxid);
 						as.setOpid(op.getId());
 						as.setPrintid(or.getPrintlnid());
 
-						as.setAndate(StringUtill.isNull(or.getInstalltime())?or.getSendtime():or.getInstalltime());
+						as.setAndate(time);
 						as.setBarcode(op.getBarcode());
 						as.setBatchNumber(op.getBatchNumber());
 						as.setBranch(or.getBranch());
@@ -255,11 +261,17 @@ public class AfterSaleManager {
 
 						if (null == as) {
 							as = new AfterSale();
+							String time = TimeUtill.getdateString();
+							if(!StringUtill.isNull(or.getInstalltime())){
+								time = or.getInstalltime();
+							}else if(!StringUtill.isNull(or.getSendtime())){
+								time = or.getSendtime();
+							}
 							as.setId(maxid);
 							as.setOpid(op.getId());
 							as.setPrintid(or.getPrintlnid());
  
-							as.setAndate(StringUtill.isNull(or.getInstalltime())?or.getSendtime():or.getInstalltime());
+							as.setAndate(time);
 							as.setBarcode(op.getBarcode());
 							as.setBatchNumber(op.getBatchNumber());
 							as.setBranch(or.getBranch());
@@ -335,11 +347,17 @@ public class AfterSaleManager {
 
 						if (null == as) {
 							as = new AfterSale();
+							String time = TimeUtill.getdateString();
+							if(!StringUtill.isNull(or.getInstalltime())){
+								time = or.getInstalltime();
+							}else if(!StringUtill.isNull(or.getSendtime())){
+								time = or.getSendtime();
+							}
 							as.setId(maxid);
 							as.setOpid(op.getId());
 							as.setPrintid(or.getPrintlnid());
 
-							as.setAndate(StringUtill.isNull(or.getInstalltime())?or.getSendtime():or.getInstalltime());
+							as.setAndate(time);
 							as.setBarcode(op.getBarcode());
 							as.setBatchNumber(op.getBatchNumber());
 							as.setBranch(or.getBranch());
@@ -384,6 +402,7 @@ public class AfterSaleManager {
 						// asp.setDealsendid(!StringUtill.isNull(or.getSendId()+"")?or.getSendId():or.getInstallid());
 						asp.setDealsendid(or.getInstallid() != 0 ? or
 								.getInstallid() : or.getSendId());
+						
 						List<String> listsql1 = AfterSaleProductManager
 								.getsaveSQL(user, asp);
 						list.addAll(listsql1);

@@ -1,18 +1,9 @@
 <%@ page language="java" import="java.util.*,java.net.*,product.*,utill.*,category.*,gift.*,aftersale.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
-<%   
- 
+<%  
+  
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
-
-TokenGen.getInstance().saveToken(request);
- 
-String token = (String)session.getAttribute("token"); 
-//Cookie Cookies[]=request.getCookies();
-
-//String sear = "";
-
-//sear = CookieUtill.isRight(Cookies, "sear");
 
 // 用户id 
 int id = user.getId();

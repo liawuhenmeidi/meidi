@@ -125,7 +125,7 @@ public class InventorySN {
 		if (null != b) {
 			branchNum = BranchService.getNameMap().get(branch).getEncoded();
 		}
-
+ 
 		logger.info(Goodsnum + "__" + branchNum + "__" + branch+"__"+statues);
 
 		if ("7".equals(statues) || "8".equals(statues)) { 
@@ -229,7 +229,7 @@ public class InventorySN {
 						branchName, 1);
 			}
 			// logger.info(responseContent);
-
+ 
 			int num = getNum(responseContent);
 			// num = 1 ;
 			// logger.info(num);
@@ -266,13 +266,19 @@ public class InventorySN {
  
 							if (!td.isEmpty() && td.size() > 0) {
     
-								String s = td.get(1).text();
+								String s = td.get(1).text(); 
 								String serialnumber =td.get(7).text(); 
-								map.put(id, serialnumber); 
-								//logger.info(s);     
-								if (branchName.equals(s)) {  
-									realtd.add(td.get(4));
-									realtd.add(td.get(1));
+								map.put(id, serialnumber);   
+								Branch b = BranchService.getNameMap().get(branchName);
+								//logger.info(b);   
+								String str = b.getNameSN();
+								//logger.info(str);    
+								//branchName = b.getNameSN();
+								//logger.info(s);       
+								//logger.info(branchName);  
+								if (str.equals(s)) {   
+									realtd.add(td.get(4)); 
+									realtd.add(td.get(1)); 
 									realtd.add(td.get(6));
 									realtd.add(td.get(7)); 
 									list.add(realtd.toString());

@@ -2,7 +2,7 @@
 <%@ include file="../../common.jsp"%>
     
 <%         
-  
+   
 OrderGoodsAll oa = null;  
 List<OrderGoods> list = null; 
 String id = request.getParameter("id"); 
@@ -38,10 +38,10 @@ if(!StringUtill.isNull(id)){
 	branchname = oa.getOm().getBranchname();
 	remark = oa.getOm().getRemark(); 
 	list = oa.getList(); 
-} 
+}  
 
 String branchid = BranchService.getNameMap().get(branchname).getId()+"";
-Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(branchid);
+Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,branchid);
 String jsoninventory = StringUtill.GetJson(map); 
 String json = StringUtill.GetJson(list); 
 // System.out.println(json); 
@@ -104,8 +104,9 @@ String json = StringUtill.GetJson(list);
            <td align=center width="10%">未入库数量</td>  
            <td align=center width="20%"> 订货数</td>  
             <td align=center width="20%">订单数</td>    
-           <td align=center width="20%">实际发货数</td>    
-          </tr> 
+           <td align=center width="20%">实际发货数</td> 
+           <td align=center width="20%">实际退货数</td>      
+          </tr>  
           <%
           
           int realcount = 0 ;
@@ -130,8 +131,9 @@ String json = StringUtill.GetJson(list);
 	     <td align=center ><%= og.getRealnum() %></td> 
 	     <td align=center ><%=  InNum+og.getRealnum()%></td> 
 	      <td align=center ><%=  og.getRealsendnum() %></td> 
-	     </tr>
-        	  
+	       <td align=center ><%=  og.getReturnrealsendnum() %></td> 
+	     </tr> 
+        	   
         	  <%
           } %> 
           <tr class="asc"> 
@@ -141,6 +143,7 @@ String json = StringUtill.GetJson(list);
 	     <td align=center><%= incount %></td>  
 	     <td align=center ><%= realcount %></td> 
 	     <td align=center ><%= ordercount %></td> 
+	     <td align=center ></td> 
 	     <td align=center ></td> 
 	     </tr>
           

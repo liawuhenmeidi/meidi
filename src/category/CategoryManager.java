@@ -450,11 +450,11 @@ logger.info(sql);
 				DB.close(conn);
 			}
 			return flag ;
-		}
+		} 
 		
 		private static Category getCategoryFromRs(ResultSet rs){
 			Category c = new Category();
-			try { 
+			try {  
 				c.setId(rs.getInt("id"));  
 				c.setName(rs.getString("categoryname"));  
 				c.setPid(rs.getInt("pid"));  

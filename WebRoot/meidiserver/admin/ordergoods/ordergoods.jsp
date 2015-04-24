@@ -2,15 +2,15 @@
 	contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>
 
-<% 
-
+<%     
+      
 List<BranchType> listgt = BranchTypeManager.getLocate(); 
 String id = request.getParameter("id"); 
 String statues = request.getParameter("statues");
 String type = request.getParameter("type");
-String message = "导购订货单";  
+String message = "导购订货单";   
 //System.out.println(statues+"&&"+type);
-OrderGoodsAll oa = null;  
+OrderGoodsAll oa = null;   
 List<OrderGoods> list = null; 
 String branchname = "";
 String remark = "";       
@@ -28,7 +28,8 @@ if(!StringUtill.isNull(id)){
   
 Map<String, List<String>> map = BranchService.getPtypeMap();
 String branchtype = StringUtill.GetJson(map);
-String json = StringUtill.GetJson(list);  
+String json = StringUtill.GetJson(list); 
+
 // System.out.println(json); 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -53,7 +54,7 @@ String json = StringUtill.GetJson(list);
   var jsonallp = null;
   var jsoninventory = null;
   var jsons = <%=json%>;  
- //alert(listall);
+ //alert(listall); 
    var map = <%=branchtype%>
  var row = 10;    
  var rows = new Array();
@@ -70,9 +71,7 @@ String json = StringUtill.GetJson(list);
 			 source: map[branchtype]
 		    }); 
 	 });  
-	   
-	 
-	 
+
 	 var num = jsons.length;
 	  
 	 if(num > 10){
@@ -171,11 +170,11 @@ String json = StringUtill.GetJson(list);
 		rows.push(i); 
 		var only = json.tname+"_"+json.statues; 
 		ctypes.push(only);   
-	 } 
+	 }  
 	 addcount();
- }
- 
- function addrowinti(){
+ } 
+   
+ function addrowinti(){ 
 	//  alert(rows); 
 	 for(var i=0;i<row;i++){  
 		 if($.inArray(i,rows) == -1){ 
@@ -209,10 +208,7 @@ String json = StringUtill.GetJson(list);
 			 return ; 
 		 }
 	 }  
-	 if(rows.length == 10){
-		 row = 15;
-		 addrowinti();
-	 }
+	  
 	 $("#addcount").html(totalcount);
  }
   
@@ -249,9 +245,9 @@ String json = StringUtill.GetJson(list);
 	//$("#product"+row).css("width",$("#td"+row).css("width"));
 	
 	
-	//$("#product"+row).autocomplete({  
-		// source: jsonallp
-	  //  });    
+	$("#product"+row).autocomplete({  
+		 source: jsonallp
+	    });     
 	  
 	$("#product"+row).blur(function (){
 		initctypes(row); 
@@ -351,11 +347,16 @@ String json = StringUtill.GetJson(list);
  }
   
  
-  function  initctypes(row){  
-	   rows.deleteEle(); 
-	   ctypes = new Array();   
+  function  initctypes(num){  
+	   rows.deleteEle();  
+	   ctypes = new Array(); 
+	   if(rows.length == row){   
+		    row = row +5;    
+			addrowinti(); 
+		 } 
+	   
 	   for(var i=0;i<rows.length;i++){
-		   if(i != row){  
+		   if(i != num){  
 			   var ctype = $("#product"+rows[i]).val();
 			   var statues = $("#statues"+rows[i]).val();
 			   if($.inArray(ctype,jsonallp) != -1  && statues != ""){

@@ -83,10 +83,10 @@ var jsoninventory = <%=jsoninventory%>;
  
  $(function () {   
 	 
-	 $("#branchid").change(function(){
-		 var str = $("#branchid").find("option:selected").text();
-		 $("#branchid").val(str);
-	 });
+	 //$("#branchid").change(function(){
+	//	 var str = $("#branchid").find("option:selected").text();
+		// $("#branchid").val(str);
+	// });
 	 
 	 $("#branchid").autocomplete({ 
 		 source: jsonall
