@@ -10,7 +10,7 @@ public class OrderReceipt {
 
 	private int id;
 	private String receveid; // 苏宁收货单号  || 苏宁发货单号
-	private String receveTime; // 收货日期  || 苏宁发货日期
+	private String receveTime; // 退货订单日期 
 	private String sendid; // 供应商发货单号
 	private String buyid;  // 退货订单号  
 	private String ordertype; // 退货订单类型
@@ -18,7 +18,7 @@ public class OrderReceipt {
 	private String goodsName; // 商品名称
 	private int cid;  
 	private int tid;  
-	private int bid;
+	private int bid; 
 	private int orderNum ; // 订单数量
 	private int recevenum; //  实发数量
 	private int refusenum;// 仍需数量

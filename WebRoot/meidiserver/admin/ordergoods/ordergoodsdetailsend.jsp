@@ -34,12 +34,13 @@ String json = StringUtill.GetJson(list);
 <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=yes"/> 
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>产品管理</title>
+<title>产品管理</title> 
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <link rel="stylesheet" href="../../css/jquery-ui.css"/> 
 <script type="text/javascript" src="../../js/jquery-ui.js"></script>
-
+ 
 <script type="text/javascript">
  
   var jsons = <%=json%>;
@@ -96,11 +97,12 @@ String json = StringUtill.GetJson(list);
 	  rows.push(row);
 	  var json = jsons[row]; 
 	  $("#uuid").text(json.uuid);
-	  
+	   
 	  var cl = 'class="asc"';
 	  
 	  var str = '<tr '+cl+'>' +    
-	     ' <td align=center   >'+(row*1+1*1)*1+'</td> '+
+	     ' <td align=center   ><input type="checkbox" name="ogid" value="'+json.id+'"></td> '+
+	     ' <td align=center   >'+(row*1+1*1)*1+'</td> '+  
 	     ' <td  align=center >'+json.tname+'</td> ' +    
 	     '<td  align=center >'+json.statuesName+'</td>'+    
 	     '<td align=center>0</td>'+  
@@ -140,6 +142,24 @@ String json = StringUtill.GetJson(list);
              
   
  function check(){ 
+	 var attract = new Array(); 
+	 var j = 0 ;
+	 $("input[type='checkbox'][name='ogid']").each(function() {
+			if ($(this).attr("checked")) {
+				var str = this.value;
+  
+				if (str != null && str != "") {
+					 attract[j] = str; 
+					  j++; 
+				}
+			} 
+		});
+	   
+	 if(attract.length <1){
+		 return false;
+	 }
+	  
+	  
 	 for(var i=0;i<row;i++){
 		 var json = jsons[i];  
 		 var realnum = json.realnum;
@@ -195,20 +215,24 @@ String json = StringUtill.GetJson(list);
         <td  align=center> 
         <%=branchname %> 
         </td> 
-        <td  align=center> 
-         单号：    
+        <td  align=center>  
+         单号：    <%=oa.getOm().getId()%> 
         </td> 
        <td align=center>
-       日期：<%=TimeUtill.getdateString() %>
-       </td>
+       日期：<%=oa.getOm().getSubmittime() %>
+       </td> 
         </tr>      
        <tr class="asc">    
        <td colspan=4 align=center> 
         <table   style="width:100% "  id="Ntable" >
          <tr class="dsc">     
+          <td align=center width="5%" ><input
+						type="checkbox" value="" id="allselect"
+						onclick="seletall(allselect)"></input></td> 
            <td align=center width="5%"   >编号</td> 
+           
            <td align=center width="20%" > 产品型号</td> 
-           <td align=center width="25%" >状态</td>  
+           <td align=center width="20%" >状态</td>  
             
            <td align=center width="10%">未入库数量</td>  
            <td align=center width="20%"> 订货数</td>  

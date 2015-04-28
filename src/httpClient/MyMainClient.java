@@ -41,23 +41,26 @@ public class MyMainClient{
 		} catch (Exception e) { 
 			// TODO Auto-generated catch block
 			e.printStackTrace(); 
-		}    
+		}     
 	}           
-                   
+                    
 	public synchronized void startinventoryIN(MyMainClient mc){ 
-		try {            
+		try {             
 			String starttime = TimeUtill.getdateString();     
 			String endtime  = TimeUtill.getdateString();   
-			//starttime = "2015-04-12";           
-			//endtime = "2015-04-09";           
-			 
+			//starttime = "2015-04-01";            
+			//endtime = "2015-04-08";                
+			                          
+			inventoryOrder.getinventoryOut(starttime,endtime,mc);
+			inventoryOrder.getinventoryOutModel(starttime,endtime,mc);
+			            
 			inventoryIN.getinventoryOut(starttime,endtime,mc); 
 			inventoryIN.getinventoryOutModel(starttime,endtime,mc); 
 			inventoryIN.getinventoryIN(starttime,endtime,mc);
-			    
-		//	inventoryOrder.getinventoryOut(starttime,endtime,mc);
+			                     
+			 
 		   // 样机退货数据未采集 
-		} catch (Exception e) {   
+		} catch (Exception e) {    
 			logger.info(e); 
 		}   
 	} 

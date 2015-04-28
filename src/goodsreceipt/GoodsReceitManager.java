@@ -25,7 +25,8 @@ import utill.TimeUtill;
 
 public class GoodsReceitManager {
 	protected static Log logger = LogFactory.getLog(GoodsReceitManager.class);
-
+    
+	
 	public static List<String> saveIN(GoodsReceipt gr) {
 		User user = new User();
 		boolean flag = true;
@@ -164,18 +165,19 @@ public class GoodsReceitManager {
 		list.add(sql);
 		return list;
 	}
-
+  
 	public static List<String> saveOut(GoodsReceipt gr) {
 		User user = new User();
 		boolean flag = true;
 		List<String> list = new ArrayList<String>();
-  
+          
 		//logger.info(gr.getTid() + "***" + gr.getBid());
 		if (gr.getTid() == 0 || gr.getBid() == 0) {
 			gr.setDisable(1);
-			flag = false;
-		}
-
+			flag = false;  
+		}   
+        String sqlup = OrderReceitManager.update(gr);
+         
 		String sql = " insert into goodsreceipt (id,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,recevenum,refusenum,branchid,branchname,uuid,disable,statues)"
 				+ " values ('"
 				+ gr.getId()
@@ -294,8 +296,8 @@ public class GoodsReceitManager {
 						+ "')*1"
 						+ -Integer.valueOf(gr.getRecevenum()) + ")";
 
-			}
-
+			}    
+			list.add(sqlup); 
 			list.add(sqlIB);
 			list.add(sqlIBM);
 		}
@@ -326,8 +328,10 @@ public class GoodsReceitManager {
 
 		if (flag) {
 			String sql = "update goodsreceipt set disable = 0 where id =  "
-					+ gr.getId();
-
+					+ gr.getId(); 
+             
+			String sqlup = OrderReceitManager.update(gr); 
+			   
 			String sqlIB = "";
 			String sqlIBM = "";
 			if (null == InventoryBranchManager.getInventoryID(user,
@@ -428,12 +432,13 @@ public class GoodsReceitManager {
 						+ ",(select papercount from mdinventorybranch where branchid = "
 						+ gr.getBid() 
 						+ " and  type = '"
-						+ gr.getTid()
+						+ gr.getTid() 
 						+ "')*1"
 						+ papermark + Integer.valueOf(gr.getRecevenum()) + ")";
 
 			}
-			list.add(sql); 
+			list.add(sql);  
+		    list.add(sqlup);  
 			list.add(sqlIB);
 			list.add(sqlIBM);
 		}
@@ -722,7 +727,7 @@ public class GoodsReceitManager {
 					}
 				}
 			}
-		}
+		} 
 		// logger.info(map); 
 		flag = saveOut(map,starttime, endtime);   
 		// GoodsReceitManager.map = map; 
@@ -769,7 +774,7 @@ public class GoodsReceitManager {
 				if (null == db) {
 					List<String> sql = saveOut(gr);
 					list.addAll(sql);
-				}
+				} 
 			}
 		}
 

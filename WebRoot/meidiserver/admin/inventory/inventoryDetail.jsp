@@ -131,9 +131,9 @@ function inventory(inventory,type){
      			<td align="center">日期</td> 
      			<td align="center">型号</td>
      			<td align="center">上报状态</td>   
-     			<td align="center">操作类型</td>  
-     			<td align="center">安装网点：账面调拨数量<P>销售门店：未入库数量</td>
-     			<td align="center">账面库存数量</td> 
+     			<td align="center">操作类型</td>   
+     			<td align="center">账面调拨数量</td>
+     			<td align="center">安装网点：账面库存数量<P>销售门店：未入库数量</td> 
      			<td align="center">实际调拨数量</td>
      			<td align="center">实际库存数量</td>
 		</tr>      

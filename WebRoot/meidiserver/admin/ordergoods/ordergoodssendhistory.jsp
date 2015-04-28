@@ -1,7 +1,7 @@
 <%@ page language="java"  import="java.util.*,ordersgoods.*,product.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%    
 request.setCharacterEncoding("utf-8");
-User user = (User)session.getAttribute("user"); 
+User user = (User)session.getAttribute("user");      
 Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getsendmap(user,OrderMessage.billing); 
  // System.out.println(StringUtill.GetJson(map));     
 %>             
@@ -70,13 +70,14 @@ function check(){
 <table width="100%" border="0" cellspacing="1"  id="Ntable"> 
   <tr class="dsc">  
   <td width="10%" class="s_list_m"  align="center"><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></td>    
+      <td   class="s_list_m" align="center">单号</td>
     <td   class="s_list_m" align="center">门店</td>
     <td   class="s_list_m" align="center">导购</td>
     <td   class="s_list_m" align="center">订单时间</td>
     <td   class="s_list_m" align="center">发货时间</td>
   </tr>  
    <%    
-   if(null != map){   
+   if(null != map){    
 	   Set<Map.Entry<String,OrderGoodsAll>> mapent = map.entrySet();
 		Iterator<Map.Entry<String,OrderGoodsAll>> itmap = mapent.iterator();
 		int i = 0 ; 
@@ -89,6 +90,7 @@ function check(){
   %>                
 <tr class="asc" ondblclick="detail('ordergoodsdetail.jsp?id=<%=key%>&type=<%=OrderMessage.all%>&statues=<%=OrderMessage.billing%>')">  
 	 <td align="center"><input type="checkbox"  value="<%=o.getOm().getId() %>"  name="omid" id="check_box"></input></td>
+	 <td align="center"><%=o.getOm().getId() %></td> 
 	 <td align="center"><%=o.getOm().getBranchname()%></td>   
      <td align="center"><%=o.getOm().getUser().getUsername()%></td> 
      <td align="center"><%= o.getOm().getSubmittime()%></td>  
@@ -100,7 +102,7 @@ function check(){
     }%>
     
     <tr class="asc"> 
-    <td align="center" colspan=5>
+    <td align="center" colspan=6>
       <input type="submit" id="submit" value="开单发货" /></td> 
     </tr>
     

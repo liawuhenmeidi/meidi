@@ -1,5 +1,5 @@
 package servlet;
-  
+
 import inventory.InventoryBranchManager;
 import inventory.InventoryManager;
 
@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,7 +37,7 @@ import branch.BranchService;
 
 import product.Product;
 import product.ProductService;
-  
+
 /**
  * 核心请求处理类
  * 
@@ -81,9 +82,9 @@ public class OrderGoodsServlet extends HttpServlet {
 		int statues = -1;
 		// String oid = request.getParameter("oid");
 		String branchid = request.getParameter("branchid");
-		if(StringUtill.isNull(branchid)){ 
-			branchid = user.getBranchName(); 
-		} 
+		if (StringUtill.isNull(branchid)) {
+			branchid = user.getBranchName();
+		}
 		String id = request.getParameter("id");
 		String remark = request.getParameter("remark");
 		String opstatues = request.getParameter("opstatues");
@@ -98,9 +99,9 @@ public class OrderGoodsServlet extends HttpServlet {
 		if (StringUtill.isNull(id)) {
 			id = OrderMessageManager.getMaxid() + "";
 			om.setId(Integer.valueOf(id));
-			// om.setOid(oid); 
-			om.setSubmitid(user.getId()); 
-			om.setSubmittime(TimeUtill.gettime()); 
+			// om.setOid(oid);
+			om.setSubmitid(user.getId());
+			om.setSubmittime(TimeUtill.gettime());
 			if (!StringUtill.isNull(branchid)) {
 				om.setBranchid(BranchService.getNameMap().get(branchid).getId());
 				statues = 1;
@@ -125,30 +126,27 @@ public class OrderGoodsServlet extends HttpServlet {
 
 		om.setRemark(remark);
 		if (!StringUtill.isNull(opstatues)) {
-			om.setOpstatues(Integer.valueOf(opstatues)); 
+			om.setOpstatues(Integer.valueOf(opstatues));
 		} else {
 			om.setOpstatues(Integer.valueOf(0));
 		}
-		
-		
-		
-		
-		if(StringUtill.isNull(rows)){
-			
-		}else {
+
+		if (StringUtill.isNull(rows)) {
+
+		} else {
 			String[] rowss = rows.split(",");
- 
+
 			for (int i = 0; i < rowss.length; i++) {
-				String row = rowss[i];   
+				String row = rowss[i];
 				String type = request.getParameter("product" + row);
-				
-				Product p = ProductService.gettypemap(user,branchid).get(type);
-				int cid = p.getCategoryID();  
-				int itype = p.getId(); 
+
+				Product p = ProductService.gettypemap(user, branchid).get(type);
+				int cid = p.getCategoryID();
+				int itype = p.getId();
 				String sta = request.getParameter("statues" + row);
 				String num = request.getParameter("orderproductNum" + row);
 				String invenNum = request.getParameter("papercount" + row);
-	           // logger.info(invenNum);  
+				// logger.info(invenNum);
 				if (StringUtill.isNull(num)) {
 					num = 0 + "";
 				}
@@ -160,7 +158,8 @@ public class OrderGoodsServlet extends HttpServlet {
 					OrderGoods op = new OrderGoods();
 					// op.setOid(oid);
 					// op.setOpstatues(Integer.valueOf(opstatues));
-					op.setOrdernum(Integer.valueOf(num) + Integer.valueOf(invenNum));
+					op.setOrdernum(Integer.valueOf(num)
+							+ Integer.valueOf(invenNum));
 					op.setRealnum(Integer.valueOf(num));
 					op.setStatues(Integer.valueOf(sta));
 					op.setSubmitid(user.getId());
@@ -170,31 +169,35 @@ public class OrderGoodsServlet extends HttpServlet {
 					op.setMid(Integer.valueOf(id));
 					if ((OrderMessage.billing + "").equals(types)) {
 						op.setBillingstatues(OrderMessage.billing);
-					}  
+					}
 					// op.setUuid(uuid);
 					list.add(op);
-				} 
+				}
 
 			}
 		}
-		
 
 		oa.setOm(om);
 		oa.setList(list);
-// logger.info("one");   
+		// logger.info("one");
 		if (OrderGoodsAllManager.save(user, oa)) {
 			try {
-				//logger.info(statues);
+				// logger.info(statues);
 				if (0 == statues) {
 					response.sendRedirect("../jieguo.jsp?type=ordergoodsadd&mark=" + 1);
-				} else {    
-					//logger.info(opstatues); 
-					if (!StringUtill.isNull(opstatues) && Integer.valueOf(opstatues) == 0 ) {
-						response.sendRedirect("../admin/ordergoods/ordergoodsupdate.jsp?id="+id+"&type="+OrderMessage.unexamine+"&statues="+OrderMessage.unexamine);
-					}else{     
-						response.sendRedirect("../jieguo.jsp?type=updated&mark=" + 1); 
+				} else {
+					// logger.info(opstatues);
+					if (!StringUtill.isNull(opstatues)
+							&& Integer.valueOf(opstatues) == 0) {
+						response.sendRedirect("../admin/ordergoods/ordergoodsupdate.jsp?id="
+								+ id
+								+ "&type="
+								+ OrderMessage.unexamine
+								+ "&statues=" + OrderMessage.unexamine);
+					} else {
+						response.sendRedirect("../jieguo.jsp?type=updated&mark=" + 1);
 					}
-					
+
 				}
 
 				// response.getWriter().write(""+statues);
@@ -214,7 +217,7 @@ public class OrderGoodsServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		String statues = request.getParameter("statues");
 		String type = request.getParameter("type");
-
+		String[] ogids = request.getParameterValues("ogid");
 		OrderGoodsAll oa = null;
 		List<OrderGoods> list = null;
 		if (!StringUtill.isNull(id)) {
@@ -224,146 +227,163 @@ public class OrderGoodsServlet extends HttpServlet {
 			} else {
 				oa = OrderGoodsAllManager.getOrderGoodsAllByid(user, id,
 						Integer.valueOf(statues), type);
-			} 
+			}
 
 			list = oa.getList();
 		}
-		if (null != list) { 
-			for (int i = 0; i < list.size(); i++) {
-				OrderGoods og = list.get(i); 
-				int ogid = og.getId(); 
-				int operatortype = 18; 
-				String realsendnum = request.getParameter("realsendnum" + ogid);
-				String returnrealsendnum = request.getParameter("returnrealsendnum" + ogid);
- 
-				int realcont = 0;
-				if (StringUtill.isNull(realsendnum)) {
-					realsendnum = "0";
-				} 
-				if (StringUtill.isNull(returnrealsendnum)) {
-					returnrealsendnum = "0";  
-				}   
-				String sql = OrderGoodsManager.updaterealsendnum(user,
-						ogid, realsendnum,returnrealsendnum);  
-				 
-				listsql.add(sql);    
-				if ((og.getRealnum() != Integer.valueOf(realsendnum) || og.getStatues() == 4) && og.getStatues() != 5 ) {
-					   
-					if (og.getStatues() == 6 || og.getStatues() == 7 
-							|| og.getStatues() == 8 || og.getStatues() == 9) { 
-						realcont = -(Integer.valueOf(returnrealsendnum) - og.getRealnum());   
-					}else if(og.getStatues() == 4 ){  
-						realcont = (Integer.valueOf(realsendnum) - og.getRealnum() - Integer.valueOf(returnrealsendnum) );
-						   
-					} else {   
-						realcont = (Integer.valueOf(realsendnum) - og.getRealnum());
+		if (null != ogids) {
+			List<String> listogids = Arrays.asList(ogids);
+			logger.info(listogids);
+
+			// for (int i = 0; i < ogids.length; i++) {
+			if (null != list) {
+				for (int i = 0; i < list.size(); i++) {
+					OrderGoods og = list.get(i);
+					int ogid = og.getId();
+					if (listogids.contains("" + ogid)) {
+						// int ogid =
+						// Integer.valueOf(Integer.valueOf(ogids[i]));
+						int operatortype = 18;
+						String realsendnum = request.getParameter("realsendnum"
+								+ ogid);
+						String returnrealsendnum = request
+								.getParameter("returnrealsendnum" + ogid);
+
+						int realcont = 0;
+						if (StringUtill.isNull(realsendnum)) {
+							realsendnum = "0";
+						}
+						if (StringUtill.isNull(returnrealsendnum)) {
+							returnrealsendnum = "0";
+						}
+						String sql = OrderGoodsManager.updaterealsendnum(user,
+								ogid, realsendnum, returnrealsendnum);
+
+						listsql.add(sql);
+						if ((og.getRealnum() != Integer.valueOf(realsendnum) || og
+								.getStatues() == 4) && og.getStatues() != 5) {
+
+							if (og.getStatues() == 6 || og.getStatues() == 7
+									|| og.getStatues() == 8
+									|| og.getStatues() == 9) {
+								realcont = -(Integer.valueOf(returnrealsendnum) - og
+										.getRealnum());
+							} else if (og.getStatues() == 4) {
+								realcont = (Integer.valueOf(realsendnum)
+										- og.getRealnum() - Integer
+										.valueOf(returnrealsendnum));
+
+							} else {
+								realcont = (Integer.valueOf(realsendnum) - og
+										.getRealnum());
+							}
+
+							String sqlIB = "";
+							String sqlIBM = "";
+
+							if (null == InventoryBranchManager.getInventoryID(
+									user, oa.getOm().getBranchid(), og.getTid()
+											+ "")) {
+								sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)"
+										+ "  values ( null,"
+										+ og.getCid()
+										+ ", '"
+										+ og.getTid()
+										+ "', '"
+										+ 0
+										+ "', '"
+										+ realcont
+										+ "',"
+										+ oa.getOm().getBranchid() + ")";
+
+								sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+										+ "  values ( null, '"
+										+ oa.getOm().getBranchid()
+										+ "', '"
+										+ oa.getOm().getId()
+										+ "','"
+										+ oa.getOm().getId()
+										+ "','"
+										+ TimeUtill.gettime()
+										+ "','"
+										+ og.getTid()
+										+ "',"
+										+ 0
+										+ ",'"
+										+ realcont
+										+ "',"
+										+ operatortype
+										+ ","
+										+ 0
+										+ ","
+										+ realcont
+										+ ","
+										+ 1
+										+ ","
+										+ oa.getOm().getBranchid() + ",-1,0,0)";
+							} else {
+
+								sqlIB = "update mdinventorybranch set  papercount =  ((mdinventorybranch.papercount)*1 + "
+										+ realcont
+										+ ")*1  where  branchid = "
+										+ oa.getOm().getBranchid()
+										+ " and  type = '" + og.getTid() + "'";
+
+								sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+										+ "  values ( null, '"
+										+ oa.getOm().getBranchid()
+										+ "', '"
+										+ oa.getOm().getId()
+										+ "','"
+										+ oa.getOm().getId()
+										+ "','"
+										+ TimeUtill.gettime()
+										+ "','"
+										+ og.getTid()
+										+ "','"
+										+ 0
+										+ "','"
+										+ realcont
+										+ "',"
+										+ operatortype
+										+ ",(select realcount from mdinventorybranch where branchid = "
+										+ oa.getOm().getBranchid()
+										+ " and  type = '"
+										+ og.getTid()
+										+ "')*1,(select papercount from mdinventorybranch where branchid = "
+										+ oa.getOm().getBranchid()
+										+ " and  type = '"
+										+ og.getTid()
+										+ "')*1,"
+										+ 1
+										+ ","
+										+ oa.getOm().getBranchid()
+										+ ",-1,(select realcount from mdinventorybranch where branchid = "
+										+ oa.getOm().getBranchid()
+										+ " and  type = '"
+										+ og.getTid()
+										+ "')*1"
+										// + -Integer.valueOf(realsendnum)
+										+ ",(select papercount from mdinventorybranch where branchid = "
+										+ oa.getOm().getBranchid()
+										+ " and  type = '"
+										+ og.getTid()
+										+ "')*1" + realcont * 1 + ")";
+
+							}
+							listsql.add(sqlIB);
+							listsql.add(sqlIBM);
+
+						}
 					}
-  
-					String sqlIB = "";
-					String sqlIBM = ""; 
-
-					if (null == InventoryBranchManager.getInventoryID(user, oa
-							.getOm().getBranchid(), og.getTid() + "")) {
-						sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)"
-								+ "  values ( null,"
-								+ og.getCid()
-								+ ", '"
-								+ og.getTid()
-								+ "', '"
-								+ 0 
-								+ "', '"
-								+ realcont
-								+ "'," + oa.getOm().getBranchid() + ")";
-
-						sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
-								+ "  values ( null, '"
-								+ oa.getOm().getBranchid()
-								+ "', '"
-								+ oa.getOm().getId()
-								+ "','"
-								+ oa.getOm().getId()
-								+ "','"
-								+ TimeUtill.gettime()
-								+ "','"
-								+ og.getTid()
-								+ "',"
-								+ 0
-								+ ",'"
-								+ realcont
-								+ "',"
-								+ operatortype
-								+ "," 
-								+ 0 
-								+ ","
-								+ realcont
-								+ ","
-								+ 1 
-								+ ","
-								+ oa.getOm().getBranchid()
-								+ ",-1,0,0)";
-					} else {
-
-						sqlIB = "update mdinventorybranch set  papercount =  ((mdinventorybranch.papercount)*1 + "
-								+ realcont
-								+ ")*1  where  branchid = "
-								+ oa.getOm().getBranchid()
-								+ " and  type = '" 
-								+ og.getTid() + "'";
-
-						sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
-								+ "  values ( null, '"
-								+ oa.getOm().getBranchid()
-								+ "', '"
-								+ oa.getOm().getId()
-								+ "','"
-								+ oa.getOm().getId()
-								+ "','"
-								+ TimeUtill.gettime()
-								+ "','"
-								+ og.getTid()
-								+ "','"
-								+ 0
-								+ "','"
-								+ realcont
-								+ "',"
-								+ operatortype
-								+ ",(select realcount from mdinventorybranch where branchid = "
-								+ oa.getOm().getBranchid()
-								+ " and  type = '"
-								+ og.getTid()
-								+ "')*1,(select papercount from mdinventorybranch where branchid = "
-								+ oa.getOm().getBranchid()
-								+ " and  type = '"
-								+ og.getTid()
-								+ "')*1,"
-								+ 1
-								+ ","
-								+ oa.getOm().getBranchid()
-								+ ",-1,(select realcount from mdinventorybranch where branchid = "
-								+ oa.getOm().getBranchid()
-								+ " and  type = '"
-								+ og.getTid()
-								+ "')*1" 
-								// + -Integer.valueOf(realsendnum)
-								+ ",(select papercount from mdinventorybranch where branchid = "
-								+ oa.getOm().getBranchid()   
-								+ " and  type = '"       
-								+ og.getTid() + "')*1" + realcont*1+")";
-    
-					}
-					listsql.add(sqlIB);
-					listsql.add(sqlIBM);
-					
 				}
-
 			}
 		}
-
+ 
 		if (DBUtill.sava(listsql)) {
 			try {
 				response.sendRedirect("../jieguo.jsp?type=updated&mark=" + 1);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (IOException e) { // TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -378,52 +398,56 @@ public class OrderGoodsServlet extends HttpServlet {
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
 				OrderMessage.billing, name);
 		// logger.info(list.size());
-		// 状态 ，型号 ，门店 
-		Map<Integer,Set<Integer>> mapb = new HashMap<Integer,Set<Integer>>();
-		Map<Integer,Set<Integer>> mapt = new HashMap<Integer,Set<Integer>>(); 
-		//Map<Integer,Map<Set<String>,Set<String>>> mapT = new HashMap<Integer,Map<Set<String>,Set<String>>>();
-		Set<Integer> set = new HashSet<Integer>(); 
+		// 状态 ，型号 ，门店
+		Map<Integer, Set<Integer>> mapb = new HashMap<Integer, Set<Integer>>();
+		Map<Integer, Set<Integer>> mapt = new HashMap<Integer, Set<Integer>>();
+		// Map<Integer,Map<Set<String>,Set<String>>> mapT = new
+		// HashMap<Integer,Map<Set<String>,Set<String>>>();
+		Set<Integer> set = new HashSet<Integer>();
 		if (null != list) {
 			for (int i = 0; i < list.size(); i++) {
-				OrderGoodsAll o = list.get(i);  
+				OrderGoodsAll o = list.get(i);
 				List<OrderGoods> listog = o.getList();
-				
-				for (int j = 0; j < listog.size(); j++) { 
+
+				for (int j = 0; j < listog.size(); j++) {
 					OrderGoods og = listog.get(j);
-					
+
 					Set<Integer> setb = mapb.get(og.getStatues());
 					Set<Integer> sett = mapt.get(og.getStatues());
-					if(null == setb){ 
+					if (null == setb) {
 						setb = new HashSet<Integer>();
 						mapb.put(og.getStatues(), setb);
-					} 
-					if(null == sett){ 
-						sett = new HashSet<Integer>(); 
+					}
+					if (null == sett) {
+						sett = new HashSet<Integer>();
 						mapt.put(og.getStatues(), sett);
-					} 
-					
+					}
+
 					setb.add(o.getOm().getBranchid());
 					sett.add(og.getTid());
 					set.add(og.getStatues());
-				} 
+				}
 			}
 		}
 
-		 
 		if (null != set) {
 			Iterator<Integer> it = set.iterator();
 			String time = request.getParameter("effectiveendtime");
 			while (it.hasNext()) {
 				int type = it.next();
 				String oid = request.getParameter("oid" + type);
-				Set<Integer> setb = mapb.get(type);
-				Set<Integer> sett = mapt.get(type);
-				     
-				String sqlinvent = InventoryBranchManager.updateSNMessage(setb,sett,oid, time); 
-				 
-				String sql = OrderGoodsManager.updateIOS(name, type, oid, time);
-				listsql.add(sqlinvent); 
-				listsql.add(sql);
+				if(!StringUtill.isNull(oid)){
+					Set<Integer> setb = mapb.get(type);
+					Set<Integer> sett = mapt.get(type);
+
+					String sqlinvent = InventoryBranchManager.updateSNMessage(setb,
+							sett, oid, time); 
+
+					String sql = OrderGoodsManager.updateIOS(name, type, oid, time);
+					listsql.add(sqlinvent);
+					listsql.add(sql);
+				}
+				
 			}
 		}
 		try {
@@ -442,53 +466,33 @@ public class OrderGoodsServlet extends HttpServlet {
 		}
 	}
 
-	/*public void updateIOS(HttpServletRequest request,
-			HttpServletResponse response) {
-		User user = (User) request.getSession().getAttribute("user");
-		List<String> listsql = new ArrayList<String>();
-		String name = request.getParameter("name");
-		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, name);
-		// logger.info(list.size());
-		Set<Integer> set = new HashSet<Integer>();
-		if (null != list) {
-			for (int i = 0; i < list.size(); i++) {
-				OrderGoodsAll o = list.get(i);
-				List<OrderGoods> listog = o.getList();
-				for (int j = 0; j < listog.size(); j++) {
-					OrderGoods og = listog.get(j);
-					set.add(og.getStatues());
-				}
-			}
-		}
+	/*
+	 * public void updateIOS(HttpServletRequest request, HttpServletResponse
+	 * response) { User user = (User) request.getSession().getAttribute("user");
+	 * List<String> listsql = new ArrayList<String>(); String name =
+	 * request.getParameter("name"); List<OrderGoodsAll> list =
+	 * OrderGoodsAllManager.getlist(user, OrderMessage.billing, name); //
+	 * logger.info(list.size()); Set<Integer> set = new HashSet<Integer>(); if
+	 * (null != list) { for (int i = 0; i < list.size(); i++) { OrderGoodsAll o
+	 * = list.get(i); List<OrderGoods> listog = o.getList(); for (int j = 0; j <
+	 * listog.size(); j++) { OrderGoods og = listog.get(j);
+	 * set.add(og.getStatues()); } } }
+	 * 
+	 * if (null != set) { Iterator<Integer> it = set.iterator(); String time =
+	 * request.getParameter("effectiveendtime"); while (it.hasNext()) { int type
+	 * = it.next(); String oid = request.getParameter("oid" + type);
+	 * 
+	 * String sql = OrderGoodsManager.updateIOS(name, type, oid, time);
+	 * listsql.add(sql); } } try { if (listsql.size() == 0) {
+	 * response.sendRedirect("../jieguo.jsp?type=updated&mark=" + 1); } else {
+	 * if (DBUtill.sava(listsql)) {
+	 * 
+	 * response.sendRedirect("../jieguo.jsp?type=updated&mark=" + 1);
+	 * 
+	 * } } } catch (IOException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } }
+	 */
 
-		if (null != set) {
-			Iterator<Integer> it = set.iterator();
-			String time = request.getParameter("effectiveendtime");
-			while (it.hasNext()) {
-				int type = it.next();
-				String oid = request.getParameter("oid" + type);
-
-				String sql = OrderGoodsManager.updateIOS(name, type, oid, time);
-				listsql.add(sql);
-			}
-		}
-		try {
-			if (listsql.size() == 0) {
-				response.sendRedirect("../jieguo.jsp?type=updated&mark=" + 1);
-			} else {
-				if (DBUtill.sava(listsql)) {
-
-					response.sendRedirect("../jieguo.jsp?type=updated&mark=" + 1);
-
-				}
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
-	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 		// 将请求、响应的编码均设置为UTF-8（防止中文乱码）
 		try {

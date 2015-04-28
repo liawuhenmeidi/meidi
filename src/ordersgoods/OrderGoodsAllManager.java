@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -69,17 +70,18 @@ public class OrderGoodsAllManager {
 		}
 		return map;
 	}
-
+ 
 	public static Map<String, OrderGoodsAll> getsendmap(User user, int statues) {
-		Map<String, OrderGoodsAll> map = new HashMap<String, OrderGoodsAll>();
+		Map<String, OrderGoodsAll> map = new LinkedHashMap<String, OrderGoodsAll>();
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getsendlist(user,
-				statues);
-		for (int i = 0; i < list.size(); i++) {
-			OrderGoodsAll oal = list.get(i);
+				statues);   
+		for (int i = 0; i < list.size(); i++) { 
+			OrderGoodsAll oal = list.get(i);            
+			// logger.info(oal.getOm().getSubmittime()); 
 			OrderGoodsAll oa = map.get(oal.getOm().getId() + "");
-			if (null == oa) {
-				map.put(oal.getOm().getId() + "", oal);
-			} else {
+			if (null == oa) { 
+				map.put(oal.getOm().getId() + "", oal);  
+			} else {  
 				oa.getList().addAll(oal.getList());
 			}
 		}
@@ -289,16 +291,16 @@ public class OrderGoodsAllManager {
 		List<Integer> listids = UserService.GetListson(user);
 		// logger.info(listids);
 		Connection conn = DB.getConn();
-
+ 
 		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.mid = mdordermessage.id and mdordergoods.billingstatues = "
-				+ opstatues
+				+ opstatues 
 				+ " and mdordermessage.opstatues = 1 and mdordermessage.submitid in ("
-				+ listids.toString().substring(1,
-						listids.toString().length() - 1) + " )";
+				+ listids.toString().substring(1,   
+						listids.toString().length() - 1) + " ) order by mdordermessage.submittime";
 
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn);
-
+ 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		// logger.info(rs);
 		try {

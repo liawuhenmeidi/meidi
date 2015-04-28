@@ -3,7 +3,7 @@
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user"); 
 String type = request.getParameter("type");
-if(StringUtill.isNull(type)){ 
+if(StringUtill.isNull(type)){  
 	type = "unconfirmed"; 
 }  
 List<Inventory> invetorylist = InventoryManager.getCategoryAnalyze(user,type); 

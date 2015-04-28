@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 String inventoryid = request.getParameter("id");
 Map<Integer,Branch> branchmap = BranchService.getMap();
- 
+  
 HashMap<Integer,Category> mapc = CategoryManager.getCategoryMap();
 
 Inventory inventory = InventoryManager.getInventoryID(user, Integer.valueOf(inventoryid));  
@@ -23,8 +23,8 @@ List<InventoryMessage> list = inventory.getInventory();
 
 Map<String,Integer> listcount = InventoryBranchMessageManager.getMapAnalyze(inventory.getInbranchid()+"",starttime,endtime); 
 
-Map<String,InventoryBranch> invnetorymap = InventoryBranchManager.getmapType(inventory.getInbranchid()+"", "");
-%>
+Map<String,InventoryBranch> invnetorymap = InventoryBranchManager.getmapType(user,inventory.getInbranchid()+"", "");
+%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>

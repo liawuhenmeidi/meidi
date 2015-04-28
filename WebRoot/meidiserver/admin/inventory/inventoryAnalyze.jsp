@@ -47,7 +47,7 @@ List<InventoryBranch>  listInventory = null ;
 Map<String,Integer> list = null ;  
 Map<String,InventoryBranch> maptype = null ;
 if(!StringUtill.isNull(branchid) && !StringUtill.isNull(starttime)  && !StringUtill.isNull(endtimeH)){
-	listInventory = InventoryBranchManager.getCategoryid(branchid, "");
+	listInventory = InventoryBranchManager.getCategoryid(user,branchid, "");
 	list = InventoryBranchMessageManager.getMapAnalyze(branchid,starttime,endtime); 
 	 maptype = InventoryBranchManager.getBranchTypeObject(user,branchid); 
 }
@@ -59,8 +59,6 @@ Map<Integer,User> usermap = UserService.getMapId();
  
 List<String> listbranchp = BranchManager.getLocateAll();  
 String listall = StringUtill.GetJson(listbranchp); 
-
-
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -203,7 +201,7 @@ function checkTime(){
 </div>
 <br/>  
  
-<div id="wrap">
+<div id="wrap"> 
 <form action="InventoryServlet" method="post" onsubmit="return checkTime()">
 <input type="hidden" name="method" value="addsubscribe"/>
 

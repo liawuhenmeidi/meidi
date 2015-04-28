@@ -228,7 +228,7 @@ function getInventory(){
                %>
                 <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssended.jsp')">修改实收数量</a></p> 
                <%
-               } 
+               }  
            if(UserManager.checkPermissions(user, Group.ordergoods,"r")){
                %> 
                  <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">库存刷新</a></p> 
@@ -238,9 +238,9 @@ function getInventory(){
                <%
                } 
            %>
-      
-           
-          
+       
+              
+           <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveorder.jsp')">退货订单</a></p>
            
           
            

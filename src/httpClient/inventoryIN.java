@@ -106,7 +106,7 @@ public class inventoryIN {
 		try {     
 			HttpUriRequest selectPost = RequestBuilder
 					.post()  
-					.setUri(uri)   
+					.setUri(uri)    
 					.addParameter("flage", "4") 
 					.addParameter("formName", "reportModelConditon")
 					.addParameter("receiveCode","") 
@@ -271,17 +271,18 @@ public class inventoryIN {
 	}
 	 
 	public static boolean getinventoryOutModel( String starttime, String endtime,MyMainClient mc) {
-		try { 
-			logger.info("getinventoryINReturn");   
+		try {  
+			logger.info("getinventoryINReturn");    
 			URI uri = new URI(inventoryIN.urlOutModel);     
 			String responseContent = getHtmlStringOutModel(uri, starttime, endtime,1,mc);
 			if(StringUtill.isNull(responseContent)){  
 				MyLogin.loginpost(new URI(MyLogin.url));
 				responseContent = getHtmlStringOutModel(uri, starttime, endtime,1,mc);
-			}     
-			int num = getNum(responseContent); 
+			}   
+			logger.info(responseContent);
+			int num = getNum(responseContent);  
 			//logger.info(num); 
-			for(int i=1;i<=num;i++){       
+			for(int i=1;i<=num;i++){        
 				responseContent =getHtmlStringOutModel(uri, starttime, endtime,i,mc);
 				Document doc = MyJsoup.getDocumnetByStr(responseContent);
 				Element en = doc.getElementById("gridTable");

@@ -4,7 +4,7 @@
 <%  
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
-
+ 
 Map<String, GoodsReceipt> map = GoodsReceitManager.getMap();
 String type= request.getParameter("type");
 if("submit".equals(type)){
@@ -16,7 +16,7 @@ if("submit".equals(type)){
 		List<String> sql = GoodsReceitManager.saveDisable(gr);
 		if(null != sql || sql.size() != 0 ){
 			map.remove(id); 
-		}
+		} 
 		list.addAll(sql);
 	}
 	

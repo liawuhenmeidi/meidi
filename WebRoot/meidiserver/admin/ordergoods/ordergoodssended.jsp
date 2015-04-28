@@ -66,6 +66,7 @@ function check(){
 <form action="ordergoodsenddetail.jsp"  method = "post"  onsubmit="return check()">
 <table width="100%" border="0" cellspacing="1"  id="Ntable"> 
   <tr class="dsc">     
+   <td   class="s_list_m" align="center">单号</td>
     <td   class="s_list_m" align="center">门店</td>
     <td   class="s_list_m" align="center">导购</td>
     <td   class="s_list_m" align="center">订单时间</td>
@@ -81,9 +82,10 @@ function check(){
 			OrderGoodsAll o =en.getValue(); 
 			String sendtime = o.getList().get(0).getBillingtime();
 			String key = en.getKey(); 
-			;   
+			
   %>              
  <tr class="asc" ondblclick="detail('ordergoodsdetailsend.jsp?id=<%=key%>&type=<%=OrderMessage.billing%>&statues=<%=OrderMessage.examine%>')">  
+	 <td align="center"><%=o.getOm().getId() %></td>  
 	 <td align="center"><%=o.getOm().getBranchname()%></td>  
      <td align="center"><%=o.getOm().getUser().getUsername()%></td> 
      <td align="center"><%= o.getOm().getSubmittime()%></td> 
