@@ -57,7 +57,7 @@ function changes(){
          url: "server.jsp",
          data:"method=branchtypeupdate&id="+str1+"&bid="+bid+"&typestatues="+typestatues+"&modelstatues="+modelstatues,
          dataType: "",  
-         success: function (data) {
+         success: function (data) { 
            window.location.href="branch.jsp";
            }, 
          error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -90,24 +90,7 @@ function changes(){
  <input   type="radio" name="typestatues" value="<%=BranchType.install%>"/>售后网点
 </td>  
 </tr> 
-<tr class="asc">    
-<td align=center>订单模型</td>   
-<td align=center> 
-<%   
-   
-   ExportModel.Model[] models = ExportModel.Model.values();
-   int num = models.length;     
-   for(int i=0;i<num;i++){     
-	   ExportModel.Model model = models[i];              
-	   %> 
-	   <input   type="radio"  name="modelstatues"  value="<%=model.getValue()%>"/><%=model.name() %>
-	   
-	   <%
-	   
-   }
-%> 
-</td>  
-</tr> 
+
 
 <tr class="asc"  >
 <td align=center colspan=2><input type="button" onclick="changes()"  value="提交"/>  </td>

@@ -87,10 +87,10 @@ String json = StringUtill.GetJson(list);
         <%=branchname %> 
         </td> 
         <td  align=center> 
-         单号：    
+         单号：    <%=oa.getOm().getOid() %>
         </td> 
        <td align=center>
-       日期：<%=TimeUtill.getdateString() %>
+       日期：<%= oa.getOm().getSubmittime()%>
        </td>
         </tr>      
        <tr class="asc">   

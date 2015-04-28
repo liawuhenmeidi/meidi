@@ -140,12 +140,24 @@ public class ProductService {
 		return typeName;
 	}
 
-	public static List<String> getlist(int id) {
-		init();
-		if (typeName == null) {
+	public static List<String> getlist(int id) { 
+		long start = System.currentTimeMillis();
+		init(); 
+		long start1 = System.currentTimeMillis();
+		logger.info(start1 - start); 
+		if (typeName == null) {  
+			logger.info("getlist"); 
 			typeName = ProductManager.getProductName();
-		}
-		return typeName.get(id + "");
+		}  
+		
+		long start11 = System.currentTimeMillis();
+		logger.info(start11 - start1);  
+		List<String> list = typeName.get(id + "");
+		long start2 = System.currentTimeMillis();
+		logger.info(start2 - start1);  
+		
+		
+		return list;
 	}
 
 	public static List<Product> getlistall() {

@@ -51,26 +51,40 @@ public class ProductManager {
 		List<String> listsql = new ArrayList<String>();
 		for (int i = 0; i < list.size(); i++) {
 			Product p = list.get(i);
+			//long start = System.currentTimeMillis();
 			String sql = ProductManager.save(p);
+			ProductService.flag = false; 
+			//logger.info(System.currentTimeMillis() - start); 
+			  
 			listsql.add(sql);
 		}
 		ProductService.flag = true;
 		return listsql;
-	}
-
+	} 
+ 
 	public static String save(Product p) {
+		
+		//long start = System.currentTimeMillis();
+		
+		 
 		List<String> lists = ProductService.getlist(Integer.valueOf(p
 				.getCategoryID()));
-		String sql = "";
-		if (null != lists) {
+		 
+		//long start1 = System.currentTimeMillis();
+		//logger.info(start1 - start); 
+		String sql = "";  
+		if (null != lists) {  
+			 
 			if (lists.contains(p.getType())) {
-				sql = "update mdproduct set pstatues = 0 where ptype = '"
+				//logger.info(System.currentTimeMillis() - start1); 
+				sql = "update mdproduct set pstatues = 0 ,saleType = '" + p.getSaleType() + "',encoded = '" + p.getEncoded()
+						+ "'  where ptype = '"
 						+ p.getType() + "'";
-			} else {
-				sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size,stockprice,mataintime,matainids,encoded) VALUES (null, null,'"
+			} else {  
+				sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size,stockprice,mataintime,matainids,encoded,saleType) VALUES (null, null,'"
 						+ p.getType()
 						+ "','"
-						+ p.getCategoryID()
+						+ p.getCategoryID() 
 						+ "',0,'"
 						+ p.getSize()
 						+ "',"
@@ -80,11 +94,10 @@ public class ProductManager {
 						+ ",'"
 						+ p.getMatainids()
 						+ "','"
-						+ p.getEncoded() + "')";
+						+ p.getEncoded() + "','" + p.getSaleType() + "')";
 			}
-
 		} else {
-			sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size,stockprice,mataintime,matainids,encoded) VALUES (null, null,'"
+			sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size,stockprice,mataintime,matainids,encoded,saleType) VALUES (null, null,'"
 					+ p.getType()
 					+ "','"
 					+ p.getCategoryID()
@@ -97,7 +110,7 @@ public class ProductManager {
 					+ ",'"
 					+ p.getMatainids()
 					+ "','"
-					+ p.getEncoded() + "')";
+					+ p.getEncoded() + "','" + p.getSaleType() + "')";
 		}
 		ProductService.flag = true;
 		return sql;
@@ -451,11 +464,11 @@ public class ProductManager {
 
 	public static void save(String type, String id, double size,
 			double stockprice, String mataintime, String matainids,
-			String encoded) {
+			String encoded, String saleType) {
 		String sql = "";
 		Product p = getProductbyname(id, type);
 		if (null == p) {
-			sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size,stockprice,mataintime,matainids,encoded) VALUES (null, null,'"
+			sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size,stockprice,mataintime,matainids,encoded,saleType) VALUES (null, null,'"
 					+ type
 					+ "','"
 					+ id
@@ -469,7 +482,7 @@ public class ProductManager {
 					+ matainids
 					+ "','"
 					+ encoded
-					+ "')";
+					+ "'," + saleType + ")";
 		} else {
 			sql = "update mdproduct set pstatues = 0 where id = " + p.getId();
 		}
@@ -480,9 +493,9 @@ public class ProductManager {
 
 	public static void update(String type, String id, double size,
 			double stockprice, String mataintime, String matainids,
-			String encoded) {
+			String encoded, String saleType) {
 		Connection conn = DB.getConn();
-		String sql = "update mdproduct set ptype = ? , size = ? ,stockprice = ? ,mataintime = ? ,matainids = ? ,encoded = ?  where id = ?";
+		String sql = "update mdproduct set ptype = ? , size = ? ,stockprice = ? ,mataintime = ? ,matainids = ? ,encoded = ? ,saleType = ?  where id = ?";
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		try {
 			pstmt.setString(1, type);
@@ -491,7 +504,8 @@ public class ProductManager {
 			pstmt.setString(4, mataintime);
 			pstmt.setString(5, matainids);
 			pstmt.setString(6, encoded);
-			pstmt.setString(7, id);
+			pstmt.setString(7, saleType);
+			pstmt.setString(8, id);
 			pstmt.executeUpdate();
 			ProductService.flag = true;
 		} catch (SQLException e) {
@@ -516,6 +530,7 @@ public class ProductManager {
 			p.setMatainids(rs.getString("matainids"));
 			p.setMataintime(rs.getInt("mataintime"));
 			p.setEncoded(rs.getString("encoded"));
+			p.setSaleType(rs.getInt("saleType"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

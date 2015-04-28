@@ -743,14 +743,15 @@ logger.info(sql);
 	private static InventoryBranch getCategoryFromRs(ResultSet rs){
 		InventoryBranch c = new InventoryBranch(); 
 		try {  
-			c.setId(rs.getInt("id")); 
+			c.setId(rs.getInt("id"));  
 			c.setBranchid(rs.getInt("branchid"));
 			c.setRealcount(rs.getInt("realcount")); 
 			c.setPapercount(rs.getInt("papercount")); 
 			c.setInventoryid(rs.getInt("inventoryid"));
-			c.setTypeid(rs.getString("type"));      
+			c.setTypeid(rs.getString("type"));    
+			//logger.info(c.getTypeid());  
 			c.setType(ProductService.getIDmap().get(Integer.valueOf(c.getTypeid())).getType());    
-		    c.setIsquery(rs.getInt("isquery"));    
+		    c.setIsquery(rs.getInt("isquery"));     
 		    c.setQuerymonth(rs.getString("querymonth"));  
 		    c.setTypeStatues(rs.getInt("typestatues")); 
 		    c.setOrderNUmSN(rs.getString("ordernumsn"));

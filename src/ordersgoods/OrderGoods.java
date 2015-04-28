@@ -24,6 +24,7 @@ public class OrderGoods {
 	private Product product;  
     
 	private int statues; // 1常规 2 特价 3 样机 4 换货 5 赠品    6 店外退货    7 已入库常规退货   8 已入库特价退货    9 已入库样机退货
+	private int realstatues;   //   
 	private int ordernum; 
 	private int realnum; // 送货数量 
 	private int opstatues; // 0 未生成订单 1 生成订单 2 已导出订单
@@ -96,12 +97,33 @@ public class OrderGoods {
 
 	public void setTid(int tid) {
 		this.tid = tid;
+	} 
+ 
+	public int getRealstatues() { 
+		Product p = getProduct(); 
+		if(p.getSaleType() != -1){   
+			if(1 == statues){   
+				realstatues = p.getSaleType(); 
+			}else if(7 == statues){ 
+				realstatues = p.getSaleType()+6; 
+			}   
+		}else {   
+			realstatues = 0 ;
+		}
+		 
+		return realstatues;
+	}
+
+	public void setRealstatues(int realstatues) {
+		this.realstatues = realstatues;
 	}
 
 	public int getStatues() {
+		
 		return statues;
 	}
-
+   
+	
 	public void setStatues(int statues) {
 		this.statues = statues;
 	}
@@ -185,13 +207,13 @@ public class OrderGoods {
 			Branch = "";
 		}
 		return Branch;
-	}
+	} 
 
 	public String getBranchGM() { 
-		if (1 == statues) { 
+		if (1 == statues || 7 == statues) { 
 			Branch = "正常";
-		} else if (2 == statues) { 
-			Branch = "一步到位机";
+		} else if (2 == statues || 8 ==statues) { 
+			Branch = "一步到位机"; 
 		} else { 
 			Branch = ""; 
 		}

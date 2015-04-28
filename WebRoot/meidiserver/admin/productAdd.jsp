@@ -17,9 +17,10 @@ String ptype = request.getParameter("ptype");
  
 Product p = new Product(); 
 List<Product> listp = ProductService.getlistMatain() ;
-
+int  saletype = -1; 
 if("update".equals(method)){
 	p = ProductService.getIDmap().get(Integer.valueOf(productID));
+	 saletype = p.getSaleType();
 } 
 
 if("add".equals(action)){  
@@ -30,7 +31,7 @@ if("add".equals(action)){
 	String matainids = "";
 	String matainid[] = request.getParameterValues("matainids");
 	String encoded = request.getParameter("encoded");
-	
+	String saleType = request.getParameter("saleType");
 	if(null != matainid && matainid.length > 0){
 		for(int i=0;i<matainid.length;i++){
 			matainids += matainid[i]+","; 
@@ -39,26 +40,27 @@ if("add".equals(action)){
 		//System.out.println(matainids);
 	}
 	if(!StringUtill.isNull(productName)){   
-		ProductManager.save(productName,categoryID,Double.valueOf(sizes),Double.valueOf(stockprice),mataintime,matainids,encoded);
+		ProductManager.save(productName,categoryID,Double.valueOf(sizes),Double.valueOf(stockprice),mataintime,matainids,encoded,saleType);
 		response.sendRedirect("product.jsp?categoryID="+categoryID);
-	}   
+	}    
 }else if("update".equals(action)){   
 	String productName = request.getParameter("name"); 
 	String sizes = request.getParameter("size");
 	String stockprice = request.getParameter("stockprice");
 	String mataintime = request.getParameter("mataintime");
-	String matainids = "";
+	String matainids = ""; 
 	String matainid[] = request.getParameterValues("matainids");
 	String encoded = request.getParameter("encoded");
+	String saleType = request.getParameter("saleType");
 	if(null != matainid && matainid.length > 0){
 		for(int i=0;i<matainid.length;i++){
 			matainids += matainid[i]+",";
-		}
+		} 
 		matainids = matainids.substring(0,matainids.length()-1);
 		//System.out.println(matainids);
 	}
 	if(!StringUtill.isNull(productName)){    
-		ProductManager.update(productName,productID,Double.valueOf(sizes),Double.valueOf(stockprice),mataintime,matainids,encoded);
+		ProductManager.update(productName,productID,Double.valueOf(sizes),Double.valueOf(stockprice),mataintime,matainids,encoded,saleType);
 		response.sendRedirect("product.jsp?categoryID="+categoryID);
 	}
 }
@@ -76,11 +78,16 @@ if("add".equals(action)){
 <script type="text/javascript">
  
  var list = <%=list%>;
+ var  saleType = "<%= saletype%>";
+ $(function () {  
+	$("#saleType"+saleType).attr("checked","checked");
+});
+ 
  function check(){ 
 	 
 	 var productid = $("#productid").val();
 	 var name = $("#name").val();
-	 var size = $("#size").val();
+	 var size = $("#size").val(); 
 	 var stockprice = $("#stockprice").val();
 	 //alert(name); 
 	 var count = $.inArray(name, list);
@@ -138,20 +145,26 @@ if("add".equals(action)){
       <input type="hidden" id="productid" name="productid" value="<%=productID%>"/>
       <input type="hidden" id="token" name="token" value="<%=token%>"/> 
       
-     <table width="100%" id="table">  
-       <tr class="asc"><td> 产品型号:</td>
-       <td><input type="text"  id="name" name="name"  value="<%=p.getType()%>"/> <br /> </td>
+     <table width="80%" id="table">  
+       <tr class="asc"><td align="center"> 产品型号:</td>
+       <td align="center"><input type="text"  id="name" name="name"  value="<%=p.getType()%>"/> <br /> </td>
        </tr> 
-     <tr class="asc"><td>  产品体积:</td>
-       <td>  <input type="text"  id="size" name="size"  value="<%=p.getSize()%>"/>  <br />   <br /> </td>
+     <tr class="asc"><td align="center">  产品体积:</td>
+       <td align="center">  <input type="text"  id="size" name="size"  value="<%=p.getSize()%>"/>  <br />   <br /> </td>
        </tr>
-       <tr class="asc"><td>  最低售价:</td>
-       <td> <input type="text"  id="stockprice" name="stockprice"  value="<%=p.getStockprice()%>"/>  <br />  <br /> </td>
+       <tr class="asc"><td align="center">  最低售价:</td>
+       <td align="center"> <input type="text"  id="stockprice" name="stockprice"  value="<%=p.getStockprice()%>"/>  <br />  <br /> </td>
        </tr>
-       <tr class="asc"><td> 产品编码:</td> 
-       <td> <input type="text"  id="encoded" name="encoded"  value="<%=p.getEncoded()%>"/>  <br />  <br /> </td>
+       <tr class="asc"><td align="center"> 产品编码:</td> 
+       <td align="center"> <input type="text"  id="encoded" name="encoded"  value="<%=p.getEncoded()%>"/>  <br />  <br /> </td>
        </tr>
        
+        <tr class="asc"><td align="center"> 销售类型:</td> 
+       <td align="center">    
+        常规机<input type="radio" name="saleType" id="saleType1" value="1" />
+        特价机   <input type="radio" name="saleType" id="saleType2"  value="2" />
+        </td>
+       </tr>  
        <% if("0".equals(ptype)){ 
     	   String matainids = p.getMatainids();
     	   String[] ids= null;
@@ -161,8 +174,8 @@ if("add".equals(action)){
     	      
         %> 
         <tr class="asc" >
-         <td>需保养配件</td>
-         <td>   
+         <td align="center">需保养配件</td>
+         <td align="center">   
          <table width="100%">
         		   
          <%  if(null != listp) { 
@@ -180,7 +193,7 @@ if("add".equals(action)){
         		// System.out.println(StringUtill.GetJson(mp));
         		  %> 
         		  <tr> 
-        		   <td><input type="checkbox" <%=checked %> name="matainids" value ="<%=mp.getId()%>"/><%= mp.getType()%></td>
+        		   <td ><input type="checkbox" <%=checked %> name="matainids" value ="<%=mp.getId()%>"/><%= mp.getType()%></td>
         		   </tr>
         		  
         		  <%
@@ -193,10 +206,10 @@ if("add".equals(action)){
         
        <% }else if("1".equals(ptype)){
     	   
-       %> 
+       %>  
        <tr class="asc">
-          <td> 配件更新周期(天)</td>
-          <td><input type="text"  id="mataintime" name="mataintime"  value="<%=p.getMataintime()%>"/></td>
+          <td align="center"> 配件更新周期(天)</td>
+          <td align="center"><input type="text"  id="mataintime" name="mataintime"  value="<%=p.getMataintime()%>"/></td>
       </tr>
         
        <%} %> 

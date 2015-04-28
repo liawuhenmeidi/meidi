@@ -130,12 +130,11 @@ select{width: 200px; height: 30px;font-size:100%;}
 	     ' <td colspan=2 align=center ><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
 	     ' </tr>'+ 
 	     '<tr '+cl+'>'+ 
-	     ' <td align=center  >状态</td>  '+
+	     ' <td align=center  >状态</td>  '+ 
 	     '<td  align=center ><select name="statues'+row+'" id="statues'+row+'">'+
-	     '<option value=""></option>'+  
-	     '<option value="1">常规机订货</option>'+
-	      '<option value="2">特价机订货</option>'+ 
-	      '<option value="3">样机订货</option>'+
+	     '<option value=""></option>'+   
+	     '<option value="1">常规特价机订货</option>'+ 
+	      '<option value="3">样机订货</option>'+  
 	      '<option value="4">换货订货</option>'+
 	      '<option value="5">赠品订货</option>'+
 	      '<option value="6">店外退货 </option>'+

@@ -28,8 +28,8 @@
 			showContent = true;  
 		}	 
 	} 
-	   
-	System.out.println(StringUtill.GetJson(list));
+	    
+	//System.out.println(StringUtill.GetJson(list));
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -71,25 +71,28 @@ function submited(){
     <tr class="dsc">
     <td>产品型号</td>
     <td>产品编码</td>
+    
     <td>体积</td>
     <td>售价</td>
+     <td>销售类别</td>
     </tr>
     <% for(int i=0;i<list.size();i++){
     	Product p = list.get(i);
-    	%> 
+    	%>  
     	<tr class="asc">
     	 <td><%=p.getType() %></td>
     	  <td><%=p.getEncoded() %></td>
     	   <td><%=p.getSize() %></td>
     	    <td><%=p.getStockprice() %></td>
-    	</tr>
-    	<%
-    } %>
+    	    <td><%=p.getSaletypeName() %></td>
+    	</tr> 
+    	<% 
+    } %>  
 		<tr class="asc">
 		 <td width="100%" align="center" colspan = 4 >
        <input type="hidden" name="fileName" value="<%=fileName %>"/>
 		<input type="hidden" name="confirm" value="confirm" id="submitswitcher"/>
-		<%if(showContent){ %> 
+		<%if(showContent){ %>  
 		<input type="button" id="commitbutton" value="提交" onclick="submited()"></input>
 		<%} %>
 		</td>

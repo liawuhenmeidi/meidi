@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,category.*,group.*,branchtype.*,user.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,category.*,exportModel.*,group.*,branchtype.*,user.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
  
@@ -123,41 +123,55 @@ function checkedd(){
         </tr>      
          <tr class="asc" >  
         <td align="center"> 
-        产品类型 
-          
-        </td>
+         产品类型    
+        </td>  
         <td align="center"> 
                 销售产品 <input type="radio" name="ptype"  value=0 />
                 &nbsp;  &nbsp;  &nbsp;  &nbsp;
                维修配件    <input type="radio" name="ptype" value = 1 /> 
-        </td>  
+        </td>   
         </tr>  
         <tr class="asc">
          <td align="center" >销售卖场</td>
-       <td>
+       <td align="center">
          <table>
           <tr>
           <% if(null != list){
         	  for(int i=0;i<list.size();i++){
         		  BranchType bt = list.get(i);
-        		  
         		 %> 
-        		 <td> 
+        		 <td align="center"> 
             <input type="checkbox" name="sales" value="<%=bt.getId()%>"/><%=bt.getName()%>
            </td>
         		 <%
         	  }
-          } %>
-           
-          
-          </tr>
-         
-         </table>
-       
-       
+          } %>  
+          </tr>     
+         </table> 
        </td>
+      </tr> 
        
-      </tr>
+      
+      <tr class="asc">    
+<td align=center>订单模型</td>   
+<td align=center> 
+<%     
+   
+   ExportModel.Model[] models = ExportModel.Model.values();
+   int num = models.length;     
+   for(int i=0;i<num;i++){     
+	   ExportModel.Model model = models[i];              
+	   %> 
+	   <input   type="radio"  name="modelstatues"  value="<%=model.getValue()%>"/><%=model.name() %>
+	   
+	   <%
+	   
+   }
+%> 
+</td>  
+</tr> 
+      
+      
       </table> 
 
       <input type="submit" value="提  交" />

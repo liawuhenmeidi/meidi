@@ -3,15 +3,15 @@
 <%     
 request.setCharacterEncoding("utf-8");
 String type = request.getParameter("type"); 
-//System.out.println(type);  
-String branchtype = request.getParameter("branchtype");
-String[] ids = request.getParameterValues("omid");        
+//System.out.println(type);   
+String exportmodel = request.getParameter("exportmodel");
+String[] ids = request.getParameterValues("omid");         
 String[] statues = request.getParameterValues("statues");  
      
 Map<String,InventoryBranch> map = InventoryBranchManager.getmapTypeBranch(StringUtill.getStr(ids));
-List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.examine,ids,statues,branchtype);  
+List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.examine,ids,statues,exportmodel);  
  // System.out.println(StringUtill.GetJson(map));      
-%>           
+%>            
 <!DOCTYPE html>    
 <html>  
 <head>
@@ -64,10 +64,10 @@ function check(num){
 <div class="weizhi_head">现在位置：订单生成</div>
 <!--  头 单种类  -->   
 <form action="../../Print"  id="post"  method = "post"  >
-  <input type="hidden"  value="billing"  name="method">       
+  <input type="hidden"  value="billing"  name="method">        
   <input type="hidden" name="ids" value="<%=StringUtill.getStr(ids)%>"/>    
   <input type="hidden" name="statues" value="<%=StringUtill.getStr(statues)%>"/>
-  <input type="hidden" name="branchtype" value="<%=branchtype%>"/> 
+  <input type="hidden" name="exportmodel" value="<%=exportmodel%>"/> 
   <input type="hidden" name="typestatues" id="typestatues" value="<%=type%>"/>
   
 <table width="100%" border="0" cellspacing="1"  id="table"> 
@@ -112,25 +112,20 @@ function check(num){
 				//System.out.println(og.getTid()+"_"+o.getOm().getBranchid());
 				 InventoryBranch in = map.get(og.getTid()+"_"+o.getOm().getBranchid());
 				 String serialnumber = og.getSerialnumber();
-				 BranchType bt = null ; 
-					if(!StringUtill.isNull(branchtype)){
-						bt = BranchTypeManager 
-								.getLocate(Integer.valueOf(branchtype));
-					} 
+				 
 					 
-				 if (ExportModel.SuNing == bt.getExportmodel()) {
+				 if (ExportModel.SuNing == Integer.valueOf(exportmodel)) {
 					 if(StringUtill.isNull(serialnumber)){
 							serialnumber =Company.supply; 
 						}
-					} else if (ExportModel.GuoMei == bt.getExportmodel()) {
+					} else if (ExportModel.GuoMei == Integer.valueOf(exportmodel)) {
 						if(StringUtill.isNull(serialnumber)){
 							serialnumber =Company.supplyGM; 
 						}
 					} 
-					
-				
+
 				int InNum = 0;
-				
+				 
 	        	  if(null != in){
 	        		  InNum = in.getPapercount();
 	        	  }

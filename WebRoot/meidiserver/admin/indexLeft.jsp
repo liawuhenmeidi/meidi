@@ -230,7 +230,7 @@ function getInventory(){
                <%
                }  
            if(UserManager.checkPermissions(user, Group.ordergoods,"r")){
-               %> 
+               %>  
                  <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">库存刷新</a></p> 
                 <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssendhistory.jsp')">历史订货单</a></p> 
                  <p ><a href="javascript:void(0);"  onclick="reloadopned('receivegoods/receivegoods.jsp')">收货记录</a></p> 
@@ -239,9 +239,9 @@ function getInventory(){
                } 
            %>
        
-              
+               
            <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveorder.jsp')">退货订单</a></p>
-           
+           <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveorderover.jsp')">已退货订单</a></p>
           
            
           

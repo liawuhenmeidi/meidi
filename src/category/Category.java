@@ -11,6 +11,7 @@ public class Category {
   private int statues ;   // 1 已断货           0 正常销售
   private int ptype ;      // 0 销售商品    1 维修配件
   private String sales;   // 销售系统
+  private int exportmodel ;  // 生成订单导出格式
   
 	public int getStatues() {
 	return statues;
@@ -53,6 +54,12 @@ public void setPid(int pid) {
 	}
 	public void setSales(String sales) {
 		this.sales = sales;
+	}
+	public int getExportmodel() {
+		return exportmodel;
+	}
+	public void setExportmodel(int exportmodel) {
+		this.exportmodel = exportmodel;
 	} 
 	
 }

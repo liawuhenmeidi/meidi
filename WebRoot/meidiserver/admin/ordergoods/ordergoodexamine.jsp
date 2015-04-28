@@ -1,5 +1,5 @@
 <%@ page language="java"
-	import="java.util.*,ordersgoods.*,product.*,branchtype.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;"
+	import="java.util.*,ordersgoods.*,product.*,branchtype.*,exportModel.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <% 
 	request.setCharacterEncoding("utf-8"); 
@@ -36,19 +36,19 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 		var attract = new Array();
 		var attracts = new Array();
 		var i = 0; 
-		var j= 0 ; 
-        if(2 != num){
-        	var branchtype = $("#branchtype").val();
+		var j= 0 ;  
+        if(2 != num){ 
+        	var branchtype = $("#exportmodel").val();
     		if (branchtype == "" || branchtype == null) {
-    			alert("请选择销售系统");
+    			alert("请选择订单模型");
     			return false;
     		}
-        }
-		
+        } 
+		  
 
 		$("input[type='checkbox'][name='statues']").each(function() {
 			if ($(this).attr("checked")) {
-				var str = this.value;
+				var str = this.value; 
 
 				if (str != null && str != "") {
 					attracts[i] = str;
@@ -133,7 +133,7 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 					<td colspan=5>
 						<table width="100%">
 							<tr>
-								<td>销售系统： <select id="branchtype" name="branchtype">
+								<%--<td>销售系统： <select id="branchtype" name="branchtype">
 										<option></option>
 										<%
 											if (null != listgt) {
@@ -148,6 +148,27 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 											}
 										%>
 								</select></td>
+								--%>
+					<td align=center>订单模型</td>
+					<td align=center> 
+					<select id="exportmodel" name="exportmodel">
+						<option></option>
+						<%  
+							ExportModel.Model[] models = ExportModel.Model.values();
+							int num = models.length;
+							for (int i = 0; i < num; i++) {
+								ExportModel.Model model = models[i];
+							 	
+						%> 
+						
+						<option value="<%=model.getValue()%>"><%=model.name()%></option>
+						<%
+							}
+						%>
+						</select>
+					</td>
+								
+								
 								<td>产品状态：
 								<table>  
 							<tr> 

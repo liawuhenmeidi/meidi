@@ -17,7 +17,33 @@ public class Product {
 	private int mataintime; // 单位是天
 	private String matainids;
 	private double stockprice;
-	private String encoded;
+	private String encoded; 
+    private int saleType; // 1 常规   2  特价 
+    private String saletypeName ;
+    
+	public int getSaleType() {
+		return saleType;
+	}
+
+	public void setSaleType(int saleType) {
+		this.saleType = saleType;
+	}
+    
+	
+	public String getSaletypeName() {
+		if(saleType == 1){
+			saletypeName = "常规";
+		}else if(saleType == 2){
+			saletypeName = "特价";
+		}else { 
+			saletypeName = "";
+		}
+		return saletypeName;
+	}
+
+	public void setSaletypeName(String saletypeName) {
+		this.saletypeName = saletypeName;
+	}
 
 	public int getMataintime() {
 		return mataintime;

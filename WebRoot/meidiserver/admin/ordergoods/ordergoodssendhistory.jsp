@@ -70,12 +70,12 @@ function check(){
 <table width="100%" border="0" cellspacing="1"  id="Ntable"> 
   <tr class="dsc">  
   <td width="10%" class="s_list_m"  align="center"><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></td>    
-      <td   class="s_list_m" align="center">单号</td>
+      <td   class="s_list_m" align="center">单号</td> 
     <td   class="s_list_m" align="center">门店</td>
     <td   class="s_list_m" align="center">导购</td>
     <td   class="s_list_m" align="center">订单时间</td>
     <td   class="s_list_m" align="center">发货时间</td>
-  </tr>  
+  </tr>   
    <%    
    if(null != map){    
 	   Set<Map.Entry<String,OrderGoodsAll>> mapent = map.entrySet();

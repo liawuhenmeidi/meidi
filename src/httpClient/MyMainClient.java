@@ -45,15 +45,15 @@ public class MyMainClient{
 	}           
                     
 	public synchronized void startinventoryIN(MyMainClient mc){ 
-		try {             
+		try {              
 			String starttime = TimeUtill.getdateString();     
-			String endtime  = TimeUtill.getdateString();   
-			//starttime = "2015-04-01";            
-			//endtime = "2015-04-08";                
-			                          
+			String endtime  = TimeUtill.getdateString();    
+			//starttime = "2015-04-20";            
+			//endtime = "2015-04-28";                 
+			                             
 			inventoryOrder.getinventoryOut(starttime,endtime,mc);
 			inventoryOrder.getinventoryOutModel(starttime,endtime,mc);
-			            
+			             
 			inventoryIN.getinventoryOut(starttime,endtime,mc); 
 			inventoryIN.getinventoryOutModel(starttime,endtime,mc); 
 			inventoryIN.getinventoryIN(starttime,endtime,mc);

@@ -175,7 +175,8 @@ public class GoodsReceitManager {
 		if (gr.getTid() == 0 || gr.getBid() == 0) {
 			gr.setDisable(1);
 			flag = false;  
-		}   
+		}
+		
         String sqlup = OrderReceitManager.update(gr);
          
 		String sql = " insert into goodsreceipt (id,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,recevenum,refusenum,branchid,branchname,uuid,disable,statues)"

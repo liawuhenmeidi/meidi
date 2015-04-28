@@ -75,7 +75,10 @@ public class UploadManager {
 	   
 	public static boolean saveproductFileToDB(String path,String fileName,String categoryID){
 		List<Product> list = xlsreader.readProductXML(path,fileName,categoryID);
+		//logger.info(list.size());  
+		//long start = System.currentTimeMillis();
 		List<String> listsql = ProductManager.save(list);
+		//logger.info(System.currentTimeMillis() - start); 
 		if(DBUtill.sava(listsql)){  
 			logger.info("上传销售单保存成功"); 
 			return true;

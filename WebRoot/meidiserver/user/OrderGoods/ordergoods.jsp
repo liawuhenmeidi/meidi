@@ -117,12 +117,11 @@ String json = StringUtill.GetJson(list);
 	 }   
 	  var str = '<tr '+cl+'>' +    
 	     ' <td align=center rowspan=2  >'+(row*1+1*1)*1+'</td> '+
-	     
+	      
 	     ' <td colspan=2 align=center ><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
 	     '<td rowspan=2 align=center ><select name="statues'+row+'" id="statues'+row+'">'+
 	     '<option value=""></option>'+  
-	     '<option value="1">常规机订货</option>'+
-	      '<option value="2">特价机订货</option>'+ 
+	     '<option value="1">常规特价订货</option>'+
 	      '<option value="3">样机订货</option>'+
 	      '<option value="4">换货订货</option>'+
 	      '<option value="5">赠品订货</option>'+

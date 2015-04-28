@@ -1,7 +1,10 @@
 package category;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import branch.Branch;
 
 public class CategoryService{
 	public static HashMap<Integer,Category> map;
@@ -16,6 +19,27 @@ public class CategoryService{
 			map = CategoryManager.getCategoryMap();
 		}
 		return map ;
+	} 
+	 
+	public static  List<Integer> getByExportModel(int expor){
+		init();    
+		List<Category> list = getList();    
+		List<Integer> listb = null;  
+		if (null != list) { 
+			listb = new ArrayList<Integer>();
+			for (int i = 0; i < list.size(); i++) {
+				Category c = list.get(i);  
+				 System.out.println(c.getExportmodel());
+				 System.out.println(expor);  
+				if (expor == c.getExportmodel()) {
+					// System.out.println(b.getId());
+					listb.add(c.getId());
+				}
+			}
+			// list = BranchManager.getLocate();
+		}
+
+		return listb;
 	}
 	
 	public static HashMap<String,Category> getmapstr(){

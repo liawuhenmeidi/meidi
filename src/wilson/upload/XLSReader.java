@@ -545,30 +545,39 @@ public class XLSReader {
 								p.setType("第"+j+1+"行,第"+i+"列商品编码不能为空");
 								return list; 
 							}else {   
-								p.setEncoded(str);    
+								p.setEncoded(str); 
+								
 							};
 						}else if(j == 2){
 							try{
 								 double b = Double.parseDouble(str);
 								  p.setSize(b);
 								}catch(Exception e)
-								{ 
-								  //flag = true;
-								} 
-						}else if(j == 3){
+								{  
+									logger.info(e);
+								}  
+						}else if(j == 3){ 
 							try{
 								 double b = Double.parseDouble(str);
 								  p.setStockprice(b);
 								}catch(Exception e)
+								{   
+								 logger.info(e);
+								}  
+						}else if(j == 4){
+							try{
+								int b = Integer.valueOf(str);
+								p.setSaleType(b);
+								}catch(Exception e)
 								{ 
-								  //flag = true;
+									logger.info(e);
 								}
 						}	
 					} 
 					
 					boolean flag = true ;
 					if(StringUtill.isNull(p.getType())){
-						flag = false;
+						flag = false; 
 					}
 					for(int m=0;m<list.size();m++){
 						Product pro  = list.get(m);
@@ -578,15 +587,15 @@ public class XLSReader {
 							break ;  
 						}
 					} 	
-					
+					 
 					if(flag){
 						list.add(p);
 					}
 				
 
 				}catch(Exception e){
-					e.printStackTrace();
-				}
+					logger.info(e);
+				} 
 			}
 	        wb.close();
 			return list;

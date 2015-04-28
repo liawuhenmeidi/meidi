@@ -2,9 +2,8 @@
 	contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>
 
-<%     
-      
-List<BranchType> listgt = BranchTypeManager.getLocate(); 
+<%
+	List<BranchType> listgt = BranchTypeManager.getLocate(); 
 String id = request.getParameter("id"); 
 String statues = request.getParameter("statues");
 String type = request.getParameter("type");
@@ -30,7 +29,7 @@ Map<String, List<String>> map = BranchService.getPtypeMap();
 String branchtype = StringUtill.GetJson(map);
 String json = StringUtill.GetJson(list); 
 
-// System.out.println(json); 
+// System.out.println(json);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -220,20 +219,20 @@ String json = StringUtill.GetJson(list);
 	     ' <td align=center   >'+(row*1+1*1)*1+'</td> '+
 	      
 	     ' <td  align=center ><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
+	   
+	     ' <td align=center ><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'"  placeholder="订单数"  style="border-style:none;width:50px;"   onBlur="addcount()" /></td> ' +
+	     '<td align=center><span style="color:red;font-size:15px;" id="papercount'+row+'" name="papercount'+row+'"></span></td>'+
 	     '<td  align=center ><select name="statues'+row+'" id="statues'+row+'">'+
 	     '<option value=""></option>'+   
-	     '<option value="1">常规机订货</option>'+
-	      '<option value="2">特价机订货</option>'+ 
+	     '<option value="1">常规特价订货</option>'+
 	      '<option value="3">样机订货</option>'+
 	      '<option value="4">换货订货</option>'+
-	      '<option value="5">赠品订货</option>'+
-	      '<option value="6">店外退货 </option>'+
+	      '<option value="5">赠品订货</option>'+ 
+	      '<option value="6">店外退货 </option>'+ 
 	      '<option value="7">已入库常规退货</option>'+
 	      '<option value="8">已入库特价退货</option>'+
 	      '<option value="9">已入库样机退货</option>'+
-	     '<select></td>'+      
-	     '<td align=center><span style="color:red;font-size:15px;" id="papercount'+row+'" name="papercount'+row+'"></span></td>'+
-	     ' <td align=center ><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'"  placeholder="订单数"  style="border-style:none;width:50px;"   onBlur="addcount()" /></td> ' +
+	     '<select></td>'+
 	     ' <td  align=center><input type="button" value="删除" onclick="delet('+row+')"/></td> ' +
 	     '</tr>'+       
 	     '<tr '+cl+'><td colspan=6><table width="100%" id="table'+row+'"></table></td></tr>'
@@ -435,10 +434,10 @@ String json = StringUtill.GetJson(list);
 
 	<div class="main">
 		<div class="weizhi_head">
-			现在位置：<%=message%></div> 
+			现在位置：<%=message%></div>
 		<div>
 			<form action="../../user/OrderGoodsServlet" method="post"
-				onsubmit="return check()"> 
+				onsubmit="return check()">
 				<input type="hidden" name="method" value="add" /> <input
 					type="hidden" name="token" value="<%=token%>" /> <input
 					type="hidden" name="id" id="id" value="<%=id%>" /> <input
@@ -447,22 +446,23 @@ String json = StringUtill.GetJson(list);
 				<input type="hidden" name="type" id="type" value="<%=type%>" />
 				<table style="width:100% ">
 					<tr class="asc">
-					<td>销售系统： <select id="branchtype" name="branchtype">
-										<option></option>
-										<%
-											if (null != listgt) {
-												for (int i = 0; i < listgt.size(); i++) {
-													BranchType bt = listgt.get(i);
-													if (bt.getTypestatues() == 1) {
-										%>
-										<option value="<%=bt.getId()%>"><%=bt.getName()%></option>
-										<%
-											}
-												}
-											}
-										%>
-								</select></td>
-								
+						<td>销售系统： <select id="branchtype" name="branchtype">
+								<option></option>
+								<%
+									if (null != listgt) {
+										for (int i = 0; i < listgt.size(); i++) {
+											BranchType bt = listgt.get(i);
+											if (bt.getTypestatues() == 1) {
+								%>
+								<option value="<%=bt.getId()%>"><%=bt.getName()%></option>
+								<%
+									}
+										}
+									}
+								%>
+						</select>
+						</td>
+
 						<td align=center>门店</td>
 						<td align=center>
 							<%
@@ -485,28 +485,29 @@ String json = StringUtill.GetJson(list);
 								<tr class="dsc">
 									<td align=center width="5%">编号</td>
 									<td align=center width="20%">产品型号</td>
-									<td align=center width="25%">状态</td>
 
-									<td align=center width="10%">未入库数量</td>
 									<td align=center width="20%">订货数</td>
+									<td align=center width="10%">未入库数量</td>
+									<td align=center width="25%">状态</td>
 									<td align=center width="20%">删除</td>
 
 								</tr>
-							</table></td>
+							</table>
+						</td>
 
 					</tr>
 
 					<tr class="asc">
 						<td align=center colspan=2><font
 							style="color:blue;font-size:20px;">合计: <span
-								style="color:red;font-size:20px;" id="addcount"></span> (台) </font></td>
+								style="color:red;font-size:20px;" id="addcount"></span> (台) </font>
+						</td>
 
 						<td align=center colspan=2>备注： <textarea id="remark"
-								name="remark"><%=remark%></textarea>
-						</td>
+								name="remark"><%=remark%></textarea></td>
 					</tr>
 
-					<tr class="asc"> 
+					<tr class="asc">
 						<td align=center colspan=5>
 							<%
 								if ("0".equals(statues)) {

@@ -140,7 +140,32 @@ public class OrderReceitManager {
 		}
 		return list;
 	}
-
+ 
+	public static List<OrderReceipt> getListOver() {
+		List<OrderReceipt> list = new ArrayList<OrderReceipt>(); 
+		String sql = " select * from orderreceipt where refusenum = 0  order by  recevetime";
+		logger.info(sql);
+		Connection conn = DB.getConn();  
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while (rs.next()) {
+				OrderReceipt as = getOrderReceitFromRs(rs);
+				// logger.info(as.getOrderNum());
+				// logger.info(as.getRecevenum());
+				// logger.info(as.getRefusenum());
+				list.add(as);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(stmt);
+			DB.close(rs);
+			DB.close(conn);
+		}
+		return list;
+	}
+	
 	public static List<OrderReceipt> getList(String buyid) {
 		List<OrderReceipt> list = new ArrayList<OrderReceipt>();
 		String sql = " select * from orderreceipt where refusenum != 0  and buyid = '"
@@ -166,7 +191,34 @@ public class OrderReceitManager {
 		}
 		return list;
 	}
+ 
+	public static List<OrderReceipt> getListOver(String buyid) {
+		List<OrderReceipt> list = new ArrayList<OrderReceipt>(); 
+		String sql = " select * from orderreceipt where refusenum = 0  and buyid = '"
+				+ buyid + "'";
+		logger.info(sql);
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn);
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while (rs.next()) {
+				OrderReceipt as = getOrderReceitFromRs(rs);
+				// logger.info(as.getOrderNum());
+				// logger.info(as.getRecevenum());
+				// logger.info(as.getRefusenum());
+				list.add(as);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(stmt);
+			DB.close(rs);
+			DB.close(conn);
+		}
+		return list;
+	}
 
+	
 	/*
 	 * public static Map<String, List<OrderReceipt>> getMapAll(String buyid) {
 	 * List<OrderReceipt> list = getList(buyid); Map<String,List<OrderReceipt>>
@@ -202,6 +254,28 @@ public class OrderReceitManager {
 
 	}
 
+	public static Map<String, OrderReceiptAll> getMapAllOver() {
+		List<OrderReceipt> list = getListOver(); 
+		Map<String, OrderReceiptAll> map = new LinkedHashMap<String, OrderReceiptAll>();
+ 
+		if (null != list) { 
+			for (int i = 0; i < list.size(); i++) {
+				OrderReceipt or = list.get(i);
+				OrderReceiptAll li = map.get(or.getBuyid());
+				if (null == li) {
+					li = new OrderReceiptAll();
+					li.setBuyid(or.getBuyid());
+					li.setCheckNum(or.getCheckNum());
+					li.setActiveordertiem(or.getActiveordertiem());
+					li.setReceveTime(or.getReceveTime());
+					map.put(or.getBuyid(), li);
+				}
+			}
+		}
+		return map;
+
+	}
+	
 	/*
 	 * public static Map<String, OrderReceipt> getMap() { return
 	 * getMap(TimeUtill.getdateString(), TimeUtill.getdateString());

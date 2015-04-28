@@ -18,6 +18,8 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import category.CategoryService;
+
 import branch.BranchService;
 
 import database.DB;
@@ -89,9 +91,9 @@ public class OrderGoodsAllManager {
 	}
 
 	public static Map<String, Map<String, List<OrderGoods>>> getbillingmap(
-			User user, int statues) {
+			User user, int statues,String branchtype) {
 		Map<String, Map<String, List<OrderGoods>>> map = new HashMap<String, Map<String, List<OrderGoods>>>();
-		List<OrderGoodsAll> list = OrderGoodsAllManager.getbillinglist(user);
+		List<OrderGoodsAll> list = OrderGoodsAllManager.getbillinglist(user,branchtype);
 		for (int i = 0; i < list.size(); i++) {
 			OrderGoodsAll oal = list.get(i);
 			List<OrderGoods> listog = oal.getList();
@@ -352,15 +354,21 @@ public class OrderGoodsAllManager {
 		}
 		return list;
 	}
-
-	public static List<OrderGoodsAll> getbillinglist(User user) {
+ 
+	public static List<OrderGoodsAll> getbillinglist(User user,String branchtype) {
 		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
 
-		List<Integer> listids = UserService.GetListson(user);
-		// logger.info(listids);
+		List<Integer> listids = UserService.GetListson(user); 
+		// logger.info(listids);   
+		String sqlbranch = "";
+		if(!StringUtill.isNull(branchtype)){ 
+			List<Integer> listbids = BranchService.getListids(Integer.valueOf(branchtype));
+			sqlbranch = " and mdordermessage.branchid in ("+listbids.toString().substring(1,
+					listbids.toString().length() - 1)+")"; 
+		} 
 		Connection conn = DB.getConn();
  
-		String sql = " select * from mdordergoods,mdordermessage  where  mdordergoods.mid = mdordermessage.id  and mdordergoods.uuid != 'null' and  mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
+		String sql = " select * from mdordergoods,mdordermessage  where  mdordergoods.mid = mdordermessage.id  "+sqlbranch+" and mdordergoods.uuid != 'null' and  mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
 						listids.toString().length() - 1) + " )";
  
@@ -424,21 +432,23 @@ public class OrderGoodsAllManager {
 	}
 
 	public static List<OrderGoodsAll> getlist(User user, int opstatues,
-			String[] ids, String[] statues, String branchtype) {
+			String[] ids, String[] statues, String exportmodel) {
 		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
 
 		List<Integer> listids = UserService.GetListson(user);
-		// logger.info(branchtype);
-		List<Integer> listbids = BranchService.getListids(Integer
-				.valueOf(branchtype));
-		// logger.info(listbids);
-		// logger.info(StringUtill.getStr(ids));
-		Connection conn = DB.getConn();
+		// logger.info(exportmodel);    
+		/*List<Integer> listbids = BranchService.getListids(Integer
+				.valueOf(branchtype));*/  
+		List<Integer> listbids = CategoryService.getByExportModel(Integer
+				.valueOf(exportmodel));     
+		 logger.info(listbids);  
+		// logger.info(StringUtill.getStr(ids)); 
+		Connection conn = DB.getConn(); 
 
 		String sql = " select * from mdordergoods,mdordermessage  where mdordermessage.submitid in ("
-				+ listids.toString().substring(1,
+				+ listids.toString().substring(1, 
 						listids.toString().length() - 1)
-				+ " ) and mdordergoods.mid = mdordermessage.id and mdordermessage.branchid in ("
+				+ " ) and mdordergoods.mid = mdordermessage.id and mdordergoods.cid in ("
 				+ listbids.toString().substring(1,
 						listbids.toString().length() - 1)
 				+ ") and mdordergoods.opstatues = 0  and mdordermessage.id in "

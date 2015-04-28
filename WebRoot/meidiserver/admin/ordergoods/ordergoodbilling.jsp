@@ -1,10 +1,13 @@
-<%@ page language="java"  import="java.util.*,ordersgoods.*,product.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,ordersgoods.*,branchtype.*,product.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%    
 request.setCharacterEncoding("utf-8");  
-User user = (User)session.getAttribute("user");      
+User user = (User)session.getAttribute("user");       
 //Map<String,List<OrderGoods>> map  = OrderGoodsAllManager.getbillingmap(user,OrderMessage.billing); 
  // System.out.println(StringUtill.GetJson(map));
- Map<String,Map<String,List<OrderGoods>>> map  = OrderGoodsAllManager.getbillingmap(user,OrderMessage.billing); 
+  
+ String branchtype = request.getParameter("branchtype"); 
+List<BranchType> listgt = BranchTypeManager.getLocate();  
+ Map<String,Map<String,List<OrderGoods>>> map  = OrderGoodsAllManager.getbillingmap(user,OrderMessage.billing,branchtype); 
  
 %>           
 <!DOCTYPE html> 
@@ -58,12 +61,37 @@ function check(){
 </script> 
 </head>
 
-<body>
+<body> 
 <div class="s_main">
 <jsp:include flush="true" page="../head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>   
   <div class="weizhi_head">现在位置：查看订单</div>
+  <form action="ordergoodbilling.jsp" method="post">
+		<table> 
+			<tr>
+				<td>销售系统： <select id="branchtype" name="branchtype">
+						<option></option> 
+						<%
+							if (null != listgt) {
+								for (int i = 0; i < listgt.size(); i++) {
+									BranchType bt = listgt.get(i);
+									if (bt.getTypestatues() == 1) {
+						%>
+						<option value="<%=bt.getId()%>"><%=bt.getName()%></option>
+						<%
+							}
+								}
+							}
+						%>
+				</select>
+				</td>
+				<td><input type="submit" id="submit" value="查询" />
+				</td>
+
+			</tr>
+		</table>
+	</form>
 <!--  头 单种类  -->     
 <form action="ordergoodSN.jsp"  method = "post"  onsubmit="return check()">
 

@@ -10,6 +10,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import category.CategoryService;
+
 import branch.BranchService;
 
 import user.User;
@@ -49,15 +51,15 @@ public class OrderMessageManager {
 		 
 	}   
 	
-	public static String billing(String exportuuid,String name,String ids,String statues,String branchtype){
-		List<Integer> listbids = BranchService.getListids(Integer.valueOf(branchtype)); 
-    
-       // logger.info(uuid);  
-		String sql = " update mdordergoods,mdordermessage set mdordergoods.uuid = '"+name+"' ,mdordergoods.exportuuid = '"+exportuuid+"',mdordergoods.uuidtime = '"+TimeUtill.getdateString()+"', mdordergoods.opstatues = 1  where mdordergoods.mid = mdordermessage.id  and mdordermessage.branchid in ("+listbids.toString().substring(1,   
-						listbids.toString().length() - 1)+")  and mdordermessage.id in "+ ids+" and mdordergoods.statues in"+statues; 
-	    return sql; 
-	     
-	}   
+	public static String billing(String exportuuid,String name,String ids,String statues,int expor){
+		//List<Integer> listbids = BranchService.getListids(Integer.valueOf(branchtype)); 
+        List<Integer> listcids = CategoryService.getByExportModel(expor); 
+       // logger.info(uuid);     
+		String sql = " update mdordergoods,mdordermessage set mdordergoods.uuid = '"+name+"' ,mdordergoods.exportuuid = '"+exportuuid+"',mdordergoods.uuidtime = '"+TimeUtill.getdateString()+"', mdordergoods.opstatues = 1  where mdordergoods.mid = mdordermessage.id  and mdordergoods.cid in ("+listcids.toString().substring(1,   
+						listcids.toString().length() - 1)+")  and mdordermessage.id in "+ ids+" and mdordergoods.statues in"+statues; 
+	    return sql;  
+	      
+	}    
 	 
 	public static String billing(String exportuuid,String ids,String statues){
     

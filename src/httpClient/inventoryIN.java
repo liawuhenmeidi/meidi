@@ -278,8 +278,8 @@ public class inventoryIN {
 			if(StringUtill.isNull(responseContent)){  
 				MyLogin.loginpost(new URI(MyLogin.url));
 				responseContent = getHtmlStringOutModel(uri, starttime, endtime,1,mc);
-			}   
-			logger.info(responseContent);
+			}    
+		//	logger.info(responseContent);
 			int num = getNum(responseContent);  
 			//logger.info(num); 
 			for(int i=1;i<=num;i++){        

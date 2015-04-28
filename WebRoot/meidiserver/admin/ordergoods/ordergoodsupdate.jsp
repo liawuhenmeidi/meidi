@@ -185,13 +185,13 @@ var jsoninventory = <%=jsoninventory%>;
 	            } 
 	           });
  }
-  
+   
  function init(){
 	 for(var i=0;i<jsons.length;i++){
 		 var json = jsons[i];  
-		 //alert(json.tname);
-		$("#product"+i).val(json.tname); 
-		$("#statues"+i).val(json.statues); 
+		 //alert(json.tname); s
+		$("#product"+i).val(json.tname);  
+		$("#statues"+i).val(json.realstatues); 
 		 
 		// $("#table"+i+" td").remove(); 
 		//var str = '<td colspan=5 align=center style="color:red" >苏宁库存信息(退货显示库存信息)</td>';
@@ -278,20 +278,21 @@ var jsoninventory = <%=jsoninventory%>;
 	     ' <td align=center  rowspan=2 >'+(row*1+1*1)*1+'</td> '+
 	      
 	     ' <td  align=center ><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
+	     ' <td align=center ><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'"  placeholder="订单数"  style="border-style:none;width:50px;"   onBlur="addcount()" /></td> ' +
+	     '<td align=center><input type="hidden" name="papercount'+row+'" id="Ipapercount'+row+'"><span style="color:red;font-size:15px;" id="papercount'+row+'"  ></span></td>'+
+	     
 	     '<td  align=center ><select name="statues'+row+'" id="statues'+row+'">'+
 	     '<option value=""></option>'+   
 	     '<option value="1">常规机订货</option>'+
 	      '<option value="2">特价机订货</option>'+ 
 	      '<option value="3">样机订货</option>'+
-	      '<option value="4">换货订货</option>'+
+	      '<option value="4">换货订货</option>'+ 
 	      '<option value="5">赠品订货</option>'+
 	      '<option value="6">店外退货 </option>'+
 	      '<option value="7">已入库常规退货</option>'+
 	      '<option value="8">已入库特价退货</option>'+
 	      '<option value="9">已入库样机退货</option>'+
-	     '<select></td>'+      
-	     '<td align=center><input type="hidden" name="papercount'+row+'" id="Ipapercount'+row+'"><span style="color:red;font-size:15px;" id="papercount'+row+'"  ></span></td>'+
-	     ' <td align=center ><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'"  placeholder="订单数"  style="border-style:none;width:50px;"   onBlur="addcount()" /></td> ' +
+	     '<select></td>'+    
 	     ' <td  align=center><input type="button" value="删除" onclick="delet('+row+')"/></td> ' +
 	     '</tr>'+     
 	     '<tr '+cl+' ><td colspan=5 align=center ><table id="table'+row+'" width="100%"></table></td></tr>'
@@ -511,10 +512,11 @@ var jsoninventory = <%=jsoninventory%>;
 								<tr class="dsc">
 									<td align=center width="5%">编号</td>
 									<td align=center width="20%">产品型号</td>
-									<td align=center width="25%">状态</td>
+								<td align=center width="20%">订货数</td>
 
 									<td align=center width="10%">未入库数量</td>
-									<td align=center width="20%">订货数</td>
+									
+										<td align=center width="25%">状态</td>
 									<td align=center width="20%">删除</td>
 								</tr>
 								<!-- 

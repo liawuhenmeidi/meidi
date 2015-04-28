@@ -106,11 +106,12 @@ if(!StringUtill.isNull(categoryID)){
 		<tr>
 			<th align="left" width="20"></th>
 			<!--<input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input></th>
-			
+			 
 			<th align="left">产品类别ID</th>  -->
 			<th align="left">产品序号</th>
 			<th align="left">产品型号</th>
 			<th align="left">产品编码</th>
+			<th align="left">销售类别</th>
 			<th align="left">体积</th> 
 			<th align="left">售价(单位元)</th>
 			<th align="left">时间(单位天)</th>
@@ -129,8 +130,9 @@ if(!StringUtill.isNull(categoryID)){
 		
 	<!-- 	<td align="left"><%=product.getId() %></td> -->
 		<td align="left"><%=i+1 %></td>   
-		<td align="left"><%=product.getType() %></td> 
-		<td align="left"><%=product.getEncoded() %></td> 
+		<td align="left"><%=product.getType() %></td>  
+		<td align="left"><%=product.getEncoded() %></td>
+		<td align="left"><%=product.getSaletypeName() %></td> 
 		<td align="left"><%=product.getSize() %></td>  
 		<td align="left"><%=product.getStockprice()%></td> 
 		<td align="left"><%=product.getMataintime()%></td> 

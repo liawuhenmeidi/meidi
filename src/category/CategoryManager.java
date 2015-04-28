@@ -433,14 +433,15 @@ logger.info(sql);
 		public static boolean update(Category user) {
 			boolean flag = false ;
 			Connection conn = DB.getConn();
-			String sql = "update mdcategory set categoryname = ?, time = ? ,sales = ?  where id = ?";
+			String sql = "update mdcategory set categoryname = ?, time = ? ,sales = ?,exportmodel = ?  where id = ?";
 			PreparedStatement pstmt = DB.prepare(conn, sql);
-			try {  
+			try {    
 				pstmt.setString(1, user.getName());
-				pstmt.setString(2, user.getTime());
-				pstmt.setString(3, user.getSales());
-				pstmt.setInt(4, user.getId());
-				pstmt.executeUpdate();
+				pstmt.setString(2, user.getTime());  
+				pstmt.setString(3, user.getSales()); 
+				pstmt.setInt(4, user.getExportmodel()); 
+				pstmt.setInt(5, user.getId()); 
+				pstmt.executeUpdate(); 
 				CategoryService.flag = true ;
 				flag = true ;
 			} catch (SQLException e) {
@@ -461,7 +462,8 @@ logger.info(sql);
 				c.setTime(rs.getString("time"));    
 				c.setStatues(rs.getInt("cstatues")); 
 				c.setPtype(rs.getInt("ptype"));    
-				c.setSales(rs.getString("sales"));   
+				c.setSales(rs.getString("sales")); 
+				c.setExportmodel(rs.getInt("exportmodel"));
 			} catch (SQLException e) { 
 				e.printStackTrace();
 			}	 
