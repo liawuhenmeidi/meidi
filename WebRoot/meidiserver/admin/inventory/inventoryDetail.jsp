@@ -136,6 +136,7 @@ function inventory(inventory,type){
      			<td align="center">安装网点：账面库存数量<P>销售门店：未入库数量</td> 
      			<td align="center">实际调拨数量</td>
      			<td align="center">实际库存数量</td>
+     			<td align="center">是否确认收发货</td>
 		</tr>      
 		    
                <% for(int i=0;i<list.size();i++){
@@ -157,13 +158,15 @@ function inventory(inventory,type){
 		        		}
             	   
 		        		
-		        			 strtype = in.getMessage(); 
-		        		 
-		        		  
+		        		strtype = in.getMessage(); 
+		        		 String cl="class=\"asc\""; 
+		        		  if(in.getIsOverStatues() == 1){
+		        			  cl="class=\"bsc\""; 
+		        		  }
 		        		 if(type == 10){
 		        			 %>
 		        			
-		        			 <tr id="<%=in.getInventoryid() %>"  class="asc"  onclick="updateClass(this)">   
+		        			 <tr id="<%=in.getInventoryid() %>"   <%=cl %> onclick="updateClass(this)">   
 			        			  <td align="center"><%=usermap.get(in.getSendUser()).getBranchName()%>"已盘点" </td>   
 			        			  <td align="center"><%=in.getTime()%></td>  
 			        			  <td align="center"><%=in.getType()%></td>    
@@ -173,13 +176,14 @@ function inventory(inventory,type){
 			        			  <td align="center"><%=papercount%></td>     
 			        			  <td align="center"> </td>  
 			        			  <td align="center"><%=realcount%></td>  
+			        			   <td align="center"><%=in.getIsOverStatuesName()%></td>  
 		        			  </tr>
 		        			<%	 
 		        		 }else {
 		        			 
 		        		%>
 		        	
-		        		   <tr id="<%=in.getInventoryid() %>" class="asc" onclick="updateClass(this)" ondblclick="inventory('<%=in.getInventoryid() %>','<%=type%>')">   
+		        		   <tr id="<%=in.getInventoryid() %>" <%=cl %> onclick="updateClass(this)" ondblclick="inventory('<%=in.getInventoryid() %>','<%=type%>')">   
 		        		      <td align="center"><%=in.getInventoryString()%></td>   
 		        		      <td align="center"><%=in.getTime()%></td>     
 		        		      <td align="center"><%=in.getType()%></td>    
@@ -190,7 +194,7 @@ function inventory(inventory,type){
 		        		      <td align="center"><%=in.getAllotRealcount()%></td>  
 		        		    
 		        		      <td align="center"><%=realcount%></td>  
-		        		         
+		        		         <td align="center"><%=in.getIsOverStatuesName()%></td>   
 		        		      </tr>
 		        		<% 
 		        		 }

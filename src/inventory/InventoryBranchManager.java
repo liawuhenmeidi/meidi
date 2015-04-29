@@ -606,7 +606,25 @@ logger.info(sql);
 		 //logger.info(map);  
 		 return map;
 	}
-	 
+	  
+	public static Map<Integer,Map<String,InventoryBranch>> getmapType(User user){
+		 Map<Integer,Map<String,InventoryBranch>> map = new HashMap<Integer,Map<String,InventoryBranch>>(); 
+		 List<InventoryBranch>  listInventory = InventoryBranchManager.getCategoryid(user,"",""); 
+		 Iterator<InventoryBranch> it = listInventory.iterator();
+		 
+		 while(it.hasNext()){
+			 InventoryBranch in = it.next();
+			 Map<String,InventoryBranch> mapt  = map.get(in.getBranchid()); 
+			 if(null == mapt){
+				 mapt = new HashMap<String,InventoryBranch>();
+				 map.put(in.getBranchid(), mapt);
+			 } 
+			 mapt.put(in.getType(), in);
+		 }  
+		 //logger.info(map);  
+		 return map;
+	}
+	
 	public static Map<String,InventoryBranch> getmapTypeBranch(String branchid){
 		//logger.info(branchid);   
 		Map<String,InventoryBranch> map = new HashMap<String,InventoryBranch>();
@@ -743,13 +761,13 @@ logger.info(sql);
 	private static InventoryBranch getCategoryFromRs(ResultSet rs){
 		InventoryBranch c = new InventoryBranch(); 
 		try {  
-			c.setId(rs.getInt("id"));  
+			c.setId(rs.getInt("id"));   
 			c.setBranchid(rs.getInt("branchid"));
 			c.setRealcount(rs.getInt("realcount")); 
 			c.setPapercount(rs.getInt("papercount")); 
 			c.setInventoryid(rs.getInt("inventoryid"));
 			c.setTypeid(rs.getString("type"));    
-			//logger.info(c.getTypeid());  
+			//logger.info(c.getTypeid());   
 			c.setType(ProductService.getIDmap().get(Integer.valueOf(c.getTypeid())).getType());    
 		    c.setIsquery(rs.getInt("isquery"));     
 		    c.setQuerymonth(rs.getString("querymonth"));  

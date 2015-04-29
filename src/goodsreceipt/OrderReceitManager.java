@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ordersgoods.OrderGoodsAllManager;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.nodes.Element;
@@ -74,8 +76,23 @@ public class OrderReceitManager {
 			list.add(sql);
 		}
 		return list;
+	}  
+    
+	public static List<String> billing(User user ,Map<String,OrderReceipt> map,String[] ids,String buyid) { 
+		List<String> list = OrderGoodsAllManager.save(user, map,ids,buyid);    
+		return list;
 	}
- 
+	 
+	public static String updateDiable(OrderReceipt gr) { 
+		String str = "update orderreceipt set disable = 1 where id = "+gr.getId();
+		return str;
+	} 
+	 
+	public static String updatesPrintNum(OrderReceipt gr) { 
+		String str = "update orderreceipt set printNum = printNum+"+1+" where id = "+gr.getId();
+		return str;
+	}
+	
 	public static String update(GoodsReceipt gr) {
 		String str = "update orderreceipt set recevenum = orderreceipt.recevenum +"
 				+ gr.getRecevenum()
@@ -118,9 +135,9 @@ public class OrderReceitManager {
 
 	public static List<OrderReceipt> getList(String starttime, String endtime) {
 		List<OrderReceipt> list = new ArrayList<OrderReceipt>();
-		String sql = " select * from orderreceipt where refusenum != 0  order by  recevetime";
+		String sql = " select * from orderreceipt where refusenum != 0 and disable = 0  order by  recevetime";
 		logger.info(sql);
-		Connection conn = DB.getConn();  
+		Connection conn = DB.getConn();   
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		try {
@@ -143,9 +160,9 @@ public class OrderReceitManager {
  
 	public static List<OrderReceipt> getListOver() {
 		List<OrderReceipt> list = new ArrayList<OrderReceipt>(); 
-		String sql = " select * from orderreceipt where refusenum = 0  order by  recevetime";
+		String sql = " select * from orderreceipt where refusenum = 0  and disable = 0 order by  recevetime";
 		logger.info(sql);
-		Connection conn = DB.getConn();  
+		Connection conn = DB.getConn();   
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		try {
@@ -191,11 +208,38 @@ public class OrderReceitManager {
 		}
 		return list;
 	}
- 
-	public static List<OrderReceipt> getListOver(String buyid) {
+  
+	
+	public static Map<String,OrderReceipt> getMapOver(String buyid) {
+		Map<String,OrderReceipt> map = new HashMap<String,OrderReceipt>();
+		List<OrderReceipt> list = getListOver(buyid);
+		if(null != list){
+			for(int i=0;i<list.size();i++){ 
+				OrderReceipt or = list.get(i);
+				map.put(or.getId()+"", or);  
+			}
+		}
+		
+		return map;
+	}
+	
+	public static Map<String,OrderReceipt> getMap(String buyid) { 
+		Map<String,OrderReceipt> map = new HashMap<String,OrderReceipt>();
+		List<OrderReceipt> list = getList(buyid);
+		if(null != list){ 
+			for(int i=0;i<list.size();i++){ 
+				OrderReceipt or = list.get(i);
+				map.put(or.getId()+"", or);  
+			}
+		}
+		
+		return map;
+	}
+	
+	public static List<OrderReceipt> getListOver(String buyid) { 
 		List<OrderReceipt> list = new ArrayList<OrderReceipt>(); 
-		String sql = " select * from orderreceipt where refusenum = 0  and buyid = '"
-				+ buyid + "'";
+		String sql = " select * from orderreceipt where refusenum = 0  and disable = 0 and buyid = '"
+				+ buyid + "'"; 
 		logger.info(sql);
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn);
@@ -515,13 +559,14 @@ public class OrderReceitManager {
 			p.setSendid(rs.getString("sendid"));
 			p.setUuid(rs.getString("uuid"));
 			p.setDisable(rs.getInt("disable"));
-			p.setStatues(rs.getInt("statues"));
+			p.setStatues(rs.getInt("statues")); 
 			p.setQueryNum(rs.getString("querynum"));
 			p.setPici(rs.getString("pici"));
 			p.setOrderNum(rs.getInt("ordernum"));
 			p.setActiveordertiem(rs.getString("activeordertiem"));
 			p.setCheckNum(rs.getString("checknum"));
-			p.setRefusenum(rs.getInt("refusenum"));
+			p.setRefusenum(rs.getInt("refusenum"));  
+			p.setPrintNum(rs.getInt("printnum"));  
 		} catch (SQLException e) {
 			p = null;
 			// logger.info(e);

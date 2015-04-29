@@ -1,6 +1,8 @@
 package servlet;
 
 import exportModel.ExportModel;
+import goodsreceipt.OrderReceipt;
+import goodsreceipt.OrderReceitManager;
 import group.Group;
 
 import java.io.File;
@@ -9,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -95,6 +98,8 @@ public class PrintServlet extends HttpServlet {
 			exporttotalExport(request, response);
 		} else if ("OrderGoodssend".equals(method)) {
 			OrderGoodssend(request, response);
+		} else if ("OrderGoodsSN".equals(method)) {
+			OrderGoodsSN(request, response);
 		} else if ("billing".equals(method)) {
 			OrderGoodsbilling(request, response);
 
@@ -1618,10 +1623,10 @@ public class PrintServlet extends HttpServlet {
 					Set<Map.Entry<Integer, OrderGoods>> sett = mapb.entrySet();
 					Iterator<Map.Entry<Integer, OrderGoods>> itt = sett
 							.iterator();
-					while (itt.hasNext()) { 
+					while (itt.hasNext()) {
 						Map.Entry<Integer, OrderGoods> mapet = itt.next();
 						OrderGoods og = mapet.getValue();
-						// logger.info(og);  
+						// logger.info(og);
 						if (export == CategoryService.getmap().get(og.getCid())
 								.getExportmodel()) {
 							String message = "";
@@ -2440,6 +2445,278 @@ public class PrintServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+ 
+	public void OrderGoodsSN(HttpServletRequest request,
+			HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+   
+		String[] ids =request.getParameterValues("id"); 
+		String buyid = request.getParameter("buyid");  
+		Map<String, OrderReceipt> map = OrderReceitManager.getMap(buyid);
+       String checkNum = ""; 
+		List<String> listor = Arrays.asList(ids);
+//logger.info(listor);  
+		Map<Integer, List<OrderReceipt>> maps = new HashMap<Integer, List<OrderReceipt>>();
+		if (null != map) {  
+			Set<Map.Entry<String, OrderReceipt>> set = map.entrySet();
+			Iterator<Map.Entry<String, OrderReceipt>> it = set.iterator();
+			while (it.hasNext()) {
+				Map.Entry<String, OrderReceipt> mapent = it.next();
+				OrderReceipt gr = mapent.getValue();
+				if (listor.contains(gr.getId() + "")) {
+				// logger.info(gr.getId());
+					checkNum = gr.getCheckNum(); 
+					List<OrderReceipt> list = maps.get(gr.getBid());
+					if (null == list) {
+						list = new ArrayList<OrderReceipt>();
+						maps.put(gr.getBid(), list);
+					}
+					list.add(gr);
+				}
+
+			} 
+		} 
+		logger.info(maps); 
+		List<String> listsql = new ArrayList<String>();
+		HSSFWorkbook wb = new HSSFWorkbook();  
+		if (null != maps) {
+			Set<Map.Entry<Integer, List<OrderReceipt>>> set = maps.entrySet();
+			Iterator<Map.Entry<Integer, List<OrderReceipt>>> it = set
+					.iterator();
+			while (it.hasNext()) {
+				Map.Entry<Integer, List<OrderReceipt>> mapent = it.next();
+				int bid = mapent.getKey();
+				List<OrderReceipt> grs = mapent.getValue();
+				// 第一步，创建一个webbook，对应一个Excel文件
+				
+				// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+				HSSFSheet sheet = wb.createSheet(BranchService.getMap().get(bid).getNameSN());
+				sheet.setDefaultColumnWidth(15);
+				sheet.setDefaultRowHeightInPoints(30);
+				sheet.setColumnWidth(1, 20 * 256);
+
+				HSSFCellStyle style = wb.createCellStyle();
+
+				style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+				style.setWrapText(true);
+				style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+				style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+				style.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
+				style.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+				style.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
+				style.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+				// sheet.setColumnWidth((short)200,(short)1000);
+				// row.setHeight((short)height);
+				// style.set 
+ 
+				int count = 0;
+				HSSFCell cell = null;
+				HSSFRow row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 6));
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (2 * 256));
+				count++;
+				for (int i = 0; i < 7; i++) {
+					if (i == 0) {
+						cell = row.createCell((short) i);
+						cell.setCellValue("退厂拖单机");
+						cell.setCellStyle(style);
+					} else {
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style);
+						cell.setCellValue("");
+					}
+				}
+                
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 6));
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (2 * 256));
+				count++;
+				for (int i = 0; i < 7; i++) {
+					if (i == 0) {
+						cell = row.createCell((short) i);
+						cell.setCellValue("苏宁云商集团股份有限公司苏宁采购中心：");
+						cell.setCellStyle(style);
+					} else {
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style);
+						cell.setCellValue("");
+					}
+				}
+				
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 6));
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (2 * 256));
+				count++;
+				for (int i = 0; i < 7; i++) {
+					if (i == 0) {
+						cell = row.createCell((short) i);
+						cell.setCellValue("我司同意贵司退回如下货物，具体明细如下表：");
+						cell.setCellStyle(style);
+					} else {
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style);
+						cell.setCellValue("");
+					}
+				}
+				
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 6));
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (2 * 256));
+				count++;
+				for (int i = 0; i < 7; i++) {
+					if (i == 0) {
+						cell = row.createCell((short) i);
+						cell.setCellValue("供应商编码："+Company.supply);
+						cell.setCellStyle(style);
+					} else {
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style);
+						cell.setCellValue("");
+					}
+				}
+				
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 6));
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (2 * 256));
+				count++;
+				for (int i = 0; i < 7; i++) {
+					if (i == 0) {
+						cell = row.createCell((short) i);
+						cell.setCellValue("供应商名称：天津市圣荣恒业商贸有限公司");
+						cell.setCellStyle(style);
+					} else {
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style);
+						cell.setCellValue("");
+					}
+				}
+				
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 6));
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (2 * 256));
+				count++; 
+				for (int i = 0; i < 7; i++) {
+					if (i == 0) { 
+						cell = row.createCell((short) i);
+						cell.setCellValue("退厂订单号:"+buyid+"-"+checkNum);
+						cell.setCellStyle(style);
+					} else {
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style);
+						cell.setCellValue("");
+					}
+				}
+				
+				// 第三步，在sheet中添加表头第0行,注意 老版本poi对Excel的行数列数有限制short
+				
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (2 * 256));
+				  
+				count++;
+				int x = 0;
+                   
+				cell = row.createCell((short) x++);
+				cell.setCellValue("序号");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("商品编码");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("商品全名");
+				cell.setCellStyle(style);
+				
+				cell = row.createCell((short) x++);
+				cell.setCellValue("退货数量（台）");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("退货价格（扣除规则月返的价格）");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("不含税净价");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("地点（仓库）名称");
+				cell.setCellStyle(style);
+				
+				
+				for(int i=0;i<grs.size();i++){
+					OrderReceipt or = grs.get(i);
+					row = sheet.createRow((int) count);
+					String sql = OrderReceitManager.updatesPrintNum(or);
+					listsql.add(sql); 
+ 
+					count++;
+					int y = 0;
+					cell = row.createCell((short) y++);
+					cell.setCellValue(i+1); 
+					cell.setCellStyle(style); 
+					cell = row.createCell((short) y++);
+					cell.setCellValue(or.getGoodsnum());
+					cell.setCellStyle(style);
+					cell = row.createCell((short) y++);
+					cell.setCellValue(or.getGoodsName());
+					cell.setCellStyle(style);
+					cell = row.createCell((short) y++);
+					cell.setCellValue(or.getOrderNum());
+					cell.setCellStyle(style); 
+					cell = row.createCell((short) y++);
+					cell.setCellValue("");
+					cell.setCellStyle(style);
+					cell = row.createCell((short) y++);
+					cell.setCellValue("");
+					cell.setCellStyle(style);
+					cell = row.createCell((short) y++);
+					cell.setCellValue(or.getBranchid());
+					cell.setCellStyle(style);
+					 
+					
+					
+				}
+			}
+				try {
+					response.setContentType("APPLICATION/OCTET-STREAM");
+					response.setCharacterEncoding("UTF-8");
+					response.setHeader("Content-Disposition",
+							"attachment; filename=\"" + StringUtill.toUtf8String("退厂拖单机")
+									+ TimeUtill.getdateString() + ".xls\"");
+					// FileOutputStream fout = new
+					// FileOutputStream("E:/报装单"+printlntime+".xls");
+					wb.write(response.getOutputStream());
+					response.getOutputStream().close();
+					
+					
+						// String sqlsend = 
+					
+						 
+			
+					
+
+					// logger.info(123);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+		
+			
+			
+			DBUtill.sava(listsql);
+			
+		}
+
+		
+		// 第五步，写入实体数据 实际应用中这些数据从数据库得到
+
+		
+		// System.out.println(count);
+		// 第六步，将文件存到指定位置
+		
 	}
 
 	public void OrderGoodsbilling(HttpServletRequest request,

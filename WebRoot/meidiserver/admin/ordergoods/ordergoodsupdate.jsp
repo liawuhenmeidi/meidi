@@ -222,11 +222,14 @@ var jsoninventory = <%=jsoninventory%>;
 		}
 		 
 		 
-		$("#uuid").val(json.uuid);  
-		rows.push(i); 
-		var only = json.tname+"_"+json.statues; 
-		ctypes.push(only);   
-	 } 
+		$("#uuid").val(json.uuid); 
+		if(json.realstatues != "" && json.realstatues!= null){
+			rows.push(i); 
+			var only = json.tname+"_"+json.realstatues; 
+			ctypes.push(only); 
+		}
+		  
+	 }  
 	 addcount();
  }
  
@@ -263,16 +266,12 @@ var jsoninventory = <%=jsoninventory%>;
 			 return ; 
 		 }
 	 } 
-	 if(rows.length == 10){
-		 row = 15;
-		 addrowinti();
-	 }
 	 $("#addcount").html(totalcount);
  }
   
- 
+  
  function addrow(row){ 
-	 var cl = 'class="asc"';
+	 var cl = 'class="asc"'; 
 	 
 	  var str = '<tr '+cl+'>' +    
 	     ' <td align=center  rowspan=2 >'+(row*1+1*1)*1+'</td> '+
@@ -290,14 +289,14 @@ var jsoninventory = <%=jsoninventory%>;
 	      '<option value="5">赠品订货</option>'+
 	      '<option value="6">店外退货 </option>'+
 	      '<option value="7">已入库常规退货</option>'+
-	      '<option value="8">已入库特价退货</option>'+
+	      '<option value="8">已入库特价退货</option>'+ 
 	      '<option value="9">已入库样机退货</option>'+
 	     '<select></td>'+    
 	     ' <td  align=center><input type="button" value="删除" onclick="delet('+row+')"/></td> ' +
 	     '</tr>'+     
 	     '<tr '+cl+' ><td colspan=5 align=center ><table id="table'+row+'" width="100%"></table></td></tr>'
 	     ;  
-	               
+	                
 	$("#Ntable").append(str);
 	 
 	//alert($("#td"+row).css("width")-10);
@@ -314,9 +313,9 @@ var jsoninventory = <%=jsoninventory%>;
 	});
 	  
 	$("#product"+row).keydown(function (){
-		initctypes();
+		initctypes(row);
 	});
-	    
+	     
 	$("#statues"+row).blur(function (){
 		initctypes(row); 
 		addresults(row); 
@@ -387,11 +386,17 @@ var jsoninventory = <%=jsoninventory%>;
 	 
  }
   
-  function  initctypes(row){  
+  function  initctypes(num){  
 	   rows.deleteEle(); 
-	   ctypes = new Array();   
+	   ctypes = new Array();
+	   
+	   if(rows.length == row){   
+		    row = row +5;    
+			addrowinti(); 
+		 }  
+	   
 	   for(var i=0;i<rows.length;i++){
-		   if(i != row){  
+		   if(i != num){  
 			   var ctype = $("#product"+rows[i]).val();
 			   var statues = $("#statues"+rows[i]).val();
 			   if($.inArray(ctype,jsonallp) != -1  && statues != ""){

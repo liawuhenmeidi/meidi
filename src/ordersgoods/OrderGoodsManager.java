@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,7 +21,6 @@ import user.User;
 import user.UserService;
 import utill.DBUtill;
 import utill.StringUtill;
-import utill.TimeUtill;
 
   
 public class OrderGoodsManager { 
@@ -31,11 +29,11 @@ public class OrderGoodsManager {
    public static boolean save(User user ,OrderGoods og){
 	   boolean flag = false ;
 	   List<String> list = new ArrayList<String>();
-	   String sql = "";
+	   String sql = ""; 
 	   if(og.getId() != 0 ){ 
 		   String sqld = "delete from mdordergoods where uuid = "+ og.getId();
 		   list.add(sqld);
-		 
+		  
 		   sql = "insert into mdordergoods (id,oid,submitid,submittime,tid,statues,ordernum,realnum,opstatues,uuid) " +
 			   		"values ("+og.getId()+","+og.getOid()+",'"+og.getSubmitid()+"','"+og.getSubmittime()+"','"+og.getTid()+"','"+og.getStatues()+"','"+og.getOrdernum()+"','"+og.getRealnum()+"','"+og.getOpstatues()+"','"+og.getUuid()+"') ;" ; 
 	   }else {

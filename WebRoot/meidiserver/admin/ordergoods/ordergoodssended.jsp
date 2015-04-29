@@ -99,6 +99,7 @@ function check(){
     <td   class="s_list_m" align="center">导购</td>
     <td   class="s_list_m" align="center">订单时间</td>
     <td   class="s_list_m" align="center">发货时间</td>
+     <td   class="s_list_m" align="center">备注</td>
   </tr>  
    <%    
    if(null != map){   
@@ -113,14 +114,15 @@ function check(){
 			if (StringUtill.isNull(branchtype)
 					|| o.getOm().getBranch().getPid() == Integer
 							.valueOf(branchtype)) {
-			
+			 
   %>               
  <tr class="asc" ondblclick="detail('ordergoodsdetailsend.jsp?id=<%=key%>&type=<%=OrderMessage.billing%>&statues=<%=OrderMessage.examine%>')">  
 	 <td align="center"><%=o.getOm().getId() %></td>  
 	 <td align="center"><%=o.getOm().getBranchname()%></td>  
      <td align="center"><%=o.getOm().getUser().getUsername()%></td> 
      <td align="center"><%= o.getOm().getSubmittime()%></td> 
-     <td align="center"><%= sendtime%></td> 
+     <td align="center"><%= sendtime%></td>  
+     <td align="center"><%= o.getOm().getRemark()%></td> 
       
   </tr>  
   

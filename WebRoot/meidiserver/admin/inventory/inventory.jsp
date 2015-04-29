@@ -4,12 +4,12 @@
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
- 
-List<String> listbranchp = BranchService.getListStr(); 
+  
+List<String> listbranchp = BranchService.getListStr();  
 String listall = StringUtill.GetJson(listbranchp);  
  
 String branchid = "";
-Branch branch = null;   
+Branch branch = null;    
 if(UserManager.checkPermissions(user, Group.Manger)){
 	branchid = request.getParameter("branchid"); 
 }else if(UserManager.checkPermissions(user, Group.sencondDealsend) || UserManager.checkPermissions(user, Group.sale) && !UserManager.checkPermissions(user, Group.dealSend)){

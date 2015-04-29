@@ -299,7 +299,7 @@ public class BranchManager {
 			Map<Integer,Branch> map = new HashMap<Integer,Branch>();
 			Connection conn = DB.getConn(); 
 			String sql = "select * from mdbranch ";
-logger.info(sql);			
+//logger.info(sql);	 		
 			Statement stmt = DB.getStatement(conn); 
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {  

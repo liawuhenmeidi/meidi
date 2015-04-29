@@ -11,12 +11,12 @@ if("submit".equals(type)){
 	List<String> list = new ArrayList<String>();
 	String[] ids = request.getParameterValues("id");
 	for(int i=0;i<ids.length;i++){
-		String id = ids[i];   
+		String id = ids[i];    
 		GoodsReceipt gr = map.get(id);
 		List<String> sql = GoodsReceitManager.saveDisable(gr);
 		if(null != sql || sql.size() != 0 ){
-			map.remove(id); 
-		} 
+			map.remove(id);  
+		}  
 		list.addAll(sql);
 	}
 	

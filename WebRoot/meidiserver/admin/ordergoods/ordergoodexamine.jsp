@@ -130,7 +130,7 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 			<input type="hidden" name="type" id="type" >
 			<table width="100%" border="0" cellspacing="1" id="Ntable">
 				<tr class="asc">
-					<td colspan=5>
+					<td colspan=6>
 						<table width="100%">
 							<tr>
 								<%--<td>销售系统： <select id="branchtype" name="branchtype">
@@ -210,6 +210,7 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 					<td width="25%" class="s_list_m" align="center">订单时间</td>
 					<td width="25%" class="s_list_m" align="center">门店</td>
 					<td width="25%" class="s_list_m" align="center">导购</td>
+					<td width="25%" class="s_list_m" align="center">备注</td>
 				</tr>
 				<%
 					if (null != map) {
@@ -225,8 +226,7 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 							if(null != list){
 								for(int m=0;m<list.size();m++){
 									OrderGoods og = list.get(m);
-									
-									%>
+																		%>
 									<script type="text/javascript"> 
 									$("#statues<%=og.getStatues()%>").css('display','block');
 									</script>
@@ -244,15 +244,16 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 					<td align="center"><%=o.getOm().getSubmittime()%></td>
 					<td align="center"><%=o.getOm().getBranchname()%></td>
 					<td align="center"><%=o.getOm().getUser().getUsername()%></td>
+					<td align="center"><%=o.getOm().getRemark()%></td>
 				</tr>
-
+ 
 				<%
 					}
 					}
 				%>
  
 				<tr class="asc"> 
-					<td align="center" colspan=5><input type="button" name="button" value="生成订单"
+					<td align="center" colspan=6><input type="button" name="button" value="生成订单"
 						onclick="check(0)" /> <input type="button" name="button" value="生成退货单"
 						onclick="check(1)" /> <input type="button" name="button" value="忽略"
 						onclick="check(2)" />

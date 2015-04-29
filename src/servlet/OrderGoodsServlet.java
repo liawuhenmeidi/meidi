@@ -60,7 +60,7 @@ public class OrderGoodsServlet extends HttpServlet {
 
 		// String uuid = request.getParameter("uuid");
 		logger.info(method);
-
+ 
 		if ("add".equals(method)) {
 			add(request, response);
 
@@ -233,8 +233,8 @@ public class OrderGoodsServlet extends HttpServlet {
 		}
 		if (null != ogids) {
 			List<String> listogids = Arrays.asList(ogids);
-			logger.info(listogids);
-
+			//logger.info(listogids);
+ 
 			// for (int i = 0; i < ogids.length; i++) {
 			if (null != list) {
 				for (int i = 0; i < list.size(); i++) {
@@ -258,31 +258,37 @@ public class OrderGoodsServlet extends HttpServlet {
 						}
 						String sql = OrderGoodsManager.updaterealsendnum(user,
 								ogid, realsendnum, returnrealsendnum);
-
+  
 						listsql.add(sql);
-						if ((og.getRealnum() != Integer.valueOf(realsendnum) || og
-								.getStatues() == 4) && og.getStatues() != 5) {
+						
+						String sqlup = " update mdinventorybranchmessage set isoverstatues = 0 where inventoryid = "+oa.getOm().getId();
+						listsql.add(sqlup); 
+						  
+						boolean flag = false;
+					 	  
+						if (og.getStatues() == 6 || og.getStatues() == 7
+								|| og.getStatues() == 8
+								|| og.getStatues() == 9) {
+							flag = true ;
+							realcont = -Integer.valueOf(returnrealsendnum) ;
+						} else if (og.getStatues() == 4) { 
+							flag = true ;
+							realcont = (Integer.valueOf(realsendnum)
+									- og.getRealnum() - Integer
+									.valueOf(returnrealsendnum));
 
-							if (og.getStatues() == 6 || og.getStatues() == 7
-									|| og.getStatues() == 8
-									|| og.getStatues() == 9) {
-								realcont = -(Integer.valueOf(returnrealsendnum) - og
-										.getRealnum());
-							} else if (og.getStatues() == 4) {
-								realcont = (Integer.valueOf(realsendnum)
-										- og.getRealnum() - Integer
-										.valueOf(returnrealsendnum));
-
-							} else {
-								realcont = (Integer.valueOf(realsendnum) - og
-										.getRealnum());
-							}
-
+						} else if((og.getRealnum() != Integer.valueOf(realsendnum) ) && og.getStatues() != 5){
+							flag = true ;
+							realcont = (Integer.valueOf(realsendnum) - og
+									.getRealnum());
+						}
+						
+						if (flag) {
 							String sqlIB = "";
-							String sqlIBM = "";
-
+							String sqlIBM = ""; 
+                            
 							if (null == InventoryBranchManager.getInventoryID(
-									user, oa.getOm().getBranchid(), og.getTid()
+									user, oa.getOm().getBranchid(), og.getTid() 
 											+ "")) {
 								sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)"
 										+ "  values ( null,"
@@ -373,12 +379,12 @@ public class OrderGoodsServlet extends HttpServlet {
 							}
 							listsql.add(sqlIB);
 							listsql.add(sqlIBM);
-
-						}
-					}
+							
+						} 
+					} 
 				}
 			}
-		}
+		} 
  
 		if (DBUtill.sava(listsql)) {
 			try {

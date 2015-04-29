@@ -32,7 +32,16 @@ public class OrderReceipt {
     private String ordertime ; // 退货订单日期 
     private String activeordertiem ; // 退货订单有效期
     private String pici; //  批次 
+    private int printNum;  //  打印次数
     
+	public int getPrintNum() {
+		return printNum;
+	}
+ 
+	public void setPrintNum(int printNum) {
+		this.printNum = printNum;
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -141,20 +141,20 @@ public class ProductService {
 	}
 
 	public static List<String> getlist(int id) { 
-		long start = System.currentTimeMillis();
+		//long start = System.currentTimeMillis();
 		init(); 
-		long start1 = System.currentTimeMillis();
-		logger.info(start1 - start); 
+		//long start1 = System.currentTimeMillis();
+		//logger.info(start1 - start); 
 		if (typeName == null) {  
-			logger.info("getlist"); 
+			//logger.info("getlist"); 
 			typeName = ProductManager.getProductName();
 		}  
 		
-		long start11 = System.currentTimeMillis();
-		logger.info(start11 - start1);  
+	//	long start11 = System.currentTimeMillis();
+		///logger.info(start11 - start1);  
 		List<String> list = typeName.get(id + "");
-		long start2 = System.currentTimeMillis();
-		logger.info(start2 - start1);  
+		//long start2 = System.currentTimeMillis();
+		//logger.info(start2 - start1);  
 		
 		
 		return list;

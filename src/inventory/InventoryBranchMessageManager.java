@@ -104,8 +104,8 @@ logger.info(sql);
 		DB.close(rs);
 		DB.close(stmt);
 		DB.close(conn);
-	} 
-	logger.info(categorys.size());
+	}  
+//	logger.info(categorys.size());
 	return categorys;
 }	
 
@@ -226,6 +226,7 @@ public static List<InventoryBranchMessage> getCategory(String type,String branch
 			c.setReceiveuser(rs.getInt("receiveuser")); 
 			c.setOldpapercount(rs.getInt("oldpapercount"));
 			c.setOldrealcount(rs.getInt("oldrealcount"));
+			c.setIsOverStatues(rs.getInt("isoverstatues"));
 		} catch (SQLException e) { 
 			e.printStackTrace();
 		}	

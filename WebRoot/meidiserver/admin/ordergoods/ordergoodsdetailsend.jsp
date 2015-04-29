@@ -24,7 +24,7 @@ if(!StringUtill.isNull(id)){
 	remark = oa.getOm().getRemark(); 
 	list = oa.getList(); 
 } 
-
+ 
 String json = StringUtill.GetJson(list); 
 // System.out.println(json); 
 %> 
@@ -67,9 +67,16 @@ String json = StringUtill.GetJson(list);
 	} 
 	 
 	 addcount();
- }  
+ }   
       
- 
+ function changecolor(obj){
+	 if($(obj).attr("checked")){
+		 $("#"+$(obj).val()).attr("class","dsc");
+	 }else {
+		 $("#"+$(obj).val()).attr("class","asc");
+	 }
+	 ;
+ }
  
  function addcount(){ 
 	 var totalcount = 0 ;
@@ -100,17 +107,18 @@ String json = StringUtill.GetJson(list);
 	   
 	  var cl = 'class="asc"';
 	  
-	  var str = '<tr '+cl+'>' +    
-	     ' <td align=center   ><input type="checkbox" name="ogid" value="'+json.id+'"></td> '+
+	  var str = '<tr '+cl+' id="'+json.id+'">' +    
+	    
 	     ' <td align=center   >'+(row*1+1*1)*1+'</td> '+  
 	     ' <td  align=center >'+json.tname+'</td> ' +    
-	     '<td  align=center >'+json.statuesName+'</td>'+    
-	     '<td align=center>0</td>'+  
-	     '<td align=center >'+json.realnum+'</td> ';
 	      
+	     '<td align=center >'+json.realnum+'</td> '+
+	     ' <td align=center   ><input type="checkbox" name="ogid"  value="'+json.id+'" id="check_box" onclick="changecolor(this)"></td> '
+	     ;  
+	         
 	     if(json.statues == 6 || json.statues == 7 || json.statues == 8 || json.statues == 9){ 
 	    	//alert(json.statues); 
-	    	 str += '<td align=center >'+
+	    	 str += '<td align=center >'+ 
 	    	 '</td> '+  
 	    		 '<td align=center  bgcolor="red">'+   
 			    // '<input type="hidden" name="id" value='+json.id+'>'+
@@ -223,19 +231,18 @@ String json = StringUtill.GetJson(list);
        </td> 
         </tr>      
        <tr class="asc">    
-       <td colspan=4 align=center> 
+       <td colspan=4 align=center>  
         <table   style="width:100% "  id="Ntable" >
          <tr class="dsc">     
-          <td align=center width="5%" ><input
-						type="checkbox" value="" id="allselect"
-						onclick="seletall(allselect)"></input></td> 
+           
            <td align=center width="5%"   >编号</td> 
            
            <td align=center width="20%" > 产品型号</td> 
-           <td align=center width="20%" >状态</td>  
-            
-           <td align=center width="10%">未入库数量</td>  
-           <td align=center width="20%"> 订货数</td>  
+          
+           <td align=center width="20%"> 订货数</td> 
+           <td align=center width="5%" ><input 
+						type="checkbox" value="" id="allselect"
+						onclick="seletall(allselect)"></input></td> 
            <td align=center width="20%">实收货数量</td> 
            <td align=center width="20%" bgcolor="red">退货数量</td> 
           </tr> 

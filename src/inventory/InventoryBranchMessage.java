@@ -39,9 +39,12 @@ public class InventoryBranchMessage {
 	private int oldpapercount;
 
 	private int typeStatues; // 1常规 2 特价 3 样机 4 换货 5 赠品
+	
+	private int isOverStatues;  //    0  已完成    1  未完成
+	private String isOverStatuesName;  //    0  已完成    1  未完成
 
 	public Branch getBranch() {
-		if(branchid != 0){
+		if(branchid != 0){ 
 			branch = BranchService.getMap().get(branchid);
 		}
 		return branch;
@@ -237,4 +240,28 @@ public class InventoryBranchMessage {
 
 		return strtype ;
 	}
+
+	public int getIsOverStatues() {
+		return isOverStatues;
+	}
+
+	public void setIsOverStatues(int isOverStatues) {
+		this.isOverStatues = isOverStatues;
+	}
+
+	public String getIsOverStatuesName() {
+		if(1 == isOverStatues){
+			isOverStatuesName = "未修改确认";
+		}else {
+			isOverStatuesName = "已修改确认";
+		}
+		return isOverStatuesName;
+	}
+
+	public void setIsOverStatuesName(String isOverStatuesName) {
+		this.isOverStatuesName = isOverStatuesName;
+	}
+	
+	
+	
 }

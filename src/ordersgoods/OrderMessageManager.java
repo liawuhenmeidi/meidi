@@ -101,8 +101,8 @@ public class OrderMessageManager {
 			}
 		   return og ;
 	   }
-	
-	public static int getMaxid(){
+	 
+	public synchronized static int getMaxid(){
 	    int id = 1 ;
 	    Connection conn = DB.getConn();  
 		Statement stmt = DB.getStatement(conn);

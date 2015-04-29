@@ -4,7 +4,7 @@
 <%    
 	request.setCharacterEncoding("utf-8"); 
 String[] ids = request.getParameterValues("omid");   
-String statues = request.getParameter("statues"); 
+String statues = request.getParameter("statues");   
 Map<Integer,Map<Integer,OrderGoodsAll>> map = OrderGoodsAllManager.getsendMap(user, Integer.valueOf(statues), ids);
 //List<OrderGoodsAll> list = OrderGoodsAllManager.getsendlist(user,OrderMessage.unexamine,ids);  
 //System.out.println(list.size());  
