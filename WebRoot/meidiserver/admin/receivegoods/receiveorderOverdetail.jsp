@@ -87,9 +87,11 @@ Map<Integer,Map<String,InventoryBranch>> map = InventoryBranchManager.getmapType
 	<div class="s_main">
 		<jsp:include flush="true" page="../head.jsp">
 			<jsp:param name="dmsn" value="" />
-		</jsp:include> 
-		<div class="weizhi_head">现在位置：查看收货记录</div>
-		<!--  头 单种类  -->
+		</jsp:include>  
+		<div class="weizhi_head">现在位置：已退货订单
+		 <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>  
+		<!--  头 单种类  --> 
+		</div>
 		<form action="receiveorderOverdetail.jsp" method="post"
 			onsubmit="return check()">
 			<input type="hidden" name="type" value="submit"> 

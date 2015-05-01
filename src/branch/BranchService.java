@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import enums.SaleModel;
+
+import branchtype.BranchTypeService;
+
 public class BranchService {
 	public static boolean flag = true;
 	// public static Map<Integer,Branch> map = null;
@@ -35,15 +39,30 @@ public class BranchService {
 		return map;
 	}
  
-	public static Map<String, Branch> getNameSNMap() {
+	public static Map<String, Branch> getAnotherNameMap() {
 		init();
 		Map<String, Branch> map = new HashMap<String, Branch>();
-
+ 
 		for (int i = 0; i < list.size(); i++) {
 			Branch b = list.get(i);
 			map.put(b.getNameSN(), b);
 		}
-		return map;
+		return map; 
+	}
+	 
+	public static Map<String, Branch> getNameSNMap() {
+		init(); 
+		Map<String, Branch> map = new HashMap<String, Branch>();
+		
+		List<Integer> li = BranchTypeService.getlistSaleModelID(SaleModel.SuNing); 
+		for (int i = 0; i < list.size(); i++) {
+			Branch b = list.get(i);  
+			if(li.contains(b.getPid())){ 
+				map.put(b.getNameSN(), b); 
+			}
+		}
+	
+		return map; 
 	}
 	
 	public static Map<String, Branch> getNumMap() {
@@ -56,8 +75,22 @@ public class BranchService {
 		}
 
 		return map;
+	}   
+   
+	public static Map<String, Branch> getNumMap(int saletype) {
+		init(); 
+		Map<String, Branch> map = new HashMap<String, Branch>();
+        List<Integer> li = BranchTypeService.getlistSaleModelID(saletype); 
+		for (int i = 0; i < list.size(); i++) {
+			Branch b = list.get(i);
+			if(li.contains(b.getPid())){
+				map.put(b.getEncoded(), b);
+			}
+		}
+
+		return map;
 	}
- 
+	
 	public static Map<String, List<String>> getPtypeMap() {
 		init();
 		Map<String, List<String>> map = new HashMap<String, List<String>>();

@@ -52,9 +52,9 @@ String type= request.getParameter("type");
 		<jsp:include flush="true" page="../head.jsp">
 			<jsp:param name="dmsn" value="" />
 		</jsp:include>
-		<div class="weizhi_head">现在位置：查看收货记录</div>
-
-		<!--  头 单种类  -->
+		<div class="weizhi_head">现在位置：未退货订单
+ <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>  
+		<!--  头 单种类  --> </div>  
 		<form action="../../Print" method="post"
 			onsubmit="return check()">
 			

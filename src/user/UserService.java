@@ -1,14 +1,20 @@
 package user;
 
 import group.Group;
+import group.GroupService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import utill.StringUtill;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import servlet.OrderServlet;
+import utill.StringUtill;
+ 
 public class UserService {
+	 protected static Log logger = LogFactory.getLog(UserService.class);
    public static boolean flag = true ;
    public static HashMap<Integer,User>  usermap ;
  //未被删除用户
@@ -17,16 +23,11 @@ public class UserService {
    public static HashMap<String,User>  usermapStr ;
    public static HashMap<String,List<User>>  usermapBranch ;
    
-   public static List<Integer> listids;  // user 子用户id
- //获取二次配单元（工队）
-   public static List<User>  list ;
-
-   // 送货员
-   public static List<User>  listsend ;  
+   public static List<Integer> listids;  // user 子用户id 
+    
+   public static List<User> listall ;   
    
-   public static List<User> listall ; 
-   
-   public static List<Integer> GetListson(User user){
+   public static List<Integer> GetListson(User user){ 
 	   init(); 
 	   List<Integer> list = new ArrayList<Integer>();
   	   if(null != listall){  
@@ -89,21 +90,49 @@ public class UserService {
    }
    
 public static  List<User> getsencondDealsend(User user){
-	 init();
-	   if(null == list){ 
-		   list = UserManager.getUsers(user,Group.sencondDealsend);
+	 init();  
+	 List<User> list = new ArrayList<User>(); 
+	  	   if(null != listall){    
+	  		   for(int i=0;i<listall.size();i++){ 
+	  			   User u = listall.get(i);  
+	  			   List<Integer> li = GroupService.getidMap().get(u.getUsertype()).getPid();
+	  			   if(null != li && li.contains(user.getUsertype()) && u.getStatues() == 1){
+	  				   if(UserManager.checkPermissions(u, Group.sencondDealsend)){
+	  					   list.add(u);
+	  				   } 
+	  			   } 
+	  		   }   
 	   }
 	    
 	   return list;
    }
 
 public static  List<User> getsend(User user){
-	 init();
-	   if(null == listsend){ 
-		   listsend =UserManager.getUsers(user,Group.send);
+	 init(); 
+	 List<User> list = new ArrayList<User>(); 
+	// logger.info(listall);  
+	  	   if(null != listall){     
+	  		   for(int i=0;i<listall.size();i++){ 
+	  			   User u = listall.get(i);   
+	  			   List<Integer> li = GroupService.getidMap().get(u.getUsertype()).getPid();
+	  			  // logger.info(li);
+	  			 // logger.info(user.getUsertype()); 
+	  			 // logger.info(null != li && li.contains(user.getUsertype())); 
+	  			   if(null != li && li.contains(user.getUsertype()) && u.getStatues() == 1){
+	  				  // logger.info(u.getId());  
+	  				 if(UserManager.checkPermissions(u, Group.send)){
+	  					   list.add(u); 
+	  				   }
+	  			  }
+	  			   
+	  			   
+	  			 
+	  			 
+	  			   
+	  		   }   
 	   }
 	    
-	   return listsend;
+	   return list;
 }
 
   public static HashMap<String,User> getuserIdStr(){
@@ -130,8 +159,6 @@ public static HashMap<String,List<User>> getMapBranchid(){
 		 usermapstatues = UserManager.getMapstatues();
 		 usermapStr = UserManager.getMap(""); 
 		 usermapBranch = UserManager.getMapBranch();
-		 list = null ;
-		 listsend = null; 
 		 listall = UserManager.getUsers();
 	 }
 	 flag = false ;

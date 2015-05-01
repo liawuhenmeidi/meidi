@@ -1,5 +1,6 @@
 package branchtype;
 
+import exportModel.ExportModel;
 import utill.StringUtill;
 
 public class BranchType {
@@ -14,8 +15,10 @@ public class BranchType {
 	private int isSystem; 
 
 	private int typestatues;  // 1 是卖场 2 售后网点
+	 
+	private int saletype ; //  1 苏宁   2 国美     ExportModel.SuNing
 	
-	private int exportmodel ;  
+	private int exportmodel ;  //  
 
 	public int getIsSystem() {
 		return isSystem;
@@ -34,6 +37,7 @@ public class BranchType {
 	}
 
 	public int getId() {
+		
 		return id;
 	}
 
@@ -66,6 +70,14 @@ public class BranchType {
 
 	public void setExportmodel(int exportmodel) {
 		this.exportmodel = exportmodel;
+	}
+
+	public int getSaletype() {
+		return saletype;
+	}
+
+	public void setSaletype(int saletype) {
+		this.saletype = saletype;
 	}
 
 }

@@ -916,10 +916,10 @@ public class PrintServlet extends HttpServlet {
 		List<OrderGoodsAll> list = null;
 		if (StringUtill.isNull(ids)) {
 			list = OrderGoodsAllManager.getlist(user, OrderMessage.billing,
-					name);
+					exportuuid);
 		} else {
 			list = OrderGoodsAllManager.getlist(user, OrderMessage.billing,
-					name, ids);
+					exportuuid, ids);
 		}
 		// logger.info(name);
 		/*
@@ -1261,7 +1261,8 @@ public class PrintServlet extends HttpServlet {
 		String exportuuid = (String) request.getAttribute("exportuuid");
 		// logger.info(name);
 		List<OrderGoodsAll> listAll = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, name, ids);
+				OrderMessage.billing, exportuuid, ids);
+
 		Map<Integer, Map<Integer, Map<Integer, OrderGoods>>> map = new HashMap<Integer, Map<Integer, Map<Integer, OrderGoods>>>();
 
 		for (int i = 0; i < listAll.size(); i++) {
@@ -1478,7 +1479,7 @@ public class PrintServlet extends HttpServlet {
 		String exportuuid = (String) request.getAttribute("exportuuid");
 		// logger.info(name);
 		List<OrderGoodsAll> listAll = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, name, ids);
+				OrderMessage.billing, exportuuid, ids);
 		Map<Integer, Map<Integer, Map<Integer, OrderGoods>>> map = new HashMap<Integer, Map<Integer, Map<Integer, OrderGoods>>>();
 
 		for (int i = 0; i < listAll.size(); i++) {
@@ -1757,7 +1758,7 @@ public class PrintServlet extends HttpServlet {
 		String exportuuid = (String) request.getAttribute("exportuuid");
 		// logger.info(name);
 		List<OrderGoodsAll> listAll = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, name, ids);
+				OrderMessage.billing, exportuuid, ids);
 		Map<Integer, Map<Integer, Map<Integer, OrderGoods>>> map = new HashMap<Integer, Map<Integer, Map<Integer, OrderGoods>>>();
 
 		for (int i = 0; i < listAll.size(); i++) {
@@ -1977,7 +1978,7 @@ public class PrintServlet extends HttpServlet {
 		String ids = request.getParameter("ids");
 		String exportuuid = (String) request.getAttribute("exportuuid");
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, name, ids);
+				OrderMessage.billing, exportuuid, ids);
 
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -2362,62 +2363,67 @@ public class PrintServlet extends HttpServlet {
 
 					for (int j = 0; j < listog.size(); j++) {
 						OrderGoods og = listog.get(j);
+						if (og.getRealnum() > 0) {
+							row = sheet.createRow((int) count);
+							if (j == 0) {
+								// logger.info(count+"___"+(count+listog.size()-1));
+								sheet.addMergedRegion(new Region(count,
+										(short) 9, count + listog.size() - 1,
+										(short) 9));
+							}
 
-						row = sheet.createRow((int) count);
-						if (j == 0) {
-							// logger.info(count+"___"+(count+listog.size()-1));
-							sheet.addMergedRegion(new Region(count, (short) 9,
-									count + listog.size() - 1, (short) 9));
-						}
-
-						count++;
-						int y = 0;
-						cell = row.createCell((short) y++);
-						cell.setCellValue(branch.getLocateName());
-						cell.setCellStyle(style);
-						cell = row.createCell((short) y++);
-						cell.setCellValue("");
-						cell.setCellStyle(style);
-						cell = row.createCell((short) y++);
-						cell.setCellValue("");
-						cell.setCellStyle(style);
-						cell = row.createCell((short) y++);
-						cell.setCellValue(og.getProduct().getType());
-						cell.setCellStyle(style);
-						cell = row.createCell((short) y++);
-						cell.setCellValue("");
-						cell.setCellStyle(style);
-						cell = row.createCell((short) y++);
-						cell.setCellValue(og.getRealnum());
-						cell.setCellStyle(style);
-						cell = row.createCell((short) y++);
-						cell.setCellValue("");
-						cell.setCellStyle(style);
-						cell = row.createCell((short) y++);
-						cell.setCellValue(og.getStatuesName());
-						cell.setCellStyle(style);
-						cell = row.createCell((short) y++);
-						cell.setCellValue(StringUtill.getNotNUll(og.getOid()));
-						cell.setCellStyle(style);
-						if (j == 0) {
+							count++;
+							int y = 0;
 							cell = row.createCell((short) y++);
-
-							cell.setCellValue(o.getOm().getRemark());
+							cell.setCellValue(branch.getLocateName());
 							cell.setCellStyle(style);
-						} else {
 							cell = row.createCell((short) y++);
-
 							cell.setCellValue("");
 							cell.setCellStyle(style);
+							cell = row.createCell((short) y++);
+							cell.setCellValue("");
+							cell.setCellStyle(style);
+							cell = row.createCell((short) y++);
+							cell.setCellValue(og.getProduct().getType());
+							cell.setCellStyle(style);
+							cell = row.createCell((short) y++);
+							cell.setCellValue("");
+							cell.setCellStyle(style);
+							cell = row.createCell((short) y++);
+							cell.setCellValue(og.getRealnum());
+							cell.setCellStyle(style);
+							cell = row.createCell((short) y++);
+							cell.setCellValue("");
+							cell.setCellStyle(style);
+							cell = row.createCell((short) y++);
+							cell.setCellValue(og.getStatuesName());
+							cell.setCellStyle(style);
+							cell = row.createCell((short) y++);
+							cell.setCellValue(StringUtill.getNotNUll(og
+									.getOid()));
+							cell.setCellStyle(style);
+							if (j == 0) {
+								cell = row.createCell((short) y++);
+
+								cell.setCellValue(o.getOm().getRemark());
+								cell.setCellStyle(style);
+							} else {
+								cell = row.createCell((short) y++);
+
+								cell.setCellValue("");
+								cell.setCellStyle(style);
+							}
+
+							// 第四步，创建单元格，并设置值
 						}
-
-						// 第四步，创建单元格，并设置值
-
 					}
 				}
 			}
 
 		}
+		
+		
+		
 		// System.out.println(count);
 		// 第六步，将文件存到指定位置
 		try {
@@ -2446,27 +2452,27 @@ public class PrintServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
- 
+
 	public void OrderGoodsSN(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
-   
-		String[] ids =request.getParameterValues("id"); 
-		String buyid = request.getParameter("buyid");  
+
+		String[] ids = request.getParameterValues("id");
+		String buyid = request.getParameter("buyid");
 		Map<String, OrderReceipt> map = OrderReceitManager.getMap(buyid);
-       String checkNum = ""; 
+		String checkNum = "";
 		List<String> listor = Arrays.asList(ids);
-//logger.info(listor);  
+		// logger.info(listor);
 		Map<Integer, List<OrderReceipt>> maps = new HashMap<Integer, List<OrderReceipt>>();
-		if (null != map) {  
+		if (null != map) {
 			Set<Map.Entry<String, OrderReceipt>> set = map.entrySet();
 			Iterator<Map.Entry<String, OrderReceipt>> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, OrderReceipt> mapent = it.next();
 				OrderReceipt gr = mapent.getValue();
 				if (listor.contains(gr.getId() + "")) {
-				// logger.info(gr.getId());
-					checkNum = gr.getCheckNum(); 
+					// logger.info(gr.getId());
+					checkNum = gr.getCheckNum();
 					List<OrderReceipt> list = maps.get(gr.getBid());
 					if (null == list) {
 						list = new ArrayList<OrderReceipt>();
@@ -2475,11 +2481,11 @@ public class PrintServlet extends HttpServlet {
 					list.add(gr);
 				}
 
-			} 
-		} 
-		logger.info(maps); 
+			}
+		}
+		logger.info(maps);
 		List<String> listsql = new ArrayList<String>();
-		HSSFWorkbook wb = new HSSFWorkbook();  
+		HSSFWorkbook wb = new HSSFWorkbook();
 		if (null != maps) {
 			Set<Map.Entry<Integer, List<OrderReceipt>>> set = maps.entrySet();
 			Iterator<Map.Entry<Integer, List<OrderReceipt>>> it = set
@@ -2489,13 +2495,19 @@ public class PrintServlet extends HttpServlet {
 				int bid = mapent.getKey();
 				List<OrderReceipt> grs = mapent.getValue();
 				// 第一步，创建一个webbook，对应一个Excel文件
-				
-				// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
-				HSSFSheet sheet = wb.createSheet(BranchService.getMap().get(bid).getNameSN());
-				sheet.setDefaultColumnWidth(15);
-				sheet.setDefaultRowHeightInPoints(30);
-				sheet.setColumnWidth(1, 20 * 256);
 
+				// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+				HSSFSheet sheet = wb.createSheet(BranchService.getMap()
+						.get(bid).getNameSN()); 
+				sheet.setDefaultColumnWidth(15); 
+				sheet.setDefaultRowHeightInPoints(30); 
+				sheet.setColumnWidth(0, 5 * 256);   
+				sheet.setColumnWidth(1, 10 * 256);  
+				sheet.setColumnWidth(2, 30 * 256);  
+				sheet.setColumnWidth(3, 9 * 256);  
+				sheet.setColumnWidth(4, 9 * 256);  
+				sheet.setColumnWidth(5, 9 * 256); 
+				sheet.setColumnWidth(5, 9 * 256);
 				HSSFCellStyle style = wb.createCellStyle();
 
 				style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
@@ -2506,122 +2518,141 @@ public class PrintServlet extends HttpServlet {
 				style.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
 				style.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
 				style.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+				
+				HSSFCellStyle style1 = wb.createCellStyle();
+
+				style1.setWrapText(true);  
+				style1.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+				style1.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
+				style1.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+				style1.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
+				style1.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+				
 				// sheet.setColumnWidth((short)200,(short)1000);
 				// row.setHeight((short)height);
-				// style.set 
- 
+				// style.set
+
 				int count = 0;
 				HSSFCell cell = null;
 				HSSFRow row = sheet.createRow((int) count);
-				sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 6));
-				row = sheet.createRow((int) count);
-				row.setHeight((short) (2 * 256));
-				count++;
-				for (int i = 0; i < 7; i++) {
-					if (i == 0) {
-						cell = row.createCell((short) i);
-						cell.setCellValue("退厂拖单机");
-						cell.setCellStyle(style);
-					} else {
-						cell = row.createCell((short) i);
-						cell.setCellStyle(style);
-						cell.setCellValue("");
-					}
-				}
-                
-				row = sheet.createRow((int) count);
-				sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 6));
-				row = sheet.createRow((int) count);
-				row.setHeight((short) (2 * 256));
-				count++;
-				for (int i = 0; i < 7; i++) {
-					if (i == 0) {
-						cell = row.createCell((short) i);
-						cell.setCellValue("苏宁云商集团股份有限公司苏宁采购中心：");
-						cell.setCellStyle(style);
-					} else {
-						cell = row.createCell((short) i);
-						cell.setCellStyle(style);
-						cell.setCellValue("");
-					}
-				}
+				sheet.addMergedRegion(new Region(count, (short) 0, count,
+						(short) 6));
 				
 				row = sheet.createRow((int) count);
-				sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 6));
-				row = sheet.createRow((int) count);
-				row.setHeight((short) (2 * 256));
+				row.setHeight((short) (2* 256));
 				count++;
-				for (int i = 0; i < 7; i++) {
-					if (i == 0) {
-						cell = row.createCell((short) i);
-						cell.setCellValue("我司同意贵司退回如下货物，具体明细如下表：");
-						cell.setCellStyle(style);
-					} else {
-						cell = row.createCell((short) i);
-						cell.setCellStyle(style);
-						cell.setCellValue("");
-					}
-				}
-				
-				row = sheet.createRow((int) count);
-				sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 6));
-				row = sheet.createRow((int) count);
-				row.setHeight((short) (2 * 256));
-				count++;
-				for (int i = 0; i < 7; i++) {
-					if (i == 0) {
-						cell = row.createCell((short) i);
-						cell.setCellValue("供应商编码："+Company.supply);
-						cell.setCellStyle(style);
-					} else {
-						cell = row.createCell((short) i);
-						cell.setCellStyle(style);
-						cell.setCellValue("");
-					}
-				}
-				
-				row = sheet.createRow((int) count);
-				sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 6));
-				row = sheet.createRow((int) count);
-				row.setHeight((short) (2 * 256));
-				count++;
-				for (int i = 0; i < 7; i++) {
-					if (i == 0) {
-						cell = row.createCell((short) i);
-						cell.setCellValue("供应商名称：天津市圣荣恒业商贸有限公司");
-						cell.setCellStyle(style);
-					} else {
-						cell = row.createCell((short) i);
-						cell.setCellStyle(style);
-						cell.setCellValue("");
-					}
-				}
-				
-				row = sheet.createRow((int) count);
-				sheet.addMergedRegion(new Region(count, (short) 0, count, (short) 6));
-				row = sheet.createRow((int) count);
-				row.setHeight((short) (2 * 256));
-				count++; 
 				for (int i = 0; i < 7; i++) {
 					if (i == 0) { 
 						cell = row.createCell((short) i);
-						cell.setCellValue("退厂订单号:"+buyid+"-"+checkNum);
+						cell.setCellValue("退厂拖单机");
 						cell.setCellStyle(style);
-					} else {
+					} else { 
 						cell = row.createCell((short) i);
 						cell.setCellStyle(style);
 						cell.setCellValue("");
 					}
-				}
-				
-				// 第三步，在sheet中添加表头第0行,注意 老版本poi对Excel的行数列数有限制short
+				}  
+ 
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 1, count,
+						(short) 6));  
+				sheet.addMergedRegion(new Region(2, (short) 0, 5,
+						(short) 0));
 				
 				row = sheet.createRow((int) count);
-				row.setHeight((short) (2 * 256));
-				  
+				row.setHeight((short) (1 * 256));
 				count++;
-				int x = 0;
-                   
+				for (int i = 0; i < 7; i++) {
+					if (i == 1) {
+						cell = row.createCell((short) i);
+						cell.setCellValue("苏宁云商集团股份有限公司苏宁采购中心：");
+						cell.setCellStyle(style1);
+					} else {
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style1);
+						cell.setCellValue("");
+					}
+				}
+
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 1, count,
+						(short) 6));
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (1 * 256));
+				count++;
+				for (int i = 0; i < 7; i++) {
+					if (i == 1) {
+						cell = row.createCell((short) i);
+						cell.setCellValue("我司同意贵司退回如下货物，具体明细如下表：");
+						cell.setCellStyle(style1);
+					} else {
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style1);
+						cell.setCellValue("");
+					}
+				}
+
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 1, count,
+						(short) 6));
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (1 * 256));
+				count++;
+				for (int i = 0; i < 7; i++) {
+					if (i ==1) {
+						cell = row.createCell((short) i);
+						cell.setCellValue("供应商编码：" + Company.supply);
+						cell.setCellStyle(style1);
+					} else {
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style1);
+						cell.setCellValue("");
+					}
+				}
+
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 1, count,
+						(short) 6));
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (1 * 256));
+				count++;
+				for (int i = 0; i < 7; i++) {
+					if (i == 1) {
+						cell = row.createCell((short) i);
+						cell.setCellValue("供应商名称：天津市圣荣恒业商贸有限公司");
+						cell.setCellStyle(style1);
+					} else {
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style1);
+						cell.setCellValue("");
+					}
+				}
+
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 1, count,
+						(short) 6));
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (1 * 256));
+				count++;
+				for (int i = 0; i < 7; i++) {
+					if (i == 1) {
+						cell = row.createCell((short) i);
+						cell.setCellValue("退厂订单号:" + buyid + "-" + checkNum);
+						cell.setCellStyle(style1);
+					} else {
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style1);
+						cell.setCellValue("");
+					}
+				}
+
+				// 第三步，在sheet中添加表头第0行,注意 老版本poi对Excel的行数列数有限制short
+  
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (2 * 256));
+				count++;  
+				int x = 0;  
+
 				cell = row.createCell((short) x++);
 				cell.setCellValue("序号");
 				cell.setCellStyle(style);
@@ -2631,7 +2662,7 @@ public class PrintServlet extends HttpServlet {
 				cell = row.createCell((short) x++);
 				cell.setCellValue("商品全名");
 				cell.setCellStyle(style);
-				
+
 				cell = row.createCell((short) x++);
 				cell.setCellValue("退货数量（台）");
 				cell.setCellStyle(style);
@@ -2644,19 +2675,20 @@ public class PrintServlet extends HttpServlet {
 				cell = row.createCell((short) x++);
 				cell.setCellValue("地点（仓库）名称");
 				cell.setCellStyle(style);
-				
-				
-				for(int i=0;i<grs.size();i++){
+                
+				int countreal = 0 ;
+				for (int i = 0; i < grs.size(); i++) {
 					OrderReceipt or = grs.get(i);
+					countreal += or.getOrderNum();
 					row = sheet.createRow((int) count);
 					String sql = OrderReceitManager.updatesPrintNum(or);
-					listsql.add(sql); 
- 
+					listsql.add(sql);
+
 					count++;
 					int y = 0;
 					cell = row.createCell((short) y++);
-					cell.setCellValue(i+1); 
-					cell.setCellStyle(style); 
+					cell.setCellValue(i + 1);
+					cell.setCellStyle(style);
 					cell = row.createCell((short) y++);
 					cell.setCellValue(or.getGoodsnum());
 					cell.setCellStyle(style);
@@ -2665,7 +2697,7 @@ public class PrintServlet extends HttpServlet {
 					cell.setCellStyle(style);
 					cell = row.createCell((short) y++);
 					cell.setCellValue(or.getOrderNum());
-					cell.setCellStyle(style); 
+					cell.setCellStyle(style);
 					cell = row.createCell((short) y++);
 					cell.setCellValue("");
 					cell.setCellStyle(style);
@@ -2675,48 +2707,152 @@ public class PrintServlet extends HttpServlet {
 					cell = row.createCell((short) y++);
 					cell.setCellValue(or.getBranchid());
 					cell.setCellStyle(style);
-					 
-					
-					
-				}
-			}
-				try {
-					response.setContentType("APPLICATION/OCTET-STREAM");
-					response.setCharacterEncoding("UTF-8");
-					response.setHeader("Content-Disposition",
-							"attachment; filename=\"" + StringUtill.toUtf8String("退厂拖单机")
-									+ TimeUtill.getdateString() + ".xls\"");
-					// FileOutputStream fout = new
-					// FileOutputStream("E:/报装单"+printlntime+".xls");
-					wb.write(response.getOutputStream());
-					response.getOutputStream().close();
-					
-					
-						// String sqlsend = 
-					
-						 
-			
-					
 
-					// logger.info(123);
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
 				
-		
-			
-			
+				if(count<38){ 
+					for(int i=count;i<38;i++){
+						row = sheet.createRow((int) count);
+						
+						count++;
+						int y = 0;
+						cell = row.createCell((short) y++);
+						cell.setCellValue(i - 6);
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						cell.setCellValue("");
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						cell.setCellValue("");
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						cell.setCellValue("");
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						cell.setCellValue("");
+						cell.setCellStyle(style);
+						cell = row.createCell((short) y++);
+						cell.setCellValue("");
+						cell.setCellStyle(style); 
+						cell = row.createCell((short) y++);
+						cell.setCellValue("");
+						cell.setCellStyle(style);
+					}
+				}
+				
+				row = sheet.createRow((int) count);
+				
+				 
+				row = sheet.createRow((int) count); 
+				row.setHeight((short) (1 * 256));
+				count++;
+				for (int i = 0; i < 7; i++) {
+					if (i == 1) {  
+						cell = row.createCell((short) i);
+						cell.setCellValue("合计"); 
+						cell.setCellStyle(style); 
+					} else if(i == 3){   
+						cell = row.createCell((short) i);
+						cell.setCellValue(countreal); 
+						cell.setCellStyle(style); 
+						 
+					}else {  
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style);
+						cell.setCellValue("");
+					}
+				} 
+             
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 0, count,
+						(short) 6));  
+				 
+				  
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (1 * 256));
+				count++; 
+				for (int i = 0; i < 7; i++) {
+					if (i == 0) {
+						cell = row.createCell((short) i);
+						cell.setCellValue("以上退货明细，我司会在商品拖机后          天内(原则上是3天内)出具退货折协议，在贵司提供退货红票通知单后          天内(原则上是3天内)开具红字发票。");
+						cell.setCellStyle(style);
+					} else {  
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style);
+						cell.setCellValue(""); 
+					}
+				} 
+
+
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 0, count,
+						(short) 6));  
+				 
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (1 * 256));
+				count++;
+				for (int i = 0; i < 7; i++) {
+					if (i == 0) {
+						cell = row.createCell((short) i);
+						cell.setCellValue(" 供应商：名称（盖章）");
+						cell.setCellStyle(style);
+					} else {
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style);
+						cell.setCellValue("");
+					}
+				} 
+
+				row = sheet.createRow((int) count);
+				sheet.addMergedRegion(new Region(count, (short) 0, count,
+						(short) 6));  
+				 
+				 
+				row = sheet.createRow((int) count);
+				row.setHeight((short) (1 * 256));
+				count++;
+				for (int i = 0; i < 7; i++) { 
+					if (i == 0) { 
+						cell = row.createCell((short) i);
+						cell.setCellValue("         年          月         日");
+						cell.setCellStyle(style); 
+					} else {  
+						cell = row.createCell((short) i);
+						cell.setCellStyle(style); 
+						cell.setCellValue("");
+					} 
+				} 
+				
+			}
+			try {
+				response.setContentType("APPLICATION/OCTET-STREAM");
+				response.setCharacterEncoding("UTF-8");
+				response.setHeader(
+						"Content-Disposition",
+						"attachment; filename=\""
+								+ StringUtill.toUtf8String("退厂拖单机")
+								+ TimeUtill.getdateString() + ".xls\"");
+				// FileOutputStream fout = new
+				// FileOutputStream("E:/报装单"+printlntime+".xls");
+				wb.write(response.getOutputStream());
+				response.getOutputStream().close();
+
+				// String sqlsend =
+
+				// logger.info(123);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 			DBUtill.sava(listsql);
-			
+
 		}
 
-		
 		// 第五步，写入实体数据 实际应用中这些数据从数据库得到
 
-		
 		// System.out.println(count);
 		// 第六步，将文件存到指定位置
-		
+
 	}
 
 	public void OrderGoodsbilling(HttpServletRequest request,

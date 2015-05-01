@@ -4,14 +4,14 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");       
 //Map<String,List<OrderGoods>> map  = OrderGoodsAllManager.getbillingmap(user,OrderMessage.billing); 
  // System.out.println(StringUtill.GetJson(map));
-  
- String branchtype = request.getParameter("branchtype"); 
-List<BranchType> listgt = BranchTypeManager.getLocate();  
+   
+ String branchtype = request.getParameter("branchtype");   
+List<BranchType> listgt = BranchTypeManager.getLocate();    
  Map<String,Map<String,List<OrderGoods>>> map  = OrderGoodsAllManager.getbillingmap(user,OrderMessage.billing,branchtype); 
  
-%>           
+%>            
 <!DOCTYPE html> 
-<html> 
+<html>  
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta charset="utf-8">
@@ -111,6 +111,7 @@ function check(){
 		while(itmap.hasNext()){ 
 			Map.Entry<String,Map<String,List<OrderGoods>>> en =  itmap.next();
 			String key = en.getKey(); 
+			String exportName = ""; 
 			Map<String,List<OrderGoods>> maps = en.getValue();
 			Set<Map.Entry<String,List<OrderGoods>>> mapsent = maps.entrySet();
 			Iterator<Map.Entry<String,List<OrderGoods>>> itmaps = mapsent.iterator();
@@ -119,11 +120,11 @@ function check(){
 				List<OrderGoods> o =enmaps.getValue();
 				String oid = o.get(0).getOid();  
 				String time = o.get(0).getUuidtime();
-				String statues = o.get(0).getOpstatuesName();
+				String statues = o.get(0).getOpstatuesName(); 
 				String endtime = o.get(0).getEffectiveendtime();
-			     
-  %>                  
- <tr class="asc" ondblclick="detail('ordergoodbillingdetail.jsp?name=<%=key%>&orderid=<%=oid%>')">
+				exportName = o.get(0).getExportuuid(); 
+  %>                    
+ <tr class="asc" ondblclick="detail('ordergoodbillingdetail.jsp?exportName=<%=exportName%>&name=<%=key%>&orderid=<%=oid%>')">
      <td align="center"><%= oid%></td>    
      <td align="center"><%=key %></td> 
      <td align="center"><%=time %></td>  

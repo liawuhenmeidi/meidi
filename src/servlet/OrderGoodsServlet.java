@@ -158,8 +158,14 @@ public class OrderGoodsServlet extends HttpServlet {
 					OrderGoods op = new OrderGoods();
 					// op.setOid(oid);
 					// op.setOpstatues(Integer.valueOf(opstatues));
-					op.setOrdernum(Integer.valueOf(num)
-							+ Integer.valueOf(invenNum));
+					logger.info(Integer.valueOf(sta));  
+					if(Integer.valueOf(sta) == 3){ 
+						op.setOrdernum(Integer.valueOf(num)); 
+					}else {
+						op.setOrdernum(Integer.valueOf(num)
+								+ Integer.valueOf(invenNum));
+					}
+					
 					op.setRealnum(Integer.valueOf(num));
 					op.setStatues(Integer.valueOf(sta));
 					op.setSubmitid(user.getId());

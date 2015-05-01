@@ -110,9 +110,9 @@ String json = StringUtill.GetJson(list);
 	  var str = '<tr '+cl+' id="'+json.id+'">' +    
 	    
 	     ' <td align=center   >'+(row*1+1*1)*1+'</td> '+  
-	     ' <td  align=center >'+json.tname+'</td> ' +    
-	      
-	     '<td align=center >'+json.realnum+'</td> '+
+	     ' <td  align=center >'+json.tname+'</td> ' +     
+	     ' <td  align=center >'+json.statuesName+'</td> ' +    
+	     '<td align=center >'+json.realnum+'</td> '+ 
 	     ' <td align=center   ><input type="checkbox" name="ogid"  value="'+json.id+'" id="check_box" onclick="changecolor(this)"></td> '
 	     ;  
 	         
@@ -238,7 +238,7 @@ String json = StringUtill.GetJson(list);
            <td align=center width="5%"   >编号</td> 
            
            <td align=center width="20%" > 产品型号</td> 
-          
+            <td align=center width="20%" > 状态</td> 
            <td align=center width="20%"> 订货数</td> 
            <td align=center width="5%" ><input 
 						type="checkbox" value="" id="allselect"

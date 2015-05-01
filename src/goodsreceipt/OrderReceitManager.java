@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;  
@@ -284,13 +285,18 @@ public class OrderReceitManager {
 			for (int i = 0; i < list.size(); i++) {
 				OrderReceipt or = list.get(i);
 				OrderReceiptAll li = map.get(or.getBuyid());
-				if (null == li) {
+				if (null == li) { 
 					li = new OrderReceiptAll();
-					li.setBuyid(or.getBuyid());
+					Set<Integer> set = new HashSet<Integer>();
+					set.add(or.getPrintNum());
+					li.setPrintstatues(set);  
+					li.setBuyid(or.getBuyid()); 
 					li.setCheckNum(or.getCheckNum());
 					li.setActiveordertiem(or.getActiveordertiem());
 					li.setReceveTime(or.getReceveTime());
-					map.put(or.getBuyid(), li);
+					map.put(or.getBuyid(), li); 
+				}else { 
+					li.getPrintstatues().add(or.getPrintNum());
 				}
 			}
 		}

@@ -54,17 +54,18 @@ function detail(src) {
 		<jsp:include flush="true" page="../head.jsp">
 			<jsp:param name="dmsn" value="" />
 		</jsp:include>
-		<div class="weizhi_head">现在位置：查看退货订单</div>
+		<div class="weizhi_head">现在位置：退货订单</div>
 
 		<!--  头 单种类  --> 
 
 		<table width="100%" border="0" cellspacing="1" id="Ntable">
 
-			<tr class="dsc">
+			<tr class="dsc"> 
 				<td align="center">退货订单编号</td>
 				<td align="center">校验码</td>
 				<td align="center">退货订单日期</td>
 				<td align="center">退货订单有效期</td>
+				<td align="center">是否打印</td> 
 			</tr> 
 			<%
 				if (null != map) {
@@ -75,13 +76,15 @@ function detail(src) {
 						Map.Entry<String, OrderReceiptAll> mapent = it.next();
 						String buyid = mapent.getKey();
 						OrderReceiptAll or = mapent.getValue();
-			%>    
+						
+			%>     
     
 			<tr class="asc"  ondblclick="detail('receiveorderdetail.jsp?buyid=<%=or.getBuyid()%>')">
 				<td align="center"><%=or.getBuyid()%></td>
 				<td align="center"><%=or.getCheckNum()%></td>
 				<td align="center"><%=or.getReceveTime()%></td>
 				<td align="center"><%=or.getActiveordertiem()%></td>
+				<td align="center"><%=or.getPrintName()%></td>
 			</tr>
 			<%
 				}

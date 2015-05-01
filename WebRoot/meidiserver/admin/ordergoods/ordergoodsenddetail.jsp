@@ -1,14 +1,14 @@
-<%@ page language="java" 
-	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
-	<%@ include file="../../common.jsp"%>
-<%    
+<%@ page language="java" pageEncoding="UTF-8"
+	contentType="text/html;charset=utf-8"%>
+<%@ include file="../../common.jsp"%>
+<%
 	request.setCharacterEncoding("utf-8"); 
 String[] ids = request.getParameterValues("omid");   
 String statues = request.getParameter("statues");   
 Map<Integer,Map<Integer,OrderGoodsAll>> map = OrderGoodsAllManager.getsendMap(user, Integer.valueOf(statues), ids);
 //List<OrderGoodsAll> list = OrderGoodsAllManager.getsendlist(user,OrderMessage.unexamine,ids);  
-//System.out.println(list.size());  
-// System.out.println(StringUtill.GetJson(map));
+//System.out.println(list.size());   
+ //System.out.println(map); 
 %>
 <!DOCTYPE html>
 <html>
@@ -57,32 +57,32 @@ function check(){
 		<div class="weizhi_head">现在位置：开单发货</div>
 		<div class="main_r_tianjia">
 			<ul>
-				<li><a href="javascript:history.go(-1);">返回</a>
-				</li>
+				<li><a href="javascript:history.go(-1);">返回</a></li>
 			</ul>
-		</div> 
+		</div>
 		<!--  头 单种类  -->
 		<table width="100%" border="0" cellspacing="1" id="table">
 			<tr class="dsc">
-				<td colspan=10> 
-					<table width="100%">    
-						<tr> 
+				<td colspan=10>
+					<table width="100%">
+						<tr>
 							<td colspan=2 align="center"></td>
 							<td colspan=2 align="center"></td>
 							<td align="center" colspan=4>
 								<form action="../../Print" method="post"
-									onsubmit="return check()"> 
+									onsubmit="return check()">
 									<input type="hidden" value="OrderGoodssend" name="method">
-									<input type="hidden" name="statues" value="<%=statues%>"> 
-									<input type="hidden" name="token" value="<%=token%>" /> 
-									<input type="hidden" value="<%=StringUtill.getStr(ids)%>"
-										name="ids"> <input type="submit" value="开单导出"
-										style="color:red">
-								</form></td>
+									<input type="hidden" name="statues" value="<%=statues%>">
+									<input type="hidden" name="token" value="<%=token%>" /> <input
+										type="hidden" value="<%=StringUtill.getStr(ids)%>" name="ids">
+									<input type="submit" value="开单导出" style="color:red">
+								</form>
+							</td>
 
 						</tr>
 
-					</table></td>
+					</table>
+				</td>
 
 			</tr>
 			<tr class="dsc">
@@ -99,12 +99,12 @@ function check(){
 			</tr>
 			<%
 				if (null != map) {
-					
+
 					Set<Map.Entry<Integer, Map<Integer, OrderGoodsAll>>> set = map
 							.entrySet();
 					Iterator<Map.Entry<Integer, Map<Integer, OrderGoodsAll>>> it = set
 							.iterator();
-					
+
 					while (it.hasNext()) {
 						Map.Entry<Integer, Map<Integer, OrderGoodsAll>> mapent = it
 								.next();
@@ -113,23 +113,26 @@ function check(){
 								.entrySet();
 						Iterator<Map.Entry<Integer, OrderGoodsAll>> itb = setb
 								.iterator();
-						int i = 0 ;
+						int i = 0;
 						String cla = "";
 						while (itb.hasNext()) {
 							i++;
-							if(i%2 == 1){
+							if (i % 2 == 1) {
 								cla = "asc";
-							}else {
+							} else {
 								cla = "bsc";
 							}
 							Map.Entry<Integer, OrderGoodsAll> mapentb = itb.next();
 							OrderGoodsAll o = mapentb.getValue();
 							Branch branch = o.getOm().getBranch();
 							List<OrderGoods> listog = o.getList();
+							int count = 0 ; 
 							for (int j = 0; j < listog.size(); j++) {
 								OrderGoods og = listog.get(j);
+								System.out.println(og.getProduct());
+								if (og.getRealnum() > 0) { 
+									
 			%> 
- 
 			<tr class="<%=cla%>">
 				<td align="center"><%=branch.getLocateName()%></td>
 				<td align="center"></td>
@@ -149,9 +152,10 @@ function check(){
 				%>
 
 			</tr>
-
-			<%
+ 
+			<% 
 				}
+							}
 						}
 					}
 

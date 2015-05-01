@@ -215,7 +215,7 @@ public class StringUtill {
     	byte[] b;
     	try { b = Character.toString(c).getBytes("utf-8");}
     	catch (Exception ex) {
-    	System.out.println(ex);
+    	logger.info(ex);
     	b = new byte[0];
     	}
     	for (int j = 0; j < b.length; j++) {

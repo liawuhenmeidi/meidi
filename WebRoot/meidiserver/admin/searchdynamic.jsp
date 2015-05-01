@@ -26,13 +26,18 @@ int pgroup = -1;
 HashMap<Integer,User> usermap = UserService.getMapId();
  
 Map<String,User> usermaps = UserService.getuserIdStr();
-
+  
 String usermapstr = StringUtill.GetJson(usermaps);
-
-// 安装网点 
-List<User> listS =  UserService.getsencondDealsend(user);  //
  
-//List<User> listS =  UserManager.getUsers(user,Group.sencondDealsend);
+// 安装网点 
+//long start = System.currentTimeMillis();
+List<User> listS =  UserService.getsencondDealsend(user);  //
+//long start1 = System.currentTimeMillis(); 
+ //System.out.println(start1-start);
+//List<User>  
+//listS =  UserManager.getUsers(user,Group.sencondDealsend);
+// long start2 = System.currentTimeMillis();
+ //System.out.println(start2-start1);
  
 List<User> listSend = UserService.getsend(user);
 

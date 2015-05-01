@@ -106,6 +106,7 @@ function check(){
 				<td width="20%" class="s_list_m" align="center">导购</td>
 				<td width="20%" class="s_list_m" align="center">订单时间</td>
 				<td width="20%" class="s_list_m" align="center">订单截止日期</td>
+				<td width="20%" class="s_list_m" align="center">备注</td>
 			</tr>
 			<%
 				if (null != map) {
@@ -132,17 +133,17 @@ function check(){
 				<td align="center"><%=o.getOm().getUser().getUsername()%></td>
 				<td align="center"><%=o.getOm().getSubmittime()%></td>
 				<td align="center"><%=StringUtill.getNotNUll(endtime)%></td>
-
+<td align="center"><%=o.getOm().getRemark()%></td>
 			</tr>
 
-			<%
+			<% 
 				}
 					}
 				}
 			%>
 
 			<tr class="asc">
-				<td align="center" colspan=5><input type="submit" id="submit"
+				<td align="center" colspan=6><input type="submit" id="submit"
 					value="开单发货" />
 				</td>
 			</tr>

@@ -18,7 +18,7 @@ public class AfterSaleProduct {
 	 
    private int id ;  
    private int asid ;   // 售后单id 
-   private int type ;  //  1 维修单   2  保养单
+   private int type ;  //  1 维修单   2  保养单   3 安装单 
    private String cause ;  // 故障原因
    private int cid ; 
    private String cname ;  
@@ -35,7 +35,7 @@ public class AfterSaleProduct {
    private String detail ;   // 处理备注  
    private String nexttime;   // 下次处理时间 
    private String thistime;   // 此次维护处理时间    
-   private String resultStr;   
+   private String resultStr;    
    private String typeStr ;
    private String dealresult ;
    private String price; 

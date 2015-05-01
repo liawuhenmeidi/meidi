@@ -100,10 +100,7 @@ String json = StringUtill.GetJson(list);
 			 return ; 
 		 }
 	 } 
-	 if(rows.length == 10){
-		 row = 15;
-		 addrowinti();
-	 }
+	 
 	 $("#addcount").html(totalcount);
  }
   
@@ -126,7 +123,7 @@ String json = StringUtill.GetJson(list);
 	      '<option value="4">换货订货</option>'+
 	      '<option value="5">赠品订货</option>'+
 	      '<option value="6">店外退货 </option>'+
-	      '<option value="7">已入库退货</option>'+
+	      '<option value="7">已入库常规特价退货</option>'+
 	      '<option value="9">已入库样机退货</option>'+
 	     
 	     '<select></td>'+   
@@ -249,11 +246,16 @@ String json = StringUtill.GetJson(list);
  }
   
  
-  function  initctypes(row){  
-	   rows.deleteEle(); 
-	   ctypes = new Array();   
+  function  initctypes(num){  
+	   rows.deleteEle();  
+	   ctypes = new Array(); 
+	   if(rows.length == row){
+		   row = row+5;
+			 addrowinti();
+		 } 
+	   
 	   for(var i=0;i<rows.length;i++){
-		   if(i != row){  
+		   if(i != num){  
 			   var ctype = $("#product"+rows[i]).val();
 			   var statues = $("#statues"+rows[i]).val();
 			   if($.inArray(ctype,jsonallp) != -1  && statues != ""){

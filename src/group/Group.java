@@ -74,7 +74,7 @@ public class Group {
 public void setPtype(int ptype) {
 	this.ptype = ptype;
 }
-
+ 
 
     
 public List<Integer> getPid() {

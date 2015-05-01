@@ -3,11 +3,12 @@
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <%
 	request.setCharacterEncoding("utf-8"); 
-User user = (User)session.getAttribute("user"); 
-String name = request.getParameter("name"); 
-String orderid = request.getParameter("orderid");  
-String exportuuid = "";   
-List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.billing,name); 
+User user = (User)session.getAttribute("user");  
+String name = request.getParameter("name");  
+String exportName = request.getParameter("exportName");
+String orderid = request.getParameter("orderid");     
+String exportuuid = "";    
+List<OrderGoodsAll> list = OrderGoodsAllManager.getlistName(user,OrderMessage.billing,exportName,name); 
 Set<String> set = new HashSet<String>();
 String endtime = "";
 if (null != list) { 
@@ -90,7 +91,7 @@ if (null != list) {
 		<!--  头 单种类  -->
 		<table width="100%" border="0" cellspacing="1" id="table">
 			<tr class="dsc">
-				<td colspan=8>
+				<td colspan=9>
 					<table width="100%">
 						<tr>
 							<td colspan=2 align="center">订单名称：<%=name%></td>
@@ -103,7 +104,7 @@ if (null != list) {
 					</table></td>
 			</tr>
 			<tr class="dsc">
-				<td colspan=8>
+				<td colspan=9>
 					<form action="../../user/OrderGoodsServlet" method="post">
 
 						<input type="hidden" value="updateIOS" name="method"> <input
@@ -147,6 +148,7 @@ if (null != list) {
 					</form></td>
 			</tr>
 			<tr class="dsc">
+			   <td align="center">序号</td>
 				<td align="center">商品编码</td>
 				<td align="center">商品名称</td>
 				<td align="center">订货数量</td>
@@ -158,12 +160,14 @@ if (null != list) {
 			</tr>
 			<%
 				if (null != list) {
+					int count = 0 ;
 					for (int i = 0; i < list.size(); i++) {
 						OrderGoodsAll o = list.get(i); 
 						Branch branch = o.getOm().getBranch();
 						List<OrderGoods> listog = o.getList();
 						for (int j = 0; j < listog.size(); j++) {
-							OrderGoods og = listog.get(j);    
+							OrderGoods og = listog.get(j);  
+							count ++;
 							//System.out.println(StringUtill.GetJson(og)); 
 							if (!StringUtill.isNull(orderid)  
 									&& orderid.equals(og.getOid())
@@ -175,7 +179,7 @@ if (null != list) {
 			%>
 
 			<tr class="asc">
- 
+ <td align="center"><%=count%></td>
 				<td align="center"><%=og.getProduct().getEncoded()%></td>
 				<td align="center"><%=og.getProduct().getType()%></td>
 				<td align="center"><%=og.getRealnum()%></td> 

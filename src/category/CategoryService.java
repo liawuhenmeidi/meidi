@@ -25,12 +25,12 @@ public class CategoryService{
 		init();    
 		List<Category> list = getList();    
 		List<Integer> listb = null;  
-		if (null != list) { 
+		if (null != list) {  
 			listb = new ArrayList<Integer>();
 			for (int i = 0; i < list.size(); i++) {
 				Category c = list.get(i);  
-				 System.out.println(c.getExportmodel());
-				 System.out.println(expor);  
+				// System.out.println(c.getExportmodel());
+				 //System.out.println(expor);  
 				if (expor == c.getExportmodel()) {
 					// System.out.println(b.getId());
 					listb.add(c.getId());

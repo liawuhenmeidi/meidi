@@ -1,5 +1,6 @@
 package goodsreceipt;
 
+import enums.SaleModel;
 import branch.Branch;
 import branch.BranchService;
 import product.Product;
@@ -124,19 +125,45 @@ public class GoodsReceipt {
 		this.refusenum = refusenum;
 	}
  
+	public int getBidSN() { 
+		Branch b = BranchService.getNumMap(SaleModel.SuNing).get(getBranchidSN()); 
+		if(null != b){ 
+			bid = b.getId();  
+		} 
+		return bid;
+	}  
+ 
 	public int getBid() { 
 		Branch b = BranchService.getNumMap().get(getBranchid()); 
 		if(null != b){
 			bid = b.getId();  
 		} 
 		return bid;
+	} 
+	
+	public int getBid(int saletype) {  
+		Branch b = BranchService.getNumMap(saletype).get(getBranchid()); 
+		if(null != b){
+			bid = b.getId();  
+		} 
+		return bid;
 	}
-
+	
 	public void setBid(int bid) {
 		this.bid = bid; 
 	}
 
 	public String getBranchid() {
+		if(StringUtill.isNull(branchid)){
+			Branch b = BranchService.getAnotherNameMap().get(branchName); 
+			if(null != b ){
+				branchid = b.getEncoded();
+			} 
+		}  
+		return branchid; 
+	}  
+    
+	public String getBranchidSN() {
 		if(StringUtill.isNull(branchid)){
 			Branch b = BranchService.getNameSNMap().get(branchName); 
 			if(null != b ){
@@ -145,7 +172,7 @@ public class GoodsReceipt {
 		}  
 		return branchid; 
 	} 
- 
+	
 	public void setBranchid(String branchid) {
 		this.branchid = branchid;
 	}

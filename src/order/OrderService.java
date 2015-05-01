@@ -3688,6 +3688,7 @@ public class OrderService {
 								  }else {
 									  if(Integer.valueOf(o.getOderStatus()) == 8){
 										  if(UserManager.checkPermissions(user, Group.dealSend, "w")){
+											  
 											  html.append("<input type=\"button\" onclick=\"changes('"+o.getOstatues().op1.getId()+"','"+o.getId()+"','"+OrderPrintln.comited+"','"+o.getDealsendId()+"','"+o.getOstatues().releasedispatch +"','"+o.getReturnstatuse()+"','"+OrderPrintln.release +"',this)\"  value=\"打印\"/>");
 											  html.append(" <input type=\"button\" onclick=\"changes('"+o.getOstatues().op1.getId()+"','"+o.getId()+"','"+OrderPrintln.comited+"','"+o.getDealsendId()+"','"+o.getOstatues().releasedispatch +"','"+o.getReturnstatuse() +"','',this)\"  value=\"确定\"/> "); 
 							
@@ -3699,7 +3700,8 @@ public class OrderService {
 											
 											  html.append(" 请先处理驳回信息");
 											  
-											    }else {
+											    }else { 
+											    	
 											    		html.append("<input type=\"button\" onclick=\"changes('"+o.getOstatues().op1.getId()+"','"+o.getId()+"','"+OrderPrintln.comited+"','"+o.getDealsendId() +"','"+o.getOstatues().releasedispatch+"','"+o.getReturnstatuse()+"','"+OrderPrintln.releasedispatch +"',this)\"  value=\"同意\"/>");
 												    	html.append("<input type=\"button\" onclick=\"changes('"+o.getOstatues().op1.getId()+"','"+o.getId()+"','"+OrderPrintln.uncomited+"','"+o.getDealsendId()+"','"+o.getOstatues().releasedispatch +"','"+o.getReturnstatuse() +"','"+OrderPrintln.releasedispatch +"',this)\"  value=\"不同意\"/>");   
 											    	

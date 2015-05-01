@@ -100,12 +100,15 @@ public class OrderGoods {
 	} 
  
 	public int getRealstatues() { 
-		Product p = getProduct(); 
+		Product p = getProduct();  
+		//System.out.println(statues); 
 		if(p.getSaleType() != -1){   
 			if(1 == statues){   
 				realstatues = p.getSaleType(); 
 			}else if(7 == statues){ 
 				realstatues = p.getSaleType()+6; 
+			}else {
+				realstatues =statues; 
 			}   
 		}else {   
 			realstatues = 0 ;
@@ -180,7 +183,8 @@ public class OrderGoods {
 	}
 
 	public Product getProduct() {
-		if (tid != 0) {
+		if (tid != 0) { 
+			System.out.print(tid); 
 			product = ProductService.getIDmap().get(tid);
 		}
 		return product;

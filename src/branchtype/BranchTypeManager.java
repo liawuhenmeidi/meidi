@@ -29,9 +29,9 @@ public class BranchTypeManager {
 			if(StringUtill.isNull(bid)){    
 				sql = "insert into mdbranchtype(id,bname,typestatues,exportmodel) values (null, '"+c+"',"+typestatues+","+exportmodel+")";
 			}else {    
-				sql = "update mdbranchtype set bname = '"+c+"', typestatues = '"+typestatues+"',exportmodel = "+exportmodel+" where id = " +bid;
+				sql = "update mdbranchtype set bname = '"+c+"', typestatues = '"+typestatues+"',saletype = "+exportmodel+" where id = " +bid;
 			}    
-			      
+			BranchTypeService.flag = true ;       
 			DBUtill.sava(sql);
 		   return true; 
 		}
@@ -44,6 +44,7 @@ public class BranchTypeManager {
 			try { 
 				pstmt.setInt(1, statues);  
 				pstmt.executeUpdate();
+				BranchTypeService.flag = true ; 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -131,6 +132,7 @@ logger.info(sql);
 			Statement stmt = DB.getStatement(conn);
 			try {
 				DB.executeUpdate(stmt, sql);
+				BranchTypeService.flag = true ; 
 				b = true;
 			} finally {
 				DB.close(stmt);
@@ -141,16 +143,17 @@ logger.info(sql);
 
 		private static BranchType getBranchFromRs(ResultSet rs){
 			BranchType branch= new BranchType();
-			try {     
-				branch.setId(rs.getInt("id"));   
+			try {      
+				branch.setId(rs.getInt("id"));    
 				branch.setName(rs.getString("bname"));
 				branch.setStatues(rs.getInt("statues")); 
 				branch.setIsSystem(rs.getInt("isSystem"));
 				branch.setTypestatues(rs.getInt("typestatues")); 
 				branch.setExportmodel(rs.getInt("exportmodel")); 
+				branch.setSaletype(rs.getInt("saletype")); 
 			} catch (SQLException e) {  
 				e.printStackTrace();
-			}	
+			}	 
 			return branch ;
 		}	
 		

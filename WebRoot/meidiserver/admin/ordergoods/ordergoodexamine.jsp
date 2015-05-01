@@ -8,7 +8,7 @@ List<BranchType> listgt = BranchTypeManager.getLocate();
 //System.out.println(StringUtill.GetJson(listgt ));  
 Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.examine); 
  // System.out.println(StringUtill.GetJson(map));
-%> 
+%>  
 <!DOCTYPE html>
 <html>
 <head>

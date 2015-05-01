@@ -50,7 +50,7 @@ select{width: 200px; height: 30px;font-size:100%;}
   var jsons = <%=json%>;
  //alert(listall);
    
- var row = 10;   
+ var row = 10;    
  var rows = new Array();
  var count = 1 ; 
  var jsoninventory = <%=jsoninventory%>; 
@@ -106,10 +106,7 @@ select{width: 200px; height: 30px;font-size:100%;}
 			 return ; 
 		 }
 	 } 
-	 if(rows.length == 10){
-		 row = 15;
-		 addrowinti();
-	 }
+	 
 	 $("#addcount").html(totalcount);
  }
   
@@ -138,7 +135,7 @@ select{width: 200px; height: 30px;font-size:100%;}
 	      '<option value="4">换货订货</option>'+
 	      '<option value="5">赠品订货</option>'+
 	      '<option value="6">店外退货 </option>'+
-	      '<option value="7">已入库退货</option>'+ 
+	      '<option value="7">已入库常规特价退货</option>'+ 
 	      '<option value="9">已入库样机退货</option>'+
 	     
 	     '<select></td>'+   
@@ -261,11 +258,17 @@ select{width: 200px; height: 30px;font-size:100%;}
  }
   
  
-  function  initctypes(row){  
+  function  initctypes(num){   
 	   rows.deleteEle(); 
-	   ctypes = new Array();   
+	   ctypes = new Array(); 
+	  // alert(rows.length);
+	 //  alert(row);
+	   if(rows.length == row){
+			 row = row+5;
+			 addrowinti();
+		 } 
 	   for(var i=0;i<rows.length;i++){
-		   if(i != row){  
+		   if(i != num){  
 			   var ctype = $("#product"+rows[i]).val();
 			   var statues = $("#statues"+rows[i]).val();
 			   if($.inArray(ctype,jsonallp) != -1  && statues != ""){

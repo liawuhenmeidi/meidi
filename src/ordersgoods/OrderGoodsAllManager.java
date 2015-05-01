@@ -523,30 +523,25 @@ public class OrderGoodsAllManager {
 	public static List<OrderGoodsAll> getlist(User user, int opstatues,
 			String[] ids, String[] statues, String exportmodel) {
 		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
-
-		List<Integer> listids = UserService.GetListson(user);
 		// logger.info(exportmodel);
 		/*
 		 * List<Integer> listbids = BranchService.getListids(Integer
 		 * .valueOf(branchtype));
-		 */
+		 */ 
 		List<Integer> listbids = CategoryService.getByExportModel(Integer
 				.valueOf(exportmodel));
-		logger.info(listbids);
+		//logger.info(listbids);
 		// logger.info(StringUtill.getStr(ids));
 		Connection conn = DB.getConn();
-
-		String sql = " select * from mdordergoods,mdordermessage  where mdordermessage.submitid in ("
-				+ listids.toString().substring(1,
-						listids.toString().length() - 1)
-				+ " ) and mdordergoods.mid = mdordermessage.id and mdordergoods.cid in ("
-				+ listbids.toString().substring(1,
-						listbids.toString().length() - 1)
+ 
+		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.mid = mdordermessage.id and mdordergoods.cid in ("
+				+ listbids.toString().substring(1, 
+						listbids.toString().length() - 1) 
 				+ ") and mdordergoods.opstatues = 0  and mdordermessage.id in "
 				+ StringUtill.getStr(ids)
 				+ " and mdordergoods.statues in"
 				+ StringUtill.getStr(statues);
-		logger.info(sql);
+		logger.info(sql); 
 		Statement stmt = DB.getStatement(conn);
 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -622,9 +617,9 @@ public class OrderGoodsAllManager {
 				+ " and mdordergoods.mid = mdordermessage.id  and mdordergoods.billingstatues = "
 				+ billingstatues
 				+ "  and mdordermessage.submitid in ("
-				+ listids.toString().substring(1,
+				+ listids.toString().substring(1, 
 						listids.toString().length() - 1)
-				+ " )  order by mdordermessage.branchid";
+				+ " ) and mdordergoods.realnum > 0  order by mdordermessage.branchid";
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn);
 
@@ -999,9 +994,9 @@ public class OrderGoodsAllManager {
 
 		List<Integer> listids = UserService.GetListson(user);
 		// logger.info(listids);
-		Connection conn = DB.getConn();
+		Connection conn = DB.getConn(); 
 
-		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.uuid = '"
+		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.exportuuid = '"
 				+ oid
 				+ "' and mdordergoods.mid = mdordermessage.id  and mdordermessage.id in "
 				+ ids
@@ -1032,13 +1027,13 @@ public class OrderGoodsAllManager {
 	public static List<OrderGoodsAll> getlist(User user, int opstatues,
 			String oid) {
 		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
-
+ 
 		List<Integer> listids = UserService.GetListson(user);
-		// logger.info(listids);
+		// logger.info(listids); 
 		Connection conn = DB.getConn();
 
-		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.uuid = '"
-				+ oid
+		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.exportuuid = '"
+				+ oid 
 				+ "' and mdordergoods.mid = mdordermessage.id    and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
 						listids.toString().length() - 1) + " ) ";
@@ -1063,6 +1058,49 @@ public class OrderGoodsAllManager {
 		return list;
 	}
 
+	public static List<OrderGoodsAll> getlistName(User user, int opstatues,
+			String exportName,String name) { 
+		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
+ 
+		List<Integer> listids = UserService.GetListson(user);
+		// logger.info(listids); 
+		Connection conn = DB.getConn();
+         String sql = "";
+         if(!StringUtill.isNull(exportName)){
+        	 sql = " select * from mdordergoods,mdordermessage  where mdordergoods.exportuuid = '"
+     				+ exportName 
+     				+ "' and mdordergoods.mid = mdordermessage.id    and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
+     				+ listids.toString().substring(1,
+     						listids.toString().length() - 1) + " ) ";
+         }else { 
+        	 sql = " select * from mdordergoods,mdordermessage  where mdordergoods.uuid = '"
+     				+ name
+     				+ "' and mdordergoods.mid = mdordermessage.id    and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
+     				+ listids.toString().substring(1,
+     						listids.toString().length() - 1) + " ) ";
+         }
+		
+		logger.info(sql);
+		Statement stmt = DB.getStatement(conn);
+
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		// logger.info(rs);
+		try {
+			while (rs.next()) {
+
+				OrderGoodsAll og = getOrderGoodsAllFromRs(rs);
+				list.add(og);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return list;
+	}
+	
 	public static OrderGoodsAll getOrderGoodsAllFromRs(ResultSet rs) {
 		OrderGoodsAll oa = new OrderGoodsAll();
 		OrderMessage om = OrderMessageManager.getOrderMessageFromRs(rs);

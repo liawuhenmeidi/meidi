@@ -222,7 +222,7 @@ public class AftersaleAllManager {
 		 AftersaleAll af = new AftersaleAll();
 		   
 		    String sql = "select * from mdaftersale,mdaftersaleproduct where mdaftersale.id = "+id+"   and  mdaftersaleproduct.asid = mdaftersale.id ";
-		    
+		     
 		       Connection conn = DB.getConn();
 		       Statement stmt = DB.getStatement(conn);
 logger.info(sql); 		      

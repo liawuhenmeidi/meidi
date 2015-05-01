@@ -229,8 +229,7 @@ String json = StringUtill.GetJson(list);
 	      '<option value="4">换货订货</option>'+
 	      '<option value="5">赠品订货</option>'+ 
 	      '<option value="6">店外退货 </option>'+ 
-	      '<option value="7">已入库常规退货</option>'+
-	      '<option value="8">已入库特价退货</option>'+
+	      '<option value="7">已入库常规特价退货</option>'+
 	      '<option value="9">已入库样机退货</option>'+
 	     '<select></td>'+
 	     ' <td  align=center><input type="button" value="删除" onclick="delet('+row+')"/></td> ' +

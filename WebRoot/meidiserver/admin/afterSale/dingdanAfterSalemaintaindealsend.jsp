@@ -3,10 +3,10 @@
 <%@ include file="../searchdynamic.jsp"%>       
  <%    
  if(StringUtill.isNull(statues)){    
-	  // 网点配工   
+	  // 网点配工    
 	 statues = Order.aftersalesecond +"";
  }
-  
+   
      
  String list = StringUtill.GetJson(UserService.getjsuser(listSend )); 
  //System.out.println(list);  
@@ -89,7 +89,7 @@ sort= "andate asc";
 var id = "";  
 var type = "<%=Group.aftersalerepare%>";
 var listuser = <%=list%>;  
-$(function () { 
+$(function () {  
 	 fixation();
 	 initOrder(type,statues,num,page,sort,sear);
 });

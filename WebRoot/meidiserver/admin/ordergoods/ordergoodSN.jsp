@@ -3,15 +3,15 @@
 <%     
 request.setCharacterEncoding("utf-8");
 String type = request.getParameter("type"); 
-//System.out.println(type);   
+//System.out.println(type);    
 String exportmodel = request.getParameter("exportmodel");
 String[] ids = request.getParameterValues("omid");         
-String[] statues = request.getParameterValues("statues");  
-     
+String[] statues = request.getParameterValues("statues");   
+       
 Map<String,InventoryBranch> map = InventoryBranchManager.getmapTypeBranch(StringUtill.getStr(ids));
 List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.examine,ids,statues,exportmodel);  
- // System.out.println(StringUtill.GetJson(map));      
-%>            
+ // System.out.println("map"+StringUtill.GetJson(map));      
+%>              
 <!DOCTYPE html>    
 <html>  
 <head>
@@ -72,7 +72,7 @@ function check(num){
   
 <table width="100%" border="0" cellspacing="1"  id="table"> 
  <tr class="dsc" >  
- <td colspan=10>  
+ <td colspan=11>  
   <table>
    <tr>
      <td  align="center">请输入订单名称</td>
@@ -90,6 +90,7 @@ function check(num){
     
  </tr>
   <tr class="dsc">    
+   <td    align="center">序号</td>  
      <td    align="center">商品编码</td>  
      <td   align="center">商品名称</td>  
      <td align=center width="10%">未入库数量</td>   
@@ -102,7 +103,8 @@ function check(num){
       <td  align="center">供应商编码</td>
   </tr>  
    <%    
-   if(null != list){   
+   if(null != list){  
+	   int count = 0 ;
 		for(int i=0;i<list.size();i++){ 
 			OrderGoodsAll o =list.get(i);
 			Branch branch = o.getOm().getBranch();
@@ -112,7 +114,7 @@ function check(num){
 				//System.out.println(og.getTid()+"_"+o.getOm().getBranchid());
 				 InventoryBranch in = map.get(og.getTid()+"_"+o.getOm().getBranchid());
 				 String serialnumber = og.getSerialnumber();
-				 
+				 count ++;
 					 
 				 if (ExportModel.SuNing == Integer.valueOf(exportmodel)) {
 					 if(StringUtill.isNull(serialnumber)){
@@ -135,7 +137,7 @@ function check(num){
 				%>
 				  
 <tr class="asc" >     
-	 
+	  <td align="center"><%= count%></td> 
     <td align="center"><%= og.getProduct().getEncoded()%></td> 
      <td align="center"><%= og.getProduct().getType()%></td>   
     <td align=center><%=  InNum %></td>    
