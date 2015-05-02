@@ -88,7 +88,7 @@ position:fixed;
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
 
-function inventory(inventory,type){
+function inventory(inventory,type,tid){
 	 if(type == 0 || type == 1 || type == 3){
 		 //window.location.href='inventorysearch.jsp?id='+inventory;
 		 window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
@@ -96,8 +96,8 @@ function inventory(inventory,type){
 		 window.open('../receivegoods/receivegoodsdetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 		    
 	 }else if(type == 14 || type == 16 || type == 17 || type == 18 ){ 
-		 window.open('../ordergoods/ordergoodsdetail.jsp?id='+inventory+'&type=<%=OrderMessage.all%>&statues=<%=OrderMessage.billing%>', 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
-	 }else{ 
+		 window.open('../ordergoods/ordergoodsdetail.jsp?id='+inventory+'&type=<%=OrderMessage.all%>&statues=<%=OrderMessage.billing%>&tid='+tid, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
+	 }else{  
 		// window.location.href='dingdanDetail.jsp?id='+inventory; 
 		 window.open('dingdanDetail.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:600px;dialogHeight:800px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 }
@@ -182,8 +182,8 @@ function inventory(inventory,type){
 		        		 }else {
 		        			 
 		        		%>
-		        	
-		        		   <tr id="<%=in.getInventoryid() %>" <%=cl %> onclick="updateClass(this)" ondblclick="inventory('<%=in.getInventoryid() %>','<%=type%>')">   
+		        	 
+		        		   <tr id="<%=in.getInventoryid() %>" <%=cl %> onclick="updateClass(this)" ondblclick="inventory('<%=in.getInventoryid() %>','<%=type%>','<%=in.getTypeid()%>')">   
 		        		      <td align="center"><%=in.getInventoryString()%></td>   
 		        		      <td align="center"><%=in.getTime()%></td>     
 		        		      <td align="center"><%=in.getType()%></td>    

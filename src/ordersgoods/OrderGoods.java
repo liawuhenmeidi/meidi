@@ -11,7 +11,7 @@ public class OrderGoods {
 	public static int change = 4;
 	public static int gift = 5;
 	public static int audit = 1;
-  
+
 	private int id; // 订单编号
 	private String oid; // 订单号
 	private int submitid; // 提交订单人
@@ -20,13 +20,14 @@ public class OrderGoods {
 	private int tid; // 产品id
 	private int cid; // 产品类别id
 
-	private String tname; 
-	private Product product;  
-    
-	private int statues; // 1常规 2 特价 3 样机 4 换货 5 赠品    6 店外退货    7 已入库常规退货   8 已入库特价退货    9 已入库样机退货
-	private int realstatues;   //   
-	private int ordernum; 
-	private int realnum; // 送货数量 
+	private String tname;
+	private Product product;
+
+	private int statues; // 1常规 2 特价 3 样机 4 换货 5 赠品 6 店外退货 7 已入库常规退货 8 已入库特价退货 9
+							// 已入库样机退货
+	private int realstatues; //
+	private int ordernum;
+	private int realnum; // 送货数量
 	private int opstatues; // 0 未生成订单 1 生成订单 2 已导出订单
 	private int billingstatues; // 0 未发货 1 已发货
 	private String uuidtime;
@@ -34,12 +35,40 @@ public class OrderGoods {
 	private String statuesName;
 	private String Branch;
 	private String billingtime;
-	private int realsendnum; 
+	private int realsendnum;
 	private int returnrealsendnum;
 	private String effectiveendtime;
-    private String serialnumber;    
-    private String exportuuid; 
-    
+	private String serialnumber;
+	private String exportuuid;
+	private String realsendnumName;
+	private String returnrealsendnumName;
+
+	public String getRealsendnumName() {
+		if (2 == billingstatues) {
+
+			realsendnumName = realsendnum + "";
+
+		} else {
+			realsendnumName = "";
+		}
+		return realsendnumName;
+	}
+
+	public String getReturnrealsendnumName() {
+		if (2 == billingstatues) {
+
+			returnrealsendnumName = returnrealsendnum + "";
+
+		} else {
+			returnrealsendnumName = "";
+		}
+		return returnrealsendnumName;
+	}
+
+	public void setReturnrealsendnumName(String returnrealsendnumName) {
+		this.returnrealsendnumName = returnrealsendnumName;
+	}
+
 	public int getRealsendnum() {
 		return realsendnum;
 	}
@@ -97,23 +126,23 @@ public class OrderGoods {
 
 	public void setTid(int tid) {
 		this.tid = tid;
-	} 
- 
-	public int getRealstatues() { 
-		Product p = getProduct();  
-		//System.out.println(statues); 
-		if(p.getSaleType() != -1){   
-			if(1 == statues){   
-				realstatues = p.getSaleType(); 
-			}else if(7 == statues){ 
-				realstatues = p.getSaleType()+6; 
-			}else {
-				realstatues =statues; 
-			}   
-		}else {   
-			realstatues = 0 ;
+	}
+
+	public int getRealstatues() {
+		Product p = getProduct();
+		// System.out.println(statues);
+		if (p.getSaleType() != -1) {
+			if (1 == statues) {
+				realstatues = p.getSaleType();
+			} else if (7 == statues) {
+				realstatues = p.getSaleType() + 6;
+			} else {
+				realstatues = statues;
+			}
+		} else {
+			realstatues = 0;
 		}
-		 
+
 		return realstatues;
 	}
 
@@ -122,11 +151,10 @@ public class OrderGoods {
 	}
 
 	public int getStatues() {
-		
+
 		return statues;
 	}
-   
-	
+
 	public void setStatues(int statues) {
 		this.statues = statues;
 	}
@@ -183,8 +211,8 @@ public class OrderGoods {
 	}
 
 	public Product getProduct() {
-		if (tid != 0) { 
-			System.out.print(tid); 
+		if (tid != 0) {
+			System.out.print(tid);
 			product = ProductService.getIDmap().get(tid);
 		}
 		return product;
@@ -194,80 +222,80 @@ public class OrderGoods {
 		this.product = product;
 	}
 
-	public String getBranch() { 
-		if (1 == statues) { 
+	public String getBranch() {
+		if (1 == statues) {
 			Branch = "0001";
-		} else if (2 == statues) { 
+		} else if (2 == statues) {
 			Branch = "0002";
 		} else if (3 == statues) {
 			Branch = "样机";
-		} else if(7 == statues){
+		} else if (7 == statues) {
 			Branch = "0001";
-		} else if(8 == statues){
+		} else if (8 == statues) {
 			Branch = "0002";
-		}else if(9 == statues){
-			Branch = "样机"; 
-		}else { 
+		} else if (9 == statues) {
+			Branch = "样机";
+		} else {
 			Branch = "";
 		}
 		return Branch;
-	} 
-
-	public String getBranchGM() { 
-		if (1 == statues || 7 == statues) { 
-			Branch = "正常";
-		} else if (2 == statues || 8 ==statues) { 
-			Branch = "一步到位机"; 
-		} else { 
-			Branch = ""; 
-		}
-		return Branch; 
 	}
-	
-	public String getStatuesName() { 
-		if (1 == statues) {  
-			statuesName = "常规机订货"; 
+
+	public String getBranchGM() {
+		if (1 == statues || 7 == statues) {
+			Branch = "正常";
+		} else if (2 == statues || 8 == statues) {
+			Branch = "一步到位机";
+		} else {
+			Branch = "";
+		}
+		return Branch;
+	}
+
+	public String getStatuesName() {
+		if (1 == statues) {
+			statuesName = "常规机订货";
 		} else if (2 == statues) {
 			statuesName = "特价机订货";
 		} else if (3 == statues) {
 			statuesName = "样机订货";
-		} else if (4 == statues) { 
+		} else if (4 == statues) {
 			statuesName = "换货订货";
-		} else if( 5 == statues){
+		} else if (5 == statues) {
 			statuesName = "赠品订货";
-		}else if(6 == statues){ 
+		} else if (6 == statues) {
 			statuesName = "店外退货";
-		}else if(7 == statues){
+		} else if (7 == statues) {
 			statuesName = "已入库常规退货";
-		}else if(8 == statues){
+		} else if (8 == statues) {
 			statuesName = "已入库特价退货";
-		}else if(9 == statues){
+		} else if (9 == statues) {
 			statuesName = "已入库样机退货";
 		}
 		return statuesName;
-	} 
+	}
 
 	public static String getStatuesName(int statues) {
 		String statuesName = "";
 		if (1 == statues) {
-			statuesName = "常规机订货"; 
+			statuesName = "常规机订货";
 		} else if (2 == statues) {
 			statuesName = "特价机订货";
 		} else if (3 == statues) {
 			statuesName = "样机订货";
-		} else if (4 == statues) { 
+		} else if (4 == statues) {
 			statuesName = "换货订货";
-		} else if( 5 == statues){
+		} else if (5 == statues) {
 			statuesName = "赠品订货";
-		}else if(6 == statues){ 
+		} else if (6 == statues) {
 			statuesName = "店外退货";
-		}else if(7 == statues){
+		} else if (7 == statues) {
 			statuesName = "已入库常规退货";
-		}else if(8 == statues){
+		} else if (8 == statues) {
 			statuesName = "已入库特价退货";
-		}else if(9 == statues){
+		} else if (9 == statues) {
 			statuesName = "已入库样机退货";
-		} 
+		}
 		return statuesName;
 	}
 
@@ -321,7 +349,7 @@ public class OrderGoods {
 	public String getSerialnumber() {
 		return serialnumber;
 	}
- 
+
 	public void setSerialnumber(String serialnumber) {
 		this.serialnumber = serialnumber;
 	}
@@ -337,7 +365,7 @@ public class OrderGoods {
 	public String getExportuuid() {
 		return exportuuid;
 	}
- 
+
 	public void setExportuuid(String exportuuid) {
 		this.exportuuid = exportuuid;
 	}

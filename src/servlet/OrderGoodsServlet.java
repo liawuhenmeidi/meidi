@@ -1,6 +1,8 @@
 package servlet;
 
 import inventory.InventoryBranchManager;
+import inventory.InventoryBranchMessage;
+import inventory.InventoryBranchMessageManager;
 import inventory.InventoryManager;
 
 import java.io.IOException;
@@ -239,10 +241,13 @@ public class OrderGoodsServlet extends HttpServlet {
 		}
 		if (null != ogids) {
 			List<String> listogids = Arrays.asList(ogids);
-			//logger.info(listogids);
- 
-			// for (int i = 0; i < ogids.length; i++) {
-			if (null != list) {
+			//logger.info(listogids); 
+            Map<String,List<InventoryBranchMessage>> mapINM = InventoryBranchMessageManager.getmap(oa.getOm().getBranchid());
+          //  logger.info(mapINM); 
+            Map<Integer,Map<Integer,InventoryBranchMessage>> map = new HashMap<Integer,Map<Integer,InventoryBranchMessage>>();  
+			// for (int i = 0; i < ogids.length; i++) { 
+			if (null != list) { 
+				
 				for (int i = 0; i < list.size(); i++) {
 					OrderGoods og = list.get(i);
 					int ogid = og.getId();
@@ -264,14 +269,14 @@ public class OrderGoodsServlet extends HttpServlet {
 						}
 						String sql = OrderGoodsManager.updaterealsendnum(user,
 								ogid, realsendnum, returnrealsendnum);
-  
+   
 						listsql.add(sql);
-						
-						String sqlup = " update mdinventorybranchmessage set isoverstatues = 0 where inventoryid = "+oa.getOm().getId();
-						listsql.add(sqlup); 
+						 
+						String sqlup = " update mdinventorybranchmessage set isoverstatues = 0 where inventoryid = "+oa.getOm().getId() + " and  type = "+og.getTid() ;
+						listsql.add(sqlup);
 						  
 						boolean flag = false;
-					 	  
+					 	boolean upflag = false ;  
 						if (og.getStatues() == 6 || og.getStatues() == 7
 								|| og.getStatues() == 8
 								|| og.getStatues() == 9) {
@@ -279,16 +284,22 @@ public class OrderGoodsServlet extends HttpServlet {
 							realcont = -Integer.valueOf(returnrealsendnum) ;
 						} else if (og.getStatues() == 4) { 
 							flag = true ;
-							realcont = (Integer.valueOf(realsendnum)
+							upflag = true ;
+							/*realcont = (Integer.valueOf(realsendnum)
 									- og.getRealnum() - Integer
+									.valueOf(returnrealsendnum));*/
+							realcont = (Integer.valueOf(realsendnum)
+									 - Integer 
 									.valueOf(returnrealsendnum));
 
 						} else if((og.getRealnum() != Integer.valueOf(realsendnum) ) && og.getStatues() != 5){
-							flag = true ;
+							flag = true ;  
+							upflag = true ;  
+							//realcont = Integer.valueOf(returnrealsendnum) ;
 							realcont = (Integer.valueOf(realsendnum) - og
 									.getRealnum());
-						}
-						
+						} 
+						logger.info(upflag);  
 						if (flag) {
 							String sqlIB = "";
 							String sqlIBM = ""; 
@@ -340,56 +351,110 @@ public class OrderGoodsServlet extends HttpServlet {
 										+ ")*1  where  branchid = "
 										+ oa.getOm().getBranchid()
 										+ " and  type = '" + og.getTid() + "'";
+                                
+								if(upflag){
+									List<InventoryBranchMessage > listin = mapINM.get(og.getTid()+"");
+									logger.info(listin);  
+									int InMid = 0 ;   
+									
+									//int oldpapercount = 0;
+									int papercount = 0;
+									for(int j=0;j<listin.size();j++){
+										InventoryBranchMessage in = listin.get(j);
+										Map<Integer,InventoryBranchMessage> maps = map.get(og.getTid());
+										logger.info(in.getInventoryid());
+										logger.info(oa.getOm().getId()); 
+										if(in.getInventoryid() == oa.getOm().getId()){
+											InMid = in.getId(); 
+											logger.info(InMid ); 
+										    if(null == maps){
+										    	maps = new HashMap<Integer,InventoryBranchMessage>();
+										    	map.put(og.getTid(), maps);
+										    }   
+										    InventoryBranchMessage inv = maps.get(in.getInventoryid());
+										    if(null == inv){ 
+										    	inv = in;   
+										    	//oldpapercount = in.getPapercount()+realcont;
+										    	papercount = in.getPapercount()+realcont;
+										    	in.setAllotPapercount(Integer.valueOf(realsendnum));
+										    	in.setPapercount(in.getPapercount()+realcont);
+										    	in.setIsOverStatues(0);
+										    	maps.put(in.getInventoryid(), in); 
+										    	   
+										    }  
+										} 
+										  
+										if(InMid != 0 && in.getId() > InMid){
+											InventoryBranchMessage inv = maps.get(in.getInventoryid());
+											if(null == inv){
+										    	inv = in;  
+										    	in.setPapercount(papercount+in.getAllotPapercount());
+										    	in.setOldpapercount(papercount);
+										    	
+										    	maps.put(in.getInventoryid(), in);  
+										    	  
+										    }
+										}
+									}
+								}else {
 
-								sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
-										+ "  values ( null, '"
-										+ oa.getOm().getBranchid()
-										+ "', '"
-										+ oa.getOm().getId()
-										+ "','"
-										+ oa.getOm().getId()
-										+ "','"
-										+ TimeUtill.gettime()
-										+ "','"
-										+ og.getTid()
-										+ "','"
-										+ 0
-										+ "','"
-										+ realcont
-										+ "',"
-										+ operatortype
-										+ ",(select realcount from mdinventorybranch where branchid = "
-										+ oa.getOm().getBranchid()
-										+ " and  type = '"
-										+ og.getTid()
-										+ "')*1,(select papercount from mdinventorybranch where branchid = "
-										+ oa.getOm().getBranchid()
-										+ " and  type = '"
-										+ og.getTid()
-										+ "')*1,"
-										+ 1
-										+ ","
-										+ oa.getOm().getBranchid()
-										+ ",-1,(select realcount from mdinventorybranch where branchid = "
-										+ oa.getOm().getBranchid()
-										+ " and  type = '"
-										+ og.getTid()
-										+ "')*1"
-										// + -Integer.valueOf(realsendnum)
-										+ ",(select papercount from mdinventorybranch where branchid = "
-										+ oa.getOm().getBranchid()
-										+ " and  type = '"
-										+ og.getTid()
-										+ "')*1" + realcont * 1 + ")";
-
+									sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+											+ "  values ( null, '"
+											+ oa.getOm().getBranchid()
+											+ "', '"
+											+ oa.getOm().getId()
+											+ "','"
+											+ oa.getOm().getId()
+											+ "','"
+											+ TimeUtill.gettime()
+											+ "','"
+											+ og.getTid()
+											+ "','"
+											+ 0
+											+ "','"
+											+ realcont
+											+ "',"
+											+ operatortype
+											+ ",(select realcount from mdinventorybranch where branchid = "
+											+ oa.getOm().getBranchid()
+											+ " and  type = '"
+											+ og.getTid()
+											+ "')*1,(select papercount from mdinventorybranch where branchid = "
+											+ oa.getOm().getBranchid()
+											+ " and  type = '"
+											+ og.getTid()
+											+ "')*1,"
+											+ 1
+											+ ","
+											+ oa.getOm().getBranchid()
+											+ ",-1,(select realcount from mdinventorybranch where branchid = "
+											+ oa.getOm().getBranchid()
+											+ " and  type = '"
+											+ og.getTid()
+											+ "')*1"
+											// + -Integer.valueOf(realsendnum)
+											+ ",(select papercount from mdinventorybranch where branchid = "
+											+ oa.getOm().getBranchid()
+											+ " and  type = '"
+											+ og.getTid()
+											+ "')*1" + realcont * 1 + ")";
+								}
 							}
 							listsql.add(sqlIB);
 							listsql.add(sqlIBM);
-							
+							 
 						} 
+ 
 					} 
 				}
+				  
+				logger.info(map); 
+				List<String> sqlup =  InventoryBranchMessageManager.update(map);
+				 
+				listsql.addAll(sqlup); 
 			}
+			
+			
 		} 
  
 		if (DBUtill.sava(listsql)) {

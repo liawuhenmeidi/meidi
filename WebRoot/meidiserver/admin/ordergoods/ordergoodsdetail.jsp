@@ -8,6 +8,7 @@ List<OrderGoods> list = null;
 String id = request.getParameter("id"); 
 String statues = request.getParameter("statues");
 String type = request.getParameter("type");
+String tid = request.getParameter("tid");
 String branchname = ""; 
 String remark = ""; 
 String message = "导购订货单";  
@@ -34,7 +35,7 @@ if(!StringUtill.isNull(id)){
 	}else{ 
 		oa = OrderGoodsAllManager.getOrderGoodsAllByid(user,id,Integer.valueOf(statues),type);
 	}
-	System.out.println(oa); 
+	//System.out.println(oa); 
 	branchname = oa.getOm().getBranchname();
 	remark = oa.getOm().getRemark(); 
 	list = oa.getList(); 
@@ -66,7 +67,7 @@ String json = StringUtill.GetJson(list);
  
  
 </script> 
-</head>
+</head> 
 
 <body>
  
@@ -85,10 +86,10 @@ String json = StringUtill.GetJson(list);
         </td>   
         <td  align=center> 
         <%=branchname %> 
-        </td> 
+        </td>  
         <td  align=center> 
-         单号：    <%=oa.getOm().getOid() %>
-        </td> 
+         单号：    <%=oa.getOm().getId() %>
+        </td>  
        <td align=center>
        日期：<%= oa.getOm().getSubmittime()%>
        </td>
@@ -100,10 +101,7 @@ String json = StringUtill.GetJson(list);
            <td align=center width="5%"   >编号</td> 
            <td align=center width="20%" > 产品型号</td> 
            <td align=center width="25%" >状态</td>  
-            
-           <td align=center width="10%">未入库数量</td>  
            <td align=center width="20%"> 订货数</td>  
-            <td align=center width="20%">订单数</td>    
            <td align=center width="20%">实际发货数</td> 
            <td align=center width="20%">实际退货数</td>      
           </tr>  
@@ -111,39 +109,37 @@ String json = StringUtill.GetJson(list);
           
           int realcount = 0 ;
           int ordercount = 0 ;
-          int incount = 0 ;
           for(int i=0;i<list.size();i++){
         	  OrderGoods og = list.get(i);
-        	  InventoryBranch in = map.get(og.getTname());
-        	  int InNum = 0;
-        	  if(null != in){
-        		  InNum = in.getPapercount();
-        	  }
+               
         	  realcount +=og.getRealnum(); 
-        	  incount += InNum;
-        	  ordercount += InNum+og.getRealnum();
-        	  %>
-        <tr class="asc"> 
+        	  ordercount += og.getRealsendnum();
+        	  String cl = "class=\"asc\"";
+        	  if(!StringUtill.isNull(tid) && og.getTid() == Integer.valueOf(tid)){
+        		  cl = "class=\"bsc\"";
+        	  }  
+        	  %>    
+        <tr <%=cl %>>  
 	     <td align=center   ><%=i+1 %></td> 
 	     <td  align=center ><%= og.getTname() %></td> 
 	     <td  align=center ><%=og.getStatuesName() %></td>   
-	     <td align=center><%=  InNum %></td> 
-	     <td align=center ><%= og.getRealnum() %></td> 
-	     <td align=center ><%=  InNum+og.getRealnum()%></td> 
-	      <td align=center ><%=  og.getRealsendnum() %></td> 
-	       <td align=center ><%=  og.getReturnrealsendnum() %></td> 
-	     </tr> 
-        	   
-        	  <%
+	   
+	     <td align=center ><%= og.getRealnum() %></td>  
+	    
+	      <td align=center ><%=  og.getRealsendnumName() %></td>  
+	       <td align=center ><%=  og.getReturnrealsendnumName() %></td> 
+	     </tr>  
+        	    
+        	  <% 
           } %> 
           <tr class="asc"> 
 	     <td align=center   >总计</td> 
 	     <td  align=center ></td> 
 	     <td  align=center ></td>   
-	     <td align=center><%= incount %></td>  
+	    
 	     <td align=center ><%= realcount %></td> 
 	     <td align=center ><%= ordercount %></td> 
-	     <td align=center ></td> 
+	  
 	     <td align=center ></td> 
 	     </tr>
           

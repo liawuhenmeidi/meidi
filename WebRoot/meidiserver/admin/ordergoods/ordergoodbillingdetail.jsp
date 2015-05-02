@@ -106,9 +106,9 @@ if (null != list) {
 			<tr class="dsc">
 				<td colspan=9>
 					<form action="../../user/OrderGoodsServlet" method="post">
-
+ 
 						<input type="hidden" value="updateIOS" name="method"> <input
-							type="hidden" value="<%=name%>" id="name" name="name">
+							type="hidden" value="<%=exportuuid%>" id="name" name="name">
 
 						<table>
 

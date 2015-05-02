@@ -47,10 +47,10 @@ public class OrderGoodsAllManager {
 	}
 
 	public static List<String> save(User user, Map<String, OrderReceipt> map,
-			String[] ids,String buyid) { 
+			String[] ids, String buyid) {
 		List<String> listsql = new ArrayList<String>();
 		List<String> listor = Arrays.asList(ids);
-		//logger.info(StringUtill.GetJson(listor));  
+		// logger.info(StringUtill.GetJson(listor));
 		Map<Integer, List<OrderReceipt>> maps = new HashMap<Integer, List<OrderReceipt>>();
 		if (null != map) {
 			Set<Map.Entry<String, OrderReceipt>> set = map.entrySet();
@@ -59,20 +59,20 @@ public class OrderGoodsAllManager {
 				Map.Entry<String, OrderReceipt> mapent = it.next();
 				OrderReceipt gr = mapent.getValue();
 				if (listor.contains(gr.getId() + "")) {
-					//logger.info(gr.getId()); 
+					// logger.info(gr.getId());
 					List<OrderReceipt> list = maps.get(gr.getBid());
 					if (null == list) {
 						list = new ArrayList<OrderReceipt>();
 						maps.put(gr.getBid(), list);
 					}
-					list.add(gr);  
+					list.add(gr);
 				}
 
 			}
 		}
- 
+
 		int maxid = OrderMessageManager.getMaxid();
- 
+
 		if (null != maps) {
 			Set<Map.Entry<Integer, List<OrderReceipt>>> set = maps.entrySet();
 			Iterator<Map.Entry<Integer, List<OrderReceipt>>> it = set
@@ -84,22 +84,22 @@ public class OrderGoodsAllManager {
 
 				String sql = " insert into mdordermessage(id,oid,submitid,submittime,opstatues,branchid,remark) values ("
 						+ maxid
-						+ ",''," 
+						+ ",'',"
 						+ user.getId()
 						+ ",'"
 						+ TimeUtill.getdateString()
 						+ "',"
-						+ 1 
-						+ ",'" 
+						+ 1
+						+ ",'"
 						+ bid
-						+ "','"+buyid+"')";
+						+ "','" + buyid + "')";
 				listsql.add(sql);
-			
- 
+
 				for (int i = 0; i < grs.size(); i++) {
 					OrderReceipt or = grs.get(i);
-					String str = "update orderreceipt set disable = 1 where id = "+or.getId();
-					listsql.add(str); 
+					String str = "update orderreceipt set disable = 1 where id = "
+							+ or.getId();
+					listsql.add(str);
 					String sqlN = "insert into mdordergoods (id,oid,submitid,submittime,cid,tid,statues,ordernum,realnum,opstatues,uuid,mid,billingstatues,serialnumber) "
 							+ "values (null,'','"
 							+ user.getId()
@@ -107,8 +107,8 @@ public class OrderGoodsAllManager {
 							+ TimeUtill.getdateString()
 							+ "','"
 							+ or.getCid()
-							+ "','" 
-							+ or.getTid() 
+							+ "','"
+							+ or.getTid()
 							+ "','0','"
 							+ or.getRecevenum()
 							+ "','"
@@ -116,9 +116,9 @@ public class OrderGoodsAllManager {
 							+ "','" + 1 + "',''," + maxid + "," + 1 + ",'') ;";
 
 					listsql.add(sqlN);
- 
-				} 
-				maxid++;  
+
+				}
+				maxid++;
 			}
 		}
 
@@ -527,21 +527,21 @@ public class OrderGoodsAllManager {
 		/*
 		 * List<Integer> listbids = BranchService.getListids(Integer
 		 * .valueOf(branchtype));
-		 */ 
+		 */
 		List<Integer> listbids = CategoryService.getByExportModel(Integer
 				.valueOf(exportmodel));
-		//logger.info(listbids);
+		// logger.info(listbids);
 		// logger.info(StringUtill.getStr(ids));
 		Connection conn = DB.getConn();
- 
+
 		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.mid = mdordermessage.id and mdordergoods.cid in ("
-				+ listbids.toString().substring(1, 
-						listbids.toString().length() - 1) 
+				+ listbids.toString().substring(1,
+						listbids.toString().length() - 1)
 				+ ") and mdordergoods.opstatues = 0  and mdordermessage.id in "
 				+ StringUtill.getStr(ids)
 				+ " and mdordergoods.statues in"
 				+ StringUtill.getStr(statues);
-		logger.info(sql); 
+		logger.info(sql);
 		Statement stmt = DB.getStatement(conn);
 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -617,7 +617,7 @@ public class OrderGoodsAllManager {
 				+ " and mdordergoods.mid = mdordermessage.id  and mdordergoods.billingstatues = "
 				+ billingstatues
 				+ "  and mdordermessage.submitid in ("
-				+ listids.toString().substring(1, 
+				+ listids.toString().substring(1,
 						listids.toString().length() - 1)
 				+ " ) and mdordergoods.realnum > 0  order by mdordermessage.branchid";
 		logger.info(sql);
@@ -761,8 +761,8 @@ public class OrderGoodsAllManager {
 			Map<Integer, Map<Integer, OrderGoodsAll>> map) {
 		Set<String> setinit = new HashSet<String>();
 		List<String> listsql = new ArrayList<String>();
-
-		if (null != map) {
+		Set<String> setup = new HashSet<String>();
+		if (null != map) { 
 			Set<Map.Entry<Integer, Map<Integer, OrderGoodsAll>>> set = map
 					.entrySet();
 			Iterator<Map.Entry<Integer, Map<Integer, OrderGoodsAll>>> it = set
@@ -788,8 +788,8 @@ public class OrderGoodsAllManager {
 							if (!flag) {
 								// logger.info(uuid);
 								setinit.add(uuid);
-							} 
-							int operatortype = 14; 
+							}
+							int operatortype = 14;
 							int realsendnum = og.getRealnum();
 							boolean flags = true;
 							if (og.getStatues() == 6 || og.getStatues() == 7
@@ -797,23 +797,28 @@ public class OrderGoodsAllManager {
 									|| og.getStatues() == 9
 									|| og.getStatues() == 5) {
 								// realsendnum = -realsendnum;
-								// operatortype = 16; 
+								// operatortype = 16;
 								flag = false;
 							} else if (og.getStatues() == 4) {
-								operatortype = 17; 
+								operatortype = 17;
 								flag = true;
-							}else {
+							} else {
 								flag = true;
 							}
 
 							String sqlIB = "";
 							String sqlIBM = "";
-							if (flag) {
+							if (flag) {  
+								//logger.info( og.getTid()); 
+								//logger.info(setup.contains(oa.getOm().getBranchid()+"_"+og.getTid()));
+							
 								if (null == InventoryBranchManager
 										.getInventoryID(user, oa.getOm()
 												.getBranchid(), og.getTid()
-												+ "")
-										) {
+												+ "")  
+										&& !setup.contains(oa.getOm().getBranchid()+"_"+og.getTid())) {
+									
+									setup.add(oa.getOm().getBranchid()+"_"+og.getTid());
 									sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)"
 											+ "  values ( null,"
 											+ og.getCid()
@@ -851,17 +856,17 @@ public class OrderGoodsAllManager {
 											+ 1
 											+ ","
 											+ oa.getOm().getBranchid()
-											+ ",-1,0,0,1)"; 
+											+ ",-1,0,0,1)";
 								} else {
- 
+
 									sqlIB = "update mdinventorybranch set  papercount =  ((mdinventorybranch.papercount)*1 + "
 											+ realsendnum
 											+ ")*1  where  branchid = "
 											+ oa.getOm().getBranchid()
 											+ " and  type = '"
 											+ og.getTid()
-											+ "'";    
-      
+											+ "'";
+
 									sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues)"
 											+ "  values ( null, '"
 											+ oa.getOm().getBranchid()
@@ -910,7 +915,7 @@ public class OrderGoodsAllManager {
 								listsql.add(sqlIBM);
 							}
 
-						} 
+						}
 					}
 				}
 			}
@@ -994,7 +999,7 @@ public class OrderGoodsAllManager {
 
 		List<Integer> listids = UserService.GetListson(user);
 		// logger.info(listids);
-		Connection conn = DB.getConn(); 
+		Connection conn = DB.getConn();
 
 		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.exportuuid = '"
 				+ oid
@@ -1027,13 +1032,13 @@ public class OrderGoodsAllManager {
 	public static List<OrderGoodsAll> getlist(User user, int opstatues,
 			String oid) {
 		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
- 
+
 		List<Integer> listids = UserService.GetListson(user);
-		// logger.info(listids); 
+		// logger.info(listids);
 		Connection conn = DB.getConn();
 
 		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.exportuuid = '"
-				+ oid 
+				+ oid
 				+ "' and mdordergoods.mid = mdordermessage.id    and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
 						listids.toString().length() - 1) + " ) ";
@@ -1059,27 +1064,27 @@ public class OrderGoodsAllManager {
 	}
 
 	public static List<OrderGoodsAll> getlistName(User user, int opstatues,
-			String exportName,String name) { 
+			String exportName, String name) {
 		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
- 
+
 		List<Integer> listids = UserService.GetListson(user);
-		// logger.info(listids); 
+		// logger.info(listids);
 		Connection conn = DB.getConn();
-         String sql = "";
-         if(!StringUtill.isNull(exportName)){
-        	 sql = " select * from mdordergoods,mdordermessage  where mdordergoods.exportuuid = '"
-     				+ exportName 
-     				+ "' and mdordergoods.mid = mdordermessage.id    and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
-     				+ listids.toString().substring(1,
-     						listids.toString().length() - 1) + " ) ";
-         }else { 
-        	 sql = " select * from mdordergoods,mdordermessage  where mdordergoods.uuid = '"
-     				+ name
-     				+ "' and mdordergoods.mid = mdordermessage.id    and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
-     				+ listids.toString().substring(1,
-     						listids.toString().length() - 1) + " ) ";
-         }
-		
+		String sql = "";
+		if (!StringUtill.isNull(exportName)) {
+			sql = " select * from mdordergoods,mdordermessage  where mdordergoods.exportuuid = '"
+					+ exportName
+					+ "' and mdordergoods.mid = mdordermessage.id    and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
+					+ listids.toString().substring(1,
+							listids.toString().length() - 1) + " ) ";
+		} else {
+			sql = " select * from mdordergoods,mdordermessage  where mdordergoods.uuid = '"
+					+ name
+					+ "' and mdordergoods.mid = mdordermessage.id    and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
+					+ listids.toString().substring(1,
+							listids.toString().length() - 1) + " ) ";
+		}
+
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn);
 
@@ -1100,7 +1105,7 @@ public class OrderGoodsAllManager {
 		}
 		return list;
 	}
-	
+
 	public static OrderGoodsAll getOrderGoodsAllFromRs(ResultSet rs) {
 		OrderGoodsAll oa = new OrderGoodsAll();
 		OrderMessage om = OrderMessageManager.getOrderMessageFromRs(rs);

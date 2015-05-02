@@ -125,7 +125,8 @@ public class GoodsReceipt {
 		this.refusenum = refusenum;
 	}
  
-	public int getBidSN() { 
+	public int getBidSN() {  
+		System.out.println("GoodsReceipt"+getBranchidSN());
 		Branch b = BranchService.getNumMap(SaleModel.SuNing).get(getBranchidSN()); 
 		if(null != b){ 
 			bid = b.getId();  

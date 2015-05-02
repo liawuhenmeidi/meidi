@@ -158,8 +158,8 @@ function changepeidan(str1,oid,deliveryStatues,types,saleId){
 	         success: function (data) { 
 	            if(data == 8){
 	            	alert("导购修改中。稍后重试");  
-	            }else{
-	            	if(str1 != 0){ 
+	            }else{ 
+	            	if(str1 == 1){ 
 	            	   window.location.href="print.jsp?id="+oid+"&deliveryStatues="+deliveryStatues+"&dingma="+str1;  
 	            	   //window.open('print.jsp?id='+oid+'&deliveryStatues='+deliveryStatues+'&dingma='+str1, 'abc', 'resizable:yes;dialogWidth:800px;dialogHeight:600px;dialogTop:0px;dialogLeft:center;scroll:no');
 	            	}else {

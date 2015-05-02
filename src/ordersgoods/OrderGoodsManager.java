@@ -144,14 +144,14 @@ public class OrderGoodsManager {
 	  String sql = " update mdordergoods set realsendnum = "+realsendnum + " ,returnrealsendnum = "+returnrealsendnum+" ,billingstatues = 2  where id = " + ogid;
 	  return sql ;  
   }   
-    
+     
   public static String updateIOS(String name,int type ,String oid,String time){ 
 	  if(StringUtill.isNull(time)){
 		  time = null;
-	  }else { 
+	  }else {  
 		  time = "'"+time+"'"; 
-	  }
-	  String sql = " update mdordergoods set oid = "+oid + " , effectiveendtime = "+time+"  where uuid = '" + name+"' and statues = "+type;
+	  }  
+	  String sql = " update mdordergoods set oid = "+oid + " , effectiveendtime = "+time+"  where exportuuid = '" + name+"' and statues = "+type;
 	  return sql ;  
   }   
    

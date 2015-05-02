@@ -13,7 +13,8 @@ public class InventoryBranchMessage {
 	private String time;
 
 	private String type;  
- 
+	private String typeid;
+	
 	private int allotRealcount; 
    
 	private int allotPapercount; 
@@ -25,7 +26,7 @@ public class InventoryBranchMessage {
 
 	private int papercount; // 虚拟库存
 
-	private String typeid;
+	
 
 	private int sendUser;
  
@@ -38,8 +39,8 @@ public class InventoryBranchMessage {
 	private int oldrealcount;
 	private int oldpapercount;
 
-	private int typeStatues; // 1常规 2 特价 3 样机 4 换货 5 赠品
-	
+	private int typeStatues; // 1常规 2 特价 3 样机 4 换货 5 赠品 
+	 
 	private int isOverStatues;  //    0  已完成    1  未完成
 	private String isOverStatuesName;  //    0  已完成    1  未完成
 
@@ -251,8 +252,8 @@ public class InventoryBranchMessage {
 
 	public String getIsOverStatuesName() {
 		if(1 == isOverStatues){
-			isOverStatuesName = "未修改确认";
-		}else {
+			isOverStatuesName = "未修改";
+		}else { 
 			isOverStatuesName = "已修改确认";
 		}
 		return isOverStatuesName;
