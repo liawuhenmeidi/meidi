@@ -3,10 +3,24 @@
 	<%@ include file="../../common.jsp"%>
 <%
 	request.setCharacterEncoding("utf-8");    
-String buyid = request.getParameter("buyid");    
-Map<String,OrderReceipt> maps =  OrderReceitManager.getMap(buyid);  
+String buyid = request.getParameter("buyid");  
+String branch = request.getParameter("branch"); 
+
+String method = request.getParameter("method");
+if(!StringUtill.isNull(method)){  
+	String ids[] = request.getParameterValues("id");
+	OrderReceitManager.delete(ids); 
+
+	
+} 
+
+
+Map<String,OrderReceipt> maps =  OrderReceitManager.getMap(buyid,branch);  
 String type= request.getParameter("type");   
-   
+    
+
+
+
  //System.out.println(StringUtill.GetJson(set));
 %>
 <!DOCTYPE html>
@@ -26,8 +40,12 @@ String type= request.getParameter("type");
 <script type="text/javascript">
 
   
-	function check() {
-		var flag = false;
+	function check(num) {
+		  
+		if(num == 1){
+			$("#post").attr("action","receiveorderdetail.jsp");
+		}
+		
 		
 		$("input[type='checkbox'][id='check_box']").each(function(){          
 	   		if($(this).attr("checked")){
@@ -40,8 +58,11 @@ String type= request.getParameter("type");
 		   				}	
 	   		} 
 	   	}); 
-		  
-		return flag;
+		
+		if(flag){
+			$("#post").submit();
+		}
+	
 	}
  
 	
@@ -55,20 +76,23 @@ String type= request.getParameter("type");
 		<div class="weizhi_head">现在位置：未退货订单
  <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>  
 		<!--  头 单种类  --> </div>  
-		<form action="../../Print" method="post"
-			onsubmit="return check()">
+		<form action="../../Print" id="post" method="post"
+			>
 			
 		
 			<table width="100%" border="0" cellspacing="1" id="Ntable">
-				 
+				  
 				<tr class="dsc">         
-					<td class="dsc" colspan=16>
-					<input type="submit" class="button"  
-						name="dosubmit" value="退厂拖机单" ></input>
+					<td class="dsc" colspan=17>
+					<input type="button" class="button"  
+						name="dosubmit" value="退厂拖机单" onclick="check(0)"></input>
+						<input type="button" class="button"  
+						name="dosubmit" value="删除" onclick="check(1)"></input>
 						<input type="hidden" value="OrderGoodsSN" name="method">
 						<input type="hidden" name="token" value="<%=token%>" /> 
 						<input type="hidden" name="buyid" value="<%=buyid%>" />  
-						</td>
+						<input type="hidden" name="branch" value="<%=branch%>" />  
+						</td> 
  
 				</tr> 
 				
@@ -92,6 +116,7 @@ String type= request.getParameter("type");
 					<td align="center">订单类型</td>
 					<td align="center">退货订单有效期</td>
 					<td align="center">批次</td>
+					<td align="center">状态</td>
 					<td align="center">打印次数</td>
 				</tr>
 				<% 
@@ -101,6 +126,7 @@ String type= request.getParameter("type");
 					while (it.hasNext()) {
 						Map.Entry<String, OrderReceipt> mapent = it.next();
 						OrderReceipt gr = mapent.getValue();
+						if(!"取消".equals(gr.getStatuesName())){
 							String clb = "";
 							String clt = "";
 							if (0 == gr.getBid()) {
@@ -131,12 +157,13 @@ String type= request.getParameter("type");
 					<td align="center"><%=gr.getOrdertype()%></td>
 					<td align="center"><%=gr.getActiveordertiem()%></td>
  
-
+  
 					<td align="center"><%=gr.getPici()%></td>
-					
+					<td align="center"><%=gr.getStatuesName()%></td>
 					<td align="center"><%=gr.getPrintNum()%></td>
 				</tr>
-				<%
+				<% 
+					}
 					}
 					}
 				%>

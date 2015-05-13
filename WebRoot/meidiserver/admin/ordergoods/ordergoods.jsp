@@ -4,31 +4,15 @@
 
 <%
 	List<BranchType> listgt = BranchTypeManager.getLocate(); 
-String id = request.getParameter("id"); 
-String statues = request.getParameter("statues");
-String type = request.getParameter("type");
-String message = "导购订货单";   
 //System.out.println(statues+"&&"+type);
-OrderGoodsAll oa = null;   
-List<OrderGoods> list = null; 
-String branchname = "";
-String remark = "";       
-if(!StringUtill.isNull(id)){ 
-	if((OrderMessage.billing+"").equals(type)){   
-		oa = OrderGoodsAllManager.getOrderGoodsAllBySendid(user,id,statues); 
-	}else {  
-		oa = OrderGoodsAllManager.getOrderGoodsAllByid(user,id,Integer.valueOf(statues),type);
-	} 
-	
-	branchname = oa.getOm().getBranchname();
-	remark = oa.getOm().getRemark(); 
-	list = oa.getList(); 
-} 
-  
+ String time = TimeUtill.getdateString();   
 Map<String, List<String>> map = BranchService.getPtypeMap();
 String branchtype = StringUtill.GetJson(map);
-String json = StringUtill.GetJson(list); 
 
+
+ProductSaleModel.Model[] model = ProductSaleModel.Model.values();
+ 
+String sm = StringUtill.GetJson(model); 
 // System.out.println(json);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -47,12 +31,10 @@ String json = StringUtill.GetJson(list);
 <script type="text/javascript" src="../../js/jquery-ui.js"></script>
 
 <script type="text/javascript">
- 
- 
-//alert(listallp);  
+  
+
+//alert(listallp);   
   var jsonallp = null;
-  var jsoninventory = null;
-  var jsons = <%=json%>;  
  //alert(listall); 
    var map = <%=branchtype%>
  var row = 10;    
@@ -60,7 +42,11 @@ String json = StringUtill.GetJson(list);
  var count = 1 ;    
  var inventory = new Array();  
  var ctypes = new Array();   
-   
+ var jsoninventory = null;
+ var jsoninventorysn = null;
+ var jsoninventorysnmodel = null;
+ var jsoninventorysnsale = null;
+ 
  $(function () {     
 	 $("#branchtype").change(function(){
 		 //var str = $("#branchid").find("option:selected").text();
@@ -68,46 +54,50 @@ String json = StringUtill.GetJson(list);
 		// alert(map[branchtype]);
 		 $("#branchid").autocomplete({ 
 			 source: map[branchtype]
-		    }); 
-	 });  
-
-	 var num = jsons.length;
-	  
-	 if(num > 10){
-		 row = (Math.floor(num/5)+1)*5;
-	 }  
+		    });	  
+	 });   
+	    
+	 $("#branchid").blur(function(){
+		  
+		 
+		 initBranch();  
+		  
+	 });   
+	 
 	 addrowinti();
-	   
-	 if(num > 0){
-		 init();
-	 }
- }); 
-    
+
+ });   
+ 
+   
  function initBranch(){
-	 getproduct();
+	// getproduct(); 
 	 getInventory();
  }
- 
- function getMessage(tid,row){
+  
+ function getInventory(){
+	 var branchtype = $("#branchtype").val();
 	 var branch = $("#branchid").val();
+	 if(branch == "" || branch == null){
+		 return ;
+	 }   
 	 $.ajax({   
-	        type: "post",    
-	         url: "../server.jsp",
-	         data:"method=InventorySN&branch="+branch+"&tname="+tid,
-	         dataType: "",   
-	         success: function (data) { 
-	        	 data = jQuery.parseJSON(data);
-	        	// alert(data.length); 
-	        	 if(data.length >0 ){
-	        		 for(var i=0;i<data.length;i++){
-	        			 var str = data[i];
-	        			 //alert(str); 
-	        			 $("#table"+row).append(str);
-	        		 }
-	        	 } 
+	        type: "post",   
+	         url: "../server.jsp", 
+	         data:"method=getInventoryMapByBranch&branch="+branch+"&branchtype="+branchtype,
+	         dataType: "",     
+	         success: function (data) {  
+	        	 var josns = jQuery.parseJSON(data); 
+	        	 jsonallp = jQuery.parseJSON(josns["strp"]);
+	        	 addrowproductinit();       
+	        	 jsoninventory = jQuery.parseJSON(josns["strin"]); 
+	        	// alert(jsoninventory);
+	        	  
+	        	// alert(jsonallp);  
+	        	 jsoninventorysn =jQuery.parseJSON(josns["mapsn"]); 
+	        	 jsoninventorysnmodel = jQuery.parseJSON(josns["strmodel"]);
+	        	 jsoninventorysnsale = jQuery.parseJSON(josns["strsale"]);
 	        	
-	        	
-	           }, 
+	           },   
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 	        // alert(errorThrown); 
 	            } 
@@ -115,63 +105,26 @@ String json = StringUtill.GetJson(list);
  }
   
  function getproduct(){
-	 var branch = $("#branchid").val();
+	 var branch = $("#branchtype").val();
 	 if(branch == "" || branch == null){
-		 return ;
-	 }
-	 $.ajax({   
-	        type: "post",  
-	         url: "../server.jsp",
-	         data:"method=getproduct&branch="+branch,
-	         dataType: "",  
-	         success: function (data) {
-	        	 jsonallp = jQuery.parseJSON(data);
-	        	 addrowproductinit();
-	           }, 
-	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	        // alert(errorThrown); 
-	            } 
-	           });
- }
- 
- 
- function getInventory(){
-	 var branch = $("#branchid").val();
-	 if(branch == "" || branch == null){
-		 return ;
-	 } 
-	 $.ajax({   
-	        type: "post",  
-	         url: "../server.jsp",
-	         data:"method=getInventoryMapByBranch&branch="+branch,
-	         dataType: "",    
-	         success: function (data) {
-	        	 jsoninventory = jQuery.parseJSON(data);
-	        	 //addrowproductinit();
-	           }, 
-	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	        // alert(errorThrown); 
-	            } 
-	           });
- }
- 
- function init(){
-	 for(var i=0;i<jsons.length;i++){
-		 var json = jsons[i];  
-		 //alert(json.tname);
-		$("#product"+i).val(json.tname); 
-		$("#statues"+i).val(json.statues); 
-		if(6 == json.statues || 7 == json.statues){
-			getMessage(json.tid,i);
-		} 
-		$("#orderproductNum"+i).val(json.realnum);
-		$("#uuid").val(json.uuid);  
-		rows.push(i); 
-		var only = json.tname+"_"+json.statues; 
-		ctypes.push(only);   
+		 return ; 
 	 }  
-	 addcount();
- } 
+	  
+	 $.ajax({   
+	        type: "post",   
+	         url: "../server.jsp",
+	         data:"method=getproduct&branchtype="+branch,
+	         dataType: "",    
+	         success: function (data) { 
+	        	 jsonallp = jQuery.parseJSON(data);
+	        	 addrowproductinit(); 
+	           }, 
+	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+	        // alert(errorThrown);  
+	            }  
+	           });
+ }
+ 
    
  function addrowinti(){ 
 	//  alert(rows); 
@@ -182,10 +135,8 @@ String json = StringUtill.GetJson(list);
 		    
 	}
  }  
-      
- function  addrowproductinit(){
-		//  alert(rows);   
-		//alert(jsonallp.length); 
+       
+ function  addrowproductinit(){ 
 		 for(var i=0;i<row;i++){  
 			 $("#product"+i).autocomplete({  
 				 source: jsonallp
@@ -219,22 +170,25 @@ String json = StringUtill.GetJson(list);
 	     ' <td align=center   >'+(row*1+1*1)*1+'</td> '+
 	      
 	     ' <td  align=center ><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
-	   
-	     ' <td align=center ><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'"  placeholder="订单数"  style="border-style:none;width:50px;"   onBlur="addcount()" /></td> ' +
-	     '<td align=center><span style="color:red;font-size:15px;" id="papercount'+row+'" name="papercount'+row+'"></span></td>'+
 	     '<td  align=center ><select name="statues'+row+'" id="statues'+row+'">'+
 	     '<option value=""></option>'+   
-	     '<option value="1">常规特价订货</option>'+
+	     '<option value="1">订货</option>'+
 	      '<option value="3">样机订货</option>'+
 	      '<option value="4">换货订货</option>'+
 	      '<option value="5">赠品订货</option>'+ 
 	      '<option value="6">店外退货 </option>'+ 
-	      '<option value="7">已入库常规特价退货</option>'+
+	      '<option value="7">已入库退货</option>'+
 	      '<option value="9">已入库样机退货</option>'+
 	     '<select></td>'+
+	     
+	     '<td align=center><span style="color:red;font-size:15px;" id="papercount'+row+'" name="papercount'+row+'"></span></td>'+
+	     '<td align=center><span style="color:red;font-size:15px;" id="sncount'+row+'"  ></span></td>'+
+	     '<td align=center><span style="color:red;font-size:15px;" id="snstatues'+row+'"  ></span></td>'+
+	     ' <td align=center ><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'"  placeholder="订单数"  style="border-style:none;width:50px;"   onBlur="addcount()" /></td> ' +
+	    
 	     ' <td  align=center><input type="button" value="删除" onclick="delet('+row+')"/></td> ' +
-	     '</tr>'+       
-	     '<tr '+cl+'><td colspan=6><table width="100%" id="table'+row+'"></table></td></tr>'
+	     '</tr>'   
+	     
 	     ;  
 	          
 	$("#Wtable").append(str); 
@@ -250,10 +204,10 @@ String json = StringUtill.GetJson(list);
 	$("#product"+row).blur(function (){
 		initctypes(row); 
 		addresultp(row);
-	});
+	}); 
 	  
 	$("#product"+row).keydown(function (){
-		initctypes();
+		initctypes(row);
 	});
 	    
 	$("#statues"+row).blur(function (){
@@ -329,8 +283,8 @@ String json = StringUtill.GetJson(list);
 					//	 $("#papercount"+row).html(jsoninventory[ctype].papercount);
 					// }else {
 					//	 $("#papercount"+row).html(0);
-					// }
-					
+					// } 
+					 
 					 rows.push(row);
 					 initctypes();  
 				 }   
@@ -354,12 +308,15 @@ String json = StringUtill.GetJson(list);
 		 } 
 	   
 	   for(var i=0;i<rows.length;i++){
-		   if(i != num){  
-			   var ctype = $("#product"+rows[i]).val();
-			   var statues = $("#statues"+rows[i]).val();
+		   var realnum = rows[i]; 
+		   if(realnum != num){   
+			    
+			   var ctype = $("#product"+realnum).val();
+			   var statues = $("#statues"+realnum).val();
 			   if($.inArray(ctype,jsonallp) != -1  && statues != ""){
-				   var only = ctype+"_"+statues;
-				   ctypes.push(only);     
+				   var only = ctype+"_"+statues; 
+				   getMessage(ctype,realnum,statues); 
+				   ctypes.push(only);        
 			   }
 		   }
 	   } 
@@ -369,11 +326,102 @@ String json = StringUtill.GetJson(list);
 	 $("#product"+row).val("");
 	 $("#orderproductNum"+row).val("");
 	 $("#statues"+row).val(""); 
+	 $("#snstatues"+row).html("");
+	 $("#sncount"+row).html("");
+	 $("#papercount"+row).html("");
 	 rows.splice($.inArray(row,rows),1); 
 	 initctypes();
-	 addcount(); 
+	 addcount();  
  }
   
+  
+ function getMessage(tname,row,statues){ 
+	// alert(tname);
+	// alert(jsoninventorysnsale);
+	 var jsonsale = jsoninventorysnsale[tname];
+	 
+	        if(9 == statues || 3 == statues){
+	       
+	        	 var jsons = jsoninventorysnmodel[tname];
+	        	 if(undefined == jsons){
+	        		
+	        		 $("#sncount"+row).html("无");
+	        		 if(undefined != jsonsale){
+	        		
+			        		$("#snstatues"+row).html(jsonsale.saleNum);
+			        	}else { 
+			        		 
+			        		$("#snstatues"+row).html("无");
+			        	}
+			        }else {   
+			        	var num = ""; 
+			        	var st = "";
+			        	for(var i=0;i<jsons.length;i++){
+			        		var json = jsons[i]; 
+			        		if(i == 0 ){  
+			        			num = json.num+":"+json.serialNumber;
+				        		//st = json.serialNumber;
+			        		}else { 
+			        			num += "_"+json.num+":"+json.serialNumber;;
+				        		//st += "_"+json.serialNumber;
+			        		}
+			        	}   
+			        	
+			        	if(undefined != jsonsale){
+			        		
+			        		$("#snstatues"+row).html(jsonsale.saleNum);
+			        	}else { 
+			        		 
+			        		$("#snstatues"+row).html("无");
+			        	}
+			        	
+			        	$("#sncount"+row).html(num);
+		        		//$("#snstatues"+row).html(st);
+			        }         	
+	        	}else {  
+	        		 var jsons = jsoninventorysn[tname]; 
+	        		
+	        		 
+	        		 if(undefined == jsons){ 
+	        			 $("#sncount"+row).html("无");
+	        			 if(undefined != jsonsale){
+	 		        		$("#snstatues"+row).html(jsonsale.saleNum);
+	 		        	}else {
+	 		        		$("#snstatues"+row).html("无");
+	 		        	}
+	        			 
+	        			 
+		        }else {   
+		        	var num = ""; 
+		        	var st = "";  
+		        	for(var i=0;i<jsons.length;i++){
+		        		var json = jsons[i]; 
+		        		if(i == 0 ){
+		        			num = json.ATP+":"+json.goodType;
+			        		//st = json.goodType;
+		        		}else {  
+		        			num += "_"+json.ATP+":"+json.goodType;
+			        		//st += "_"+json.goodType;
+		        		}
+		        		
+		        		
+		        	}     
+		        	
+		        	//alert(jsonsale );
+		        	if(undefined != jsonsale){
+		        		$("#snstatues"+row).html(jsonsale.saleNum);
+		        	}else {
+		        		$("#snstatues"+row).html("无");
+		        	}
+		        	 
+		        	
+		        	$("#sncount"+row).html(num);
+	        		//$("#snstatues"+row).html(st);
+		        }  
+	        	 }  
+ } 
+ 
+ 
  function check(){
 	 ctypes = new Array();  
 	if(rows.length <1){ 
@@ -429,20 +477,16 @@ String json = StringUtill.GetJson(list);
 </script>
 </head>
 
-<body>
-
+<body> 
 	<div class="main">
-		<div class="weizhi_head">
-			现在位置：<%=message%></div>
+		<div class="weizhi_head">现在位置：增加调货单</div>
 		<div>
 			<form action="../../user/OrderGoodsServlet" method="post"
 				onsubmit="return check()">
-				<input type="hidden" name="method" value="add" /> <input
-					type="hidden" name="token" value="<%=token%>" /> <input
-					type="hidden" name="id" id="id" value="<%=id%>" /> <input
-					type="hidden" name="rows" id="rows" value="" /> <input
-					type="hidden" name="opstatues" id="opstatues" value="<%=statues%>" />
-				<input type="hidden" name="type" id="type" value="<%=type%>" />
+				<input type="hidden" name="method" value="add" />
+				<!--  <input 
+					type="hidden" name="token" value="<%=token%>" /> -->
+				<input type="hidden" name="rows" id="rows" value="" />
 				<table style="width:100% ">
 					<tr class="asc">
 						<td>销售系统： <select id="branchtype" name="branchtype">
@@ -463,18 +507,8 @@ String json = StringUtill.GetJson(list);
 						</td>
 
 						<td align=center>门店</td>
-						<td align=center>
-							<%
-								if (StringUtill.isNull(branchname)) {
-							%> <input type="text" name="branchid" id="branchid"
-							placeholder="请先输入门店" onBlur="initBranch()"
-							value="<%=branchname%>" class="cba" /> <%
- 	} else {
- %> <input type="hidden" name="branchid" id="branchid"
-							value="<%=branchname%>" /> <%=branchname%> <%
- 	}
- %>
-						</td>
+						<td align=center><input type="text" name="branchid"
+							id="branchid" placeholder="请先输入门店" value="" class="cba" /></td>
 						<td align=center>单号：</td>
 						<td align=center>日期：<%=TimeUtill.getdateString()%></td>
 					</tr>
@@ -484,10 +518,12 @@ String json = StringUtill.GetJson(list);
 								<tr class="dsc">
 									<td align=center width="5%">编号</td>
 									<td align=center width="20%">产品型号</td>
-
-									<td align=center width="20%">订货数</td>
-									<td align=center width="10%">未入库数量</td>
 									<td align=center width="25%">状态</td>
+									
+									<td align=center width="10%">店外库存数量</td>
+									<td align=center width="10%">卖场库存</td>
+									<td align=center width="10%">(30天销售数量)</td>
+<td align=center width="20%">订货数</td>
 									<td align=center width="20%">删除</td>
 
 								</tr>
@@ -501,20 +537,14 @@ String json = StringUtill.GetJson(list);
 							style="color:blue;font-size:20px;">合计: <span
 								style="color:red;font-size:20px;" id="addcount"></span> (台) </font>
 						</td>
-
-						<td align=center colspan=2>备注： <textarea id="remark"
-								name="remark"><%=remark%></textarea></td>
+ 
+						<td align=center colspan=3>备注： <textarea id="remark"
+								name="remark"></textarea></td>
 					</tr>
 
 					<tr class="asc">
-						<td align=center colspan=5>
-							<%
-								if ("0".equals(statues)) {
-							%> <input type="submit" id="submit" value="审核通过" /> <%
- 	} else {
- %> <input type="submit" id="submit" value="提交" /> <%
- 	}
- %>
+						<td align=center colspan=5><input type="submit" id="submit"
+							value="提交" />
 						</td>
 
 					</tr>
@@ -527,7 +557,6 @@ String json = StringUtill.GetJson(list);
 		</div>
 
 	</div>
-
 
 </body>
 </html>

@@ -2,12 +2,13 @@
 <%@ include file="../../common.jsp"%>
      
 <%         
-//long start= System.currentTimeMillis();     
+//long start= System.currentTimeMillis();  
+String time = TimeUtill.getdateString();
 List<String> listallp = ProductService.getlistsale(user); 
 //System.out.println("qa"+(System.currentTimeMillis() - start));  
 String listallpp = StringUtill.GetJson(listallp);  
 OrderGoodsAll oa = null;
-List<OrderGoods> list = null;
+List<OrderGoods> list = null; 
 String id = request.getParameter("id"); 
 String remark = "";
 if(!StringUtill.isNull(id)){
@@ -16,15 +17,29 @@ if(!StringUtill.isNull(id)){
 	remark = oa.getOm().getRemark();
 }  
  
+
+String json = StringUtill.GetJson(list);
+
 Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,user.getBranch());
-String jsoninventory = StringUtill.GetJson(map);
-String json = StringUtill.GetJson(list); 
-// System.out.println(json); 
+String jsoninventory = StringUtill.GetJson(map); 
+    //System.out.println(jsoninventory);
+Map<String,List<httpClient.download.Inventory>> mapsn = InventoryChange.getMapBranchType(user,time,Integer.valueOf(user.getBranch()));
+ 
+Map<String,List<httpClient.download.Inventory>> mapsnModel = InventoryModelDownLoad.getMapBranchType(user, time,Integer.valueOf(user.getBranch()));
+//  
+Map<String,httpClient.download.Inventory> mapsale = SaleDownLoad.getMap(TimeUtill.dataAdd(time, -29),time,Integer.valueOf(user.getBranch())); 
+     
+//System.out.println(mapsn); 
+String jsoninventorysn = StringUtill.GetJson(mapsn);   
+String jsoninventorysnmodel = StringUtill.GetJson(mapsnModel); 
+String jsoninventorysnsale = StringUtill.GetJson(mapsale); 
+ 
+ //System.out.println(jsoninventorysnsale); 
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0,user-scalable=yes"/> 
+<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=yes"/> 
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
@@ -34,25 +49,37 @@ String json = StringUtill.GetJson(list);
 <link rel="stylesheet" type="text/css" href="../../css/songhuo.css"/> 
 <link rel="stylesheet" href="../../css/jquery-ui.css"/>  
 <script type="text/javascript" src="../../js/jquery-ui.js"></script>
- 
+ <style type="text/css"> 
+body {font-size: 22px;} 
+input{width: 300px; height: 30px; font-size:100%}  
+input .cl {width: 100px; height: 30px; font-size:100%} 
+select{width: 200px; height: 30px;font-size:100%;}  
+</style>
+
 <script type="text/javascript">
   
  
 //alert(listallp);  
  var jsonallp = <%=listallpp%>; 
   var jsons = <%=json%>;
- //alert(listall); 
-   var jsoninventory = <%=jsoninventory%>;
- var row = 10;   
+ //alert(listall);  
+var jsoninventory = <%=jsoninventory%>;
+var jsoninventorysn = <%=jsoninventorysn%>;
+var jsoninventorysnmodel = <%=jsoninventorysnmodel%>;
+var jsoninventorysnsale = <%=jsoninventorysnsale%>;
+
+ var row = 1;   
  var rows = new Array();
  var count = 1 ; 
  var ctypes = new Array();  
- 
- $(function () {  
+  
+ $(function () {   
 	 var num = jsons.length;
-	 if(num > 10){
-		 row = (Math.floor(num/5)+1)*5;
-	 } 
+	// row = (Math.floor(num/5)+1)*5;
+if(num >row){
+	 row  = num ;
+}
+	
 	 addrowinti();
 	 
 	 if(num > 0){
@@ -71,6 +98,25 @@ String json = StringUtill.GetJson(list);
 		$("#product"+i).val(json.tname); 
 		$("#statues"+i).val(json.statues); 
 		$("#orderproductNum"+i).val(json.realnum);
+		
+		getMessage(json.tname,i,json.statues); 
+		
+		if(null != jsoninventory  ){
+			// alert(jsoninventory); 
+			 var ishava = jsoninventory[json.tname];
+			// alert(ishava);    
+			 if(null != ishava && ""!= ishava && undefined  != ishava){
+				 $("#Ipapercount"+i).val(ishava.papercount);
+				 $("#papercount"+i).html(ishava.papercount);
+			 }else {   
+				 $("#papercount"+i).html(0);
+			 }
+		}else {
+			$("#papercount"+i).html(0); 
+		}
+		 
+		
+		
 		$("#uuid").val(json.uuid);  
 		rows.push(i); 
 		var only = json.tname+"_"+json.statues; 
@@ -113,27 +159,42 @@ String json = StringUtill.GetJson(list);
 		 cl = 'class="bsc"';
 	 }   
 	  var str = '<tr '+cl+'>' +    
-	     ' <td align=center rowspan=2  >'+(row*1+1*1)*1+'</td> '+
-	      
-	     ' <td colspan=2 align=center ><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
-	     '<td rowspan=2 align=center ><select name="statues'+row+'" id="statues'+row+'">'+
+	     ' <td align=center rowspan=6  >'+(row*1+1*1)*1+'</td> '+
+	       
+	     ' <td  align=center colspan = 2><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
+	    // ' <td rowspan=6 align=center><input type="button" value="删除" onclick="delet('+row+')"/></td> ' +   
+	     ' </tr>'+ 
+	     '<tr '+cl+'>'+   
+	     
+	     '<td align=center colspan = 2>状态:<select name="statues'+row+'" id="statues'+row+'">'+
 	     '<option value=""></option>'+  
-	     '<option value="1">常规特价订货</option>'+
+	     '<option value="1">订货</option>'+
 	      '<option value="3">样机订货</option>'+
 	      '<option value="4">换货订货</option>'+
 	      '<option value="5">赠品订货</option>'+
 	      '<option value="6">店外退货 </option>'+
-	      '<option value="7">已入库常规特价退货</option>'+
+	      '<option value="7">已入库退货</option>'+
 	      '<option value="9">已入库样机退货</option>'+
 	     
-	     '<select></td>'+   
-	     ' <td rowspan=2 align=center><input type="button" value="删除" onclick="delet('+row+')"/></td> ' +   
+	     '<select></td>'+  
+	     
+	      
+	    
 	     ' </tr>'+ 
 	     '<tr '+cl+'>'+  
-	     '<td align=center><span style="color:red;font-size:15px;" id="papercount'+row+'" name="papercount'+row+'"></span></td>'+
-	     ' <td align=center ><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'"  placeholder="订单数"  style="border-style:none;width:50px;"   onBlur="addcount()" /></td> ' +
-	     
-	     '</tr>'
+	     '<td align=center colspan = 2>店外库存数量:<span style="color:red;font-size:30px;" id="papercount'+row+'" name="papercount'+row+'"></span></td>'+
+	     ' </tr>'+ 
+	     '<tr '+cl+'>'+  
+	     '<td align=center colspan = 2>卖场库存:<span style="color:red;font-size:30px;" id="sncount'+row+'"  ></span></td>'+
+	     ' </tr>'+ 
+	     '<tr '+cl+'>'+  
+	     '<td align=center colspan = 2>(30天销售数量):<span style="color:red;font-size:30px;" id="snstatues'+row+'"  ></span></td>'+
+	     ' </tr>'+   
+	     '<tr '+cl+'>'+     
+	     ' <td align=center><input type="button" value="删除" class="cl" style="width: 100px" onclick="delet('+row+')"/></td> '+
+	     ' <td align=center ><input type="text" class="cl"  id="orderproductNum'+row+'" style="width: 100px"  name="orderproductNum'+row+'"  placeholder="订单数"     onBlur="addcount()" /></td> ' +
+	      
+	     ' </tr>'; 
 	     ;  
 	          
 	$("#tproduct").append(str);
@@ -142,7 +203,7 @@ String json = StringUtill.GetJson(list);
 	//$("#product"+row).css("width",$("#td"+row).css("width"));
 	$("#product"+row).autocomplete({  
 		 source: jsonallp
-	    });   
+	    });    
 	 
 	$("#product"+row).blur(function (){
 		initctypes(row); 
@@ -150,7 +211,7 @@ String json = StringUtill.GetJson(list);
 	});
 	  
 	$("#product"+row).keydown(function (){
-		initctypes();
+		initctypes(row);
 	});
 	    
 	$("#statues"+row).blur(function (){
@@ -163,8 +224,94 @@ String json = StringUtill.GetJson(list);
 	//}); 
 	 
 	
- }  
-          
+ }   
+ function getMessage(tname,row,statues){ 
+		// alert(tname); 
+		 //alert(jsoninventorysnsale);
+		 var jsonsale = jsoninventorysnsale[tname];
+		 
+		        if(9 == statues || 3 == statues){
+		       
+		        	 var jsons = jsoninventorysnmodel[tname];
+		        	 if(undefined == jsons){
+		        	
+		        		 $("#sncount"+row).html("无");
+		        		 if(undefined != jsonsale){
+		        		
+				        		$("#snstatues"+row).html(jsonsale.saleNum);
+				        	}else { 
+				        		 
+				        		$("#snstatues"+row).html("无");
+				        	}
+				        }else {   
+				        	var num = ""; 
+				        	var st = "";
+				        	for(var i=0;i<jsons.length;i++){
+				        		var json = jsons[i]; 
+				        		if(i == 0 ){  
+				        			num = json.num+":"+json.serialNumber;
+					        		//st = json.serialNumber;
+				        		}else { 
+				        			num += "_"+json.num+":"+json.serialNumber;;
+					        		//st += "_"+json.serialNumber;
+				        		}
+				        	}   
+				        	
+				        	if(undefined != jsonsale){
+				        		
+				        		$("#snstatues"+row).html(jsonsale.saleNum);
+				        	}else {  
+				        		  
+				        		$("#snstatues"+row).html("无");
+				        	}
+				        	
+				        	$("#sncount"+row).html(num);
+			        		//$("#snstatues"+row).html(st);
+				        }         	
+		        	}else {  
+		        		 var jsons = jsoninventorysn[tname]; 
+		        		 var m = 1+1 ;  
+		        		 
+		        		 //alert(jsons );
+		        		 if(undefined == jsons){  
+		        			 $("#sncount"+row).html("无");
+		        			 if(undefined != jsonsale){ 
+		 		        		$("#snstatues"+row).html(jsonsale.saleNum);
+		 		        	}else { 
+		 		        		$("#snstatues"+row).html("无");
+		 		        	}
+		        			 
+		        			 
+			        }else {   
+			        	var num = ""; 
+			        	var st = "";  
+			        	for(var i=0;i<jsons.length;i++){
+			        		var json = jsons[i]; 
+			        		if(i == 0 ){
+			        			num = json.ATP+":"+json.goodType;
+				        		//st = json.goodType;
+			        		}else {  
+			        			num += "_"+json.ATP+":"+json.goodType;
+				        		//st += "_"+json.goodType;
+			        		}
+			        		 
+			        		
+			        	}     
+			        	
+			        	//alert(jsonsale );
+			        	if(undefined != jsonsale){
+			        		$("#snstatues"+row).html(jsonsale.saleNum);
+			        	}else {
+			        		$("#snstatues"+row).html("无");
+			        	}
+			        	 
+			        	
+			        	$("#sncount"+row).html(num);
+		        		//$("#snstatues"+row).html(st);
+			        }  
+		        	 }   
+	 } 
+ 
  function addresultp(row){  
 	 var ctype = $("#product"+row).val();
 	 var statues = $("#statues"+row).val();
@@ -211,7 +358,7 @@ String json = StringUtill.GetJson(list);
 		
 		 //alert(ctype);  
 		 if(ctype == ""){   
-			 alert("型号不能为空");
+			 alert("型号不能为空"); 
 			 return  ;
 		 }else {  
 			 if($.inArray(ctype,jsonallp) != -1){
@@ -243,23 +390,25 @@ String json = StringUtill.GetJson(list);
 		 }
 	} 
 	 
- }
+ } 
   
  
   function  initctypes(num){  
-	   rows.deleteEle();  
+	   rows.deleteEle();   
 	   ctypes = new Array(); 
 	   if(rows.length == row){
-		   row = row+5;
-			 addrowinti();
-		 } 
-	   
-	   for(var i=0;i<rows.length;i++){
-		   if(i != num){  
-			   var ctype = $("#product"+rows[i]).val();
-			   var statues = $("#statues"+rows[i]).val();
+		   row = row+1; 
+			 addrowinti(); 
+		 }   
+	    
+	   for(var i=0;i<rows.length;i++){ 
+		   var realnum = rows[i];  
+		   if(num != realnum){    
+			   var ctype = $("#product"+realnum).val(); 
+			   var statues = $("#statues"+realnum).val(); 
 			   if($.inArray(ctype,jsonallp) != -1  && statues != ""){
 				   var only = ctype+"_"+statues;
+				   getMessage(ctype,realnum,statues); 
 				   ctypes.push(only);     
 			   }
 		   }
@@ -270,7 +419,10 @@ String json = StringUtill.GetJson(list);
   function delet(row){   
 		 $("#product"+row).val("");
 		 $("#orderproductNum"+row).val("");
-		 $("#statues"+row).val(""); 
+		 $("#statues"+row).val("");
+		 $("#snstatues"+row).html("");
+		 $("#sncount"+row).html("");
+		 $("#papercount"+row).html("");
 		 rows.splice($.inArray(row,rows),1); 
 		 initctypes();
 		 addcount(); 
@@ -354,18 +506,7 @@ String json = StringUtill.GetJson(list);
        <tr>  
        <td colspan=2  align=center> 
         <table  id="tproduct" style="width:100% " >
-         <tr class="asc">    
-           <td align=center width="5%" rowspan=2  >编号</td> 
-           <td align=center width="45%" colspan=2> 产品型号</td> 
-           <td align=center width="30%" rowspan=2  >状态</td>  
-           <td align=center width="20%" rowspan=2> 删除</td> 
-         </tr>  
-          <tr class="asc">   
-         <td align=center width="20%">未入库数量</td>  
-         <td align=center width="30%"> 订单数</td> 
         
-              
-          </tr>
         </table>
        </td>
         

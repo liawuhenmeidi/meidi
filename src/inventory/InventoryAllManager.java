@@ -21,7 +21,8 @@ import utill.NumbleUtill;
 import utill.StringUtill;
   
 public class InventoryAllManager {
-	 
+	 // 苏宁订单刷新
+	
 	
 	public static  Collection<InventoryAll> getMap(User user,String branch,String category,String product,String isSN){ 
 		List<InventoryBranch> list = null ; 

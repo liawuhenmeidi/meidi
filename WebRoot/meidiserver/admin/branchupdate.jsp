@@ -51,7 +51,13 @@ function changes(){
 	if( "" == typestatues || null == typestatues){
 		alert("门店属性不能为空");
 		return ; 
-	}   
+	} 
+	 
+	if( "" == modelstatues || null == modelstatues){
+		alert("所属卖场不能为空");
+		return ; 
+	}  
+	
 	$.ajax({  
         type: "post",  
          url: "server.jsp",
@@ -93,9 +99,9 @@ function changes(){
 
 <tr class="asc">    
 <td align=center>所属卖场</td>  
-<td align=center> 
+<td align=center>  
 <%      
-    
+     
 SaleModel.Model[] models = SaleModel.Model.values();
    int num = models.length;     
    for(int i=0;i<num;i++){      

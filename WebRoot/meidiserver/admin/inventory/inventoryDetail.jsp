@@ -8,7 +8,7 @@ String endtime = request.getParameter("endtime");
 endtime = TimeUtill.dataAdd(endtime,1); 
 
 String starttime = request.getParameter("starttime"); 
-
+ 
 Branch b = null;
 if(!StringUtill.isNull(branchid)){
 	if(NumbleUtill.isNumeric(branchid)){

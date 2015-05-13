@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ordersgoods.OrderGoods;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -64,7 +66,24 @@ public class InventoryBranchMessageManager {
 			 	
 		return sql;  
 	}
- 
+  
+	public static String update(List<OrderGoods> list) {
+		//logger.info(list);   
+		List<Integer> listi = new ArrayList<Integer>();
+		if(!list.isEmpty()){
+			 Iterator<OrderGoods> it = list.iterator();
+			 while(it.hasNext()){
+				 OrderGoods og = it.next();
+				 listi.add(og.getTid());
+				 
+			 }
+		}    
+		//logger.info(listi); 
+		String sql = "update  mdinventorybranch set activetime = '"+TimeUtill.getdateString()+"'  where type in " +StringUtill.getStr(listi);
+		
+		return sql;  
+	}
+	
 	public static List<String> update(
 			Map<Integer, Map<Integer, InventoryBranchMessage>> map) {
 		/*

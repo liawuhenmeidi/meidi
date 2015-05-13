@@ -63,7 +63,7 @@ function check(){
 		<!--  头 单种类  -->
 		<table width="100%" border="0" cellspacing="1" id="table">
 			<tr class="dsc">
-				<td colspan=10>
+				<td colspan=11>
 					<table width="100%">
 						<tr>
 							<td colspan=2 align="center"></td>
@@ -86,6 +86,7 @@ function check(){
 
 			</tr>
 			<tr class="dsc">
+			    <td align="center">编号</td>
 				<td align="center">门店</td>
 				<td align="center">商品编码</td>
 				<td align="center">商品条码</td>
@@ -104,7 +105,7 @@ function check(){
 							.entrySet();
 					Iterator<Map.Entry<Integer, Map<Integer, OrderGoodsAll>>> it = set
 							.iterator();
-
+					int count = 0 ;   
 					while (it.hasNext()) {
 						Map.Entry<Integer, Map<Integer, OrderGoodsAll>> mapent = it
 								.next();
@@ -115,6 +116,7 @@ function check(){
 								.iterator();
 						int i = 0;
 						String cla = "";
+						
 						while (itb.hasNext()) {
 							i++;
 							if (i % 2 == 1) {
@@ -126,14 +128,15 @@ function check(){
 							OrderGoodsAll o = mapentb.getValue();
 							Branch branch = o.getOm().getBranch();
 							List<OrderGoods> listog = o.getList();
-							int count = 0 ; 
+							 
 							for (int j = 0; j < listog.size(); j++) {
 								OrderGoods og = listog.get(j);
-								System.out.println(og.getProduct());
+								//System.out.println(og.getProduct());
 								if (og.getRealnum() > 0) { 
-									
-			%> 
+									count ++;
+			%>  
 			<tr class="<%=cla%>">
+			    <td align="center"><%=count%></td>
 				<td align="center"><%=branch.getLocateName()%></td>
 				<td align="center"></td>
 				<td align="center"></td>

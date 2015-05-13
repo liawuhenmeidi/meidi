@@ -25,10 +25,12 @@ if (null != list) {
 	        endtime = StringUtill.getNotNUll(og.getEffectiveendtime());
 	        exportuuid = og.getExportuuid();
 	        	}
-	        } else {
-	        	set.add(og.getStatues()+"_"+og.getOid());
-		        endtime = StringUtill.getNotNUll(og.getEffectiveendtime());
-		        exportuuid = og.getExportuuid();
+	        } else { 
+	        	if(StringUtill.isNull(og.getOid())){
+	        		set.add(og.getStatues()+"_"+og.getOid());
+	        endtime = StringUtill.getNotNUll(og.getEffectiveendtime());
+	        exportuuid = og.getExportuuid();
+	        	}
 	        }
 	         
 		} 
@@ -84,29 +86,31 @@ if (null != list) {
 
 		<div class="main_r_tianjia">
 			<ul>
-				<li><a href="javascript:history.go(-1);">返回</a>
-				</li>
+				<li><a href="javascript:history.go(-1);">返回</a></li>
 			</ul>
 		</div>
 		<!--  头 单种类  -->
+
 		<table width="100%" border="0" cellspacing="1" id="table">
 			<tr class="dsc">
-				<td colspan=9>
+				<td colspan=10>
 					<table width="100%">
 						<tr>
 							<td colspan=2 align="center">订单名称：<%=name%></td>
 							<td colspan=2 align="center"></td>
 							<td align="center" colspan=4><a
 								href="../../../data/exportOrderGM/<%=exportuuid%>.xls"><font
-									style="color:blue;font-size:20px;">导出</font> </a></td>
+									style="color:blue;font-size:20px;">导出</font> </a>
+							</td>
 						</tr>
-
-					</table></td>
+					</table>
+				</td>
 			</tr>
+
 			<tr class="dsc">
-				<td colspan=9>
+				<td colspan=10>
 					<form action="../../user/OrderGoodsServlet" method="post">
- 
+
 						<input type="hidden" value="updateIOS" name="method"> <input
 							type="hidden" value="<%=exportuuid%>" id="name" name="name">
 
@@ -128,8 +132,7 @@ if (null != list) {
 								%>
 								<td align="center"><%=OrderGoods.getStatuesName(Integer.valueOf(i))%>(订单号)</td>
 								<td align="center"><input type="text" name="oid<%=i%>"
-									value="<%=oid%>" />
-								</td>
+									value="<%=oid%>" /></td>
 								<%
 									}
 									}
@@ -138,19 +141,23 @@ if (null != list) {
 								<td align="center">订单截止日期</td>
 								<td align="center"><input type="text"
 									name="effectiveendtime" onclick="new Calendar().show(this);"
-									value="<%=endtime%>" />
-								</td>
+									value="<%=endtime%>" /></td>
 
 								<td align="center"><input type="submit" value="保存"
-									style="color:red"></td>
+									style="color:red">
+								</td>
 							</tr>
 						</table>
-					</form></td>
+					</form>
+				</td>
 			</tr>
+
 			<tr class="dsc">
-			   <td align="center">序号</td>
+				<td align="center">序号</td>
+				<td align="center">订单号</td>
 				<td align="center">商品编码</td>
 				<td align="center">商品名称</td>
+
 				<td align="center">订货数量</td>
 				<td align="center">订货门店</td>
 				<td align="center">订货门店编码</td>
@@ -160,29 +167,37 @@ if (null != list) {
 			</tr>
 			<%
 				if (null != list) {
-					int count = 0 ;
+					int count = 0;
 					for (int i = 0; i < list.size(); i++) {
-						OrderGoodsAll o = list.get(i); 
+						OrderGoodsAll o = list.get(i);
 						Branch branch = o.getOm().getBranch();
 						List<OrderGoods> listog = o.getList();
 						for (int j = 0; j < listog.size(); j++) {
-							OrderGoods og = listog.get(j);  
-							count ++;
+							OrderGoods og = listog.get(j);
+							count++;
 							//System.out.println(StringUtill.GetJson(og)); 
-							if (!StringUtill.isNull(orderid)  
+							if (!StringUtill.isNull(orderid)
 									&& orderid.equals(og.getOid())
-									|| StringUtill.isNull(orderid)) {
+									|| StringUtill.isNull(orderid)
+									&& StringUtill.isNull(og.getOid())) {
 								String serialnumber = og.getSerialnumber();
 								if (StringUtill.isNull(serialnumber)) {
 									serialnumber = Company.supply;
-								} 
+								}
+
+								String cl = "class=\"asc\"";
+								if (StringUtill.isNull(og.getOid())) {
+									cl = "class=\"bsc\"";
+								}
 			%>
 
-			<tr class="asc">
- <td align="center"><%=count%></td>
+			<tr <%=cl%>>
+				<td align="center"><%=count%></td>
+				<td align="center"><%=og.getOid()%></td>
 				<td align="center"><%=og.getProduct().getEncoded()%></td>
 				<td align="center"><%=og.getProduct().getType()%></td>
-				<td align="center"><%=og.getRealnum()%></td> 
+
+				<td align="center"><%=og.getRealnum()%></td>
 				<td align="center"><%=branch.getLocateName()%></td>
 				<td align="center"><%=branch.getEncoded()%></td>
 				<td align="center"><%=og.getStatuesName()%></td>

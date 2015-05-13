@@ -45,7 +45,17 @@ public class OrderGoodsManager {
 	   flag = DBUtill.sava(list);
 	   return flag ;
    }    
-      
+         
+   public static String updateOid(int tid ,int bid,int statues,String oid,String time ,int num){ 
+	     
+	   String sql = "update mdordergoods set oid = '"+oid+"' , effectiveendtime = '"+time+"' where tid ="+tid+"  and mid in (select id from mdordermessage where branchid = "+bid  + ") and oid = null and opstatues = 2 and  ordernum <= " +num; 
+	   
+	      
+	   return sql ;
+	   
+   }
+    
+   
    public static List<String> save(User user ,OrderGoodsAll oa){
 	   //boolean flag = false ;   
 	   List<OrderGoods> ogs = oa.getList();
@@ -256,7 +266,7 @@ public class OrderGoodsManager {
 			p.setRealnum(rs.getInt("mdordergoods.realnum")); 
 			p.setStatues(rs.getInt("mdordergoods.statues"));  
 			p.setSubmitid(rs.getInt("mdordergoods.submitid")); 
-			p.setSubmittime(rs.getString("submittime"));   
+			p.setSubmittime(rs.getString("mdordergoods.submittime"));   
 			p.setUuid(rs.getString("mdordergoods.uuid"));  
 			p.setTid(rs.getInt("mdordergoods.tid"));   
 			p.setUuidtime(rs.getString("mdordergoods.uuidtime")); 
@@ -265,7 +275,8 @@ public class OrderGoodsManager {
 			p.setSerialnumber(rs.getString("serialnumber"));   
 			p.setCid(rs.getInt("cid"));            
 			p.setReturnrealsendnum(rs.getInt("returnrealsendnum"));
-			p.setExportuuid(rs.getString("exportuuid")); 
+			p.setExportuuid(rs.getString("exportuuid"));
+			p.setMid(rs.getInt("mid")); 
 		    //p.setNexttime(rs.getString("nexttime"));
 		} catch (SQLException e) {    
 			e.printStackTrace();

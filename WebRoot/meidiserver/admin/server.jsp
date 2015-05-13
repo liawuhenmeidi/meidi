@@ -1,11 +1,11 @@
 <%@ page language="java"
-	import="java.util.*,orderproduct.*,httpClient.*,ordersgoods.*,saledealsend.*,uploadtotalgroup.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;"
+	import="java.util.*,orderproduct.*,httpClient.*,ordersgoods.*,httpClient.*,httpClient.download.*,saledealsend.*,uploadtotalgroup.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;"
 	pageEncoding="utf-8"%>
 <%
-	request.setCharacterEncoding("utf-8");
+	request.setCharacterEncoding("utf-8"); 
 
 	User user = (User) session.getAttribute("user");
-
+ 
 	String method = request.getParameter("method");
 
 	if ("deleOrder".equals(method)) {
@@ -666,16 +666,15 @@
 		String id = request.getParameter("oid");
 		Order or = OrderManager.getOrderID(user, Integer.valueOf(id));
 		String str = or.getSendTypejson(0);
-		response.getWriter().write(str);
-		response.getWriter().flush(); 
+		response.getWriter().write(str); 
+		response.getWriter().flush();    
 		response.getWriter().close(); //inventory
-	} else if ("getproduct".equals(method)) {
-		String branch = request.getParameter("branch");
-		//System.out.println(branch); 
+	} else if ("getproduct".equals(method)) { 
+		String branchtype = request.getParameter("branchtype");
+		//System.out.println(branchtype);     
 		//List<String> listallp = ProductService.getlistall(BranchService.getNameMap().get(branch));
-		List<String> listallp = ProductService.getlistsale(BranchService
-				.getNameMap().get(branch));
-		//System.out.println(StringUtill.GetJson(listallp)); 
+		List<String> listallp = ProductService.getlistsale(Integer.valueOf(branchtype));
+		//System.out.println(StringUtill.GetJson(listallp));   
 		response.getWriter().write(StringUtill.GetJson(listallp));
 		response.getWriter().flush();
 		response.getWriter().close(); //inventory 
@@ -689,19 +688,44 @@
 		List<String> s = InventorySN.getinventoryByName(tname, branch,
 				statues, map, id);
 		//List<String> list = OrderGoodsManager.Updateserialnumber(map);
-		//DBUtill.sava(list);    
+		//DBUtill.sava(list);      
 		// System.out.println(StringUtill.GetJson(map)); 
 		response.getWriter().write(StringUtill.GetJson(s));
-		response.getWriter().flush();
+		response.getWriter().flush(); 
 		response.getWriter().close(); //inventory  
 	} else if ("getInventoryMapByBranch".equals(method)) {
-		//	MyMainClient.getinstance().run();  
+  
+		String branchtype = request.getParameter("branchtype");
 		String branch = request.getParameter("branch");
-		String branchid = BranchService.getNameMap().get(branch)
-				.getId()
-				+ "";
-		Map<String, InventoryBranch> map = InventoryBranchManager
-				.getmapType(user,branchid);
+		Map<String,String> map = new HashMap<String,String>();
+		
+		List<String> listallp = ProductService.getlistsale(Integer.valueOf(branchtype));
+		String strp = StringUtill.GetJson(listallp);
+		
+		
+		Branch b = BranchService.getNameMap(Integer.valueOf(branchtype)).get(branch);
+		//System.out.println("branch"+b.getId());  
+		String time = TimeUtill.getdateString(); 
+		Map<String,InventoryBranch> mapin = InventoryBranchManager.getmapType(user,b.getId()+"");
+		String strin = StringUtill.GetJson(mapin);
+		
+	    Map<String,List<httpClient.download.Inventory>> mapsn = InventoryChange.getMapBranchType(user,time,b.getId());
+		  
+	    String strsn = StringUtill.GetJson(mapsn);
+	   // System.out.println("mapsn"+mapsn);
+		Map<String,List<httpClient.download.Inventory>> mapsnModel = InventoryModelDownLoad.getMapBranchType(user, time,b.getId());
+		String strmodel = StringUtill.GetJson(mapsnModel);
+		// System.out.println("mapsnModel"+strmodel);
+		Map<String,httpClient.download.Inventory> mapsale = SaleDownLoad.getMap(TimeUtill.dataAdd(time, -29),time,b.getId()); 
+		    
+		 String strsale = StringUtill.GetJson(mapsale);
+		// System.out.println("strsale"+strsale);
+		 
+		map.put("strp", strp);
+		map.put("strin", strin);
+		map.put("mapsn", strsn);
+		map.put("strmodel", strmodel);
+		map.put("strsale", strsale);
 		//System.out.println(map); 
 		response.getWriter().write(StringUtill.GetJson(map));
 		response.getWriter().flush();

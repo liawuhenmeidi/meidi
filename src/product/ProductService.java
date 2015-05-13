@@ -59,7 +59,25 @@ public class ProductService {
 		}
 		return map;
 	}
+    
+	public static Map<String, Product> gettypemap(User user, Integer branchtype) {
+		init();
+		HashMap<String, Product> map = new HashMap<String, Product>();
+		// long start = System.currentTimeMillis();
 
+		List<Integer> li = ProductService.getlistallCid(branchtype);
+		//logger.info(li); 
+		if (null != listall) { 
+			for (int i = 0; i < listall.size(); i++) {
+				Product op = listall.get(i);
+				if (li.contains(op.getCategoryID())) {
+					map.put(op.getType(), op);
+				}
+			}
+		}
+		return map;
+	}
+	
 	public static Map<String, Product> gettypemap(User user) {
 		init();
 		HashMap<String, Product> map = new HashMap<String, Product>();
@@ -132,6 +150,51 @@ public class ProductService {
 		return map;
 	}
 
+	public static Map<String, Product> gettypeNUmmap(int branchtype) {
+		
+		init(); 
+		List<String> li = new ArrayList<String>();
+		HashMap<String, Product> map = new HashMap<String, Product>();
+		List<Category> listc = CategoryService.getList();
+		// logger.info(listc); 
+			for (int i = 0; i < listc.size(); i++) {
+				Category c = listc.get(i);
+				String sales = c.getSales(); 
+				  
+				if (!StringUtill.isNull(sales)) {
+					// logger.info(sales); 
+					String sale[] = sales.split("_");
+					for (int j = 0; j < sale.length; j++) {
+						if (!StringUtill.isNull(sale[j])) { 
+							
+							/*logger.info(Integer.valueOf(sale[j])) ;
+							logger.info( branchtype);     
+							logger.info(Integer.valueOf(6) == 6);
+							logger.info(Integer.valueOf(sale[j]) - branchtype);*/
+							
+							if (Integer.valueOf(sale[j]) == branchtype) {
+								li.add(c.getId() + "");
+								continue;
+							}
+						}
+					}
+				}   
+			}     
+		 logger.info(li); 
+		if (null != getlistall()) {
+			for (int i = 0; i < listall.size(); i++) {
+				Product op = listall.get(i); 
+				if (op.getStatues() == 0 && li.contains(op.getCategoryID() + "")) {
+					map.put(op.getEncoded(), op);
+				}
+			} 
+		} 
+    
+		//logger.info(map);
+		
+		return map;
+	}
+	
 	public static HashMap<String, ArrayList<String>> gettypeName() {
 		init();
 		if (typeName == null) {
@@ -299,8 +362,53 @@ public class ProductService {
 				if (op.getStatues() == 0 && li.contains(op.getCategoryID() + "")) {
 					list.add(op.getType());
 				}
-			}
+			} 
 		}
+		// logger.info(System.currentTimeMillis() - start);
+		return list;
+	}
+	
+	public static List<String> getlistsale(int branchtype) {
+		init(); 
+		List<String> list = new ArrayList<String>();
+		List<String> li = new ArrayList<String>();
+         
+		List<Category> listc = CategoryService.getList();
+		// logger.info(listc); 
+			for (int i = 0; i < listc.size(); i++) {
+				Category c = listc.get(i);
+				String sales = c.getSales(); 
+				  
+				if (!StringUtill.isNull(sales)) {
+					// logger.info(sales); 
+					String sale[] = sales.split("_");
+					for (int j = 0; j < sale.length; j++) {
+						if (!StringUtill.isNull(sale[j])) { 
+							
+							/*logger.info(Integer.valueOf(sale[j])) ;
+							logger.info( branchtype);     
+							logger.info(Integer.valueOf(6) == 6);
+							logger.info(Integer.valueOf(sale[j]) - branchtype);*/
+							
+							if (Integer.valueOf(sale[j]) == branchtype) {
+								li.add(c.getId() + "");
+								continue;
+							}
+						}
+					}
+				}   
+			}     
+		 logger.info(li); 
+		if (null != getlistall()) {
+			for (int i = 0; i < listall.size(); i++) {
+				Product op = listall.get(i); 
+				if (op.getStatues() == 0 && li.contains(op.getCategoryID() + "")) {
+					list.add(op.getType());
+				}
+			}
+		} 
+    
+		//logger.info(list);
 		// logger.info(System.currentTimeMillis() - start);
 		return list;
 	}
@@ -337,6 +445,38 @@ public class ProductService {
 		return li;
 	}
 
+	public static List<Integer> getlistallCid(Integer branchtype) {
+		init();
+		List<Integer> li = new ArrayList<Integer>();
+ 
+		List<Category> listc = CategoryService.getList();
+		//logger.info(listc);
+		for (int i = 0; i < listc.size(); i++) {
+			Category c = listc.get(i);
+			String sales = c.getSales();
+		//	logger.info(sales); 
+			if (!StringUtill.isNull(sales)) {
+			//	logger.info(sales);
+			//	logger.info(branch.getPid()); 
+				String sale[] = sales.split("_");
+				for (int j = 0; j < sale.length; j++) {
+					if (!StringUtill.isNull(sale[j])) { 
+						if (Integer.valueOf(sale[j]) == branchtype) {
+							li.add(c.getId());
+							continue;
+						}
+					}
+
+				}
+			}
+		}
+
+		// logger.info(li);
+
+		// logger.info(System.currentTimeMillis() - start);
+		return li;
+	}
+	
 	public static List<Product> getlistMatain() {
 		List<Category> list = CategoryService.getlistmaintain();
 		List<Product> listp = new ArrayList<Product>();

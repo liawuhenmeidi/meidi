@@ -1,11 +1,22 @@
 <%@ page language="java"
 	import="java.util.*,httpClient.*,ordersgoods.*,product.*,branch.*,org.apache.commons.logging.*,utill.*,goodsreceipt.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
-<% 
+<%
 	request.setCharacterEncoding("utf-8"); 
-User user = (User)session.getAttribute("user");   
-              
+User user = (User)session.getAttribute("user");
+ 
+            
 Map<String,OrderReceiptAll> map = OrderReceitManager.getMapAllOver(); 
+
+List<OrderReceipt> list = OrderReceitManager.getListOver(); 
+Set<String> sets = new HashSet<String>();
+if (null != list) {
+	for(int i=0;i<list.size();i++){
+		OrderReceipt or = list.get(i);
+		sets.add(or.getBranchName());
+	}
+}
+
 String type= request.getParameter("type");      
     
  //System.out.println(StringUtill.GetJson(set));
@@ -25,10 +36,9 @@ String type= request.getParameter("type");
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
-function detail(src) {
-	window.location.href = src;
-}
- 
+	function detail(src) {
+		window.location.href = src;
+	}
 
 	function check() {
 		var flag = false;
@@ -36,7 +46,7 @@ function detail(src) {
 		$("input[type='checkbox'][id='check_box']").each(function() {
 			if ($(this).attr("checked")) {
 				var str = this.value;
- 
+
 				if (str != null && str != "") {
 					// attract[i] = str; 
 					//  i++;
@@ -55,17 +65,35 @@ function detail(src) {
 			<jsp:param name="dmsn" value="" />
 		</jsp:include>
 		<div class="weizhi_head">现在位置：查看退货订单</div>
+          <select name="branch">
+          
+          <% if(sets.isEmpty()){
+        	  Iterator<String> it =  sets.iterator();
+        	  while(it.hasNext()){
+        		  String br = it.next();
+        	  
+        	  %>
+        	  <option value="<%= br%>"><%= br%></option>
+        	  <%
+        	  }
+        	  
+          } %>
+          
+          
+          </select>
 
-		<!--  头 单种类  --> 
+          
+		<!--  头 单种类  -->
 
 		<table width="100%" border="0" cellspacing="1" id="Ntable">
 
 			<tr class="dsc">
+				<td align="center"></td>
 				<td align="center">退货订单编号</td>
 				<td align="center">校验码</td>
 				<td align="center">退货订单日期</td>
 				<td align="center">退货订单有效期</td>
-			</tr> 
+			</tr>
 			<%
 				if (null != map) {
 					Set<Map.Entry<String, OrderReceiptAll>> set = map.entrySet();
@@ -75,9 +103,11 @@ function detail(src) {
 						Map.Entry<String, OrderReceiptAll> mapent = it.next();
 						String buyid = mapent.getKey();
 						OrderReceiptAll or = mapent.getValue();
-			%>      
-    
-			<tr class="asc"  ondblclick="detail('receiveorderOverdetail.jsp?buyid=<%=or.getBuyid()%>')">
+			%>
+
+			<tr class="asc"
+				ondblclick="detail('receiveorderOverdetail.jsp?buyid=<%=or.getBuyid()%>')">
+				<td align="center"></td>
 				<td align="center"><%=or.getBuyid()%></td>
 				<td align="center"><%=or.getCheckNum()%></td>
 				<td align="center"><%=or.getReceveTime()%></td>

@@ -135,13 +135,13 @@ function checkedd(){
          <td align="center" >销售卖场</td>
        <td align="center">
          <table>
-          <tr>
+          <tr> 
           <% if(null != list){
         	  for(int i=0;i<list.size();i++){
         		  BranchType bt = list.get(i);
         		 %> 
         		 <td align="center"> 
-            <input type="checkbox" name="sales" value="<%=bt.getId()%>"/><%=bt.getName()%>
+            <input type="radio" name="sales" value="<%=bt.getId()%>"/><%=bt.getName()%>
            </td>
         		 <%
         	  }

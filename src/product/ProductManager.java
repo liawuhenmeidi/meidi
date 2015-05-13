@@ -72,17 +72,17 @@ public class ProductManager {
 		 
 		//long start1 = System.currentTimeMillis();
 		//logger.info(start1 - start); 
-		String sql = "";  
+		String sql = "";      
 		if (null != lists) {  
-			 
+			    
 			if (lists.contains(p.getType())) {
 				//logger.info(System.currentTimeMillis() - start1); 
 				sql = "update mdproduct set pstatues = 0 ,saleType = '" + p.getSaleType() + "',encoded = '" + p.getEncoded()
 						+ "'  where ptype = '"
-						+ p.getType() + "'";
-			} else {  
+						+ p.getType() + "' and categoryID = "+p.getCategoryID();
+			} else {    
 				sql = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size,stockprice,mataintime,matainids,encoded,saleType) VALUES (null, null,'"
-						+ p.getType()
+						+ p.getType() 
 						+ "','"
 						+ p.getCategoryID() 
 						+ "',0,'"

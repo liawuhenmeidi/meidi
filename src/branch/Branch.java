@@ -1,11 +1,14 @@
 package branch;
 
+import branchtype.BranchType;
+import branchtype.BranchTypeService;
 import utill.StringUtill;
 
 public class Branch {
 	private String locateName;
 	private int id;
 	private int pid;
+	private BranchType branchtype ;
 	private String message; // 门店订单需要的号，是否需要pos号，等
 	private int statues; // 是否作为总库
 	private String branchids;
@@ -13,6 +16,17 @@ public class Branch {
 	private String encoded; 
 	private String nameSN;  // 苏宁国美别名
 	private String Reservoir; // 库位名称 
+  
+	public BranchType getBranchtype() {
+		//System.out.println(BranchTypeService.getMap());
+		//System.out.println(pid); 
+		branchtype = BranchTypeService.getMap().get(pid);
+		return branchtype;
+	}
+
+	public void setBranchtype(BranchType branchtype) {
+		this.branchtype = branchtype;
+	}
 
 	public int getDisable() {
 		return disable;

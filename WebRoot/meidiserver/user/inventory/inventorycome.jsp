@@ -70,11 +70,27 @@ function serchclick(category,type,branchid,obj){
 } 
 
 
+function pandian(type,branchid){
+	
+	$.ajax({   
+         type: "post", 
+         url: "../../admin/server.jsp",    
+         data:"method=pandian&branchid="+branchid+"&type="+type,
+         dataType: "",   
+         success: function (data) { 
+        	 add();
 
+            },  
+         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+            } 
+           });
+	
+	event.cancelBubble =true;
+}
  
  
 function add(){   
-	  
+	 var canpandian = true ;
 	 $("#table tr").remove();    
  
 	 var product = $("#product").val(); 
@@ -87,7 +103,7 @@ function add(){
 	         success: function (data) { 
 	        	 //alert(data);    
 	        	 var addstr =  '<thead>'+ 
-	     		  '<tr>'+  
+	     		  '<tr>'+   
 	     		        '<th align="left">订单号</th>'+
 		        		 
 		     			'<th align="left">产品型号</th>'+ 
@@ -110,15 +126,15 @@ function add(){
 		                 var pandian = "是";
 		                 
 		                 if(str.isquery == false|| str.isquery == "false"){
-		                	// if(canpandian){
+		                	 if(canpandian){
 		                		 pandian = '<span style="cursor:hand,color:red" onclick="pandian(\''+str.typeid+'\',\''+branchid+'\')">盘点确认</span>'; 
-		                	 //}else {  
+		                	 }else {  
 		                		 pandian = "否"; 
-		                	// }
+		                	 }
 		                 }else{   
-		                	 //if(canpandian){  
+		                	 if(canpandian){  
 		                		 pandian = str.time;  
-		                	// }  
+		                	 }  
 		                 }    
 		                 if(str.papercount != 0){
 		                	 addstr += '<tr id="record'+row+'" class="asc" onclick="search(\''+str.typeid+'\',\''+branchid+'\')">'; 

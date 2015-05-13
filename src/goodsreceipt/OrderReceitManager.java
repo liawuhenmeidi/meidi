@@ -2,6 +2,7 @@ package goodsreceipt;
  
 import inventory.InventoryBranchManager;
   
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,20 +22,23 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import com.csvreader.CsvReader;
+
 import database.DB;
 
 import user.User;
 import utill.DBUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
-
+ 
 public class OrderReceitManager {
 	protected static Log logger = LogFactory.getLog(OrderReceitManager.class);
-
+ 
 	public static List<String> saveOut(OrderReceipt gr) {
 		List<String> list = new ArrayList<String>();
-		if (0 != gr.getRefusenum()) {
-			String sql = " insert into orderreceipt (id,querynum,checknum,pici,activeordertiem,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,ordernum,recevenum,refusenum,branchid,branchname,uuid,disable,statues)"
+		//if (0 != gr.getRefusenum()) {
+			String sql = " insert into orderreceipt (id,querynum,checknum,pici,activeordertiem,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,ordernum,recevenum,refusenum,branchid,branchname,uuid,disable,statues,statuesName)"
 					+ " values ('"
 					+ gr.getId()
 					+ "','"
@@ -70,12 +74,12 @@ public class OrderReceitManager {
 					+ gr.getBranchid()
 					+ "','"
 					+ gr.getBranchName()
-					+ "','"
+					+ "','" 
 					+ gr.getUuid()
 					+ "',"
-					+ gr.getDisable() + "," + gr.getStatues() + ");";
+					+ gr.getDisable() + "," + gr.getStatues() + ",'"+gr.getStatuesName()+"');";
 			list.add(sql);
-		}
+		//}
 		return list;
 	}  
     
@@ -130,11 +134,35 @@ public class OrderReceitManager {
 			DB.close(rs);
 			DB.close(conn);
 		}
-
 		return map;
 	}
-
-	public static List<OrderReceipt> getList(String starttime, String endtime) {
+  
+	public static List<OrderReceipt> getList(String typenum,String branchName) {
+		List<OrderReceipt> list = new ArrayList<OrderReceipt>(); 
+		String sql = " select * from orderreceipt where goodsnum = '"+typenum+"' and branchname = '"+branchName+"' order by  recevetime";
+		logger.info(sql);
+		Connection conn = DB.getConn();   
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while (rs.next()) {
+				OrderReceipt as = getOrderReceitFromRs(rs);
+				// logger.info(as.getOrderNum());
+				// logger.info(as.getRecevenum());
+				// logger.info(as.getRefusenum());
+				list.add(as);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(stmt);
+			DB.close(rs);
+			DB.close(conn);
+		}
+		return list;
+	} 
+  
+	public static List<OrderReceipt> getList() { 
 		List<OrderReceipt> list = new ArrayList<OrderReceipt>();
 		String sql = " select * from orderreceipt where refusenum != 0 and disable = 0  order by  recevetime";
 		logger.info(sql);
@@ -157,8 +185,59 @@ public class OrderReceitManager {
 			DB.close(conn);
 		}
 		return list;
+	} 
+	
+	public static List<OrderReceipt> getListAll() {
+		List<OrderReceipt> list = new ArrayList<OrderReceipt>();
+		String sql = " select * from orderreceipt  order by  recevetime";
+		logger.info(sql); 
+		Connection conn = DB.getConn();   
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while (rs.next()) {
+				OrderReceipt as = getOrderReceitFromRs(rs);
+				// logger.info(as.getOrderNum());
+				// logger.info(as.getRecevenum());
+				// logger.info(as.getRefusenum());
+				list.add(as);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(stmt);
+			DB.close(rs);
+			DB.close(conn);
+		}
+		return list;
 	}
- 
+	 
+	
+	public static List<OrderReceipt> getListToDeal() {
+		List<OrderReceipt> list = new ArrayList<OrderReceipt>();  
+		String sql = " select * from orderreceipt  where disable = 0  order by  recevetime";
+		logger.info(sql);
+		Connection conn = DB.getConn();   
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while (rs.next()) {
+				OrderReceipt as = getOrderReceitFromRs(rs);
+				// logger.info(as.getOrderNum());
+				// logger.info(as.getRecevenum());
+				// logger.info(as.getRefusenum());
+				list.add(as);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(stmt);
+			DB.close(rs);
+			DB.close(conn);
+		}
+		return list;
+	}
+	
 	public static List<OrderReceipt> getListOver() {
 		List<OrderReceipt> list = new ArrayList<OrderReceipt>(); 
 		String sql = " select * from orderreceipt where refusenum = 0  and disable = 0 order by  recevetime";
@@ -212,21 +291,8 @@ public class OrderReceitManager {
   
 	
 	public static Map<String,OrderReceipt> getMapOver(String buyid) {
-		Map<String,OrderReceipt> map = new HashMap<String,OrderReceipt>();
-		List<OrderReceipt> list = getListOver(buyid);
-		if(null != list){
-			for(int i=0;i<list.size();i++){ 
-				OrderReceipt or = list.get(i);
-				map.put(or.getId()+"", or);  
-			}
-		}
-		
-		return map;
-	}
-	
-	public static Map<String,OrderReceipt> getMap(String buyid) { 
-		Map<String,OrderReceipt> map = new HashMap<String,OrderReceipt>();
-		List<OrderReceipt> list = getList(buyid);
+		Map<String,OrderReceipt> map = new LinkedHashMap<String,OrderReceipt>();
+		List<OrderReceipt> list = getListOver(buyid); 
 		if(null != list){ 
 			for(int i=0;i<list.size();i++){ 
 				OrderReceipt or = list.get(i);
@@ -235,6 +301,43 @@ public class OrderReceitManager {
 		}
 		
 		return map;
+	} 
+	
+	public static Map<String,OrderReceipt> getMap(String buyid,String branch) { 
+		Map<String,OrderReceipt> map = new HashMap<String,OrderReceipt>();
+		List<OrderReceipt> list = getList(buyid); 
+		if(null != list){  
+			for(int i=0;i<list.size();i++){ 
+				OrderReceipt or = list.get(i);
+				if(StringUtill.isNull(branch) || !StringUtill.isNull(branch) && branch.equals(or.getBranchName())){
+					map.put(or.getId()+"", or);  
+				}
+				
+			}
+		}
+		
+		return map;
+	}
+	 
+	public static Map<String,OrderReceipt> getMapTypeBranch(String typenum,String branchName) { 
+		Map<String,OrderReceipt> map = new HashMap<String,OrderReceipt>();
+		List<OrderReceipt> list = getList(typenum,branchName);   
+		if(null != list){   
+			for(int i=0;i<list.size();i++){ 
+				OrderReceipt or = list.get(i);
+				
+					map.put(or.getId()+"", or);  
+				
+				
+			}
+		}
+		
+		return map;
+	}
+	
+	public static void delete(String[] ids) {  
+		String sql = "delete from orderreceipt where id in "+StringUtill.getStr(ids);
+		DBUtill.sava(sql); 
 	}
 	
 	public static List<OrderReceipt> getListOver(String buyid) { 
@@ -333,10 +436,175 @@ public class OrderReceitManager {
 	 * }
 	 */
 
+public static boolean saveOut(CsvReader reader,String starttime,String endtime) {
+		
+		int id = getMaxid();
+   
+		Map<String, OrderReceipt> map = new HashMap<String, OrderReceipt>();
+		
+		boolean flag = true; 
+		try {   
+			reader.readHeaders();
+		while (reader.readRecord()) { // 逐行读入除表头的数据
+			String[] strs = reader.getValues();
+			if (null != strs) {  
+				OrderReceipt gr = new OrderReceipt();
+				String rows = "";
+				String receveid = "";
+					   
+					for (int i = 0; i < strs.length; i++) {
+						String str = strs[i]; 
+						// logger.info(str);
+						if (i == 1) {
+							gr.setQueryNum(str);
+						} else if (i == 3) {
+							receveid = str;
+							gr.setBuyid(str);
+						} else if (i == 4) {
+							gr.setCheckNum(str);
+						} else if (i == 5) {
+							rows = str;
+							OrderReceipt grmap = map.get(receveid + "_" + rows);
+							if (null == grmap) {
+								gr.setId(id);
+								gr.setStatues(1);
+								id++;
+								map.put(receveid + "_" + rows, gr);
+							}
+							gr.setUuid(receveid + "_" + rows);
+						} else if (i == 6) {
+							gr.setGoodsnum(str);
+						} else if (i == 7) {
+							gr.setGoodsName(str);
+						} else if (i == 9) {
+							gr.setBranchid(str);
+							// gr.setOrdertype(str);
+						} else if (i == 10) {
+							gr.setBranchName(str);
+						} else if (i == 11) {
+							double realnum = Double.valueOf(str);
+							int re = (int) realnum;
+							gr.setOrderNum(Integer.valueOf(re));
+						} else if (i == 12) {
+							double realnum = Double.valueOf(str);
+							int re = (int) realnum;
+							gr.setRecevenum(re);
+						} else if (i == 13) {
+							double realnum = Double.valueOf(str);
+							int re = (int) realnum;
+							gr.setRefusenum(re);
+						} else if (i == 14) {
+							gr.setReceveTime(str);
+						} else if (i == 15) {
+							gr.setOrdertype(str);
+						} else if (i == 16) {
+							gr.setActiveordertiem(str);
+						} else if (i == 17) {
+							gr.setStatuesName(str);
+						} else if (i == 20) {
+							gr.setPici(str);
+						}
+					}
+				} 
+			}  
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace(); 
+		}  
+		 
+		flag = saveOut(map, starttime, endtime);
+		// GoodsReceitManager.map = map;
+		// logger.info(StringUtill.GetJson(map));
+		return flag;
+	}
+ 
+public static boolean saveOutModel(CsvReader reader,String starttime,String endtime) {
+	
+	int id = getMaxid();
+
+	Map<String, OrderReceipt> map = new HashMap<String, OrderReceipt>();
+	
+	boolean flag = true; 
+	try {   
+		reader.readHeaders();
+	while (reader.readRecord()) { // 逐行读入除表头的数据
+		String[] strs = reader.getValues();
+		if (null != strs) {  
+			OrderReceipt gr = new OrderReceipt();
+			String rows = "";
+			String receveid = "";
+				   
+				for (int i = 0; i < strs.length; i++) {
+					String str = strs[i]; 
+					// logger.info(str);
+					if (i == 1) {
+						gr.setQueryNum(str);
+					} else if (i == 3) {
+						receveid = str;
+						gr.setBuyid(str);
+					} else if (i == 4) {
+						gr.setCheckNum(str);
+					} else if (i == 5) {
+						rows = str;
+						OrderReceipt grmap = map.get(receveid + "_" + rows);
+						if (null == grmap) {
+							gr.setId(id);
+							gr.setStatues(1);
+							id++;
+							map.put(receveid + "_" + rows, gr);
+						}
+						gr.setUuid(receveid + "_" + rows);
+					} else if (i == 6) {
+						gr.setGoodsnum(str);
+					} else if (i == 7) {
+						gr.setGoodsName(str);
+					} else if (i == 9) {
+						gr.setBranchid(str);
+						// gr.setOrdertype(str);
+					} else if (i == 10) {
+						gr.setBranchName(str);
+					} else if (i == 11) {
+						double realnum = Double.valueOf(str);
+						int re = (int) realnum;
+						gr.setOrderNum(Integer.valueOf(re));
+					} else if (i == 12) {
+						double realnum = Double.valueOf(str);
+						int re = (int) realnum;
+						gr.setRecevenum(re);
+					} else if (i == 13) {
+						double realnum = Double.valueOf(str);
+						int re = (int) realnum;
+						gr.setRefusenum(re);
+					} else if (i == 14) {
+						gr.setReceveTime(str);
+					} else if (i == 15) {
+						gr.setOrdertype(str);
+					} else if (i == 16) {
+						gr.setActiveordertiem(str);
+					} else if (i == 17) {
+						gr.setStatuesName(str);
+					} else if (i == 20) {
+						gr.setPici(str);
+					}
+				}
+			} 
+		}  
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace(); 
+	}  
+	 
+	flag = saveOut(map, starttime, endtime);
+	// GoodsReceitManager.map = map;
+	// logger.info(StringUtill.GetJson(map));
+	return flag;
+}
+
 	public static boolean saveOut(Elements en, String starttime, String endtime) {
 		int id = getMaxid();
 
 		Map<String, OrderReceipt> map = new HashMap<String, OrderReceipt>();
+		
 		boolean flag = true;
 		if (!en.isEmpty()) {
 			Iterator<Element> it = en.iterator();
@@ -401,11 +669,13 @@ public class OrderReceitManager {
 							gr.setOrdertype(str);
 						} else if (i == 16) {
 							gr.setActiveordertiem(str);
+						} else if (i == 17) {
+							gr.setStatuesName(str);
 						} else if (i == 20) {
 							gr.setPici(str);
 						}
 					}
-				}
+				} 
 			}
 		}
 		// logger.info(map);
@@ -479,10 +749,12 @@ public class OrderReceitManager {
 							gr.setRefusenum(re);
 						} else if (i == 12) {
 							gr.setReceveTime(str);
-						} else if (i == 13) {
+						} else if (i == 13) { 
 							gr.setOrdertype(str);
 						} else if (i == 14) {
 							gr.setActiveordertiem(str);
+						}else if (i == 15) {
+							gr.setStatuesName(str);
 						}
 					}
 				}
@@ -572,7 +844,8 @@ public class OrderReceitManager {
 			p.setActiveordertiem(rs.getString("activeordertiem"));
 			p.setCheckNum(rs.getString("checknum"));
 			p.setRefusenum(rs.getInt("refusenum"));  
-			p.setPrintNum(rs.getInt("printnum"));  
+			p.setPrintNum(rs.getInt("printnum")); 
+			p.setStatuesName(rs.getString("statuesname"));
 		} catch (SQLException e) {
 			p = null;
 			// logger.info(e);

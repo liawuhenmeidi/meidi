@@ -25,8 +25,8 @@ String listallpp = StringUtill.GetJson(listallp);
 //System.out.println(listallpp);
 Map<Integer,Branch> branchmap = BranchService.getMap();
 
-Inventory inventory = new Inventory(); 
-String invent = "[]"; 
+inventory.Inventory inventory = new inventory.Inventory(); 
+String invent = "[]";  
 Branch outbranch = new Branch();
 Branch inbranch = new Branch(); 
 String remark = "";  

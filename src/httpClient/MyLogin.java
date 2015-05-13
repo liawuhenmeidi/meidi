@@ -29,18 +29,18 @@ public class MyLogin {
 	public  static String url = "https://passport.suning.com/ids/login";
 	//public  static String url = "http://scs.suning.com/sps/portal/showPortalPage.action";
 	public static boolean loginpost(URI uri) {  
-    	// 创建默认的httpClient实例.     	  
+    	// 创建默认的httpClient实例.     	   
         try{   
         	String uuid = UUID.randomUUID().toString();
         	HttpUriRequest login = RequestBuilder.post()
             .setUri(uri)   
             .addParameter("service", "https://scs.suning.com/sps/auth?targetUrl=http%3A%2F%2Fscs.suning.com%2Fsps%2Fmember%2Flogon.do")
             .addParameter("uuid", uuid) 
-            .addParameter("loginTheme", "scs")  
+            .addParameter("loginTheme", "scs")   
             .addParameter("username", MyMainClient.getCacheUsername()) 
             .addParameter("password", MyMainClient.getCachePassword())
-            .build();    
-	        logger.info("executing request " + login.getURI());  
+            .build();     
+	//logger.info("executing request " + login.getURI());  
 	        CloseableHttpResponse response2 = MyMainClient.getHttpclient().execute(login);
 	         
 	        try { 
@@ -65,7 +65,7 @@ public class MyLogin {
                
 	            if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY || 
 	            		statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
-	            //logger.info(statusCode);     
+	            logger.info(statusCode);     
 	            	if(response2.getHeaders("location").length > 0){
 	            		/*Header[] h = response2.getHeaders("location") ;
 	            		for(int i=0;i<h.length;i++){
@@ -87,16 +87,16 @@ public class MyLogin {
 	            }
 	        } catch (Exception e) {  
 	        	e.printStackTrace();
-	        } finally {  
-	        	response2.close();
+	        } finally {   
+	        	response2.close(); 
 	        }  
 	        return true;
         } catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			logger.info(e);
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
+			logger.info(e); 
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.info(e);
 		} finally {
             
         } 
@@ -106,36 +106,40 @@ public class MyLogin {
 	public static boolean loginget(URI uri) {  
     	// 创建默认的httpClient实例.     	
         try{ 
+        	//logger.info(1);
         	String uuid = UUID.randomUUID().toString();
         	HttpUriRequest login = RequestBuilder.post()
             .setUri(uri)
             .addParameter("service", "https://scs.suning.com/sps/auth?targetUrl=http%3A%2F%2Fscs.suning.com%2Fsps%2Fmember%2Flogon.do")
             .addParameter("uuid", uuid)
-            .addParameter("loginTheme", "scs")
+            .addParameter("loginTheme", "scs") 
             .addParameter("username", MyMainClient.getCacheUsername()) 
             .addParameter("password", MyMainClient.getCachePassword())
             .build();
+        	//logger.info(1);
 	      //  System.out.println("executing request " + login.getURI());  
 	        CloseableHttpResponse response2 = MyMainClient.getHttpclient().execute(login);
-	        
+	      //  logger.info(response2); 
 	        try {  
 	        	HttpEntity entity = response2.getEntity();
- 
+  
 	            EntityUtils.consume(entity); 
                 int statusCode = response2.getStatusLine().getStatusCode();
-               // logger.info(statusCode);
+                logger.info(statusCode);
 	            if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY || 
 	            		statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
-	            	
+	            	 
 	            	if(response2.getHeaders("location").length > 0){
 	            		String locationURL = response2.getHeaders("location")[0].toString();
 	            		locationURL = locationURL.substring(10);
 	            		//logger.info(locationURL); 
-	            //		System.out.println(locationURL);
-	            		response2.close();
+	            //		System.out.println(locationURL); 
+	            		response2.close(); 
 	            		URL url = new URL(locationURL);
+	            		
 	            		URI uri2 = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
-	            		loginget(uri2);
+	            	//	logger.info(uri2 ); 
+	            		loginget(uri2); 
 	            	}
 	            	 
 	            }else{
@@ -146,20 +150,19 @@ public class MyLogin {
 	           
 	            
 	        } catch (Exception e) {  
-	        	e.printStackTrace();
+	        	logger.info(e); 
 	        } finally {  
 	        	response2.close();
 	        }  
 	        return true;
         } catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info(e);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info(e);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info(e);
 		} finally {
             
         }

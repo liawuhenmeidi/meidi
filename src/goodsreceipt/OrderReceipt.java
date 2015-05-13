@@ -32,8 +32,17 @@ public class OrderReceipt {
     private String ordertime ; // 退货订单日期 
     private String activeordertiem ; // 退货订单有效期
     private String pici; //  批次 
-    private int printNum;  //  打印次数
+    private int printNum;  //  打印次数 
+    private String statuesName ; // 订单状态 
     
+	public String getStatuesName() {
+		return statuesName;
+	}
+
+	public void setStatuesName(String statuesName) {
+		this.statuesName = statuesName;
+	}
+
 	public int getPrintNum() {
 		return printNum;
 	}

@@ -20,7 +20,7 @@ public class OrderGoods {
 	private int tid; // 产品id
 	private int cid; // 产品类别id
 
-	private String tname;
+	private String tname; 
 	private Product product;
 
 	private int statues; // 1常规 2 特价 3 样机 4 换货 5 赠品 6 店外退货 7 已入库常规退货 8 已入库特价退货 9
@@ -208,11 +208,11 @@ public class OrderGoods {
 
 	public void setMid(int mid) {
 		this.mid = mid;
-	}
-
+	} 
+ 
 	public Product getProduct() {
-		if (tid != 0) {
-			System.out.print(tid);
+		if (tid != 0) {  
+			//System.out.print("tid"+tid); 
 			product = ProductService.getIDmap().get(tid);
 		}
 		return product;

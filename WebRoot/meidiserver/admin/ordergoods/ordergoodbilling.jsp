@@ -1,16 +1,16 @@
 <%@ page language="java"  import="java.util.*,ordersgoods.*,branchtype.*,product.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%    
-request.setCharacterEncoding("utf-8");  
-User user = (User)session.getAttribute("user");       
+<%     
+request.setCharacterEncoding("utf-8");    
+User user = (User)session.getAttribute("user");          
 //Map<String,List<OrderGoods>> map  = OrderGoodsAllManager.getbillingmap(user,OrderMessage.billing); 
- // System.out.println(StringUtill.GetJson(map));
-   
- String branchtype = request.getParameter("branchtype");   
-List<BranchType> listgt = BranchTypeManager.getLocate();    
+ // System.out.println(StringUtill.GetJson(map)); 
+     
+ String branchtype = request.getParameter("branchtype");    
+List<BranchType> listgt = BranchTypeManager.getLocate();     
  Map<String,Map<String,List<OrderGoods>>> map  = OrderGoodsAllManager.getbillingmap(user,OrderMessage.billing,branchtype); 
- 
+  
 %>            
-<!DOCTYPE html> 
+<!DOCTYPE html>    
 <html>  
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -68,8 +68,8 @@ function check(){
   </jsp:include>   
   <div class="weizhi_head">现在位置：查看订单</div>
   <form action="ordergoodbilling.jsp" method="post">
-		<table> 
-			<tr>
+		<table>   
+			<tr> 
 				<td>销售系统： <select id="branchtype" name="branchtype">
 						<option></option> 
 						<%
@@ -79,7 +79,7 @@ function check(){
 									if (bt.getTypestatues() == 1) {
 						%>
 						<option value="<%=bt.getId()%>"><%=bt.getName()%></option>
-						<%
+						<% 
 							}
 								}
 							}
@@ -97,7 +97,9 @@ function check(){
 
 <table width="100%" border="0" cellspacing="1"  id="table"> 
   <tr class="dsc"> 
-    <td  class="s_list_m"  align="center">订单号</td>
+
+    <td  class="s_list_m"  align="center">卖场订单号</td> 
+  <td  class="s_list_m"  align="center">要货单号</td>
     <td  class="s_list_m"  align="center">订单名称</td>
     <td  class="s_list_m" align="center">订单时间</td>
      <td  class="s_list_m" align="center">有效时间</td>
@@ -116,17 +118,29 @@ function check(){
 			Set<Map.Entry<String,List<OrderGoods>>> mapsent = maps.entrySet();
 			Iterator<Map.Entry<String,List<OrderGoods>>> itmaps = mapsent.iterator();
 			while(itmaps.hasNext()){ 
+				Set<Integer> listomid = new HashSet<Integer>();
 				Map.Entry<String,List<OrderGoods>> enmaps =  itmaps.next();
 				List<OrderGoods> o =enmaps.getValue();
-				String oid = o.get(0).getOid();  
+				if(!o.isEmpty()){  
+					Iterator<OrderGoods> it = o.iterator();
+					while(it.hasNext()){
+						OrderGoods og = it.next();
+						listomid.add(og.getMid());
+					} 
+				}  
+				 
+				String oid = o.get(0).getOid(); 
+				String uuid = o.get(0).getUuid();
 				String time = o.get(0).getUuidtime();
 				String statues = o.get(0).getOpstatuesName(); 
 				String endtime = o.get(0).getEffectiveendtime();
 				exportName = o.get(0).getExportuuid(); 
-  %>                    
- <tr class="asc" ondblclick="detail('ordergoodbillingdetail.jsp?exportName=<%=exportName%>&name=<%=key%>&orderid=<%=oid%>')">
-     <td align="center"><%= oid%></td>    
-     <td align="center"><%=key %></td> 
+  %>                      
+ <tr class="asc" ondblclick="detail('ordergoodbillingdetail.jsp?exportName=<%=exportName%>&name=<%=uuid%>&orderid=<%=oid%>')">
+     
+     <td align="center"><%= oid%></td>  
+       <td align="center"><%= listomid.toString()%></td> 
+     <td align="center"><%=uuid %></td> 
      <td align="center"><%=time %></td>  
       <td align="center"><%=StringUtill.getNotNUll(endtime)%></td>     
      <td align="center"><%=statues %></td>  

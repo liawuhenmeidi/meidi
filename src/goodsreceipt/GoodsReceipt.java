@@ -126,7 +126,7 @@ public class GoodsReceipt {
 	}
  
 	public int getBidSN() {  
-		System.out.println("GoodsReceipt"+getBranchidSN());
+		//System.out.println("GoodsReceipt"+getBranchidSN());
 		Branch b = BranchService.getNumMap(SaleModel.SuNing).get(getBranchidSN()); 
 		if(null != b){ 
 			bid = b.getId();  

@@ -5,6 +5,9 @@ import goodsreceipt.OrderReceipt;
 import goodsreceipt.OrderReceitManager;
 import group.Group;
 
+import inventory.InventoryBranch;
+import inventory.InventoryBranchManager;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -12,8 +15,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +64,9 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.util.Region;
 import org.apache.poi.ss.usermodel.Font;
+
+import product.Product;
+import product.ProductService;
 
 import category.Category;
 import category.CategoryService;
@@ -903,24 +911,14 @@ public class PrintServlet extends HttpServlet {
 	}
 
 	public void exportOrderGoodsSN(HttpServletRequest request,
-			HttpServletResponse response, int expor) {
+			HttpServletResponse response, List<OrderGoodsAll> list) {
 		User user = (User) request.getSession().getAttribute("user");
 
 		String name = request.getParameter("name");
-		String ids = request.getParameter("ids");
-		String branchtype = request.getParameter("branchtype");
-		String statue = request.getParameter("statues");
-		String typestatues = request.getParameter("typestatues");
+		
 		String exportuuid = (String) request.getAttribute("exportuuid");
 
-		List<OrderGoodsAll> list = null;
-		if (StringUtill.isNull(ids)) {
-			list = OrderGoodsAllManager.getlist(user, OrderMessage.billing,
-					exportuuid);
-		} else {
-			list = OrderGoodsAllManager.getlist(user, OrderMessage.billing,
-					exportuuid, ids);
-		}
+		
 		// logger.info(name);
 		/*
 		 * List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
@@ -1176,8 +1174,7 @@ public class PrintServlet extends HttpServlet {
 			for (int j = 0; j < listog.size(); j++) {
 				OrderGoods og = listog.get(j);
 
-				if (expor == CategoryService.getmap().get(og.getCid())
-						.getExportmodel()) {
+				
 
 					row = sheet.createRow((int) count);
 					count++;
@@ -1206,7 +1203,7 @@ public class PrintServlet extends HttpServlet {
 					cell.setCellStyle(style);
 					// 第四步，创建单元格，并设置值
 				}
-			}
+			
 
 		}
 		// System.out.println(count);
@@ -1250,18 +1247,15 @@ public class PrintServlet extends HttpServlet {
 	}
 
 	public void exportOrderGoodsGM(HttpServletRequest request,
-			HttpServletResponse response, int export) {
+			HttpServletResponse response, List<OrderGoodsAll> listAll) {
 		User user = (User) request.getSession().getAttribute("user");
-		String uuid = UUID.randomUUID().toString();
+		
 		String name = request.getParameter("name");
-		String ids = request.getParameter("ids");
-		String branchtype = request.getParameter("branchtype");
-		String statue = request.getParameter("statues");
-		String typestatues = request.getParameter("typestatues");
+	
+		
 		String exportuuid = (String) request.getAttribute("exportuuid");
 		// logger.info(name);
-		List<OrderGoodsAll> listAll = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, exportuuid, ids);
+		
 
 		Map<Integer, Map<Integer, Map<Integer, OrderGoods>>> map = new HashMap<Integer, Map<Integer, Map<Integer, OrderGoods>>>();
 
@@ -1379,8 +1373,7 @@ public class PrintServlet extends HttpServlet {
 						Map.Entry<Integer, OrderGoods> mapet = itt.next();
 						OrderGoods og = mapet.getValue();
 						// logger.info(og);
-						if (export == CategoryService.getmap().get(og.getCid())
-								.getExportmodel()) {
+						
 							String message = "";
 							if (og.getStatues() == 1) {
 								message = "正常";
@@ -1418,7 +1411,7 @@ public class PrintServlet extends HttpServlet {
 							cell.setCellStyle(style);
 						}
 					}
-				}
+				
 			}
 		}
 
@@ -1468,18 +1461,13 @@ public class PrintServlet extends HttpServlet {
 	}
 
 	public void exportOrderGoodsGMDC(HttpServletRequest request,
-			HttpServletResponse response, int export) {
-		User user = (User) request.getSession().getAttribute("user");
-		String uuid = UUID.randomUUID().toString();
+			HttpServletResponse response, List<OrderGoodsAll> listAll) {
+	
 		String name = request.getParameter("name");
-		String ids = request.getParameter("ids");
-		String branchtype = request.getParameter("branchtype");
-		String statue = request.getParameter("statues");
-		String typestatues = request.getParameter("typestatues");
+		
 		String exportuuid = (String) request.getAttribute("exportuuid");
 		// logger.info(name);
-		List<OrderGoodsAll> listAll = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, exportuuid, ids);
+	
 		Map<Integer, Map<Integer, Map<Integer, OrderGoods>>> map = new HashMap<Integer, Map<Integer, Map<Integer, OrderGoods>>>();
 
 		for (int i = 0; i < listAll.size(); i++) {
@@ -1628,8 +1616,7 @@ public class PrintServlet extends HttpServlet {
 						Map.Entry<Integer, OrderGoods> mapet = itt.next();
 						OrderGoods og = mapet.getValue();
 						// logger.info(og);
-						if (export == CategoryService.getmap().get(og.getCid())
-								.getExportmodel()) {
+					
 							String message = "";
 							if (og.getStatues() == 1) {
 								message = "正常";
@@ -1697,7 +1684,6 @@ public class PrintServlet extends HttpServlet {
 							cell.setCellStyle(style);
 						}
 					}
-				}
 			}
 		}
 
@@ -1747,18 +1733,14 @@ public class PrintServlet extends HttpServlet {
 	}
 
 	public void exportOrderGoodsreturnGM(HttpServletRequest request,
-			HttpServletResponse response, int export) {
+			HttpServletResponse response, List<OrderGoodsAll> listAll) {
 		User user = (User) request.getSession().getAttribute("user");
 
 		String name = request.getParameter("name");
-		String ids = request.getParameter("ids");
-		String branchtype = request.getParameter("branchtype");
-		String statue = request.getParameter("statues");
-		String typestatues = request.getParameter("typestatues");
+		
 		String exportuuid = (String) request.getAttribute("exportuuid");
 		// logger.info(name);
-		List<OrderGoodsAll> listAll = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, exportuuid, ids);
+		
 		Map<Integer, Map<Integer, Map<Integer, OrderGoods>>> map = new HashMap<Integer, Map<Integer, Map<Integer, OrderGoods>>>();
 
 		for (int i = 0; i < listAll.size(); i++) {
@@ -1886,8 +1868,7 @@ public class PrintServlet extends HttpServlet {
 						Map.Entry<Integer, OrderGoods> mapet = itt.next();
 						OrderGoods og = mapet.getValue();
 						// logger.info(og);
-						if (export == CategoryService.getmap().get(og.getCid())
-								.getExportmodel()) {
+						
 							String message = "";
 							if (og.getStatues() == 1) {
 								message = "正常";
@@ -1926,9 +1907,8 @@ public class PrintServlet extends HttpServlet {
 						}
 					}
 				}
-			}
 		}
-
+ 
 		// 第四步，创建单元格，并设置值
 
 		// System.out.println(count);
@@ -1971,14 +1951,13 @@ public class PrintServlet extends HttpServlet {
 	}
 
 	public void exportOrderGoodsreturnSN(HttpServletRequest request,
-			HttpServletResponse response, int export) {
+			HttpServletResponse response, List<OrderGoodsAll> list) {
 		User user = (User) request.getSession().getAttribute("user");
 
 		String name = request.getParameter("name");
-		String ids = request.getParameter("ids");
+	
 		String exportuuid = (String) request.getAttribute("exportuuid");
-		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,
-				OrderMessage.billing, exportuuid, ids);
+		
 
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -2194,8 +2173,7 @@ public class PrintServlet extends HttpServlet {
 
 			for (int j = 0; j < listog.size(); j++) {
 				OrderGoods og = listog.get(j);
-				if (export == CategoryService.getmap().get(og.getCid())
-						.getExportmodel()) {
+				
 					String serialnumber = og.getSerialnumber();
 					if (StringUtill.isNull(serialnumber)) {
 						serialnumber = Company.supply;
@@ -2226,7 +2204,6 @@ public class PrintServlet extends HttpServlet {
 					cell.setCellStyle(style);
 					// 第四步，创建单元格，并设置值
 				}
-			}
 
 		}
 		// System.out.println(count);
@@ -2422,11 +2399,11 @@ public class PrintServlet extends HttpServlet {
 
 		}
 		
-		
+		 
 		
 		// System.out.println(count);
 		// 第六步，将文件存到指定位置
-		try {
+		try { 
 			response.setContentType("APPLICATION/OCTET-STREAM");
 			response.setCharacterEncoding("UTF-8");
 			response.setHeader("Content-Disposition",
@@ -2440,13 +2417,13 @@ public class PrintServlet extends HttpServlet {
 				List<String> listsql = new ArrayList<String>();
 				// String sqlsend = 
 				String sql = OrderMessageManager.sendprint(ids);
-				listsql.add(sql);
+				listsql.add(sql);   
 				List<String> sqlinventory = OrderGoodsAllManager
 						.updateSendcount(user, map);
 				listsql.addAll(sqlinventory);
 				DBUtill.sava(listsql);
-			}
-
+			} 
+  
 			// logger.info(123);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2459,8 +2436,8 @@ public class PrintServlet extends HttpServlet {
 
 		String[] ids = request.getParameterValues("id");
 		String buyid = request.getParameter("buyid");
-		Map<String, OrderReceipt> map = OrderReceitManager.getMap(buyid);
-		String checkNum = "";
+		Map<String, OrderReceipt> map = OrderReceitManager.getMap(buyid,"");
+		String checkNum = ""; 
 		List<String> listor = Arrays.asList(ids);
 		// logger.info(listor);
 		Map<Integer, List<OrderReceipt>> maps = new HashMap<Integer, List<OrderReceipt>>();
@@ -2469,7 +2446,7 @@ public class PrintServlet extends HttpServlet {
 			Iterator<Map.Entry<String, OrderReceipt>> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, OrderReceipt> mapent = it.next();
-				OrderReceipt gr = mapent.getValue();
+				OrderReceipt gr = mapent.getValue(); 
 				if (listor.contains(gr.getId() + "")) {
 					// logger.info(gr.getId());
 					checkNum = gr.getCheckNum();
@@ -2857,22 +2834,27 @@ public class PrintServlet extends HttpServlet {
 
 	public void OrderGoodsbilling(HttpServletRequest request,
 			HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+
 		String uuid = TimeUtill.gettimeString();
 		String name = request.getParameter("name");
 		String ids = request.getParameter("ids");
+		String branchtype = request.getParameter("branchtype");
+		String statue = request.getParameter("statues");
+		String[] statues = statue.split("_");
+		List<String> listStatues = Arrays.asList(statues); 
+		String typestatues = request.getParameter("typestatues");
 		String exportmodel = request.getParameter("exportmodel");
 		int expor = -1;
 		if (!StringUtill.isNull(exportmodel)) {
 			expor = Integer.valueOf(exportmodel);
 		}
+		
+		
 		/*
 		 * BranchType bt = null ; if(!StringUtill.isNull(branchtype)){ bt =
 		 * BranchTypeManager .getLocate(Integer.valueOf(branchtype)); }
 		 */
-
-		// logger.info(bt.getExportmodel());
-		String statue = request.getParameter("statues");
-		String typestatues = request.getParameter("typestatues");
 		String exportuuid = UUID.randomUUID().toString();
 		request.setAttribute("exportuuid", exportuuid);
 		logger.info(typestatues);
@@ -2884,20 +2866,76 @@ public class PrintServlet extends HttpServlet {
 			String sql = OrderMessageManager.billing(exportuuid, name, ids,
 					statue, expor);
 			// logger.info(typestatues);
-			if (DBUtill.sava(sql)) {
+			if (DBUtill.sava(sql)) {  
+				List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.examine,ids,statue,exportmodel);
+				/*Map<String,InventoryBranch> map = InventoryBranchManager.getmapTypeBranch(ids);
+				
+				Set<Integer> pids = new HashSet<Integer>();
+				if(list.isEmpty()){
+					Iterator<OrderGoodsAll> it = list.iterator();
+					while(it.hasNext()){
+						OrderGoodsAll oa = it.next();
+						List<OrderGoods> listog = oa.getList();
+						for (int j = 0; j < listog.size(); j++) {
+							OrderGoods og = listog.get(j);
+							pids.add(og.getTid());
+							}
+					}
+				} */
+				 
+				/*Map<Integer,OrderGoodsAll> maps = new HashMap<Integer,OrderGoodsAll>();
+				if (null != map) {
+					Collection<InventoryBranch> c = map.values();
+					if (!c.isEmpty()) {
+						Iterator<InventoryBranch> it = c.iterator();
+						while (it.hasNext()) {
+							InventoryBranch ib = it.next();
+							if (StringUtill.isNull(ib.getOrderNUmSN())) {
+					//System.out.println(Integer.valueOf(ib.getTypeid())); 
+								if (!pids.contains(Integer.valueOf(ib.getTypeid())) && ib.getPapercount() > 0 && listStatues.contains(ib.getTypeStatues()+"")) {
+									OrderGoodsAll oa = maps.get(ib.getBranchid());
+									if(null == oa){
+										oa = new OrderGoodsAll();
+										OrderMessage om = new OrderMessage();
+										oa.setOm(om);
+										om.setBranchid(ib.getBranchid());
+									}
+								   
+									List<OrderGoods> listog = oa.getList();
+									
+									if(null == listog){
+										listog = new ArrayList<OrderGoods>();
+									}
+									
+									OrderGoods og = new OrderGoods();
+									
+									og.setTid(Integer.valueOf(ib.getTypeid()));
+									og.setOrdernum(ib.getPapercount());
+									og.setRealnum(ib.getPapercount()); 
+									
+		
+				}
+							}
+						}
+					}
+
+				}
+				
+				list.addAll(maps.values()); */
+				
 				if ("0".equals(typestatues)) {
 					if (ExportModel.SuNing == expor) {
-						exportOrderGoodsSN(request, response, expor);
+						exportOrderGoodsSN(request, response, list);
 					} else if (ExportModel.GuoMei == expor) {
-						exportOrderGoodsGM(request, response, expor);
+						exportOrderGoodsGM(request, response, list);
 					} else if (ExportModel.GuoMeiDC == expor) {
-						exportOrderGoodsGMDC(request, response, expor);
+						exportOrderGoodsGMDC(request, response, list);
 					}
 				} else if ("1".equals(typestatues)) {
 					if (ExportModel.SuNing == expor) {
-						exportOrderGoodsreturnSN(request, response, expor);
+						exportOrderGoodsreturnSN(request, response, list);
 					} else if (ExportModel.GuoMei == expor) {
-						exportOrderGoodsreturnGM(request, response, expor);
+						exportOrderGoodsreturnGM(request, response, list);
 					}
 				} else {
 					try {

@@ -34,7 +34,6 @@ public class InventoryBranch {
 	// 订单过期时间
 	private String activetime ;
 	
-	
 	public boolean isquery() {
 		boolean flag = false;
 		int month = TimeUtill.getMonth();

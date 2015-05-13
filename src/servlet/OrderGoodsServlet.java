@@ -63,7 +63,7 @@ public class OrderGoodsServlet extends HttpServlet {
 		// String uuid = request.getParameter("uuid");
 		logger.info(method);
  
-		if ("add".equals(method)) {
+		if ("add".equals(method) || "disableadd".equals(method)) { 
 			add(request, response);
 
 		} else if ("updaterealsendnum".equals(method)) {
@@ -81,6 +81,7 @@ public class OrderGoodsServlet extends HttpServlet {
 
 	public void add(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
+		String method = request.getParameter("method");
 		int statues = -1;
 		// String oid = request.getParameter("oid");
 		String branchid = request.getParameter("branchid");
@@ -152,15 +153,15 @@ public class OrderGoodsServlet extends HttpServlet {
 				if (StringUtill.isNull(num)) {
 					num = 0 + "";
 				}
-
+ 
 				if (StringUtill.isNull(invenNum)) {
 					invenNum = "0";
 				}
 				if (!StringUtill.isNull(type) && !StringUtill.isNull(sta)) {
 					OrderGoods op = new OrderGoods();
-					// op.setOid(oid);
+					// op.setOid(oid); 
 					// op.setOpstatues(Integer.valueOf(opstatues));
-					logger.info(Integer.valueOf(sta));  
+					//logger.info(Integer.valueOf(sta));  
 					if(Integer.valueOf(sta) == 3){ 
 						op.setOrdernum(Integer.valueOf(num)); 
 					}else {
@@ -184,13 +185,16 @@ public class OrderGoodsServlet extends HttpServlet {
 
 			}
 		}
-
+ 
 		oa.setOm(om);
 		oa.setList(list);
 		// logger.info("one");
 		if (OrderGoodsAllManager.save(user, oa)) {
-			try {
+			try {  
 				// logger.info(statues);
+				if("disableadd".equals(method)){
+					DBUtill.sava(InventoryBranchMessageManager.update(list));
+				}
 				if (0 == statues) {
 					response.sendRedirect("../jieguo.jsp?type=ordergoodsadd&mark=" + 1);
 				} else {
@@ -281,14 +285,16 @@ public class OrderGoodsServlet extends HttpServlet {
 								|| og.getStatues() == 8
 								|| og.getStatues() == 9) {
 							flag = true ;
+							operatortype = 16;
 							realcont = -Integer.valueOf(returnrealsendnum) ;
 						} else if (og.getStatues() == 4) { 
-							flag = true ;
-							upflag = true ;
+							flag = true ; 
+							//upflag = true ; 
+							operatortype = 17;
 							/*realcont = (Integer.valueOf(realsendnum)
 									- og.getRealnum() - Integer
 									.valueOf(returnrealsendnum));*/
-							realcont = (Integer.valueOf(realsendnum)
+							realcont = (Integer.valueOf(realsendnum) 
 									 - Integer 
 									.valueOf(returnrealsendnum));
 

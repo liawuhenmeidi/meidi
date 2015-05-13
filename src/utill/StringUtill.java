@@ -40,7 +40,7 @@ public class StringUtill {
         
        return "" ;  
     } 
-    
+      
     public static String GetJson(List list){ 
     	//long start= System.currentTimeMillis(); 
     	if(null != list){
@@ -53,9 +53,9 @@ public class StringUtill {
     }
     
     public static String GetJson(Object object){ 
- 	   
+ 	    
     	if(null != object){
-         if(object instanceof Collection){  
+         if(object instanceof Collection || object instanceof Object[]){  
         	 JSONArray jsObj = JSONArray.fromObject(object); 
         	 return jsObj.toString(); 
          }else {
@@ -67,6 +67,8 @@ public class StringUtill {
     	} 
     	 return "";
     }
+    
+  
     
     public static String GetSqlInGroup(List<Group> listg){
     	String str = "(";
@@ -146,7 +148,19 @@ public class StringUtill {
     	} 
     	return str ;
     }
-         
+          
+    public static String getStr(List<Integer> list){
+    	String str = "";
+    	if(null != list && list.size() != 0){
+    		for(int i=0;i<list.size();i++){
+    			str += ","+list.get(i);
+    		}  
+    		//logger.info(str);
+    		str = "("+str.substring(1,str.length())+")";
+    	} 
+    	return str ;
+    }
+    
     public static String getStr(Set<Integer> set){
     	String str = ""; 
     	if(null != set){ 

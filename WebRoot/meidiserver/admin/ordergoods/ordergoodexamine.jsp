@@ -1,5 +1,5 @@
 <%@ page language="java"
-	import="java.util.*,ordersgoods.*,product.*,branchtype.*,exportModel.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;"
+	import="java.util.*,ordersgoods.*,product.*,branchtype.*,enums.*,exportModel.*,org.apache.commons.logging.*,utill.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <% 
 	request.setCharacterEncoding("utf-8"); 
@@ -167,35 +167,29 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 						%>
 						</select>
 					</td>
-								
-								
+					<td></td>
+					<td></td>
+					<td></td>
 								<td>产品状态：
 								<table>  
-							<tr> 
-								<td id="statues1" style="display:none"><input type="checkbox" name="statues"  value="1"
-								>常规机</td>
-								<td id="statues2" style="display:none"><input type="checkbox" name="statues"  value="2"
-								>特价</td>
-								<td id="statues3" style="display:none"><input type="checkbox" name="statues"  value="3"
-								>样机</td>
-								<td id="statues4" style="display:none"><input type="checkbox" name="statues"  value="4"
-								>换货</td>
-								<td id="statues5" style="display:none"><input type="checkbox" name="statues"  value="5"
-								>赠品</td> 
-								<td id="statues6" style="display:none"><input type="checkbox" name="statues"  value="6"
-								>店外退货</td>
-								<td id="statues7" style="display:none"><input type="checkbox" name="statues" value="7"
-								>已入库常规退货</td>
-								<td id="statues8" style="display:none"><input type="checkbox" name="statues"  value="8"
-								>已入库特价退货</td>
-								<td id="statues9" style="display:none"><input type="checkbox" name="statues"  value="9"
-								>已入库样机退货</td>
-							</tr>
-							
-							</table>
+							<tr>  
+							<% 
+							ProductSaleModel.Model[] model = ProductSaleModel.Model.values();
+							for(int i=0;i<model.length;i++){
+								ProductSaleModel.Model pm = model[i];
+								
+								%>
+								<td id="statues<%=pm.getValue() %>" style="display:none"><input type="checkbox" name="statues"  value="<%=pm.getValue() %>"
+								><%=pm %></td>
+								  
+								<%
+							}  
 							 
-							
+							%>				
+							</tr>
+							</table>
 							</td>
+					
 							</tr>
 						</table></td>
 
@@ -233,13 +227,13 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 									
 									<%
 								}
-							} 
+							}  
 				%>
 				<tr class="asc"
 					ondblclick="detail('ordergoodsdetail.jsp?id=<%=key%>&type=<%=OrderMessage.examine%>&statues=<%=OrderMessage.unexamine%>')">
 					<td align="center"><input type="checkbox"
 						value="<%=o.getOm().getId()%>" name="omid" id="check_box"></input>
-					</td>
+					</td> 
 					<td align="center"><%=o.getOm().getOid()%></td>
 					<td align="center"><%=o.getOm().getSubmittime()%></td>
 					<td align="center"><%=o.getOm().getBranchname()%></td>

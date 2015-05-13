@@ -1,6 +1,7 @@
 package ordersgoods;
 
 import goodsreceipt.OrderReceipt;
+import inventory.InventoryBranch;
 import inventory.InventoryBranchManager;
 
 import java.sql.Connection;
@@ -141,7 +142,7 @@ public class OrderGoodsAllManager {
 	}
 
 	public static Map<String, OrderGoodsAll> getmap(User user, int statues) {
-		Map<String, OrderGoodsAll> map = new HashMap<String, OrderGoodsAll>();
+		Map<String, OrderGoodsAll> map = new LinkedHashMap<String, OrderGoodsAll>();
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user, statues);
 		for (int i = 0; i < list.size(); i++) {
 			OrderGoodsAll oal = list.get(i);
@@ -174,20 +175,20 @@ public class OrderGoodsAllManager {
 
 	public static Map<String, Map<String, List<OrderGoods>>> getbillingmap(
 			User user, int statues, String branchtype) {
-		Map<String, Map<String, List<OrderGoods>>> map = new HashMap<String, Map<String, List<OrderGoods>>>();
+		Map<String, Map<String, List<OrderGoods>>> map = new LinkedHashMap<String, Map<String, List<OrderGoods>>>();
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getbillinglist(user,
 				branchtype);
 		for (int i = 0; i < list.size(); i++) {
-			OrderGoodsAll oal = list.get(i);
+			OrderGoodsAll oal = list.get(i); 
 			List<OrderGoods> listog = oal.getList();
 			if (null != listog) {
 				for (int j = 0; j < listog.size(); j++) {
 					OrderGoods og = listog.get(j);
-					Map<String, List<OrderGoods>> maps = map.get(og.getUuid());
+					Map<String, List<OrderGoods>> maps = map.get(og.getExportuuid());
 					if (null == maps) {
-						maps = new HashMap<String, List<OrderGoods>>();
-						map.put(og.getUuid(), maps);
-					}
+						maps = new LinkedHashMap<String, List<OrderGoods>>();
+						map.put(og.getExportuuid(), maps);
+					} 
 					List<OrderGoods> listogm = maps.get(og.getOid());
 					if (null == listogm) {
 						listogm = new ArrayList<OrderGoods>();
@@ -268,6 +269,40 @@ public class OrderGoodsAllManager {
 				+ " and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
 						listids.toString().length() - 1) + " ) ";
+
+		logger.info(sql);
+		Statement stmt = DB.getStatement(conn);
+
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		// logger.info(rs);
+		try {
+			while (rs.next()) {
+
+				OrderGoodsAll ogs = getOrderGoodsAllFromRs(rs);
+				if (null == og) {
+					og = ogs;
+				} else {
+					og.getList().addAll(ogs.getList());
+				}
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return og;
+	}
+
+	public static OrderGoodsAll getOrderGoodsAllexamByid(User user, String id) {
+		// logger.info(listids);
+		Connection conn = DB.getConn();
+		OrderGoodsAll og = null;
+		String sql = " select * from mdordergoods,mdordermessage  where mdordermessage.id = "
+				+ id
+				+ " and mdordergoods.mid = mdordermessage.id and mdordergoods.billingstatues = 0";
 
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn);
@@ -382,7 +417,7 @@ public class OrderGoodsAllManager {
 				+ " and mdordermessage.opstatues = 1 and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
 						listids.toString().length() - 1)
-				+ " ) order by mdordermessage.submittime";
+				+ " ) order by mdordermessage.submittime desc";
 
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn);
@@ -416,7 +451,8 @@ public class OrderGoodsAllManager {
 				+ opstatues
 				+ " and mdordergoods.opstatues = 0  and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
-						listids.toString().length() - 1) + " ) ";
+						listids.toString().length() - 1)
+				+ " ) order by mdordermessage.id desc";
 
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn);
@@ -459,7 +495,8 @@ public class OrderGoodsAllManager {
 				+ sqlbranch
 				+ " and mdordergoods.uuid != 'null' and  mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
-						listids.toString().length() - 1) + " )";
+						listids.toString().length() - 1)
+				+ " ) order by mdordermessage.id desc ";
 
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn);
@@ -522,12 +559,18 @@ public class OrderGoodsAllManager {
 
 	public static List<OrderGoodsAll> getlist(User user, int opstatues,
 			String[] ids, String[] statues, String exportmodel) {
+
+		List<OrderGoodsAll> list = getlist(user, opstatues,
+				StringUtill.getStr(ids), StringUtill.getStr(statues),
+				exportmodel);
+
+		return list;
+	}
+
+	public static List<OrderGoodsAll> getlist(User user, int opstatues,
+			String ids, String statues, String exportmodel) {
 		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
-		// logger.info(exportmodel);
-		/*
-		 * List<Integer> listbids = BranchService.getListids(Integer
-		 * .valueOf(branchtype));
-		 */
+
 		List<Integer> listbids = CategoryService.getByExportModel(Integer
 				.valueOf(exportmodel));
 		// logger.info(listbids);
@@ -537,10 +580,11 @@ public class OrderGoodsAllManager {
 		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.mid = mdordermessage.id and mdordergoods.cid in ("
 				+ listbids.toString().substring(1,
 						listbids.toString().length() - 1)
-				+ ") and mdordergoods.opstatues = 0  and mdordermessage.id in "
-				+ StringUtill.getStr(ids)
-				+ " and mdordergoods.statues in"
-				+ StringUtill.getStr(statues);
+				+ ") and mdordergoods.opstatues = "
+				+ opstatues
+				+ "  and mdordermessage.id in "
+				+ ids
+				+ " and mdordergoods.statues in" + statues;
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn);
 
@@ -754,15 +798,18 @@ public class OrderGoodsAllManager {
 		}
 
 		return listsql;
-
 	}
 
 	public static List<String> updateSendcount(User user,
 			Map<Integer, Map<Integer, OrderGoodsAll>> map) {
+
+		Map<Integer, Map<String, InventoryBranch>> mapin = InventoryBranchManager
+				.getInventoryMap(user);
+		logger.info(mapin);
 		Set<String> setinit = new HashSet<String>();
 		List<String> listsql = new ArrayList<String>();
 		Set<String> setup = new HashSet<String>();
-		if (null != map) { 
+		if (null != map) {
 			Set<Map.Entry<Integer, Map<Integer, OrderGoodsAll>>> set = map
 					.entrySet();
 			Iterator<Map.Entry<Integer, Map<Integer, OrderGoodsAll>>> it = set
@@ -795,31 +842,36 @@ public class OrderGoodsAllManager {
 							if (og.getStatues() == 6 || og.getStatues() == 7
 									|| og.getStatues() == 8
 									|| og.getStatues() == 9
-									|| og.getStatues() == 5) {
+									|| og.getStatues() == 5
+									|| og.getStatues() == 4) {
 								// realsendnum = -realsendnum;
 								// operatortype = 16;
 								flag = false;
 							} else if (og.getStatues() == 4) {
 								operatortype = 17;
-								flag = true;
 							} else {
 								flag = true;
 							}
 
 							String sqlIB = "";
 							String sqlIBM = "";
-							if (flag) {  
-								//logger.info( og.getTid()); 
-								//logger.info(setup.contains(oa.getOm().getBranchid()+"_"+og.getTid()));
-							
-								if (null == InventoryBranchManager
-										.getInventoryID(user, oa.getOm()
-												.getBranchid(), og.getTid()
-												+ "")  
-										&& !setup.contains(oa.getOm().getBranchid()+"_"+og.getTid())) {
-									
-									setup.add(oa.getOm().getBranchid()+"_"+og.getTid());
-									sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)"
+							if (flag) { 
+								// logger.info( og.getTid());
+								// logger.info(setup.contains(oa.getOm().getBranchid()+"_"+og.getTid()));
+								InventoryBranch in = null;  
+								if (null != mapin.get(oa.getOm().getBranchid())) {
+									in = mapin.get(oa.getOm().getBranchid())
+											.get(og.getTid() + "");
+								}
+								if (null == in
+										&& !setup.contains(oa.getOm()
+												.getBranchid()
+												+ "_"
+												+ og.getTid())) {
+
+									setup.add(oa.getOm().getBranchid() + "_"
+											+ og.getTid());
+									sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
 											+ "  values ( null,"
 											+ og.getCid()
 											+ ", '"
@@ -829,9 +881,11 @@ public class OrderGoodsAllManager {
 											+ "', '"
 											+ realsendnum
 											+ "',"
-											+ oa.getOm().getBranchid() + ")";
+											+ oa.getOm().getBranchid()
+											+ ","
+											+ og.getStatues() + ")";
 
-									sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues)"
+									sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues,typestatues)"
 											+ "  values ( null, '"
 											+ oa.getOm().getBranchid()
 											+ "', '"
@@ -856,7 +910,9 @@ public class OrderGoodsAllManager {
 											+ 1
 											+ ","
 											+ oa.getOm().getBranchid()
-											+ ",-1,0,0,1)";
+											+ ",-1,0,0,1,"
+											+ og.getStatues()
+											+ ")";
 								} else {
 
 									sqlIB = "update mdinventorybranch set  papercount =  ((mdinventorybranch.papercount)*1 + "
@@ -865,9 +921,10 @@ public class OrderGoodsAllManager {
 											+ oa.getOm().getBranchid()
 											+ " and  type = '"
 											+ og.getTid()
-											+ "'";
+											+ "' and typestatues = "
+											+ og.getStatues();
 
-									sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues)"
+									sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues,typestatues)"
 											+ "  values ( null, '"
 											+ oa.getOm().getBranchid()
 											+ "', '"
@@ -908,7 +965,7 @@ public class OrderGoodsAllManager {
 											+ og.getTid()
 											+ "')*1"
 											+ Integer.valueOf(realsendnum)
-											+ ",1)";
+											+ ",1," + og.getStatues() + ")";
 
 								}
 								listsql.add(sqlIB);

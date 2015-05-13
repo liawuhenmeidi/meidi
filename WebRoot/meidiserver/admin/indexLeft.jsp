@@ -23,16 +23,17 @@ function reloadopned(src){
 	$("#main",window.parent.document).find("#contentpage").attr("src",src);
 		//$("#contentpage").attr("src");
   }    
-   
+    
 function getInventory(){
-	
-	var mydate = new Date(); 
+	 
+	var mydate = new Date();  
 	var dates = mydate.getTime();  
 	//alert((dates - date)/1000/60); 
-	if((dates - date)/1000/60<5){  
-		alert("您的操作过于频繁，请稍后重试");
-		return ;
-	}   
+	//if((dates - date)/1000/60<5){  
+	//	alert("您的操作过于频繁，请稍后重试");
+	//	return ;
+	//}   
+	//alert(1);  
 	$("#initInventory").html("正在刷新");
 	//alert(dates - date);
 	$("#initInventory").attr("disabled","true");
@@ -41,12 +42,12 @@ function getInventory(){
 		        type: "post",   
 		         url: "server.jsp",
 		         data:"method=InitInventorySN", 
-		         dataType: "",       
+		         dataType: "",        
 		         success: function (data) { 
 		        	 date = dates;
 		        	 $("#initInventory").html("库存刷新");
 		        	 $("#initInventory").removeAttr("disabled"); 
-		           }, 
+		           },  
 		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 		        // alert(errorThrown); 
 		            } 
@@ -97,7 +98,7 @@ function getInventory(){
             if(UserManager.checkPermissions(user, Group.sale,"r")){
                 %> 
             <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanprintln.jsp')">查看订单页</a></p>
-            <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanTuihuo.jsp')">退货订单</a></p>                  
+                        
              <%}
             
            if(UserManager.checkPermissions(user, Group.callback)){
@@ -105,8 +106,14 @@ function getInventory(){
                 
              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdancallback.jsp')">客服未回访页</a></p>
                <%} 
-           
-           %>
+           if(UserManager.checkPermissions(user, Group.tuihuo)){
+               %> 
+                   
+                <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanTuihuo.jsp')">退货订单</a></p>     
+                  <%} 
+              
+              %> 
+      
            
             </div>  
           </li> 
@@ -232,17 +239,31 @@ function getInventory(){
            if(UserManager.checkPermissions(user, Group.ordergoods,"r")){
                %>  
                  <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">库存刷新</a></p> 
+                 
                 <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssendhistory.jsp')">历史订货单</a></p> 
                  <p ><a href="javascript:void(0);"  onclick="reloadopned('receivegoods/receivegoods.jsp')">收货记录</a></p> 
                  <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventory.jsp')">库存查询</a></p>
+              
+              
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveorder.jsp')">退货订单</a></p>
+                            <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveordertype.jsp')">退货订单统计</a></p>
+              <!--   
+           <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveorderover.jsp')">已退货订单</a></p>
+           -->
+           <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventory.jsp')">销售查询</a></p>
+            <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventorytype.jsp')">库存类别</a></p>
+            
+              
+            <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventoryline.jsp')">线性图</a></p>
+             
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventorybar.jsp')">柱形图</a></p>
+               <!--  -->
+              
                <% 
                } 
            %>
-       
+         
                
-           <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveorder.jsp')">退货订单</a></p>
-           <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveorderover.jsp')">已退货订单</a></p>
-          
            
           
           
@@ -291,7 +312,7 @@ function getInventory(){
           </li>
             <%
          } 
-         
+          
          %>
           
           
