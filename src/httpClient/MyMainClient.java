@@ -4,6 +4,7 @@ import inventory.InventoryBranchManager;
 import httpClient.download.InventoryDownLoad;
 import httpClient.download.InventoryModelDownLoad;
 import httpClient.download.OrderDownLoad;
+import httpClient.download.SaleDownLoad;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,7 +31,7 @@ public class MyMainClient {
 	private static String cacheUsername = "haoyuely@163.com";
 	private static String cachePassword = "sn26524316";
 
-	// 九阳
+	// 九阳 
 	// private static String cacheUsername = "tjhdlshm@163.com";
 	// private static String cachePassword = "lxn123456";
 
@@ -47,17 +48,17 @@ public class MyMainClient {
 		// String branch = StringUtill.toUtf8String("天津宁河店");
 		// branch = "天津宁河店";
 		// branch = "";
-		mc.run();
+		mc.run(); 
 		// List<String> s = InventorySN.getinventory("122707928","9367");
 		// List<String> s = InventorySN.getinventoryModel("105057044",branch,);
 		// List<String> s = InventorySN.getinventoryModel("105057044","");
 		// logger.info(s);
 	}  
-          
+           
 	public synchronized void run() {
-		try {     
+		try {           
 			startinventoryIN(this);
-			//round(this); 
+			//round(this);  
 			// sdi.selectDeliverInform(new
 			// URI("http://scs.suning.com/sps/PurchaseOrderDelivery/orderDelivery.action?menuid=100000111&scspageexptime=1427005676454"),"","",this);
 		} catch (Exception e) {
@@ -65,77 +66,78 @@ public class MyMainClient {
 			e.printStackTrace();
 		}
 	}
-
+  
 	public static void round(MyMainClient mc) {
 		String starttime = TimeUtill.getdateString();
 		String endtime = TimeUtill.getdateString();
-    
-		int count = 0; 
-		starttime = "2015-05-3";
-		endtime = "2015-05-12";  
-		while (count < 80)  {        
-			int num = -9;      
+               
+		int count = 0;     
+		starttime = "2015-05-13"; 
+		endtime = "2015-05-19";   
+		while (count < 3)  {              
+			int num = -6;            
 			starttime = TimeUtill.dataAdd(starttime, num);
 			endtime = TimeUtill.dataAdd(endtime, num);
-			count++;  
-			inventoryOrder.getinventoryOut(starttime, endtime, mc);
-			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
+			count++;   
+			//inventoryOrder.getinventoryOut(starttime, endtime, mc);
+			//inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
 			
 			
 			//OrderDownLoad.saveDB(starttime, endtime);
-			    
+			       
 			//OrderDownLoad.saveDB(starttime, endtime);
 			//inventoryOut.getinventoryOut(starttime, endtime, mc); 
 			//inventoryOut.get(starttime, endtime);  
-			       
+			            
 			//inventoryModelOut.getinventoryOutModel(starttime, endtime, mc);
 			//inventoryModelOut.get(starttime, endtime);
-			   
-	        //inventoryIN.getinventoryIN(starttime, endtime, mc);
-			// inventoryIN.get(starttime, endtime); 
-			 
-		}
-
-	}
- 
-	public synchronized void startinventoryIN(MyMainClient mc) {
-		try {
-			String starttime = TimeUtill.getdateString();
-			String endtime = TimeUtill.getdateString();
-			   
-			   
-			// int count = 0 ;
-			 //starttime = "2015-05-08";
-			// endtime = "2015-05-08";  
-     
-			// 异常退货订单  
-			inventoryOrder.getinventoryOut(starttime, endtime, mc);
-			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
-    
-			// 入库退货信息 
-        
-			//inventoryOut.getinventoryOut(starttime, endtime, mc); 
-			inventoryOut.get(starttime, endtime);  
-			     
-			//inventoryModelOut.getinventoryOutModel(starttime, endtime, mc);
-			inventoryModelOut.get(starttime, endtime);
-			 
+			      
 	        //inventoryIN.getinventoryIN(starttime, endtime, mc);
 			 inventoryIN.get(starttime, endtime);  
-			 
-			// 库存  
+			  
+		}
+	}  
+    
+	public synchronized void startinventoryIN(MyMainClient mc) {
+		try {   
+			String starttime = TimeUtill.getdateString();
+			String endtime = TimeUtill.getdateString();
+			               
+			// int count = 0 ; 
+			//starttime = "2015-05-15";
+			//endtime = "2015-05-15";    
+                    
+			// 异常退货订单      
+			inventoryOrder.getinventoryOut(starttime, endtime, mc);
+			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
+       
+			// 入库退货信息  
+            
+			//inventoryOut.getinventoryOut(starttime, endtime, mc); 
+			inventoryOut.get(starttime, endtime);  
+			         
+			//inventoryModelOut.getinventoryOutModel(starttime, endtime, mc);
+			inventoryModelOut.get(starttime, endtime);
+			  
+	        //inventoryIN.getinventoryIN(starttime, endtime, mc);
+		    inventoryIN.get(starttime, endtime);  
+			       
+			// 库存                
 			InventoryDownLoad.save();
-
+          
 			InventoryModelDownLoad.save();
-			// InventoryChange.compare("2015-05-01","2015-05-03");
-
-			// 更新过期订单(系统内)
+			 //InventoryChange.compare("2015-05-01","2015-05-03");
+   
+			// 更新过期订单(系统内) 
 			InventoryBranchManager.initOrderNumSN();
-
-			logger.info("更新订单加订单号");
-			// 更新订单信息
+   
+			logger.info("更新订单加订单号"); 
+			// 更新订单信息 
 			OrderDownLoad.saveDB(starttime, endtime);
-
+   
+			// 销售数据
+			   
+			//SaleDownLoad.saveDB(starttime, endtime);  
 			// 样机退货数据未采集
 		} catch (Exception e) {
 			logger.info(e);

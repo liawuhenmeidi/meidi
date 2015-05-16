@@ -101,6 +101,8 @@ if (null != list) {
 				<td align="center">商品编码</td>
 				<td align="center">商品名称</td>
 				<td align="center">退货订单号</td>
+				<td align="center">订单日期</td>
+				<td align="center">有效日期</td>
 			</tr>
 			<%
 				if (null != map) {
@@ -109,14 +111,15 @@ if (null != list) {
 							.entrySet();
 					Iterator<Map.Entry<String, Map<String, List<OrderReceipt>>>> it = set
 							.iterator();
-					int allcount = 0;
+					int allcount = 0; 
+					int bcount = 0; 
 					while (it.hasNext()) {
 						Map.Entry<String, Map<String, List<OrderReceipt>>> mapent = it
 								.next();
 						//String buyid = mapent.getKey();
 						String bname = mapent.getKey();
 						//System.out.println(bname);
-						int bcount = 0;
+						
 						Map<String, List<OrderReceipt>> or = mapent.getValue();
 
 						if (!or.isEmpty()) {
@@ -127,7 +130,7 @@ if (null != list) {
 							Iterator<Map.Entry<String, List<OrderReceipt>>> itb = setb
 									.iterator();
 							while (itb.hasNext()) {
-								bcount++;
+								
 								Map.Entry<String, List<OrderReceipt>> mapb = itb
 										.next();
 								String typename = mapb.getKey();
@@ -140,6 +143,8 @@ if (null != list) {
 								if (!oas.isEmpty()) {
 									Iterator<OrderReceipt> itl = oas.iterator();
 									String buyid = "";
+									String time = "";
+									String Recevetime = "";
 									String goodname = "";
 									String cl = "class=\"asc\"";
 
@@ -153,13 +158,16 @@ if (null != list) {
 
 										if (oa.getRefusenum() != 0) {
 											flag = true;
-										} 
+										}   
 										allcount++;
 										goodname = oa.getGoodsName();
-
+ 
 										buyid += "</p>" + oa.getBuyid();
+										time += "</p>" + oa.getReceveTime(); 
+										Recevetime += "</p>" + oa.getActiveordertiem();
 									} 
 									if (flag) {
+										bcount++;
 										//if (bcount == 1) {
 			%>
 			<tr <%=cl%>
@@ -169,12 +177,14 @@ if (null != list) {
 				<td align="center"><%=typename%></td>
 				<td align="center"><%=goodname%></td>
 				<td align="center"><%=buyid%></td>
+				<td align="center"><%=time%></td>
+				<td align="center"><%=Recevetime%></td>
 			</tr>
 			<%
 				
-			%>
+			%> 
 
-			<%
+			<% 
 				//} else {
 			%>
 			<!--  

@@ -50,6 +50,8 @@ public class InventoryChange {
 		Map<String, Map<String, List<GoodsReceipt>>> mapgr = GoodsReceitManager
 				.getMapGoodNum(startTime,endTime);       
     
+		logger.info(mapgr.size()); 
+		
 		Collection<Inventory> liststart = get(startTime);
 
 		Map<String, Inventory> mapstart = changeMap(liststart);
@@ -75,11 +77,13 @@ public class InventoryChange {
 					// logger.info(inend.getGoodNum());
 					Map<String, List<GoodsReceipt>> mapg = mapgr.get(inend
 							.getGoodNum());
+					//logger.info(mapg);  
 					if (null != mapg) {
 						String bnum = StringUtill.getStringNocn(inend
 								.getBranchName());
 
 						List<GoodsReceipt> li = mapg.get(bnum);
+						logger.info(li); 
 						if (null != li) {
 							int count = 0;
 							for (int i = 0; i < li.size(); i++) {
@@ -90,6 +94,7 @@ public class InventoryChange {
 									count = count - gr.getRecevenum();
 								}
 							}
+							logger.info(count);  
 							// logger.info(inend.getNum() - count);
 							inend.setNum(inend.getNum() - count);
 							inend.setInInbranch(count); 
@@ -97,24 +102,28 @@ public class InventoryChange {
 						}
 					}
 				}
-
+ 
 				if (null != instart) {
 
 					mapstart.remove(key);
-
+ 
 					if (instart.getNum() == inend.getNum()) {
-						samecount++;
-					} else if (instart.getNum() - inend.getNum() > 0) {
 						Inventory in = inend;
+						list.add(in); 
+						samecount++;  
+					} else if (instart.getNum() - inend.getNum() != 0) {
+						Inventory in = inend; 
 						in.setInreduce(instart.getNum() - inend.getNum());
-						list.add(in);
-					}
-				} else {
-					if (inend.getNum() == 0) {
+						//logger.info(in.getInInbranch());
+						list.add(in); 
+					} 
+				} else { 
+					if (inend.getNum() == 0) {  
 						// logger.info(inend.getGoodpName());
 					} else {
 						// logger.info("none");
 						Inventory in = inend;
+						//logger.info(in.getInInbranch());
 						in.setInreduce(0 - in.getNum());
 						list.add(in);
 					}
@@ -138,8 +147,36 @@ public class InventoryChange {
 			while (it.hasNext()) { 
 				Map.Entry<String, Inventory> mapent = it.next();
 				Inventory in = mapent.getValue();
+				int count = 0;
+				if (null != mapgr) {
+					// logger.info(inend.getGoodNum());
+					Map<String, List<GoodsReceipt>> mapg = mapgr.get(in
+							.getGoodNum());
+					if (null != mapg) {
+						String bnum = StringUtill.getStringNocn(in
+								.getBranchName());
+
+						List<GoodsReceipt> li = mapg.get(bnum);
+						if (null != li) {
+							
+							for (int i = 0; i < li.size(); i++) {
+								GoodsReceipt gr = li.get(i);
+								if (gr.getStatues() == 0) {
+									count = count + gr.getRecevenum();
+								} else {
+									count = count - gr.getRecevenum();
+								}
+							}
+							// logger.info(inend.getNum() - count);
+						 
+							// logger.info(count);
+						} 
+					} 
+				}
+				 
 				//if(in.getNum() != 0){ 
-					in.setInreduce(in.getNum());
+					in.setInreduce(in.getNum()+count);
+					in.setInInbranch(count); 
 					list.add(in);
 				//} 
 				

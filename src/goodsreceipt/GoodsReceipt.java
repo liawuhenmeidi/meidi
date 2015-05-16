@@ -1,24 +1,25 @@
 package goodsreceipt;
 
+import enums.ProductModel;
 import enums.SaleModel;
 import branch.Branch;
 import branch.BranchService;
 import product.Product;
 import product.ProductService;
 import utill.StringUtill;
-
+ 
 public class GoodsReceipt { 
-
+ 
 	private int id;
 	private String receveid; // 苏宁收货单号  || 苏宁发货单号
 	private String receveTime; // 收货日期  || 苏宁发货日期
 	private String sendid; // 供应商发货单号
 	private String buyid; // 采购订单号   || 退货订单号 
-	private String ordertype; // 订单类型   || 退货订单类型
+	private String ordertype; // 订单类型 
 	private String goodsnum; // 商品代码 
 	private String goodsName; // 商品名称
 	private int cid;  
-	private int tid;  
+	private int tid;   
 	private int bid;
 	private int recevenum; // 实收数量  || 实发数量
 	private int refusenum;// 拒收数量
@@ -27,7 +28,23 @@ public class GoodsReceipt {
     private String uuid ;  // 唯一码  
     private int statues ;  // 0 入库   1  退货  
     private int disable ;   //  0 起作用  1  不起作用 
- 
+    private int goodtypeStatues; //
+     
+       
+    public int getGoodtypeStatues() {     
+    	//System.out.println(ordertype);    
+    	//System.out.println(ProductModel.Model.特价机采购订单.toString().equals(ordertype));  
+		if(ProductModel.Model.标准采购订单.toString().equals(ordertype)){     
+			goodtypeStatues = ProductModel.Model.标准采购订单.getValue();
+		}else if(ProductModel.Model.特价机采购订单.toString().equals(ordertype)){
+			goodtypeStatues = ProductModel.Model.特价机采购订单.getValue();
+		}else if(ProductModel.Model.样机采购订单.toString().equals(ordertype)){
+			goodtypeStatues = ProductModel.Model.样机采购订单.getValue();
+		}   
+		//System.out.println(goodtypeStatues);   
+		return goodtypeStatues;
+	}
+    
 	public int getId() {
 		return id;
 	}

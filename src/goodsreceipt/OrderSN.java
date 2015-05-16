@@ -138,17 +138,19 @@ public class OrderSN {
 	public int getStatues() {
 		return statues;
 	}
-
+ 
 	public void setStatues(int statues) {
 		this.statues = statues;
-	}
- 
+	}    
+   
 	public int getGoodtypeStatues() {
-		if(ProductModel.Model.标准采购订单.equals(goodType)){  
+		if(ProductModel.Model.标准采购订单.toString().equals(goodType)){  
 			goodtypeStatues = ProductModel.Model.标准采购订单.getValue();
-		}else if(ProductModel.Model.特价机采购订单.equals(goodType)){
+		}else if(ProductModel.Model.特价机采购订单.toString().equals(goodType)){
 			goodtypeStatues = ProductModel.Model.特价机采购订单.getValue();
-		}
+		}else if(ProductModel.Model.样机采购订单.toString().equals(goodType)){
+			goodtypeStatues = ProductModel.Model.样机采购订单.getValue();
+		} 
 		return goodtypeStatues;
 	}
 

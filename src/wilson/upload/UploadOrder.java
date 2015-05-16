@@ -50,8 +50,8 @@ public class UploadOrder {
 	
 	private String fileName = ""; //来自的文件名
 	
-	private int checked = UNCHECK; //0 为已经check  1为没有 check 2为已经与提成标准匹配好  3为已经消单  默认为1
-	
+	private int checked = UNCHECK; //0 为已经check  1为没有 check 2为已经与提成标准匹配好  3为已经消单  默认为1   
+
 	public static final int DEFAULT = -1;
 	public static final int CHECKED = 0;
 	public static final int UNCHECK = 1;

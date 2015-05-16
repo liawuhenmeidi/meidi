@@ -138,27 +138,27 @@ function inventory(inventory,type,tid){
      			<td align="center">实际库存数量</td>
      			<td align="center">是否确认收发货</td>
 		</tr>      
-		    
+		     
                <% for(int i=0;i<list.size();i++){
 	            	   InventoryBranchMessage  in = list.get(i);
-	            	   
-		        		 String strtype = "";
-		        		 int type = in.getOperatortype(); 
-		        		 //System.out.println(type);
+	            	    
+		        		 String strtype = ""; 
+		        		 int type = in.getOperatortype();  
+		        		 //System.out.println(type); 
 		        		 String branch = branchmap.get(in.getBranchid()).getLocateName();
 		        		 if(branchid != "" && branchid != null){
-		        			 papercount =in.getPapercount();
-			        		 realcount  = in.getRealcount(); 
-			        		 //papercount +=in.getAllotPapercount();
-			        		// realcount += in.getAllotRealcount();
-		        		 }else {
-	
+		        			 //papercount =in.getPapercount();  
+			        		// realcount  = in.getRealcount();  
+			        		 papercount +=in.getAllotPapercount();
+			        		 realcount += in.getAllotRealcount();
+		        		 }else {  
+	  
 		        			papercount +=in.getAllotPapercount();
 		        			realcount += in.getAllotRealcount();
 		        		}
-            	   
-		        		
-		        		strtype = in.getMessage(); 
+            	      
+		        		  
+		        	 	strtype = in.getMessage(); 
 		        		 String cl="class=\"asc\""; 
 		        		  if(in.getIsOverStatues() == 1){
 		        			  cl="class=\"bsc\""; 

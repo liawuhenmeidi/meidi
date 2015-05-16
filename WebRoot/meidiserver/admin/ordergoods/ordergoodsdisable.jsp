@@ -11,29 +11,28 @@ Branch b = BranchService.getMap().get(Integer.valueOf(branch));
 String time = TimeUtill.getdateString(); 
 List<OrderGoods> list = new ArrayList<OrderGoods>(); 
 
-List<InventoryBranch> listib = InventoryBranchManager.getCategoryid(user, branch, "");
-    
+Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,branch);
+Collection<InventoryBranch> listib = map.values();
+      
 if(!listib.isEmpty()){  
-	for(int i=0;i<listib.size();i++){
-		InventoryBranch ib = listib.get(i);
-		if(StringUtill.isNull(ib.getActivetime())){
+	 Iterator<InventoryBranch> it = listib.iterator();
+	while(it.hasNext()){  
+		InventoryBranch ib = it.next(); 
+		if(StringUtill.isNull(ib.getActivetime()) && ib.getPapercount() != 0 ){
 			OrderGoods og = new OrderGoods();
 			og.setTid(Integer.valueOf(ib.getTypeid()));
 			og.setRealnum(0);
 			og.setStatues(ib.getTypeStatues());
 			list.add(og); 
 		}
-		
-	}
+		 
+	} 
 }
 
- 
+  
 String branchname = b.getLocateName();
 String branchtype = ""+b.getPid(); 
   
- 
-       
-Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,branch);
 String jsoninventory = StringUtill.GetJson(map); 
     
 Map<String,List<httpClient.download.Inventory>> mapsn = InventoryChange.getMapBranchType(user,time,Integer.valueOf(branch));

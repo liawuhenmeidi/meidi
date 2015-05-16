@@ -179,16 +179,17 @@ public class OrderGoodsAllManager {
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getbillinglist(user,
 				branchtype);
 		for (int i = 0; i < list.size(); i++) {
-			OrderGoodsAll oal = list.get(i); 
+			OrderGoodsAll oal = list.get(i);
 			List<OrderGoods> listog = oal.getList();
 			if (null != listog) {
 				for (int j = 0; j < listog.size(); j++) {
 					OrderGoods og = listog.get(j);
-					Map<String, List<OrderGoods>> maps = map.get(og.getExportuuid());
+					Map<String, List<OrderGoods>> maps = map.get(og
+							.getExportuuid());
 					if (null == maps) {
 						maps = new LinkedHashMap<String, List<OrderGoods>>();
 						map.put(og.getExportuuid(), maps);
-					} 
+					}
 					List<OrderGoods> listogm = maps.get(og.getOid());
 					if (null == listogm) {
 						listogm = new ArrayList<OrderGoods>();
@@ -803,9 +804,11 @@ public class OrderGoodsAllManager {
 	public static List<String> updateSendcount(User user,
 			Map<Integer, Map<Integer, OrderGoodsAll>> map) {
 
-		Map<Integer, Map<String, InventoryBranch>> mapin = InventoryBranchManager
+		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryBranchManager
 				.getInventoryMap(user);
+
 		logger.info(mapin);
+
 		Set<String> setinit = new HashSet<String>();
 		List<String> listsql = new ArrayList<String>();
 		Set<String> setup = new HashSet<String>();
@@ -838,6 +841,9 @@ public class OrderGoodsAllManager {
 							}
 							int operatortype = 14;
 							int realsendnum = og.getRealnum();
+
+							logger.info(realsendnum);
+
 							boolean flags = true;
 							if (og.getStatues() == 6 || og.getStatues() == 7
 									|| og.getStatues() == 8
@@ -855,14 +861,18 @@ public class OrderGoodsAllManager {
 
 							String sqlIB = "";
 							String sqlIBM = "";
+							InventoryBranch in = null;
 							if (flag) { 
+								try {
+									in = mapin.get(oa.getOm().getBranchid())
+											.get(og.getTid() + "")
+											.get(og.getStatues());
+								} catch (Exception e) {
+									in = null;
+								}
 								// logger.info( og.getTid());
 								// logger.info(setup.contains(oa.getOm().getBranchid()+"_"+og.getTid()));
-								InventoryBranch in = null;  
-								if (null != mapin.get(oa.getOm().getBranchid())) {
-									in = mapin.get(oa.getOm().getBranchid())
-											.get(og.getTid() + "");
-								}
+
 								if (null == in
 										&& !setup.contains(oa.getOm()
 												.getBranchid()
@@ -935,8 +945,8 @@ public class OrderGoodsAllManager {
 											+ TimeUtill.gettime()
 											+ "','"
 											+ og.getTid()
-											+ "','"
-											+ 0
+											+ "','" 
+											+ 0 
 											+ "','"
 											+ realsendnum
 											+ "',"
@@ -945,26 +955,26 @@ public class OrderGoodsAllManager {
 											+ oa.getOm().getBranchid()
 											+ " and  type = '"
 											+ og.getTid()
-											+ "')*1,(select papercount from mdinventorybranch where branchid = "
+											+ "' and typestatues = "+og.getStatues()+")*1,(select papercount from mdinventorybranch where branchid = "
 											+ oa.getOm().getBranchid()
 											+ " and  type = '"
 											+ og.getTid()
-											+ "')*1,"
-											+ 1
-											+ ","
+											+ "' and typestatues = "+og.getStatues()+")*1,"
+											+ 1    
+											+ ","   
 											+ oa.getOm().getBranchid()
 											+ ",-1,(select realcount from mdinventorybranch where branchid = "
 											+ oa.getOm().getBranchid()
 											+ " and  type = '"
-											+ og.getTid()
-											+ "')*1"
-											// + -Integer.valueOf(realsendnum)
+											+ og.getTid()  
+											+ "' and typestatues = "+og.getStatues()+")*1"
+											// + -Integer.valueOf(realsendnum) 
 											+ ",(select papercount from mdinventorybranch where branchid = "
 											+ oa.getOm().getBranchid()
 											+ " and  type = '"
-											+ og.getTid()
-											+ "')*1"
-											+ Integer.valueOf(realsendnum)
+											+ og.getTid()  
+											+ "' and typestatues = "+og.getStatues()+")*1"
+											+ Integer.valueOf(realsendnum) 
 											+ ",1," + og.getStatues() + ")";
 
 								}

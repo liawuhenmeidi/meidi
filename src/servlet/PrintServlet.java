@@ -2415,9 +2415,9 @@ public class PrintServlet extends HttpServlet {
 			response.getOutputStream().close();
 			if ("0".equals(statues)) {
 				List<String> listsql = new ArrayList<String>();
-				// String sqlsend = 
+				// String sqlsend =   
 				String sql = OrderMessageManager.sendprint(ids);
-				listsql.add(sql);   
+				listsql.add(sql);       
 				List<String> sqlinventory = OrderGoodsAllManager
 						.updateSendcount(user, map);
 				listsql.addAll(sqlinventory);

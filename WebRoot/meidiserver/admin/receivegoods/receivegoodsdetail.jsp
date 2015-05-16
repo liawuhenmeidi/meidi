@@ -1,14 +1,14 @@
 <%@ page language="java"
 	import="java.util.*,httpClient.*,ordersgoods.*,product.*,branch.*,org.apache.commons.logging.*,utill.*,goodsreceipt.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
-<%  
+<%    
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
-String id = request.getParameter("id");
-GoodsReceipt gr =  GoodsReceitManager.getByid(id);  
- //System.out.println(StringUtill.GetJson(set)); 
-
-%>
+String id = request.getParameter("id"); 
+GoodsReceipt gr =  GoodsReceitManager.getByid(id); 
+System.out.println("GoodsReceipt"+StringUtill.GetJson(gr));  
+  
+%>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -84,9 +84,8 @@ GoodsReceipt gr =  GoodsReceitManager.getByid(id);
 				<td align="center" ><%=gr.getBranchName()%></td>
 			</tr>
 			
-
+ 
 		</table>
-</form>
 	</div>
 
 </body>

@@ -25,6 +25,7 @@ public class InventoryAllManager {
 	
 	
 	public static  Collection<InventoryAll> getMap(User user,String branch,String category,String product,String isSN){ 
+		System.out.println("isSN"+isSN);  
 		List<InventoryBranch> list = null ; 
 		Collection<InventoryAll> clist  = null; 
 		if(StringUtill.isNull(product)){ 
@@ -84,41 +85,52 @@ public class InventoryAllManager {
 		    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
 		    		listp.setIsquery(listp.getIsquery()&&inb.isquery());
 		    	}
-		    }
-			 
+		    } 
+			  
 		    clist = map.values(); 
 		}else if(!StringUtill.isNull(category) || !StringUtill.isNull(isSN)){
 	        Map<String,InventoryAll> map  = new HashMap<String,InventoryAll>();   
-			
-		    for(int i=0;i<list.size();i++){ 
+			 
+		    for(int i=0;i<list.size();i++){  
 		    	InventoryBranch inb = list.get(i);
 		    	int categoryid = inb.getInventoryid();
-		    	String type = inb.getType();
-		    	InventoryAll listp= map.get(type);  
-		    	if(listp == null){
-		    		listp = new InventoryAll();  
+		    	String type = inb.getType();  
+		    	//int statues = inb.getTypeStatues(); 
+		    	//String key = type+"_"+statues;
+		    	String key = type;
+		    	if(StringUtill.isNull(isSN)){
+		    		key = type;
+		    	}  
+		    	InventoryAll listp= map.get(key );  
+		    	if(listp == null){ 
+		    		listp = new InventoryAll();   
 		    		Category c = CategoryManager.getCategory(categoryid+"");
-		    		listp.setCategoryid(c.getId());
-		    	    listp.setType(type); 
+		    		listp.setCategoryid(c.getId()); 
+		    	    listp.setType(type);  
 		    	    listp.setTypeid(inb.getTypeid());
 		    		listp.setCateoryName(c.getName());  
 		    		listp.setPapercount(inb.getPapercount()); 
 		    		listp.setRealcount(inb.getRealcount());
-		    		listp.setIsquery(inb.isquery());
+		    		listp.setIsquery(inb.isquery()); 
 		    		listp.setOrderNUmSN(inb.getOrderNUmSN());
 		    		listp.setActivetime(inb.getActivetime());
-		    		listp.setProduct(inb.getProduct());
+		    		listp.setProduct(inb.getProduct()); 
+		    		listp.setTypestatues(inb.getTypeStatues()); 
 		    		if(!StringUtill.isNull(branch)){
 			    		listp.setTime(inb.getQuerymonth());
-			    	}
-		    		
-		    		map.put(type, listp);
-		    	}else { 
+			    	} 
+		    		map.put(key , listp); 
+		    	}else {   
+		    		listp.setOrderNUmSN(listp.getOrderNUmSN()+"_"+inb.getOrderNUmSN()); 
+		    		listp.setTypestatuesName(listp.getTypestatuesName()+"_"+inb.getTypestatuesName()); 
 		    		listp.setPapercount(listp.getPapercount()+inb.getPapercount());
 		    		listp.setRealcount(listp.getRealcount()+inb.getRealcount());
 		    		listp.setIsquery(listp.getIsquery()&&inb.isquery());
-		    	}
-		    }
+		    	} 
+		    	 
+		    	 
+		    	//System.out.println(StringUtill.GetJson(listp));
+		    }  
 		    clist = map.values();
 		}      
 		  
@@ -130,7 +142,7 @@ public class InventoryAllManager {
 		 
 		Collection<InventoryAll> c = InventoryAllManager.getMap(user,branch,
 				category, product,isSN);   
-		 
+		  
 		if(!c.isEmpty()){
 			Iterator<InventoryAll> it = c.iterator();
 			while(it.hasNext()){

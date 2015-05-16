@@ -5,6 +5,7 @@
 String message = "调拨单";
 String type = request.getParameter("type");
 
+
 if(!StringUtill.isNull(type)){
 	if(Integer.valueOf(type) == 3){  
 		message = "调账面库存单据";
@@ -275,11 +276,11 @@ var disable = '<%=isdisabel %>';
 	      <% 
 	      } 
       }
-      if(inventory.getInstatues() == 1 && inventory.getOutstatues() == 1){
+    //  if(inventory.getInstatues() == 1 && inventory.getOutstatues() == 1){
       %> 
       <li><a href="print.jsp?id=<%=inventoryid%>">打印</a></li> 
-      <% 
-      }
+      <%  
+    //  }
       %> 
       
      </ul>   

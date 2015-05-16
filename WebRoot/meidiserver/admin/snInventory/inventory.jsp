@@ -12,6 +12,22 @@ String endtime = request.getParameter("endtime");
 String branch = request.getParameter("branch");  
   
 List<Inventory> list = InventorySale.compare(starttime,endtime);
+ 
+Map<String,List<Inventory>> map = new HashMap<String,List<Inventory>>();
+        
+if(!list.isEmpty()){
+	Iterator<Inventory> it = list.iterator();
+	while(it.hasNext()){ 
+		Inventory in = it.next();
+		List<Inventory> li = map.get(in.getBranchName());
+		if(null == li){
+	li = new ArrayList<Inventory>();
+	map.put(in.getBranchName(), li);
+		}
+		
+		li.add(in); 
+	}
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -71,25 +87,26 @@ List<Inventory> list = InventorySale.compare(starttime,endtime);
 					<td><input name="starttime" type="text" id="starttime"
 						value="<%=starttime%>" size="10" maxlength="10"
 						onclick="new Calendar().show(this);" placeholder="必填"
-						readonly="readonly" /></td>
- 
-					<td>结束时间</td> 
-					<td><input name="endtime" type="text" id="endtime" size="10"
-						value="<%=TimeUtill.dataAdd(TimeUtill.getdateString(), -1)%>" maxlength="10"
 						readonly="readonly" />
 					</td>
+ 
+					<td>结束时间</td>
+					<td><input name="endtime" type="text" id="endtime" size="10"
+					    onclick="new Calendar().show(this);" placeholder="必填"
+						value="<%=TimeUtill.dataAdd(TimeUtill.getdateString(), -1)%>"
+						maxlength="10" readonly="readonly" /></td>
 
 					<td>门店</td>
 					<td><input type="text" name="branch" id="branch"
-						value="<%=branch%>" /></td>
+						value="<%=branch%>" />
+					</td>
 					<td>型号</td>
 
 					<td><input type="text" name="product" id="product" value="" />
 					</td>
 
 
-					<td><input type="submit" value="查询" />
-					</td>
+					<td><input type="submit" value="查询" /></td>
 				</tr>
 
 			</table>
@@ -111,26 +128,37 @@ List<Inventory> list = InventorySale.compare(starttime,endtime);
 			</tr>
 
 			<%
-				if (null != list) {
-					for (int i = 0; i < list.size(); i++) {
-						Inventory in = list.get(i);
-						String bnum = StringUtill.getStringNocn(in.getBranchName());
-						String bname = "";
-						if (StringUtill.isNull(bnum)) {
-							bnum = in.getBranchNum();
-						}
+				if (!map.isEmpty()) {
+					Set<Map.Entry<String, List<Inventory>>> set = map.entrySet();
+					Iterator<Map.Entry<String, List<Inventory>>> it = set
+							.iterator(); 
+					while (it.hasNext()) { 
+						Map.Entry<String, List<Inventory>> mapen = it.next();
+						List<Inventory> li = mapen.getValue();
 
-						if (null != BranchService.getNumMap(SaleModel.SuNing)) {
-							if (null != BranchService.getNumMap(SaleModel.SuNing)
-									.get(bnum)) {
-								bname = BranchService.getNumMap(SaleModel.SuNing)
-										.get(bnum).getLocateName();
-							}
-						}
+						if (null != li) {
+							for (int i = 0; i < li.size(); i++) {
+								Inventory in = li.get(i);
+								String bnum = StringUtill.getStringNocn(in
+										.getBranchName());
+								String bname = "";
+								if (StringUtill.isNull(bnum)) {
+									bnum = in.getBranchNum();
+								}
 
-						if (!StringUtill.isNull(branch) && branch.equals(bname)
-								|| StringUtill.isNull(branch)) {
-							
+								if (null != BranchService
+										.getNumMap(SaleModel.SuNing)) {
+									if (null != BranchService.getNumMap(
+											SaleModel.SuNing).get(bnum)) {
+										bname = BranchService
+												.getNumMap(SaleModel.SuNing)
+												.get(bnum).getLocateName();
+									}
+								}
+
+								if (!StringUtill.isNull(branch)
+										&& branch.equals(bname)
+										|| StringUtill.isNull(branch)) {
 			%>
 			<tr class="asc">
 				<td align="center"><%=i + 1%></td>
@@ -138,8 +166,8 @@ List<Inventory> list = InventorySale.compare(starttime,endtime);
 
 				<td align="center"><%=in.getGoodpName()%></td>
 				<td align="center"><%=in.getGoodNum()%></td>
- 
-				<td align="center"><%=in.getInreduce()-in.getInInbranch()%></td>
+
+				<td align="center"><%=in.getInreduce()%></td>
 				<td align="center"><%=in.getInInbranch()%></td>
 				<td align="center"><%=in.getSaleNum()%></td>
 
@@ -147,6 +175,8 @@ List<Inventory> list = InventorySale.compare(starttime,endtime);
 			</tr>
 			<%
 				}
+							}
+						}
 					}
 				}
 			%>

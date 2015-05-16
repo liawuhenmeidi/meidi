@@ -10,10 +10,9 @@ String isDisable = request.getParameter("isDisable");
  
 List<BranchType> listgt = BranchTypeManager.getLocate(); 
 Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.unexamine);
-   
-Map<Integer,InventoryBranch>  mapin = InventoryBranchManager.getmapKeyBranchType(branchtype);
+      
+Map<Integer,InventoryBranch>  mapin = InventoryBranchManager.getmapKeyBranchType(user,branchtype);
   
-
  // System.out.println(StringUtill.GetJson(map));
 %>
 <!DOCTYPE html>
@@ -96,14 +95,13 @@ Map<Integer,InventoryBranch>  mapin = InventoryBranchManager.getmapKeyBranchType
 					Set<Map.Entry<String, OrderGoodsAll>> mapent = map.entrySet();
 					Iterator<Map.Entry<String, OrderGoodsAll>> itmap = mapent
 							.iterator();
-					int i = 0;
-					//System.out.println(12); 
+					int i = 0; 
+					//System.out.println(12);  
 					while (itmap.hasNext()) {
 						Map.Entry<String, OrderGoodsAll> en = itmap.next();
 						OrderGoodsAll o = en.getValue();
-						String key = en.getKey();
-						;
-						if (StringUtill.isNull(branchtype)
+						String key = en.getKey();  
+						if (StringUtill.isNull(branchtype) 
 								|| !StringUtill.isNull(branchtype)
 								&& BranchService.getMap()
 										.get(o.getOm().getBranchid()).getPid() == Integer

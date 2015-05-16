@@ -120,14 +120,15 @@ public class inventoryIN {
 	public static void get(String starttime, String endtime) {
 		// startTime = "2015-05-03";
 		save(starttime, endtime);
+		 
 		if (StringUtill.isNull(starttime) || StringUtill.isNull(endtime)) {
 			return;
-		}
+		} 
 		try {
 			String tempPath = PathUtill.getXMLpath();
 
 			tempPath += "data" + File.separator + "InventoryIn"
-					+ File.separator + starttime + "_" + endtime;
+					;
 			logger.info(tempPath);
 
 			File file = new File(tempPath);
@@ -138,11 +139,11 @@ public class inventoryIN {
 			File file2 = new File(tempPath + File.separator + "InventoryIn.csv");
 			// file2.createNewFile();
 
-			CsvReader reader = new CsvReader(file2.getAbsolutePath(), ',',
+			CsvReader reader = new CsvReader(file2.getPath(), ',',
 					Charset.forName("GBK")); // 一般用这编码读就可以了
-
+ 
 			GoodsReceitManager.saveIN(reader, starttime, endtime);
-
+ 
 			reader.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -190,8 +191,7 @@ public class inventoryIN {
 			InputStream in = entity.getContent();
 
 			String tempPath = PathUtill.getXMLpath();
-			tempPath += "data" + File.separator + "InventoryIn"
-					+ File.separator + starttime + "_" + endtime;
+			tempPath += "data" + File.separator + "InventoryIn";
 
 			logger.info(tempPath);
 
@@ -250,7 +250,7 @@ public class inventoryIN {
 				Elements tr = en.getElementsByTag("tr");
 				GoodsReceitManager.saveIN(tr, starttime, endtime);
 			}
-
+ 
 		} catch (Exception e) {
 			logger.info(e);
 		}

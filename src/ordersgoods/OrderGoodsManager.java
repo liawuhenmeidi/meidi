@@ -1,6 +1,7 @@
 package ordersgoods;
 
 
+import goodsreceipt.OrderSN;
 import httpClient.InventorySN;
 
 import java.sql.Connection;
@@ -45,12 +46,11 @@ public class OrderGoodsManager {
 	   flag = DBUtill.sava(list);
 	   return flag ;
    }    
-         
-   public static String updateOid(int tid ,int bid,int statues,String oid,String time ,int num){ 
-	     
-	   String sql = "update mdordergoods set oid = '"+oid+"' , effectiveendtime = '"+time+"' where tid ="+tid+"  and mid in (select id from mdordermessage where branchid = "+bid  + ") and oid = null and opstatues = 2 and  ordernum <= " +num; 
-	   
+           
+   public static String updateOid(int tid ,int bid,OrderSN os){ 
 	      
+	   String sql = "update mdordergoods set oid = '"+os.getOrderNum()+"' , effectiveendtime = '"+os.getEndtime()+"' where tid ="+tid+"  and mid in (select id from mdordermessage where branchid = "+bid  + ") and oid is null and opstatues = 2 and statues = "+os.getGoodtypeStatues()+" and  ordernum <= " +os.getNum(); 
+	     
 	   return sql ;
 	   
    }

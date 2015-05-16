@@ -8,6 +8,7 @@ HashMap<Integer,Category> categorymap = CategoryManager.getCategoryMap();
 
 String inventoryid = request.getParameter("id");
 String type = request.getParameter("type");
+
 if((2+"").equals(type)){
 	InventoryManager.updatePrintln(inventoryid);
 }
@@ -62,12 +63,18 @@ List<InventoryMessage> list = inventory.getInventory();
   <td height="30" colspan="5" align="center" valign="middle" bgcolor="#FFFFFF">
   <table width="1010" width="100%" border="0" cellspacing="0" cellpadding="0"> 
  <tr> 
-
+ 
  <td id="d" width="15%" align="center">
 入库单位
  </td>
  <td id="d" width="35%" align="center">
 <%=branchmap.get(inventory.getInbranchid()).getLocateName() %>
+ </td> 
+ <td id="d" width="15%" align="center">
+出库单位 
+ </td> 
+ <td id="d" width="35%" align="center">
+<%=branchmap.get(inventory.getOutbranchid()).getLocateName() %>
  </td> 
  </tr> 
 </table>

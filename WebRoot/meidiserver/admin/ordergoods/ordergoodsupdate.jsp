@@ -278,20 +278,20 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	 } 
 	 $("#addcount").html(totalcount);
  }
-   
+  
   
  function addrow(row){ 
 	 var cl = 'class="asc"'; 
-	 
+	  
 	  var str = '<tr '+cl+'>' +    
-	     ' <td align=center  rowspan=2 >'+(row*1+1*1)*1+'</td> '+
+	     ' <td align=center  >'+(row*1+1*1)*1+'</td> '+
 	     ' <td  align=center ><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
 	     ' <td align=center ><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'"  placeholder="订单数"  style="border-style:none;width:50px;"   onBlur="addcount()" /></td> ' +
 	     '<td align=center><input type="hidden" name="papercount'+row+'" id="Ipapercount'+row+'"><span style="color:red;font-size:15px;" id="papercount'+row+'"  ></span></td>'+
 	     '<td align=center><span style="color:red;font-size:15px;" id="sncount'+row+'"  ></span></td>'+
 	     '<td align=center><span style="color:red;font-size:15px;" id="snstatues'+row+'"  ></span></td>'+
 	     '<td  align=center ><select name="statues'+row+'" id="statues'+row+'">'+
-	      
+	       
 	     '<option value=""></option>'+    
 	     '<option value="1">常规机订货</option>'+
 	     '<option value="2">特价机订货</option>'+
@@ -304,8 +304,8 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	      '<option value="9">已入库样机退货</option>'+
 	     '<select></td>'+ 
 	     ' <td  align=center><input type="button" value="删除" onclick="delet('+row+')"/></td> ' +
-	     </tr>'
-	     ;   
+	     '</tr>'
+	     ;  
 	                
 	$("#Ntable").append(str);
 	 

@@ -97,7 +97,7 @@ public class InventorySale {
 					 in.setInreduce(0); 
 					 list.add(in);
 				 }
-				  
+				 
 			 } 
 		} 
 		logger.info("list" + list.size());

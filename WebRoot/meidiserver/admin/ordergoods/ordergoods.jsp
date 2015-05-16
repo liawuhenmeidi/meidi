@@ -26,7 +26,7 @@ String sm = StringUtill.GetJson(model);
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/jquerycommon.js"></script>
 <link rel="stylesheet" type="text/css" rev="stylesheet"
-	href="../../style/css/bass.css" />
+	href="../../style/css/bass.css" /> 
 <link rel="stylesheet" href="../../css/jquery-ui.css" />
 <script type="text/javascript" src="../../js/jquery-ui.js"></script>
 

@@ -502,11 +502,13 @@ public class XLSReader {
 			if(fileName == null || path == null){
 				return null;  
 			}   
-			//logger.info(path); 
+			//logger.info(path);  
 			String filepath = path.replace("\\", "/");
-			logger.info(filepath);
+			logger.info(filepath); 
 			//List<String> list =   new ArrayList<String>();
 			File srcFile = new File(filepath,fileName); 
+			logger.info(srcFile.getAbsolutePath()); 
+			logger.info(srcFile.getPath());  
 			Workbook wb = null; 
 			try { 
 				wb = Workbook.getWorkbook(srcFile);

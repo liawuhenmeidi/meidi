@@ -97,7 +97,7 @@ public class OrderReceitManager {
 		String str = "update orderreceipt set printNum = printNum+"+1+" where id = "+gr.getId();
 		return str;
 	}
-	
+	  
 	public static String update(GoodsReceipt gr) {
 		String str = "update orderreceipt set recevenum = orderreceipt.recevenum +"
 				+ gr.getRecevenum()
@@ -150,7 +150,7 @@ public class OrderReceitManager {
 				// logger.info(as.getOrderNum());
 				// logger.info(as.getRecevenum());
 				// logger.info(as.getRefusenum());
-				list.add(as);
+				list.add(as); 
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -320,12 +320,12 @@ public class OrderReceitManager {
 	}
 	 
 	public static Map<String,OrderReceipt> getMapTypeBranch(String typenum,String branchName) { 
-		Map<String,OrderReceipt> map = new HashMap<String,OrderReceipt>();
-		List<OrderReceipt> list = getList(typenum,branchName);   
-		if(null != list){   
+		Map<String,OrderReceipt> map = new LinkedHashMap<String,OrderReceipt>();
+		List<OrderReceipt> list = getList(typenum,branchName);    
+		if(null != list){      
 			for(int i=0;i<list.size();i++){ 
 				OrderReceipt or = list.get(i);
-				
+				// logger.info(or.getReceveTime()); 
 					map.put(or.getId()+"", or);  
 				
 				

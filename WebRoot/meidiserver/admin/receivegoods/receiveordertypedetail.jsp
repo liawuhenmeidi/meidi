@@ -15,9 +15,14 @@ if(!StringUtill.isNull(method)){
 	 
 	response.sendRedirect("receiveordertype.jsp");
 } 
+Map<String,List<httpClient.download.Inventory>> mapsn = null ;
+if(null != BranchService.getNameSNMap().get(branchname)){ 
+	
+	mapsn = InventoryChange.getMapBranchTypeNum(user,time,BranchService.getNameSNMap().get(branchname).getId());
+	 
+}
+
   
-Map<String,List<httpClient.download.Inventory>> mapsn = InventoryChange.getMapBranchTypeNum(user,time,BranchService.getNameSNMap().get(branchname).getId());
-   
 //System.out.println(mapsn);   
 Map<String,OrderReceipt> maps =  OrderReceitManager.getMapTypeBranch(typenum,branchname); 
 
@@ -141,18 +146,23 @@ String type= request.getParameter("type");
 							if (0 == gr.getTid()) {
 								clt = "style=color:red";
 							} 
-							 
-							List<httpClient.download.Inventory> list = mapsn.get(gr.getGoodsnum());
 							String innum = "";
-							if(null != list){
-								
-								for(int i=0;i<list.size();i++){
-									httpClient.download.Inventory in = list.get(i);
-									innum += in.getGoodType()+":"+in.getATP()+"_";
-								}  
+							if(null == mapsn){
+								innum = "门店不存在"; 
 							}else { 
-								innum = "无"; 
-							}  
+								List<httpClient.download.Inventory> list = mapsn.get(gr.getGoodsnum());
+								
+								if(null != list){
+									
+									for(int i=0;i<list.size();i++){
+										httpClient.download.Inventory in = list.get(i);
+										innum += in.getGoodType()+":"+in.getATP()+"_";
+									}  
+								}else { 
+									innum = "无"; 
+								}  
+							}
+							
 				%> 
 				<tr class="asc">
 

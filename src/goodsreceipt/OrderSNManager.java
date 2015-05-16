@@ -25,13 +25,13 @@ import branch.BranchService;
 
 import database.DB;
 import enums.SaleModel;
-
+  
 public class OrderSNManager {
 	protected static Log logger = LogFactory.getLog(OrderSNManager.class);
-
+ 
 	public static List<String> save(OrderSN gr) {
 		List<String> list = new ArrayList<String>();
-		 
+		  
 			String sql = " insert into mdordersn (id,ordernum,branchname,goodtype,goodpname,goodnum,num,innum,statues,disable,uuid,starttime,endtime)"
 					+ " values ("
 					+ null 
@@ -64,7 +64,7 @@ public class OrderSNManager {
 		 List<String> listsql = new ArrayList<String>();
 		try{
 		 Map<String,OrderSN> map = getMapAll(starttime,endtime);
-		 
+		  
 		 //logger.info(list.size());
 		
 		   if(!list.isEmpty()){     
@@ -83,22 +83,25 @@ public class OrderSNManager {
 				  }
 				  
 				  //logger.info(flag);    
-				  
+				   
 				   if(flag){    
 					   List<String> sql = save(sn); 
-					  // logger.info(sql);
-					   listsql.addAll(sql);  
+					 //  logger.info(sql); 
+					   listsql.addAll(sql);   
+					  // logger.info(sn.getBranchName());
+					     
 					   int tid = ProductService.gettypeNUmmap().get(sn.getGoodNum()).getId();
+					   
 					   int bid = BranchService.getNameSNMap().get(sn.getBranchName()).getId();
-					    
+					     
 					  String sqlin = InventoryBranchManager.updateSNMessage(tid, bid, sn.getGoodtypeStatues(), sn.getOrderNum(),sn.getEndtime());
-				      
-					 // logger.info(sqlin);
-					  String sqlog = OrderGoodsManager.updateOid(tid, bid, sn.getGoodtypeStatues(), sn.getOrderNum(), sn.getEndtime(),sn.getNum());  
-					//  logger.info(sqlog); 
-					  listsql.add(sqlog); 
-					  listsql.add(sqlin);  
-				  // logger.info(listsql); 
+				             
+					 // logger.info(sqlin);   
+					  String sqlog = OrderGoodsManager.updateOid(tid, bid, sn);    
+					// logger.info(sqlog); 
+					  listsql.add(sqlog);   
+					  listsql.add(sqlin);    
+				 //  logger.info(listsql); 
 				   } 
 			   }
 			  // logger.info(listsql); 

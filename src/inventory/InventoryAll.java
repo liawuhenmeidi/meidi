@@ -1,6 +1,8 @@
 package inventory;
 
+import enums.ProductModel;
 import product.Product;
+import utill.StringUtill;
 
 public class InventoryAll {
 	public int categoryid;
@@ -10,9 +12,39 @@ public class InventoryAll {
    private String typeid ;
    private Boolean isquery ;   // 是否已盘点
    private String time ;
-   private int papercount;
-   private int realcount; 
-   public Product getProduct() {
+   private int papercount; 
+   private int realcount;   
+   
+   private int typestatues;
+   private String typestatuesName ;
+    
+   public int getTypestatues() {
+	return typestatues;
+} 
+   
+public void setTypestatues(int typestatues) {
+	this.typestatues = typestatues;
+}     
+    
+public String getTypestatuesName() {  
+	if(StringUtill.isNull(typestatuesName)){
+		//System.out.println(typestatues); 
+		if(ProductModel.Model.标准采购订单.getValue() == typestatues){     
+			typestatuesName = ProductModel.Model.标准采购订单.toString();
+		}else if(ProductModel.Model.特价机采购订单.getValue()== typestatues){
+			typestatuesName = ProductModel.Model.特价机采购订单.toString();
+		}else if(ProductModel.Model.样机采购订单.getValue()==typestatues){ 
+			typestatuesName = ProductModel.Model.样机采购订单.toString();
+		}    
+	}
+	
+	//System.out.println(goodtypeStatues);   
+	return typestatuesName; 
+}
+public void setTypestatuesName(String typestatuesName) {
+	this.typestatuesName = typestatuesName;
+}
+public Product getProduct() {
 	return product;
 }
 public void setProduct(Product product) {

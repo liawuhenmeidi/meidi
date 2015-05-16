@@ -311,8 +311,8 @@
 		//System.out.println(product);       
 		Map<String,List<InventoryAll>> c = InventoryAllManager.getMapSN(user,branch,
 				category, product,isSN); 
-		// System.out.println(c);
-		str = StringUtill.GetJson(c);  
+		// System.out.println(c);  
+		str = StringUtill.GetJson(c);   
 		//System.out.println(str+""); 
 		response.getWriter().write(str);
 		response.getWriter().flush();

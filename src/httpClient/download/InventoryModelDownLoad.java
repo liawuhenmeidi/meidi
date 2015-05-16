@@ -84,7 +84,7 @@ public class InventoryModelDownLoad extends HttpServlet implements DownLoad {
 				File file2 = new File(tempPath + File.separator + "model.csv");
 				// file2.createNewFile();
  
-				CsvReader reader = new CsvReader(file2.getAbsolutePath(), ',',
+				CsvReader reader = new CsvReader(file2.getPath(), ',',
 						Charset.forName("GBK")); // 一般用这编码读就可以了
 
 				reader.readHeaders();

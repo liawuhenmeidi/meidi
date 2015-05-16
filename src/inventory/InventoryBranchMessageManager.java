@@ -329,6 +329,29 @@ public class InventoryBranchMessageManager {
 		return categorys;
 	}
 
+	public static List<InventoryBranchMessage> getMap(String sql ) {
+ 
+		List<InventoryBranchMessage> categorys = new ArrayList<InventoryBranchMessage>();
+		Connection conn = DB.getConn();
+	
+		Statement stmt = DB.getStatement(conn);
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while (rs.next()) {
+				InventoryBranchMessage u = getCategoryFromRs(rs);
+				categorys.add(u);
+			}
+		} catch (SQLException e) {
+			logger.error(e);
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		logger.info(categorys.size());
+		return categorys;
+	}
+	
 	private static InventoryBranchMessage getCategoryFromRs(ResultSet rs) {
 		InventoryBranchMessage c = new InventoryBranchMessage();
 		try {

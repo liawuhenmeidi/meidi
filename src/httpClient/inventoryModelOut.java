@@ -190,7 +190,7 @@ public class inventoryModelOut {
 			String tempPath = PathUtill.getXMLpath();
 
 			tempPath += "data" + File.separator + "InventoryOutModel"
-					+ File.separator + starttime + "_" + endtime;
+					;
 			logger.info(tempPath);
 
 			File file = new File(tempPath);
@@ -202,7 +202,7 @@ public class inventoryModelOut {
 					+ "InventoryOutModel.csv");
 			// file2.createNewFile();
 
-			CsvReader reader = new CsvReader(file2.getAbsolutePath(), ',',
+			CsvReader reader = new CsvReader(file2.getPath(), ',',
 					Charset.forName("GBK")); // 一般用这编码读就可以了
  
 			GoodsReceitManager.saveOutModel(reader, starttime, endtime);
@@ -256,7 +256,7 @@ public class inventoryModelOut {
 			String tempPath = PathUtill.getXMLpath(); 
 			
 			tempPath += "data" + File.separator + "InventoryOutModel"
-					+ File.separator + starttime + "_" + endtime;
+				;
    
 			logger.info(tempPath); 
  

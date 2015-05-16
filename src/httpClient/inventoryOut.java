@@ -3,6 +3,7 @@ package httpClient;
 import goodsreceipt.GoodsReceitManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -127,24 +128,27 @@ public class inventoryOut {
 		try {
 			String tempPath = PathUtill.getXMLpath();
 
-			tempPath += "data" + File.separator + "InventoryOut"
-					+ File.separator + starttime + "_" + endtime;
+			tempPath += "data" + File.separator + "InventoryOut";
 			logger.info(tempPath);
-
+ 
 			File file = new File(tempPath);
 			if (!file.exists()) {
 				file.mkdirs();
 			}
 
-			File file2 = new File(tempPath + File.separator
-					+ "InventoryOut.csv");
+			String file2 = tempPath + File.separator + "InventoryOut.csv";
+			/*
+			 * File file2 = new File(tempPath + File.separator +
+			 * "InventoryOut.csv"); 
+			 */  
 			// file2.createNewFile();
 
-			CsvReader reader = new CsvReader(file2.getAbsolutePath(), ',',
-					Charset.forName("GBK")); // 一般用这编码读就可以了
-
+			// logger.info(file2.getAbsolutePath());
+			// logger.info(file2.);
+			CsvReader reader = new CsvReader(file2, ',', Charset.forName("GBK")); // 一般用这编码读就可以了
+ 
 			GoodsReceitManager.saveOut(reader, starttime, endtime);
-
+ 
 			reader.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -182,83 +186,151 @@ public class inventoryOut {
 	}
 
 	public static void save(String starttime, String endtime) {
-		URI uri;
+		URI uri = null;
+
 		try {
 			uri = new URI(dowmurlOut);
-			HttpUriRequest request = RequestBuilder.post().setUri(uri)
-					.addParameter("formName", "reportQueryConditon")
-					.addParameter("receivedDate1", starttime)
-					.addParameter("receivedDate2", endtime)
-					.addParameter("flage", "3") 
-					// .addParameter("buyerProductcode", "101123403")
-					.build();
- 
-			CloseableHttpResponse response2 = MyMainClient.getHttpclient()
-					.execute(request);
+		} catch (URISyntaxException e) {
+			logger.info(e);
+		}
+		HttpUriRequest request = RequestBuilder.post().setUri(uri)
+				.addParameter("formName", "reportQueryConditon")
+				.addParameter("receivedDate1", starttime)
+				.addParameter("receivedDate2", endtime)
+				.addParameter("flage", "3")
+				// .addParameter("buyerProductcode", "101123403")
+				.build();
 
-			int statusCode = response2.getStatusLine().getStatusCode();
+		CloseableHttpResponse response2 = null;
 
-			if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY
-					|| statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
+		try {
+			response2 = MyMainClient.getHttpclient().execute(request);
+		} catch (ClientProtocolException e) {
+			logger.info(e);
+		} catch (IOException e) {
+			logger.info(e);
+		}
+
+		int statusCode = response2.getStatusLine().getStatusCode();
+
+		if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY
+				|| statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
+			try {
 				MyLogin.loginpost(new URI(MyLogin.url));
-
-				response2 = MyMainClient.getHttpclient().execute(request);
-
+			} catch (URISyntaxException e) {
+				logger.info(e);
 			}
-
-			HttpEntity entity = response2.getEntity();
-
-			// EntityUtils.consume(entity);
-			/*
-			 * if (entity != null) { String str = EntityUtils.toString(entity,
-			 * "UTF-8"); if(StringUtill.isNull(str)){ MyLogin.loginpost(new
-			 * URI(MyLogin.url)); response2 = MyMainClient.getHttpclient()
-			 * .execute(request); entity = response2.getEntity(); } }
-			 */
-
-			InputStream in = entity.getContent();
-
-			String tempPath = PathUtill.getXMLpath();
-			tempPath += "data" + File.separator + "InventoryOut"
-					+ File.separator + starttime + "_" + endtime;
-
-			logger.info(tempPath);
-
-			File file = new File(tempPath);
-			if (!file.exists()) {
-				file.mkdirs();
-			}
-
-			File file2 = new File(tempPath + File.separator
-					+ "InventoryOut.csv");
-
-			file2.createNewFile();
 
 			try {
-				FileOutputStream fout = new FileOutputStream(file2);
-				int l = -1;
-				byte[] tmp = new byte[1024];
-				while ((l = in.read(tmp)) != -1) {
-					fout.write(tmp, 0, l);
-					// 注意这里如果用OutputStream.write(buff)的话，图片会失真，大家可以试试
-				}
-				fout.flush();
-				fout.close();
-				response2.close();
-			} finally {
-				// 关闭低层流。
-				in.close();
+				response2 = MyMainClient.getHttpclient().execute(request);
+			} catch (ClientProtocolException e) {
+				logger.info(e);
+			} catch (IOException e) {
+				logger.info(e);
 			}
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			logger.info(e);
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
+
+		}
+
+		HttpEntity entity = response2.getEntity();
+
+		// EntityUtils.consume(entity);
+		/*
+		 * if (entity != null) { String str = EntityUtils.toString(entity,
+		 * "UTF-8"); if(StringUtill.isNull(str)){ MyLogin.loginpost(new
+		 * URI(MyLogin.url)); response2 = MyMainClient.getHttpclient()
+		 * .execute(request); entity = response2.getEntity(); } }
+		 */
+
+		InputStream in = null;
+
+		try {
+			in = entity.getContent();
+		} catch (IllegalStateException e) {
 			logger.info(e);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			logger.info(e);
 		}
+
+		String tempPath = PathUtill.getXMLpath();
+		tempPath += "data" + File.separator + "InventoryOut";
+		File file = new File(tempPath);
+		 
+		logger.info(file.exists());  
+		if (!file.exists()) { 
+			try{logger.info(file.mkdirs());
+			}catch(Exception e){
+				logger.info(e);
+			}  
+		}      
+		logger.info(tempPath + File.separator + "InventoryOut.csv"); 
+		  
+		File file2 = new File(tempPath + File.separator + "InventoryOut.csv");
+     
+		try {        
+			if(!file2.exists()){ 
+				file2.createNewFile(); 
+			}
+			 
+		} catch (IOException e) {
+			logger.info(e);
+			logger.info(file.getAbsolutePath() + File.separator + "InventoryOut.csv");
+			 
+			file = new File(file.getAbsolutePath());
+			if (!file.exists()) {
+				file.mkdirs();
+			}   
+		  	
+			file2 = new File(file.getAbsolutePath() + File.separator + "InventoryOut.csv");
+			try {
+				file2.createNewFile();
+			} catch (IOException e1) {
+			logger.info(e);
+			}
+		} 
+
+		FileOutputStream fout = null;
+		try {
+			fout = new FileOutputStream(file2);
+		} catch (FileNotFoundException e) {
+			logger.info(e);
+		}
+
+		int l = -1;
+		byte[] tmp = new byte[1024];
+		try {
+			while ((l = in.read(tmp)) != -1) {
+				fout.write(tmp, 0, l);
+				// 注意这里如果用OutputStream.write(buff)的话，图片会失真，大家可以试试
+			}
+		} catch (IOException e) {
+			logger.info(e);
+		}
+		try {
+			fout.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			fout.close();
+		} catch (IOException e) {
+			logger.info(e);
+		}
+		try {
+			response2.close();
+		} catch (IOException e) {
+			logger.info(e);
+		}
+		  
+		finally{ 
+			try {
+				in.close();
+			} catch (IOException e) {
+				logger.info(e); 
+			}
+		}
+
 	}
 
 	public static boolean getinventoryOutModel(URI uri, String starttime,

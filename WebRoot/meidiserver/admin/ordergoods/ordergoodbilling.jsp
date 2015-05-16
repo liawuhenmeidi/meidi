@@ -9,7 +9,7 @@ User user = (User)session.getAttribute("user");
 List<BranchType> listgt = BranchTypeManager.getLocate();     
  Map<String,Map<String,List<OrderGoods>>> map  = OrderGoodsAllManager.getbillingmap(user,OrderMessage.billing,branchtype); 
   
-%>            
+%>
 <!DOCTYPE html>    
 <html>  
 <head>

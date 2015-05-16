@@ -135,9 +135,9 @@ function getInventory(){
                 %> 
              <p ><a href="javascript:void(0);"  onclick="reloadopned('dingdanCharge.jsp')">厂送票未结款</a></p>
                <%}
-            
+             
             if(UserManager.checkPermissions(user, Group.sallOrder) || UserManager.checkPermissions(user, Group.Commission) || UserManager.checkPermissions(user, Group.sall)){
-                %> 
+                %>  
               <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadManage.jsp')">上传管理</a></p>
                <%}
             if(UserManager.checkPermissions(user, Group.salecharge) ){ 

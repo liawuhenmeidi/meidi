@@ -107,7 +107,8 @@ function add(){
 	     		        '<th align="left">订单号</th>'+
 		        		 
 		     			'<th align="left">产品型号</th>'+ 
-		     			'<th align="left">产品条码</th>'+ 
+		     			'<th align="left">产品条码</th>'+
+		     			'<th align="left">产品类别</th>'+ 
 		     			'<th align="left">未入库数量</th>'+
 		     			'<th align="left">过期时间</th>'+
 		     			'<th align="left">盘点</th>'+ 
@@ -124,29 +125,30 @@ function add(){
 	        		 for(var i=0;i<json.length;i++){
 		        		 var str = json[i]; 
 		                 var pandian = "是";
-		                 
+		                  
 		                 if(str.isquery == false|| str.isquery == "false"){
 		                	 if(canpandian){
 		                		 pandian = '<span style="cursor:hand,color:red" onclick="pandian(\''+str.typeid+'\',\''+branchid+'\')">盘点确认</span>'; 
 		                	 }else {  
 		                		 pandian = "否"; 
 		                	 }
-		                 }else{   
+		                 }else{     
 		                	 if(canpandian){  
 		                		 pandian = str.time;  
-		                	 }  
-		                 }    
+		                	 }    
+		                 } 
+		                  
 		                 if(str.papercount != 0){
 		                	 addstr += '<tr id="record'+row+'" class="asc" onclick="search(\''+str.typeid+'\',\''+branchid+'\')">'; 
-		        		     
+		        		      
 		                	 if(i == 0 ){ 
 		                		 addstr +=  ' <td rowspan='+num+'>'+key+'</td> ' ;
-		        		     }
-		                	  
-		                	 addstr += ' <td>'+str.type+'</td> ' +     
-		        		     ' <td>'+str.product.encoded+'</td> ' + 
-		        		      
-		        		     ' <td>'+str.papercount+'</td> ' +  
+		        		     }  
+		                	     
+		                	 addstr += ' <td>'+str.type+'</td> ' +      
+		        		     ' <td>'+str.product.encoded+'</td> ' +  
+		        		     ' <td>'+str.typestatuesName+'</td> ' + 
+		        		     ' <td>'+str.papercount+'</td> ' +   
 		        		     // inventoryid 
 		        		    ' <td>'+str.activetime+'</td> ' + 
 		        		      

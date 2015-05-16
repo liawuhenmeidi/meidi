@@ -1,5 +1,5 @@
 package httpClient.download;
-
+ 
 public class Inventory {
   private String branchName;  // 库位名称 
   private String branchNum;  // 库位代码

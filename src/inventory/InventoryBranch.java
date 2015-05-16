@@ -2,6 +2,8 @@ package inventory;
 
 import java.util.Date;
 
+import enums.ProductModel;
+
 import product.Product;
 import product.ProductService;
 
@@ -34,6 +36,25 @@ public class InventoryBranch {
 	// 订单过期时间
 	private String activetime ;
 	
+	 private String typestatuesName ;
+	    
+	  
+	   
+	public String getTypestatuesName() { 
+		//System.out.println(typestatues); 
+		if(ProductModel.Model.标准采购订单.getValue() == typeStatues){     
+			typestatuesName = ProductModel.Model.标准采购订单.toString();
+		}else if(ProductModel.Model.特价机采购订单.getValue()== typeStatues){
+			typestatuesName = ProductModel.Model.特价机采购订单.toString();
+		}else if(ProductModel.Model.样机采购订单.getValue()==typeStatues){ 
+			typestatuesName = ProductModel.Model.样机采购订单.toString();
+		}    
+		//System.out.println(goodtypeStatues);   
+		return typestatuesName; 
+	}
+	public void setTypestatuesName(String typestatuesName) {
+		this.typestatuesName = typestatuesName;
+	}
 	public boolean isquery() {
 		boolean flag = false;
 		int month = TimeUtill.getMonth();

@@ -72,7 +72,7 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 			File file2 = new File(tempPath + File.separator + "sale.csv");
 			// file2.createNewFile();
 
-			CsvReader reader = new CsvReader(file2.getAbsolutePath(), ',',
+			CsvReader reader = new CsvReader(file2.getPath(), ',',
 					Charset.forName("GBK")); // 一般用这编码读就可以了
 
 			reader.readHeaders();
@@ -121,21 +121,22 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 			e.printStackTrace();
 		} // 跳过表头 如果需要表头的话，不要写这句。
 		return map; 
-	}  
-	    
+	}        
+	        
 	public static void saveDB(String starttime,String endtime){
 		 List<OrderSN > list = get(starttime,endtime); 
-		//logger.info(StringUtill.GetJson(list));     
+		//logger.info(StringUtill.GetJson(list));      
 		 List<String> listsql = OrderSNManager.save(list,starttime,endtime);
-		 logger.info(StringUtill.GetJson(listsql)); 
-		   
-		 DBUtill.sava(listsql );
-		 
+		    
+		// logger.info(StringUtill.GetJson(listsql)); 
+		     
+		 DBUtill.sava(listsql ); 
+		  
 	} 
 	public static List<OrderSN > get(String starttime,String endtime) {
 		// startTime = "2015-05-03"; 
 		save(starttime, endtime);  
-		 
+		  
 		List<OrderSN> list = new ArrayList<OrderSN>();
 		
 		if(StringUtill.isNull(starttime) || StringUtill.isNull(endtime)){
@@ -153,10 +154,10 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 				file.mkdirs(); 
 			}
  
-			File file2 = new File(tempPath + File.separator +starttime+"_"+endtime+"order.csv");
+			File file2 = new File(tempPath + File.separator+"order.csv");
 			// file2.createNewFile();
  
-			CsvReader reader = new CsvReader(file2.getAbsolutePath(), ',',
+			CsvReader reader = new CsvReader(file2.getPath(), ',',
 					Charset.forName("GBK")); // 一般用这编码读就可以了
 
 			reader.readHeaders();
@@ -210,7 +211,7 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 			reader.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			logger.info(e); 
+			logger.info(e);  
 		} // 跳过表头 如果需要表头的话，不要写这句。
 		return list;
 	}
@@ -266,7 +267,7 @@ HttpEntity entity = response2.getEntity();
 			}  
     
 			File file2 = new File(tempPath + File.separator + 
-					 starttime+"_"+endtime+"order.csv");  
+					"order.csv");  
 			   
 			file2.createNewFile();  
 			   

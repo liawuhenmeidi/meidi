@@ -1,5 +1,6 @@
 package goodsreceipt;
 
+import inventory.InventoryBranch;
 import inventory.InventoryBranchManager;
 
 import java.io.IOException;
@@ -29,8 +30,9 @@ import utill.TimeUtill;
  
 public class GoodsReceitManager {
 	protected static Log logger = LogFactory.getLog(GoodsReceitManager.class);
-    
-	public static List<String> saveIN(GoodsReceipt gr) {
+      
+	  
+	public static List<String> saveIN(Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin ,GoodsReceipt gr) {
 		User user = new User();
 		boolean flag = true;
 		List<String> list = new ArrayList<String>();
@@ -39,7 +41,7 @@ public class GoodsReceitManager {
 		if (gr.getTid() == 0 || gr.getBidSN() == 0) {
 			gr.setDisable(1);
 			flag = false;
-		}
+		} 
 
 		String sql = " insert into goodsreceipt (id,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,recevenum,refusenum,branchid,branchname,uuid,disable)"
 				+ " values ('"
@@ -73,19 +75,28 @@ public class GoodsReceitManager {
 
 			String sqlIB = "";
 			String sqlIBM = "";
-			if (null == InventoryBranchManager.getInventoryID(user,
-					gr.getBidSN(), gr.getTid() + "")) {
-				sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)"
+			InventoryBranch in = null; 
+			try {
+				in = mapin.get(gr.getBidSN())
+						.get(gr.getTid() + "")
+						.get(gr.getGoodtypeStatues()); 
+			} catch (Exception e) {
+				in = null;
+			}
+			 
+			if (null == in) {
+				sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
 						+ "  values ( null,"
 						+ gr.getCid()
 						+ ", '"
 						+ gr.getTid()
+						+ "', '" 
+						+ +gr.getRecevenum() 
 						+ "', '"
-						+ +gr.getRecevenum()
-						+ "', '"
-						+ -gr.getRecevenum() + "'," + gr.getBidSN() + ")";
+						+ -gr.getRecevenum() + "'," + gr.getBidSN()+ ","
+								+ gr.getGoodtypeStatues()+ ")";
 
-				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues,typestatues)"
 						+ "  values ( null, '"
 						+ gr.getBidSN()
 						+ "', '"
@@ -107,17 +118,19 @@ public class GoodsReceitManager {
 						+ ","
 						+ -gr.getRecevenum()
 						+ ","
-						+ 1 + "," + gr.getBidSN() + ",21,0,0)";
-			} else {
+						+ 1 + "," + gr.getBidSN() + ",21,0,0,0,"
+											+ gr.getGoodtypeStatues()
+											+ ")";
+			} else { 
 
 				sqlIB = "update mdinventorybranch set papercount =  ((mdinventorybranch.papercount)*1 - "
 						+ gr.getRecevenum()
 						+ ")*1  , realcount = ((mdinventorybranch.realcount)*1 + "
 						+ gr.getRecevenum()
 						+ ")*1   where  branchid = "
-						+ gr.getBidSN() + " and  type = '" + gr.getTid() + "'";
+						+ gr.getBidSN() + " and  type = '" + gr.getTid() + "' and typestatues = "+gr.getGoodtypeStatues();
 
-				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues,typestatues)"
 						+ "  values ( null, '"
 						+ gr.getBidSN()
 						+ "', '"
@@ -138,40 +151,40 @@ public class GoodsReceitManager {
 						+ gr.getBidSN()
 						+ " and  type = '"
 						+ gr.getTid()
-						+ "')*1,(select papercount from mdinventorybranch where branchid = "
+						+ "' and typestatues = "+gr.getGoodtypeStatues() +")*1,(select papercount from mdinventorybranch where branchid = "
 						+ gr.getBidSN()
 						+ " and  type = '"
 						+ gr.getTid()
-						+ "')*1,"
+						+ "'  and typestatues = "+gr.getGoodtypeStatues() +")*1,"
 						+ 1
 						+ ","
 						+ gr.getBidSN()
 						+ ",21,(select realcount from mdinventorybranch where branchid = "
 						+ gr.getTid()
-						+ " and  type = '"
+						+ " and  type = '" 
 						+ gr.getTid()
-						+ "')*1"
+						+ "'  and typestatues = "+gr.getGoodtypeStatues() +")*1"
 						+ -Integer.valueOf(gr.getRecevenum())
 						+ ",(select papercount from mdinventorybranch where branchid = "
-						+ gr.getBidSN()
+						+ gr.getBidSN() 
 						+ " and  type = '"
-						+ gr.getTid()
-						+ "')*1"
-						+ +Integer.valueOf(gr.getRecevenum()) + ")";
+						+ gr.getTid()  
+						+ "'  and typestatues = "+gr.getGoodtypeStatues() +")*1"
+						+ +Integer.valueOf(gr.getRecevenum()) + ",0," + gr.getGoodtypeStatues() + ")";
 
 			} 
-            
-			String sqlor = OrderReceitManager.update(gr);
-			list.add(sqlor);
+              
+			//String sqlor = OrderReceitManager.update(gr);
+			//list.add(sqlor);    
 			list.add(sqlIB);
-			list.add(sqlIBM);
-		}
+			list.add(sqlIBM); 
+		} 
 
 		list.add(sql);
 		return list;
 	}
   
-	public static List<String> saveOut(GoodsReceipt gr) {
+	public static List<String> saveOut(Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin ,GoodsReceipt gr) {
 		User user = new User();
 		boolean flag = true;   
 		List<String> list = new ArrayList<String>();
@@ -181,20 +194,20 @@ public class GoodsReceitManager {
 			 
 			gr.setDisable(1);
 			flag = false;  
-		}
-		
+		} 
+		 
         String sqlup = OrderReceitManager.update(gr);
-         
-		String sql = " insert into goodsreceipt (id,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,recevenum,refusenum,branchid,branchname,uuid,disable,statues)"
+          
+		String sql = " insert into goodsreceipt (id,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,recevenum,refusenum,branchid,branchname,uuid,disable,statues,typestatues)"
 				+ " values ('"
 				+ gr.getId()
-				+ "','"
+				+ "','" 
 				+ gr.getReceveid()
 				+ "','"
 				+ gr.getReceveTime()
 				+ "','"
 				+ gr.getSendid()
-				+ "','"
+				+ "','" 
 				+ gr.getBuyid()
 				+ "','"
 				+ gr.getOrdertype()
@@ -213,23 +226,33 @@ public class GoodsReceitManager {
 				+ gr.getBranchName()
 				+ "','"  
 				+ gr.getUuid() + "'," + gr.getDisable() + ","+gr.getStatues()+");";
-		if (flag) {
-
+		if (flag) { 
+ 
 			String sqlIB = "";
-			String sqlIBM = "";
-			if (null == InventoryBranchManager.getInventoryID(user,
-					gr.getBidSN(), gr.getTid() + "")) {
-				sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)"
+			String sqlIBM = ""; 
+			InventoryBranch in = null;
+			 
+			try { 
+				in = mapin.get(gr.getBidSN())
+						.get(gr.getTid() + "")
+						.get(gr.getGoodtypeStatues()); 
+			} catch (Exception e) {
+				in = null;
+			}  
+			 
+			if (null == in) {
+				sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
 						+ "  values ( null,"
 						+ gr.getCid()
-						+ ", '"
+						+ ", '" 
 						+ gr.getTid()
 						+ "', '"
 						+ -gr.getRecevenum()
 						+ "', '"
-						+ gr.getRecevenum() + "'," + gr.getBidSN() + ")";
-
-				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+						+ gr.getRecevenum() + "'," + gr.getBidSN() + ","
+								+ gr.getGoodtypeStatues()+ ")";
+ 
+				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues,typestatues)"
 						+ "  values ( null, '"
 						+ gr.getBidSN()
 						+ "', '"
@@ -251,7 +274,9 @@ public class GoodsReceitManager {
 						+ ","
 						+ gr.getRecevenum()
 						+ ","
-						+ 1 + "," + gr.getBidSN() + ",21,0,0)";
+						+ 1 + "," + gr.getBidSN() + ",21,0,0,1,"
+											+ gr.getGoodtypeStatues()
+											+ ")";
 			} else {
 
 				sqlIB = "update mdinventorybranch set papercount =  ((mdinventorybranch.papercount)*1 + "
@@ -259,9 +284,9 @@ public class GoodsReceitManager {
 						+ ")*1 , realcount = ((mdinventorybranch.realcount)*1 - "
 						+ gr.getRecevenum()
 						+ ")*1  where  branchid = "
-						+ gr.getBidSN() + " and  type = '" + gr.getTid() + "'";
+						+ gr.getBidSN() + " and  type = '" + gr.getTid() + "' and typestatues = "+gr.getGoodtypeStatues();
 
-				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues,typestatues)"
 						+ "  values ( null, '"
 						+ gr.getBidSN()
 						+ "', '"
@@ -282,37 +307,37 @@ public class GoodsReceitManager {
 						+ gr.getBidSN()
 						+ " and  type = '"
 						+ gr.getTid()
-						+ "')*1,(select papercount from mdinventorybranch where branchid = "
+						+ "' and typestatues = "+gr.getGoodtypeStatues() +")*1,(select papercount from mdinventorybranch where branchid = "
 						+ gr.getBidSN()
 						+ " and  type = '" 
-						+ gr.getTid()
-						+ "')*1,"
+						+ gr.getTid() 
+						+ "'  and typestatues = "+gr.getGoodtypeStatues() +")*1,"
 						+ 1
 						+ ","
-						+ gr.getBidSN()
+						+ gr.getBidSN() 
 						+ ",21,(select realcount from mdinventorybranch where branchid = "
 						+ gr.getTid()
 						+ " and  type = '"
 						+ gr.getTid()
-						+ "')*1"
-						+ Integer.valueOf(gr.getRecevenum())
+						+ "' and typestatues = "+gr.getGoodtypeStatues() +")*1"
+						+ Integer.valueOf(gr.getRecevenum()) 
 						+ ",(select papercount from mdinventorybranch where branchid = "
 						+ gr.getBidSN()
 						+ " and  type = '"
 						+ gr.getTid()
-						+ "')*1"
-						+ -Integer.valueOf(gr.getRecevenum()) + ")";
-
+						+ "' and typestatues = "+gr.getGoodtypeStatues() +")*1"
+						+ -Integer.valueOf(gr.getRecevenum()) + ",1," + gr.getGoodtypeStatues() + ")";
+ 
 			}    
 			list.add(sqlup); 
 			list.add(sqlIB);
-			list.add(sqlIBM);
-		}
-
+			list.add(sqlIBM);  
+		} 
+ 
 		list.add(sql);
 		return list;
 	}
-
+ 
 	public static List<String> saveDisable(GoodsReceipt gr) {
 		User user = new User(); 
 		String papermark = "-"; 
@@ -343,7 +368,7 @@ public class GoodsReceitManager {
 			String sqlIBM = "";
 			if (null == InventoryBranchManager.getInventoryID(user,
 					gr.getBidSN(), gr.getTid() + "")) {
-				sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid)"
+				sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
 						+ "  values ( null,"
 						+ gr.getCid()
 						+ ", '"
@@ -355,9 +380,10 @@ public class GoodsReceitManager {
 						+ papermark
 						+ gr.getRecevenum()
 						+ "',"
-						+ gr.getBidSN() + ")";
+						+ gr.getBidSN() + ","
+								+ gr.getGoodtypeStatues()+ ")";
 
-				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues,typestatues)"
 						+ "  values ( null, '"
 						+ gr.getBidSN()
 						+ "', '"
@@ -386,7 +412,8 @@ public class GoodsReceitManager {
 						+ 1
 						+ ","
 						+ gr.getBidSN()
-						+ ",21,0,0)";
+						+ ",21,0,0,1,"+ gr.getGoodtypeStatues()
+											+ ")";
 			} else {
 
 				sqlIB = "update mdinventorybranch set papercount =  ((mdinventorybranch.papercount)*1  "
@@ -397,9 +424,9 @@ public class GoodsReceitManager {
 						+ gr.getRecevenum()
 						+ ")*1   where  branchid = "
 						+ gr.getBidSN() 
-						+ " and  type = '" + gr.getTid() + "'";
+						+ " and  type = '" + gr.getTid() + "' and typestatues = "+gr.getGoodtypeStatues();
  
-				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)"
+				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues,typestatues)"
 						+ "  values ( null, '"
 						+ gr.getBidSN()  
 						+ "', '"  
@@ -422,11 +449,11 @@ public class GoodsReceitManager {
 						+ gr.getBidSN()
 						+ " and  type = '"
 						+ gr.getTid()
-						+ "')*1,(select papercount from mdinventorybranch where branchid = "
+						+ "' and typestatues = "+gr.getGoodtypeStatues() +")*1,(select papercount from mdinventorybranch where branchid = "
 						+ gr.getBidSN()
 						+ " and  type = '"
 						+ gr.getTid()
-						+ "')*1,"
+						+ "' and typestatues = "+gr.getGoodtypeStatues() +")*1,"
 						+ 1  
 						+ ","
 						+ gr.getBidSN() 
@@ -434,17 +461,17 @@ public class GoodsReceitManager {
 						+ gr.getTid()
 						+ " and  type = '"
 						+ gr.getTid()  
-						+ "')*1"
+						+ "' and typestatues = "+gr.getGoodtypeStatues() +")*1"
 						+ realmark + Integer.valueOf(gr.getRecevenum())  
 						+ ",(select papercount from mdinventorybranch where branchid = "
-						+ gr.getBidSN()   
+						+ gr.getBidSN()    
 						+ " and  type = '" 
-						+ gr.getTid()   
-						+ "')*1" 
+						+ gr.getTid()    
+						+ "' and typestatues = "+gr.getGoodtypeStatues() +")*1" 
 						+ papermark + Integer.valueOf(gr.getRecevenum()) + ")";
- 
+  
 			} 
-			list.add(sql);  
+			list.add(sql);   
 		    list.add(sqlup);  
 			list.add(sqlIB);
 			list.add(sqlIBM);
@@ -455,7 +482,7 @@ public class GoodsReceitManager {
 	public static GoodsReceipt getByid(String id) {
 		Map<String, GoodsReceipt> map = new HashMap<String, GoodsReceipt>();
 		String sql = " select * from goodsreceipt where id=   " + id;
-
+ 
 		logger.info(sql);
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn);
@@ -995,6 +1022,9 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 	
 	public static boolean save(Map<String, GoodsReceipt> map,String starttime, String endtime) {
 		boolean flag = false; 
+		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryBranchManager
+				.getInventoryMap();
+		 
 		List<String> list = new ArrayList<String>();
 		Map<String, GoodsReceipt> mapdb = getMapAll(starttime,
 				endtime);
@@ -1006,7 +1036,7 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 				GoodsReceipt gr = ent.getValue();
 				GoodsReceipt db = mapdb.get(gr.getUuid());
 				if (null == db) {
-					List<String> sql = saveIN(gr);
+					List<String> sql = saveIN(mapin,gr);
 					list.addAll(sql);
 				}
 			}
@@ -1018,6 +1048,9 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 
 	public static boolean saveOut(Map<String, GoodsReceipt> map,String starttime, String endtime) {
 		boolean flag = false;
+		
+		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryBranchManager
+				.getInventoryMap();
 		List<String> list = new ArrayList<String>();
 		Map<String, GoodsReceipt> mapdb = getMapAll(starttime,
 				endtime); 
@@ -1029,7 +1062,7 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 				GoodsReceipt gr = ent.getValue();
 				GoodsReceipt db = mapdb.get(gr.getUuid());
 				if (null == db) {
-					List<String> sql = saveOut(gr);
+					List<String> sql = saveOut(mapin,gr);
 					list.addAll(sql);
 				} 
 			}
@@ -1072,7 +1105,7 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 			p.setBranchName(rs.getString("branchname"));
 			p.setBuyid(rs.getString("buyid"));
 			p.setGoodsName(rs.getString("goodsname"));
-			p.setGoodsnum(rs.getString("goodsnum"));
+			p.setGoodsnum(rs.getString("goodsnum")); 
 			p.setId(rs.getInt("id"));
 			p.setOrdertype(rs.getString("ordertype"));
 			p.setReceveid(rs.getString("receveid"));
