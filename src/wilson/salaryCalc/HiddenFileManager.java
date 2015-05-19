@@ -18,6 +18,7 @@ import org.apache.poi.hssf.record.formula.functions.Rows;
 import jxl.Sheet;
 import jxl.Workbook;
 
+import utill.PathUtill;
 import utill.StringUtill;
 import wilson.catergory.HiddenCatergoryMapingManager;
 import wilson.download.ExcelGenerator;
@@ -47,7 +48,10 @@ public class HiddenFileManager {
 	
 	public static boolean checkFile(){
 		boolean result = false;
-		try {
+		try { 
+			if(null == hiddenFileDIR){
+				initPath(PathUtill.getXMLpath());
+			} 
 			//确认目录存在，不存在的时候创建目录
 			if (!hiddenFileDIR.exists()) {
 				hiddenFileDIR.mkdirs();

@@ -51,6 +51,7 @@ import com.csvreader.CsvReader;
 
 import salesn.SaleSN;
 import salesn.SaleSNManager;
+import utill.DBUtill;
 import utill.PathUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
@@ -298,7 +299,7 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 			e.printStackTrace();
 		} // 跳过表头 如果需要表头的话，不要写这句。
 		return list;
-	}
+	}  
 
 	public static List<SaleSN> getSaleSN(String starttime, String endtime) {
 		// startTime = "2015-05-03";
@@ -335,7 +336,9 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 					for (int i = 0; i < strs.length; i++) {
 						// logger.info(i);
 						String str = strs[i];
-						if (i == 2) {
+						if(i ==0){  
+							in.setSaletime(str); 
+						}else if (i == 2) {
 							// logger.info(str);
 							in.setBranchnum(str);
 						} else if (i == 3) {
@@ -367,12 +370,15 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 		List<SaleSN> listsql = new ArrayList<SaleSN>();
 
 		List<SaleSN> list = getSaleSN(starttime, endtime);
-
+         
+		logger.info(list.size());
 		Map<String, Map<String, List<SaleSN>>> map = new HashMap<String, Map<String, List<SaleSN>>>();
-
+ 
 		Map<String, Map<String, List<SaleSN>>> mapdb = SaleSNManager.getMapDB(
-				starttime, endtime);
-
+				starttime, endtime); 
+		   
+        logger.info(mapdb);  
+         
 		if (null == mapdb) {
 			listsql =  list;
 		} else {  
@@ -455,10 +461,9 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 				}
 			}
 		}
-		
-		
-		
-		
+  // logger.info(listsql);
+		 
+		SaleSNManager.save(listsql);
 	}
 
 	public static void save(String starttime, String endtime) {

@@ -50,15 +50,15 @@ public class OrderMessageManager {
 		return list ;
 		 
 	}   
-	
-	public static String billing(String exportuuid,String name,String ids,String statues,int expor){
+	 
+	public static String billing(String exportuuid,String name,String ids,String statues,int expor,String typestatues){
 		//List<Integer> listbids = BranchService.getListids(Integer.valueOf(branchtype)); 
         List<Integer> listcids = CategoryService.getByExportModel(expor); 
-       // logger.info(uuid);     
-		String sql = " update mdordergoods,mdordermessage set mdordergoods.uuid = '"+name+"' ,mdordergoods.exportuuid = '"+exportuuid+"',mdordergoods.uuidtime = '"+TimeUtill.getdateString()+"', mdordergoods.opstatues = 1  where mdordergoods.mid = mdordermessage.id  and mdordergoods.cid in ("+listcids.toString().substring(1,   
+       // logger.info(uuid);      
+		String sql = " update mdordergoods,mdordermessage set mdordergoods.uuid = '"+name+"' ,mdordergoods.exportuuid = '"+exportuuid+"',mdordergoods.uuidtime = '"+TimeUtill.getdateString()+"', mdordergoods.opstatues = 1,mdordergoods.exportmodel ="+expor+",mdordergoods.exportstatues = "+typestatues+"  where mdordergoods.mid = mdordermessage.id  and mdordergoods.cid in ("+listcids.toString().substring(1,   
 						listcids.toString().length() - 1)+")  and mdordermessage.id in "+ ids+" and mdordergoods.statues in"+statues; 
-	    return sql;  
-	      
+	    return sql;    
+	         
 	}    
 	 
 	public static String billing(String exportuuid,String ids,String statues){
@@ -67,10 +67,10 @@ public class OrderMessageManager {
 	    return sql;  
 	       
 	}   
-	
-	public static String billingprint(String name){
-		
-		String sql = " update mdordergoods set opstatues = 2 where uuid = '"+name+"'";
+	 
+	public static String billingprint(String name){ 
+		  
+		String sql = " update mdordergoods set opstatues = 2 where uuid = '"+name+"' and opstatues = 1 ";
 	    return sql;  
 	     
 	} 

@@ -21,9 +21,9 @@ public class InventoryBranchMessage {
      
 	private int operatortype; // 0 表示出货 1 表示入库 ,收货 2 文员派单 4 安装公司释放 
 	// 11 安装公司派送货员 6 送货员释放 7 退货员拉回 8 文员同意退货 9 退货员释放 10 盘点记录 12 换货员确认换货
-	// 13 卖场入库    14  导购收货       15 卖场退货     16 导购退货    17导购换货    18 实发退货库存修正  
+	// 13 卖场入库    14  导购收货       15 卖场退货     16 导购退货    17导购换货    18 实发退货库存修正        19 卖场出库   21 卖场入库 
 	private int realcount; // 实际库存
-
+ 
 	private int papercount; // 虚拟库存
 
 	
@@ -236,8 +236,12 @@ public class InventoryBranchMessage {
 		 }else if(operatortype == 17){  
 			 strtype = "导购换货";
 		 }else if(operatortype == 18){
-			 strtype = " 实发退货库存修正 ";
-		 }    
+			 strtype = "实发退货库存修正";
+		 }else if(operatortype == 19){
+			 strtype = "卖场出库";
+		 } else if(operatortype == 21){
+			 strtype = "卖场入库";
+		 }      
 
 		return strtype ;
 	}

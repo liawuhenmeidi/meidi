@@ -3,7 +3,7 @@
 request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user");  
 String branchtype = request.getParameter("branchtype"); 
-List<BranchType> listgt = BranchTypeManager.getLocate();   
+List<BranchType> listgt = BranchTypeManager.getLocate();    
 Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getsendmap(user,OrderMessage.examine); 
  // System.out.println(StringUtill.GetJson(map));     
 %>           
@@ -101,12 +101,12 @@ function check(){
     <td   class="s_list_m" align="center">发货时间</td>
      <td   class="s_list_m" align="center">备注</td>
   </tr>  
-   <%    
-   if(null != map){   
+   <%     
+   if(null != map){     
 	   Set<Map.Entry<String,OrderGoodsAll>> mapent = map.entrySet();
 		Iterator<Map.Entry<String,OrderGoodsAll>> itmap = mapent.iterator();
-		int i = 0 ; 
-		while(itmap.hasNext()){ 
+		int i = 0 ;   
+		while(itmap.hasNext()){  
 			Map.Entry<String,OrderGoodsAll> en =  itmap.next();
 			OrderGoodsAll o =en.getValue(); 
 			String sendtime = o.getList().get(0).getBillingtime();
@@ -115,7 +115,7 @@ function check(){
 					|| o.getOm().getBranch().getPid() == Integer
 							.valueOf(branchtype)) {
 			 
-  %>               
+  %>                
  <tr class="asc" ondblclick="detail('ordergoodsdetailsend.jsp?id=<%=key%>&type=<%=OrderMessage.billing%>&statues=<%=OrderMessage.examine%>')">  
 	 <td align="center"><%=o.getOm().getId() %></td>  
 	 <td align="center"><%=o.getOm().getBranchname()%></td>  

@@ -44,8 +44,6 @@ function changes(id,name,statues){
         // alert(errorThrown); 
             } 
            });
-	
-	
 }
 
 function update(uid,phone){
@@ -152,34 +150,46 @@ if(null != list){
 		<td align="left"><%=u.getChargeName()%></td>
 		<td align="left"><%= u.getBranchName() %></td>
 		<td align="left"><%=u.getEntryTime() %></td> 
-		<td align="left">
+		
 		 <% 
 		   if(!UserManager.checkPermissions(u, Group.Manger)){
 			   String str = 0 == u.getStatues()?"否":"是";
 		  
 			   if(flag){
 					if(0 == u.getStatues()){  
-					 %> 
-					<%=str %>
-					   
+					 %>  
+					
+					   <td align="left" bgcolor="red">
+					   <%=str %>
 					   <input type="button" onclick="changes('<%=u.getId()%>','',1)"  value="激活"/>
 					   <input type="button" onclick="changes('<%=u.getId()%>','<%=u.getUsername() %>',2)"  value="删除"/>
+					 </td> 
 					 <%
 					   }else { 
 					 %> 
-					<%=str %>
+					
+					<td align="left">
+					<%=str %> 
 					   <input type="button" onclick="changes('<%=u.getId()%>','',0)"  value="关闭"/>
 					  <input type="button" onclick="changes('<%=u.getId()%>','<%=u.getUsername() %>',2)"  value="删除"/>
-					 <%
+					 </td>
+					 <% 
 				   }
 			   }else {
 				  %> 
-				  <%
+				  <td align="left">
+			   </td>   
+				  <% 
 			   }
+		   }else {
+			  %> 
+			  <td align="left">
+			   </td>   
+			  <%
 		   }
 		 %>
 		 
-		 </td>      
+		   
 		<!--
 		 <td align="left">
 			<a href="huiyuanUpdate.jsp?id=<%=u.getId() %>">[修改]</a>
@@ -209,7 +219,7 @@ if(null != list){
 		<td align="left"><%=u.getChargeName()%></td>
 		<td align="left"><%=BranchService.getMap().get(Integer.valueOf(u.getBranch())) == null ? "":BranchService.getMap().get(Integer.valueOf(u.getBranch())).getLocateName() %></td>
 		<td align="left"><%=u.getEntryTime() %></td> 
-		<td align="left"> 
+		
 		 <%
 		 String str = 0 == u.getStatues()?"否":"是";
 		  
@@ -217,23 +227,31 @@ if(null != list){
 				   if(0 == u.getStatues()){
 					   
 				 %>
-				 <%=str %>
-				 
+				
+				   <td align="left" bgcolor="red">
+				    <%=str %>
 				 <input type="button" onclick="changes('<%=u.getId()%>',1)"  value="激活"/>
 				   <input type="button" onclick="changes('<%=u.getId()%>',2)"  value="删除"/>
+				   </td>
 				 <%
 			
 				   }else {
 					   
-				 %> 
-				 <%=str %>
+				 %>  
+				
+				 <td align="left"> 
+				  <%=str %>
 				 <input type="button" onclick="changes('<%=u.getId()%>',0)"  value="关闭"/>
 				  <input type="button" onclick="changes('<%=u.getId()%>',2)"  value="删除"/>
+				  </td>
 				 <%
 			   }
 		   }else {
 			  %> 
+			  <td align="left"> 
 			   <%=str %>
+			    </td>
+			   
 			  <%
 		   }
 		 %>

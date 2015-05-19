@@ -402,10 +402,10 @@ logger.info(pstmt);
 					
 					if(UserManager.checkPermissions(user, Group.Manger)){
 						sql = "select * from  mduser where statues != 2 order by id desc";
-					}else {
+					}else { 
 						// select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"'
 						//sql = "select * from  mduser where statues != 2 and usertype in (select id from mdgroup where pid = "+user.getUsertype()+") order by id desc";
-						sql = "select * from  mduser where statues != 2 and usertype in (select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"') order by id desc";
+						sql = "select * from  mduser where statues != 2 and usertype in (select groupid from  mdrelategroup where  pgroupid = '"+user.getUsertype()+"') order by branch";
 					} 
 					logger.info(sql); 
 					//  select id from mdgroup where pid = user.get

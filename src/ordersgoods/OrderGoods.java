@@ -18,30 +18,59 @@ public class OrderGoods {
 	private String submittime; // 提交订单时间
 	private int mid;
 	private int tid; // 产品id
-	private int cid; // 产品类别id
-
+	private int cid; // 产品类别id 
+ 
 	private String tname; 
 	private Product product;
-
+  
 	private int statues; // 1常规 2 特价 3 样机 4 换货 5 赠品 6 店外退货 7 已入库常规退货 8 已入库特价退货 9
 							// 已入库样机退货
-	private int realstatues; //
-	private int ordernum;
-	private int realnum; // 送货数量
+	private int realstatues; // 
+	private int ordernum;    
+	private int realnum; // 送货数量  
 	private int opstatues; // 0 未生成订单 1 生成订单 2 已导出订单
-	private int billingstatues; // 0 未发货 1 已发货
+	private int billingstatues; // 0 未发货 1 已发货  2 已修改实发数量   3 已入库 
 	private String uuidtime;
 	private String uuid;
 	private String statuesName;
 	private String Branch;
 	private String billingtime;
 	private int realsendnum;
+	private int Instoragenum;  //  卖场入库数量   
 	private int returnrealsendnum;
 	private String effectiveendtime;
-	private String serialnumber;
-	private String exportuuid;
+	private String serialnumber;  
+	private String exportuuid;    // 导出标识符  
+	private int exportmodel;    // 导出类别   苏宁系统/国美系统
+	
+	private int exportstatues ; // 退货单、订货单等
+	
 	private String realsendnumName;
 	private String returnrealsendnumName;
+ 
+	public int getExportstatues() {
+		return exportstatues;
+	}
+
+	public void setExportstatues(int exportstatues) {
+		this.exportstatues = exportstatues;
+	}
+
+	public int getExportmodel() {
+		return exportmodel;
+	}
+
+	public void setExportmodel(int exportmodel) {
+		this.exportmodel = exportmodel;
+	}
+
+	public int getInstoragenum() {
+		return Instoragenum;
+	}
+
+	public void setInstoragenum(int instoragenum) {
+		Instoragenum = instoragenum;
+	}
 
 	public String getRealsendnumName() {
 		if (2 == billingstatues) {

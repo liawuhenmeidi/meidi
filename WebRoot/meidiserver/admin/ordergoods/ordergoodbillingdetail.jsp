@@ -7,7 +7,9 @@ User user = (User)session.getAttribute("user");
 String name = request.getParameter("name");  
 String exportName = request.getParameter("exportName");
 String orderid = request.getParameter("orderid");     
-String exportuuid = "";    
+String exportuuid = "";
+int exportmodel = -1;
+int typestatues = -1;
 List<OrderGoodsAll> list = OrderGoodsAllManager.getlistName(user,OrderMessage.billing,exportName,name); 
 Set<String> set = new HashSet<String>();
 String endtime = "";
@@ -24,12 +26,16 @@ if (null != list) {
 	        		set.add(og.getStatues()+"_"+og.getOid());
 	        endtime = StringUtill.getNotNUll(og.getEffectiveendtime());
 	        exportuuid = og.getExportuuid();
-	        	}
+	        exportmodel = og.getExportmodel();
+	        typestatues = og.getExportstatues();
+	        	} 
 	        } else { 
 	        	if(StringUtill.isNull(og.getOid())){
 	        		set.add(og.getStatues()+"_"+og.getOid());
 	        endtime = StringUtill.getNotNUll(og.getEffectiveendtime());
-	        exportuuid = og.getExportuuid();
+	        exportuuid = og.getExportuuid();  
+	        exportmodel = og.getExportmodel(); 
+	        typestatues = og.getExportstatues();
 	        	}
 	        }
 	         
@@ -98,10 +104,14 @@ if (null != list) {
 						<tr>
 							<td colspan=2 align="center">订单名称：<%=name%></td>
 							<td colspan=2 align="center"></td>
-							<td align="center" colspan=4><a
+							<td align="center" colspan=2><a
 								href="../../../data/exportOrderGM/<%=exportuuid%>.xls"><font
-									style="color:blue;font-size:20px;">导出</font> </a>
-							</td>
+									style="color:blue;font-size:20px;">导出原文件</font> </a> 
+							</td>        
+							<td align="center" colspan=2><a   
+								href="../../Print?method=billingsencond&exportuuid=<%=exportuuid%>&orderid=<%=orderid%>&exportmodel=<%=exportmodel%>&typestatues=<%=typestatues%>&name=<%=name%>"><font  
+									style="color:blue;font-size:20px;">导出当前数据</font> </a>
+							</td> 
 						</tr>
 					</table>
 				</td>
@@ -189,6 +199,7 @@ if (null != list) {
 								if (StringUtill.isNull(og.getOid())) {
 									cl = "class=\"bsc\"";
 								}
+								
 			%>
 
 			<tr <%=cl%>>
@@ -200,8 +211,8 @@ if (null != list) {
 				<td align="center"><%=og.getRealnum()%></td>
 				<td align="center"><%=branch.getLocateName()%></td>
 				<td align="center"><%=branch.getEncoded()%></td>
-				<td align="center"><%=og.getStatuesName()%></td>
-				<td align="center"><%=TimeUtill.getdateString()%></td>
+				<td align="center"><%=og.getStatuesName()%></td> 
+				<td align="center"><%=og.getSubmittime()%></td>
 				<td align="center"><%=serialnumber%></td>
 			</tr>
 

@@ -24,7 +24,7 @@ public class SaleSNManager {
 	
 	public static void save(List<SaleSN> list){
 		List<String> listsql = new ArrayList<String>();
-		if(list.isEmpty()){
+		if(!list.isEmpty()){ 
 			Iterator<SaleSN> it = list.iterator();
 			while(it.hasNext()){ 
 				SaleSN sa= it.next();  

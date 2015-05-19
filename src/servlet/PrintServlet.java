@@ -111,6 +111,8 @@ public class PrintServlet extends HttpServlet {
 		} else if ("billing".equals(method)) {
 			OrderGoodsbilling(request, response);
 
+		}else if("billingsencond".equals(method)){
+			OrderGoodsbillingsencond(request, response);
 		}
 	}
 
@@ -913,7 +915,6 @@ public class PrintServlet extends HttpServlet {
 	public void exportOrderGoodsSN(HttpServletRequest request,
 			HttpServletResponse response, List<OrderGoodsAll> list) {
 		User user = (User) request.getSession().getAttribute("user");
-
 		String name = request.getParameter("name");
 		
 		String exportuuid = (String) request.getAttribute("exportuuid");
@@ -1236,9 +1237,9 @@ public class PrintServlet extends HttpServlet {
 			// FileOutputStream("E:/报装单"+printlntime+".xls");
 			wb.write(response.getOutputStream());
 			response.getOutputStream().close();
-
+ 
 			String sql = OrderMessageManager.billingprint(name);
-			DBUtill.sava(sql);
+			DBUtill.sava(sql); 
 			// logger.info(123);
 
 		} catch (Exception e) {
@@ -2845,28 +2846,22 @@ public class PrintServlet extends HttpServlet {
 		List<String> listStatues = Arrays.asList(statues); 
 		String typestatues = request.getParameter("typestatues");
 		String exportmodel = request.getParameter("exportmodel");
-		int expor = -1;
+		int expor = -1; 
 		if (!StringUtill.isNull(exportmodel)) {
 			expor = Integer.valueOf(exportmodel);
-		}
-		
-		
-		/*
-		 * BranchType bt = null ; if(!StringUtill.isNull(branchtype)){ bt =
-		 * BranchTypeManager .getLocate(Integer.valueOf(branchtype)); }
-		 */
+		}  
 		String exportuuid = UUID.randomUUID().toString();
 		request.setAttribute("exportuuid", exportuuid);
 		logger.info(typestatues);
-		if ("2".equals(typestatues)) {
+		if ("2".equals(typestatues)) { 
 			// 忽略
 			String sql = OrderMessageManager.billing(exportuuid, ids, statue);
 			DBUtill.sava(sql);
 		} else {
 			String sql = OrderMessageManager.billing(exportuuid, name, ids,
-					statue, expor);
+					statue, expor,typestatues);
 			// logger.info(typestatues);
-			if (DBUtill.sava(sql)) {  
+			if (DBUtill.sava(sql)) {   
 				List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.examine,ids,statue,exportmodel);
 				/*Map<String,InventoryBranch> map = InventoryBranchManager.getmapTypeBranch(ids);
 				
@@ -2922,7 +2917,7 @@ public class PrintServlet extends HttpServlet {
 				}
 				
 				list.addAll(maps.values()); */
-				
+				 
 				if ("0".equals(typestatues)) {
 					if (ExportModel.SuNing == expor) {
 						exportOrderGoodsSN(request, response, list);
@@ -2949,7 +2944,48 @@ public class PrintServlet extends HttpServlet {
 		}
 
 	}
+   
+	
+	public void OrderGoodsbillingsencond(HttpServletRequest request,
+			HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("user");
+   
+		String exportmodel = request.getParameter("exportmodel");
+		String exportuuid = request.getParameter("exportuuid");
+		String orderid = request.getParameter("orderid"); 
+		String typestatues = request.getParameter("typestatues");
+		int expor = -1; 
+		if (!StringUtill.isNull(exportmodel)) {
+			expor = Integer.valueOf(exportmodel);
+		}  
+		List<OrderGoodsAll> list = OrderGoodsAllManager.getlistName(user,exportuuid,orderid); 
+				 
+				if ("0".equals(typestatues)) {
+					if (ExportModel.SuNing == expor) {
+						exportOrderGoodsSN(request, response, list);
+					} else if (ExportModel.GuoMei == expor) {
+						exportOrderGoodsGM(request, response, list);
+					} else if (ExportModel.GuoMeiDC == expor) {
+						exportOrderGoodsGMDC(request, response, list);
+					}
+				} else if ("1".equals(typestatues)) { 
+					if (ExportModel.SuNing == expor) {
+						exportOrderGoodsreturnSN(request, response, list);
+					} else if (ExportModel.GuoMei == expor) {
+						exportOrderGoodsreturnGM(request, response, list);
+					}  
+				} else { 
+					try { 
+						response.sendRedirect("jieguo.jsp?type=type=updated&mark=" + 1);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 
+	}
+	
+	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 将请求、响应的编码均设置为UTF-8（防止中文乱码）

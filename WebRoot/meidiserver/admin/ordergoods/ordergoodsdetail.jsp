@@ -10,7 +10,7 @@ String statues = request.getParameter("statues");
 String type = request.getParameter("type");
 String tid = request.getParameter("tid");
 String branchname = ""; 
-String remark = ""; 
+String remark = "";  
 String message = "导购订货单";  
  
 //System.out.println(statues+"&&"+type);
@@ -27,20 +27,20 @@ if("1".equals(type)){
 	message = "历史订单";
 }   
    
-if(!StringUtill.isNull(id)){ 
+if(!StringUtill.isNull(id)){   
 	if((OrderMessage.billing+"").equals(type)){    
 		oa = OrderGoodsAllManager.getOrderGoodsAllBySendid(user,id,statues); 
 	}else if(("3").equals(type)){
 		oa = OrderGoodsAllManager.getOrderGoodsAllByid(user, id); 
 	}else{ 
 		oa = OrderGoodsAllManager.getOrderGoodsAllByid(user,id,Integer.valueOf(statues),type);
-	}
+	} 
 	//System.out.println(oa); 
 	branchname = oa.getOm().getBranchname();
 	remark = oa.getOm().getRemark(); 
 	list = oa.getList(); 
 }  
-
+ 
 String branchid = BranchService.getNameMap().get(branchname).getId()+"";
 Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,branchid);
 String jsoninventory = StringUtill.GetJson(map); 

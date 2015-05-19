@@ -16,9 +16,9 @@ public class InventoryBranch {
 	private int branchid;
  
 	private String type;
-       
-	private Product product  ; 
-	 
+        
+	private Product product  ;  
+	  
 	private int typeStatues; // 1常规 2 特价 3 样机 4 换货 5 赠品 
    
 	private String typeid;

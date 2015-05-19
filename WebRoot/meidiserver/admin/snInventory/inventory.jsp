@@ -13,9 +13,9 @@ String branch = request.getParameter("branch");
   
 List<Inventory> list = InventorySale.compare(starttime,endtime);
  
-Map<String,List<Inventory>> map = new HashMap<String,List<Inventory>>();
+Map<String,List<Inventory>> map = new LinkedHashMap<String,List<Inventory>>();
         
-if(!list.isEmpty()){
+if(!list.isEmpty()){ 
 	Iterator<Inventory> it = list.iterator();
 	while(it.hasNext()){ 
 		Inventory in = it.next();

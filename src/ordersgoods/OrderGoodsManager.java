@@ -155,6 +155,12 @@ public class OrderGoodsManager {
 	  return sql ;  
   }   
      
+  public static String updateInstoragenum(User user ,int ogid,String realsendnum){
+	     
+	  String sql = " update mdordergoods set instoragenum  = "+realsendnum + ", billingstatues = 3  where id = " + ogid;
+	  return sql ;  
+  }  
+  
   public static String updateIOS(String name,int type ,String oid,String time){ 
 	  if(StringUtill.isNull(time)){
 		  time = null;
@@ -264,19 +270,22 @@ public class OrderGoodsManager {
 			p.setBillingstatues(rs.getInt("mdordergoods.billingstatues")); 
 			p.setOrdernum(rs.getInt("mdordergoods.ordernum")); 
 			p.setRealnum(rs.getInt("mdordergoods.realnum")); 
-			p.setStatues(rs.getInt("mdordergoods.statues"));  
+			p.setStatues(rs.getInt("mdordergoods.statues"));   
 			p.setSubmitid(rs.getInt("mdordergoods.submitid")); 
 			p.setSubmittime(rs.getString("mdordergoods.submittime"));   
-			p.setUuid(rs.getString("mdordergoods.uuid"));  
-			p.setTid(rs.getInt("mdordergoods.tid"));   
+			p.setUuid(rs.getString("mdordergoods.uuid"));   
+			p.setTid(rs.getInt("mdordergoods.tid"));     
 			p.setUuidtime(rs.getString("mdordergoods.uuidtime")); 
 			p.setRealsendnum(rs.getInt("mdordergoods.realsendnum"));
 			p.setEffectiveendtime(rs.getString("effectiveendtime"));
 			p.setSerialnumber(rs.getString("serialnumber"));   
-			p.setCid(rs.getInt("cid"));            
+			p.setCid(rs.getInt("cid"));             
 			p.setReturnrealsendnum(rs.getInt("returnrealsendnum"));
 			p.setExportuuid(rs.getString("exportuuid"));
-			p.setMid(rs.getInt("mid")); 
+			p.setMid(rs.getInt("mid"));    
+			p.setInstoragenum(rs.getInt("instoragenum")); 
+			p.setExportmodel(rs.getInt("exportmodel")); 
+            p.setExportstatues(rs.getInt("exportstatues")); 
 		    //p.setNexttime(rs.getString("nexttime"));
 		} catch (SQLException e) {    
 			e.printStackTrace();

@@ -1,4 +1,6 @@
 package httpClient.download;
+
+import java.text.DecimalFormat;
  
 public class Inventory {
   private String branchName;  // 库位名称 
@@ -14,7 +16,33 @@ public class Inventory {
   private int inreduce; // 库存较少 
   private String serialNumber;   // 序列号
   private int inInbranch ;   // 入库数量
-  
+  private double dynamic ; 
+  private int modelnum ;
+  private int outnum ;    // 未入库数量
+   
+       
+public int getModelnum() {
+	return modelnum;
+}
+
+public void setModelnum(int modelnum) {
+	this.modelnum = modelnum;
+}
+
+public double getDynamic() {
+	DecimalFormat    df   = new DecimalFormat("######0.00");   
+	    
+	if(0 == num){  
+		dynamic = saleNum ;  
+	}else {      
+		dynamic = (double)saleNum/(double)num ;
+	}  
+	 return Double.valueOf(df.format(dynamic));
+}
+
+public void setDynamic(double dynamic) {
+	this.dynamic = dynamic;
+}
 public int getInInbranch() {
 	return inInbranch;
 }
@@ -92,6 +120,14 @@ public int getNum() {
 }
 public void setNum(int num) {
 	this.num = num;
+}
+
+public int getOutnum() {
+	return outnum;
+}
+ 
+public void setOutnum(int outnum) {
+	this.outnum = outnum;
 }
 
 }

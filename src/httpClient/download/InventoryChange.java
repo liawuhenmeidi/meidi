@@ -38,29 +38,30 @@ public class InventoryChange {
 		InventoryChange.get("2105-05-03");
 
 	}
- 
+
 	public static List<Inventory> compare(String startTime, String endTime) {
+
 		List<Inventory> list = new ArrayList<Inventory>();
 		if (StringUtill.isNull(startTime)) {
-			return list; 
-		}  
+			return list;
+		}
 		if (StringUtill.isNull(endTime)) {
 			endTime = TimeUtill.getdateString();
-		}  
+		}
 		Map<String, Map<String, List<GoodsReceipt>>> mapgr = GoodsReceitManager
-				.getMapGoodNum(startTime,endTime);       
-    
-		logger.info(mapgr.size()); 
-		
+				.getMapGoodNum(startTime, endTime);
+
+		logger.info(mapgr.size());
+
 		Collection<Inventory> liststart = get(startTime);
 
 		Map<String, Inventory> mapstart = changeMap(liststart);
-  
+
 		Collection<Inventory> listend = get(TimeUtill.dataAdd(endTime, 1));
-   
-		logger.info(liststart.size()); 
-		logger.info(listend.size()); 
-		
+
+		logger.info(liststart.size());
+		logger.info(listend.size());
+
 		int samecount = 0;
 
 		if (!listend.isEmpty()) {
@@ -77,13 +78,13 @@ public class InventoryChange {
 					// logger.info(inend.getGoodNum());
 					Map<String, List<GoodsReceipt>> mapg = mapgr.get(inend
 							.getGoodNum());
-					//logger.info(mapg);  
+					// logger.info(mapg);
 					if (null != mapg) {
 						String bnum = StringUtill.getStringNocn(inend
 								.getBranchName());
 
 						List<GoodsReceipt> li = mapg.get(bnum);
-						logger.info(li); 
+						// logger.info(li);
 						if (null != li) {
 							int count = 0;
 							for (int i = 0; i < li.size(); i++) {
@@ -93,37 +94,49 @@ public class InventoryChange {
 								} else {
 									count = count - gr.getRecevenum();
 								}
-							}
-							logger.info(count);  
+							} 
+							logger.info(inend.getGoodNum());
+							logger.info(bnum);
+							logger.info(count);
 							// logger.info(inend.getNum() - count);
 							inend.setNum(inend.getNum() - count);
-							inend.setInInbranch(count); 
+							inend.setInInbranch(count);
 							// logger.info(count);
 						}
 					}
 				}
- 
+
 				if (null != instart) {
 
 					mapstart.remove(key);
- 
+
 					if (instart.getNum() == inend.getNum()) {
-						Inventory in = inend;
-						list.add(in); 
-						samecount++;  
+						if (inend.getInInbranch() != 0) {
+							Inventory in = inend;
+							list.add(in);
+
+						} else {
+							samecount++;
+						}
 					} else if (instart.getNum() - inend.getNum() != 0) {
-						Inventory in = inend; 
-						in.setInreduce(instart.getNum() - inend.getNum());
-						//logger.info(in.getInInbranch());
-						list.add(in); 
-					} 
-				} else { 
-					if (inend.getNum() == 0) {  
-						// logger.info(inend.getGoodpName());
-					} else {
-						// logger.info("none");
 						Inventory in = inend;
-						//logger.info(in.getInInbranch());
+						in.setInreduce(instart.getNum() - inend.getNum());
+						// logger.info(in.getInInbranch());
+						list.add(in);
+					}
+				} else {
+					if (inend.getNum() == 0) {
+						if(inend.getInInbranch() != 0){
+							Inventory in = inend;
+							// logger.info(in.getInInbranch());
+							in.setInreduce(0 - in.getNum());
+							list.add(in);   
+						}  
+						// logger.info(inend.getGoodpName());
+					} else {   
+						// logger.info("none");
+						Inventory in = inend; 
+						// logger.info(in.getInInbranch());
 						in.setInreduce(0 - in.getNum());
 						list.add(in);
 					}
@@ -144,7 +157,7 @@ public class InventoryChange {
 		if (null != mapstart) {
 			Set<Map.Entry<String, Inventory>> set = mapstart.entrySet();
 			Iterator<Map.Entry<String, Inventory>> it = set.iterator();
-			while (it.hasNext()) { 
+			while (it.hasNext()) {
 				Map.Entry<String, Inventory> mapent = it.next();
 				Inventory in = mapent.getValue();
 				int count = 0;
@@ -158,7 +171,7 @@ public class InventoryChange {
 
 						List<GoodsReceipt> li = mapg.get(bnum);
 						if (null != li) {
-							
+
 							for (int i = 0; i < li.size(); i++) {
 								GoodsReceipt gr = li.get(i);
 								if (gr.getStatues() == 0) {
@@ -168,18 +181,18 @@ public class InventoryChange {
 								}
 							}
 							// logger.info(inend.getNum() - count);
-						 
+
 							// logger.info(count);
-						} 
-					} 
+						}
+					}
 				}
-				 
-				//if(in.getNum() != 0){ 
-					in.setInreduce(in.getNum()+count);
-					in.setInInbranch(count); 
-					list.add(in);
-				//} 
-				
+
+				// if(in.getNum() != 0){
+				in.setInreduce(in.getNum() + count);
+				in.setInInbranch(count);
+				list.add(in);
+				// }
+
 			}
 		}
 		// logger.info("list" + list.size());
@@ -200,22 +213,23 @@ public class InventoryChange {
 
 		// logger.info(map.size());
 		return map;
-	} 
-  
-	public static Map<String, Inventory> changeMap(Collection<Inventory> list,String branch,String type) {
+	}
+
+	public static Map<String, Inventory> changeMap(Collection<Inventory> list,
+			String branch, String type) {
 		Map<String, Inventory> map = new HashMap<String, Inventory>();
-		if (!list.isEmpty()) { 
+		if (!list.isEmpty()) {
 			Iterator<Inventory> it = list.iterator();
-			while (it.hasNext()) { 
+			while (it.hasNext()) {
 				Inventory in = it.next();
 				String key = "";
-				if(StringUtill.isNull(branch) && StringUtill.isNull(type)){
+				if (StringUtill.isNull(branch) && StringUtill.isNull(type)) {
 					key = in.getGoodNum();
-				}else {
-					key = StringUtill.getStringNocn(in.getBranchName())
-							+ "_" + in.getGoodNum();
+				} else {
+					key = StringUtill.getStringNocn(in.getBranchName()) + "_"
+							+ in.getGoodNum();
 				}
-				
+
 				map.put(key, in);
 			}
 		}
@@ -223,7 +237,7 @@ public class InventoryChange {
 		// logger.info(map.size());
 		return map;
 	}
-	
+
 	public static Collection<Inventory> get(String startTime) {
 		// startTime = "2015-05-03";
 		// List<Inventory> list = new ArrayList<Inventory>();
@@ -314,7 +328,7 @@ public class InventoryChange {
 			Map<String, Product> mapp = ProductService.gettypeNUmmap(branch
 					.getPid());
 			logger.info(bnum + "__" + startTime);
- 
+
 			try {
 				String tempPath = PathUtill.getXMLpath();
 				tempPath += "data" + File.separator + "DownloadInventory"
@@ -397,101 +411,100 @@ public class InventoryChange {
 	}
 
 	// 型号 , 状态
-		public static Map<String, List<Inventory>> getMapBranchTypeNum(User user,
-				String startTime, int branchid) {
-			// startTime = "2015-05-03";
-			// List<Inventory> list = new ArrayList<Inventory>();
-			Branch branch = BranchService.getMap().get(branchid);
-			Map<String, List<Inventory>> map = new HashMap<String, List<Inventory>>();
-			if (branch.getBranchtype().getSaletype() == SaleModel.Model.苏宁
-					.getValue()) {
-				String bnum = branch.getEncoded();
-				Map<String, Product> mapp = ProductService.gettypeNUmmap(branch
-						.getPid());
-				logger.info(bnum + "__" + startTime);
-	 
-				try {
-					String tempPath = PathUtill.getXMLpath();
-					tempPath += "data" + File.separator + "DownloadInventory"
-							+ File.separator + startTime;
-					logger.info(tempPath);
-					File file = new File(tempPath);
-					if (!file.exists()) {
-						file.mkdirs();
-					}
+	public static Map<String, List<Inventory>> getMapBranchTypeNum(User user,
+			String startTime, int branchid) {
+		// startTime = "2015-05-03";
+		// List<Inventory> list = new ArrayList<Inventory>();
+		Branch branch = BranchService.getMap().get(branchid);
+		Map<String, List<Inventory>> map = new HashMap<String, List<Inventory>>();
+		if (branch.getBranchtype().getSaletype() == SaleModel.Model.苏宁
+				.getValue()) {
+			String bnum = branch.getEncoded();
+			Map<String, Product> mapp = ProductService.gettypeNUmmap(branch
+					.getPid());
+			logger.info(bnum + "__" + startTime);
 
-					File file2 = new File(tempPath + File.separator + "common.csv");
-					// file2.createNewFile();
+			try {
+				String tempPath = PathUtill.getXMLpath();
+				tempPath += "data" + File.separator + "DownloadInventory"
+						+ File.separator + startTime;
+				logger.info(tempPath);
+				File file = new File(tempPath);
+				if (!file.exists()) {
+					file.mkdirs();
+				}
 
-					CsvReader reader = new CsvReader(file2.getAbsolutePath(), ',',
-							Charset.forName("GBK")); // 一般用这编码读就可以了
+				File file2 = new File(tempPath + File.separator + "common.csv");
+				// file2.createNewFile();
 
-					reader.readHeaders();
+				CsvReader reader = new CsvReader(file2.getAbsolutePath(), ',',
+						Charset.forName("GBK")); // 一般用这编码读就可以了
 
-					while (reader.readRecord()) { // 逐行读入除表头的数据
-						String[] strs = reader.getValues();
-						if (null != strs) {
-							Inventory in = new Inventory();
-							for (int i = 0; i < strs.length; i++) {
-								// logger.info(i);
-								String str = strs[i];
-								if (i == 6) {
-									// logger.info(str);
-									in.setBranchName(str);
-								} else if (i == 7) {
-									in.setBranchNum(str);
-								} else if (i == 8) {
-									in.setGoodType(str);
-								} else if (i == 13) {
-									in.setGoodGroupName(str);
-								} else if (i == 14) {
-									in.setGoodGroupNum(str);
-								} else if (i == 15) {
-									in.setGoodpName(str);
-								} else if (i == 16) {
-									in.setGoodNum(str);
-								} else if (i == 17) {
-									in.setATP(Integer.valueOf(str));
-								} else if (i == 18) {
-									in.setNum(Integer.valueOf(str));
-								}
+				reader.readHeaders();
+
+				while (reader.readRecord()) { // 逐行读入除表头的数据
+					String[] strs = reader.getValues();
+					if (null != strs) {
+						Inventory in = new Inventory();
+						for (int i = 0; i < strs.length; i++) {
+							// logger.info(i);
+							String str = strs[i];
+							if (i == 6) {
+								// logger.info(str);
+								in.setBranchName(str);
+							} else if (i == 7) {
+								in.setBranchNum(str);
+							} else if (i == 8) {
+								in.setGoodType(str);
+							} else if (i == 13) {
+								in.setGoodGroupName(str);
+							} else if (i == 14) {
+								in.setGoodGroupNum(str);
+							} else if (i == 15) {
+								in.setGoodpName(str);
+							} else if (i == 16) {
+								in.setGoodNum(str);
+							} else if (i == 17) {
+								in.setATP(Integer.valueOf(str));
+							} else if (i == 18) {
+								in.setNum(Integer.valueOf(str));
 							}
+						}
 
-							String bnu = StringUtill.getStringNocn(in
-									.getBranchName());
+						String bnu = StringUtill.getStringNocn(in
+								.getBranchName());
 
-							if (bnum.equals(bnu)) {
+						if (bnum.equals(bnu)) {
 
-								String key = in.getGoodNum();
+							String key = in.getGoodNum();
 
-								if (null != mapp.get(key)) {
-									//String pname = mapp.get(key).getType();
+							if (null != mapp.get(key)) {
+								// String pname = mapp.get(key).getType();
 
-									List<Inventory> inmap = map.get(key);
+								List<Inventory> inmap = map.get(key);
 
-									if (inmap == null) {
-										inmap = new ArrayList<Inventory>();
-										map.put(key, inmap);
-									}
-
-									inmap.add(in);
+								if (inmap == null) {
+									inmap = new ArrayList<Inventory>();
+									map.put(key, inmap);
 								}
 
+								inmap.add(in);
 							}
 
 						}
+
 					}
+				}
 
-					logger.info(map.size());
-					reader.close();
-				} catch (IOException e) {
-					logger.info(e);
-				} // 跳过表头 如果需要表头的话，不要写这句。
-			}
-			return map;
+				logger.info(map.size());
+				reader.close();
+			} catch (IOException e) {
+				logger.info(e);
+			} // 跳过表头 如果需要表头的话，不要写这句。
 		}
+		return map;
+	}
 
-		
 	public static Map<String, List<Inventory>> getMap(String startTime) {
 		// startTime = "2015-05-03";
 		// List<Inventory> list = new ArrayList<Inventory>();

@@ -407,14 +407,20 @@ public class OrderGoodsAllManager {
 	}
 
 	public static List<OrderGoodsAll> getsendlist(User user, int opstatues) {
+		String opstatuess = "";
 		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
 
 		List<Integer> listids = UserService.GetListson(user);
+		if(OrderMessage.all == opstatues){
+			opstatuess = "(2,3)";
+		}else { 
+			opstatuess = "("+opstatues+")";
+		}
 		// logger.info(listids);
 		Connection conn = DB.getConn();
 
-		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.mid = mdordermessage.id and mdordergoods.billingstatues = "
-				+ opstatues
+		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.mid = mdordermessage.id and mdordergoods.billingstatues in "
+				+ opstatuess
 				+ " and mdordermessage.opstatues = 1 and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
 						listids.toString().length() - 1)
@@ -647,16 +653,16 @@ public class OrderGoodsAllManager {
 				StringUtill.getStr(ids));
 
 		return list;
-	}
-
+	} 
+ 
 	public static List<OrderGoodsAll> getsendlist(User user,
 			int billingstatues, String ids) {
 		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
-
+ 
 		List<Integer> listids = UserService.GetListson(user);
 		// logger.info(StringUtill.getStr(ids));
 		Connection conn = DB.getConn();
-
+ 
 		String sql = " select * from mdordergoods,mdordermessage  where mdordermessage.id in "
 				+ ids
 				+ " and mdordergoods.mid = mdordermessage.id  and mdordergoods.billingstatues = "
@@ -664,7 +670,7 @@ public class OrderGoodsAllManager {
 				+ "  and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
 						listids.toString().length() - 1)
-				+ " ) and mdordergoods.realnum > 0  order by mdordermessage.branchid";
+				+ " )  order by mdordermessage.branchid";
 		logger.info(sql);
 		Statement stmt = DB.getStatement(conn);
 
@@ -945,7 +951,7 @@ public class OrderGoodsAllManager {
 											+ TimeUtill.gettime()
 											+ "','"
 											+ og.getTid()
-											+ "','" 
+											+ "','"
 											+ 0 
 											+ "','"
 											+ realsendnum
@@ -1169,10 +1175,53 @@ public class OrderGoodsAllManager {
 			DB.close(rs);
 			DB.close(stmt);
 			DB.close(conn);
+		} 
+		return list;
+	} 
+ 
+	public static List<OrderGoodsAll> getlistName(User user,
+			String exportName, String oid) {
+		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
+
+		List<Integer> listids = UserService.GetListson(user);
+		// logger.info(listids); 
+		Connection conn = DB.getConn();
+		String sql = "";
+		if (!StringUtill.isNull(oid)) {
+			sql = " select * from mdordergoods,mdordermessage  where mdordergoods.exportuuid = '"
+					+ exportName 
+					+ "' and mdordergoods.mid = mdordermessage.id  and mdordergoods.oid = '"+oid+"'  and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
+					+ listids.toString().substring(1, 
+							listids.toString().length() - 1) + " ) "; 
+		}else {
+			sql = " select * from mdordergoods,mdordermessage  where mdordergoods.exportuuid = '"
+					+ exportName
+					+ "' and mdordergoods.mid = mdordermessage.id  and mdordergoods.oid is null  and mdordergoods.opstatues in (1,2) and mdordermessage.submitid in ("
+					+ listids.toString().substring(1, 
+							listids.toString().length() - 1) + " ) ";
+		} 
+
+		logger.info(sql);
+		Statement stmt = DB.getStatement(conn);
+
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		// logger.info(rs);
+		try {
+			while (rs.next()) {
+
+				OrderGoodsAll og = getOrderGoodsAllFromRs(rs);
+				list.add(og);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
 		}
 		return list;
 	}
-
+	
 	public static OrderGoodsAll getOrderGoodsAllFromRs(ResultSet rs) {
 		OrderGoodsAll oa = new OrderGoodsAll();
 		OrderMessage om = OrderMessageManager.getOrderMessageFromRs(rs);

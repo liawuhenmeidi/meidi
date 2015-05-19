@@ -282,7 +282,7 @@ public class inventoryOrder {
 		try { 
 			logger.info("getinventoryOrder");
 			URI uri = new URI(inventoryOrder.url);
-
+ 
 			String responseContent = getHtmlStringOut(uri, starttime, endtime,
 					1, mc);  
 			// logger.info(responseContent);

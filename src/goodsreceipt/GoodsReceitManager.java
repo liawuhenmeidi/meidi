@@ -57,7 +57,7 @@ public class GoodsReceitManager {
 				+ "','" 
 				+ gr.getOrdertype()
 				+ "',"
-				+ "'"
+				+ "'" 
 				+ gr.getGoodsnum()
 				+ "','"
 				+ gr.getGoodsName()
@@ -65,8 +65,8 @@ public class GoodsReceitManager {
 				+ gr.getRecevenum()
 				+ "','"
 				+ gr.getRefusenum()
-				+ "','"
-				+ gr.getBranchid()
+				+ "','" 
+				+ gr.getBranchid() 
 				+ "','"
 				+ gr.getBranchName()
 				+ "','"
@@ -162,7 +162,7 @@ public class GoodsReceitManager {
 						+ ",21,(select realcount from mdinventorybranch where branchid = "
 						+ gr.getTid()
 						+ " and  type = '" 
-						+ gr.getTid()
+						+ gr.getTid() 
 						+ "'  and typestatues = "+gr.getGoodtypeStatues() +")*1"
 						+ -Integer.valueOf(gr.getRecevenum())
 						+ ",(select papercount from mdinventorybranch where branchid = "
@@ -173,7 +173,7 @@ public class GoodsReceitManager {
 						+ +Integer.valueOf(gr.getRecevenum()) + ",0," + gr.getGoodtypeStatues() + ")";
 
 			} 
-              
+               
 			//String sqlor = OrderReceitManager.update(gr);
 			//list.add(sqlor);    
 			list.add(sqlIB);
@@ -198,7 +198,7 @@ public class GoodsReceitManager {
 		 
         String sqlup = OrderReceitManager.update(gr);
           
-		String sql = " insert into goodsreceipt (id,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,recevenum,refusenum,branchid,branchname,uuid,disable,statues,typestatues)"
+		String sql = " insert into goodsreceipt (id,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,recevenum,refusenum,branchid,branchname,uuid,disable,statues)"
 				+ " values ('"
 				+ gr.getId()
 				+ "','" 
@@ -211,23 +211,23 @@ public class GoodsReceitManager {
 				+ gr.getBuyid()
 				+ "','"
 				+ gr.getOrdertype()
-				+ "',"
-				+ "'"
+				+ "'," 
+				+ "'" 
 				+ gr.getGoodsnum()
-				+ "','"
+				+ "','" 
 				+ gr.getGoodsName()
 				+ "','"
 				+ gr.getRecevenum()
 				+ "','"
 				+ gr.getRefusenum()
-				+ "','"
+				+ "','" 
 				+ gr.getBranchid() 
 				+ "','" 
 				+ gr.getBranchName()
 				+ "','"  
 				+ gr.getUuid() + "'," + gr.getDisable() + ","+gr.getStatues()+");";
 		if (flag) { 
- 
+  
 			String sqlIB = "";
 			String sqlIBM = ""; 
 			InventoryBranch in = null;
@@ -274,7 +274,7 @@ public class GoodsReceitManager {
 						+ ","
 						+ gr.getRecevenum()
 						+ ","
-						+ 1 + "," + gr.getBidSN() + ",21,0,0,1,"
+						+ 1 + "," + gr.getBidSN() + ",21,0,0,0,"
 											+ gr.getGoodtypeStatues()
 											+ ")";
 			} else {
@@ -326,7 +326,7 @@ public class GoodsReceitManager {
 						+ " and  type = '"
 						+ gr.getTid()
 						+ "' and typestatues = "+gr.getGoodtypeStatues() +")*1"
-						+ -Integer.valueOf(gr.getRecevenum()) + ",1," + gr.getGoodtypeStatues() + ")";
+						+ -Integer.valueOf(gr.getRecevenum()) + ",0," + gr.getGoodtypeStatues() + ")";
  
 			}    
 			list.add(sqlup); 

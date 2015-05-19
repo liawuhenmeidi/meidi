@@ -66,7 +66,7 @@ public class ProductService {
 		// long start = System.currentTimeMillis();
 
 		List<Integer> li = ProductService.getlistallCid(branchtype);
-		//logger.info(li); 
+		//logger.info(li);  
 		if (null != listall) { 
 			for (int i = 0; i < listall.size(); i++) {
 				Product op = listall.get(i);
@@ -454,16 +454,19 @@ public class ProductService {
 		for (int i = 0; i < listc.size(); i++) {
 			Category c = listc.get(i);
 			String sales = c.getSales();
-		//	logger.info(sales); 
+			//logger.info(sales);  
 			if (!StringUtill.isNull(sales)) {
-			//	logger.info(sales);
-			//	logger.info(branch.getPid()); 
+			//	logger.info(sales); 
+			//	logger.info(branch.getPid());  
 				String sale[] = sales.split("_");
 				for (int j = 0; j < sale.length; j++) {
 					if (!StringUtill.isNull(sale[j])) { 
-						if (Integer.valueOf(sale[j]) == branchtype) {
+						//logger.info(branchtype);  
+						//logger.info(Integer.valueOf(sale[j]));
+						//logger.info(Integer.valueOf(sale[j]) == branchtype);
+						if (sale[j].equals(branchtype+"")) {
 							li.add(c.getId());
-							continue;
+							continue; 
 						}
 					}
 

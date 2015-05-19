@@ -320,10 +320,10 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 		initctypes(row); 
 		addresultp(row);
 	});
-	  
+	   
 	$("#product"+row).keydown(function (){
 		initctypes(row);
-		alert(row); 
+		//alert(row); 
 	});
 	     
 	$("#statues"+row).blur(function (){
@@ -388,7 +388,9 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 					 initctypes();  
 				 }   
 			 }else { 
-				 alert("您输入的产品不存在，请重新输入");
+
+
+				 ("您输入的产品不存在，请重新输入");
 				 $("#product"+row).val("");
 				 return ;
 			 }

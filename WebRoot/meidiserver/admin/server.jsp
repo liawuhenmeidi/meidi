@@ -705,7 +705,7 @@
 		
 		Branch b = BranchService.getNameMap(Integer.valueOf(branchtype)).get(branch);
 		//System.out.println("branch"+b.getId());  
-		String time = TimeUtill.getdateString(); 
+		String time = TimeUtill.getdateString();  
 		Map<String,InventoryBranch> mapin = InventoryBranchManager.getmapType(user,b.getId()+"");
 		String strin = StringUtill.GetJson(mapin);
 		

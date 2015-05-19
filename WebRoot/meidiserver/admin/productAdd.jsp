@@ -157,8 +157,8 @@ if("add".equals(action)){
        </tr>
        <tr class="asc"><td align="center"> 产品编码:</td> 
        <td align="center"> <input type="text"  id="encoded" name="encoded"  value="<%=p.getEncoded()%>"/>  <br />  <br /> </td>
-       </tr>
-       
+       </tr> 
+        
         <tr class="asc"><td align="center"> 销售类型:</td> 
        <td align="center">    
         常规机<input type="radio" name="saleType" id="saleType1" value="1" />

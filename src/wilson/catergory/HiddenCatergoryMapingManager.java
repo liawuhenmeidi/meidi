@@ -16,6 +16,7 @@ import java.util.UUID;
 import jxl.Sheet;
 import jxl.Workbook;
 
+import utill.PathUtill;
 import utill.StringUtill;
 import wilson.download.ExcelGenerator;
 import wilson.upload.UploadManager;
@@ -40,6 +41,7 @@ public class HiddenCatergoryMapingManager {
 		indexFile = new File(properFilePath);
 		hiddenCatergoryMapingDIR = new File(hiddenCatergoryMapingPath);
 	}
+	
 	public static Properties getProperFile(){
 		//是否有重名问题，有重名问题，返回false
 		Properties props = new Properties();
@@ -91,6 +93,10 @@ public class HiddenCatergoryMapingManager {
 	public static boolean checkFile(){
 		boolean result = false;
 		try {
+			if(null == hiddenCatergoryMapingDIR){
+				initPath(PathUtill.getXMLpath());  
+			}  
+			System.out.println(hiddenCatergoryMapingDIR); 
 			//确认目录存在，不存在的时候创建目录
 			if (!hiddenCatergoryMapingDIR.exists()) {
 				hiddenCatergoryMapingDIR.mkdirs();

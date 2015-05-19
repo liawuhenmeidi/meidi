@@ -354,14 +354,14 @@ public class InventoryBranchMessageManager {
 	
 	private static InventoryBranchMessage getCategoryFromRs(ResultSet rs) {
 		InventoryBranchMessage c = new InventoryBranchMessage();
-		try {
+		try { 
 			c.setId(rs.getInt("id"));
 			c.setBranchid(rs.getInt("branchid"));
 			c.setAllotPapercount(rs.getInt("allotPapercount"));
 			c.setAllotRealcount(rs.getInt("allotRealcount"));
 			c.setInventoryid(rs.getInt("inventoryid"));
 			c.setInventoryString(rs.getString("inventoryString"));
-			c.setTypeid(rs.getString("type"));
+			c.setTypeid(rs.getString("type")); 
 			c.setType(ProductService.getIDmap()
 					.get(Integer.valueOf(c.getTypeid())).getType());
 			c.setTime(rs.getString("time"));
@@ -369,11 +369,12 @@ public class InventoryBranchMessageManager {
 			c.setRealcount(rs.getInt("realcount"));
 			c.setPapercount(rs.getInt("papercount"));
 			c.setDevidety(rs.getInt("devidety"));
-			c.setSendUser(rs.getInt("sendUser"));
+			c.setSendUser(rs.getInt("sendUser")); 
 			c.setReceiveuser(rs.getInt("receiveuser"));
 			c.setOldpapercount(rs.getInt("oldpapercount"));
 			c.setOldrealcount(rs.getInt("oldrealcount"));
 			c.setIsOverStatues(rs.getInt("isoverstatues"));
+			c.setTypeStatues(rs.getInt("typestatues")); 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

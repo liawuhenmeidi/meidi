@@ -689,6 +689,7 @@ logger.info(sql);
 		 return map;
 	}
 	  
+	
 	public static Map<Integer,Map<String,InventoryBranch>> getmapType(User user){
 		 Map<Integer,Map<String,InventoryBranch>> map = new HashMap<Integer,Map<String,InventoryBranch>>(); 
 		 List<InventoryBranch>  listInventory = InventoryBranchManager.getCategoryid(user,"",""); 

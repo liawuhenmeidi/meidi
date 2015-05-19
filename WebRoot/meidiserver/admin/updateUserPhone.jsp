@@ -89,14 +89,14 @@ $(function () {
       <td><input name="control_date" type="text" id="oldphone" value="<%=u.getPhone() %>" size="10"
                         maxlength="11"   /> </td>
    </tr> 
-  <tr> 
+  <tr>  
       <td>新电话</td> 
       <td> <input name="control_date2" type="text" id="newphone" size="10"
-                        maxlength="11" /></td>
+                        maxlength="11" /></td> 
   </tr>
-   <% if(UserManager.checkPermissions(user, Group.dealSend)) { %>
+   <% if(UserManager.checkPermissions(user, Group.ManagerUser)) { %>
   <tr> 
-      <td>原门店</td>
+      <td>原门店</td> 
       <td><input name="control_date" type="text" id="oldphone" value="<%=u.getBranchName() %>" size="10"
                         maxlength="11"   /> </td>
    </tr> 

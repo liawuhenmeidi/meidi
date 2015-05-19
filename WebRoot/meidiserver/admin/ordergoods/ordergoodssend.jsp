@@ -1,10 +1,11 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>
-<% 
+<%  
 	request.setCharacterEncoding("utf-8"); 
 List<BranchType> listgt = BranchTypeManager.getLocate();  
 String branchtype = request.getParameter("branchtype"); 
+
 Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getsendmap(user,OrderMessage.unexamine); 
  // System.out.println(StringUtill.GetJson(map)); 
 %>
@@ -79,7 +80,7 @@ function check(){
 						<option value="<%=bt.getId()%>"><%=bt.getName()%></option>
 						<%
 							}
-								}
+								} 
 							}
 						%>
 				</select>
@@ -93,9 +94,8 @@ function check(){
 	<!--  头 单种类  -->
 	<form action="ordergoodsenddetail.jsp" method="post"
 		onsubmit="return check()">
-		<input type="hidden" name="statues" value="0"> <input
-			type="hidden" name="token" value="<%=token%>" />
-
+		<input type="hidden" name="statues" value="0"> 
+ 
 		<table width="100%" border="0" cellspacing="1" id="Ntable">
 			<tr class="dsc">
 				<td width="10%" class="s_list_m" align="center"><input

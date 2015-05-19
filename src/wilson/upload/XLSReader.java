@@ -302,37 +302,40 @@ public class XLSReader {
 			final int NUM_POS = 3;
 			final int SALEPRICE_POS = 4;
 			final int BACKPOINT_POS = 5;
-			
-			
+
 			
 			String filepath = path.replace("\\", "/");
 			List <UploadOrder> UploadOrders = new ArrayList<UploadOrder>();
 			UploadOrder uo = new UploadOrder();
-			
+			 
 			File srcFile = new File(filepath,fileName); 
 			Workbook wb = null;
-			try {
+			try {   
 				wb = Workbook.getWorkbook(srcFile);
 			} catch (BiffException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
-			Sheet sheet0 = wb.getSheet(0);
+			}   
+			logger.info(wb.getSheets()[0]);  
+			Sheet sheet0 = wb.getSheets()[0];  
+			logger.info(sheet0);   
 			SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 			SimpleDateFormat s1 = new SimpleDateFormat("yy-MM-dd");
 			SimpleDateFormat s2 = new SimpleDateFormat("yyyyMMdd");
-			
+			 
 			String name = "";
 			try{
+				//logger.info(sheet0.getCell(0,0)); 
+				//logger.info(sheet0.getCell(1,0));  
 				name = sheet0.getCell(1,0).getContents().trim();
 				if(UploadManager.isUploaderFileNameExist(name)){
 					UploadOrders = new ArrayList<UploadOrder>();
 					uo = new UploadOrder();
-					uo.setId(-1);
+					uo.setId(-1); 
 					uo.setName("文件名称重复!请修改名称");
-					UploadOrders.add(uo);
+					UploadOrders.add(uo); 
 					return UploadOrders;
 				}
 			}catch(Exception e){

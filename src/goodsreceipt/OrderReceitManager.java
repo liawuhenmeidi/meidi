@@ -266,12 +266,12 @@ public class OrderReceitManager {
 	public static List<OrderReceipt> getList(String buyid) {
 		List<OrderReceipt> list = new ArrayList<OrderReceipt>();
 		String sql = " select * from orderreceipt where refusenum != 0  and buyid = '"
-				+ buyid + "'";
-		logger.info(sql);
+				+ buyid + "' order by branchid";
+		logger.info(sql); 
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn);
 		ResultSet rs = DB.getResultSet(stmt, sql);
-		try {
+		try { 
 			while (rs.next()) {
 				OrderReceipt as = getOrderReceitFromRs(rs);
 				// logger.info(as.getOrderNum());
@@ -302,12 +302,12 @@ public class OrderReceitManager {
 		
 		return map;
 	} 
-	
+	 
 	public static Map<String,OrderReceipt> getMap(String buyid,String branch) { 
-		Map<String,OrderReceipt> map = new HashMap<String,OrderReceipt>();
+		Map<String,OrderReceipt> map = new LinkedHashMap<String,OrderReceipt>();
 		List<OrderReceipt> list = getList(buyid); 
-		if(null != list){  
-			for(int i=0;i<list.size();i++){ 
+		if(null != list){    
+			for(int i=0;i<list.size();i++){  
 				OrderReceipt or = list.get(i);
 				if(StringUtill.isNull(branch) || !StringUtill.isNull(branch) && branch.equals(or.getBranchName())){
 					map.put(or.getId()+"", or);  

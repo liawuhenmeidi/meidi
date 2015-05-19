@@ -14,7 +14,7 @@ if(!StringUtill.isNull(method)){
 	
 } 
 
-
+ 
 Map<String,OrderReceipt> maps =  OrderReceitManager.getMap(buyid,branch);  
 String type= request.getParameter("type");   
     

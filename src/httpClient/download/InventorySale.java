@@ -30,9 +30,10 @@ public class InventorySale {
         }
          
 		List<Inventory> listIn = InventoryChange.compare(starttime,endtime); 
-		   
+		      
+		logger.info(StringUtill.GetJson(listIn));  
 		logger.info(listIn.size());
-		 
+		  
 		Map<String,Inventory> mapsale = SaleDownLoad.getMap(starttime,endtime); 
 		//logger.info(mapsale);
 		logger.info( mapsale.size());
