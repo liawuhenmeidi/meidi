@@ -46,7 +46,7 @@ public class Branch {
 
 	public int getStatues() {
 		return statues;
-	}
+	} 
 
 	public void setStatues(int statues) {
 		this.statues = statues;
@@ -89,8 +89,28 @@ public class Branch {
 			encoded = "";
 		}
 		return encoded;
+	}  
+ 
+	public String getEncoded(int statues) {
+		if(StringUtill.isNull(encoded)){
+			encoded = "";
+		}else{   
+			char c = encoded.charAt(0);
+			 
+			if(c == '7'){ 
+				encoded =  encoded.replaceFirst("7", "A");
+			}else if(c == '8'){
+				encoded =  encoded.replaceFirst("8", "B");
+			}else if(c == '9'){
+				//System.out.print(c == '9'); 
+				  
+				encoded =  encoded.replaceFirst("9", "C");
+			}
+			
+		}
+		return encoded;
 	}
-
+	
 	public void setEncoded(String encoded) {
 		this.encoded = encoded;
 	}

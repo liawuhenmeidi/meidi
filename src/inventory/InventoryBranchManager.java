@@ -25,6 +25,7 @@ import order.OrderManager;
 
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
+import product.Product;
 import product.ProductService;
 
 import user.User;
@@ -974,9 +975,16 @@ logger.info(sql);
 			c.setRealcount(rs.getInt("realcount")); 
 			c.setPapercount(rs.getInt("papercount")); 
 			c.setInventoryid(rs.getInt("inventoryid"));
-			c.setTypeid(rs.getString("type"));    
+			c.setTypeid(rs.getString("type")); 
+			
+			Product p = ProductService.getIDmap().get(Integer.valueOf(c.getTypeid())) ;
+			if(null != p ){ 
+				c.setType(ProductService.getIDmap().get(Integer.valueOf(c.getTypeid())).getType());   
+			}   
 			//logger.info(c.getTypeid());    
-			c.setType(ProductService.getIDmap().get(Integer.valueOf(c.getTypeid())).getType());    
+			//c.setType(ProductService.getIDmap().get(Integer.valueOf(c.getTypeid())).getType());   
+			
+			 
 		    c.setIsquery(rs.getInt("isquery"));     
 		    c.setQuerymonth(rs.getString("querymonth"));  
 		    c.setTypeStatues(rs.getInt("typestatues")); 

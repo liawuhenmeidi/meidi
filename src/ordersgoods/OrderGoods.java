@@ -32,14 +32,14 @@ public class OrderGoods {
 	private int billingstatues; // 0 未发货 1 已发货  2 已修改实发数量   3 已入库 
 	private String uuidtime;
 	private String uuid;
-	private String statuesName;
+	private String statuesName; 
 	private String Branch;
 	private String billingtime;
 	private int realsendnum;
 	private int Instoragenum;  //  卖场入库数量   
 	private int returnrealsendnum;
 	private String effectiveendtime;
-	private String serialnumber;  
+	private String serialnumber;   
 	private String exportuuid;    // 导出标识符  
 	private int exportmodel;    // 导出类别   苏宁系统/国美系统
 	
@@ -50,7 +50,7 @@ public class OrderGoods {
  
 	public int getExportstatues() {
 		return exportstatues;
-	}
+	} 
 
 	public void setExportstatues(int exportstatues) {
 		this.exportstatues = exportstatues;
@@ -156,10 +156,10 @@ public class OrderGoods {
 	public void setTid(int tid) {
 		this.tid = tid;
 	}
-
+  
 	public int getRealstatues() {
 		Product p = getProduct();
-		// System.out.println(statues);
+		  //System.out.println(statues);
 		if (p.getSaleType() != -1) {
 			if (1 == statues) {
 				realstatues = p.getSaleType();
@@ -179,11 +179,19 @@ public class OrderGoods {
 		this.realstatues = realstatues;
 	}
 
+	public int getrealStatues() { 
+        if(statues == 7 || statues == 8 ||statues == 9){
+        	return  statues - 6 ; 
+        }   
+		return statues;
+	}
+  
 	public int getStatues() {
-
+//System.out.println(statues);
 		return statues;
 	}
 
+	
 	public void setStatues(int statues) {
 		this.statues = statues;
 	}

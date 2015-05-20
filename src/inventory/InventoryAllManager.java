@@ -23,7 +23,7 @@ import utill.StringUtill;
 public class InventoryAllManager {
 	 // 苏宁订单刷新
 	
-	
+	 
 	public static  Collection<InventoryAll> getMap(User user,String branch,String category,String product,String isSN){ 
 		System.out.println("isSN"+isSN);  
 		List<InventoryBranch> list = null ; 
@@ -77,6 +77,7 @@ public class InventoryAllManager {
 		    		listp.setOrderNUmSN(inb.getOrderNUmSN());
 		    		listp.setActivetime(inb.getActivetime());
 		    		listp.setProduct(inb.getProduct());
+		    		listp.setBranchid(inb.getBranchid());
 		    		//System.out.println(inb.getPapercount()+"***"+inb.getRealcount());
 		    		map.put(categoryid, listp); 
 		    	}else {  
@@ -116,6 +117,7 @@ public class InventoryAllManager {
 		    		listp.setActivetime(inb.getActivetime());
 		    		listp.setProduct(inb.getProduct()); 
 		    		listp.setTypestatues(inb.getTypeStatues()); 
+		    		listp.setBranchid(inb.getBranchid());
 		    		if(!StringUtill.isNull(branch)){
 			    		listp.setTime(inb.getQuerymonth());
 			    	} 

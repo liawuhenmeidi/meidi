@@ -22,7 +22,9 @@ if(!StringUtill.isNull(id)){
 	remark = oa.getOm().getRemark();    
 	list = oa.getList();    
 }    
-       
+
+
+
 Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,oa.getOm().getBranchid()+"");
 String jsoninventory = StringUtill.GetJson(map); 
     
@@ -39,7 +41,7 @@ String jsoninventorysnsale = StringUtill.GetJson(mapsale);
  
 String json = StringUtill.GetJson(list);   
 //String SNjson = StringUtill.GetJson(map); 
- //System.out.println(jsoninventorysnmodel); 
+System.out.println(json); 
 
 
 %>
@@ -198,7 +200,7 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
    
  function init(){
 	 for(var i=0;i<jsons.length;i++){
-		 var json = jsons[i];  
+		 var json = jsons[i];   
 		 //alert(json.tname); s
 		$("#product"+i).val(json.tname);  
 		$("#statues"+i).val(json.realstatues); 
@@ -297,7 +299,7 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	     '<option value="2">特价机订货</option>'+
 	      '<option value="3">样机订货</option>'+
 	      '<option value="4">换货订货</option>'+
-	      '<option value="5">赠品订货</option>'+   
+	      '<option value="5">赠品订货</option>'+    
 	      '<option value="6">店外退货 </option>'+ 
 	      '<option value="7">已入库常规退货</option>'+
 	      '<option value="8">已入库特价退货</option>'+
@@ -306,7 +308,7 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	     ' <td  align=center><input type="button" value="删除" onclick="delet('+row+')"/></td> ' +
 	     '</tr>'
 	     ;  
-	                
+	                 
 	$("#Ntable").append(str);
 	 
 	//alert($("#td"+row).css("width")-10);

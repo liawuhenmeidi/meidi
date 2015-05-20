@@ -2341,6 +2341,14 @@ public class PrintServlet extends HttpServlet {
 
 					for (int j = 0; j < listog.size(); j++) {
 						OrderGoods og = listog.get(j);
+						String type = "";
+						Product op = og.getProduct();
+						if(null != op){ 
+							type = op.getType();
+						}
+						
+						 
+						 
 						if (og.getRealnum() > 0) {
 							row = sheet.createRow((int) count);
 							if (j == 0) {
@@ -2350,21 +2358,21 @@ public class PrintServlet extends HttpServlet {
 										(short) 9));
 							}
 
-							count++;
+							count++; 
 							int y = 0;
 							cell = row.createCell((short) y++);
 							cell.setCellValue(branch.getLocateName());
 							cell.setCellStyle(style);
 							cell = row.createCell((short) y++);
-							cell.setCellValue("");
-							cell.setCellStyle(style);
+							cell.setCellValue(""); 
+							cell.setCellStyle(style);   
 							cell = row.createCell((short) y++);
 							cell.setCellValue("");
 							cell.setCellStyle(style);
 							cell = row.createCell((short) y++);
-							cell.setCellValue(og.getProduct().getType());
+							cell.setCellValue(type); 
 							cell.setCellStyle(style);
-							cell = row.createCell((short) y++);
+							cell = row.createCell((short) y++); 
 							cell.setCellValue("");
 							cell.setCellStyle(style);
 							cell = row.createCell((short) y++);
@@ -2378,8 +2386,8 @@ public class PrintServlet extends HttpServlet {
 							cell.setCellStyle(style);
 							cell = row.createCell((short) y++);
 							cell.setCellValue(StringUtill.getNotNUll(og
-									.getOid()));
-							cell.setCellStyle(style);
+									.getOid())); 
+							cell.setCellStyle(style); 
 							if (j == 0) {
 								cell = row.createCell((short) y++);
 
@@ -2396,11 +2404,11 @@ public class PrintServlet extends HttpServlet {
 						}
 					}
 				}
-			}
+			} 
 
-		}
+		} 
 		
-		 
+		  
 		
 		// System.out.println(count);
 		// 第六步，将文件存到指定位置
@@ -2954,10 +2962,10 @@ public class PrintServlet extends HttpServlet {
 		String exportuuid = request.getParameter("exportuuid");
 		String orderid = request.getParameter("orderid"); 
 		String typestatues = request.getParameter("typestatues");
-		int expor = -1; 
+		int expor = -1;  
 		if (!StringUtill.isNull(exportmodel)) {
 			expor = Integer.valueOf(exportmodel);
-		}  
+		}   
 		List<OrderGoodsAll> list = OrderGoodsAllManager.getlistName(user,exportuuid,orderid); 
 				 
 				if ("0".equals(typestatues)) {

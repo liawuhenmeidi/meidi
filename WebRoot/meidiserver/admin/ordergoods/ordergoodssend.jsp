@@ -38,13 +38,13 @@ function search(statues){
 	window.location.href="maintain.jsp?statues="+statues;
 }
 
-function check(){ 
+function check(){  
 	var flag = false; 
 	$("#submit").css("display","none"); 
 	$("input[type='checkbox'][id='check_box']").each(function(){          
    		if($(this).attr("checked")){
    				var str = this.value; 
-   				
+   				 
    				if(str != null  &&  str != ""){
 	   				  // attract[i] = str; 
 		   	          //  i++;
@@ -107,7 +107,7 @@ function check(){
 				<td width="20%" class="s_list_m" align="center">订单时间</td>
 				<td width="20%" class="s_list_m" align="center">订单截止日期</td>
 				<td width="20%" class="s_list_m" align="center">备注</td>
-			</tr>
+			</tr> 
 			<%
 				if (null != map) {
 					Set<Map.Entry<String, OrderGoodsAll>> mapent = map.entrySet();
@@ -122,7 +122,7 @@ function check(){
 						if (StringUtill.isNull(branchtype)
 								|| o.getOm().getBranch().getPid() == Integer
 										.valueOf(branchtype)) {
-							;
+							; 
 			%>
 			<tr class="asc"
 				ondblclick="detail('ordergoodsdetail.jsp?id=<%=key%>&type=<%=OrderMessage.billing%>&statues=<%=OrderMessage.unexamine%>')">

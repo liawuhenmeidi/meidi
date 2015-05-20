@@ -153,9 +153,9 @@ List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.unexam
 					<td align=center><%=InNum%></td>
 					<td align=center><%=og.getRealnum()%></td>
 					<td align=center><%=og.getOrdernum()%></td>
-
+  
 					<td align="center"><%=branch.getNameSN()%></td>
-					<td align="center"><%=branch.getEncoded()%></td>
+					<td align="center"><%=branch.getEncoded(og.getStatues())%></td>
 					<td align="center"><%=og.getStatuesName()%></td>
 					<td align="center"><%=TimeUtill.getdateString()%></td>
 					<td align="center"><%=serialnumber%></td>

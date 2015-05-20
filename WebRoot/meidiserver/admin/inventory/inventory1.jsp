@@ -4,8 +4,9 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 String userbranch = user.getBranch(); 
 String category = request.getParameter("category");
-String branchid = request.getParameter("branchid"); 
+String branchid = request.getParameter("branchid");  
 
+//boolean flag = UserManager.checkPermissions(user, Group.ordergoods, "f"); 
 Category c = CategoryManager.getCategory(category);
  
 List<String> listp = ProductService.getlist(Integer.valueOf(category));
@@ -266,8 +267,12 @@ function pandian(type,branchid){
 						+ '<td align="left">产品型号</td>'
 						+ '<td align="left">'
 						+ '<table width="100%"><tr><td align="left">安装网点：账面库存数量</td></tr><tr><td align="left">销售门店：未入库数量</td></tr></table>'
-						+ '</td>' + '<td align="left">实际库存数量</td>'
-						+ '<td align="left">盘点</td>' + '</tr>';
+						+ '</td>' + '<td align="left">实际库存数量</td>';
+						//if(flag){
+						//	addstr += '<td align="left">卖场入库</td>'; 
+						//}
+						
+						addstr += '<td align="left">盘点</td>' + '</tr>';
 	        	 var json =  $.parseJSON(data);
 	        	
 	        	 for(var i=0;i<json.length;i++){
@@ -280,36 +285,39 @@ function pandian(type,branchid){
 	                	 }else {
 	                		 pandian = "否";
 	                	 }
-	                 }else{
+	                 }else{ 
 	                	 if(canpandian){
 	                		 pandian = str.time; 
 	                	 }
-	                 }
+	                 }  
 	                 
 	                 if(counttype != 0 || counttype == 0 && str.papercount != 0 ){
 		        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.typeid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+str.typeid+'\',\''+branch+'\',this)">' +  
-		        		    
+		        		     
 		        		     ' <td>'+str.cateoryName+'</td> ' +   
 		        		     ' <td>'+str.type+'</td> ' +   
 		        		     ' <td>'+str.papercount+'</td> ' +  
-		        		     // inventoryid
-		        		     ' <td>'+str.realcount+'</td> ' + 
-		        		      
+		        		     // inventoryid  
+		        		     ' <td>'+str.realcount+'</td> ' +   
+		        		    //  ' <td><label onclick="addlInstorage('+str.branchid+','+str.typeid+')">[点击增加卖场入库信息]</td></label> ' + 
 		        		     ' <td>'+pandian+'</td> ' +  
-		        		     ' </tr>'; 
-		        		     row++;
-	                 }
+		        		     ' </tr>';  
+		        		     row++;  
+	                 } 
 	        	 }
 	        	
 	        	 $("#table").append(addstr);      
-	           },  
+	           },   
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 	            } 
 	           });
-
+ 
  }
-  
-
+     
+    
+ function addlInstorage(branchid,type){ 
+	 window.location.href='../ordergoods/addlInstorage.jsp?branchid='+branchid+'&type='+type;
+ } 
 </script>
 </head>
 
@@ -377,6 +385,7 @@ function pandian(type,branchid){
 			<th align="left">产品型号</th>
 			<th align="left">账面库存数量</th>
 			<th align="left">实际库存数量</th>
+			
 			<th align="left">盘点</th> 
 		</tr>
 	</thead>

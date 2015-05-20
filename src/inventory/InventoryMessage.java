@@ -103,6 +103,7 @@ public static Map<String,String> getDeliveryStatuesMap(){
 	map.put(-1+"", "调拨单"); 
 	map.put(20+"", "换货单");
 	map.put(21+"", "网上数据");  
+	map.put(22+"", "卖场入库");   
 	//map.put(20+"", "换货单");
 	return map ;
 	

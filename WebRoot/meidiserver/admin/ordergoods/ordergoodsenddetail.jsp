@@ -8,7 +8,7 @@ String statues = request.getParameter("statues");
 Map<Integer,Map<Integer,OrderGoodsAll>> map = OrderGoodsAllManager.getsendMap(user, Integer.valueOf(statues), ids);
 //List<OrderGoodsAll> list = OrderGoodsAllManager.getsendlist(user,OrderMessage.unexamine,ids);  
 //System.out.println(list.size());   
- //System.out.println(map); 
+ //System.out.println(map);
 %>
 <!DOCTYPE html>
 <html>
@@ -57,7 +57,8 @@ function check(){
 		<div class="weizhi_head">现在位置：开单发货</div>
 		<div class="main_r_tianjia">
 			<ul>
-				<li><a href="javascript:history.go(-1);">返回</a></li>
+				<li><a href="javascript:history.go(-1);">返回</a>
+				</li>
 			</ul>
 		</div>
 		<!--  头 单种类  -->
@@ -76,17 +77,15 @@ function check(){
 									<input type="hidden" name="token" value="<%=token%>" /> <input
 										type="hidden" value="<%=StringUtill.getStr(ids)%>" name="ids">
 									<input type="submit" value="开单导出" style="color:red">
-								</form>
-							</td>
+								</form></td>
 
 						</tr>
 
-					</table>
-				</td>
+					</table></td>
 
 			</tr>
 			<tr class="dsc">
-			    <td align="center">编号</td>
+				<td align="center">编号</td>
 				<td align="center">门店</td>
 				<td align="center">商品编码</td>
 				<td align="center">商品条码</td>
@@ -105,47 +104,56 @@ function check(){
 							.entrySet();
 					Iterator<Map.Entry<Integer, Map<Integer, OrderGoodsAll>>> it = set
 							.iterator();
-					int count = 0 ;   
+					int count = 0;
 					while (it.hasNext()) {
 						Map.Entry<Integer, Map<Integer, OrderGoodsAll>> mapent = it
 								.next();
+
 						Map<Integer, OrderGoodsAll> mapb = mapent.getValue();
-						Set<Map.Entry<Integer, OrderGoodsAll>> setb = mapb
-								.entrySet();
-						Iterator<Map.Entry<Integer, OrderGoodsAll>> itb = setb
-								.iterator();
-						int i = 0;
-						String cla = "";
-						
-						while (itb.hasNext()) {
-							i++;
-							if (i % 2 == 1) {
-								cla = "asc";
-							} else {
-								cla = "bsc";
-							}
-							Map.Entry<Integer, OrderGoodsAll> mapentb = itb.next();
-							OrderGoodsAll o = mapentb.getValue();
-							Branch branch = o.getOm().getBranch();
-							List<OrderGoods> listog = o.getList();
-							 
-							for (int j = 0; j < listog.size(); j++) {
-								OrderGoods og = listog.get(j);
-								//System.out.println(og.getProduct());
-								if (og.getRealnum() > 0) { 
-									count ++;
-			%>  
+						if (null != mapb) {
+							Set<Map.Entry<Integer, OrderGoodsAll>> setb = mapb
+									.entrySet();
+							Iterator<Map.Entry<Integer, OrderGoodsAll>> itb = setb
+									.iterator();
+							int i = 0;
+							String cla = "";
+
+							while (itb.hasNext()) {
+								i++;
+								if (i % 2 == 1) {
+									cla = "asc";
+								} else {
+									cla = "bsc";
+								}
+								Map.Entry<Integer, OrderGoodsAll> mapentb = itb
+										.next();
+								OrderGoodsAll o = mapentb.getValue();
+								Branch branch = o.getOm().getBranch();
+								List<OrderGoods> listog = o.getList();
+
+								for (int j = 0; j < listog.size(); j++) {
+									OrderGoods og = listog.get(j);
+									String type = "";
+									Product op = og.getProduct();
+									if(null != op){ 
+										type = op.getType();
+									} 
+									//System.out.println(og.getProduct());
+									if (og.getRealnum() > 0) {
+										count++;
+			%>
 			<tr class="<%=cla%>">
-			    <td align="center"><%=count%></td>
+				<td align="center"><%=count%></td>
 				<td align="center"><%=branch.getLocateName()%></td>
 				<td align="center"></td>
-				<td align="center"></td>
-				<td align="center"><%=og.getProduct().getType()%></td>
+				<td align="center"></td> 
+				<td align="center"><%=type%></td>
 				<td align="center"></td>
 				<td align="center"><%=og.getRealnum()%></td>
 				<td align="center"></td>
 				<td align="center"><%=og.getStatuesName()%></td>
-				<td align="center"><%=StringUtill.getNotNUll(og.getOid())%></td>
+				<td align="center"><%=StringUtill.getNotNUll(og
+											.getOid())%></td>
 				<%
 					if (j == 0) {
 				%>
@@ -155,13 +163,13 @@ function check(){
 				%>
 
 			</tr>
- 
-			<% 
+
+			<%
 				}
+								}
 							}
 						}
 					}
-
 				}
 			%>
 

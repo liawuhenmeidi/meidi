@@ -259,7 +259,7 @@ public class OrderGoodsManager {
 		return id;
 
   } 
-   
+    
    public static OrderGoods getOrderGoodsFromRs(ResultSet rs){
 	   OrderGoods p = null;
 		try {   
@@ -284,9 +284,10 @@ public class OrderGoodsManager {
 			p.setExportuuid(rs.getString("exportuuid"));
 			p.setMid(rs.getInt("mid"));    
 			p.setInstoragenum(rs.getInt("instoragenum")); 
-			p.setExportmodel(rs.getInt("exportmodel")); 
+			p.setExportmodel(rs.getInt("exportmodel"));  
             p.setExportstatues(rs.getInt("exportstatues")); 
 		    //p.setNexttime(rs.getString("nexttime"));
+           // System.out.println("p.getStatues()"+p.getStatues()); 
 		} catch (SQLException e) {    
 			e.printStackTrace();
 		}  

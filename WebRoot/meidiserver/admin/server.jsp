@@ -730,7 +730,33 @@
 		response.getWriter().write(StringUtill.GetJson(map));
 		response.getWriter().flush();
 		response.getWriter().close(); //
-	} else if ("InitInventorySN".equals(method)) {
+	} else if ("getInventoryOut".equals(method)) {
+		  
+				String branchtype = request.getParameter("branchtype");
+				String branch = request.getParameter("branch");
+				Map<String,String> map = new HashMap<String,String>();
+				
+				List<String> listallp = ProductService.getlistsale(Integer.valueOf(branchtype));
+				String strp = StringUtill.GetJson(listallp);
+				
+				
+				Branch b = BranchService.getNameMap(Integer.valueOf(branchtype)).get(branch);
+				//System.out.println("branch"+b.getId());  
+				String time = TimeUtill.getdateString();  
+				Map<String,InventoryBranch> mapin = InventoryBranchManager.getmapType(user,b.getId()+"");
+				String strin = StringUtill.GetJson(mapin);
+				
+			   
+				// System.out.println("strsale"+strsale);
+				 
+				map.put("strp", strp);
+				map.put("strin", strin);
+				 
+				//System.out.println(map); 
+				response.getWriter().write(StringUtill.GetJson(map));
+				response.getWriter().flush();
+				response.getWriter().close(); //
+			} else if ("InitInventorySN".equals(method)) {
 		MyMainClient.getinstance().run();
 		response.getWriter().write(1);
 		response.getWriter().flush();

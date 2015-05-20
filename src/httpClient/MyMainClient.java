@@ -122,7 +122,7 @@ public class MyMainClient {
 			  
 	        //inventoryIN.getinventoryIN(starttime, endtime, mc);
 		    inventoryIN.get(starttime, endtime);  
-			       
+			        
 			// 库存                
 			InventoryDownLoad.save();
           

@@ -230,10 +230,10 @@ public class InventoryBranchMessageManager {
 
 		return mapAnalyze;
 	}
-
-	public static Map<String, List<InventoryBranchMessage>> getmap(int branchid) {
  
-		Map<String, List<InventoryBranchMessage>> categorys = new HashMap<String, List<InventoryBranchMessage>>();
+	public static Map<String, Map<String,List<InventoryBranchMessage>>> getmap(int branchid) {
+ 
+		Map<String, Map<String,List<InventoryBranchMessage>>> categorys = new HashMap<String, Map<String,List<InventoryBranchMessage>>>();
 		Connection conn = DB.getConn();
 		String sql = "select * from mdinventorybranchmessage where  branchid = "
 				+ branchid + " order by id "; 
@@ -243,10 +243,16 @@ public class InventoryBranchMessageManager {
 		try {
 			while (rs.next()) { 
 				InventoryBranchMessage u = getCategoryFromRs(rs);
-				List<InventoryBranchMessage> list = categorys.get(u.getTypeid());
+				Map<String,List<InventoryBranchMessage>> maps = categorys.get(u.getTypeid());
+				if(null == maps){
+					maps = new HashMap<String,List<InventoryBranchMessage>>();
+					categorys.put(u.getTypeid(), maps);
+				}
+				
+				List<InventoryBranchMessage> list = maps.get(u.getTypeStatues()+"");
 				if (null == list) {
 					list = new ArrayList<InventoryBranchMessage>();
-					categorys.put(u.getTypeid(), list);
+					maps.put(u.getTypeStatues()+"", list); 
 				}
 				list.add(u);
 			}

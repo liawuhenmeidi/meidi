@@ -266,7 +266,8 @@ if("permission".equals(action)){
         <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>要货单权限</td><td></td></tr></table></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >要货单:</td><td width=25% >可提交(导购上报)<input type="checkbox" value="40-w" name = "permission" id="p40-w"  /></td><td width=25% >确认审核&nbsp;<input type="checkbox" value="40-q" name = "permission" id="p40-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="40-r" name = "permission" id="p40-r" /></td></tr>
         <tr class="asc"  onclick="updateClass(this)"><td width=25% ></td><td width=25% >生成卖场(苏宁，国美)订单<input type="checkbox" value="40-c" name = "permission" id="p40-c"  /></td><td width=25% >开单发货&nbsp;<input type="checkbox" value="40-d" name = "permission" id="p40-d" /></td><td width=25% >确认实货数量&nbsp;<input type="checkbox" value="40-e" name = "permission" id="p40-e" /></td></tr>
-  
+        <tr class="asc"  onclick="updateClass(this)"><td width=25% ></td><td width=25% >确认卖场入库数量<input type="checkbox" value="40-f" name = "permission" id="p40-f"  /></td><td width=25% ></td><td width=25% ></td></tr>
+    
       
        <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>公司文员类权限</td><td></td></tr></table></td></tr> 
         
@@ -326,7 +327,8 @@ if("permission".equals(action)){
                <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>要货单权限</td><td></td></tr></table></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >要货单:</td><td width=25% >可提交(导购上报)<input type="checkbox" value="40-w" name = "permission" id="p40-w"  /></td><td width=25% >确认审核&nbsp;<input type="checkbox" value="40-q" name = "permission" id="p40-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="40-r" name = "permission" id="p40-r" /></td></tr>
         <tr class="asc"  onclick="updateClass(this)"><td width=25% ></td><td width=25% >生成卖场(苏宁，国美)订单<input type="checkbox" value="40-c" name = "permission" id="p40-c"  /></td><td width=25% >开单发货&nbsp;<input type="checkbox" value="40-d" name = "permission" id="p40-d" /></td><td width=25% >确认实货数量&nbsp;<input type="checkbox" value="40-e" name = "permission" id="p40-e" /></td></tr>
-  
+   <tr class="asc"  onclick="updateClass(this)"><td width=25% ></td><td width=25% >确认卖场入库数量<input type="checkbox" value="40-f" name = "permission" id="p40-f"  /></td><td width=25% ></td><td width=25% ></td></tr>
+   
  
             <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>库存类权限</td><td></td></tr></table></td></tr> 
             <tr class="asc"  onclick="updateClass(this)"><td width=25% >调货单权限:</td><td width=25% ></td><td width=25% >可确认<input type="checkbox" value="13-q" name = "permission" id="p13-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="13-r" name = "permission" id="p13-r" /></td></tr>	 	 
@@ -361,7 +363,8 @@ if("permission".equals(action)){
         <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>要货单权限</td><td></td></tr></table></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >要货单:</td><td width=25% >可提交(导购上报)<input type="checkbox" value="40-w" name = "permission" id="p40-w"  /></td><td width=25% >确认审核&nbsp;<input type="checkbox" value="40-q" name = "permission" id="p40-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="40-r" name = "permission" id="p40-r" /></td></tr>
         <tr class="asc"  onclick="updateClass(this)"><td width=25% ></td><td width=25% >生成卖场(苏宁，国美)订单<input type="checkbox" value="40-c" name = "permission" id="p40-c"  /></td><td width=25% >开单发货&nbsp;<input type="checkbox" value="40-d" name = "permission" id="p40-d" /></td><td width=25% >确认实货数量&nbsp;<input type="checkbox" value="40-e" name = "permission" id="p40-e" /></td></tr>
-  
+   <tr class="asc"  onclick="updateClass(this)"><td width=25% ></td><td width=25% >确认卖场入库数量<input type="checkbox" value="40-f" name = "permission" id="p40-f"  /></td><td width=25% ></td><td width=25% ></td></tr>
+   
          
         <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>库存类权限</td><td></td></tr></table></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >调货单权限:</td><td width=25% >可提交<input type="checkbox" value="13-w" name = "permission" id="p13-w" /></td><td width=25% >可确认<input type="checkbox" value="13-q" name = "permission" id="p13-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="13-r" name = "permission" id="p13-r" /></td></tr>	 	 

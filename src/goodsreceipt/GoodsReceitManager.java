@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,15 +33,15 @@ public class GoodsReceitManager {
 	protected static Log logger = LogFactory.getLog(GoodsReceitManager.class);
       
 	  
-	public static List<String> saveIN(Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin ,GoodsReceipt gr) {
+	public static List<String> saveIN(Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin ,GoodsReceipt gr,Set<String> setup) {
 		User user = new User();
 		boolean flag = true;
 		List<String> list = new ArrayList<String>();
 
 		logger.info(gr.getTid() + "***" + gr.getBidSN());
 		if (gr.getTid() == 0 || gr.getBidSN() == 0) {
-			gr.setDisable(1);
-			flag = false;
+			gr.setDisable(1); 
+			flag = false;  
 		} 
 
 		String sql = " insert into goodsreceipt (id,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,recevenum,refusenum,branchid,branchname,uuid,disable)"
@@ -83,8 +84,14 @@ public class GoodsReceitManager {
 			} catch (Exception e) {
 				in = null;
 			}
-			 
-			if (null == in) {
+			  
+			if (null == in 
+					&& !setup.contains(gr.getBidSN()
+							+ "_"
+							+ gr.getTid()+"_"+gr.getGoodtypeStatues())) {
+
+				setup.add(gr.getBidSN() + "_"
+						+ gr.getTid()+"_"+gr.getGoodtypeStatues());
 				sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
 						+ "  values ( null,"
 						+ gr.getCid()
@@ -95,7 +102,8 @@ public class GoodsReceitManager {
 						+ "', '"
 						+ -gr.getRecevenum() + "'," + gr.getBidSN()+ ","
 								+ gr.getGoodtypeStatues()+ ")";
-
+                 
+			
 				sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues,typestatues)"
 						+ "  values ( null, '"
 						+ gr.getBidSN()
@@ -184,7 +192,7 @@ public class GoodsReceitManager {
 		return list;
 	}
   
-	public static List<String> saveOut(Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin ,GoodsReceipt gr) {
+	public static List<String> saveOut(Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin ,GoodsReceipt gr,Set<String> setup) {
 		User user = new User();
 		boolean flag = true;   
 		List<String> list = new ArrayList<String>();
@@ -192,7 +200,7 @@ public class GoodsReceitManager {
 		//logger.info(gr.getTid() + "***" + gr.getBidSN());
 		if (gr.getTid() == 0 || gr.getBidSN() == 0) {
 			 
-			gr.setDisable(1);
+			gr.setDisable(1); 
 			flag = false;  
 		} 
 		 
@@ -240,7 +248,13 @@ public class GoodsReceitManager {
 				in = null;
 			}  
 			 
-			if (null == in) {
+			if (null == in 
+					&& !setup.contains(gr.getBidSN()
+							+ "_"
+							+ gr.getTid()+"_"+gr.getGoodtypeStatues())) {
+
+				setup.add(gr.getBidSN() + "_"
+						+ gr.getTid()+"_"+gr.getGoodtypeStatues());
 				sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
 						+ "  values ( null,"
 						+ gr.getCid()
@@ -1024,7 +1038,7 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 		boolean flag = false; 
 		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryBranchManager
 				.getInventoryMap();
-		 
+		Set<String> setup = new HashSet<String>();
 		List<String> list = new ArrayList<String>();
 		Map<String, GoodsReceipt> mapdb = getMapAll(starttime,
 				endtime);
@@ -1036,7 +1050,7 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 				GoodsReceipt gr = ent.getValue();
 				GoodsReceipt db = mapdb.get(gr.getUuid());
 				if (null == db) {
-					List<String> sql = saveIN(mapin,gr);
+					List<String> sql = saveIN(mapin,gr,setup);
 					list.addAll(sql);
 				}
 			}
@@ -1044,13 +1058,14 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 
 		flag = DBUtill.sava(list);
 		return flag;
-	}
-
+	} 
+ 
 	public static boolean saveOut(Map<String, GoodsReceipt> map,String starttime, String endtime) {
-		boolean flag = false;
-		
+		boolean flag = false; 
+		 
 		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryBranchManager
-				.getInventoryMap();
+				.getInventoryMap(); 
+		Set<String> setup = new HashSet<String>();
 		List<String> list = new ArrayList<String>();
 		Map<String, GoodsReceipt> mapdb = getMapAll(starttime,
 				endtime); 
@@ -1059,10 +1074,10 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 			Iterator<Map.Entry<String, GoodsReceipt>> it = en.iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, GoodsReceipt> ent = it.next();
-				GoodsReceipt gr = ent.getValue();
+				GoodsReceipt gr = ent.getValue(); 
 				GoodsReceipt db = mapdb.get(gr.getUuid());
 				if (null == db) {
-					List<String> sql = saveOut(mapin,gr);
+					List<String> sql = saveOut(mapin,gr,setup);
 					list.addAll(sql);
 				} 
 			}

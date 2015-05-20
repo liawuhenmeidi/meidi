@@ -8,8 +8,8 @@
  String time = TimeUtill.getdateString();   
 Map<String, List<String>> map = BranchService.getPtypeMap();
 String branchtype = StringUtill.GetJson(map);
-
-
+ 
+ 
 ProductSaleModel.Model[] model = ProductSaleModel.Model.values();
  
 String sm = StringUtill.GetJson(model); 
@@ -66,7 +66,7 @@ String sm = StringUtill.GetJson(model);
 	 
 	 addrowinti();
 
- });   
+ });    
  
    
  function initBranch(){
@@ -165,7 +165,7 @@ String sm = StringUtill.GetJson(model);
  
  function addrow(row){ 
 	 var cl = 'class="asc"';
-	 
+	  
 	  var str = '<tr '+cl+'>' +    
 	     ' <td align=center   >'+(row*1+1*1)*1+'</td> '+
 	      

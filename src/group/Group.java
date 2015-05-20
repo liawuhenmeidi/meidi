@@ -48,7 +48,7 @@ public class Group {
    public static int change = 38;    // 型号转化与门店转化权限  
     
    public static int ordergoods = 40;  //  订货单权限    w  可提交    q 审核       r  查看
-    //  c  生成苏宁订单      d  开单发货     e 修改实收数量    
+    //  c  生成苏宁订单      d  开单发货     e 修改实收数量    f 确认卖场入库数量
    
    
    

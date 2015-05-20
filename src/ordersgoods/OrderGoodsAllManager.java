@@ -872,25 +872,25 @@ public class OrderGoodsAllManager {
 								try {
 									in = mapin.get(oa.getOm().getBranchid())
 											.get(og.getTid() + "")
-											.get(og.getStatues());
+											.get(og.getrealStatues());
 								} catch (Exception e) {
 									in = null;
 								}
 								// logger.info( og.getTid());
 								// logger.info(setup.contains(oa.getOm().getBranchid()+"_"+og.getTid()));
-
-								if (null == in
+  
+								if (null == in 
 										&& !setup.contains(oa.getOm()
 												.getBranchid()
-												+ "_"
-												+ og.getTid())) {
-
+												+ "_" 
+												+ og.getTid()+"_"+og.getrealStatues())) {
+  
 									setup.add(oa.getOm().getBranchid() + "_"
-											+ og.getTid());
+											+ og.getTid()+"_"+og.getrealStatues());
 									sqlIB = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
 											+ "  values ( null,"
 											+ og.getCid()
-											+ ", '"
+											+ ", '" 
 											+ og.getTid()
 											+ "', '"
 											+ 0
@@ -899,7 +899,7 @@ public class OrderGoodsAllManager {
 											+ "',"
 											+ oa.getOm().getBranchid()
 											+ ","
-											+ og.getStatues() + ")";
+											+ og.getrealStatues() + ")";
 
 									sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues,typestatues)"
 											+ "  values ( null, '"
@@ -927,7 +927,7 @@ public class OrderGoodsAllManager {
 											+ ","
 											+ oa.getOm().getBranchid()
 											+ ",-1,0,0,1,"
-											+ og.getStatues()
+											+ og.getrealStatues()
 											+ ")";
 								} else {
 
@@ -938,7 +938,7 @@ public class OrderGoodsAllManager {
 											+ " and  type = '"
 											+ og.getTid()
 											+ "' and typestatues = "
-											+ og.getStatues();
+											+ og.getrealStatues();
 
 									sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid, inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues,typestatues)"
 											+ "  values ( null, '"
@@ -961,11 +961,11 @@ public class OrderGoodsAllManager {
 											+ oa.getOm().getBranchid()
 											+ " and  type = '"
 											+ og.getTid()
-											+ "' and typestatues = "+og.getStatues()+")*1,(select papercount from mdinventorybranch where branchid = "
+											+ "' and typestatues = "+og.getrealStatues()+")*1,(select papercount from mdinventorybranch where branchid = "
 											+ oa.getOm().getBranchid()
 											+ " and  type = '"
 											+ og.getTid()
-											+ "' and typestatues = "+og.getStatues()+")*1,"
+											+ "' and typestatues = "+og.getrealStatues()+")*1,"
 											+ 1    
 											+ ","   
 											+ oa.getOm().getBranchid()
@@ -973,15 +973,15 @@ public class OrderGoodsAllManager {
 											+ oa.getOm().getBranchid()
 											+ " and  type = '"
 											+ og.getTid()  
-											+ "' and typestatues = "+og.getStatues()+")*1"
+											+ "' and typestatues = "+og.getrealStatues()+")*1"
 											// + -Integer.valueOf(realsendnum) 
 											+ ",(select papercount from mdinventorybranch where branchid = "
 											+ oa.getOm().getBranchid()
 											+ " and  type = '"
 											+ og.getTid()  
-											+ "' and typestatues = "+og.getStatues()+")*1"
+											+ "' and typestatues = "+og.getrealStatues()+")*1"
 											+ Integer.valueOf(realsendnum) 
-											+ ",1," + og.getStatues() + ")";
+											+ ",1," + og.getrealStatues() + ")";
 
 								}
 								listsql.add(sqlIB);
@@ -1232,7 +1232,7 @@ public class OrderGoodsAllManager {
 			if (null == list) {
 				list = new ArrayList<OrderGoods>();
 			}
-			list.add(og);
+			list.add(og); 
 			oa.setList(list);
 		}
 		return oa;
