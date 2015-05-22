@@ -1,11 +1,14 @@
 package inventory;
 
+import httpClient.download.InventoryChange;
+import httpClient.download.InventoryModelDownLoad;
 
-import java.sql.Connection;
+import java.sql.Connection; 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +19,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import branch.Branch;
+import branch.BranchManager;
 import branch.BranchService;
 
 
@@ -117,7 +121,44 @@ public static List<InventoryBranch> getCategoryid(User user,String branch , Stri
 		} 
 		return categorys;
 	}
-	
+
+
+public static List<InventoryBranch> getCategoryid(User user,String branch , String categoryid,String typestatues) {  
+	//System.out.println(branch); 
+	String typesear = "";
+	List<InventoryBranch> categorys = new ArrayList<InventoryBranch>();
+	Connection conn = DB.getConn();  
+	String products = user.getProductIDS(); 
+	if(!StringUtill.isNull(typestatues)){ 
+		typesear = " and typestatues in  ("+typestatues+")";
+	}  
+	String sql = ""; 
+	if(!StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
+		sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and inventoryid in "+products+" and  branchid in ("+branch+")  and branchid not in (select id from mdbranch where statues = 1 ) "+typesear+" order by  id desc";  
+	}else if(!StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
+		sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 ) "+typesear+" order by  id desc";  
+	}else if(StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
+		sql = "select * from mdinventorybranch where  branchid in ("+branch+") and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 )  "+typesear+" order by  id desc";  
+	}else if(StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
+		sql = "select * from mdinventorybranch where 1= 1 and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 ) "+typesear+"  order by  id desc";    
+	}    
+logger.info(sql);	    
+	Statement stmt = DB.getStatement(conn); 
+	ResultSet rs = DB.getResultSet(stmt, sql); 
+	try {    
+		while (rs.next()) {  
+			InventoryBranch u = getCategoryFromRs(rs);
+			categorys.add(u); 
+		}  
+	} catch (SQLException e) {  
+		logger.error(e); 
+	} finally { 
+		DB.close(rs);
+		DB.close(stmt);
+		DB.close(conn);
+	} 
+	return categorys;
+}
 public static List<InventoryBranch> getByBranchids(String branch) {  
 	//System.out.println(branch);
 	List<InventoryBranch> categorys = new ArrayList<InventoryBranch>();
@@ -848,6 +889,7 @@ logger.info(sql);
 			 }
 		
 		
+		
 	public static InventoryBranch getInventoryID(User user ,int branchid,String type){
 		   
 		InventoryBranch orders = null;   
@@ -922,6 +964,7 @@ logger.info(sql);
 				 }
 				return list;
 		 }
+	
 	
 	
 	public static int update(User user ,String branchid,String type){

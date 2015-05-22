@@ -49,15 +49,15 @@ td {
 	 add();
  }); 
    
- function search(category,branchid){ 
-	  window.location.href='inventory1.jsp?category='+category+'&branchid='+branchid;
+ function search(category,branchid){  
+	  window.location.href='inventory1check.jsp?category='+category+'&branchid='+branchid;
 		// window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
  }   
  
- function distri(){
+ function distri(){ 
 	 if(categoryid == null || categoryid == ""){
-		 alert("请选择商品");
-	 }else { 
+		 alert("请选择商品"); 
+	 }else {    
 	     //window.open('distribution.jsp?category='+categoryid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 		 window.location.href='distribution.jsp?category='+categoryid; 
 	   }
@@ -145,12 +145,13 @@ td {
 	</jsp:include>
  
 	<!--   头部结束   -->
-	<div class="main">
+	<div class="main"> 
 		<div class="weizhi_head">
 			现在位置：库存查询 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
+<!-- 
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="javascript:distri();">
-				查看分布</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 仓库: <input type="text"
+				查看分布</a>  -->
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 仓库: <input type="text"
 				name="branch" id="branch" class="cba" /> 
 				产品类别： 
 				常规<input type="checkbox" name="typestatues" value="1" checked="checked"/> 
@@ -158,7 +159,7 @@ td {
 				type="checkbox" name="typestatues" value="2" checked="checked"/> 
 				样机<input
 				type="checkbox" name="typestatues" value="3" checked="checked"/>
-				
+				 
 				<select id="counttyepe"
 				name="counttyepe">
 				<option value="-1">全部显示</option>

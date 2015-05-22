@@ -1,6 +1,8 @@
-<%@ page language="java" import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"
+	import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;"
+	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <%
-request.setCharacterEncoding("utf-8");
+	request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 String userbranch = user.getBranch(); 
 String category = request.getParameter("category");
@@ -97,26 +99,19 @@ if(!StringUtill.isNull(inventoryid)){
     	isdisabel = ""; 
     }
 }
-
-  
-
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <style type="text/css">
-
-td {  
-    width:100px;
-    line-height:30px;
+td {
+	width: 100px;
+	line-height: 30px;
 }
 
-#head td 
-{ 
-    white-space:nowrap; 
-} 
-
-
+#head td {
+	white-space: nowrap;
+}
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
@@ -126,12 +121,13 @@ td {
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
 
-<link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
-<link rel="stylesheet" href="../../css/jquery-ui.css"/> 
+<link rel="stylesheet" type="text/css" rev="stylesheet"
+	href="../../style/css/bass.css" />
+<link rel="stylesheet" href="../../css/jquery-ui.css" />
 <script type="text/javascript" src="../../js/jquery-ui.js"></script>
 
 <script type="text/javascript">
-var disable = '<%=isdisabel %>';
+var disable = '<%=isdisabel%>';
 var jsonall = <%=listall%>;
 var allp = <%=allp%>;
 
@@ -232,175 +228,185 @@ function pandian(type,branchid){
 	 
 	 $("#table tr").remove();    
 	 
-	 var category = "<%=category%>"; 
-	 var b = $("#branch").val();  
-	 var product = $("#product").val(); 
-//alert(branch);
-//alert(b);
-//alert(b!= null);
-    var counttype = $("#counttyepe").val();
+	 var category = "<%=category%>";  
+		var b = $("#branch").val();
+		var product = $("#product").val();
+		//alert(branch);
+		//alert(b); 
+		
+		//alert(b!= null);
+		var counttype = $("#counttyepe").val();
+		
+		var chk_value =[];    
+        $('input[name="typestatues"]:checked').each(function(){    
+                 chk_value.push($(this).val());    
+            }); 
+        
+		var typestatues = chk_value.toString();
 
-	 if((branch == null || branch == "") && b!= null&&b!=""){
-		 branch = b ; 
-	 }
-      
-	 if(b!= null&&b!=""){
-		 branch = b ;
-	 }
-	 //alert(branch);
-	// alert(b);
-	 $("#branch").val(branch);
-	 //$("#branch option[value='"+branch+"']").attr("selected","selected"); 
-	 //alert(branch);
-	 if(userbranch == branch){
-		 canpandian = true ;
-	 }
-	 
-	 $.ajax({   
-	        type: "post", 
-	         url: "../server.jsp",    
-	         data:"method=inventoryall&branch="+branch+"&category="+category+"&product="+product,
-	         dataType: "",   
-	         success: function (data) {  
-	        	 var addstr = '<tr class="dsc">'
-						+ '<td align="left">产品类别</td>'
-						+ '<td align="left">产品型号</td>'
-						+ '<td align="left">'
-						+ '<table width="100%"><tr><td align="left">安装网点：账面库存数量</td></tr><tr><td align="left">销售门店：未入库数量</td></tr></table>'
-						+ '</td>' + '<td align="left">实际库存数量</td>';
+		if ((branch == null || branch == "") && b != null && b != "") {
+			branch = b;
+		}
+
+		if (b != null && b != "") {
+			branch = b;
+		}
+		//alert(branch);
+		// alert(b);
+		$("#branch").val(branch);
+		//$("#branch option[value='"+branch+"']").attr("selected","selected"); 
+		//alert(branch);
+		if (userbranch == branch) {
+			canpandian = true;
+		}
+
+		$
+				.ajax({
+					type : "post",
+					url : "../server.jsp",
+					data : "method=inventoryall&branch=" + branch
+							+ "&category=" + category + "&product=" + product
+							+ "&typestatues=" + typestatues,
+					dataType : "",
+					success : function(data) {
+						var addstr = '<tr class="dsc">'
+								+ '<td align="left">产品类别</td>'
+								+ '<td align="left">产品型号</td>'
+								+ '<td align="left">'
+								+ '<table width="100%"><tr><td align="left">安装网点：账面库存数量</td></tr><tr><td align="left">销售门店：未入库数量</td></tr></table>'
+								+ '</td>' + '<td align="left">实际库存数量</td>';
 						//if(flag){
 						//	addstr += '<td align="left">卖场入库</td>'; 
 						//}
-						
+
 						addstr += '<td align="left">盘点</td>' + '</tr>';
-	        	 var json =  $.parseJSON(data);
-	        	
-	        	 for(var i=0;i<json.length;i++){
-	        		 var str = json[i]; 
-	                 var pandian = "是";
-	                 
-	                 if(str.isquery == false|| str.isquery == "false"){
-	                	 if(canpandian){
-	                		 pandian = '<input type="button" name="" value="盘点确认" onclick="pandian(\''+str.typeid+'\',\''+userbranch+'\')"/>'; 
-	                	 }else {
-	                		 pandian = "否";
-	                	 }
-	                 }else{ 
-	                	 if(canpandian){
-	                		 pandian = str.time; 
-	                	 }
-	                 }  
-	                 
-	                 if(counttype != 0 || counttype == 0 && str.papercount != 0 ){
-		        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.typeid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+str.typeid+'\',\''+branch+'\',this)">' +  
-		        		     
-		        		     ' <td>'+str.cateoryName+'</td> ' +   
-		        		     ' <td>'+str.type+'</td> ' +   
-		        		     ' <td>'+str.papercount+'</td> ' +  
-		        		     // inventoryid  
-		        		     ' <td>'+str.realcount+'</td> ' +   
-		        		    //  ' <td><label onclick="addlInstorage('+str.branchid+','+str.typeid+')">[点击增加卖场入库信息]</td></label> ' + 
-		        		     ' <td>'+pandian+'</td> ' +  
-		        		     ' </tr>';  
-		        		     row++;  
-	                 } 
-	        	 }
-	        	
-	        	 $("#table").append(addstr);      
-	           },   
-	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-	            } 
-	           });
- 
- }
-     
-    
- function addlInstorage(branchid,type){ 
-	 window.location.href='../ordergoods/addlInstorage.jsp?branchid='+branchid+'&type='+type;
- } 
+						var json = $.parseJSON(data);
+
+						for ( var i = 0; i < json.length; i++) {
+							var str = json[i];
+							var pandian = "是";
+
+							if (str.isquery == false || str.isquery == "false") {
+								if (canpandian) {
+									pandian = '<input type="button" name="" value="盘点确认" onclick="pandian(\''
+											+ str.typeid
+											+ '\',\''
+											+ userbranch
+											+ '\')"/>';
+								} else {
+									pandian = "否";
+								}
+							} else {
+								if (canpandian) {
+									pandian = str.time;
+								}
+							}
+
+							if (counttype != 0 || counttype == 0
+									&& str.papercount != 0) {
+								addstr += '<tr id="record' + row
+										+ '" class="asc" ondblclick="search(\''
+										+ str.typeid + '\',\'' + branch
+										+ '\')"  onclick="serchclick(\''
+										+ str.categoryid + '\',\'' + str.typeid
+										+ '\',\'' + branch + '\',this)">' +
+
+										' <td>' + str.cateoryName + '</td> '
+										+ ' <td>' + str.type + '</td> '
+										+ ' <td>' + str.papercount + '</td> ' +
+										// inventoryid  
+										' <td>' + str.realcount + '</td> ' +
+										//  ' <td><label onclick="addlInstorage('+str.branchid+','+str.typeid+')">[点击增加卖场入库信息]</td></label> ' + 
+										' <td>' + pandian + '</td> ' + ' </tr>';
+								row++;
+							}
+						}
+
+						$("#table").append(addstr);
+					},
+					error : function(XMLHttpRequest, textStatus, errorThrown) {
+					}
+				});
+
+	}
+
+	function addlInstorage(branchid, type) {
+		window.location.href = '../ordergoods/addlInstorage.jsp?branchid='
+				+ branchid + '&type=' + type;
+	}
 </script>
 </head>
 
 <body>
-<!--   头部开始   -->
- <jsp:include flush="true" page="../head.jsp">
-  <jsp:param name="dmsn" value="" />
-  </jsp:include>
+	<!--   头部开始   -->
+	<jsp:include flush="true" page="../head.jsp">
+		<jsp:param name="dmsn" value="" />
+	</jsp:include>
 
-<!--   头部结束   --> 
-   
-  <input type="hidden" id="time"  value=""/>
-  <input type="hidden" id="starttime"  value=""/>
-  <input type="hidden" id="endtime"  value=""/>
-  
-	    <table width="100%" id="head">
-	        <tr > 
-	           <td>
-	                                         现在位置：<%=c.getName() %>库存
-	           </td>
-	               
-	              <td> 
-	              <a href="javascript:distri();"> 查看分布</a>
-	              
-	              </td>
-	              <td>
-	                                            仓库:<input type="text" name="branch" id="branch" value=""   /> 
-	              
-	              </td>
-	              <td>
-	                                     产品型号:<input type="text" name="product" id="product" value=""   /> 
-	              
-	              </td>
-	               <td>
-	               <select id="counttyepe" name = "counttyepe">
-				         <option value="-1">全部显示</option>
-				         <option value=0 >只显示库存不为0</option>
-     				</select> 
-	               
-	                
-	               </td>
-	           <td>
-	            <input type="button" name="" value="查询" onclick="add()"/>   
-	           </td>
-	         
-                <td>
-                 <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>  
-                
-                </td>
-	        </tr>
-	         
-	    
-	    
-	    
-	    
-	    </table>
-          
-     <div class="table-list" >
-        
-  <table width="100%"  cellspacing="1" id="table" >
-     
-     <thead>
+	<!--   头部结束   -->
+
+	<input type="hidden" id="time" value="" />
+	<input type="hidden" id="starttime" value="" />
+	<input type="hidden" id="endtime" value="" />
+
+	<table width="100%" id="head">
 		<tr>
-			<th align="left">产品类别</th>
-			<th align="left">产品型号</th>
-			<th align="left">账面库存数量</th>
-			<th align="left">实际库存数量</th>
-			
-			<th align="left">盘点</th> 
-		</tr>
-	</thead>
+			<td>现在位置：<%=c.getName()%>库存</td>
+
+			<td><a href="javascript:distri();"> 查看分布</a></td>
+			<td>仓库:<input type="text" name="branch" id="branch" value="" />
+
+			</td>
+			<td>产品型号:<input type="text" name="product" id="product" value="" />
  
-   </table>
-  
+			</td> 
+			<td>产品类别： 
+				常规<input type="checkbox" name="typestatues" value="1" checked="checked"/> 
+				特价<input
+				type="checkbox" name="typestatues" value="2" checked="checked"/> 
+				样机<input
+				type="checkbox" name="typestatues" value="3" checked="checked"/></td>
+			<td><select id="counttyepe" name="counttyepe">
+					<option value="-1">全部显示</option>
+					<option value=0>只显示库存不为0</option>
+			</select></td>
 
-  </div>
-       
+			<td><input type="button" name="" value="查询" onclick="add()" /></td>
 
-<br/>
+			<td><a href="javascript:history.go(-1);"><font
+					style="color:blue;font-size:20px;">返回</font>
+			</a></td>
+		</tr>
 
-<div id="serach"> 
 
 
-</div>
+
+
+	</table>
+
+	<div class="table-list">
+
+		<table width="100%" cellspacing="1" id="table">
+
+			<thead>
+				<tr>
+					<th align="left">产品类别</th>
+					<th align="left">产品型号</th>
+					<th align="left">账面库存数量</th>
+					<th align="left">实际库存数量</th>
+
+					<th align="left">盘点</th>
+				</tr>
+			</thead>
+
+		</table>
+
+
+	</div>
+
+
+	<br />
+
+	<div id="serach"></div>
 </body>
 </html>

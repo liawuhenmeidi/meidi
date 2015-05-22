@@ -149,6 +149,24 @@ public class ProductService {
 		}
 		return map;
 	}
+	 
+	public static Map<String, Product> gettypeNUmmapC( int Categoryid) {
+		init(); 
+		HashMap<String, Product> map = new HashMap<String, Product>();
+		// long start = System.currentTimeMillis();
+		if (null != listall) {
+			for (int i = 0; i < listall.size(); i++) {
+				Product op = listall.get(i);
+				if(op.getCategoryID() ==Categoryid ){
+					map.put(op.getEncoded(), op);
+				}
+				
+			}
+		}
+		return map;
+	}
+
+	
 
 	public static Map<String, Product> gettypeNUmmap(int branchtype) {
 		

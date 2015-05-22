@@ -12,19 +12,24 @@ import org.apache.commons.logging.LogFactory;
 
 import utill.DBUtill;
 
+import inventory.InventoryBranch;
+import inventory.InventoryBranchManager;
 import inventory.InventoryBranchMessage;
 import inventory.InventoryBranchMessageManager;
-
+ 
 public class RegulateDB {
 	protected static Log logger = LogFactory.getLog(RegulateDB.class);
 
 	public static void main(String args[]) {
-		regulate();
+		regulate(); 
 	} 
 
 	public static void regulate() {
-
+      
 		List<String> listsql = new ArrayList<String>();
+		
+		Map<Integer,Map<String,Map<Integer,InventoryBranch>>> mapDB = InventoryBranchManager.getInventoryMap();
+		
 		// String sql =
 		// "SELECT mdinventorybranchmessage.* from mdinventorybranchmessage,tmp_table where mdinventorybranchmessage.type = tmp_table.type and mdinventorybranchmessage.branchid = tmp_table.branchid order by mdinventorybranchmessage.id";
 		String sql = "SELECT mdinventorybranchmessage.* from mdinventorybranchmessage where mdinventorybranchmessage.type in (select id from mdproduct where categoryID = 50)";
@@ -168,7 +173,7 @@ logger.info(in.getTypeStatues());
 
 									// logger.info("*******");
 								} 
-							}
+							} 
 							// logger.info(li);
 
 						}

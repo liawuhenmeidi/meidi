@@ -332,11 +332,11 @@ public class InventoryBranchMessageManager {
 			DB.close(conn);
 		}
 		logger.info(categorys.size());
-		return categorys;
-	}
-
+		return categorys; 
+	} 
+       
 	public static List<InventoryBranchMessage> getMap(String sql ) {
- 
+   
 		List<InventoryBranchMessage> categorys = new ArrayList<InventoryBranchMessage>();
 		Connection conn = DB.getConn();
 	

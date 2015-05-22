@@ -1,6 +1,8 @@
 package httpClient.download;
 
 import java.text.DecimalFormat;
+
+import product.ProductService;
  
 public class Inventory {
   private String branchName;  // 库位名称 
@@ -13,14 +15,44 @@ public class Inventory {
   private int ATP;  //atp 可卖数  
   private int num;  // 实货可用数
   private int saleNum;  
-  private int inreduce; // 库存较少 
+  private int inreduce; // 库存较少  
   private String serialNumber;   // 序列号
   private int inInbranch ;   // 入库数量
   private double dynamic ; 
   private int modelnum ;
   private int outnum ;    // 未入库数量
+  private int bid ;
+  private int tid ; 
+   private int cid ;
    
        
+public int getCid() {
+	if(tid != 0 && tid != -1){
+		cid = ProductService.getIDmap().get(tid).getCategoryID();
+	} 
+	return cid;
+}
+
+public void setCid(int cid) {
+	this.cid = cid;
+}
+
+public int getBid() {
+	return bid;
+}
+
+public void setBid(int bid) {
+	this.bid = bid;
+}
+
+public int getTid() {
+	return tid;
+}
+
+public void setTid(int tid) {
+	this.tid = tid;
+}
+
 public int getModelnum() {
 	return modelnum;
 }

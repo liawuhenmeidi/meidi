@@ -281,7 +281,7 @@
 				sas.setOrderids(messas[0]);
 				list.add(sas);
 			}
-		}
+		} 
 		sa.setList(list);
 		sa.setMessage(message);
 		sa.setName(name);
@@ -293,11 +293,12 @@
 		String branch = request.getParameter("branch");
 		String category = request.getParameter("category");
 		String product = request.getParameter("product");
-		String isSN = request.getParameter("isSN");
-		//System.out.println(product);      
+		String isSN = request.getParameter("isSN"); 
+		String typestatues = request.getParameter("typestatues"); 
+		//System.out.println(product);       
 		Collection<InventoryAll> c = InventoryAllManager.getMap(user,branch,
-				category, product,isSN);     
-		str = StringUtill.GetJson(c); 
+				category, product,isSN,typestatues);     
+		str = StringUtill.GetJson(c);  
 		//System.out.println(str+""); 
 		response.getWriter().write(str);
 		response.getWriter().flush();

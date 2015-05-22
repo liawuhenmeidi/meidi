@@ -103,17 +103,17 @@ public class MyMainClient {
 		try {   
 			String starttime = TimeUtill.getdateString();
 			String endtime = TimeUtill.getdateString();
-			                 
+			                  
 			// int count = 0 ; 
 			//starttime = "2015-05-18";
 			//endtime = "2015-05-18";    
-                      
+                       
 			// 异常退货订单        
 			inventoryOrder.getinventoryOut(starttime, endtime, mc);
 			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
-        
-			// 入库退货信息  
-            
+          
+			// 入库退货信息     
+              
 			//inventoryOut.getinventoryOut(starttime, endtime, mc); 
 			inventoryOut.get(starttime, endtime);  
 			         
@@ -122,27 +122,32 @@ public class MyMainClient {
 			  
 	        //inventoryIN.getinventoryIN(starttime, endtime, mc);
 		    inventoryIN.get(starttime, endtime);  
-			        
-			// 库存                
+			          
+			// 库存                  
 			InventoryDownLoad.save();
-          
+             
 			InventoryModelDownLoad.save();
+			     
+			//InventoryModelDownLoad.saveDB();
+			
 			 //InventoryChange.compare("2015-05-01","2015-05-03");
    
-			// 更新过期订单(系统内) 
+			// 更新过期订单(系统内)  
 			InventoryBranchManager.initOrderNumSN();
-    
+      
 			logger.info("更新订单加订单号"); 
-			// 更新订单信息 
+			// 更新订单信息   
 			OrderDownLoad.saveDB(starttime, endtime);
-   
+               
+			      
+			ProductSN.save(mc);
 			// 销售数据
-			   
+			     
 			//SaleDownLoad.saveDB(starttime, endtime);  
 			// 样机退货数据未采集
 		} catch (Exception e) {
 			logger.info(e);
-		}
+		} 
 	}
 
 	public static CloseableHttpClient getHttpclient() {

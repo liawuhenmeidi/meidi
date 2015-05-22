@@ -770,7 +770,7 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 	public static boolean saveOut(Map<String, OrderReceipt> map,
 			String starttime, String endtime) {
 		boolean flag = false;
-		// logger.info(map.size());
+		// logger.info(map.size()); 
 		List<String> list = new ArrayList<String>();
 		Map<String, OrderReceipt> mapdb = getMapAll(starttime, endtime);
 		Set<Map.Entry<String, OrderReceipt>> en = map.entrySet();

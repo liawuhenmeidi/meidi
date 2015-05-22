@@ -1,5 +1,8 @@
 package httpClient.download;
 
+import inventory.InventoryBranch;
+import inventory.InventoryBranchManager;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,6 +12,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +21,8 @@ import javax.servlet.http.HttpServlet;
 import httpClient.MyLogin;
 import httpClient.MyMainClient;
 import httpClient.inventoryOrder;
+
+import ordersgoods.OrderGoods;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,8 +42,10 @@ import branch.BranchService;
 import com.csvreader.CsvReader;
 
 import enums.SaleModel;
+import enums.SaleModel.Model;
 
 import user.User;
+import utill.DBUtill;
 import utill.PathUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
@@ -236,7 +244,149 @@ public class InventoryModelDownLoad extends HttpServlet implements DownLoad {
 		} // 跳过表头 如果需要表头的话，不要写这句。
 		return map; 
 	}
+ 
+	public static List<Inventory> getMap() { 
+		// startTime = "2015-05-03";  
+		List<Inventory> list = new ArrayList<Inventory>();
+  
+		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryBranchManager
+				.getInventoryMap(); 
+		 
+		try { 
+			String tempPath = PathUtill.getXMLpath();
+			tempPath += "data" + File.separator + "DownloadInventory"
+					+ File.separator + TimeUtill.getdateString();
+			logger.info(tempPath);
+			File file = new File(tempPath);
+			if (!file.exists()) {
+				file.mkdirs();
+			}
 
+			File file2 = new File(tempPath + File.separator + "model.csv");
+			// file2.createNewFile();
+
+			CsvReader reader = new CsvReader(file2.getPath(), ',',
+					Charset.forName("GBK")); // 一般用这编码读就可以了
+
+			reader.readHeaders();
+            int count = 0 ;
+			while (reader.readRecord()) { // 逐行读入除表头的数据
+				String[] strs = reader.getValues();
+				if (null != strs) {
+					Inventory in = new Inventory();
+					for (int i = 0; i < strs.length; i++) {
+						// logger.info(i);
+						String str = strs[i];
+						// logger.info(str);
+						if (i == 0) {
+							// logger.info(str);
+							in.setGoodType("样机");
+						} else if (i == 2) {
+
+							in.setBranchName(str);
+						} else if (i == 3) {
+							in.setBranchNum(str);
+						} else if (i == 6) {
+							in.setGoodGroupName(str);
+						} else if (i == 7) {
+							in.setGoodGroupNum(str);
+						} else if (i == 10) {
+							in.setGoodpName(str);
+						} else if (i == 11) {
+							in.setGoodNum(str);
+						} else if (i == 12) {
+							double realnum = Double.valueOf(str);
+							int re = (int) realnum;
+							in.setNum(re);
+						} else if (i == 13) {
+							in.setSerialNumber(str);
+						}
+					} 
+					count ++;
+					int branchid = -1 ;
+					int type = -1;
+					try{
+						branchid = BranchService.getNumMap(Model.苏宁.getValue()).get(in.getBranchNum()).getId();
+						//logger.info(in.getBranchNum());
+					}catch(Exception e){ 
+						logger.info("转化门店出错");
+					}
+					try{ 
+						type = ProductService.gettypeNUmmap().get(in.getGoodNum()).getId();
+						//logger.info(in.getGoodNum()); 
+					}catch(Exception e){ 
+						logger.info("转化型号出错");
+					}	  
+					
+					
+					if(branchid != -1 && type != -1){
+						in.setBid(branchid);
+						in.setTid(type); 
+						Map<String, Map<Integer, InventoryBranch>> mapb = mapin.get(branchid);
+						if(null == mapb){
+							list.add(in); 
+						}else {
+							Map<Integer, InventoryBranch> mapt = mapb.get(type+"");
+							if(null == mapt){
+								list.add(in);
+								
+							}else {
+								InventoryBranch inb = mapt.get(OrderGoods.prototype);
+								if(null == inb){
+									list.add(in);
+								}
+							}
+						}
+					}
+					
+					
+					
+				}   
+			}     
+			logger.info("count"+count);  
+			
+			reader.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			logger.info(e); 
+		} // 跳过表头 如果需要表头的话，不要写这句。
+		
+		logger.info("list"+list.size()); 
+		  
+		return list; 
+	}
+	
+	
+	public static void saveDB(){
+		save();
+		List<String> li = new ArrayList<String>();  
+		List<Inventory> list = getMap();   
+		  
+		 if(!list.isEmpty()){
+			 Iterator<Inventory> it = list.iterator();
+			 while(it.hasNext()){
+				 Inventory in = it.next();
+				  
+				  
+				 String sql = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
+							+ "  values ( null,"
+							+ in.getCid()
+							+ ", '"
+							+ in.getTid()
+							+ "', '" 
+							+ +in.getNum()
+							+ "', '"
+							+ 0 + "'," + in.getBid()+ ","
+									+ 3+ ")";
+				 
+				 li.add(sql);
+			 }
+			
+		 }
+		 
+		logger.info(li.size());
+		DBUtill.sava(li); 
+	}
 	public static void save() {
 		URI uri;
 		try {

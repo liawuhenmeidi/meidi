@@ -35,11 +35,26 @@ public class InventoryBranch {
 	private String orderNUmSN;
 	// 订单过期时间
 	private String activetime ;
-	
+	 
 	 private String typestatuesName ;
-	    
-	  
+	     
+	private int snNum ;  // 苏宁库存  
+	
+	private int snModelnum ;  // 苏宁样机 
 	   
+	
+	public int getSnNum() {
+		return snNum;
+	}
+	public void setSnNum(int snNum) {
+		this.snNum = snNum;
+	}
+	public int getSnModelnum() {
+		return snModelnum;
+	}
+	public void setSnModelnum(int snModelnum) {
+		this.snModelnum = snModelnum;
+	}
 	public String getTypestatuesName() { 
 		//System.out.println(typestatues); 
 		if(ProductModel.Model.标准采购订单.getValue() == typeStatues){     

@@ -31,7 +31,7 @@ public class DBUtill {
 				for (int i = 0; i < strsqls.length; i++) {
 					String sql = (String) strsqls[i];
 					if (!StringUtill.isNull(sql)) {
-						logger.info(sql);
+						 logger.info(sql); 
 						sm.execute(sql);// 执行添加事物的语句
 					}
 
