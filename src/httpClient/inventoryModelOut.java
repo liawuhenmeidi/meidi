@@ -184,9 +184,9 @@ public class inventoryModelOut {
 		// startTime = "2015-05-03";
 		save(starttime, endtime);
 		if (StringUtill.isNull(starttime) || StringUtill.isNull(endtime)) {
-			return;
+			return; 
 		}
-		try {
+		try { 
 			String tempPath = PathUtill.getXMLpath();
 
 			tempPath += "data" + File.separator + "InventoryOutModel"
@@ -207,7 +207,7 @@ public class inventoryModelOut {
  
 			GoodsReceitManager.saveOutModel(reader, starttime, endtime);
 
-			reader.close();
+			reader.close(); 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			logger.info(e);
@@ -297,11 +297,12 @@ public class inventoryModelOut {
 		}
 
 	}
+	 
 	
-	
-	public static boolean getinventoryOutModel(URI uri, String starttime, String endtime,MyMainClient mc) {
-		try { 
-			logger.info("getinventoryINReturnModel");  
+	public static boolean getinventoryOutModel(String starttime, String endtime,MyMainClient mc) {
+		try {  
+			logger.info("getinventoryINReturnModel"); 
+			URI uri = new URI(urlOutModel);
 			String responseContent = getHtmlStringOut(uri, starttime, endtime,1,mc);
 			if(StringUtill.isNull(responseContent)){  
 				MyLogin.loginpost(new URI(MyLogin.url));
@@ -316,7 +317,7 @@ public class inventoryModelOut {
 				// logger.info(en); 
 				Elements tr = en.getElementsByTag("tr");
 				//logger.info(tr); 
-				GoodsReceitManager.saveOut(tr,starttime, endtime);
+				GoodsReceitManager.saveOutModel(tr,starttime, endtime);
 			}
 			
 		} catch (Exception e) {

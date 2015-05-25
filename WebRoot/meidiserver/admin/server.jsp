@@ -295,7 +295,7 @@
 		String product = request.getParameter("product");
 		String isSN = request.getParameter("isSN"); 
 		String typestatues = request.getParameter("typestatues"); 
-		//System.out.println(product);       
+		//System.out.println(product);        
 		Collection<InventoryAll> c = InventoryAllManager.getMap(user,branch,
 				category, product,isSN,typestatues);     
 		str = StringUtill.GetJson(c);  

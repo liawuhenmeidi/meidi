@@ -324,6 +324,7 @@ public class ProductManager {
 		HashMap<Integer, Product> map = new HashMap<Integer, Product>();
 		Connection conn = DB.getConn();
 		String sql = "select * from mdproduct";
+		logger.info(sql);  
 		Statement stmt = DB.getStatement(conn);
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		try {

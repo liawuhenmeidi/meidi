@@ -32,11 +32,11 @@ import utill.TimeUtill;
 public class GoodsReceitManager {
 	protected static Log logger = LogFactory.getLog(GoodsReceitManager.class);
       
-	  
+	   
 	public static List<String> saveIN(Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin ,GoodsReceipt gr,Set<String> setup) {
 		User user = new User();
-		boolean flag = true;
-		List<String> list = new ArrayList<String>();
+		boolean flag = true;   
+		List<String> list = new ArrayList<String>(); 
 
 		logger.info(gr.getTid() + "***" + gr.getBidSN());
 		if (gr.getTid() == 0 || gr.getBidSN() == 0) {
@@ -189,7 +189,7 @@ public class GoodsReceitManager {
 		} 
 
 		list.add(sql);
-		return list;
+		return list; 
 	}
   
 	public static List<String> saveOut(Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin ,GoodsReceipt gr,Set<String> setup) {
@@ -566,14 +566,14 @@ public class GoodsReceitManager {
 		}
 
 		return map;
-	}
-	
+	} 
+	 
 	public static Map<String, GoodsReceipt> getMapAll(String starttime,
 			String endtime) {
 		Map<String, GoodsReceipt> map = new HashMap<String, GoodsReceipt>();
 		String sql = " select * from goodsreceipt where  recevetime BETWEEN  '"
 				+ starttime + "'  and '" + endtime + "'";
-		logger.info(sql);
+		logger.info(sql);  
 		Connection conn = DB.getConn();
 		Statement stmt = DB.getStatement(conn);
 
@@ -775,11 +775,11 @@ public static boolean saveOut(CsvReader reader,String starttime,String endtime) 
   
 		Map<String, GoodsReceipt> map = new HashMap<String, GoodsReceipt>();
 		boolean flag = true; 
-		try { 
-			reader.readHeaders();
+		try {  
+			reader.readHeaders(); 
 		while (reader.readRecord()) { // 逐行读入除表头的数据
 			String[] strs = reader.getValues();
-			if (null != strs) {  
+			if (null != strs) {   
 					GoodsReceipt gr = null;
 					String rows = "";
 					String receveid = "";
@@ -825,7 +825,7 @@ public static boolean saveOut(CsvReader reader,String starttime,String endtime) 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}  
+		}   
 		flag = saveOut(map,starttime,endtime); 
 		// GoodsReceitManager.map = map;
 		// logger.info(StringUtill.GetJson(map));
@@ -839,7 +839,7 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 	Map<String, GoodsReceipt> map = new HashMap<String, GoodsReceipt>();
 	boolean flag = true; 
 	try { 
-		reader.readHeaders();
+		reader.readHeaders(); 
 	while (reader.readRecord()) { // 逐行读入除表头的数据
 		String[] strs = reader.getValues();
 		if (null != strs) {  
@@ -851,7 +851,7 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 					String str = strs[i]; 
 					if (i == 0) {     
 						receveid = str ; 
-					} else if (i == 1) {  
+					} else if (i == 2) {   
 						rows = str ;
 						gr = map.get(receveid + "_" + rows);
 						if (null == gr) {
@@ -863,26 +863,28 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 						}  
 						gr.setReceveid(receveid);
 						gr.setUuid(receveid + "_" + rows);
-					} else if (i == 2) {
-						gr.setBuyid(str);
-					} else if (i == 5) {
+					} else if (i == 3) {
 						gr.setGoodsnum(str);
 
-					}  else if (i == 6) {
+					}  else if (i == 4) {
 						gr.setGoodsName(str);
 
-					} else if (i == 7) {
+					} else if (i == 6) {
+						gr.setBranchid(str); 
+						
+					}else if (i == 7) {
+						gr.setBranchName(str);
+					} else if (i == 9) {
 						double realnum = Double.valueOf(str);
 						int re = (int) realnum;
 						gr.setRecevenum(re);
-					} else if (i == 8) {
-						gr.setOrdertype(str);
-					} else if (i == 10) {
-						gr.setBranchName(str);
-					} else if (i == 11) {
+						 
+					}  else if (i == 11) {
 						gr.setReceveTime(str);
+					} else if (i == 12) {
+						gr.setOrdertype(str);
 					} 
-				}
+				} 
 			} 
 		}  
 	} catch (IOException e) {
@@ -895,7 +897,7 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 	return flag;
 }
 
-
+ 
 	public static boolean saveOut(Elements en,String starttime, String endtime) {
 		int id = getMaxid();
 
@@ -941,7 +943,7 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 
 						}  else if (i == 7) {
 							gr.setGoodsName(str);
-
+  
 						} else if (i == 8) {
 							double realnum = Double.valueOf(str);
 							int re = (int) realnum;
@@ -1064,15 +1066,16 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 		boolean flag = false; 
 		 
 		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryBranchManager
-				.getInventoryMap(); 
+				.getInventoryMap();  
+		  
 		Set<String> setup = new HashSet<String>();
 		List<String> list = new ArrayList<String>();
 		Map<String, GoodsReceipt> mapdb = getMapAll(starttime,
-				endtime); 
+				endtime);  
 		Set<Map.Entry<String, GoodsReceipt>> en = map.entrySet();
-		if (!en.isEmpty()) {
+		if (!en.isEmpty()) { 
 			Iterator<Map.Entry<String, GoodsReceipt>> it = en.iterator();
-			while (it.hasNext()) {
+			while (it.hasNext()) { 
 				Map.Entry<String, GoodsReceipt> ent = it.next();
 				GoodsReceipt gr = ent.getValue(); 
 				GoodsReceipt db = mapdb.get(gr.getUuid());

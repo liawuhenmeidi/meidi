@@ -10,7 +10,7 @@ import product.ProductService;
 import utill.StringUtill;
 import utill.TimeUtill;
 
-public class InventoryBranch {
+public class InventoryBranch {  
 	private int id;
 	private int inventoryid; // 所包含的产品类别id
 	private int branchid;
@@ -36,13 +36,26 @@ public class InventoryBranch {
 	// 订单过期时间
 	private String activetime ;
 	 
-	 private String typestatuesName ;
+	private String typestatuesName ;
 	     
 	private int snNum ;  // 苏宁库存  
 	
 	private int snModelnum ;  // 苏宁样机 
-	   
+	private String goodnum ; 
+	private String goodname;// 苏宁名称
 	
+	public String getGoodnum() {
+		return goodnum;
+	}
+	public void setGoodnum(String goodnum) {
+		this.goodnum = goodnum;
+	}
+	public String getGoodname() {
+		return goodname;
+	}
+	public void setGoodname(String goodname) {
+		this.goodname = goodname;
+	}
 	public int getSnNum() {
 		return snNum;
 	}

@@ -121,17 +121,17 @@ public static List<InventoryBranch> getCategoryid(User user,String branch , Stri
 		} 
 		return categorys;
 	}
-
+ 
 
 public static List<InventoryBranch> getCategoryid(User user,String branch , String categoryid,String typestatues) {  
 	//System.out.println(branch); 
 	String typesear = "";
 	List<InventoryBranch> categorys = new ArrayList<InventoryBranch>();
 	Connection conn = DB.getConn();  
-	String products = user.getProductIDS(); 
+	String products = user.getProductIDS();  
 	if(!StringUtill.isNull(typestatues)){ 
-		typesear = " and typestatues in  ("+typestatues+")";
-	}  
+		typesear = " and (typestatues in  (0,"+typestatues+") or typestatues is null) ";
+	}   
 	String sql = ""; 
 	if(!StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
 		sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and inventoryid in "+products+" and  branchid in ("+branch+")  and branchid not in (select id from mdbranch where statues = 1 ) "+typesear+" order by  id desc";  

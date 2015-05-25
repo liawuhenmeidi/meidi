@@ -179,11 +179,13 @@ public class OrderGoods {
 		this.realstatues = realstatues;
 	}
 
-	public int getrealStatues() { 
+	public int getrealStatues() {  
         if(statues == 7 || statues == 8 ||statues == 9){
-        	return  statues - 6 ; 
-        }   
-		return statues;
+        	return  statues - 6 ;   
+        }else if(statues == 6 || statues ==4){ 
+        	return product.getSaleType(); 
+        }    
+		return statues; 
 	}
   
 	public int getStatues() {

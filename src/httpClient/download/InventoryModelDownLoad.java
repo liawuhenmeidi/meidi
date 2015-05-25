@@ -225,7 +225,7 @@ public class InventoryModelDownLoad extends HttpServlet implements DownLoad {
 						}
 					} 
 					String key = in.getBranchNum() + "_" + in.getGoodNum();
-					// logger.info(key); 
+					// logger.info(key);  
 					Inventory inmap = map.get(key);
  
 					if (null == inmap) {

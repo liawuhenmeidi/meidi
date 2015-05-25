@@ -2,11 +2,12 @@ package product;
 
 import utill.StringUtill;
 import category.CategoryManager;
+import category.CategoryService;
 
 public class Product {
 	public static int sale = 0;
 	public static int unsale = 1;
-
+ 
 	private int id;
 	private String type; // 型号
 	private String name;
@@ -59,13 +60,13 @@ public class Product {
 
 	public void setMatainids(String matainids) {
 		this.matainids = matainids;
-	}
-
+	} 
+ 
 	public String getCname() {
 		if (this.getCategoryID() == 0) {
 			cname = "";
-		} else {
-			cname = CategoryManager.getCategoryMap().get(this.getCategoryID())
+		} else { 
+			cname = CategoryService.getmap().get(this.getCategoryID())
 					.getName();
 		}
 		return cname;

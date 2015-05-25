@@ -30,7 +30,7 @@ if(!StringUtill.isNull(starttime) && !StringUtill.isNull(endtime)){
 	//Map<String, Inventory> mapstart = InventoryChange.changeMap(listend );
 	 // 样机   
 	 Map<String,Inventory> mapModel = InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd(endtime, 1));
-	      
+	       
 	 // 销量    
 	Map<String,Inventory> mapsale = SaleDownLoad.getMap(starttime,endtime);  
 	// 未入库数量    

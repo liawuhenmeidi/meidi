@@ -10,9 +10,9 @@ String branchid = request.getParameter("branchid");
 String time = request.getParameter("time");
 if(StringUtill.isNull(time)){
 	time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
-} 
+}  
 if(StringUtill.isNull(branchid)){
-	 
+	  
 }
 //boolean flag = UserManager.checkPermissions(user, Group.ordergoods, "f"); 
 Category c = CategoryManager.getCategory(category);
@@ -23,15 +23,16 @@ String allp = StringUtill.GetJson(listp);
     
 List<String> listbranchp = BranchService.getListStr(); 
 String listall = StringUtill.GetJson(listbranchp); 
-  
+   
 //List<InventoryBranch> list = InventoryAllManager.getlist(user,branchid,
 	//	category);    
-    
-     
+         
+//long start = System.currentTimeMillis();
+// Map<String, Map<String, Map<Integer, InventoryBranch>>> mapin = null;
 Map<String, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryAllManager.getInventoryMap(user,category,branchid,time);  
-  
-//System.out.println(mapin);  
- 
+ // System.out.println(System.currentTimeMillis() - start);
+//System.out.println(mapin);     
+ // System.out.println(mapin ); 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -177,6 +178,7 @@ function pandian(type,branchid){
 		<table width="100%" cellspacing="1" id="table">
 			<thead>
 				<tr> 
+				<th align="left">编号</th>
 					<th align="left">产品类别</th>
 					<th align="left">产品型号</th>
 					<th align="left">常规特价实货未入库</th>
@@ -187,54 +189,101 @@ function pandian(type,branchid){
 					<th align="left">盘点</th>
 				</tr>
 			</thead>
-         <%  if(!mapin.isEmpty()){
+         <%  
+          
+         //long start1 = System.currentTimeMillis(); 
+          int count = 0 ;
+         Map<Integer, Product>  maps =  ProductService.getIDmap();
+         if(null != mapin && !mapin.isEmpty()){  
         	 Set<Map.Entry<String, Map<String, Map<Integer, InventoryBranch>>>> set = mapin.entrySet();
         	 Iterator<Map.Entry<String, Map<String, Map<Integer, InventoryBranch>>>> it = set.iterator();
              while(it.hasNext()){
             	 Map.Entry<String, Map<String, Map<Integer, InventoryBranch>>> mapent = it.next();
             	 Map<String, Map<Integer, InventoryBranch>> mapb = mapent.getValue();
-          //System.out.println(1);
+          //System.out.println(1);  
+         System.out.println( mapb ); 
+         System.out.println( mapb.size() );
+          int outnumall = 0 ;
+ 		 int inmodelnumall = 0 ;  
+ 		 int outmodelnumall = 0 ; 
+ 		 int snnumall = 0 ; 
             	 Set<Map.Entry<String, Map<Integer, InventoryBranch>>> setb = mapb.entrySet();
             	 Iterator<Map.Entry<String, Map<Integer, InventoryBranch>>> itb = setb.iterator();
-            	 while(itb.hasNext()){
-            		 //System.out.println(2);
+            	 
+            	
+            	   
+            	 //long start11 = System.currentTimeMillis();      
+            	 while(itb.hasNext()){  
+            		 
+            		 //System.out.println(2); 
             		 Map.Entry<String, Map<Integer, InventoryBranch>> mapentb = itb.next();
             		 Map<Integer, InventoryBranch> mapt = mapentb.getValue();
-            		 String type = mapentb.getKey();
-            		 String cname = ProductService.getIDmap().get(Integer.valueOf(type)).getCname();
-            		 String tname = ProductService.getIDmap().get(Integer.valueOf(type)).getType();
+            		 String type = mapentb.getKey(); 
+            		 //long start111 = System.currentTimeMillis();  
+            		 String cname = "";
+            		 String tname = "";
+            		  
+            		
+            		
+            		  int countin = 0 ;
+            		 //long start222 = System.currentTimeMillis();  
+                	// System.out.println("****"+(start222 - start111));  
             		 int outnum = 0 ;
-            		 int inmodelnum = 0 ; 
+            		 int inmodelnum = 0 ;  
             		 int outmodelnum = 0 ; 
-            		 int snnum = 0 ;
-            		 String querytime = "";
+            		 int snnum = 0 ;  
+            		 String querytime = ""; 
+            		  
             		 Set<Map.Entry<Integer, InventoryBranch>> sett = mapt.entrySet();
-            		 Iterator<Map.Entry<Integer, InventoryBranch>> itt =  sett.iterator(); 
-            		 while(itt.hasNext()){
-            			// System.out.println(3);
+            		 Iterator<Map.Entry<Integer, InventoryBranch>> itt =  sett.iterator();
+            		 while(itt.hasNext()){  
+            			// System.out.println(3); 
             			 Map.Entry<Integer, InventoryBranch> mapentt = itt.next();
             			 InventoryBranch in = mapentt.getValue();
-          
-            			 if(in.getTypeStatues() == 1){
-            				 outnum += in.getPapercount();
-            			 }else if(in.getTypeStatues() == 2){
-            				 outnum += in.getPapercount();
-            			 }else if(in.getTypeStatues() == 3){
-            				// System.out.println(in.getTypeStatues()); 
+            			 if(in.getTypeid().equals("-1")){
+            				   
+                 			 cname = in.getGoodname(); 
+                 			  
+                 		 }else { 
+                 			 cname = maps.get(Integer.valueOf(type)).getCname();
+                     		 tname =maps.get(Integer.valueOf(type)).getType();
+                 		 }
+            			 
+            			 
+            			 
+            			 //System.out.println(in.getTypeStatues()); 
+            			 if(in.getTypeStatues() == 1){ 
+            				 outnum += in.getPapercount(); 
+            				 outnumall += in.getPapercount(); 
+            			 }else if(in.getTypeStatues() == 2){ 
+            				 outnum += in.getPapercount(); 
+            				 outnumall += in.getPapercount(); 
+            			 }else if(in.getTypeStatues() ==0){   
+            				 outnum += in.getPapercount(); 
+            				 outnumall += in.getPapercount(); 
+            			 }else if(in.getTypeStatues() ==3 ){
             				 outmodelnum += in.getPapercount(); 
-            				 inmodelnum += in.getSnModelnum();  
-            			 } 
-            			   
+            				 outmodelnumall += in.getPapercount(); 
+            			 }   
+            			      
             			 snnum = in.getSnNum();
             			
-            			 
-            		 } 
-            		       
-            		    
-            		  
-            		 %> 
+        				 inmodelnum = in.getSnModelnum(); 
+        				 
+            			 if(inmodelnum == 1){
+            				 count ++ ;
+            			 }
+            		 }    
+            		        
+            		 snnumall += snnum; 
+            		 inmodelnumall += inmodelnum;  
+            		 
+            		 
+            		 
+            		 
+            		 %>  
             		 <tr class="asc">
-            		   
+            		    <td><%=count %></td> 
             		 <td><%=cname %></td> 
             		  <td><%=tname %></td> 
             		  <td><%=outnum%></td> 
@@ -246,15 +295,39 @@ function pandian(type,branchid){
             		 </tr>
   
             		 <%
-            		 
+            		  
             	 }  
             	 
+            	 //long start22 = System.currentTimeMillis();  
+            	// System.out.println("***"+(start22 - start11));
             	 
-            	 
+            	  %> <tr class="asc">
+      		    <td></td> 
+      		 <td></td> 
+      		  <td></td> 
+      		  <td><%=outnumall%></td> 
+      		  <td><%=outmodelnumall %></td>
+      		  <td><%=inmodelnumall %></td> 
+      		   <td><%=snnumall %></td>
+      		   <td></td>
+      		   <td ><input type="checkbox" name="inid" ></input></td>
+      		 </tr>
+       
+       <%
+       
+       
              }
-         
-         
-         } %>
+          
+          
+            // long start2 = System.currentTimeMillis();  
+        	// System.out.println("**"+(start2 - start1)); 
+          
+         } 
+           
+           
+       
+        System.out.println("end"+count);
+         %>
 		</table>
 
  

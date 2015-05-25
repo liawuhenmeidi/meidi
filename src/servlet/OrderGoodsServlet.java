@@ -279,11 +279,11 @@ public class OrderGoodsServlet extends HttpServlet {
 						}
 						if (StringUtill.isNull(returnrealsendnum)) {
 							returnrealsendnum = "0";
-						}
+						}   
 						String sql = OrderGoodsManager.updaterealsendnum(user,
 								ogid, realsendnum, returnrealsendnum);
 
-						listsql.add(sql); 
+						listsql.add(sql);  
 
 						String sqlup = " update mdinventorybranchmessage set isoverstatues = 0 where inventoryid = "
 								+ oa.getOm().getId()

@@ -169,12 +169,12 @@ public class InventoryBranchMessageManager {
 			sql = "select * from mdinventorybranchmessage where type = '"
 					+ type
 					+ "' and branchid not in (select id from mdbranch where statues = 1 ) and branchid in "
-					+ branchid + time;
-		} else {
+					+ branchid + time +" order by time";
+		} else { 
 			sql = "select * from mdinventorybranchmessage where type = '"
-					+ type
+					+ type 
 					+ "' and branchid not in (select id from mdbranch where statues = 1 ) "
-					+ time;
+					+ time +" order by time";
 		}
 
 		logger.info(sql);

@@ -40,10 +40,10 @@ public class inventoryOut {
 
 	public static String getHtmlStringOut(URI uri, String starttime,
 			String endtime, int page, MyMainClient mc) {
-		String str = "";
-		// logger.info(starttime);
-		// logger.info(endtime);
-		try {
+		String str = ""; 
+		// logger.info(starttime);  
+		// logger.info(endtime); 
+		try { 
 			HttpUriRequest selectPost = RequestBuilder.post().setUri(uri)
 					.addParameter("flage", "3")
 					.addParameter("formName", "reportQueryConditon")
@@ -123,14 +123,14 @@ public class inventoryOut {
 		// startTime = "2015-05-03";
 		save(starttime, endtime);
 		if (StringUtill.isNull(starttime) || StringUtill.isNull(endtime)) {
-			return;
-		}
-		try {
+			return;  
+		}  
+		try { 
 			String tempPath = PathUtill.getXMLpath();
-
+ 
 			tempPath += "data" + File.separator + "InventoryOut";
 			logger.info(tempPath);
- 
+  
 			File file = new File(tempPath);
 			if (!file.exists()) {
 				file.mkdirs();
@@ -148,7 +148,7 @@ public class inventoryOut {
 			CsvReader reader = new CsvReader(file2, ',', Charset.forName("GBK")); // 一般用这编码读就可以了
  
 			GoodsReceitManager.saveOut(reader, starttime, endtime);
- 
+  
 			reader.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -188,11 +188,11 @@ public class inventoryOut {
 	public static void save(String starttime, String endtime) {
 		URI uri = null;
 
-		try {
+		try { 
 			uri = new URI(dowmurlOut);
 		} catch (URISyntaxException e) {
 			logger.info(e);
-		}
+		} 
 		HttpUriRequest request = RequestBuilder.post().setUri(uri)
 				.addParameter("formName", "reportQueryConditon")
 				.addParameter("receivedDate1", starttime)
