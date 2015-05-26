@@ -244,8 +244,8 @@ function getInventory(){
                 <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssendhistory.jsp')">历史订单</a></p> 
                  <p ><a href="javascript:void(0);"  onclick="reloadopned('receivegoods/receivegoods.jsp')">收货记录</a></p> 
                  <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventory.jsp')">库存查询</a></p>
-              
-              
+                 <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventorycheck.jsp')">库存盘点</a></p>
+               
               <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveorder.jsp')">退货订单</a></p>
                             <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveordertype.jsp')">退货订单统计</a></p>
               <!--   

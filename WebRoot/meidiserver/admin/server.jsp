@@ -539,14 +539,27 @@
 				session.setAttribute("message", "修改成功");
 			}
 
-		}
-		return;
+		} 
+		return; 
 	} else if ("pandian".equals(method)) {
 		//data:"method=pandian&branchid="+branchid+"&type="+type,
 		String branchid = request.getParameter("branchid");
-		String type = request.getParameter("type");
+		String type = request.getParameter("type"); 
 		InventoryBranchManager.update(user, branchid, type);
-	} else if ("savesalecategory".equals(method)) {
+	} else if ("pandians".equals(method)) {  
+		//data:"method=pandian&branchid="+branchid+"&type="+type,
+		String branch = request.getParameter("branch");
+	   String time = request.getParameter("time");
+	//System.out.println("servicebranch"+branch ); 
+	   branch = new String(branch.getBytes("UTF-8"), "ISO8859-1");
+		String branchid = request.getParameter("branchid"); 
+		String[] types = request.getParameterValues("type");
+		String category = request.getParameter("category");  
+		InventoryBranchManager.update(user, branchid, types,time);    
+		             
+		response.sendRedirect("inventory/inventory1check.jsp?branch="+branch+"&category="+category+"&time="+time);
+		
+	}else if ("savesalecategory".equals(method)) {
 		String isuid = request.getParameter("isuid");
 		String chargetype = request.getParameter("chargetype");
 		String uid = request.getParameter("uid");

@@ -139,10 +139,10 @@ function check(){
 										type = op.getType();
 									} 
 									//System.out.println(og.getProduct());
-									if (og.getRealnum() > 0) {
-										count++;
-			%>
-			<tr class="<%=cla%>">
+								//	if (og.getRealnum() > 0) {
+										count++; 
+			%> 
+			<tr class="<%=cla%>"> 
 				<td align="center"><%=count%></td>
 				<td align="center"><%=branch.getLocateName()%></td>
 				<td align="center"></td>
@@ -165,7 +165,7 @@ function check(){
 			</tr>
 
 			<%
-				}
+				//}
 								}
 							}
 						}
