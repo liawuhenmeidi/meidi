@@ -7,6 +7,7 @@ import product.ProductService;
 public class Inventory {
   private String branchName;  // 库位名称 
   private String branchNum;  // 库位代码
+  private String oldbranchNum;  // 原库位
   private String goodType ;  // 商品类别
   private String goodGroupName ;  // 商品组名称
   private String goodGroupNum ;  // 商品组代码
@@ -14,6 +15,7 @@ public class Inventory {
   private String goodNum ;  // 商品代码
   private int ATP;  //atp 可卖数  
   private int num;  // 实货可用数
+  private int Nomention ;  // 销售未提
   private int saleNum;  
   private int inreduce; // 库存较少  
   private String serialNumber;   // 序列号
@@ -23,9 +25,24 @@ public class Inventory {
   private int outnum ;    // 未入库数量
   private int bid ;
   private int tid ; 
-   private int cid ;
-   
-       
+  private int cid ;
+         
+public int getNomention() {
+	return Nomention;
+}
+  
+public void setNomention(int nomention) {
+	Nomention = nomention;
+}
+
+public String getOldbranchNum() { 
+	return oldbranchNum;
+}
+
+public void setOldbranchNum(String oldbranchNum) {
+	this.oldbranchNum = oldbranchNum;
+}
+
 public int getCid() {
 	if(tid != 0 && tid != -1){
 		cid = ProductService.getIDmap().get(tid).getCategoryID();

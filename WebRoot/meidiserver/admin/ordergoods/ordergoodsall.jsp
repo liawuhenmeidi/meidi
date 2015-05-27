@@ -7,11 +7,11 @@ User user = (User)session.getAttribute("user");
 String branchtype = request.getParameter("branchtype");  
 String isDisable = request.getParameter("isDisable");  
   
- 
+  
 List<BranchType> listgt = BranchTypeManager.getLocate(); 
 Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.unexamine);
-      
-Map<Integer,InventoryBranch>  mapin = InventoryBranchManager.getmapKeyBranchType(user,branchtype);
+        
+Map<Integer,List<InventoryBranch>>  mapin = InventoryBranchManager.getmapKeyBranchType(user,branchtype);
   
  // System.out.println(StringUtill.GetJson(map));
 %>
@@ -68,15 +68,13 @@ Map<Integer,InventoryBranch>  mapin = InventoryBranchManager.getmapKeyBranchType
 									}
 								}
 							%>
-					</select>
-					</td>
+					</select></td>
 
 
 					<td id="isDisable"><input type="checkbox" name="isDisable"
 						value="1">订单已过期产品</td>
 
-					<td><input type="submit" id="submit" value="查询" />
-					</td>
+					<td><input type="submit" id="submit" value="查询" /></td>
 				</tr>
 			</table>
 		</form>
@@ -95,13 +93,13 @@ Map<Integer,InventoryBranch>  mapin = InventoryBranchManager.getmapKeyBranchType
 					Set<Map.Entry<String, OrderGoodsAll>> mapent = map.entrySet();
 					Iterator<Map.Entry<String, OrderGoodsAll>> itmap = mapent
 							.iterator();
-					int i = 0; 
+					int i = 0;
 					//System.out.println(12);  
 					while (itmap.hasNext()) {
 						Map.Entry<String, OrderGoodsAll> en = itmap.next();
 						OrderGoodsAll o = en.getValue();
-						String key = en.getKey();  
-						if (StringUtill.isNull(branchtype) 
+						String key = en.getKey();
+						if (StringUtill.isNull(branchtype)
 								|| !StringUtill.isNull(branchtype)
 								&& BranchService.getMap()
 										.get(o.getOm().getBranchid()).getPid() == Integer
@@ -124,23 +122,36 @@ Map<Integer,InventoryBranch>  mapin = InventoryBranchManager.getmapKeyBranchType
 
 				if (!StringUtill.isNull(isDisable)) {
 					if (!mapin.isEmpty()) {
-						Set<Map.Entry<Integer, InventoryBranch>> set = mapin
+						Set<Map.Entry<Integer, List<InventoryBranch>>> set = mapin
 								.entrySet();
-						Iterator<Map.Entry<Integer, InventoryBranch>> it = set
+						Iterator<Map.Entry<Integer, List<InventoryBranch>>> it = set
 								.iterator();
-						while(it.hasNext()){
-						Map.Entry<Integer, InventoryBranch> mapen = it.next();
-						int branchid = mapen.getKey(); 
-						InventoryBranch ib = mapen.getValue();
-						if (StringUtill.isNull(ib.getActivetime())) {
-							Branch branch = BranchService.getMap().get(
-									ib.getBranchid());
-
-							String cl = "class=\"bsc\"";
-			%>
-  
-			<tr <%=cl%> ondblclick="detail('ordergoodsdisable.jsp?branch=<%=branch.getId()%>')">
+						while (it.hasNext()) {
+							Map.Entry<Integer, List<InventoryBranch>> mapen = it
+									.next();
+							int branchid = mapen.getKey();
+							List<InventoryBranch> ibs = mapen.getValue();
+							boolean flag = false;
+							if (null != ibs) {
+								for (int i = 0; i < ibs.size(); i++) {
+									InventoryBranch ib = ibs.get(i);
  
+									if (StringUtill.isNull(ib.getActivetime() ) && ib.getPapercount() != 0) {
+										flag = true;
+									}  
+								}
+							}
+ 
+							if (flag) { 
+								Branch branch = BranchService.getMap()
+										.get(branchid);
+
+								String cl = "class=\"bsc\"";
+			%>
+
+			<tr <%=cl%>
+				ondblclick="detail('ordergoodsdisable.jsp?branch=<%=branch.getId()%>')">
+
 				<td align="center"><%=branch.getLocateName()%></td>
 				<td align="center"></td>
 				<td align="center"></td>
@@ -150,12 +161,11 @@ Map<Integer,InventoryBranch>  mapin = InventoryBranchManager.getmapKeyBranchType
 
 
 
-
-			<%
+ 
+			<% 
 				}
 						}
 					}
-
 				}
 			%>
 		</table>

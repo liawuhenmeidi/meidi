@@ -5,18 +5,41 @@
 //long start= System.currentTimeMillis();  
 String time = TimeUtill.getdateString();
 List<String> listallp = ProductService.getlistsale(user); 
+
+String id = request.getParameter("id"); 
+String intelligent = request.getParameter("intelligent");
+ 
 //System.out.println("qa"+(System.currentTimeMillis() - start));  
 String listallpp = StringUtill.GetJson(listallp);  
 OrderGoodsAll oa = null;
 List<OrderGoods> list = null; 
-String id = request.getParameter("id"); 
-String remark = "";
+
+
+String remark = "";  
 if(!StringUtill.isNull(id)){
 	oa = OrderGoodsAllManager.getOrderGoodsAllByid(user,id);
 	list = oa.getList(); 
 	remark = oa.getOm().getRemark();
 }  
- 
+   
+if("intelligent".equals(intelligent)){
+	remark = "智能要货生成订单"; 
+	String num = request.getParameter("salenum");
+	if(StringUtill.isNull(num)){
+		num= "15";  
+	} 
+	
+	String endtime = TimeUtill.getdateString();   
+	endtime = TimeUtill.dataAdd(endtime, -1);
+	String starttime = TimeUtill.dataAdd(endtime, -Integer.valueOf(num));
+	
+	String branch = user.getBranchName();
+	String branchtype = BranchService.getMap().get(Integer.valueOf(user.getBranch())).getBranchtype().getSaletype()+"";
+	
+	list = IntelligentInventory.getmessage(user, starttime, endtime, branch);
+	 
+} 
+
 
 String json = StringUtill.GetJson(list);
 
@@ -93,7 +116,7 @@ if(num >row){
  function init(){
 	 
 	 for(var i=0;i<jsons.length;i++){
-		 var json = jsons[i]; 
+		 var json = jsons[i];  
 		 //alert(json.tname);
 		$("#product"+i).val(json.tname); 
 		$("#statues"+i).val(json.statues); 
@@ -122,6 +145,8 @@ if(num >row){
 		var only = json.tname+"_"+json.statues; 
 		ctypes.push(only);   
 	 }
+	  
+	 initctypes(jsons.length-1);
  }
  
  function addrowinti(){
@@ -213,8 +238,8 @@ if(num >row){
 	$("#product"+row).keydown(function (){
 		initctypes(row);
 	});
-	    
-	$("#statues"+row).blur(function (){
+	      
+	$("#statues"+row).change(function (){
 		initctypes(row); 
 		addresults(row); 
 	});
@@ -222,8 +247,6 @@ if(num >row){
 	//$("#statues"+row).change(function (){
 	//	initctypes();
 	//}); 
-	 
-	
  }   
  function getMessage(tname,row,statues){ 
 		// alert(tname); 
@@ -485,9 +508,12 @@ if(num >row){
 
 <body>
 
-<div class="main">   
-   <div class="s_main_tit">现在位置：导购订货单<span class="qiangdan"><a href="ordergoodsBig.jsp?id=<%=id%>">放大</a></span><span class="qiangdan"><a href="../welcom.jsp">返回</a></span></div>    
-     <div>           
+<div class="main">
+
+		     
+   <div class="s_main_tit"><span class="qiangdan"><a href="ordergoods.jsp?intelligent=intelligent">智能要货</a></span><span class="qiangdan"><a href="../welcom.jsp">返回</a></span></div>    
+     <div>
+            
      <form action="../OrderGoodsServlet"  method = "post"  onsubmit="return check()">
       <input type="hidden" name="method" value="add"/> 
       <input type="hidden" name="token" value="<%=token%>"/> 

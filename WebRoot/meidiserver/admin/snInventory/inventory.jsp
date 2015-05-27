@@ -15,7 +15,7 @@ List<Inventory> list = InventorySale.compare(starttime,endtime);
  
 Map<String,List<Inventory>> map = new LinkedHashMap<String,List<Inventory>>();
         
-if(!list.isEmpty()){ 
+if(!list.isEmpty()){  
 	Iterator<Inventory> it = list.iterator();
 	while(it.hasNext()){ 
 		Inventory in = it.next();
@@ -72,11 +72,11 @@ if(!list.isEmpty()){
 
 		return true;
 	}
-</script>
-</head>
-<body>
-	<div class="s_main">
-		<jsp:include flush="true" page="../head.jsp">
+</script>  
+</head>  
+<body>   
+	<div class="s_main"> 
+		<jsp:include flush="true" page="../head.jsp"> 
 			<jsp:param name="dmsn" value="" />
 		</jsp:include>
 		<div class="weizhi_head">现在位置：查看明细</div>
@@ -89,11 +89,11 @@ if(!list.isEmpty()){
 						onclick="new Calendar().show(this);" placeholder="必填"
 						readonly="readonly" />
 					</td>
- 
+  
 					<td>结束时间</td>
 					<td><input name="endtime" type="text" id="endtime" size="10"
 					    onclick="new Calendar().show(this);" placeholder="必填"
-						value="<%=TimeUtill.dataAdd(TimeUtill.getdateString(), -1)%>"
+						value="<%=endtime%>"
 						maxlength="10" readonly="readonly" /></td>
 
 					<td>门店</td>
@@ -124,6 +124,7 @@ if(!list.isEmpty()){
 				<td align="center">库存较少数量</td>
 				<td align="center">入库数量</td>
 				<td align="center">销售数量</td>
+				<td align="center">销售已销未提</td>
 
 			</tr>
 
@@ -159,8 +160,9 @@ if(!list.isEmpty()){
 								if (!StringUtill.isNull(branch)
 										&& branch.equals(bname)
 										|| StringUtill.isNull(branch)) {
+									
 			%>
-			<tr class="asc">
+			<tr class="asc"> 
 				<td align="center"><%=i + 1%></td>
 				<td align="center"><%=bname%></td>
 
@@ -170,7 +172,7 @@ if(!list.isEmpty()){
 				<td align="center"><%=in.getInreduce()%></td>
 				<td align="center"><%=in.getInInbranch()%></td>
 				<td align="center"><%=in.getSaleNum()%></td>
-
+<td align="center"><%=in.getNomention()%></td>
 
 			</tr>
 			<%

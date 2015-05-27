@@ -46,6 +46,10 @@ function clear(){
 	   %>          
 	   <li><a href="OrderGoods/ordergoods.jsp">订货 </a></li> 
 	   <li><a href="OrderGoods/ordergoodsall.jsp">未审核订单 </a></li> 
+	   <!--   
+	    <li><a href="OrderGoods/inventoryDynamic.jsp">智能要货 </a></li> 
+	    -->
+	  
 	    <%          
 	     }  
    if(UserManager.checkPermissions(user, Group.ordergoods,"r")){ 	 

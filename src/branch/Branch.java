@@ -89,26 +89,29 @@ public class Branch {
 			encoded = "";
 		}
 		return encoded;
-	}  
+	}   
  
 	public String getEncoded(int statues) {
+		String encodedd = "";  
 		if(StringUtill.isNull(encoded)){
-			encoded = "";
-		}else{   
-			char c = encoded.charAt(0);
-			 
-			if(c == '7'){ 
-				encoded =  encoded.replaceFirst("7", "A");
-			}else if(c == '8'){
-				encoded =  encoded.replaceFirst("8", "B");
-			}else if(c == '9'){
-				//System.out.print(c == '9'); 
-				  
-				encoded =  encoded.replaceFirst("9", "C");
-			}
-			
-		}
-		return encoded;
+			encodedd = "";
+		}else{    
+			 if(2 == statues){ 
+				 char c = encoded.charAt(0);
+				 if(c == '7'){  
+					 encodedd =  encoded.replaceFirst("7", "A");
+					}else if(c == '8'){
+						encodedd =  encoded.replaceFirst("8", "B");
+					}else if(c == '9'){
+						//System.out.print(c == '9'); 
+						  
+						encodedd =  encoded.replaceFirst("9", "C");
+					} 
+			 }else { 
+				 encodedd = encoded;
+			 } 
+		}  
+		return encodedd;
 	}
 	
 	public void setEncoded(String encoded) {

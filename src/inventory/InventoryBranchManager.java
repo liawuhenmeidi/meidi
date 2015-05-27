@@ -784,22 +784,26 @@ logger.info(sql);
 		 return map;
 	}
 	 
-	public static Map<Integer,InventoryBranch> getmapKeyBranchType(User user ,String branchtype){
+	public static Map<Integer,List<InventoryBranch>> getmapKeyBranchType(User user ,String branchtype){
 		//logger.info(branchid);  
-		String sear = "";  
+		String sear = "";   
 		if(!StringUtill.isNull(branchtype)){ 
 			sear =   StringUtill.getStr(BranchService.getListids(Integer.valueOf(branchtype)));
 		} 
 		 
-		 Map<Integer,InventoryBranch> map = new HashMap<Integer,InventoryBranch>();
+		Map<Integer,List<InventoryBranch>> map = new HashMap<Integer,List<InventoryBranch>>();
 		 List<InventoryBranch>  listInventory = InventoryBranchManager.getall(user,sear); 
 		 Iterator<InventoryBranch> it = listInventory.iterator(); 
-		 while(it.hasNext()){    
+		 while(it.hasNext()){     
 			 InventoryBranch in = it.next(); 
-			 
-			
+			 List<InventoryBranch> list = map.get(in.getBranchid());
+			 if(null == list){
+				 list = new ArrayList<InventoryBranch>();
+				 map.put(in.getBranchid(),list);
+			 } 
+			  
 			// logger.info(in.getTypeid()+"_"+in.getBranchid()); 
-			 map.put(in.getBranchid(), in);
+		list.add(in);
 		 }  
 		 //logger.info(map);  
 		 return map;

@@ -1,5 +1,5 @@
 <%@ page language="java"
-	import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,httpClient.download.InventoryModelDownLoad,httpClient.download.InventoryChange,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;"
+	import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,httpClient.download.InventoryModelDownLoad,httpClient.download.InventoryBadGoodsDownLoad,httpClient.download.InventoryChange,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <%  
 request.setCharacterEncoding("utf-8"); 
@@ -35,7 +35,7 @@ String listall = StringUtill.GetJson(listbranchp);
 // Map<String, Map<String, Map<Integer, InventoryBranch>>> mapin = null;
 
  // System.out.println(System.currentTimeMillis() - start);
-//System.out.println(mapin);      
+//System.out.println(mapin);       
  // System.out.println(mapin ); 
     
 Collection<httpClient.download.Inventory> listend = InventoryChange
@@ -47,10 +47,13 @@ Map<String, httpClient.download.Inventory> mapc = InventoryChange
 Map<String, httpClient.download.Inventory> mapm = InventoryModelDownLoad
 				.getMap(user, TimeUtill.dataAdd(time, 1));
 		  
-		 
-Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryAllManager.getInventoryMap(user,category,branch,time,mapc,mapm);  		 
-		
-		 
+Map<String, httpClient.download.Inventory> mapbad = InventoryBadGoodsDownLoad
+.getMap(user, TimeUtill.dataAdd(time, 1));
+     
+//System.out.println("mapbad.size()"+mapbad.size());
+Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryAllManager.getInventoryMap(user,category,branch,time,mapc,mapm,mapbad);  		 
+//System.out.println("mapbad.size()"+mapbad.size()); 
+		  
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -115,11 +118,11 @@ var allp = <%=allp%>;
 	 //window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 window.location.href='inventorysearch.jsp?id='+inventory;
  }
-  
- function search(ctype,branchid){ 
-	 $("#time").val("");
+   
+ function search(ctype,branchid){  
+	 $("#time").val(""); 
 	 $("#starttime").val(""); 
-	 $("#endtime").val(""); 
+	 $("#endtime").val("");  
 	 winPar = window.open("time.jsp","time","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
 	
 	 setInterval("startRequest('"+ctype+"','"+branchid+"')",500);  
@@ -207,20 +210,22 @@ function pandian(type,branchid){
 					<th align="left">产品型号</th>
 					<th align="left">常规特价实货未入库</th>
 					<th align="left">样机未入库</th> 
-					<th align="left">样机入库</th> 
+					<th align="left">入库样机</th> 
+					<th align="left">入库坏机</th> 
 					<th align="left">苏宁系统库存</th>
 					<th align="left">上次盘点日期</th>
-					<th align="left">盘点</th>
+					<th align="left">盘点</th> 
 				</tr> 
 			</thead>
          <%  
           
          //long start1 = System.currentTimeMillis(); 
-          int count = 0 ;
-          int outnumall = 0 ;
-  		 int inmodelnumall = 0 ;   
-  		 int outmodelnumall = 0 ; 
-  		 int snnumall = 0 ;  
+          int count = 0 ; 
+          int outnumall = 0 ; 
+  		 int inmodelnumall = 0 ;    
+  		 int outmodelnumall = 0 ;   
+  		 int snnumall = 0 ;
+  		 int snbadall = 0 ; 
   		 int ccount = 0 ;
   		  
          Map<Integer, Product>  maps =  ProductService.getIDmap();
@@ -255,7 +260,8 @@ function pandian(type,branchid){
             		 int outnum = 0 ;
             		 int inmodelnum = 0 ;  
             		 int outmodelnum = 0 ; 
-            		 int snnum = 0 ;  
+            		 int snnum = 0 ; 
+            		 int snbad = 0 ;
             		 String querytime = "";  
             		 Set<Integer> sb = new HashSet<Integer>();  
             		 Set<Map.Entry<Integer, InventoryBranch>> sett = mapt.entrySet();
@@ -294,14 +300,15 @@ function pandian(type,branchid){
             				 sb.add(in.getBranchid()); 
             				 snnum += in.getSnNum();
                  			   
-            				 inmodelnum += in.getSnModelnum(); 
+            				 inmodelnum += in.getSnModelnum();
+            				 snbad += in.getSnBad();
             			 }
             			 
             			 if(!StringUtill.isNull(in.getQuerymonth())){
             				 querytime = in.getQuerymonth();
             			 }
             			  
-
+ 
             		 }     
             		 count++;          
             		 snnumall += snnum;  
@@ -309,20 +316,21 @@ function pandian(type,branchid){
             		   
             		
             		 
-            		  
+            		   
             		 %>  
             		 <tr class="asc">
             		    <td><%=count %></td> 
             		 <td><%=cname %></td> 
-            		  <td><%=tname %></td> 
+            		  <td><%=tname %></td>  
             		  <td><%=outnum%></td> 
             		  <td><%=outmodelnum %></td>
             		  <td><%=inmodelnum %></td> 
             		   <td><%=snnum %></td> 
+            		      <td><%=snbad %></td> 
             		   <td><%=querytime%></td>
             		   <td ><input type="checkbox" name="type" value="<%=type %>"></input></td>
             		 </tr> 
-   
+    
             		 <% 
             		  
             	 }  
@@ -388,7 +396,7 @@ function pandian(type,branchid){
 			}
  			
  			int cnum = 0;
- 			
+ 			int badnum = 0 ;
  			
  			
  			if (StringUtill.isNull(branch) || branch.equals(bname)) {
@@ -402,12 +410,19 @@ function pandian(type,branchid){
  	 				cnum = 0;
  	 			}
  				
+ 				try { 
+ 	 				badnum = mapbad.get(key).getNum();
+ 	 				//ccount++;
+ 	 				mapbad.remove(key); 
+ 	 			} catch (Exception e) {
+ 	 				badnum = 0;
+ 	 			}
  				// logger.info(bname);
  				// logger.info(in.getBranchNum());
  				//countb++;
- 				 count++; 
+ 				 count++;  
  				 snnumall += cnum;   
-            		 inmodelnumall += in.getNum(); 
+            	 inmodelnumall += in.getNum(); 
  				 %>   
         		 <tr class="asc">
         		 <td><%=count %></td>  
@@ -417,8 +432,8 @@ function pandian(type,branchid){
         		  <td><%=0 %></td> 
         		  <td><%=in.getNum()%></td> 
         		   <td><%=cnum %></td> 
-        		   <td></td> 
-        		   
+        		   <td><%=badnum %></td> 
+        		    <td></td>
         		   <td >
         		   <% 
         		   if(flag){
@@ -435,17 +450,12 @@ function pandian(type,branchid){
         		 </tr>
 
         		 <%
- 				
-
- 			
-
- 			
  			}
  		}   
-        
+          
  		System.out.println("mapc.size()"+mapc.size());
- 		System.out.println("mapm.size()"+mapm.size());  
-         
+ 		System.out.println("mapm.size()"+mapm.size());   
+ 		System.out.println("mapbad.size()"+mapbad.size()); 
          
         Set<Map.Entry<String, httpClient.download.Inventory>> setc = mapc
 				.entrySet();
@@ -495,8 +505,9 @@ function pandian(type,branchid){
     		  <td><%=tname %></td>  
     		  <td><%=0%></td>    
     		  <td><%=0 %></td>  
-    		  <td><%=0%></td>  
+    		  <td><%=0%></td>   
     		   <td><%=in.getNum() %></td> 
+    		    <td></td>
     		   <td></td>  
     		   <td >
     		    
@@ -520,6 +531,80 @@ function pandian(type,branchid){
 			}
 		}   
         
+		Set<Map.Entry<String, httpClient.download.Inventory>> setbad = mapbad
+				.entrySet();
+		Iterator<Map.Entry<String, httpClient.download.Inventory>> itbad = setbad
+				.iterator();
+		while (itbad.hasNext()) {
+			Map.Entry<String, httpClient.download.Inventory> mapentc = itbad
+					.next();
+			String key = mapentc.getKey();
+			httpClient.download.Inventory in = mapentc.getValue();
+			//itc.remove();
+			int bid = -1;
+			int tid = -1;
+			boolean flag = true ; 
+			String tname = "";
+			
+
+			String bname = "";
+			try {  
+				//System.out.println(in.getBranchName()); 
+				bname = BranchService.getNumMap()
+						.get(StringUtill.getStringNocn(in.getBranchName()))
+						.getLocateName();   
+				//bid = BranchService.getNumMap().get(in.getBranchNum()).getId();
+			} catch (Exception e) {
+				bname = "";   
+			} 
+			
+			try { 
+ 				tname = in.getGoodpName();
+				tid = ProductService.gettypeNUmmap().get(in.getGoodNum())
+						.getId();
+			} catch (Exception e) {
+				tname = in.getGoodpName();
+				flag = false ;
+			}
+			 
+			if (StringUtill.isNull(branch) || branch.equals(bname)) {
+				 count++; 
+				//	logger.info(in.getGoodNum());
+				 ccount++; 
+				 snbadall += in.getNum();   
+				 %>      
+    		 <tr class="asc">
+    		 <td><%=count %></td>  
+    		 <td><%=in.getGoodGroupName() %></td> 
+    		  <td><%=tname %></td>  
+    		  <td><%=0%></td>    
+    		  <td><%=0 %></td>   
+    		  <td><%=0%></td>   
+    		   <td><%=0 %></td> 
+    		    <td><%=in.getNum() %></td>
+    		   <td></td>  
+    		   <td >
+    		    
+    		    <% 
+        		   if(flag){
+        			      
+        			   %> 
+        			   <input type="checkbox" name="type" value="<%=tid %>"></input>
+        			   
+        			   <%
+        		   }
+        		   
+        		   
+        		   %>
+    		   </td>
+    		 </tr>
+
+    		 <% 
+
+				
+			}
+		} 
+		
         %> <tr class="asc">
 		    <td></td> 
 		 <td></td> 
@@ -528,12 +613,13 @@ function pandian(type,branchid){
 		  <td><%=outmodelnumall %></td>
 		  <td><%=inmodelnumall %></td> 
 		   <td><%=snnumall %></td> 
-		   <td></td>
+		   <td><%=snbadall %></td>
+		    <td></td>
 		   <td ></td> 
 		 </tr>
-		     
+		      
 		 <tr class="asc"> 
-		 <td colspan=9 align="center"><input type="submit" value="提交"/> </td>
+		 <td colspan=10 align="center"><input type="submit" value="提交"/> </td>
 		 
 		  </tr>
 		</table>

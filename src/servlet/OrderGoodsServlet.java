@@ -56,7 +56,7 @@ public class OrderGoodsServlet extends HttpServlet {
 	/**
 	 * 确认请求来自微信服务器
 	 */
-
+ 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
 		String method = request.getParameter("method");
@@ -144,11 +144,12 @@ public class OrderGoodsServlet extends HttpServlet {
 			String[] rowss = rows.split(",");
 
 			for (int i = 0; i < rowss.length; i++) {
-				String row = rowss[i];
+				String row = rowss[i].trim();  
+				 //System.out.println("row"+row);
 				String type = request.getParameter("product" + row);
-
+                // System.out.println("type"+type);
 				Product p = ProductService.gettypemap(user, branchid).get(type);
-				int cid = p.getCategoryID();
+				int cid = p.getCategoryID(); 
 				int itype = p.getId();
 				String sta = request.getParameter("statues" + row);
 				String num = request.getParameter("orderproductNum" + row);
@@ -235,7 +236,7 @@ public class OrderGoodsServlet extends HttpServlet {
 		String statues = request.getParameter("statues");
 		String type = request.getParameter("type");
 		String[] ogids = request.getParameterValues("ogid");
-		OrderGoodsAll oa = null;
+		OrderGoodsAll oa = null; 
 		List<OrderGoods> list = null;
 		if (!StringUtill.isNull(id)) { 
 			if ((OrderMessage.billing + "").equals(type)) {

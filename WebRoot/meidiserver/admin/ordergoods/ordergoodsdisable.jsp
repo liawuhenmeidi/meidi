@@ -117,7 +117,7 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	        		
 			        		$("#snstatues"+row).html(jsonsale.saleNum);
 			        	}else { 
-			        		 alert(2);
+			        		// alert(2);
 			        		$("#snstatues"+row).html("无");
 			        	}
 			        }else {   
@@ -138,7 +138,7 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 			        		
 			        		$("#snstatues"+row).html(jsonsale.saleNum);
 			        	}else { 
-			        		 alert(2);
+			        		 // alert(2);
 			        		$("#snstatues"+row).html("无");
 			        	}
 			        	

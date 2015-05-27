@@ -1190,8 +1190,8 @@ public class PrintServlet extends HttpServlet {
 					// logger.info(og.getOrdernum());
 					cell.setCellValue(og.getOrdernum());
 					cell.setCellStyle(style);
-					cell = row.createCell((short) y++);
-					cell.setCellValue(branch.getEncoded());
+					cell = row.createCell((short) y++); 
+					cell.setCellValue(branch.getEncoded(og.getStatues()));
 					cell.setCellStyle(style);
 					cell = row.createCell((short) y++);
 					cell.setCellValue(og.getBranch());

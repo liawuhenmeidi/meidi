@@ -41,9 +41,17 @@ public class InventoryBranch {
 	private int snNum ;  // 苏宁库存  
 	
 	private int snModelnum ;  // 苏宁样机 
+	 
+	private int snBad;  // 苏宁坏机
 	private String goodnum ; 
 	private String goodname;// 苏宁名称
 	
+	public int getSnBad() {
+		return snBad;
+	}
+	public void setSnBad(int snBad) {
+		this.snBad = snBad;
+	}
 	public String getGoodnum() {
 		return goodnum;
 	}

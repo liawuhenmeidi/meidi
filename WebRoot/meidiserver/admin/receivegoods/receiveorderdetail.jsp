@@ -83,7 +83,7 @@ String type= request.getParameter("type");
 			<table width="100%" border="0" cellspacing="1" id="Ntable">
 				  
 				<tr class="dsc">         
-					<td class="dsc" colspan=17>
+					<td class="dsc" colspan=18>
 					<input type="button" class="button"  
 						name="dosubmit" value="退厂拖机单" onclick="check(0)"></input>
 						<input type="button" class="button"  
@@ -101,7 +101,7 @@ String type= request.getParameter("type");
 						type="checkbox" value="" id="allselect"
 						onclick="seletall(allselect)"></input></td>
 
-
+<td align="center">编号</td>
 					<td align="center">送货确认书编号</td>
 					<td align="center">退货订单编号</td>
 					<td align="center">校验码</td>
@@ -120,6 +120,7 @@ String type= request.getParameter("type");
 					<td align="center">打印次数</td>
 				</tr>
 				<% 
+				int count = 0 ;
 				if (null != maps) { 
 					Set<Map.Entry<String, OrderReceipt>> set = maps.entrySet();
 					Iterator<Map.Entry<String, OrderReceipt>> it = set.iterator();
@@ -135,14 +136,14 @@ String type= request.getParameter("type");
 							if (0 == gr.getTid()) {
 								clt = "style=color:red";
 							}
-							 
+							count++; 
 				%> 
 				<tr class="asc">
 
 					<td align="center"><input type="checkbox"
 						value="<%=gr.getId()%>" name="id" id="check_box"></input></td>
-
  
+ <td align="center"><%=count%></td>
 					<td align="center"><%=gr.getQueryNum()%></td>
 					<td align="center"><%=gr.getBuyid()%></td>
 					<td align="center"><%=gr.getCheckNum()%></td>

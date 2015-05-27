@@ -284,8 +284,10 @@ public class InventoryChange {
 							in.setGoodNum(str);
 						} else if (i == 17) {
 							in.setATP(Integer.valueOf(str));
-						} else if (i == 18) {
+						} else if (i == 18) { 
 							in.setNum(Integer.valueOf(str));
+						}else if(i == 19){ 
+							in.setNomention(Integer.valueOf(str));
 						}
 
 					}

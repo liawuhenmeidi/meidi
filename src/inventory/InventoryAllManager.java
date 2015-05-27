@@ -54,11 +54,11 @@ public class InventoryAllManager {
 	}
   
 	public static Map<Integer, Map<String, Map<Integer, InventoryBranch>>> getInventoryMap(
-			User user, String category, String branch, String time,Map<String, httpClient.download.Inventory> mapc,Map<String, httpClient.download.Inventory> mapm) { 
+			User user, String category, String branch, String time,Map<String, httpClient.download.Inventory> mapc,Map<String, httpClient.download.Inventory> mapm,Map<String, httpClient.download.Inventory> mapbad) { 
 		 // 门店 。型号  状态
 		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> map = new HashMap<Integer, Map<String, Map<Integer, InventoryBranch>>>();
         
-		// 实货库存          
+		// 实货库存           
 		
 		// InventoryBranchMessageManager.getMap(sql);
 		// logger.info(mapm.size());
@@ -157,6 +157,7 @@ public class InventoryAllManager {
 				// logger.info("key"+key);
 				int cnum = 0;  
 				int mnum = 0; 
+				int badnum ;
 				try {  
 					cnum = mapc.get(key).getNum();
 					count++;
@@ -173,7 +174,18 @@ public class InventoryAllManager {
 					// logger.info("none"+key);
 					mnum = 0;
 				}  
+ 
+				try { 
+					badnum = mapbad.get(key).getNum();
+					// logger.info(key+"***"+mnum);
+					//count++;  
+					mapbad.remove(key);
+				} catch (Exception e) {
+					// logger.info("none"+key);
+					badnum = 0;
+				}  
 
+				
 				Map<Integer, InventoryBranch> mapinv = mapent.getValue();
 
 				Collection<InventoryBranch> coinv = mapinv.values();
@@ -186,6 +198,8 @@ public class InventoryAllManager {
 						orders.setSnNum(cnum);
 
 						orders.setSnModelnum(mnum);
+						
+						orders.setSnBad(badnum); 
 						// logger.info(branch);
 						Map<String, Map<Integer, InventoryBranch>> mapt = map
 								.get(orders.getBranchid());
@@ -221,8 +235,9 @@ public class InventoryAllManager {
 							or.setSnNum(or.getSnNum() + orders.getSnNum());
 							or.setSnModelnum(or.getSnModelnum()
 									+ orders.getSnModelnum());
+							or.setSnBad(or.getSnBad()+orders.getSnBad());
 						}
-
+ 
 						// List<InventoryMessage> listm =
 						// InventoryMessageManager.getInventoryID(user,branchid);
 						// orders.setInventory(listm);

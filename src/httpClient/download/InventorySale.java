@@ -37,7 +37,7 @@ public class InventorySale {
 		Map<String,Inventory> mapsale = SaleDownLoad.getMap(starttime,endtime); 
 		//logger.info(mapsale);
 		logger.info( mapsale.size());
-		 
+		  
 		if(!listIn.isEmpty()){
 			Iterator<Inventory> it = listIn.iterator();
 			while(it.hasNext()){

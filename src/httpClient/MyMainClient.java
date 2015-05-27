@@ -1,6 +1,7 @@
 package httpClient;
 
 import inventory.InventoryBranchManager;
+import httpClient.download.InventoryBadGoodsDownLoad;
 import httpClient.download.InventoryDownLoad;
 import httpClient.download.InventoryModelDownLoad;
 import httpClient.download.OrderDownLoad;
@@ -56,15 +57,15 @@ public class MyMainClient {
              
 	public synchronized void run() {
 		try {                  
-			//startinventoryIN(this);
-			round(this);    
+			startinventoryIN(this);
+			//round(this);     
 			// sdi.selectDeliverInform(new
 			// URI("http://scs.suning.com/sps/PurchaseOrderDelivery/orderDelivery.action?menuid=100000111&scspageexptime=1427005676454"),"","",this);
 		} catch (Exception e) { 
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
-	}    
+	}     
    
 	public static void round(MyMainClient mc) {
 		String starttime = TimeUtill.getdateString();
@@ -135,12 +136,13 @@ public class MyMainClient {
 			InventoryDownLoad.save();
              
 			InventoryModelDownLoad.save();
-			     
+			// 坏品  
+			InventoryBadGoodsDownLoad.save();
 			//InventoryModelDownLoad.saveDB();
 			
 			 //InventoryChange.compare("2015-05-01","2015-05-03");
     
-			// 更新过期订单(系统内)  
+			// 更新过期订单(系统内)   
 			InventoryBranchManager.initOrderNumSN();
       
 			logger.info("更新订单加订单号"); 
