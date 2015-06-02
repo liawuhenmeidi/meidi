@@ -73,14 +73,18 @@ public class InventoryModelDownLoad extends HttpServlet implements DownLoad {
 		// startTime = "2015-05-03";
 		// List<Inventory> list = new ArrayList<Inventory>();
 		Branch branch = BranchService.getMap().get(branchid);
-		String bnum = branch.getEncoded();
+		String bnum = "";
+		if(null != branch){
+			bnum = branch.getEncoded();
+		}
+		
 		// logger.info()
 		Map<String, Product> mapp = ProductService.gettypeNUmmap();
 
 		// logger.info(mapp);
 
 		Map<String, List<Inventory>> map = new HashMap<String, List<Inventory>>();
-		if (branch.getBranchtype().getSaletype() == SaleModel.Model.苏宁
+		if (null != branch && branch.getBranchtype().getSaletype() == SaleModel.Model.苏宁
 				.getValue()) {
 			try {
 				String tempPath = PathUtill.getXMLpath();

@@ -150,16 +150,19 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 
 	public static Map<String, Inventory> getMap(String starttime,
 			String endtime, int branchid) {
-		// startTime = "2015-05-03";
+		// startTime = "2015-05-03"; 
 		Branch branch = BranchService.getMap().get(branchid);
-		String bnum = branch.getEncoded();
+		String bnum = "";     
+		if(null != branch){
+			bnum = branch.getEncoded();
+		}
 
 		Map<String, Inventory> map = new HashMap<String, Inventory>();
 		Map<String, Product> mapp = ProductService.gettypeNUmmap();
 		if (StringUtill.isNull(starttime) || StringUtill.isNull(endtime)) {
 			return map;
-		}
-		if (branch.getBranchtype().getSaletype() == SaleModel.Model.苏宁
+		} 
+		if (null != branch && branch.getBranchtype().getSaletype() == SaleModel.Model.苏宁
 				.getValue()) {
 			try {
 

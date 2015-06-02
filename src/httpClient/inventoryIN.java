@@ -238,7 +238,7 @@ public class inventoryIN {
 			logger.info("getinventoryIN");
 			URI uri = new URI(inventoryIN.url);
 			String responseContent = getHtmlString(uri, starttime, endtime, 1,
-					mc);
+					mc); 
 
 			int num = getNum(responseContent);
 			// logger.info(num);

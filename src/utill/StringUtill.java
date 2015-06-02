@@ -93,14 +93,18 @@ public class StringUtill {
     	JSONObject jsObj = JSONObject.fromObject(map);  
    	 return jsObj.toString();
    }
-    // 获取字母不包含汉子
+    // 获取字母不包含汉子 
     public static String getStringNocn(String str){
-    	 str = str.replace("(", "").replace(")", "").replace("（","").replace("）", "").replaceAll("\\s*", "");
-    	 String regEx = "[\\u4e00-\\u9fa5]"; 
+    	String s = "";
+    	if(!StringUtill.isNull(str)){
+    		 str = str.replace("(", "").replace(")", "").replace("（","").replace("）", "").replaceAll("\\s*", "");
+        	 String regEx = "[\\u4e00-\\u9fa5]"; 
 
-		 Pattern p = Pattern.compile(regEx);
-		 Matcher m = p.matcher(str);  
-         String s =m.replaceAll("").trim(); 
+    		 Pattern p = Pattern.compile(regEx);
+    		 Matcher m = p.matcher(str);  
+             s =m.replaceAll("").trim();   
+    	}
+    	
 		return s; 
 		  
     } 

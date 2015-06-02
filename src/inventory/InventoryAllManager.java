@@ -1,34 +1,22 @@
 package inventory;
-
-import httpClient.download.InventoryChange;
-import httpClient.download.InventoryModelDownLoad;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+ 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Map; 
 import java.util.Set;
-
+ 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import category.Category;
 import category.CategoryManager;
-import database.DB;
-
 import product.Product;
 import product.ProductService;
-
 import branch.Branch;
 import branch.BranchManager;
 import branch.BranchService;
-
 import user.User;
 import utill.NumbleUtill;
 import utill.StringUtill;
@@ -52,19 +40,19 @@ public class InventoryAllManager {
 
 		return list;
 	}
-  
-	public static Map<Integer, Map<String, Map<Integer, InventoryBranch>>> getInventoryMap(
-			User user, String category, String branch, String time,Map<String, httpClient.download.Inventory> mapc,Map<String, httpClient.download.Inventory> mapm,Map<String, httpClient.download.Inventory> mapbad) { 
-		 // 门店 。型号  状态
-		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> map = new HashMap<Integer, Map<String, Map<Integer, InventoryBranch>>>();
-        
-		// 实货库存           
+   
+	public static Map<String, Map<Integer, Map<Integer, InventoryBranch>>> getInventoryMap(
+			User user, String category, String branch, String time,Map<String,Map<String, httpClient.download.Inventory>> mapc,Map<String,Map<String, httpClient.download.Inventory>> mapm,Map<String,Map<String, httpClient.download.Inventory>> mapbad) { 
+		 // 型号,门店 。  状态 
+		Map<String, Map<Integer, Map<Integer, InventoryBranch>>> map = new HashMap<String, Map<Integer, Map<Integer, InventoryBranch>>>();
+         
+		// 实货库存             
 		
 		// InventoryBranchMessageManager.getMap(sql);
 		// logger.info(mapm.size());
 		// logger.info("mapm"+StringUtill.GetJson(mapm));
   
-		// 系统库存
+		// 系统库存 
 		Map<String, Map<Integer, InventoryBranch>> mapin = new HashMap<String, Map<Integer, InventoryBranch>>();
          
 		String str = "";
@@ -85,7 +73,7 @@ public class InventoryAllManager {
 		
 		if (!list.isEmpty()) { 
 			Iterator<InventoryBranchMessage> it = list.iterator();
-			while (it.hasNext()) {
+			while (it.hasNext()) { 
 				InventoryBranchMessage inm = it.next();
 				String key = inm.getBranchid() + "_" + inm.getTypeid();
 				// logger.info(key);
@@ -159,32 +147,32 @@ public class InventoryAllManager {
 				int mnum = 0; 
 				int badnum ;
 				try {  
-					cnum = mapc.get(key).getNum();
+					cnum = mapc.get(pnum).get(bnum).getNum();
 					count++;
-					mapc.remove(key);
+					mapc.get(pnum).remove(bnum);
 				} catch (Exception e) {
 					cnum = 0;
 				}
-				try {
-					mnum = mapm.get(key).getNum();
+				try { 
+					mnum = mapm.get(pnum).get(bnum).getNum();
 					// logger.info(key+"***"+mnum);
 					//count++;  
-					mapm.remove(key);
+					mapm.get(pnum).remove(bnum);
 				} catch (Exception e) {
 					// logger.info("none"+key);
 					mnum = 0;
 				}  
  
 				try { 
-					badnum = mapbad.get(key).getNum();
+					badnum = mapbad.get(pnum).get(bnum).getNum();
 					// logger.info(key+"***"+mnum);
 					//count++;  
-					mapbad.remove(key);
+					mapbad.get(pnum).remove(bnum);
 				} catch (Exception e) {
 					// logger.info("none"+key);
 					badnum = 0;
 				}  
-
+ 
 				
 				Map<Integer, InventoryBranch> mapinv = mapent.getValue();
 
@@ -201,21 +189,20 @@ public class InventoryAllManager {
 						
 						orders.setSnBad(badnum); 
 						// logger.info(branch);
-						Map<String, Map<Integer, InventoryBranch>> mapt = map
-								.get(orders.getBranchid());
-						if (null == mapt) {
+						Map<Integer, Map<Integer, InventoryBranch>> mapt = map
+								.get(orders.getTypeid()); 
+						if (null == mapt) { 
 							// logger.info("branch"+branch);
-							mapt = new HashMap<String, Map<Integer, InventoryBranch>>();
-							map.put(orders.getBranchid(), mapt);
-						}
-
-						Map<Integer, InventoryBranch> maptp = mapt.get(orders
-								.getTypeid());
+							mapt = new HashMap<Integer, Map<Integer, InventoryBranch>>();
+							map.put(orders.getTypeid(), mapt); 
+						} 
+ 
+						Map<Integer, InventoryBranch> maptp = mapt.get(orders.getBranchid());
 						if (null == maptp) {
 							maptp = new HashMap<Integer, InventoryBranch>();
-							mapt.put(orders.getTypeid(), maptp);
+							mapt.put(orders.getBranchid(), maptp);
 						}
-
+ 
 						InventoryBranch or = maptp.get(orders.getTypeStatues());
 
 						if (null == or) {
@@ -245,10 +232,10 @@ public class InventoryAllManager {
 				}
 
 			} 
-		}
+		} 
 		logger.info("count" + count);
 		// logger.info(map.values().size());
-		logger.info(map.size()); 
+		logger.info(map.size());  
 		logger.info("mapc.size()"+mapc.size());
 		logger.info("mapm.size()"+mapm.size()); 
              
@@ -562,7 +549,7 @@ public class InventoryAllManager {
 
 		Collection<InventoryAll> c = InventoryAllManager.getMap(user, branch,
 				category, product, isSN, "-1");
-
+  
 		if (!c.isEmpty()) {
 			Iterator<InventoryAll> it = c.iterator();
 			while (it.hasNext()) {

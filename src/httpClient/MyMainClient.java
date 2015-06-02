@@ -27,15 +27,21 @@ public class MyMainClient {
 	/*
 	 * public void setHttpclient(CloseableHttpClient httpclient) {
 	 * this.httpclient = httpclient; }
-	 */
-  
+	 */ 
+    // 圣荣 
 	private static String cacheUsername = "haoyuely@163.com";
 	private static String cachePassword = "sn26524316";
  
-	// 九阳 
+	// 九阳  
 	// private static String cacheUsername = "tjhdlshm@163.com";
 	// private static String cachePassword = "lxn123456";
- 
+      
+	//大港倾心 
+	//private static String cacheUsername = "qxgs2014@163.com";
+	//private static String cachePassword = "qingxin2014";
+	 
+	 
+	
 	private static String cacheLoginURL = "https://passport.suning.com/ids/login";
 
 	public static MyMainClient getinstance() {
@@ -56,8 +62,8 @@ public class MyMainClient {
 	}  
              
 	public synchronized void run() {
-		try {                  
-			startinventoryIN(this);
+		try {                      
+		     startinventoryIN(this);
 			//round(this);     
 			// sdi.selectDeliverInform(new
 			// URI("http://scs.suning.com/sps/PurchaseOrderDelivery/orderDelivery.action?menuid=100000111&scspageexptime=1427005676454"),"","",this);
@@ -66,24 +72,23 @@ public class MyMainClient {
 			e.printStackTrace();
 		}  
 	}     
-   
+    
 	public static void round(MyMainClient mc) {
 		String starttime = TimeUtill.getdateString();
 		String endtime = TimeUtill.getdateString();
-                    
-		int count = 0;       
-		starttime = "2013-12-13"; 
-		endtime = "2013-12-22";   
-		while (count < 20)  {                            
-			int num = -10;                         
-			count++;   
-			starttime = TimeUtill.dataAdd(starttime, num);
-			endtime = TimeUtill.dataAdd(endtime, num);
+                              
+		            
+		starttime = "2015-05-24"; 
+		endtime = "2015-06-02";      
+		while (TimeUtill.compare(starttime,"2015-05-01"))  {                             
+			int num = -10;                               
+		//	count++;       
+			   
+			 
+		//	inventoryOrder.getinventoryOut(starttime, endtime, mc);
+			//inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
 			
-			inventoryOrder.getinventoryOut(starttime, endtime, mc);
-			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
-			
-			
+			inventoryModelOut.getinventoryOutModel(starttime, endtime, mc);
 			//inventoryOrder.getinventoryOut(starttime, endtime, mc);
 			//inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
 			 
@@ -99,58 +104,58 @@ public class MyMainClient {
 	   // inventoryIN.getinventoryIN(starttime, endtime, mc);
 		  // inventoryIN.get(starttime, endtime);  
 			
-			
-			
-			// inventoryIN.get(starttime, endtime);
+			// inventoryIN.get(starttime, endtime); 
 			// SaleDownLoad.saveDB(starttime, endtime);  
-		    
+			starttime = TimeUtill.dataAdd(starttime, num);
+			endtime = TimeUtill.dataAdd(endtime, num);
 			   
-		}
-	}  
-    
+		} 
+	}    
+      
 	public synchronized void startinventoryIN(MyMainClient mc) {
-		try {   
-			String starttime = TimeUtill.getdateString();
-			String endtime = TimeUtill.getdateString();
-			                  
+		try {    
+			String starttime = TimeUtill.getdateString(); 
+			String start = TimeUtill.dataAdd(starttime, -7); 
+			String endtime = TimeUtill.getdateString();  
+			                         
 			// int count = 0 ; 
-			//starttime = "2015-05-18";
-			//endtime = "2015-05-18";    
-                         
+			//starttime = "2015-05-22";
+			//endtime = "2015-05-22";    
+                               
 			// 异常退货订单         
-			inventoryOrder.getinventoryOut(starttime, endtime, mc);
-			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
+			//inventoryOrder.getinventoryOut(starttime, endtime, mc);
+			//inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
                 
-			// 入库退货信息          
+			// 入库退货信息           
                   
-			inventoryOut.getinventoryOut(starttime, endtime, mc); 
+			//inventoryOut.getinventoryOut(start, endtime, mc); 
 			//inventoryOut.get(starttime, endtime);  
 			               
-			inventoryModelOut.getinventoryOutModel(starttime, endtime, mc);
+			//inventoryModelOut.getinventoryOutModel(start, endtime, mc);
 			//inventoryModelOut.get(starttime, endtime);
 			   
-	        inventoryIN.getinventoryIN(starttime, endtime, mc);
+	       // inventoryIN.getinventoryIN(start, endtime, mc);
 		   // inventoryIN.get(starttime, endtime);  
 			          
 			// 库存                   
-			InventoryDownLoad.save();
+			//InventoryDownLoad.save();
              
-			InventoryModelDownLoad.save();
+			//InventoryModelDownLoad.save();
 			// 坏品  
-			InventoryBadGoodsDownLoad.save();
+			//InventoryBadGoodsDownLoad.save();
 			//InventoryModelDownLoad.saveDB();
 			
 			 //InventoryChange.compare("2015-05-01","2015-05-03");
     
 			// 更新过期订单(系统内)   
-			InventoryBranchManager.initOrderNumSN();
+			//InventoryBranchManager.initOrderNumSN();
       
 			logger.info("更新订单加订单号"); 
 			// 更新订单信息   
-			OrderDownLoad.saveDB(starttime, endtime);
+			//OrderDownLoad.saveDB(starttime, endtime);
                 
 			      
-			ProductSN.save(mc); 
+			//ProductSN.save(mc); 
 			// 销售数据
 			     
 			//SaleDownLoad.saveDB(starttime, endtime);  
@@ -159,6 +164,7 @@ public class MyMainClient {
 			logger.info(e);
 		} 
 	}
+    
 
 	public static CloseableHttpClient getHttpclient() {
 		CloseableHttpClient httpclient = HttpClients.custom()

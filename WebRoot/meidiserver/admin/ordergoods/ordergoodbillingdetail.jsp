@@ -184,12 +184,13 @@ if (null != list) {
 						List<OrderGoods> listog = o.getList();
 						for (int j = 0; j < listog.size(); j++) {
 							OrderGoods og = listog.get(j);
-							count++;
+							
 							//System.out.println(StringUtill.GetJson(og)); 
 							if (!StringUtill.isNull(orderid)
 									&& orderid.equals(og.getOid())
 									|| StringUtill.isNull(orderid)
 									&& StringUtill.isNull(og.getOid())) {
+								count++; 
 								String serialnumber = og.getSerialnumber();
 								if (StringUtill.isNull(serialnumber)) {
 									serialnumber = Company.supply;

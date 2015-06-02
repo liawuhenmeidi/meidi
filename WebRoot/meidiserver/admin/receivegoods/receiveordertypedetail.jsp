@@ -17,6 +17,8 @@ if(!StringUtill.isNull(method)){
 } 
 Map<String,List<httpClient.download.Inventory>> mapsn = null ;
 if(null != BranchService.getNameSNMap().get(branchname)){ 
+	//System.out.println(branchname);
+	//System.out.println(BranchService.getNameSNMap().get(branchname).getId()); 
 	
 	mapsn = InventoryChange.getMapBranchTypeNum(user,time,BranchService.getNameSNMap().get(branchname).getId());
 	 

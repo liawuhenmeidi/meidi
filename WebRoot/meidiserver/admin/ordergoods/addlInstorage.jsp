@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>
-
+ 
 <%
 	List<BranchType> listgt = BranchTypeManager.getLocate(); 
 //System.out.println(statues+"&&"+type);

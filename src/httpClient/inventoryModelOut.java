@@ -39,12 +39,12 @@ public class inventoryModelOut {
 	public static String getHtmlStringOut(URI uri, String starttime, String endtime,int page,MyMainClient mc) {
 		String str = "";   
 		//logger.info(starttime);
-		//logger.info(endtime);
-		try {      
+		//logger.info(endtime); 
+		try {        
 			HttpUriRequest selectPost = RequestBuilder
-					.post()  
+					.post()    
 					.setUri(uri)   
-					.addParameter("flage", "3") 
+					.addParameter("flage", "4") 
 					.addParameter("formName", "reportQueryConditon")
 					.addParameter("receiveCode","")
 					.addParameter("receivedDate1", 
@@ -307,9 +307,9 @@ public class inventoryModelOut {
 			if(StringUtill.isNull(responseContent)){  
 				MyLogin.loginpost(new URI(MyLogin.url));
 				responseContent = getHtmlStringOut(uri, starttime, endtime,1,mc);
-			}    
+			}     
 			int num = getNum(responseContent); 
-			//logger.info(num); 
+			logger.info(num); 
 			for(int i=1;i<=num;i++){     
 				responseContent = getHtmlStringOut(uri, starttime, endtime,i,mc);
 				Document doc = MyJsoup.getDocumnetByStr(responseContent);

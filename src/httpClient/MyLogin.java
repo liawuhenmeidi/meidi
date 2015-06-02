@@ -23,17 +23,18 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
    
- 
 public class MyLogin { 
 	protected static Log logger = LogFactory.getLog( MyLogin.class); 
+	
 	public  static String url = "https://passport.suning.com/ids/login";
 	//public  static String url = "http://scs.suning.com/sps/portal/showPortalPage.action";
+	
 	public static boolean loginpost(URI uri) {  
     	// 创建默认的httpClient实例.     	   
-        try{   
+        try{    
         	String uuid = UUID.randomUUID().toString();
         	HttpUriRequest login = RequestBuilder.post()
-            .setUri(uri)   
+            .setUri(uri)     
             .addParameter("service", "https://scs.suning.com/sps/auth?targetUrl=http%3A%2F%2Fscs.suning.com%2Fsps%2Fmember%2Flogon.do")
             .addParameter("uuid", uuid) 
             .addParameter("loginTheme", "scs")   
@@ -105,13 +106,13 @@ public class MyLogin {
 	
 	public static boolean loginget(URI uri) {  
     	// 创建默认的httpClient实例.     	
-        try{ 
+        try{  
         	//logger.info(1);
         	String uuid = UUID.randomUUID().toString();
         	HttpUriRequest login = RequestBuilder.post()
             .setUri(uri)
             .addParameter("service", "https://scs.suning.com/sps/auth?targetUrl=http%3A%2F%2Fscs.suning.com%2Fsps%2Fmember%2Flogon.do")
-            .addParameter("uuid", uuid)
+            .addParameter("uuid", uuid) 
             .addParameter("loginTheme", "scs") 
             .addParameter("username", MyMainClient.getCacheUsername()) 
             .addParameter("password", MyMainClient.getCachePassword())
@@ -138,17 +139,15 @@ public class MyLogin {
 	            		URL url = new URL(locationURL);
 	            		
 	            		URI uri2 = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
-	            	//	logger.info(uri2 ); 
+	            	//	logger.info(uri2 );
+		            	logger.info(uri2);  
 	            		loginget(uri2); 
-	            	}
-	            	 
-	            }else{
-	            	//return false;
+	            	}   
+	            }else if(statusCode == HttpStatus.SC_NOT_FOUND){
+	            	Thread.sleep(10*1000); 
+	            	logger.info(uri); 
+	            	loginpost(new URI(MyLogin.url)); 
 	            }
-	           
-	            
-	           
-	            
 	        } catch (Exception e) {  
 	        	logger.info(e); 
 	        } finally {  

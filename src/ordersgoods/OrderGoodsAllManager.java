@@ -525,7 +525,8 @@ public class OrderGoodsAllManager {
 		}
 		return list;
 	}
-
+	 
+    // 获取未开单发货单据
 	public static List<OrderGoodsAll> getlist(User user, int opstatues,
 			String[] ids, String[] statues) {
 		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
@@ -620,7 +621,8 @@ public class OrderGoodsAllManager {
 		return map;
 
 	}
-
+    
+	
 	public static Map<Integer, Map<Integer, OrderGoodsAll>> getsendMap(
 			User user, int billingstatues, String ids) {
 		Map<Integer, Map<Integer, OrderGoodsAll>> map = new HashMap<Integer, Map<Integer, OrderGoodsAll>>();

@@ -99,9 +99,9 @@ function add(){
 	        type: "post",   
 	         url: "../../admin/server.jsp",    
 	         data:"method=inventoryallSN&branch="+branchid+"&product="+product+"&isSN=isSN",
-	         dataType: "",        
+	         dataType: "",         
 	         success: function (data) { 
-	        	 //alert(data);    
+	        	 alert(data);    
 	        	 var addstr =  '<thead>'+ 
 	     		  '<tr>'+   
 	     		        '<th align="left">订单号</th>'+

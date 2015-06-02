@@ -4,19 +4,23 @@
 <%  
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user"); 
-String userbranch = user.getBranch();   
 String category = request.getParameter("category"); 
 String branch = request.getParameter("branch");
-String time = request.getParameter("time");
-int branchid = -1 ;
+String time = request.getParameter("time"); 
+ 
+
+int branchid = -1 ; 
+int branchtype = -1 ; 
 if(StringUtill.isNull(time)){
 	time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
-}    
+}     
 if(!StringUtill.isNull(branch)){  
 	//branch = new String(branch.getBytes("ISO8859-1"), "UTF-8");
-	  
+	   
 	//System.out.println(branch);
 	branchid = BranchService.getNameMap().get(branch).getId(); 
+	branchtype =  BranchService.getNameMap().get(branch).getPid();
+	
 }  
 //boolean flag = UserManager.checkPermissions(user, Group.ordergoods, "f"); 
 Category c = CategoryManager.getCategory(category);
@@ -27,31 +31,34 @@ String allp = StringUtill.GetJson(listp);
      
 List<String> listbranchp = BranchService.getListStr(); 
 String listall = StringUtill.GetJson(listbranchp); 
-    
+
+
 //List<InventoryBranch> list = InventoryAllManager.getlist(user,branchid,
-	//	category);     
+	//	category);      
            
 //long start = System.currentTimeMillis();
 // Map<String, Map<String, Map<Integer, InventoryBranch>>> mapin = null;
 
- // System.out.println(System.currentTimeMillis() - start);
+ // System.out.println(System. currentTimeMillis() - start);
 //System.out.println(mapin);       
  // System.out.println(mapin ); 
     
 Collection<httpClient.download.Inventory> listend = InventoryChange
 				.get(TimeUtill.dataAdd(time, 1));
 		// System.out.println("listend"+listend.size());
-Map<String, httpClient.download.Inventory> mapc = InventoryChange
-				.changeMap(listend);  
- 
-Map<String, httpClient.download.Inventory> mapm = InventoryModelDownLoad
-				.getMap(user, TimeUtill.dataAdd(time, 1));
-		  
-Map<String, httpClient.download.Inventory> mapbad = InventoryBadGoodsDownLoad
-.getMap(user, TimeUtill.dataAdd(time, 1));
+Map<String,Map<String, httpClient.download.Inventory>>  mapc = InventoryChange
+				.changeMapTypeBranch(listend);   
      
+Map<String,Map<String, httpClient.download.Inventory>> mapm = InventoryChange
+.changeMapTypeBranchNum(InventoryModelDownLoad
+		.getMap(user, TimeUtill.dataAdd(time, 1)).values());   
+
+Map<String,Map<String, httpClient.download.Inventory>> mapbad = InventoryChange
+.changeMapTypeBranch(InventoryBadGoodsDownLoad
+		.getMap(user, TimeUtill.dataAdd(time, 1)).values()); 
+         
 //System.out.println("mapbad.size()"+mapbad.size());
-Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryAllManager.getInventoryMap(user,category,branch,time,mapc,mapm,mapbad);  		 
+Map<String, Map<Integer, Map<Integer, InventoryBranch>>> mapin = InventoryAllManager.getInventoryMap(user,category,branch,time,mapc,mapm,mapbad);  		 
 //System.out.println("mapbad.size()"+mapbad.size()); 
 		  
 %>
@@ -70,12 +77,12 @@ td {
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>产品管理</title>
-
-
-
+   
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript" src="../../js/calendar.js"></script>
+<script type="text/javascript" src="../../js/cookie/jquery.cookie.js"></script>
+ 
 <link rel="stylesheet" type="text/css" rev="stylesheet"
 	href="../../style/css/bass.css" /> 
  
@@ -84,26 +91,26 @@ td {
 <script type="text/javascript">
 var jsonall = <%=listall%>;
 var allp = <%=allp%>; 
-
- var row = 1; 
- var rows = new Array(); 
- var winPar = null;
-  var typeid = ""; 
+ var row = 1;   
+ var rows = new Array();  
+ var winPar = null; 
+  var typeid = "";  
   var branch = "<%=branch%>"; 
-  var userbranch = "<%=userbranch%>";
-    
- $(function () {  
+  var branchtype = "<%=branchtype%>"; 
+  var tids = new Array();
+        
+ $(function () {   
 	 $("#branch").autocomplete({ 
 		 source: jsonall
 	    });
 	 //allp
 	 //add();
      
- });  
-  
+ });         
+   
  function startRequest(ctype,branchid){ 
 	 var time = $("#time").val();
-	 if("fresh" == time){
+	 if("fresh" == time){ 
 		 var starttime = $("#starttime").val(); 
 		 var endtime = $("#endtime").val(); 
 		 window.location.href='inventoryDetail.jsp?ctype='+ctype+'&branchid='+branchid+'&starttime='+starttime+'&endtime='+endtime; 
@@ -118,17 +125,54 @@ var allp = <%=allp%>;
 	 //window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 window.location.href='inventorysearch.jsp?id='+inventory;
  }
+               
+ function addtid (tid){
+	 tids.push(tid);     
+	 $("#"+tid).attr("class","bsc");
+	 $("#l"+tid).css("display","none");
+	 
+	 //   
+	 if(null == winPar){  
+		 winPar = window.open("../ordergoods/ordergoodsupdatecookie.jsp?inventory=inventory&branch="+branch+"&tids="+tids.toString()+"&branchtype="+branchtype,"time","resizable=yes,modal=yes,scroll=no,width="+screen.width*0.8+",top="+(screen.height-300)/2+",left="+(screen.width*0.1)+",height=400px,dialogTop:0px,scroll=no");  	
+	 }else {    
+		 if(winPar.closed){    
+			 window.location.reload();
+			 //tids = new Array();  
+			// tids.push(tid);     
+			      
+			//  alert($("#"+tid));   
+			// $("#"+tid).attr("class","bsc");
+			// $("#l"+tid).css("display","none");
+			  
+			// winPar = window.open("../ordergoods/ordergoodsupdate.jsp?inventory=inventory&branch="+branch+"&tids="+tids.toString()+"&branchtype="+branchtype,"time","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	 
+			 //winPar.location.href="../ordergoods/ordergoodsupdate.jsp?inventory=inventory&branch="+branch+"&tids="+tids.toString()+"&branchtype="+branchtype; 
+		 }else {   
+			 winPar.close();  
+			 winPar = window.open("../ordergoods/ordergoodsupdatecookie.jsp?inventory=inventory&branch="+branch+"&tids="+tids.toString()+"&branchtype="+branchtype,"time","resizable=yes,modal=yes,scroll=no,width="+screen.width*0.8+",top="+(screen.height-300)/2+",left="+(screen.width*0.1)+",height=400px,dialogTop:0px,scroll=no");  	 
+		 }
+		
+	 }
+   
+ }
    
  function search(ctype,branchid){  
-	 $("#time").val(""); 
+	 $("#time").val("");  
 	 $("#starttime").val(""); 
 	 $("#endtime").val("");  
-	 winPar = window.open("time.jsp","time","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
-	
+	 winPar = window.open("time.jsp","time","resizable=yes,modal=yes,scroll=no,width=700px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
 	 setInterval("startRequest('"+ctype+"','"+branchid+"')",500);  
- } 
-   
-
+ }  
+     
+ function changecolor(obj){
+	 if($(obj).attr("checked")){ 
+		 $("#"+$(obj).val()).attr("class","dsc");
+		 $("#l"+$(obj).val()).css("display","none");
+	 }else { 
+		 $("#"+$(obj).val()).attr("class","asc");
+		 $("#l"+$(obj).val()).css("display","block");
+	 }
+	 ;
+ }
 
 function serchclick(category,type,branchid,obj){
 	 categoryid = category;
@@ -137,28 +181,25 @@ function serchclick(category,type,branchid,obj){
 	 updateClass(obj);  
  } 
  
-function pandian(type,branchid){
-	$.ajax({   
-         type: "post", 
-         url: "../server.jsp",    
-         data:"method=pandian&branchid="+branchid+"&type="+type,
-         dataType: "",   
-         success: function (data) { 
-        	 add();
 
-            },  
-         error: function (XMLHttpRequest, textStatus, errorThrown) { 
-            } 
-           });
-}
  
 	function addlInstorage(branchid, type) {
 		window.location.href = '../ordergoods/addlInstorage.jsp?branchid='
 				+ branchid + '&type=' + type;
 	} 
+	  
+	function winfirm(){ 
+		var branch = $("#branch").val();
+		//alert(branch); 
+		if(null == branch || "" == branch){
+			$("#mypost").attr("action","inventory1checkall.jsp");
+		}  
+		$("#mypost").submit();  
+		
+	} 
 </script>
 </head>
-
+ 
 <body>
 	<!--   头部开始   -->
 	<jsp:include flush="true" page="../head.jsp">
@@ -170,10 +211,10 @@ function pandian(type,branchid){
 	<input type="hidden" id="time" value="" />
 	<input type="hidden" id="starttime" value="" />
 	<input type="hidden" id="endtime" value="" />
-<form action="inventory1check.jsp"> 
+<form action="inventory1check.jsp" id="mypost" > 
 <input type="hidden" name="category" value="<%=category%>"/>
 	<table width="100%" id="head">  
-		<tr>  
+		<tr>   
 			<td>现在位置：<%=c.getName()%>库存</td>
 			<td>仓库:<input type="text" name="branch" id="branch" value="<%=branch %>" />
 			</td>  
@@ -181,16 +222,12 @@ function pandian(type,branchid){
 						value="<%=time%>" size="10" maxlength="10"
 						onclick="new Calendar().show(this);" placeholder="必填"
 						 /></td> 
-			<td><input type="submit" name="" value="查询" /></td>
+			<td><input type="button" onclick="winfirm()" value="查询" /></td>
              
 			<td><a href="javascript:history.go(-1);"><font
 					style="color:blue;font-size:20px;">返回</font>
 			</a></td>
 		</tr>
-
-
-
-
 
 	</table>
 </form> 
@@ -211,16 +248,18 @@ function pandian(type,branchid){
 					<th align="left">常规特价实货未入库</th>
 					<th align="left">样机未入库</th> 
 					<th align="left">入库样机</th> 
-					<th align="left">入库坏机</th> 
+					
 					<th align="left">苏宁系统库存</th>
+					<th align="left">入库坏机</th> 
 					<th align="left">上次盘点日期</th>
-					<th align="left">盘点</th> 
+					<th align="left">调账调拨</th>
+					<th align="left">盘点</th>  
 				</tr> 
-			</thead>
+			</thead> 
          <%  
           
          //long start1 = System.currentTimeMillis(); 
-          int count = 0 ; 
+          int count = 0 ;  
           int outnumall = 0 ; 
   		 int inmodelnumall = 0 ;    
   		 int outmodelnumall = 0 ;   
@@ -230,27 +269,35 @@ function pandian(type,branchid){
   		  
          Map<Integer, Product>  maps =  ProductService.getIDmap();
          if(null != mapin && !mapin.isEmpty()){  
-        	 Set<Map.Entry<Integer, Map<String, Map<Integer, InventoryBranch>>>> set = mapin.entrySet();
-        	 Iterator<Map.Entry<Integer, Map<String, Map<Integer, InventoryBranch>>>> it = set.iterator();
-             while(it.hasNext()){ 
-            	 Map.Entry<Integer, Map<String, Map<Integer, InventoryBranch>>> mapent = it.next();
-            	 Map<String, Map<Integer, InventoryBranch>> mapb = mapent.getValue();
+        	 Set<Map.Entry<String, Map<Integer, Map<Integer, InventoryBranch>>>> set = mapin.entrySet();
+        	 Iterator<Map.Entry<String, Map<Integer, Map<Integer, InventoryBranch>>>> it = set.iterator();
+             while(it.hasNext()){  
+            	 Map.Entry<String, Map<Integer, Map<Integer, InventoryBranch>>> mapent = it.next();
+            	 String type = mapent.getKey();
+            	 Map<Integer, Map<Integer, InventoryBranch>> mapb = mapent.getValue();
+
           //System.out.println(1);  
        //  System.out.println( mapb ); 
        //  System.out.println( mapb.size() ); 
+       
+        
+       
+       
+       
+       
           
-            	 Set<Map.Entry<String, Map<Integer, InventoryBranch>>> setb = mapb.entrySet();
-            	 Iterator<Map.Entry<String, Map<Integer, InventoryBranch>>> itb = setb.iterator();
-            	 
+            	 Set<Map.Entry<Integer, Map<Integer, InventoryBranch>>> setb = mapb.entrySet();
+            	 Iterator<Map.Entry<Integer, Map<Integer, InventoryBranch>>> itb = setb.iterator();
+            	  
             	
-            	   
+            	  
             	 //long start11 = System.currentTimeMillis();      
             	 while(itb.hasNext()){  
-            		 
+            		  
             		 //System.out.println(2); 
-            		 Map.Entry<String, Map<Integer, InventoryBranch>> mapentb = itb.next();
+            		 Map.Entry<Integer, Map<Integer, InventoryBranch>> mapentb = itb.next();
             		 Map<Integer, InventoryBranch> mapt = mapentb.getValue();
-            		 String type = mapentb.getKey(); 
+            		 int bid  = mapentb.getKey(); 
             		 //long start111 = System.currentTimeMillis();  
             		 String cname = "";
             		 String tname = "";
@@ -260,7 +307,7 @@ function pandian(type,branchid){
             		 int outnum = 0 ;
             		 int inmodelnum = 0 ;  
             		 int outmodelnum = 0 ; 
-            		 int snnum = 0 ; 
+            		 int snnum = 0 ;  
             		 int snbad = 0 ;
             		 String querytime = "";  
             		 Set<Integer> sb = new HashSet<Integer>();  
@@ -278,9 +325,6 @@ function pandian(type,branchid){
                  			 cname = maps.get(Integer.valueOf(type)).getCname();
                      		 tname =maps.get(Integer.valueOf(type)).getType();
                  		 }
-            			 
-            			 
-            			 
             			 //System.out.println(in.getTypeStatues()); 
             			 if(in.getTypeStatues() == 1){ 
             				 outnum += in.getPapercount(); 
@@ -318,7 +362,7 @@ function pandian(type,branchid){
             		 
             		   
             		 %>  
-            		 <tr class="asc">
+            		 <tr class="asc" id="<%=type %>">
             		    <td><%=count %></td> 
             		 <td><%=cname %></td> 
             		  <td><%=tname %></td>  
@@ -326,11 +370,12 @@ function pandian(type,branchid){
             		  <td><%=outmodelnum %></td>
             		  <td><%=inmodelnum %></td> 
             		   <td><%=snnum %></td> 
-            		      <td><%=snbad %></td> 
-            		   <td><%=querytime%></td>
-            		   <td ><input type="checkbox" name="type" value="<%=type %>"></input></td>
-            		 </tr> 
-    
+            		      <td><%=snbad %></td>  
+            		   <td><%=querytime%></td> 
+            		    <td><label id="l<%=type %>"  onclick="addtid('<%=type %>')">[调拨单]</label></td> 
+            		   <td ><input type="checkbox" name="type"  value="<%=type %>" onclick="changecolor(this)"></input></td>
+            		 </tr>  
+     
             		 <% 
             		  
             	 }  
@@ -354,77 +399,89 @@ function pandian(type,branchid){
          
           
          
-       int countb = 0 ;
-       Set<Map.Entry<String, httpClient.download.Inventory>> setm = mapm
+       int countb = 0 ; 
+       Set<Map.Entry<String,Map<String, httpClient.download.Inventory>>> setm = mapm
  				.entrySet();
- 		Iterator<Map.Entry<String, httpClient.download.Inventory>> itm = setm
+ 		Iterator<Map.Entry<String,Map<String, httpClient.download.Inventory>>> itm = setm
  				.iterator();
  		while (itm.hasNext()) { 
- 			Map.Entry<String, httpClient.download.Inventory> mapentc = itm
+ 			Map.Entry<String,Map<String, httpClient.download.Inventory>> mapentc = itm
  					.next();
  			
- 			String key = mapentc.getKey(); 
+ 			String type = mapentc.getKey(); 
+ 			
  			//countb++;
- 			httpClient.download.Inventory in = mapentc.getValue();
+ 			Map<String, httpClient.download.Inventory> inmap = mapentc.getValue(); 
+ 			
+ 			Collection<httpClient.download.Inventory> co = inmap.values();
+ 			
+ 			Iterator<httpClient.download.Inventory> it = co.iterator();
  			int tid = -1;
  			int bid = -1;
  			String tname = "";
  			String bname = "";
  			boolean flag = true ;
+ 			
+ 			while(it.hasNext()){
+ 				int cnum = 0;
+ 	 			int badnum = 0 ;
+ 	 			
+ 				httpClient.download.Inventory in = it.next();
+ 				try {
+ 	 				 
+ 	 				
+ 	 				bname = BranchService.getNumMap().get(in.getBranchNum())
+ 	 						.getLocateName();
+ 	 				bid = BranchService.getNumMap().get(in.getBranchNum()).getId();
+ 	 			} catch (Exception e) {
+ 	 				//logger.info(in.getBranchNum());
+ 	 				bname = "";
+ 	 				flag = false ;
+ 	 			}
+ 	            
+ 	 			try { 
+ 	 				tname = in.getGoodpName();
+ 					tid = ProductService.gettypeNUmmap().get(in.getGoodNum())
+ 							.getId();
+ 				} catch (Exception e) {
+ 					tname = in.getGoodpName();
+ 					flag = false ;
+ 				}
+ 
+ 			
  			 
  			// logger.info(in.getBranchName());
  			 
- 			try {
- 				
- 				
- 				bname = BranchService.getNumMap().get(in.getBranchNum())
- 						.getLocateName();
- 				bid = BranchService.getNumMap().get(in.getBranchNum()).getId();
- 			} catch (Exception e) {
- 				//logger.info(in.getBranchNum());
- 				bname = "";
- 				flag = false ;
- 			}
-            
- 			try { 
- 				tname = in.getGoodpName();
-				tid = ProductService.gettypeNUmmap().get(in.getGoodNum())
-						.getId();
-			} catch (Exception e) {
-				tname = in.getGoodpName();
-				flag = false ;
-			}
  			
- 			int cnum = 0;
- 			int badnum = 0 ;
+ 			
  			
  			
  			if (StringUtill.isNull(branch) || branch.equals(bname)) {
  				
- 	 				
+ 	 				 
  				try { 
- 	 				cnum = mapc.get(key).getNum();
+ 	 				cnum = mapc.get(type).get(in.getBranchNum()).getNum();
  	 				//ccount++;
- 	 				mapc.remove(key); 
+ 	 				mapc.get(type).remove(in.getBranchNum()); 
  	 			} catch (Exception e) {
  	 				cnum = 0;
  	 			}
  				
  				try { 
- 	 				badnum = mapbad.get(key).getNum();
+ 	 				badnum = mapbad.get(type).get(in.getBranchNum()).getNum();
  	 				//ccount++;
- 	 				mapbad.remove(key); 
+ 	 				mapbad.get(type).remove(in.getBranchNum()); 
  	 			} catch (Exception e) {
  	 				badnum = 0;
  	 			}
  				// logger.info(bname);
  				// logger.info(in.getBranchNum());
  				//countb++;
- 				 count++;  
+ 				 count++;   
  				 snnumall += cnum;   
             	 inmodelnumall += in.getNum(); 
  				 %>   
-        		 <tr class="asc">
+        		 <tr class="asc" id="<%=tid %>">
         		 <td><%=count %></td>  
         		 <td><%=in.getGoodGroupName() %></td> 
         		  <td><%=tname %></td>  
@@ -434,12 +491,21 @@ function pandian(type,branchid){
         		   <td><%=cnum %></td> 
         		   <td><%=badnum %></td> 
         		    <td></td>
-        		   <td >
+        		    <td>
+    		    <% if(flag){
+    		    	
+    		    	%>
+    		    	 <label id="l<%=tid %>" onclick="addtid('<%=tid %>')">[调拨单]</label>
+    		    	
+    		    	<%
+    		    } %>
+    		  </td> 
+        		   <td > 
         		   <% 
         		   if(flag){
-        			     
+        			      
         			   %> 
-        			   <input type="checkbox" name="type" value="<%=tid %>"></input>
+        			   <input type="checkbox" name="type" value="<%=tid %>" onclick="changecolor(this)"></input>
         			   
         			   <%
         		   }
@@ -452,20 +518,27 @@ function pandian(type,branchid){
         		 <%
  			}
  		}   
-          
+ 
+	}
  		System.out.println("mapc.size()"+mapc.size());
  		System.out.println("mapm.size()"+mapm.size());   
  		System.out.println("mapbad.size()"+mapbad.size()); 
          
-        Set<Map.Entry<String, httpClient.download.Inventory>> setc = mapc
+        Set<Map.Entry<String,Map<String, httpClient.download.Inventory>>> setc = mapc
 				.entrySet();
-		Iterator<Map.Entry<String, httpClient.download.Inventory>> itc = setc
+		Iterator<Map.Entry<String,Map<String, httpClient.download.Inventory>>> itc = setc
 				.iterator();
 		while (itc.hasNext()) {
-			Map.Entry<String, httpClient.download.Inventory> mapentc = itc
+			Map.Entry<String,Map<String, httpClient.download.Inventory>> mapentc = itc
 					.next();
 			String key = mapentc.getKey();
-			httpClient.download.Inventory in = mapentc.getValue();
+			Map<String, httpClient.download.Inventory> inmap = mapentc.getValue();
+			Collection<httpClient.download.Inventory> co = inmap.values();
+			Iterator<httpClient.download.Inventory> it = co.iterator();
+			while(it.hasNext()){
+				httpClient.download.Inventory in = it.next();
+				
+		
 			//itc.remove();
 			int bid = -1;
 			int tid = -1;
@@ -498,8 +571,8 @@ function pandian(type,branchid){
 				//	logger.info(in.getGoodNum());
 				 ccount++; 
 				 snnumall += in.getNum();   
-				 %>      
-    		 <tr class="asc">
+				 %>       
+    		 <tr class="asc" id="<%=tid %>">
     		 <td><%=count %></td>  
     		 <td><%=in.getGoodGroupName() %></td> 
     		  <td><%=tname %></td>  
@@ -507,15 +580,24 @@ function pandian(type,branchid){
     		  <td><%=0 %></td>  
     		  <td><%=0%></td>   
     		   <td><%=in.getNum() %></td> 
-    		    <td></td>
+    		    <td>0</td>
     		   <td></td>  
+    		  <td>
+    		    <% if(flag){
+    		    	
+    		    	%>
+    		    	 <label id="l<%=tid %>" onclick="addtid('<%=tid %>')">[调拨单]</label>
+    		    	
+    		    	<%
+    		    } %>
+    		  </td> 
     		   <td >
     		    
     		    <% 
         		   if(flag){
         			      
         			   %> 
-        			   <input type="checkbox" name="type" value="<%=tid %>"></input>
+        			   <input type="checkbox" name="type" value="<%=tid %>" onclick="changecolor(this)"></input>
         			   
         			   <%
         		   }
@@ -530,16 +612,21 @@ function pandian(type,branchid){
 				
 			}
 		}   
-        
-		Set<Map.Entry<String, httpClient.download.Inventory>> setbad = mapbad
+		}
+		Set<Map.Entry<String,Map<String, httpClient.download.Inventory>>> setbad = mapbad
 				.entrySet();
-		Iterator<Map.Entry<String, httpClient.download.Inventory>> itbad = setbad
+		Iterator<Map.Entry<String,Map<String, httpClient.download.Inventory>>> itbad = setbad
 				.iterator();
 		while (itbad.hasNext()) {
-			Map.Entry<String, httpClient.download.Inventory> mapentc = itbad
+			Map.Entry<String,Map<String, httpClient.download.Inventory>> mapentc = itbad
 					.next();
 			String key = mapentc.getKey();
-			httpClient.download.Inventory in = mapentc.getValue();
+			Map<String, httpClient.download.Inventory> inmap = mapentc.getValue();
+			 Collection<httpClient.download.Inventory> co = inmap.values();
+			 Iterator<httpClient.download.Inventory> it = co.iterator();
+			 while(it.hasNext()){
+				 httpClient.download.Inventory in = it.next();
+			
 			//itc.remove();
 			int bid = -1;
 			int tid = -1;
@@ -573,7 +660,7 @@ function pandian(type,branchid){
 				 ccount++; 
 				 snbadall += in.getNum();   
 				 %>      
-    		 <tr class="asc">
+    		 <tr class="asc" id="<%=tid %>">
     		 <td><%=count %></td>  
     		 <td><%=in.getGoodGroupName() %></td> 
     		  <td><%=tname %></td>  
@@ -582,25 +669,34 @@ function pandian(type,branchid){
     		  <td><%=0%></td>   
     		   <td><%=0 %></td> 
     		    <td><%=in.getNum() %></td>
-    		   <td></td>  
+    		   <td></td> 
+    		   <td> 
+    		    <% if(flag){
+    		    	
+    		    	%>
+    		    	 <label id="l<%=tid %>" onclick="addtid('<%=tid %>')">[调拨单]</label>
+    		    	
+    		    	<%
+    		    } %>
+    		  </td>  
     		   <td >
     		    
     		    <% 
         		   if(flag){
         			      
         			   %> 
-        			   <input type="checkbox" name="type" value="<%=tid %>"></input>
+        			   <input type="checkbox" name="type" value="<%=tid %>" onclick="changecolor(this)"></input>
         			   
         			   <%
         		   }
         		   
         		   
-        		   %>
+        		   %> 
     		   </td>
     		 </tr>
 
     		 <% 
-
+			 }
 				
 			}
 		} 
@@ -615,12 +711,13 @@ function pandian(type,branchid){
 		   <td><%=snnumall %></td> 
 		   <td><%=snbadall %></td>
 		    <td></td>
-		   <td ></td> 
+		   <td ></td>  
+		    <td ></td> 
 		 </tr>
 		      
 		 <tr class="asc"> 
-		 <td colspan=10 align="center"><input type="submit" value="提交"/> </td>
-		 
+		 <td colspan=11 align="center"><input type="submit" value="提交"/> </td>
+		    
 		  </tr>
 		</table>
 

@@ -169,7 +169,7 @@ public class ProductSN {
 			while(it.hasNext()){      
 				Product p = it.next();  
 				Product DBp = null ;
-				String sqlnew = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size,stockprice,mataintime,matainids,encoded,saleType) VALUES (null, null,'"
+				/*String sqlnew = "insert into mdproduct(id, name, ptype,categoryID,pstatues,size,stockprice,mataintime,matainids,encoded,saleType) VALUES (null, null,'"
 						+ p.getType() 
 						+ "','"   
 						+ 555  
@@ -185,9 +185,9 @@ public class ProductSN {
 						+ p.getEncoded() + "','" + 1 + "')";
 						
 						      
-				li.add(sqlnew);		
+				li.add(sqlnew);		*/
 						  
-						   
+						    
 				Product DBpp = map.get(p.getEncoded());
 				if(null != DBpp){
 					map.remove(p.getEncoded()); 

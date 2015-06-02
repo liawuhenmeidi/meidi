@@ -17,6 +17,8 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import branch.BranchService;
 import database.DB;
 import user.User;
 import user.UserService;
@@ -52,8 +54,8 @@ public class OrderGoodsManager {
 	   String sql = "update mdordergoods set oid = '"+os.getOrderNum()+"' , effectiveendtime = '"+os.getEndtime()+"' where tid ="+tid+"  and mid in (select id from mdordermessage where branchid = "+bid  + ") and oid is null and opstatues = 2 and statues = "+os.getGoodtypeStatues()+" and  ordernum <= " +os.getNum(); 
 	     
 	   return sql ;
-	   
-   }
+	    
+   } 
     
    
    public static List<String> save(User user ,OrderGoodsAll oa){
@@ -122,6 +124,39 @@ public class OrderGoodsManager {
 			DB.close(conn);
 		}
 	   return list ;
+   } 
+    
+   public static Map<String,OrderGoods> getmapphone(User user){
+	   String bnum = BranchService.getMap().get(Integer.valueOf(user.getBranch())).getEncoded();
+	   Map<String,OrderGoods> map = new  HashMap<String,OrderGoods>(); 
+	  
+	   Connection conn = DB.getConn(); 
+	    
+	   String sql = " select * from mdordergoods where mid in  (select id from mdordermessage where branchid = "+user.getBranch()+")";
+		 logger.info(sql);
+		Statement stmt = DB.getStatement(conn); 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {  
+			while (rs.next()) {
+				OrderGoods og = getOrderGoodsFromRs(rs);
+				String pnum =og.getProduct().getEncoded();
+				String key = bnum+"_"+pnum;
+				OrderGoods ogm = map.get(key);
+				if(null == ogm){
+					map.put(key, og);
+				}else {
+					ogm.setOrdernum(ogm.getOrdernum()+og.getOrdernum());
+				}
+
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+	   return map ;
    }
    
    public static List<OrderGoods> getlist(User user,String uuid){

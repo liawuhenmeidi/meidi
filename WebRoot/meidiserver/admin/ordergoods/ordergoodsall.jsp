@@ -12,7 +12,7 @@ List<BranchType> listgt = BranchTypeManager.getLocate();
 Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.unexamine);
         
 Map<Integer,List<InventoryBranch>>  mapin = InventoryBranchManager.getmapKeyBranchType(user,branchtype);
-  
+   
  // System.out.println(StringUtill.GetJson(map));
 %>
 <!DOCTYPE html>

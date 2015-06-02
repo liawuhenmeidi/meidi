@@ -214,6 +214,48 @@ public class InventoryChange {
 		// logger.info(map.size());
 		return map;
 	}
+	// type branch 
+	public static Map<String,Map<String, Inventory>> changeMapTypeBranch(Collection<Inventory> list) {
+		Map<String,Map<String, Inventory>> map = new HashMap<String,Map<String, Inventory>>();
+		if (!list.isEmpty()) {
+			Iterator<Inventory> it = list.iterator();
+			while (it.hasNext()) {
+				Inventory in = it.next();
+				
+				Map<String, Inventory> mapb = map.get(in.getGoodNum());
+				if(null == mapb){ 
+					mapb = new HashMap<String, Inventory>();
+					map.put(in.getGoodNum(), mapb);  
+				}
+				
+				mapb.put(StringUtill.getStringNocn(in.getBranchName()), in);
+			}
+		}
+
+		// logger.info(map.size());
+		return map;
+	} 
+	
+	public static Map<String,Map<String, Inventory>> changeMapTypeBranchNum(Collection<Inventory> list) {
+		Map<String,Map<String, Inventory>> map = new HashMap<String,Map<String, Inventory>>();
+		if (!list.isEmpty()) {
+			Iterator<Inventory> it = list.iterator();
+			while (it.hasNext()) {
+				Inventory in = it.next();
+				
+				Map<String, Inventory> mapb = map.get(in.getGoodNum());
+				if(null == mapb){ 
+					mapb = new HashMap<String, Inventory>();
+					map.put(in.getGoodNum(), mapb);  
+				}
+				 
+				mapb.put(in.getBranchNum(), in);
+			}
+		}
+
+		// logger.info(map.size());
+		return map;
+	}
 
 	public static Map<String, Inventory> changeMap(Collection<Inventory> list,
 			String branch, String type) {
@@ -320,11 +362,11 @@ public class InventoryChange {
 	// 型号 , 状态
 	public static Map<String, List<Inventory>> getMapBranchType(User user,
 			String startTime, int branchid) {
-		// startTime = "2015-05-03";
+		// startTime = "2015-05-03";　
 		// List<Inventory> list = new ArrayList<Inventory>();
 		Branch branch = BranchService.getMap().get(branchid);
 		Map<String, List<Inventory>> map = new HashMap<String, List<Inventory>>();
-		if (branch.getBranchtype().getSaletype() == SaleModel.Model.苏宁
+		if (null != branch &&branch.getBranchtype().getSaletype() == SaleModel.Model.苏宁
 				.getValue()) {
 			String bnum = branch.getEncoded();
 			Map<String, Product> mapp = ProductService.gettypeNUmmap(branch
@@ -470,13 +512,13 @@ public class InventoryChange {
 								in.setATP(Integer.valueOf(str));
 							} else if (i == 18) {
 								in.setNum(Integer.valueOf(str));
-							}
-						}
-
+							} 
+						} 
+                         
 						String bnu = StringUtill.getStringNocn(in
 								.getBranchName());
-
-						if (bnum.equals(bnu)) {
+ 
+						if (bnum.equals(bnu) || StringUtill.isNull(bnu) && bnum.equals("D011")) {
 
 							String key = in.getGoodNum();
 

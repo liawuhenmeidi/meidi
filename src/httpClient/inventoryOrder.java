@@ -71,14 +71,14 @@ public class inventoryOrder {
 		}
 
 		return str;
-	} 
- 
+	}  
+  
 	public static String getHtmlStringOut(URI uri, String starttime,
-			String endtime, int page, MyMainClient mc) {
+			String endtime, String page, MyMainClient mc) {
 		String str = ""; 
 		// logger.info(starttime);
 		// logger.info(endtime);
-		try {
+		try { 
 			HttpUriRequest selectPost = RequestBuilder.post().setUri(uri)
 					.addParameter("flage", "1")
 					.addParameter("formName", "reportQueryConditon")
@@ -93,7 +93,7 @@ public class inventoryOrder {
 					.execute(selectPost);
 
 			int statusCode = response2.getStatusLine().getStatusCode();
-
+logger.info("statusCode1"+statusCode); 
 			if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY
 					|| statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
 				try {
@@ -101,6 +101,9 @@ public class inventoryOrder {
 
 					response2 = MyMainClient.getHttpclient()
 							.execute(selectPost);
+					statusCode = response2.getStatusLine().getStatusCode();	
+logger.info("statusCode2"+statusCode);					
+					 
 				} catch (URISyntaxException e) {
 					logger.info(e);
 				}
@@ -280,16 +283,17 @@ public class inventoryOrder {
 	public static boolean getinventoryOut(String starttime, String endtime,
 			MyMainClient mc) {
 		try { 
-			logger.info("getinventoryOrder");
+			logger.info("getinventoryOrder"+starttime+"****"+endtime);
 			URI uri = new URI(inventoryOrder.url);
- 
+  
 			String responseContent = getHtmlStringOut(uri, starttime, endtime,
-					1, mc);  
-			// logger.info(responseContent);
+					"", mc);    
+			 
+			logger.info(StringUtill.isNull(responseContent));
 			int num = getNum(responseContent);
 			// logger.info(num);  
 			for (int i = 1; i <= num; i++) { 
-				responseContent = getHtmlStringOut(uri, starttime, endtime, i,
+				responseContent = getHtmlStringOut(uri, starttime, endtime, i+"",
 						mc);
 				Document doc = MyJsoup.getDocumnetByStr(responseContent);
 				Element en = doc.getElementById("gridTable");
@@ -424,8 +428,8 @@ public class inventoryOrder {
 	
 	public static boolean getinventoryOutModel(String starttime,
 			String endtime, MyMainClient mc) {
-		try {
-			logger.info("getinventoryOrder");
+		try { 
+			logger.info("getinventoryOrderModel"+starttime+"***"+endtime);
 			URI uri = new URI(inventoryOrder.urlModel);
 			
 			String responseContent = getHtmlStringOutModel(uri, starttime,

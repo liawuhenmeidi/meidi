@@ -121,8 +121,8 @@ public static List<InventoryBranch> getCategoryid(User user,String branch , Stri
 		} 
 		return categorys;
 	}
+  
  
-
 public static List<InventoryBranch> getCategoryid(User user,String branch , String categoryid,String typestatues) {  
 	//System.out.println(branch); 
 	String typesear = "";
@@ -130,7 +130,12 @@ public static List<InventoryBranch> getCategoryid(User user,String branch , Stri
 	Connection conn = DB.getConn();  
 	String products = user.getProductIDS();  
 	if(!StringUtill.isNull(typestatues)){ 
-		typesear = " and (typestatues in  (0,"+typestatues+") or typestatues is null) ";
+		if(typestatues.equals("-1")){
+			typesear = "";
+		}else { 
+			typesear = " and (typestatues in  (0,"+typestatues+") or typestatues is null) ";
+		}
+		
 	}   
 	String sql = ""; 
 	if(!StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
@@ -141,7 +146,7 @@ public static List<InventoryBranch> getCategoryid(User user,String branch , Stri
 		sql = "select * from mdinventorybranch where  branchid in ("+branch+") and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 )  "+typesear+" order by  id desc";  
 	}else if(StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
 		sql = "select * from mdinventorybranch where 1= 1 and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 ) "+typesear+"  order by  id desc";    
-	}    
+	}     
 logger.info(sql);	    
 	Statement stmt = DB.getStatement(conn); 
 	ResultSet rs = DB.getResultSet(stmt, sql); 

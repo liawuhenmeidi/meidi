@@ -367,7 +367,7 @@ public class InventoryBranchMessageManager {
 			c.setAllotRealcount(rs.getInt("allotRealcount"));
 			c.setInventoryid(rs.getInt("inventoryid"));
 			c.setInventoryString(rs.getString("inventoryString"));
-			c.setTypeid(rs.getString("type")); 
+			c.setTypeid(rs.getString("type"));  
 			c.setType(ProductService.getIDmap()
 					.get(Integer.valueOf(c.getTypeid())).getType());
 			c.setTime(rs.getString("time"));

@@ -308,7 +308,7 @@
 		String branch = request.getParameter("branch");
 		String category = request.getParameter("category");
 		String product = request.getParameter("product");
-		String isSN = request.getParameter("isSN");  
+		String isSN = request.getParameter("isSN");   
 		//System.out.println(product);       
 		Map<String,List<InventoryAll>> c = InventoryAllManager.getMapSN(user,branch,
 				category, product,isSN); 

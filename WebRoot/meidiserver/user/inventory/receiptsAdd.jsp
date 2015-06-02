@@ -5,7 +5,7 @@
 List<Category> categorylist = CategoryManager.getCategory(user,Category.sale); 
  
 List<Branch> listbranch = BranchManager.getLocate(); 
-
+ 
 List<String> listbranchp = BranchManager.getLocateAll();  
 String listall = StringUtill.GetJson(listbranchp); 
 
@@ -22,8 +22,8 @@ String listallpp = StringUtill.GetJson(listallp);
    
 Map<Integer,Branch> branchmap = BranchService.getMap(); 
 String inventoryid = request.getParameter("id");
-Inventory inventory = new Inventory() ;
-String invent = ""; 
+inventory.Inventory inventory = new inventory.Inventory() ;
+String invent = "";  
 Branch outbranch = new Branch();
 Branch inbranch = new Branch(); 
 String remark = ""; 

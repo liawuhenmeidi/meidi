@@ -4,44 +4,61 @@
 <%@ include file="../../common.jsp"%>
 
 <%   
-   
-String id = request.getParameter("id");   
-String message = "调货单审核"; 
+     
+String id = request.getParameter("id"); 
+String inventory  = request.getParameter("inventory"); 
+String message = "调货单审核";  
  String time = TimeUtill.getdateString();
 //System.out.println(statues+"&&"+type);
-OrderGoodsAll oa = null;  
-List<OrderGoods> list = null; 
-String branchname = "";
-String branchtype = ""; 
-String remark = "";
-  
+OrderGoodsAll oa = null;   
+List<OrderGoods> list = null;   
+String branchname = ""; 
+String branchtype = "";   
+String remark = ""; 
+String json = "[]"; 
+int branchid = -1;
 if(!StringUtill.isNull(id)){ 
 	oa = OrderGoodsAllManager.getOrderGoodsAllexamByid(user,id); 
 	branchname = oa.getOm().getBranchname(); 
 	branchtype = BranchService.getMap().get(oa.getOm().getBranchid()).getPid()+"";
 	remark = oa.getOm().getRemark();    
-	list = oa.getList();    
-}    
-
-
-
-Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,oa.getOm().getBranchid()+"");
-String jsoninventory = StringUtill.GetJson(map); 
-    
-Map<String,List<httpClient.download.Inventory>> mapsn = InventoryChange.getMapBranchType(user,time,oa.getOm().getBranchid());
+	list = oa.getList();     
+	 json = StringUtill.GetJson(list); 
+	 branchid = oa.getOm().getBranchid(); 
+}        
+       
+if(!StringUtill.isNull(inventory)){  
+	branchname = request.getParameter("branch");
+	branchtype =request.getParameter("branchtype");  
+	String tids = request.getParameter("tids"); 
+	System.out.println("branchname"+branchname+"***branchtype"+branchtype+"**tids"+tids);
+	String[] tidss = tids.split(","); 
+	list = new ArrayList<OrderGoods> ();
+	for(int i=0;i<tidss.length;i++){
+		String tid = tidss[i];
+		OrderGoods og = new OrderGoods();
+		og.setTid(Integer.valueOf(tid));
+		list.add(og); 
+	}  
+	 json = StringUtill.GetJson(list); 
+}  
  
-Map<String,List<httpClient.download.Inventory>> mapsnModel = InventoryModelDownLoad.getMapBranchType(user, time,oa.getOm().getBranchid());
+Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,branchid+"");
+String jsoninventory = StringUtill.GetJson(map);  
+     
+Map<String,List<httpClient.download.Inventory>> mapsn = InventoryChange.getMapBranchType(user,time,branchid);
+ 
+Map<String,List<httpClient.download.Inventory>> mapsnModel = InventoryModelDownLoad.getMapBranchType(user, time,branchid);
 //   
-Map<String,httpClient.download.Inventory> mapsale = SaleDownLoad.getMap(TimeUtill.dataAdd(time, -29),time,oa.getOm().getBranchid()); 
+Map<String,httpClient.download.Inventory> mapsale = SaleDownLoad.getMap(TimeUtill.dataAdd(time, -29),time,branchid); 
      
 //System.out.println(mapsn); 
 String jsoninventorysn = StringUtill.GetJson(mapsn);   
 String jsoninventorysnmodel = StringUtill.GetJson(mapsnModel); 
 String jsoninventorysnsale = StringUtill.GetJson(mapsale); 
- 
-String json = StringUtill.GetJson(list);   
+
 //String SNjson = StringUtill.GetJson(map); 
-System.out.println(json); 
+//System.out.println(json); 
 
 
 %>
@@ -63,17 +80,20 @@ td {
 	href="../../style/css/bass.css" />
 <link rel="stylesheet" href="../../css/jquery-ui.css" />
 <script type="text/javascript" src="../../js/jquery-ui.js"></script> 
+<script type="text/javascript" src="../../js/cookie/jquery.cookie.js"></script>
 <script type="text/javascript">
 var branchtype = "<%=branchtype%>";
-//alert(listallp);   
-  var jsonallp = null; 
-  var jsons = <%=json%>;
- //alert(listall);  
+//alert(listallp);    
+  var jsonallp = null;     
+  var jsons = <%=json%>; 
+ //alert(listall);   
 var jsoninventory = <%=jsoninventory%>;
 var jsoninventorysn = <%=jsoninventorysn%>;
 var jsoninventorysnmodel = <%=jsoninventorysnmodel%>;
 var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 
+//alert( $.cookie("branch")); 
+//alert( $.cookie("branchtype"));
 //  alert(jsoninventorysn);
  var row = 10;   
  var rows = new Array();
@@ -249,7 +269,11 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	//  alert(rows); 
 	 for(var i=0;i<row;i++){  
 		 if($.inArray(i,rows) == -1){ 
-			 addrow(i); 
+			 addrow(i);
+			 $("#product"+i).autocomplete({  
+				 source: jsonallp
+			    }); 
+			  
 		 }  
 		    
 	}
@@ -407,7 +431,7 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	   //alert(num);
 	   if(rows.length == row){   
 		    row = row +5;    
-			addrowinti(); 
+			addrowinti();  
 		 }   
 	    
 	   for(var i=0;i<rows.length;i++){
@@ -563,7 +587,7 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 						</td>
 					</tr>
 
-					<tr class="asc">
+					<tr class="asc"> 
 						<td align=center colspan=2><input type="button" id="submit1"
 							value="保存刷新" onclick="check('0')" />
 						</td>

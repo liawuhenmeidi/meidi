@@ -11,7 +11,7 @@ if(!StringUtill.isNull(type)){
 		message = "调账面库存单据";
 	} 
 } 
-
+ 
 
 String inventoryid = request.getParameter("id");
  
@@ -271,7 +271,7 @@ var disable = '<%=isdisabel %>';
 	      <%
 	      }   
 	       if(user.getBranch().equals(inbranch.getId()+"") && inventory.getInstatues() == 0 && UserManager.checkPermissions(user, Group.inventoryquery) || inbranch.getStatues() == 1 && UserManager.checkPermissions(user, Group.dealSend) && inventory.getInstatues() == 0){ 
-	      %>   
+	      %>    
 	      <li><a href="InventoryServlet?method=inbranch&id=<%=inventory.getId() %>&token=<%=token%>">入库方确认</a></li>
 	      <% 
 	      } 

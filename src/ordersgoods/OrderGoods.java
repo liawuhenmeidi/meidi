@@ -24,7 +24,7 @@ public class OrderGoods {
 	private Product product;
   
 	private int statues; // 1常规 2 特价 3 样机 4 换货 5 赠品 6 店外退货 7 已入库常规退货 8 已入库特价退货 9
-							// 已入库样机退货
+							// 已入库样机退货     10 店外样机退货
 	private int realstatues; // 
 	private int ordernum;    
 	private int realnum; // 送货数量  
@@ -66,7 +66,7 @@ public class OrderGoods {
 
 	public int getInstoragenum() {
 		return Instoragenum;
-	}
+	} 
 
 	public void setInstoragenum(int instoragenum) {
 		Instoragenum = instoragenum;
@@ -158,9 +158,9 @@ public class OrderGoods {
 	}
   
 	public int getRealstatues() {
-		Product p = getProduct();
+	    	Product p = getProduct();   
 		  //System.out.println(statues);
-		if (p.getSaleType() != -1) {
+		if (null != p && p.getSaleType() != -1) {
 			if (1 == statues) {
 				realstatues = p.getSaleType();
 			} else if (7 == statues) {
@@ -183,8 +183,10 @@ public class OrderGoods {
         if(statues == 7 || statues == 8 ||statues == 9){
         	return  statues - 6 ;   
         }else if(statues == 6 || statues ==4){ 
-        	return product.getSaleType(); 
-        }    
+        	return getProduct().getSaleType(); 
+        }else if(statues == 10){
+        	 return 3;
+        }     
 		return statues; 
 	}
   
@@ -230,11 +232,11 @@ public class OrderGoods {
 		this.uuid = uuid;
 	}
 
-	public String getTname() {
-		if (tid != 0) {
+	public String getTname() { 
+		if (tid != 0 || tid != -1) {
 			tname = ProductService.getIDmap().get(tid).getType();
 		}
-		return tname;
+		return tname; 
 	}
 
 	public void setTname(String tname) {
@@ -250,7 +252,8 @@ public class OrderGoods {
 	} 
  
 	public Product getProduct() {
-		if (tid != 0) {  
+		//System.out.println("tid"+tid);
+		if (tid != 0 || tid != -1) {   
 			//System.out.print("tid"+tid); 
 			product = ProductService.getIDmap().get(tid);
 		}
@@ -260,7 +263,7 @@ public class OrderGoods {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-
+ 
 	public String getBranch() {
 		if (1 == statues) {
 			Branch = "0001";

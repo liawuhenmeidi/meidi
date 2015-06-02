@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ordersgoods.OrderGoods;
+import ordersgoods.OrderGoodsManager;
 
 import comparator.Inventoryomparator;
 
@@ -37,8 +38,8 @@ public class IntelligentInventory {
 				endtime, 1));
 		// System.out.println("listend"+listend.size());
 		// Map<String, Inventory> mapstart = InventoryChange.changeMap(listend
-		// );
-		// 样机
+		// ); 
+		// 样机  
 		Map<String, Inventory> mapModel = InventoryModelDownLoad.getMap(user,
 				TimeUtill.dataAdd(endtime, 1));
 
@@ -49,7 +50,9 @@ public class IntelligentInventory {
 		// 未入库数量
 		Map<Integer, Map<String, InventoryBranch>> mapout = InventoryBranchManager
 				.getmapType(user);
-
+        
+		// 
+		Map<String,OrderGoods> mapog = OrderGoodsManager.getmapphone(user);
 		// System.out.println("mapout"+mapout);
 		// Collection<Inventory> sales = SaleDownLoad.get(starttime, endtime);
 
@@ -86,10 +89,11 @@ public class IntelligentInventory {
 					// e.printStackTrace();
 				}
 				// logger.info(key);
-
+ 
 				Inventory sale = mapsale.get(key);
 				Inventory model = mapModel.get(key);
 				InventoryBranch inout = null;
+				OrderGoods og = mapog.get(key);
 				try {
 					inout = mapout.get(bid).get(tname);
 				} catch (Exception e) {
@@ -113,6 +117,10 @@ public class IntelligentInventory {
 					inve.setOutnum(inout.getPapercount());
 				}
 
+				if(null != og){
+					if(og.getStatues() == 1 || og.getStatues() == 2)
+					inve.setOutnum(inve.getOutnum()+og.getOrdernum()); 
+				} 
 				// System.out.println("key"+key);
 
 				String keyin = "";
@@ -146,7 +154,7 @@ public class IntelligentInventory {
 
 			}
 		}
-
+      
 		if (!mapsale.isEmpty()) {
 			Set<Map.Entry<String, Inventory>> set = mapsale.entrySet();
 			Iterator<Map.Entry<String, Inventory>> it = set.iterator();
@@ -163,6 +171,47 @@ public class IntelligentInventory {
 					bnum = StringUtill.getStringNocn(inve.getBranchName());
 				}
 
+				String key = bnum + "_" + inve.getGoodNum();
+
+				int bid = 0;
+				String tname = "";
+
+				try {
+					bid = BranchService.getNumMap(SaleModel.SuNing).get(bnum)
+							.getId();
+				} catch (Exception e) {
+					// e.printStackTrace();
+					bid = 0;
+				}
+				try {
+					tname = ProductService.gettypeNUmmap()
+							.get(inve.getGoodNum()).getType();
+				} catch (Exception e) {
+					tname = "";
+					// e.printStackTrace();
+				}
+				// logger.info(key);
+				Inventory model = mapModel.get(key);
+				InventoryBranch inout = null;
+				OrderGoods og = mapog.get(key);
+				try {
+					inout = mapout.get(bid).get(tname);
+				} catch (Exception e) {
+					// e.printStackTrace();
+					inout = null;
+				}
+
+				// System.out.println("sale"+sale);
+
+				if (null != inout) {
+					inve.setOutnum(inout.getPapercount());
+				}
+
+				if(null != og){
+					if(og.getStatues() == 1 || og.getStatues() == 2)
+					inve.setOutnum(inve.getOutnum()+og.getOrdernum()); 
+				} 
+				  
 				if (!StringUtill.isNull(branch)) {
 					String branchnum = BranchService.getNameMap().get(branch)
 							.getEncoded();
@@ -176,7 +225,6 @@ public class IntelligentInventory {
 
 						li.add(inve);
 					}
-
 				} else {
 					keyin = bnum;
 
@@ -185,15 +233,12 @@ public class IntelligentInventory {
 						li = new ArrayList<Inventory>();
 						map.put(keyin, li);
 					}
-
 					li.add(inve);
 
 				}
-
 			}
-
 		}
-
+ 
 		int count = 0;
 		List<Integer> list = new ArrayList<Integer>();
 
@@ -230,30 +275,28 @@ public class IntelligentInventory {
 							String cl = "class=\"asc\"";
 							int pid = 0;
 							count++;
-
+ 
 							try {
 								pid = ProductService.gettypemap(user, bname)
 										.get(in.getGoodpName()).getId();
 
 								list.add(count);
-
+ 
 							} catch (Exception e) {
-								pid = 0;
+								pid =0;
 								cl = "class=\"bsc\"";
 							}
+							     
+							if( 0 != pid){
+								OrderGoods og = new OrderGoods();
+								og.setTid(pid); 
+								og.setStatues(1); 
+								og.setRealnum(realcont);
+								  
+								listr.add(og);
+							}
 							
-							OrderGoods og = new OrderGoods();
-							
-							og.setTid(pid);
-							og.setStatues(1); 
-							og.setRealnum(realcont);
-							 
-							listr.add(og);
-							
-							
-							
-							
-							 
+
 						}
 					}
 				}

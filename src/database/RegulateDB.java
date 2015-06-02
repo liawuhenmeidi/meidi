@@ -25,9 +25,9 @@ public class RegulateDB {
 	protected static Log logger = LogFactory.getLog(RegulateDB.class);
 
 	public static void main(String args[]) {
-		regulate(); 
+		regulate();  
 	} 
-
+ 
 	public static void regulate() {
       
 		List<String> listsql = new ArrayList<String>();
@@ -164,7 +164,7 @@ logger.info(in.getTypeStatues());
 												 flag = true ; 
 											} 
 										}
-									} 
+									}  
 									InventoryBranch inb= null;
 									String sqlin = "";
 									try{

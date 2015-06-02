@@ -70,8 +70,8 @@ function checkedd(){
 	if(salecategoryname != null && salecategoryname != ""){
 		salecategoryname = salecategoryname.substring(0,salecategoryname.length-1);
 		sear += "&salecategoryname="+ salecategoryname;
-	} 
-	$.cookie("sear", sear);
+	}  
+	$.cookie("sear", sear); 
 	
 	if(sear != null && sear != ""){
 		sear += "&searched=searched";

@@ -13,8 +13,6 @@ String intelligent = request.getParameter("intelligent");
 String listallpp = StringUtill.GetJson(listallp);  
 OrderGoodsAll oa = null;
 List<OrderGoods> list = null; 
-
-
 String remark = "";  
 if(!StringUtill.isNull(id)){
 	oa = OrderGoodsAllManager.getOrderGoodsAllByid(user,id);
@@ -45,7 +43,9 @@ String json = StringUtill.GetJson(list);
 
 Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,user.getBranch());
 String jsoninventory = StringUtill.GetJson(map); 
-    //System.out.println(jsoninventory);
+    //System.out.println(jsoninventory); 
+
+
 Map<String,List<httpClient.download.Inventory>> mapsn = InventoryChange.getMapBranchType(user,time,Integer.valueOf(user.getBranch()));
  
 Map<String,List<httpClient.download.Inventory>> mapsnModel = InventoryModelDownLoad.getMapBranchType(user, time,Integer.valueOf(user.getBranch()));
@@ -247,7 +247,8 @@ if(num >row){
 	//$("#statues"+row).change(function (){
 	//	initctypes();
 	//}); 
- }   
+ }  
+ 
  function getMessage(tname,row,statues){ 
 		// alert(tname); 
 		 //alert(jsoninventorysnsale);
@@ -334,6 +335,7 @@ if(num >row){
 			        }  
 		        	 }   
 	 } 
+ 
  
  function addresultp(row){  
 	 var ctype = $("#product"+row).val();
