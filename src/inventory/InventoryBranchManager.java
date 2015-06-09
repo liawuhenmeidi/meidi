@@ -18,6 +18,8 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import category.Category;
+
 import branch.Branch;
 import branch.BranchManager;
 import branch.BranchService;
@@ -100,7 +102,7 @@ public static List<InventoryBranch> getCategoryid(User user,String branch , Stri
 		}else if(!StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
 			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
 		}else if(StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where  branchid in ("+branch+") and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
+			sql = "select * from mdinventorybranch where  branchid in ("+branch+") and inventoryid in "+products+"  order by  id desc";  
 		}else if(StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
 			sql = "select * from mdinventorybranch where 1= 1 and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";    
 		}   
@@ -132,18 +134,20 @@ public static List<InventoryBranch> getCategoryid(User user,String branch , Stri
 	if(!StringUtill.isNull(typestatues)){ 
 		if(typestatues.equals("-1")){
 			typesear = "";
-		}else { 
+		}else if(typestatues.equals("-2")){
+			typesear = " and typestatues in  (-2) ";
+		} else {  
 			typesear = " and (typestatues in  (0,"+typestatues+") or typestatues is null) ";
 		}
 		
 	}   
 	String sql = ""; 
 	if(!StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
-		sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and inventoryid in "+products+" and  branchid in ("+branch+")  and branchid not in (select id from mdbranch where statues = 1 ) "+typesear+" order by  id desc";  
+		sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and inventoryid in "+products+" and  branchid in ("+branch+")  "+typesear+" order by  id desc";  
 	}else if(!StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
 		sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 ) "+typesear+" order by  id desc";  
 	}else if(StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
-		sql = "select * from mdinventorybranch where  branchid in ("+branch+") and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 )  "+typesear+" order by  id desc";  
+		sql = "select * from mdinventorybranch where  branchid in ("+branch+") and inventoryid in "+products+"   "+typesear+" order by  id desc";  
 	}else if(StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
 		sql = "select * from mdinventorybranch where 1= 1 and inventoryid in "+products+" and branchid not in (select id from mdbranch where statues = 1 ) "+typesear+"  order by  id desc";    
 	}     
@@ -722,39 +726,79 @@ logger.info(sql);
 		 Iterator<InventoryBranch> it = listInventory.iterator();
 		 while(it.hasNext()){ 
 			 InventoryBranch in = it.next(); 
-			 InventoryBranch inmap = map.get(in.getType());
-			 if(null == inmap){    
-				 inmap = in ;   
-				 map.put(in.getType(), inmap);
-			 }else {    
-				 inmap.setPapercount(inmap.getPapercount()+in.getPapercount());
-				 inmap.setRealcount(inmap.getRealcount()+in.getRealcount());
+			 if(!StringUtill.isNull(in.getType())){
+				 InventoryBranch inmap = map.get(in.getType());
+				 if(null == inmap){     
+					 inmap = in ;    
+					// logger.info(in.getType());
+					 map.put(in.getType(), inmap);
+				 }else {    
+					 inmap.setPapercount(inmap.getPapercount()+in.getPapercount());
+					 inmap.setRealcount(inmap.getRealcount()+in.getRealcount());
+				 }
 			 }
+			 
 			 
 		 }  
 		 //logger.info(map);  
 		 return map;
 	}
 	  
-	
+	 
 	public static Map<Integer,Map<String,InventoryBranch>> getmapType(User user){
 		 Map<Integer,Map<String,InventoryBranch>> map = new HashMap<Integer,Map<String,InventoryBranch>>(); 
 		 List<InventoryBranch>  listInventory = InventoryBranchManager.getCategoryid(user,"",""); 
 		 Iterator<InventoryBranch> it = listInventory.iterator();
 		 
-		 while(it.hasNext()){
-			 InventoryBranch in = it.next();
+		 while(it.hasNext()){ 
+			 InventoryBranch in = it.next(); 
 			 Map<String,InventoryBranch> mapt  = map.get(in.getBranchid()); 
 			 if(null == mapt){
 				 mapt = new HashMap<String,InventoryBranch>();
 				 map.put(in.getBranchid(), mapt);
-			 } 
-			 mapt.put(in.getType(), in);
+			 }
+			 
+			 InventoryBranch inmap = mapt.get(in.getType());
+			 if(null == inmap){
+				 mapt.put(in.getType(), in);
+			 }else { 
+				 inmap.setPapercount(inmap.getPapercount()+in.getPapercount());
+			 }
+			  
+			// logger.info(in.getType()+"**"+in.getPapercount());
+			
 		 }  
 		 //logger.info(map);  
 		 return map;
 	}
+	 
 	
+	public static Map<Integer,Map<String,InventoryBranch>> getmapType(User user,Category c){
+		 Map<Integer,Map<String,InventoryBranch>> map = new HashMap<Integer,Map<String,InventoryBranch>>(); 
+		 List<InventoryBranch>  listInventory = InventoryBranchManager.getCategoryid(user,"",c.getId()+""); 
+		 Iterator<InventoryBranch> it = listInventory.iterator();
+		  
+		 while(it.hasNext()){  
+			 InventoryBranch in = it.next(); 
+			 Map<String,InventoryBranch> mapt  = map.get(in.getBranchid()); 
+			 if(null == mapt){
+				 mapt = new HashMap<String,InventoryBranch>();
+				 map.put(in.getBranchid(), mapt);
+			 }
+			 
+			 InventoryBranch inmap = mapt.get(in.getType());
+			 if(null == inmap){
+				 mapt.put(in.getType(), in);
+			 }else { 
+				 inmap.setPapercount(inmap.getPapercount()+in.getPapercount());
+			 }
+			  
+			// logger.info(in.getType()+"**"+in.getPapercount());
+			
+		 }  
+		 //logger.info(map);  
+		 return map;
+	}
 	public static Map<String,InventoryBranch> getmapTypeBranch(String branchid){
 		//logger.info(branchid);   
 		Map<String,InventoryBranch> map = new HashMap<String,InventoryBranch>();
@@ -988,8 +1032,23 @@ logger.info(sql);
 	       listsql.add(sql1); 
 	       DBUtill.sava(listsql);
 		   return count ;
+	} 
+	    
+	public static int updateSN(User user ,String branchid,String type,String typestatues){
+	      
+		   int count = -1 ;   
+		   List<String> listsql = new ArrayList<String>(); 
+		   String sql = "update mdinventorybranch  set  isquery = 1 , querymonth = '"+TimeUtill.getdateString()+"' where branchid = "+ branchid + " and type = '" + type+"' and typestatues = "+typestatues;  
+		   String sql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)" + 
+                 "  values ( null, "+branchid+",0, 0,'"+TimeUtill.gettime()+"','"+type+"','0',0,"+10+",(select realcount from mdinventorybranch where branchid = " +branchid + " and  type = '"+type+"' and typestatues = "+typestatues+")*1,(select papercount from mdinventorybranch where branchid = " +branchid + " and  type = '"+type +"' and typestatues = "+typestatues+")*1,"+user.getId()+",0,0,(select realcount from mdinventorybranch where branchid = " +branchid + " and  type = '"+type+"' and typestatues = "+typestatues+")*1 ,(select papercount from mdinventorybranch where branchid = " +branchid + " and  type = '"+type+"' and typestatues = "+typestatues+")*1)";    
+
+		    
+		   //String sql1 = "insert into mdpandian (id,mdinventorybranchid,mdtime,userid,mdmonth) values (null,(select id from mdinventorybranch  where branchid = "+ branchid + " and type = '" + type+"'),'"+TimeUtill.gettime()+"',"+user.getId()+",'"+TimeUtill.getMonth()+"')";
+	       listsql.add(sql);
+	       listsql.add(sql1); 
+	       DBUtill.sava(listsql);
+		   return count ;
 	}
-	 
 	public static int update(User user ,String branchid,String[] types,String time){
 		   Map<Integer,Map<String,Map<Integer,InventoryBranch>>> map = InventoryBranchManager.getInventoryMap(); 
 		   int count = -1 ;    

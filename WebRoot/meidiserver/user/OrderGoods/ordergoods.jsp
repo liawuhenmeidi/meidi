@@ -26,31 +26,33 @@ if("intelligent".equals(intelligent)){
 	if(StringUtill.isNull(num)){
 		num= "15";  
 	} 
-	
-	String endtime = TimeUtill.getdateString();   
-	endtime = TimeUtill.dataAdd(endtime, -1);
+	  
+	String endtime = TimeUtill.getdateString();    
+	endtime = TimeUtill.dataAdd(endtime, -1); 
 	String starttime = TimeUtill.dataAdd(endtime, -Integer.valueOf(num));
-	
-	String branch = user.getBranchName();
+	  
+	String branch = user.getBranchName(); 
 	String branchtype = BranchService.getMap().get(Integer.valueOf(user.getBranch())).getBranchtype().getSaletype()+"";
-	
+	 
 	list = IntelligentInventory.getmessage(user, starttime, endtime, branch);
 	 
 } 
 
 
 String json = StringUtill.GetJson(list);
-
+//if(StringUtill.isNull(json)){
+///	json = "[]";
+//}
+ 
 Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,user.getBranch());
 String jsoninventory = StringUtill.GetJson(map); 
-    //System.out.println(jsoninventory); 
-
-
-Map<String,List<httpClient.download.Inventory>> mapsn = InventoryChange.getMapBranchType(user,time,Integer.valueOf(user.getBranch()));
+    //System.out.println(jsoninventory);  
+  
+Map<String,List<SNInventory>> mapsn = InventoryChange.getMapBranchType(user,time,Integer.valueOf(user.getBranch()));
  
-Map<String,List<httpClient.download.Inventory>> mapsnModel = InventoryModelDownLoad.getMapBranchType(user, time,Integer.valueOf(user.getBranch()));
-//  
-Map<String,httpClient.download.Inventory> mapsale = SaleDownLoad.getMap(TimeUtill.dataAdd(time, -29),time,Integer.valueOf(user.getBranch())); 
+Map<String,List<SNInventory>> mapsnModel = InventoryModelDownLoad.getMapBranchType(user, time,Integer.valueOf(user.getBranch()));
+//   
+Map<String,SNInventory> mapsale = SaleDownLoad.getMap(TimeUtill.dataAdd(time, -29),time,Integer.valueOf(user.getBranch())); 
      
 //System.out.println(mapsn); 
 String jsoninventorysn = StringUtill.GetJson(mapsn);   
@@ -190,7 +192,7 @@ if(num >row){
 	    // ' <td rowspan=6 align=center><input type="button" value="删除" onclick="delet('+row+')"/></td> ' +   
 	     ' </tr>'+ 
 	     '<tr '+cl+'>'+   
-	     
+	      
 	     '<td align=center colspan = 2>状态:<select name="statues'+row+'" id="statues'+row+'">'+
 	     '<option value=""></option>'+  
 	     '<option value="1">订货</option>'+
@@ -199,8 +201,8 @@ if(num >row){
 	      '<option value="5">赠品订货</option>'+
 	      '<option value="6">店外退货 </option>'+
 	      '<option value="7">已入库退货</option>'+
-	      '<option value="9">已入库样机退货</option>'+
-	     
+	      '<option value="9">样机退货</option>'+
+	             
 	     '<select></td>'+  
 	     
 	      

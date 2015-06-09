@@ -52,14 +52,14 @@ import utill.TimeUtill;
 
 public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 	/**
-	 *   
+	 *    
 	 */
 	private static final long serialVersionUID = 1L;
 	protected static Log logger = LogFactory
 			.getLog(InventoryBadGoodsDownLoad.class);
 	 
 	private static String url = "http://scs.suning.com/sps/BadMachineReport/downLoadBadMachineReport.action";
-    
+     
 	public static void main(String args[]) {
 		InventoryBadGoodsDownLoad id = new InventoryBadGoodsDownLoad();
 		// id.get();
@@ -69,7 +69,7 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 	} 
  
 	// 型号 , 状态
-	public static Map<String, List<Inventory>> getMapBranchType(User user,
+	public static Map<String, List<SNInventory>> getMapBranchType(User user,
 			String startTime, int branchid) {
 		// startTime = "2015-05-03";
 		// List<Inventory> list = new ArrayList<Inventory>();
@@ -80,7 +80,7 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 
 		// logger.info(mapp);
 
-		Map<String, List<Inventory>> map = new HashMap<String, List<Inventory>>();
+		Map<String, List<SNInventory>> map = new HashMap<String, List<SNInventory>>();
 		if (branch.getBranchtype().getSaletype() == SaleModel.Model.苏宁
 				.getValue()) {
 			try {
@@ -104,7 +104,7 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 				while (reader.readRecord()) { // 逐行读入除表头的数据
 					String[] strs = reader.getValues();
 					if (null != strs) {
-						Inventory in = new Inventory();
+						SNInventory in = new SNInventory();
 						for (int i = 0; i < strs.length; i++) {
 							// logger.info(i);
 							String str = strs[i];
@@ -146,10 +146,10 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 							if (null != p) {
 								String pname = mapp.get(key).getType();
 
-								List<Inventory> inmap = map.get(pname);
+								List<SNInventory> inmap = map.get(pname);
 
 								if (inmap == null) {
-									inmap = new ArrayList<Inventory>();
+									inmap = new ArrayList<SNInventory>();
 									map.put(pname, inmap);
 								}
 
@@ -171,14 +171,14 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 		return map;
 	} 
  
-	public static Map<String, Inventory> getMap(User user, String startTime) {
+	public static Map<String, SNInventory> getMap(User user, String startTime) {
 		// startTime = "2015-05-03";  
-		Map<String, Inventory> map = new HashMap<String,Inventory>();
+		Map<String, SNInventory> map = new HashMap<String,SNInventory>();
 
 		try { 
 			String tempPath = PathUtill.getXMLpath();
 			tempPath += "data" + File.separator + "DownloadInventory"
-					+ File.separator + startTime;
+					+ File.separator + startTime+File.separator+"SuNing";
 			logger.info(tempPath);
 			File file = new File(tempPath);
 			if (!file.exists()) {
@@ -196,7 +196,7 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 			while (reader.readRecord()) { // 逐行读入除表头的数据
 				String[] strs = reader.getValues();
 				if (null != strs) {
-					Inventory in = new Inventory();
+					SNInventory in = new SNInventory();
 					for (int i = 0; i < strs.length; i++) {
 						// logger.info(i);
 						String str = strs[i];  
@@ -228,7 +228,7 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 					}     
 					String key = in.getBranchNum() + "_" + in.getGoodNum();
 					// logger.info(key);  
-					Inventory inmap = map.get(key);
+					SNInventory inmap = map.get(key);
  
 					if (null == inmap) {
 						map.put(key, in); 
@@ -247,9 +247,9 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 		return map; 
 	}
  
-	public static List<Inventory> getMap() { 
+	public static List<SNInventory> getMap() { 
 		// startTime = "2015-05-03";  
-		List<Inventory> list = new ArrayList<Inventory>();
+		List<SNInventory> list = new ArrayList<SNInventory>();
   
 		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryBranchManager
 				.getInventoryMap(); 
@@ -275,7 +275,7 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 			while (reader.readRecord()) { // 逐行读入除表头的数据
 				String[] strs = reader.getValues();
 				if (null != strs) {
-					Inventory in = new Inventory();
+					SNInventory in = new SNInventory();
 					for (int i = 0; i < strs.length; i++) {
 						// logger.info(i);
 						String str = strs[i];
@@ -362,12 +362,12 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 	public static void saveDB(){
 		save();
 		List<String> li = new ArrayList<String>();  
-		List<Inventory> list = getMap();   
+		List<SNInventory> list = getMap();   
 		  
 		 if(!list.isEmpty()){
-			 Iterator<Inventory> it = list.iterator();
+			 Iterator<SNInventory> it = list.iterator();
 			 while(it.hasNext()){
-				 Inventory in = it.next();
+				 SNInventory in = it.next();
 				  
 				  
 				 String sql = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
@@ -428,7 +428,7 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 
 			String tempPath = PathUtill.getXMLpath();
 			tempPath += "data" + File.separator + "DownloadInventory"
-					+ File.separator + TimeUtill.getdateString();
+					+ File.separator + TimeUtill.getdateString()+File.separator+"SuNing";
  
 			logger.info(tempPath);
 

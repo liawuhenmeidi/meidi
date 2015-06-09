@@ -351,7 +351,7 @@ function pandian(type,branchid){
 
 	<table width="100%" id="head">
 		<tr>
-			<td>现在位置：<%=c.getName()%>库存</td>
+			<td>现在位置：库存查询</td>
 
 			<td><a href="javascript:distri();"> 查看分布</a></td>
 			<td>仓库:<input type="text" name="branch" id="branch" value="" />

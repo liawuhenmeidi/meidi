@@ -24,9 +24,9 @@ public class OrderReceipt {
 	private int refusenum;// 仍需数量
 	private String branchid; // 地点
 	private String branchName; // 地点名称   || 地点(仓库)名称
-    private String uuid ;  // 唯一码  
+    private String uuid ;  // 唯一码   
     private int statues ;  // 0 入库   1  退货   
-    private int disable ;   //  0 起作用  1  不起作用 
+    private int disable ;   //  0 起作用  1  不起作用    2 被删除
     private String queryNum ; //  送货确认书编号 
     private String checkNum;   // 校验码   
     private String ordertime ; // 退货订单日期 

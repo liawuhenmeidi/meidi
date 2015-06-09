@@ -91,7 +91,7 @@ function check(){
 			</tr>
 		</table>
 	</form>
-	<!--  头 单种类  -->
+	<!--  头 单种类  --> 
 	<form action="ordergoodsenddetail.jsp" method="post"
 		onsubmit="return check()">
 		<input type="hidden" name="statues" value="0"> 

@@ -1,7 +1,7 @@
 package jfree;
 
 
-import httpClient.download.Inventory;
+import httpClient.download.SNInventory;
 import httpClient.download.InventoryChange;
 import httpClient.download.SaleDownLoad;
 
@@ -109,12 +109,12 @@ public class JfreeBar {
     	 
     	String str = ""; 
     	
-        List<Inventory> sale = SaleDownLoad.get(starttime, endtime);
+        List<SNInventory> sale = SaleDownLoad.get(starttime, endtime);
     	
-    	Collection<Inventory> inven = InventoryChange.get(endtime);  
+    	Collection<SNInventory> inven = InventoryChange.get(endtime);  
     	
-    	Map<String,Inventory> mapsale = InventoryChange.changeMap(sale, branch, type);
-    	Map<String,Inventory> mapinven = InventoryChange.changeMap(inven, branch, type);
+    	Map<String,SNInventory> mapsale = InventoryChange.changeMap(sale, branch, type);
+    	Map<String,SNInventory> mapinven = InventoryChange.changeMap(inven, branch, type);
     	  
     	logger.info(mapinven.size());   
     	double[][] data = new double[51][1];  
@@ -123,23 +123,23 @@ public class JfreeBar {
       	DecimalFormat    df   = new DecimalFormat("######0.00");   
     	int count = -1 ;
     	if(!mapinven.isEmpty()){ 
-    		Set<Map.Entry<String,Inventory>> set = mapinven.entrySet();
-    		Iterator<Map.Entry<String,Inventory>> it = set.iterator();
+    		Set<Map.Entry<String,SNInventory>> set = mapinven.entrySet();
+    		Iterator<Map.Entry<String,SNInventory>> it = set.iterator();
     		while(it.hasNext() && count <50){
     			double salecount = 0 ;
     			double incount = 0 ;  
     			double dynamic = 0 ;  
     			count ++;
     			
-    			Map.Entry<String,Inventory> mapent = it.next();
+    			Map.Entry<String,SNInventory> mapent = it.next();
     			String key = mapent.getKey();
-    			Inventory in = mapent.getValue();
+    			SNInventory in = mapent.getValue();
     			  
     			rowKeys.append(in.getGoodpName()+"_");  
     			 
     			incount = in.getATP();
     			 
-    			Inventory insale = mapsale.get(key);
+    			SNInventory insale = mapsale.get(key);
     			
     			if(null != insale){
     				salecount = insale.getSaleNum(); 

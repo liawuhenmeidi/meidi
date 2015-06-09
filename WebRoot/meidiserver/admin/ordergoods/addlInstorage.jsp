@@ -2,7 +2,7 @@
 	contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>
  
-<%
+<% 
 	List<BranchType> listgt = BranchTypeManager.getLocate(); 
 //System.out.println(statues+"&&"+type);
  String time = TimeUtill.getdateString();   
@@ -133,13 +133,13 @@ String sm = StringUtill.GetJson(model);
 	     '<td  align=center ><select name="statues'+row+'" id="statues'+row+'">'+
 	     '<option value=""></option>'+   
 	     '<option value="1">常规订货</option>'+
-	     '<option value="1">特价订货</option>'+
+	     '<option value="2">特价订货</option>'+
 	      '<option value="3">样机订货</option>'+
 	      '<option value="7">常规退货</option>'+
 		     '<option value="8">特价退货</option>'+
 		      '<option value="9">样机退货</option>'+
 	     '<select></td>'+
-	      s
+	 
 	     '<td align=center><span style="color:red;font-size:15px;" id="papercount'+row+'" name="papercount'+row+'"></span></td>'+
 	     //'<td align=center><span style="color:red;font-size:15px;" id="sncount'+row+'"  ></span></td>'+
 	     //'<td align=center><span style="color:red;font-size:15px;" id="snstatues'+row+'"  ></span></td>'+

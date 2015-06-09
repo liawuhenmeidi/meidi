@@ -65,7 +65,7 @@ List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.unexam
 			<jsp:param name="dmsn" value="" />
 		</jsp:include>
 		<div class="weizhi_head">现在位置：订单生成</div>
-		<!--  头 单种类  -->
+		<!--  头 单种类  --> 
 		<form action="../../Print" id="post" method="post">
 			<input type="hidden" value="billing" name="method"> <input
 				type="hidden" name="ids" value="<%=StringUtill.getStr(ids)%>" /> <input
@@ -76,7 +76,7 @@ List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.unexam
 
 			<table width="100%" border="0" cellspacing="1" id="table">
 				<tr class="dsc">
-					<td colspan=12>
+					<td colspan=11>
 						<table>
 							<tr>
 								<td align="center">请输入订单名称</td>
@@ -97,7 +97,9 @@ List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.unexam
 					<td align="center">序号</td>
 					<td align="center">商品编码</td>
 					<td align="center">商品名称</td>
+					<!-- 
 					<td align=center width="10%">未入库数量</td>
+					 -->
 					<td align=center width="20%">订货数</td>
 					<td align=center width="20%">订单数</td>
 					<td align="center">订货门店</td>
@@ -150,7 +152,9 @@ List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.unexam
 					<td align="center"><%=count%></td>
 					<td align="center"><%=og.getProduct().getEncoded()%></td>
 					<td align="center"><%=og.getProduct().getType()%></td>
+					<!--  
 					<td align=center><%=InNum%></td>
+					 -->
 					<td align=center><%=og.getRealnum()%></td>
 					<td align=center><%=og.getOrdernum()%></td>
   

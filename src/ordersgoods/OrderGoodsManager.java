@@ -131,8 +131,8 @@ public class OrderGoodsManager {
 	   Map<String,OrderGoods> map = new  HashMap<String,OrderGoods>(); 
 	  
 	   Connection conn = DB.getConn(); 
-	    
-	   String sql = " select * from mdordergoods where mid in  (select id from mdordermessage where branchid = "+user.getBranch()+")";
+	     
+	   String sql = " select * from mdordergoods where opstatues = 0 and mid in  (select id from mdordermessage where branchid = "+user.getBranch()+")";
 		 logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);

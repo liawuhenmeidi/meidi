@@ -221,7 +221,7 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 								for(int m=0;m<list.size();m++){
 									OrderGoods og = list.get(m);
 																		%>
-									<script type="text/javascript"> 
+									<script type="text/javascript">  
 									$("#statues<%=og.getStatues()%>").css('display','block');
 									</script>
 									

@@ -396,7 +396,7 @@ public class ProductService {
 			for (int i = 0; i < listc.size(); i++) {
 				Category c = listc.get(i);
 				String sales = c.getSales(); 
-				  
+				   
 				if (!StringUtill.isNull(sales)) {
 					// logger.info(sales); 
 					String sale[] = sales.split("_");

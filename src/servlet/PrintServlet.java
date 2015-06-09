@@ -2246,19 +2246,25 @@ public class PrintServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
+ 
 	public void OrderGoodssend(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 
 		String ids = request.getParameter("ids");
 		String statues = request.getParameter("statues");
-		// logger.info(name);
+		String[] ogid = request.getParameterValues("ogid");
+		       
+		// logger.info(name); 
 		// List<OrderGoodsAll> list =
 		// OrderGoodsAllManager.getsendlist(user,OrderMessage.unexamine,ids);
+		/*Map<Integer, Map<Integer, OrderGoodsAll>> map = OrderGoodsAllManager
+				.getsendMap(user, Integer.valueOf(statues), ids); */
+  
 		Map<Integer, Map<Integer, OrderGoodsAll>> map = OrderGoodsAllManager
-				.getsendMap(user, Integer.valueOf(statues), ids);
-
+				.getsendMapOgid(user, Integer.valueOf(statues), StringUtill.getStr(ogid)); 
+		 
+		  
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
@@ -2422,16 +2428,20 @@ public class PrintServlet extends HttpServlet {
 			// FileOutputStream("E:/报装单"+printlntime+".xls");
 			wb.write(response.getOutputStream());
 			response.getOutputStream().close();
-			if ("0".equals(statues)) {
+			if ("0".equals(statues)) { 
 				List<String> listsql = new ArrayList<String>();
-				// String sqlsend =   
-				String sql = OrderMessageManager.sendprint(ids);
-				listsql.add(sql);       
+				// String sqlsend =    
+				//String sql = OrderMessageManager.sendprint(ids);
+				String sql = OrderMessageManager.sendprintOgids(StringUtill.getStr(ogid));
+				 
+				listsql.add(sql);        
 				List<String> sqlinventory = OrderGoodsAllManager
 						.updateSendcount(user, map);
 				listsql.addAll(sqlinventory);
+				
+				logger.info(listsql); 
 				DBUtill.sava(listsql);
-			} 
+			}  
   
 			// logger.info(123);
 		} catch (Exception e) {

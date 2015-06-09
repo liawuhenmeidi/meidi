@@ -1,12 +1,11 @@
 package httpClient.download;
 
-import java.text.DecimalFormat;
-
+import inventory.InventoryBranch;
 import product.ProductService;
- 
-public class Inventory {
-  private String branchName;  // 库位名称 
-  private String branchNum;  // 库位代码
+      
+public class SNInventory extends InventoryBranch implements Comparable<SNInventory>{
+  private String branchName;  // 库位名称  
+  private String branchNum;  // 库位代码  
   private String oldbranchNum;  // 原库位
   private String goodType ;  // 商品类别
   private String goodGroupName ;  // 商品组名称
@@ -14,19 +13,58 @@ public class Inventory {
   private String goodpName ;  // 商品名称
   private String goodNum ;  // 商品代码
   private int ATP;  //atp 可卖数  
-  private int num;  // 实货可用数
+  private int num;  // 实货可用数 
   private int Nomention ;  // 销售未提
-  private int saleNum;  
-  private int inreduce; // 库存较少  
+  private int saleNum;    // 销售数量 
+  private int inreduce; // 库存较少   
   private String serialNumber;   // 序列号
   private int inInbranch ;   // 入库数量
-  private double dynamic ; 
-  private int modelnum ;
-  private int outnum ;    // 未入库数量
-  private int bid ;
-  private int tid ; 
-  private int cid ;
-         
+  private double dynamic ;   
+  private int modelnum ;    // 样机数量 
+  
+
+private int outmodelnum ; // 未入库样机 
+  private int outcommonnum ; // 未入库常规 
+  private int outspecialnum ; // 未入库特价
+  private int badnum ;    //坏机  
+  private int outnum ;    // 未入库数量  
+  private int bid ; 
+  private int tid ;   
+  private int cid ;   
+  
+  
+  
+  public int getBadnum() {
+	return badnum;
+}
+
+public void setBadnum(int badnum) {
+	this.badnum = badnum;
+}
+
+public int getOutcommonnum() {
+		return outcommonnum;
+	}
+
+	public void setOutcommonnum(int outcommonnum) {
+		this.outcommonnum = outcommonnum;
+	}
+
+	public int getOutspecialnum() {
+		return outspecialnum;
+	}
+
+	public void setOutspecialnum(int outspecialnum) {
+		this.outspecialnum = outspecialnum;
+	}
+public int getOutmodelnum() {
+	return outmodelnum;
+}
+
+public void setOutmodelnum(int outmodelnum) {
+	this.outmodelnum = outmodelnum;
+}
+
 public int getNomention() {
 	return Nomention;
 }
@@ -49,11 +87,11 @@ public int getCid() {
 	} 
 	return cid;
 }
-
+ 
 public void setCid(int cid) {
 	this.cid = cid;
-}
-
+} 
+  
 public int getBid() {
 	return bid;
 }
@@ -79,14 +117,16 @@ public void setModelnum(int modelnum) {
 }
 
 public double getDynamic() {
-	DecimalFormat    df   = new DecimalFormat("######0.00");   
-	    
-	if(0 == num){  
-		dynamic = saleNum ;  
-	}else {      
-		dynamic = (double)saleNum/(double)num ;
-	}  
-	 return Double.valueOf(df.format(dynamic));
+	//DecimalFormat    df   = new DecimalFormat("######0.00");    
+	if(0 == (num+saleNum+outnum+modelnum)){   
+		dynamic = saleNum*100 ;     
+	}else {             
+	//System.out.println(num+saleNum+outnum+modelnum);
+		//dynamic = ((double)saleNum*100/(double)(num+saleNum+outnum+modelnum)) ;
+		dynamic = (saleNum*100/(num+saleNum+outnum+modelnum)) ;
+	}      
+	// return Double.valueOf(df.format(dynamic));
+	return dynamic; 
 }
 
 public void setDynamic(double dynamic) {
@@ -178,5 +218,24 @@ public int getOutnum() {
 public void setOutnum(int outnum) {
 	this.outnum = outnum;
 }
+
+@Override
+public int compareTo(SNInventory o) {
+     	    
+        if(this.getSaleNum() > o.getSaleNum()){
+     	   return 0 ; 
+        }else if(this.getSaleNum() < o.getSaleNum()){
+     	   return 1 ;  
+        }else if(this.getSaleNum() == o.getSaleNum()){
+     	   if(this.getNum() >= o.getNum()){
+     		   return 0 ;  
+     	   }else { 
+     		   return 1 ;
+     	   }
+        }  
+ 
+	return 0;
+}
+
 
 }

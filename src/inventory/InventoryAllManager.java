@@ -1,5 +1,9 @@
 package inventory;
  
+import httpClient.download.InventoryChange;
+import httpClient.download.InventoryModelDownLoad;
+import httpClient.download.SNInventory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,9 +44,85 @@ public class InventoryAllManager {
 
 		return list;
 	}
-   
+     
+	public static Map<String, SNInventory> get(User user, String category, String branch, String time){
+		Map<String,SNInventory> map = new HashMap<String,  SNInventory>();
+         try{
+		String str = "";
+		if (!StringUtill.isNull(branch)) {  
+			Branch b = BranchManager.getLocatebyname(branch);
+			str = " and branchid = " + b.getId(); 
+		} 
+  
+		String sql = ""; 
+		sql = "select * from   mdinventorybranchmessage where type in (select id from mdproduct where categoryID =  '"
+				+ category + "') " + str + " and time < '"+TimeUtill.dataAdd(time, 1)+"' order by id ";
+		      
+		logger.info(sql);  
+		List<InventoryBranchMessage> list = InventoryBranchMessageManager
+				.getMap(sql);
+		 
+		logger.info(list.size());
+		
+		if (!list.isEmpty()) { 
+			Iterator<InventoryBranchMessage> it = list.iterator();
+			while (it.hasNext()) { 
+				InventoryBranchMessage inm = it.next();
+				String key = inm.getBranchid() + "_" + inm.getTypeid();
+
+  
+				SNInventory in = map.get(key);
+				if (null == in) { 
+					in = new SNInventory();  
+					 
+					in.setBranchid(inm.getBranchid()); 
+					in.setTypeid(inm.getTypeid()); 
+					if(inm.getTypeStatues() == 1 || inm.getTypeStatues() == 2){
+						in.setIncommonnum(inm.getAllotPapercount());
+					}else {
+						in.setInmodelnum(inm.getAllotPapercount());
+					} 
+					
+					//in.setTypeStatues(inm.getTypeStatues());
+					//in.setRealcount(inm.getAllotRealcount());
+					//in.setPapercount(inm.getAllotPapercount());
+					map.put(key, in);
+				} else {
+    
+					/*
+					 * if(inm.getTypeid().equals("3376")){
+					 * logger.info(in.getPapercount());
+					 * logger.info(inm.getAllotPapercount());
+					 * logger.info(in.getRealcount()); logger.info(key); }
+					 */ 
+					if(inm.getTypeStatues() == 1 || inm.getTypeStatues() == 2){
+						in.setIncommonnum(in.getIncommonnum()+inm.getAllotPapercount());
+					}else {
+						in.setInmodelnum(in.getInmodelnum()+inm.getAllotPapercount());
+					}  
+					 
+					//in.setRealcount(in.getRealcount() + inm.getAllotRealcount());
+					if (inm.getOperatortype() == 10) {
+						in.setQuerymonth(inm.getTime());
+					}
+					 
+					if(in.getIsOverStatues() ==1 ){
+						in.setIsOverStatues(inm.getIsOverStatues());
+					}
+					
+				}
+			}
+		}
+         }catch(Exception e){
+        	 logger.info(e); 
+         }
+	//logger.info(map);
+		return map;
+	}
+	
+	
 	public static Map<String, Map<Integer, Map<Integer, InventoryBranch>>> getInventoryMap(
-			User user, String category, String branch, String time,Map<String,Map<String, httpClient.download.Inventory>> mapc,Map<String,Map<String, httpClient.download.Inventory>> mapm,Map<String,Map<String, httpClient.download.Inventory>> mapbad) { 
+			User user, String category, String branch, String time,Map<String,Map<String, httpClient.download.SNInventory>> mapc,Map<String,Map<String, httpClient.download.SNInventory>> mapm,Map<String,Map<String, httpClient.download.SNInventory>> mapbad) { 
 		 // 型号,门店 。  状态 
 		Map<String, Map<Integer, Map<Integer, InventoryBranch>>> map = new HashMap<String, Map<Integer, Map<Integer, InventoryBranch>>>();
          
@@ -96,10 +176,13 @@ public class InventoryAllManager {
 					in.setPapercount(inm.getAllotPapercount());
 					if (inm.getOperatortype() == 10) {
 						in.setQuerymonth(inm.getTime());
-					}
+					} 
 					mapbt.put(inm.getTypeStatues(), in);
+					if(in.getIsOverStatues() ==1 ){
+						in.setIsOverStatues(inm.getIsOverStatues());
+					} 
 				} else {
-
+  
 					/*
 					 * if(inm.getTypeid().equals("3376")){
 					 * logger.info(in.getPapercount());
@@ -112,6 +195,11 @@ public class InventoryAllManager {
 					if (inm.getOperatortype() == 10) {
 						in.setQuerymonth(inm.getTime());
 					}
+					 
+					if(in.getIsOverStatues() ==1 ){
+						in.setIsOverStatues(inm.getIsOverStatues());
+					}
+					
 				}
 			}
 		}
@@ -146,15 +234,18 @@ public class InventoryAllManager {
 				int cnum = 0;  
 				int mnum = 0; 
 				int badnum ;
+				String gname = "";
 				try {  
 					cnum = mapc.get(pnum).get(bnum).getNum();
+					gname = mapc.get(pnum).get(bnum).getGoodGroupName();
 					count++;
 					mapc.get(pnum).remove(bnum);
 				} catch (Exception e) {
 					cnum = 0;
 				}
 				try { 
-					mnum = mapm.get(pnum).get(bnum).getNum();
+					mnum = mapm.get(pnum).get(bnum).getModelnum();
+					gname = mapm.get(pnum).get(bnum).getGoodGroupName();
 					// logger.info(key+"***"+mnum);
 					//count++;  
 					mapm.get(pnum).remove(bnum);
@@ -175,14 +266,20 @@ public class InventoryAllManager {
  
 				
 				Map<Integer, InventoryBranch> mapinv = mapent.getValue();
-
+			       Map<Integer, Product>  maps =  ProductService.getIDmap();
 				Collection<InventoryBranch> coinv = mapinv.values();
 				if (!coinv.isEmpty()) {
 					Iterator<InventoryBranch> itc = coinv.iterator();
 					while (itc.hasNext()) {
 						InventoryBranch orders = itc.next();
-						// count ++;
+						// count ++; 
 						// logger.info(mnum);
+						if(!StringUtill.isNull(gname)){
+						   orders.setGoodname(gname);
+						}else {  
+							String cname = maps.get(Integer.valueOf(type)).getCname();
+							orders.setGoodname(cname); 
+						} 
 						orders.setSnNum(cnum);
 
 						orders.setSnModelnum(mnum);
@@ -420,7 +517,164 @@ public class InventoryAllManager {
 		// logger.info(map.size());
 		return map;
 	}
+    
+	public static Map<String,List<InventoryBranch>> getMapType(User user, String branch,
+			String category, String product, String isSN, String typestatues){
+		  
+		Map<String,List<InventoryBranch>> map = new HashMap<String,List<InventoryBranch>>();
+		List<InventoryBranch> list = get(user, branch,
+				category, product,isSN, typestatues);
+		
+		for (int i = 0; i < list.size(); i++) {
+			InventoryBranch inb = list.get(i);
+			String key = inb.getType();
+		 
+			if(!StringUtill.isNull(inb.getOrderNUmSN()) && inb.getPapercount() > 0){
+				List<InventoryBranch> listp = map.get(key);
+				if (listp == null) {
+					listp = new ArrayList<InventoryBranch>();
+					map.put(key, listp);
+				}
+				 
+				listp.add(inb);
+			}
+		}
+		
+		
+		return map ;
+		
+	}
+	
+	public static Map<String,List<InventoryBranch>> getMapTypePandian(User user, String branch,
+			String category, String product, String isSN, String typestatues,String typestatuesSN){
+		 
+		Map<String,Map<String, httpClient.download.SNInventory>> mapm = null;
+		if(!StringUtill.isNull(typestatuesSN)){
+			mapm = InventoryChange  
+					.changeMapTypeBranchNum(InventoryModelDownLoad 
+							.getMap(user, TimeUtill.getdateString()).values()); 
+		}
+        if(StringUtill.isNull(typestatues)){
+        	
+        }
+		// System.out.println(mapm.size());
+		Map<String,List<InventoryBranch>> map = new HashMap<String,List<InventoryBranch>>();
+		List<InventoryBranch> list = get(user, branch,
+				category, product,isSN, typestatues);
+		   
+		for (int i = 0; i < list.size(); i++) {
+			InventoryBranch inb = list.get(i); 
+			String key = inb.getType(); 
+			if(inb.getTypeStatues() == 3){
+				String encode  = ProductService.getIDmap().get(Integer.valueOf(inb.getTypeid())).getEncoded();
+				 // System.out.println(encode);
+				  httpClient.download.SNInventory inve = null ;    
+				  if(null != mapm){  
+					  Map<String, httpClient.download.SNInventory> mapen =  mapm.get(encode);
+					  if(null != mapen){ 
+						  String Bnum = BranchService.getMap().get(Integer.valueOf(user.getBranch())).getEncoded();
+						  inve = mapen.get(Bnum);
+		                  if(null != inve){
+		                	  mapm.get(encode).remove(Bnum);  
+		                	  inb.setPapercount(inb.getPapercount()+inve.getModelnum()); 
+		                  }
+					  } 
+				  }
+			}
 
+			if(inb.getPapercount() > 0){
+				List<InventoryBranch> listp = map.get(key);
+				if (listp == null) { 
+					listp = new ArrayList<InventoryBranch>();
+					map.put(key, listp);
+				} 
+				    
+				listp.add(inb);
+			}
+		}
+		
+		if(null != mapm){
+			String Bnum = BranchService.getMap().get(Integer.valueOf(user.getBranch())).getEncoded();
+			System.out.println("Bnum"+Bnum);
+			  Set<Map.Entry<String,Map<String, httpClient.download.SNInventory>>> set = mapm.entrySet();
+			  Iterator<Map.Entry<String,Map<String, httpClient.download.SNInventory>>> it = set.iterator();
+			  while(it.hasNext()){
+				  Map.Entry<String,Map<String, httpClient.download.SNInventory>> mapent = it.next();
+				  String tnum = mapent.getKey();
+				  Map<String, httpClient.download.SNInventory> mapb = mapent.getValue();
+				  httpClient.download.SNInventory inve = mapb.get(Bnum);
+				  if(null != inve){
+					  Product p = ProductService.gettypeNUmmap().get(tnum);
+					  InventoryBranch inb = new InventoryBranch();  
+					  String key = ""; 
+					  if(null == p){
+						  key = inve.getGoodpName();
+						  inb.setTypeid("-1");
+						 
+					  }else {   
+						  key = p.getType();
+						  inb.setTypeid(p.getId()+"");
+					  } 
+					  inb.setPapercount(1);
+					  List<InventoryBranch> listp = map.get(key);
+						if (listp == null) { 
+							listp = new ArrayList<InventoryBranch>();
+							map.put(key, listp);
+						} 
+						
+						listp.add(inb);
+						
+				  }
+				 
+				  
+				  
+				  
+			  }
+		}
+		
+		return map ;
+		
+	}
+
+	public static List<InventoryBranch> get(User user, String branch,
+			String category, String product, String isSN, String typestatues){
+		List<InventoryBranch> list = null;
+		if (StringUtill.isNull(product)) {
+			if (!StringUtill.isNull(branch)) {
+				if (!NumbleUtill.isNumeric(branch)) {
+					Branch b = BranchManager.getLocatebyname(branch);
+					branch = b.getId() + "";
+				}
+			} 
+
+			list = InventoryBranchManager.getCategoryid(user, branch, category,
+					typestatues); 
+		} else {
+			if (!NumbleUtill.isNumeric(product)) {
+				Product p = ProductService.gettypemap().get(product);
+				product = p.getId() + "";
+			}
+
+			if (!StringUtill.isNull(branch)) {
+				// System.out.println(branch);
+				if (NumbleUtill.isNumeric(branch)) {
+					Branch b = BranchManager.getLocatebyid(branch);
+					branch = b.getLocateName();
+				}
+
+				list = InventoryBranchManager
+						.getCategory(user, branch, product);
+			} else {
+				list = InventoryBranchManager
+						.getCategory(user, branch, product);
+			}
+		}
+
+		return list ;
+		 
+	}
+	
+	
 	public static Collection<InventoryAll> getMap(User user, String branch,
 			String category, String product, String isSN, String typestatues) {
 		// System.out.println("isSN"+isSN);
@@ -473,7 +727,9 @@ public class InventoryAllManager {
 					listp.setPapercount(inb.getPapercount());
 					listp.setRealcount(inb.getRealcount());
 					listp.setIsquery(inb.isquery());
+					if(!StringUtill.isNull(inb.getOrderNUmSN())){
 					listp.setOrderNUmSN(inb.getOrderNUmSN());
+					}
 					listp.setActivetime(inb.getActivetime());
 					listp.setProduct(inb.getProduct());
 					listp.setBranchid(inb.getBranchid());
@@ -484,7 +740,7 @@ public class InventoryAllManager {
 					listp.setPapercount(listp.getPapercount()
 							+ inb.getPapercount());
 					listp.setRealcount(listp.getRealcount()
-							+ inb.getRealcount());
+							+ inb.getRealcount()); 
 					listp.setIsquery(listp.getIsquery() && inb.isquery());
 				}
 			}
@@ -511,25 +767,50 @@ public class InventoryAllManager {
 					listp.setType(type);
 					listp.setTypeid(inb.getTypeid());
 					listp.setCateoryName(c.getName());
+					
+					listp.setIsquery(inb.isquery());
+					if(!StringUtill.isNull(inb.getOrderNUmSN()) && inb.getPapercount() > 0){
+						listp.setOrderNUmSN(inb.getOrderNUmSN());
+						listp.setTypestatues(inb.getTypeStatues());
+						
+					}
 					listp.setPapercount(inb.getPapercount());
 					listp.setRealcount(inb.getRealcount());
-					listp.setIsquery(inb.isquery());
-					listp.setOrderNUmSN(inb.getOrderNUmSN());
 					listp.setActivetime(inb.getActivetime());
 					listp.setProduct(inb.getProduct());
-					listp.setTypestatues(inb.getTypeStatues());
+					
 					listp.setBranchid(inb.getBranchid());
 					if (!StringUtill.isNull(branch)) {
 						listp.setTime(inb.getQuerymonth());
 					}
 					map.put(key, listp);
 				} else {
-					listp.setOrderNUmSN(listp.getOrderNUmSN() + "_"
-							+ inb.getOrderNUmSN());
-					listp.setTypestatuesName(listp.getTypestatuesName() + "_"
-							+ inb.getTypestatuesName());
-					listp.setPapercount(listp.getPapercount()
+					if(!StringUtill.isNull(inb.getOrderNUmSN()) && inb.getPapercount() > 0){
+						if(StringUtill.isNull(listp.getOrderNUmSN()) ){
+							listp.setOrderNUmSN(  
+								 inb.getOrderNUmSN());
+							
+							listp.setTypestatuesName(
+									inb.getTypestatuesName());
+							 
+							
+						}else {
+							listp.setOrderNUmSN(listp.getOrderNUmSN() + "_"
+									+ inb.getOrderNUmSN());
+							  
+							listp.setTypestatuesName(listp.getTypestatuesName() + "_"
+									+ inb.getTypestatuesName());
+							
+							
+						}
+						
+						 
+					}
+					
+					listp.setPapercount(listp.getPapercount() 
 							+ inb.getPapercount());
+					
+					
 					listp.setRealcount(listp.getRealcount()
 							+ inb.getRealcount());
 					listp.setIsquery(listp.getIsquery() && inb.isquery());
@@ -542,7 +823,9 @@ public class InventoryAllManager {
 
 		return clist;
 	}
-
+      
+	 
+	
 	public static Map<String, List<InventoryAll>> getMapSN(User user,
 			String branch, String category, String product, String isSN) {
 		Map<String, List<InventoryAll>> map = new HashMap<String, List<InventoryAll>>();

@@ -202,7 +202,7 @@ function getInventory(){
           </li>
           <%} %>
           <li >  
-            <h4 >调货单管理</h4> 
+            <h4 >卖场开单</h4> 
             <div class="list-item none">   
          
            <%
@@ -226,52 +226,79 @@ function getInventory(){
                   <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodbilling.jsp')">查看订单</a></p> 
                <%
                }
-           if(UserManager.checkPermissions(user, Group.ordergoods,"c")){
-               %>
-                 <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssend.jsp')">开单发货</a></p> 
-               <%
-               }
-           if(UserManager.checkPermissions(user, Group.ordergoods,"e")){
-               %> 
-                <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssended.jsp')">修改实收数量</a></p> 
-                 <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodsInstorage.jsp')">卖场入库</a></p> 
-               <%
-               }  
-           if(UserManager.checkPermissions(user, Group.ordergoods,"r")){
-               %>   
-                 <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">库存刷新</a></p> 
-                  
-                <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssendhistory.jsp')">历史订单</a></p> 
-                 <p ><a href="javascript:void(0);"  onclick="reloadopned('receivegoods/receivegoods.jsp')">收货记录</a></p> 
-                 <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventory.jsp')">库存查询</a></p>
-                 <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventorycheck.jsp')">库存盘点</a></p>
-               
-              <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveorder.jsp')">退货订单</a></p>
-                            <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveordertype.jsp')">退货订单统计</a></p>
-              <!--   
-           <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveorderover.jsp')">已退货订单</a></p>
-           -->
-           <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventory.jsp')">销售查询</a></p>
-                      <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventoryDynamic.jsp')">动销率</a></p>
-            <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventorytype.jsp')">库存类别</a></p>
-            
-              
-            <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventoryline.jsp')">线性图</a></p>
-             
-              <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventorybar.jsp')">柱形图</a></p>
-               <!--  -->
-              
-               <% 
-               } 
-           %>
-         
-               
            
-          
+         
+           %>
           
             </div> 
-          </li>  
-            
+          </li>   
+          
+          
+          
+             <li >
+            <h4 >发货管理</h4>
+            <div class="list-item none">
+                <%  
+                if(UserManager.checkPermissions(user, Group.ordergoods,"c")){
+                    %>
+                      <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssend.jsp')">开单发货</a></p> 
+                    <%
+                    } 
+                if(UserManager.checkPermissions(user, Group.ordergoods,"e")){
+                    %> 
+                     <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssended.jsp')">修改实收数量</a></p> 
+                      <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodsInstorage.jsp')">卖场入库</a></p> 
+                 <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssendhistory.jsp')">历史订单</a></p> 
+                 <p ><a href="javascript:void(0);"  onclick="reloadopned('receivegoods/receivegoods.jsp')">收货记录</a></p> 
+                    
+                    <%
+                    }  
+                %>
+            </div> 
+          </li>
+           <li >
+            <h4 >盘点库存管理</h4>
+            <div class="list-item none">
+              <% 
+              if(UserManager.checkPermissions(user, Group.ordergoods,"r")){
+                  %>   
+                    <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">库存刷新</a></p> 
+                     
+<!--  
+                    <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventory.jsp')">库存查询</a></p>
+                     -->
+                    <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventorycheck.jsp')">库存盘点</a></p>
+                  
+               
+               
+                 <!-- 
+               <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventoryline.jsp')">线性图</a></p>
+                
+                 <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventorybar.jsp')">柱形图</a></p>
+                   -->
+                 
+                  <% 
+                  } 
+              
+              %>
+            </div>
+          </li>
+          
+           <li >
+            <h4 >增值服务</h4>
+            <div class="list-item none">
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveorder.jsp')">退货订单</a></p>
+                               <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveordertype.jsp')">退货订单统计</a></p>
+                 <!--   
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('receivegoods/receiveorderover.jsp')">已退货订单</a></p>
+              -->  
+              <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventory.jsp')">销售查询</a></p>
+                         <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventoryDynamicBranch.jsp')">动销率</a></p>
+               <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventorytype.jsp')">库存类别</a></p>
+            </div>
+          </li>
+           
+          
           <%  
          if(UserManager.checkPermissions(user,Group.inventory) || UserManager.checkPermissions(user, Group.inventoryquery) || UserManager.checkPermissions(user, Group.inventoryreserve)){
          %>

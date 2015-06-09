@@ -22,7 +22,7 @@ if("submit".equals(type)){
 			String sql = OrderReceitManager.updateDiable(or);
 			maps.remove(id);  
 			li.add(sql);    
-		}   
+		}    
 	}else if(method.equals("1")){ 
 		List<String> sql = OrderReceitManager.billing(user,maps,ids,buyid); 
 		li.addAll(sql);  

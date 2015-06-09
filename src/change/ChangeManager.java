@@ -141,7 +141,7 @@ public class ChangeManager {
 		Map<String, String> map = new HashMap<String, String>();
 		List<Change> list = getLocate();
 		for (int i = 0; i < list.size(); i++) {
-			Change c = list.get(i); 
+			Change c = list.get(i);  
 			map.put(c.getBechange(), c.getChange());
 		}
 		return map;

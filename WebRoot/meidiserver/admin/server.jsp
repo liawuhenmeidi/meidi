@@ -304,12 +304,12 @@
 		response.getWriter().flush();
 		response.getWriter().close(); //inventory 
 	} else if ("inventoryallSN".equals(method)) {
-		String str = "";  
+		String str = "";   
 		String branch = request.getParameter("branch");
 		String category = request.getParameter("category");
 		String product = request.getParameter("product");
 		String isSN = request.getParameter("isSN");   
-		//System.out.println(product);       
+		//System.out.println(product);         
 		Map<String,List<InventoryAll>> c = InventoryAllManager.getMapSN(user,branch,
 				category, product,isSN); 
 		// System.out.println(c);  
@@ -540,13 +540,19 @@
 			}
 
 		} 
-		return; 
+		return;  
 	} else if ("pandian".equals(method)) {
 		//data:"method=pandian&branchid="+branchid+"&type="+type,
 		String branchid = request.getParameter("branchid");
-		String type = request.getParameter("type"); 
+		String type = request.getParameter("type");   
 		InventoryBranchManager.update(user, branchid, type);
-	} else if ("pandians".equals(method)) {  
+	}  else if ("pandianSN".equals(method)) {  
+		//data:"method=pandian&branchid="+branchid+"&type="+type, 
+		String branchid = request.getParameter("branchid");
+		String type = request.getParameter("type"); 
+		String typestatues = request.getParameter("typestatues"); 
+		InventoryBranchManager.updateSN(user, branchid, type,typestatues);
+	}else if ("pandians".equals(method)) {     
 		//data:"method=pandian&branchid="+branchid+"&type="+type,
 		String branch = request.getParameter("branch");
 	   String time = request.getParameter("time");
@@ -723,15 +729,15 @@
 		Map<String,InventoryBranch> mapin = InventoryBranchManager.getmapType(user,b.getId()+"");
 		String strin = StringUtill.GetJson(mapin);
 		
-	    Map<String,List<httpClient.download.Inventory>> mapsn = InventoryChange.getMapBranchType(user,time,b.getId());
+	    Map<String,List<SNInventory>> mapsn = InventoryChange.getMapBranchType(user,time,b.getId());
 		  
 	    String strsn = StringUtill.GetJson(mapsn);
 	   // System.out.println("mapsn"+mapsn);
-		Map<String,List<httpClient.download.Inventory>> mapsnModel = InventoryModelDownLoad.getMapBranchType(user, time,b.getId());
+		Map<String,List<SNInventory>> mapsnModel = InventoryModelDownLoad.getMapBranchType(user, time,b.getId());
 		String strmodel = StringUtill.GetJson(mapsnModel);
 		// System.out.println("mapsnModel"+strmodel);
-		Map<String,httpClient.download.Inventory> mapsale = SaleDownLoad.getMap(TimeUtill.dataAdd(time, -29),time,b.getId()); 
-		    
+		Map<String,SNInventory> mapsale = SaleDownLoad.getMap(TimeUtill.dataAdd(time, -29),time,b.getId()); 
+		     
 		 String strsale = StringUtill.GetJson(mapsale);
 		// System.out.println("strsale"+strsale);
 		 
@@ -745,7 +751,7 @@
 		response.getWriter().flush();
 		response.getWriter().close(); //
 	} else if ("getInventoryOut".equals(method)) {
-		  
+		   
 				String branchtype = request.getParameter("branchtype");
 				String branch = request.getParameter("branch");
 				Map<String,String> map = new HashMap<String,String>();
@@ -765,13 +771,18 @@
 				 
 				map.put("strp", strp);
 				map.put("strin", strin);
-				 
+				  
 				//System.out.println(map); 
 				response.getWriter().write(StringUtill.GetJson(map));
 				response.getWriter().flush();
 				response.getWriter().close(); //
 			} else if ("InitInventorySN".equals(method)) {
 		MyMainClient.getinstance().run();
+		response.getWriter().write(1);
+		response.getWriter().flush();
+		response.getWriter().close(); // 
+	}else if ("InitInventoryReceiveorder".equals(method)) {
+		MyMainClient.getinstance().refresh();
 		response.getWriter().write(1);
 		response.getWriter().flush();
 		response.getWriter().close(); //

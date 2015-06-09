@@ -1,18 +1,24 @@
 <%@ page language="java"
-	import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,httpClient.download.InventoryModelDownLoad,httpClient.download.InventoryBadGoodsDownLoad,httpClient.download.InventoryChange,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;"
+	import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,httpClient.download.*,httpClient.download.InventoryModelDownLoad,httpClient.download.InventoryBadGoodsDownLoad,httpClient.download.InventoryChange,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <%  
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user"); 
 String category = request.getParameter("category"); 
 String branch = request.getParameter("branch");
-String time = request.getParameter("time"); 
- 
-
+String time = request.getParameter("time");  
+String realtime = ""; 
+  
 int branchid = -1 ; 
-int branchtype = -1 ; 
+int branchtype = -1 ;  
 if(StringUtill.isNull(time)){
 	time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
+	realtime = time ;
+}else {
+	realtime = time ;
+	if(time.equals(TimeUtill.getdateString())){ 
+		time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
+	}
 }     
 if(!StringUtill.isNull(branch)){  
 	//branch = new String(branch.getBytes("ISO8859-1"), "UTF-8");
@@ -35,7 +41,7 @@ String listall = StringUtill.GetJson(listbranchp);
 
 //List<InventoryBranch> list = InventoryAllManager.getlist(user,branchid,
 	//	category);      
-           
+            
 //long start = System.currentTimeMillis();
 // Map<String, Map<String, Map<Integer, InventoryBranch>>> mapin = null;
 
@@ -43,22 +49,22 @@ String listall = StringUtill.GetJson(listbranchp);
 //System.out.println(mapin);       
  // System.out.println(mapin ); 
     
-Collection<httpClient.download.Inventory> listend = InventoryChange
+Collection<SNInventory> listend = InventoryChange
 				.get(TimeUtill.dataAdd(time, 1));
 		// System.out.println("listend"+listend.size());
-Map<String,Map<String, httpClient.download.Inventory>>  mapc = InventoryChange
-				.changeMapTypeBranch(listend);   
-     
-Map<String,Map<String, httpClient.download.Inventory>> mapm = InventoryChange
+Map<String,Map<String,SNInventory>>  mapc = InventoryChange
+				.changeMapTypeBranch(listend);    
+         
+Map<String,Map<String,SNInventory>> mapm = InventoryChange
 .changeMapTypeBranchNum(InventoryModelDownLoad
 		.getMap(user, TimeUtill.dataAdd(time, 1)).values());   
-
-Map<String,Map<String, httpClient.download.Inventory>> mapbad = InventoryChange
+ 
+Map<String,Map<String,SNInventory>> mapbad = InventoryChange
 .changeMapTypeBranch(InventoryBadGoodsDownLoad
 		.getMap(user, TimeUtill.dataAdd(time, 1)).values()); 
          
 //System.out.println("mapbad.size()"+mapbad.size());
-Map<String, Map<Integer, Map<Integer, InventoryBranch>>> mapin = InventoryAllManager.getInventoryMap(user,category,branch,time,mapc,mapm,mapbad);  		 
+Map<String, Map<Integer, Map<Integer, InventoryBranch>>> mapin = InventoryAllManager.getInventoryMap(user,category,branch,realtime ,mapc,mapm,mapbad);  		 
 //System.out.println("mapbad.size()"+mapbad.size()); 
 		  
 %>
@@ -102,7 +108,13 @@ var allp = <%=allp%>;
  $(function () {   
 	 $("#branch").autocomplete({ 
 		 source: jsonall
+	    }); 
+	  
+	 
+	 $("#product").autocomplete({ 
+		 source: allp
 	    });
+	 
 	 //allp
 	 //add();
      
@@ -118,47 +130,69 @@ var allp = <%=allp%>;
 		 return ;
 	 }
 	
- }
+ } 
  
+   
+ function search(ctype,branchid){ 
+	 $("#time").val(""); 
+	 $("#starttime").val("");  
+	 $("#endtime").val(""); 
+	 winPar = window.open("time.jsp","time","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
+	 
+	 setInterval("startRequest('"+ctype+"','"+branchid+"')",500);  
+} 
+   
  
  function inventory(inventory){
 	 //window.open('inventorysearch.jsp?id='+inventory, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
 	 window.location.href='inventorysearch.jsp?id='+inventory;
  }
-               
- function addtid (tid){
-	 tids.push(tid);     
+                     
+ function addtid (tid){  
+	if(null == tid || "" == tid){
+		tid = $("#product").val();
+		//alert(tname); 
+	}
+	// var data = new  Date(); 
+	 //data.setTime(data.getTime()+(60*12 * 60 * 1000));
+	// alert(data);  
+	// $.cookie("inventorycheck", tid,{ expires: data });   
+	 tids.push(tid);      
+	  
 	 $("#"+tid).attr("class","bsc");
 	 $("#l"+tid).css("display","none");
 	 
-	 //   
+	 //    
 	 if(null == winPar){  
 		 winPar = window.open("../ordergoods/ordergoodsupdatecookie.jsp?inventory=inventory&branch="+branch+"&tids="+tids.toString()+"&branchtype="+branchtype,"time","resizable=yes,modal=yes,scroll=no,width="+screen.width*0.8+",top="+(screen.height-300)/2+",left="+(screen.width*0.1)+",height=400px,dialogTop:0px,scroll=no");  	
-	 }else {    
+	 }else {     
 		 if(winPar.closed){    
 			 window.location.reload();
 			 //tids = new Array();  
-			// tids.push(tid);     
+			// tids.push(tid);      
 			      
 			//  alert($("#"+tid));   
 			// $("#"+tid).attr("class","bsc");
 			// $("#l"+tid).css("display","none");
-			  
+			   
 			// winPar = window.open("../ordergoods/ordergoodsupdate.jsp?inventory=inventory&branch="+branch+"&tids="+tids.toString()+"&branchtype="+branchtype,"time","resizable=yes,modal=yes,scroll=no,width=500px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	 
 			 //winPar.location.href="../ordergoods/ordergoodsupdate.jsp?inventory=inventory&branch="+branch+"&tids="+tids.toString()+"&branchtype="+branchtype; 
-		 }else {   
+		 }else {  
+			 //winPar.location.reload();
 			 winPar.close();  
-			 winPar = window.open("../ordergoods/ordergoodsupdatecookie.jsp?inventory=inventory&branch="+branch+"&tids="+tids.toString()+"&branchtype="+branchtype,"time","resizable=yes,modal=yes,scroll=no,width="+screen.width*0.8+",top="+(screen.height-300)/2+",left="+(screen.width*0.1)+",height=400px,dialogTop:0px,scroll=no");  	 
+			 winPar = window.open("../ordergoods/ordergoodsupdatecookie.jsp?inventory=inventory&branch="+branch+"&tids="+tids.toString()+"&branchtype="+branchtype+"&time=<%=time%>","time","resizable=yes,modal=yes,scroll=no,width="+screen.width*0.8+",top="+(screen.height-300)/2+",left="+(screen.width*0.1)+",height=400px,dialogTop:0px,scroll=no");  	 
 		 }
-		
+		 
 	 }
    
  }
    
  function search(ctype,branchid){  
+	// alert(0);  
 	 $("#time").val("");  
 	 $("#starttime").val(""); 
 	 $("#endtime").val("");  
+	// alert(1);
 	 winPar = window.open("time.jsp","time","resizable=yes,modal=yes,scroll=no,width=700px,top="+(screen.height-300)/2+",left="+(screen.width-400)/2+",height=400px,dialogTop:0px,scroll=no");  	
 	 setInterval("startRequest('"+ctype+"','"+branchid+"')",500);  
  }  
@@ -208,22 +242,69 @@ function serchclick(category,type,branchid,obj){
 
 	<!--   头部结束   --> 
  
-	<input type="hidden" id="time" value="" />
+<input type="hidden" id="time" value="" />
 	<input type="hidden" id="starttime" value="" />
 	<input type="hidden" id="endtime" value="" />
+
 <form action="inventory1check.jsp" id="mypost" > 
 <input type="hidden" name="category" value="<%=category%>"/>
 	<table width="100%" id="head">  
-		<tr>   
-			<td>现在位置：<%=c.getName()%>库存</td>
+		<tr>    
+			<td>现在位置：盘点</td> 
 			<td>仓库:<input type="text" name="branch" id="branch" value="<%=branch %>" />
+			</td>   
+			<%         
+			// System.out.print("branchid"+branchid);
+			 List<User> list = UserService.getMapBranchid().get(branchid+"") ; 
+			 
+			      if(null != list){
+			    	   
+			    	  for(int i=0;i<list.size();i++){
+			    		  User u = list.get(i);  
+			    		  String str = u.getProductIDS();
+			    		 // System.out.println(str);
+			    		  str = str.substring(1,str.length()-2);
+			    		//  System.out.println(str);
+			               boolean flag = false ;  
+			    		  String[] p = str.split(",");
+			    		  for(int j=0;j<p.length;j++){
+			    			  String pid = p[j];  
+			    			 // System.out.println(pid+"&&&&"+c.getId());
+			    			  if(pid.trim().equals(c.getId()+"")){
+			    				  flag = true ;
+			    			  }
+			    		  }
+			    		  
+			    		 if(flag){
+			    		 
+			    		  %> 
+			    		<td> 
+			    		<%=u.getUsername() %>::
+
+			    		  <%=u.getPhone() %>
+			    		  
+			    		  </td> 
+			    		  <% 
+			    	  }}
+			      }
+			 
+			 
+			 
+			 
+			 
+			 %>
+			<td>
+			  
+			
 			</td>  
                  <td>时间:<input name="time" type="text" id="time"
 						value="<%=time%>" size="10" maxlength="10"
-						onclick="new Calendar().show(this);" placeholder="必填"
-						 /></td> 
-			<td><input type="button" onclick="winfirm()" value="查询" /></td>
-             
+						onclick="new Calendar().show(this);" placeholder="必填" 
+						 /></td>    
+			<td><input type="button" onclick="winfirm()" value="查询" /></td> 
+			<td><label id="l" onclick="addtid('')">[调拨单]</label></td>
+			<!--  
+             <td> <input type="text" name="product" id="product" placeholder="调拨单增加产品"/><label id="l" onclick="addtid('')">[调拨单]</label></td> --> 
 			<td><a href="javascript:history.go(-1);"><font
 					style="color:blue;font-size:20px;">返回</font>
 			</a></td>
@@ -234,14 +315,15 @@ function serchclick(category,type,branchid,obj){
 	<div class="table-list"> 
 <form action="../server.jsp" >    
 <input type="hidden" name="method" value ="pandians"/> 
- 
+  
 <input type="hidden" name="branchid" value ="<%=branchid%>"/> 
 <input type="hidden" name="branch" value ="<%=branch%>"/>
 <input type="hidden" name="category" value ="<%=category%>"/>  
- <input type="hidden" name="time" value ="<%=time%>"/>   
-		<table width="100%" cellspacing="1" id="table">
-			<thead> 
-				<tr> 
+ <input type="hidden" name="time" value ="<%=time%>"/> 
+ <div style="height:400px">   
+		<table width="100%"    cellspacing="1" id="table">
+			<thead>  
+				<tr>  
 				<th align="left">编号</th>
 					<th align="left">产品类别</th>
 					<th align="left">产品型号</th>
@@ -276,22 +358,9 @@ function serchclick(category,type,branchid,obj){
             	 String type = mapent.getKey();
             	 Map<Integer, Map<Integer, InventoryBranch>> mapb = mapent.getValue();
 
-          //System.out.println(1);  
-       //  System.out.println( mapb ); 
-       //  System.out.println( mapb.size() ); 
-       
-        
-       
-       
-       
-       
-          
             	 Set<Map.Entry<Integer, Map<Integer, InventoryBranch>>> setb = mapb.entrySet();
             	 Iterator<Map.Entry<Integer, Map<Integer, InventoryBranch>>> itb = setb.iterator();
-            	  
-            	
-            	  
-            	 //long start11 = System.currentTimeMillis();      
+   
             	 while(itb.hasNext()){  
             		  
             		 //System.out.println(2); 
@@ -301,6 +370,7 @@ function serchclick(category,type,branchid,obj){
             		 //long start111 = System.currentTimeMillis();  
             		 String cname = "";
             		 String tname = "";
+            		 int tid = 0 ;
             		 int countin = 0 ;
             		 //long start222 = System.currentTimeMillis();  
                 	// System.out.println("****"+(start222 - start111));  
@@ -313,26 +383,29 @@ function serchclick(category,type,branchid,obj){
             		 Set<Integer> sb = new HashSet<Integer>();  
             		 Set<Map.Entry<Integer, InventoryBranch>> sett = mapt.entrySet();
             		 Iterator<Map.Entry<Integer, InventoryBranch>> itt =  sett.iterator();
+            		 String cl = "class=\"asc\""; 
             		 while(itt.hasNext()){   
             			// System.out.println(3); 
             			 Map.Entry<Integer, InventoryBranch> mapentt = itt.next();
             			 InventoryBranch in = mapentt.getValue();
             			 if(in.getTypeid().equals("-1")){
-            				   
+            				    
                  			 cname = in.getGoodname(); 
-                 			  
+                 			    
                  		 }else { 
-                 			 cname = maps.get(Integer.valueOf(type)).getCname();
+                 			 cname = in.getGoodname();
+                 			//  cname = maps.get(Integer.valueOf(type)).getCname();
                      		 tname =maps.get(Integer.valueOf(type)).getType();
+                     		 tid = maps.get(Integer.valueOf(type)).getId();
                  		 }
             			 //System.out.println(in.getTypeStatues()); 
-            			 if(in.getTypeStatues() == 1){ 
-            				 outnum += in.getPapercount(); 
+            			 if(in.getTypeStatues() == 1){  
+            				 outnum += in.getPapercount();     
+            				 outnumall += in.getPapercount();   
+            			 }else if(in.getTypeStatues() == 2){   
+            				 outnum += in.getPapercount();  
             				 outnumall += in.getPapercount(); 
-            			 }else if(in.getTypeStatues() == 2){ 
-            				 outnum += in.getPapercount(); 
-            				 outnumall += in.getPapercount(); 
-            			 }else if(in.getTypeStatues() ==0){   
+            			 }else if(in.getTypeStatues() ==0){    
             				 outnum += in.getPapercount(); 
             				 outnumall += in.getPapercount(); 
             			 }else if(in.getTypeStatues() ==3 ){
@@ -342,30 +415,30 @@ function serchclick(category,type,branchid,obj){
             			 
             			 if(!sb.contains(in.getBranchid())){
             				 sb.add(in.getBranchid()); 
-            				 snnum += in.getSnNum();
+            				 snnum += in.getSnNum(); 
                  			   
             				 inmodelnum += in.getSnModelnum();
             				 snbad += in.getSnBad();
-            			 }
+            			 } 
             			 
             			 if(!StringUtill.isNull(in.getQuerymonth())){
             				 querytime = in.getQuerymonth();
             			 }
             			  
+            			 if(in.getIsOverStatues() == 1){
+            				 cl = "class=\"bsc\""; 
+            			 }
  
             		 }     
             		 count++;          
             		 snnumall += snnum;  
             		 inmodelnumall += inmodelnum;  
-            		   
-            		
-            		 
-            		   
-            		 %>  
-            		 <tr class="asc" id="<%=type %>">
-            		    <td><%=count %></td> 
-            		 <td><%=cname %></td> 
-            		  <td><%=tname %></td>  
+
+            		 %>   
+            		 <tr <%=cl %> id="<%=type %>" ondblclick="search('<%=tid%>','<%=branchid%>')">  
+            		    <td><%=count %></td>   
+            		 <td><%=cname %></td>  
+            		  <td><%=tname %></td>   
             		  <td><%=outnum%></td> 
             		  <td><%=outmodelnum %></td>
             		  <td><%=inmodelnum %></td> 
@@ -393,29 +466,29 @@ function serchclick(category,type,branchid,obj){
         	// System.out.println("**"+(start2 - start1)); 
           
          } 
-  
+   
  		//System.out.println("mapc.size()"+mapc.size());
  		//System.out.println("mapm.size()"+mapm.size());   
          
           
-         
+          
        int countb = 0 ; 
-       Set<Map.Entry<String,Map<String, httpClient.download.Inventory>>> setm = mapm
+       Set<Map.Entry<String,Map<String, SNInventory>>> setm = mapm
  				.entrySet();
- 		Iterator<Map.Entry<String,Map<String, httpClient.download.Inventory>>> itm = setm
+ 		Iterator<Map.Entry<String,Map<String,SNInventory>>> itm = setm
  				.iterator();
  		while (itm.hasNext()) { 
- 			Map.Entry<String,Map<String, httpClient.download.Inventory>> mapentc = itm
+ 			Map.Entry<String,Map<String,SNInventory>> mapentc = itm
  					.next();
  			
  			String type = mapentc.getKey(); 
  			
  			//countb++;
- 			Map<String, httpClient.download.Inventory> inmap = mapentc.getValue(); 
+ 			Map<String,SNInventory> inmap = mapentc.getValue(); 
  			
- 			Collection<httpClient.download.Inventory> co = inmap.values();
+ 			Collection<SNInventory> co = inmap.values();
  			
- 			Iterator<httpClient.download.Inventory> it = co.iterator();
+ 			Iterator<SNInventory> it = co.iterator();
  			int tid = -1;
  			int bid = -1;
  			String tname = "";
@@ -426,7 +499,7 @@ function serchclick(category,type,branchid,obj){
  				int cnum = 0;
  	 			int badnum = 0 ;
  	 			
- 				httpClient.download.Inventory in = it.next();
+ 	 			SNInventory in = it.next();
  				try {
  	 				 
  	 				
@@ -438,7 +511,7 @@ function serchclick(category,type,branchid,obj){
  	 				bname = "";
  	 				flag = false ;
  	 			}
- 	            
+ 	             
  	 			try { 
  	 				tname = in.getGoodpName();
  					tid = ProductService.gettypeNUmmap().get(in.getGoodNum())
@@ -447,15 +520,7 @@ function serchclick(category,type,branchid,obj){
  					tname = in.getGoodpName();
  					flag = false ;
  				}
- 
- 			
- 			 
- 			// logger.info(in.getBranchName());
- 			 
- 			
- 			
- 			
- 			
+  
  			if (StringUtill.isNull(branch) || branch.equals(bname)) {
  				
  	 				 
@@ -474,12 +539,13 @@ function serchclick(category,type,branchid,obj){
  	 			} catch (Exception e) {
  	 				badnum = 0;
  	 			}
- 				// logger.info(bname);
+ 				// logger.info(bname); 
  				// logger.info(in.getBranchNum());
- 				//countb++;
+ 				//countb++;  
+ 				// System.out.println("in.getModelnum()"+in.getModelnum());
  				 count++;   
  				 snnumall += cnum;   
-            	 inmodelnumall += in.getNum(); 
+            	 inmodelnumall += in.getModelnum(); 
  				 %>   
         		 <tr class="asc" id="<%=tid %>">
         		 <td><%=count %></td>  
@@ -487,7 +553,7 @@ function serchclick(category,type,branchid,obj){
         		  <td><%=tname %></td>  
         		  <td><%=0%></td>   
         		  <td><%=0 %></td> 
-        		  <td><%=in.getNum()%></td> 
+        		  <td><%=in.getModelnum()%></td> 
         		   <td><%=cnum %></td> 
         		   <td><%=badnum %></td> 
         		    <td></td>
@@ -524,19 +590,19 @@ function serchclick(category,type,branchid,obj){
  		System.out.println("mapm.size()"+mapm.size());   
  		System.out.println("mapbad.size()"+mapbad.size()); 
          
-        Set<Map.Entry<String,Map<String, httpClient.download.Inventory>>> setc = mapc
+        Set<Map.Entry<String,Map<String, SNInventory>>> setc = mapc
 				.entrySet();
-		Iterator<Map.Entry<String,Map<String, httpClient.download.Inventory>>> itc = setc
+		Iterator<Map.Entry<String,Map<String, SNInventory>>> itc = setc
 				.iterator();
 		while (itc.hasNext()) {
-			Map.Entry<String,Map<String, httpClient.download.Inventory>> mapentc = itc
+			Map.Entry<String,Map<String, SNInventory>> mapentc = itc
 					.next();
 			String key = mapentc.getKey();
-			Map<String, httpClient.download.Inventory> inmap = mapentc.getValue();
-			Collection<httpClient.download.Inventory> co = inmap.values();
-			Iterator<httpClient.download.Inventory> it = co.iterator();
+			Map<String, SNInventory> inmap = mapentc.getValue();
+			Collection<SNInventory> co = inmap.values();
+			Iterator<SNInventory> it = co.iterator();
 			while(it.hasNext()){
-				httpClient.download.Inventory in = it.next();
+				SNInventory in = it.next();
 				
 		
 			//itc.remove();
@@ -613,19 +679,19 @@ function serchclick(category,type,branchid,obj){
 			}
 		}   
 		}
-		Set<Map.Entry<String,Map<String, httpClient.download.Inventory>>> setbad = mapbad
+		Set<Map.Entry<String,Map<String, SNInventory>>> setbad = mapbad
 				.entrySet();
-		Iterator<Map.Entry<String,Map<String, httpClient.download.Inventory>>> itbad = setbad
+		Iterator<Map.Entry<String,Map<String, SNInventory>>> itbad = setbad
 				.iterator();
 		while (itbad.hasNext()) {
-			Map.Entry<String,Map<String, httpClient.download.Inventory>> mapentc = itbad
+			Map.Entry<String,Map<String,SNInventory>> mapentc = itbad
 					.next();
 			String key = mapentc.getKey();
-			Map<String, httpClient.download.Inventory> inmap = mapentc.getValue();
-			 Collection<httpClient.download.Inventory> co = inmap.values();
-			 Iterator<httpClient.download.Inventory> it = co.iterator();
+			Map<String, SNInventory> inmap = mapentc.getValue();
+			 Collection<SNInventory> co = inmap.values();
+			 Iterator<SNInventory> it = co.iterator();
 			 while(it.hasNext()){
-				 httpClient.download.Inventory in = it.next();
+				 SNInventory in = it.next();
 			
 			//itc.remove();
 			int bid = -1;
@@ -720,7 +786,7 @@ function serchclick(category,type,branchid,obj){
 		    
 		  </tr>
 		</table>
-
+</div>
  </form>
 	</div>
 

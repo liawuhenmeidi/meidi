@@ -9,17 +9,17 @@ import product.ProductService;
 
 import utill.StringUtill;
 import utill.TimeUtill;
-
+ 
 public class InventoryBranch {  
 	private int id;
 	private int inventoryid; // 所包含的产品类别id
 	private int branchid;
- 
-	private String type;
-        
+  
+	private String type; 
+         
 	private Product product  ;  
-	  
-	private int typeStatues; // 1常规 2 特价 3 样机 4 换货 5 赠品 
+	   
+	private int typeStatues; // 1常规 2 特价 3 样机 4 换货 5 赠品      
    
 	private String typeid;
 
@@ -35,17 +35,34 @@ public class InventoryBranch {
 	private String orderNUmSN;
 	// 订单过期时间
 	private String activetime ;
-	 
+	  
 	private String typestatuesName ;
 	     
 	private int snNum ;  // 苏宁库存  
 	
 	private int snModelnum ;  // 苏宁样机 
-	 
+	  
 	private int snBad;  // 苏宁坏机
-	private String goodnum ; 
+	private String goodnum ;  
 	private String goodname;// 苏宁名称
+	private int isOverStatues;  //    0  已完成    1  未完成 
 	
+	private int incommonnum ;
+	private int inmodelnum ;   
+	
+	 
+	public int getIncommonnum() {
+		return incommonnum;
+	} 
+	public void setIncommonnum(int incommonnum) {
+		this.incommonnum = incommonnum;
+	}
+	public int getInmodelnum() {
+		return inmodelnum;
+	}
+	public void setInmodelnum(int inmodelnum) {
+		this.inmodelnum = inmodelnum;
+	}
 	public int getSnBad() {
 		return snBad;
 	}
@@ -84,7 +101,7 @@ public class InventoryBranch {
 			typestatuesName = ProductModel.Model.特价机采购订单.toString();
 		}else if(ProductModel.Model.样机采购订单.getValue()==typeStatues){ 
 			typestatuesName = ProductModel.Model.样机采购订单.toString();
-		}    
+		}     
 		//System.out.println(goodtypeStatues);   
 		return typestatuesName; 
 	}
@@ -100,7 +117,7 @@ public class InventoryBranch {
 			if (month == date.getMonth() && isquery == 1) {
 				flag = true;
 			}
-		}
+		} 
 
 		return flag;
 	}
@@ -185,7 +202,7 @@ public class InventoryBranch {
 	public void setTypeStatues(int typeStatues) {
 		this.typeStatues = typeStatues;
 	} 
-
+ 
 	public String getOrderNUmSN() {
 		if(StringUtill.isNull(orderNUmSN)){
 			orderNUmSN = "";
@@ -203,17 +220,25 @@ public class InventoryBranch {
 		} 
 		return activetime;
 	}  
-
+ 
 	public void setActivetime(String activetime) {
 		this.activetime = activetime;
-	}
-   
-	public Product getProduct() {  
-		//System.out.println(Integer.valueOf(this.getTypeid())); 
-		product = ProductService.getIDmap().get(Integer.valueOf(this.getTypeid()));
+	} 
+    
+	public Product getProduct() {   
+		if(!StringUtill.isNull(this.getTypeid())){
+			product = ProductService.getIDmap().get(Integer.valueOf(this.getTypeid()));
+		}
+		
 		return product;
 	}
 
+	public int getIsOverStatues() {
+		return isOverStatues;
+	}
+	public void setIsOverStatues(int isOverStatues) {
+		this.isOverStatues = isOverStatues;
+	}
 	public void setProduct(Product product) {
 		this.product = product;
 	}

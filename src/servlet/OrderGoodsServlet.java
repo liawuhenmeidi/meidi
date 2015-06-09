@@ -86,6 +86,10 @@ public class OrderGoodsServlet extends HttpServlet {
 	public void add(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		String method = request.getParameter("method");
+		String time = request.getParameter("time");
+		if(StringUtill.isNull(time)){
+			time = TimeUtill.getdateString(); 
+		}
 		int statues = -1;
 		// String oid = request.getParameter("oid");
 		String branchid = request.getParameter("branchid");
@@ -108,7 +112,7 @@ public class OrderGoodsServlet extends HttpServlet {
 			om.setId(Integer.valueOf(id));
 			// om.setOid(oid);
 			om.setSubmitid(user.getId());
-			om.setSubmittime(TimeUtill.gettime());
+			om.setSubmittime(time);
 			if (!StringUtill.isNull(branchid)) {
 				om.setBranchid(BranchService.getNameMap().get(branchid).getId());
 				statues = 1;
@@ -173,11 +177,11 @@ public class OrderGoodsServlet extends HttpServlet {
 						op.setOrdernum(Integer.valueOf(num)
 								+ Integer.valueOf(invenNum));
 					}
-
+ 
 					op.setRealnum(Integer.valueOf(num));
 					op.setStatues(Integer.valueOf(sta));
 					op.setSubmitid(user.getId());
-					op.setSubmittime(TimeUtill.getdateString());
+					op.setSubmittime(time);
 					op.setCid(cid);
 					op.setTid(Integer.valueOf(itype));
 					op.setMid(Integer.valueOf(id));
@@ -186,13 +190,13 @@ public class OrderGoodsServlet extends HttpServlet {
 					}
 					// op.setUuid(uuid);
 					list.add(op);
-				}
+				} 
 
 			}
 		}
-
+ 
 		oa.setOm(om);
-		oa.setList(list);
+		oa.setList(list); 
 		// logger.info("one");
 		if (OrderGoodsAllManager.save(user, oa)) {
 			try {
@@ -252,13 +256,16 @@ public class OrderGoodsServlet extends HttpServlet {
 		if (null != ogids) {
 			List<String> listogids = Arrays.asList(ogids);
 			// logger.info(listogids);
+			
 			Map<String, Map<String,List<InventoryBranchMessage>>> mapINM = InventoryBranchMessageManager
-					.getmap(oa.getOm().getBranchid()); 
+					.getmap(oa.getOm().getBranchid(),oa.getOm().getId()); 
+			
+			 
 			// logger.info(mapINM);
 			Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryBranchManager
 					.getInventoryMap(user);
 
-			Map<Integer, Map<Integer, InventoryBranchMessage>> map = new HashMap<Integer, Map<Integer, InventoryBranchMessage>>();
+			Map<String,InventoryBranchMessage> map = new HashMap<String, InventoryBranchMessage>();
 			// for (int i = 0; i < ogids.length; i++) {
 			if (null != list) {
 
@@ -280,7 +287,7 @@ public class OrderGoodsServlet extends HttpServlet {
 						}
 						if (StringUtill.isNull(returnrealsendnum)) {
 							returnrealsendnum = "0";
-						}   
+						}    
 						String sql = OrderGoodsManager.updaterealsendnum(user,
 								ogid, realsendnum, returnrealsendnum);
 
@@ -295,13 +302,13 @@ public class OrderGoodsServlet extends HttpServlet {
 						boolean flag = false;
 						boolean upflag = false;
 						if (og.getStatues() == 6 || og.getStatues() == 7
-								|| og.getStatues() == 8 || og.getStatues() == 9) {
-
-							flag = true;
+								|| og.getStatues() == 8 || og.getStatues() == 9 || og.getStatues() == 10) {
+ 
+							flag = true; 
 							operatortype = 16;
 							realcont = -Integer.valueOf(returnrealsendnum);
 						} else if (og.getStatues() == 4) {
-							flag = true;
+							flag = true;   
 							// upflag = true ;
 							operatortype = 17;
 							/*
@@ -369,7 +376,7 @@ public class OrderGoodsServlet extends HttpServlet {
 										+ "',"
 										+ 0
 										+ ",'"
-										+ realcont
+										+ realcont 
 										+ "',"
 										+ operatortype
 										+ ","
@@ -405,20 +412,15 @@ public class OrderGoodsServlet extends HttpServlet {
 									for (int j = 0; j < listin.size(); j++) {
 										InventoryBranchMessage in = listin
 												.get(j);
-										Map<Integer, InventoryBranchMessage> maps = map
-												.get(og.getTid());
+										String key = og.getTid()+"_"+in.getTypeStatues();
+										InventoryBranchMessage inv = map
+												.get(key); 
 										// logger.info(in.getInventoryid());
 										// logger.info(oa.getOm().getId());
-										if (in.getInventoryid() == oa.getOm()
-												.getId()) { 
+										
 											InMid = in.getId(); 
 											logger.info(InMid); 
-											if (null == maps) {
-												maps = new HashMap<Integer, InventoryBranchMessage>();
-												map.put(og.getTid(), maps);
-											}
-											InventoryBranchMessage inv = maps
-													.get(in.getInventoryid());
+											
 											if (null == inv) {
 												inv = in;
 												// oldpapercount =
@@ -431,22 +433,22 @@ public class OrderGoodsServlet extends HttpServlet {
 														.getPapercount()
 														+ realcont);
 												in.setIsOverStatues(0);
-												maps.put(in.getInventoryid(),
-														in);
+												map.put(key,
+														in); 
 
 											}
-										}
+										
 
 										if (InMid != 0 && in.getId() > InMid) {
-											InventoryBranchMessage inv = maps
-													.get(in.getInventoryid());
+											 inv =map
+													.get(key); 
 											if (null == inv) {
 												inv = in;
 												in.setPapercount(papercount
 														+ in.getAllotPapercount());
 												in.setOldpapercount(papercount);
-
-												maps.put(in.getInventoryid(),
+ 
+												map.put(key, 
 														in);
 
 											}
@@ -520,7 +522,7 @@ public class OrderGoodsServlet extends HttpServlet {
 
 				List<String> sqlup = InventoryBranchMessageManager.update(map);
 
-				listsql.addAll(sqlup);
+				listsql.addAll(sqlup); 
 
 			}
 

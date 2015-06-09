@@ -159,7 +159,7 @@ td {
 
 <!--   头部结束   -->
 <div class="main">   
-  <div class="weizhi_head">现在位置：<%=c.getName() %>分布
+  <div class="weizhi_head">现在位置：库存查询
   
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
   <select id="counttyepe" name = "counttyepe">

@@ -1,27 +1,27 @@
 <%@ page language="java"
 	import="java.util.*,httpClient.*,ordersgoods.*,product.*,branch.*,enums.*,httpClient.download.*,org.apache.commons.logging.*,utill.*,goodsreceipt.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
-<%
+<% 
 	request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user");
 List<String> listbranchp = BranchService.getListStr(); 
 String listall = StringUtill.GetJson(listbranchp);  
- 
+       
 String starttime = request.getParameter("starttime");
 String endtime = request.getParameter("endtime"); 
 String branch = request.getParameter("branch");  
   
-List<Inventory> list = InventorySale.compare(starttime,endtime);
+List<SNInventory> list = InventorySale.compare(starttime,endtime);
  
-Map<String,List<Inventory>> map = new LinkedHashMap<String,List<Inventory>>();
+Map<String,List<SNInventory>> map = new LinkedHashMap<String,List<SNInventory>>();
         
 if(!list.isEmpty()){  
-	Iterator<Inventory> it = list.iterator();
+	Iterator<SNInventory> it = list.iterator();
 	while(it.hasNext()){ 
-		Inventory in = it.next();
-		List<Inventory> li = map.get(in.getBranchName());
+		SNInventory in = it.next();
+		List<SNInventory> li = map.get(in.getBranchName());
 		if(null == li){
-	li = new ArrayList<Inventory>();
+	li = new ArrayList<SNInventory>();
 	map.put(in.getBranchName(), li);
 		}
 		
@@ -67,7 +67,7 @@ if(!list.isEmpty()){
 			 alert("结束时间不能为空");
 			 return false;
 		}
-		
+		 
 		
 
 		return true;
@@ -130,23 +130,22 @@ if(!list.isEmpty()){
 
 			<%
 				if (!map.isEmpty()) {
-					Set<Map.Entry<String, List<Inventory>>> set = map.entrySet();
-					Iterator<Map.Entry<String, List<Inventory>>> it = set
+					Set<Map.Entry<String, List<SNInventory>>> set = map.entrySet();
+					Iterator<Map.Entry<String, List<SNInventory>>> it = set
 							.iterator(); 
 					while (it.hasNext()) { 
-						Map.Entry<String, List<Inventory>> mapen = it.next();
-						List<Inventory> li = mapen.getValue();
+						Map.Entry<String, List<SNInventory>> mapen = it.next();
+						List<SNInventory> li = mapen.getValue();
 
 						if (null != li) {
 							for (int i = 0; i < li.size(); i++) {
-								Inventory in = li.get(i);
+								SNInventory in = li.get(i);
 								String bnum = StringUtill.getStringNocn(in
 										.getBranchName());
 								String bname = "";
 								if (StringUtill.isNull(bnum)) {
 									bnum = in.getBranchNum();
-								}
-
+								} 
 								if (null != BranchService
 										.getNumMap(SaleModel.SuNing)) {
 									if (null != BranchService.getNumMap(

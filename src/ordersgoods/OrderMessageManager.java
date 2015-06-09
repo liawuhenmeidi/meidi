@@ -79,6 +79,11 @@ public class OrderMessageManager {
 		String sql = " update mdordergoods,mdordermessage set mdordergoods.billingstatues = 1 ,mdordergoods.billingtime = '"+TimeUtill.getdateString()+"'  where mdordergoods.mid = mdordermessage.id and mdordermessage.id in "+ids;
 	    return sql;   
 	} 
+      
+     public static String sendprintOgids(String ogids){
+ 		String sql = " update mdordergoods set mdordergoods.billingstatues = 1 ,mdordergoods.billingtime = '"+TimeUtill.getdateString()+"'  where mdordergoods.id  in "+ogids;
+ 	    return sql;   
+ 	} 
      
 	public static OrderMessage getbyid(User user,String id){
 	    	OrderMessage og = null;

@@ -1,7 +1,7 @@
 <%@ page language="java"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>
     
-<%      
+<%       
 //long start= System.currentTimeMillis();  
 List<String> listallp = ProductService.getlistall(user); 
 //System.out.println("qa"+(System.currentTimeMillis() - start));   

@@ -53,18 +53,19 @@
 	             source = StringUtill.GetJson(leftnew.getBranch());
 		}else if(Integer.valueOf(statues) == 1){
 	             source = StringUtill.GetJson(leftnew.getTypes());
-		} 
+		}  
 		//System.out.println("source"+source); 
-	    right = UploadManager.getTotalUploadOrders(selectOrderName2,-1+"",BasicUtill.send); 
+	    right = UploadManager.getTotalUploadOrders(selectOrderName2,-1+"",BasicUtill.send);
+	 // System.out.println(" right"+right);  
 		checkBoxStatus = request.getParameter("ridiocheck");
 		//初始化要对比的orders      
 		ri = UploadChangeManager.getsetbranch(right,Integer.valueOf(statues));
-		  // System.out.println(ri.size());
+		//  System.out.println("ri"+ri); 
 		Map<String,String> mapchange = UploadChangeManager.getmatch(left, ri,checkBoxStatus,statues); 
 		//System.out.println(StringUtill.GetJson(mapchange)); 
-		change = StringUtill.GetJson(mapchange);  
-		map.putAll(mapchange);  
-		
+		change = StringUtill.GetJson(mapchange);   
+		map.putAll(mapchange);    
+		//System.out.println(map);
 		//System.out.println(StringUtill.GetJson(mapchange));
 	}else if("RightSerach".equals(method)){
 		showright = true ;
@@ -708,7 +709,7 @@ function addleft(num){
 				UploadOrder up = it.next();
 //System.out.println(up.getShop());
 				if (!db.contains(up.getShop())) {
-					rightb.add(up.getShop());
+					rightb.add(up.getShop().trim());
 				}
 
 				String sendtypestr = up.getSendType();
@@ -718,12 +719,12 @@ function addleft(num){
 					// System.out.println(sendtypestrs[j]);
 					String[] sendtypes = sendtype.split(":");
 					String realtype = sendtypes[0];
-					if (!db.contains(realtype)) {
-						rightt.add(realtype);
+					if (!db.contains(realtype) && !db.contains(realtype.trim())) {
+						rightt.add(realtype); 
 					}
 				}
 
-			}
+			} 
 			
     	   if( 0 == Integer.valueOf(statues)){
     		   %>

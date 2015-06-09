@@ -1,13 +1,13 @@
-<%@ page language="java"
+<%@ page language="java" 
 	import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
-  
+   
 List<String> listbranchp = BranchService.getListStr();  
 String listall = StringUtill.GetJson(listbranchp);  
- 
+  
 String branchid = "";
 Branch branch = null;    
 if(UserManager.checkPermissions(user, Group.Manger)){
@@ -28,7 +28,7 @@ td {
 }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>库存查询</title>
+<title>库存盘点</title>
 
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
@@ -65,8 +65,8 @@ td {
 		 alert("请选择商品"); 
 	 }else {    
 	     //window.open('distribution.jsp?category='+categoryid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no');
-		 window.location.href='distribution.jsp?category='+categoryid; 
-	   }
+		 window.location.href='distributioncheck.jsp?category='+categoryid; 
+	   }   
 	 }
  
  function serchclick(category,branchid,obj){
@@ -149,14 +149,14 @@ td {
 	<jsp:include flush="true" page="../head.jsp">
 		<jsp:param name="dmsn" value="" />
 	</jsp:include>
- 
+  
 	<!--   头部结束   -->
 	<div class="main"> 
 		<div class="weizhi_head">
-			现在位置：库存查询 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<!-- 
+			现在位置：盘点 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="javascript:distri();">
-				查看分布</a>  -->
+				查看分布</a>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 仓库: <input type="text"
 				name="branch" id="branch" class="cba" /> 
 				产品类别： 

@@ -2,7 +2,7 @@
  
 <%         
 User user = (User)session.getAttribute("user"); 
-request.setCharacterEncoding("utf-8"); 
+request.setCharacterEncoding("utf-8");  
 
 TokenGen.getInstance().saveToken(request);
  

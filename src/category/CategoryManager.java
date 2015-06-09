@@ -255,7 +255,7 @@ logger.info(category.getName());
 				
 		// 通过id获取
 		public static Category getCategory(String id) {
-			Category u = new Category();
+			Category u = new Category(); 
 			Connection conn = DB.getConn();
 			String sql = "select * from mdcategory where id = "+ id;
 			Statement stmt = DB.getStatement(conn);

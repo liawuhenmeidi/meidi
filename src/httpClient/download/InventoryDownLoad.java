@@ -77,14 +77,14 @@ public class InventoryDownLoad extends HttpServlet implements DownLoad {
 			 * URI(MyLogin.url)); response2 = MyMainClient.getHttpclient()
 			 * .execute(request); entity = response2.getEntity(); } }
 			 */
-			InputStream in = entity.getContent();
+			InputStream in = entity.getContent(); 
 
 			String tempPath = PathUtill.getXMLpath();
 			tempPath += "data" + File.separator + "DownloadInventory"
-					+ File.separator + TimeUtill.getdateString();
+					+ File.separator + TimeUtill.getdateString()+File.separator+"SuNing";
+  
+			logger.info(tempPath);  
  
-			logger.info(tempPath);
-
 			File file = new File(tempPath);
 			if (!file.exists()) {
 				file.mkdirs();

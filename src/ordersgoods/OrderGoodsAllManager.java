@@ -623,6 +623,32 @@ public class OrderGoodsAllManager {
 	}
     
 	
+	public static Map<Integer, Map<Integer, OrderGoodsAll>> getsendMapOgid(
+			User user, int billingstatues, String ids) {
+		Map<Integer, Map<Integer, OrderGoodsAll>> map = new HashMap<Integer, Map<Integer, OrderGoodsAll>>();
+		List<OrderGoodsAll> list = getsendlistOgid(user, billingstatues, ids);
+		if (null != list) { 
+			for (int i = 0; i < list.size(); i++) {
+				OrderGoodsAll og = list.get(i);
+				Map<Integer, OrderGoodsAll> mapb = map.get(og.getOm()
+						.getBranchid());
+				if (null == mapb) {
+					mapb = new HashMap<Integer, OrderGoodsAll>();
+					map.put(og.getOm().getBranchid(), mapb);
+				}
+
+				OrderGoodsAll ogmap = mapb.get(og.getOm().getId());
+				if (null == ogmap) {
+					mapb.put(og.getOm().getId(), og);
+				} else {
+					ogmap.getList().addAll(og.getList());
+				}
+			}
+		}
+		return map;
+
+	}
+
 	public static Map<Integer, Map<Integer, OrderGoodsAll>> getsendMap(
 			User user, int billingstatues, String ids) {
 		Map<Integer, Map<Integer, OrderGoodsAll>> map = new HashMap<Integer, Map<Integer, OrderGoodsAll>>();
@@ -648,7 +674,7 @@ public class OrderGoodsAllManager {
 		return map;
 
 	}
-
+	
 	public static List<OrderGoodsAll> getsendlist(User user,
 			int billingstatues, String[] ids) {
 		List<OrderGoodsAll> list = getsendlist(user, billingstatues,
@@ -693,7 +719,40 @@ public class OrderGoodsAllManager {
 		}
 		return list;
 	}
+ 
+	public static List<OrderGoodsAll> getsendlistOgid(User user,
+			int billingstatues, String ogids) {  
+		List<OrderGoodsAll> list = new ArrayList<OrderGoodsAll>();
 
+		// logger.info(StringUtill.getStr(ids));
+		Connection conn = DB.getConn();
+  
+		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.id in "
+				+ ogids
+				+ " and mdordergoods.mid = mdordermessage.id  and mdordergoods.billingstatues = "
+				+ billingstatues
+				+ "  order by mdordermessage.branchid";
+		logger.info(sql);
+		Statement stmt = DB.getStatement(conn);
+
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		// logger.info(rs);
+		try {
+			while (rs.next()) {
+
+				OrderGoodsAll og = getOrderGoodsAllFromRs(rs);
+				list.add(og);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		}
+		return list;
+	}
+	
 	public static List<String> updateSendcount(User user, OrderGoodsAll oa) {
 
 		List<String> listsql = new ArrayList<String>();
@@ -790,7 +849,7 @@ public class OrderGoodsAllManager {
 							+ oa.getOm().getBranchid()
 							+ " and  type = '"
 							+ og.getTid()
-							+ "')*1"
+							+ "')*1" 
 							// + -Integer.valueOf(realsendnum)
 							+ ",(select papercount from mdinventorybranch where branchid = "
 							+ oa.getOm().getBranchid()
@@ -808,7 +867,7 @@ public class OrderGoodsAllManager {
 
 		return listsql;
 	}
-
+ 
 	public static List<String> updateSendcount(User user,
 			Map<Integer, Map<Integer, OrderGoodsAll>> map) {
 
@@ -850,14 +909,15 @@ public class OrderGoodsAllManager {
 							int operatortype = 14;
 							int realsendnum = og.getRealnum();
 
-							logger.info(realsendnum);
+							//logger.info(realsendnum);
 
 							boolean flags = true;
 							if (og.getStatues() == 6 || og.getStatues() == 7
 									|| og.getStatues() == 8
-									|| og.getStatues() == 9
+									|| og.getStatues() == 9 
 									|| og.getStatues() == 5
-									|| og.getStatues() == 4) {
+									|| og.getStatues() == 4  
+									|| og.getStatues() == 10) {
 								// realsendnum = -realsendnum;
 								// operatortype = 16;
 								flag = false;
@@ -880,7 +940,7 @@ public class OrderGoodsAllManager {
 								}
 								// logger.info( og.getTid());
 								// logger.info(setup.contains(oa.getOm().getBranchid()+"_"+og.getTid()));
-  
+   
 								if (null == in 
 										&& !setup.contains(oa.getOm()
 												.getBranchid()
@@ -932,7 +992,7 @@ public class OrderGoodsAllManager {
 											+ og.getrealStatues()
 											+ ")";
 								} else {
-
+ 
 									sqlIB = "update mdinventorybranch set  papercount =  ((mdinventorybranch.papercount)*1 + "
 											+ realsendnum
 											+ ")*1  where  branchid = "

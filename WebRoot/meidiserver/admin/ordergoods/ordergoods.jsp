@@ -172,15 +172,15 @@ String sm = StringUtill.GetJson(model);
 	     ' <td  align=center ><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
 	     '<td  align=center ><select name="statues'+row+'" id="statues'+row+'">'+
 	     '<option value=""></option>'+   
-	     '<option value="1">订货</option>'+
+	     '<option value="1">订货</option>'+ 
 	      '<option value="3">样机订货</option>'+
 	      '<option value="4">换货订货</option>'+
 	      '<option value="5">赠品订货</option>'+ 
 	      '<option value="6">店外退货 </option>'+ 
 	      '<option value="7">已入库退货</option>'+
-	      '<option value="9">已入库样机退货</option>'+
+	      '<option value="9">样机退货</option>'+
 	     '<select></td>'+
-	     
+	      
 	     '<td align=center><span style="color:red;font-size:15px;" id="papercount'+row+'" name="papercount'+row+'"></span></td>'+
 	     '<td align=center><span style="color:red;font-size:15px;" id="sncount'+row+'"  ></span></td>'+
 	     '<td align=center><span style="color:red;font-size:15px;" id="snstatues'+row+'"  ></span></td>'+
@@ -484,7 +484,7 @@ String sm = StringUtill.GetJson(model);
 			<form action="../../user/OrderGoodsServlet" method="post"
 				onsubmit="return check()">
 				<input type="hidden" name="method" value="add" />
-				<!--  <input 
+				<!--  <input  
 					type="hidden" name="token" value="<%=token%>" /> -->
 				<input type="hidden" name="rows" id="rows" value="" />
 				<table style="width:100% ">

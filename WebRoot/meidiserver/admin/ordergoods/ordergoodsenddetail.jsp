@@ -9,8 +9,8 @@ Map<Integer,Map<Integer,OrderGoodsAll>> map = OrderGoodsAllManager.getsendMap(us
 //List<OrderGoodsAll> list = OrderGoodsAllManager.getsendlist(user,OrderMessage.unexamine,ids);  
 //System.out.println(list.size());   
  //System.out.println(map);
-%>
-<!DOCTYPE html>
+%> 
+<!DOCTYPE html> 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -40,6 +40,22 @@ function search(statues){
 }
  
 function check(){
+	  
+	var flag = false; 
+	$("#submit").css("display","none"); 
+	$("input[type='checkbox'][id='check_box']").each(function(){          
+   		if($(this).attr("checked")){ 
+   				var str = this.value; 
+   				  
+   				if(str != null  &&  str != ""){
+	   				  // attract[i] = str; 
+		   	          //  i++; 
+		   	          flag = true;
+	   				}	
+   		} 
+   	}); 
+	  
+	return flag;
 	//var name=$("#name").val();
 	//if("" == name || null == name){
 	//	alert("订单名称不能为空");
@@ -61,23 +77,24 @@ function check(){
 				</li>
 			</ul>
 		</div>
+		<form action="../../Print" method="post"
+									onsubmit="return check()">
 		<!--  头 单种类  -->
 		<table width="100%" border="0" cellspacing="1" id="table">
 			<tr class="dsc">
 				<td colspan=11>
-					<table width="100%">
+					<table width="100%"> 
 						<tr>
 							<td colspan=2 align="center"></td>
 							<td colspan=2 align="center"></td>
 							<td align="center" colspan=4>
-								<form action="../../Print" method="post"
-									onsubmit="return check()">
+								
 									<input type="hidden" value="OrderGoodssend" name="method">
 									<input type="hidden" name="statues" value="<%=statues%>">
 									<input type="hidden" name="token" value="<%=token%>" /> <input
 										type="hidden" value="<%=StringUtill.getStr(ids)%>" name="ids">
 									<input type="submit" value="开单导出" style="color:red">
-								</form></td>
+								</td>
 
 						</tr>
 
@@ -85,7 +102,10 @@ function check(){
 
 			</tr>
 			<tr class="dsc">
-				<td align="center">编号</td>
+				<td width="5%" class="s_list_m" align="center"><input
+					type="checkbox" value="" id="allselect"
+					onclick="seletall(allselect)"></input>&nbsp;
+				</td>
 				<td align="center">门店</td>
 				<td align="center">商品编码</td>
 				<td align="center">商品条码</td>
@@ -96,7 +116,7 @@ function check(){
 				<td align="center">状态</td>
 				<td align="center">订单号</td>
 				<td align="center">备注</td>
-			</tr>
+			</tr> 
 			<%
 				if (null != map) {
 
@@ -140,10 +160,15 @@ function check(){
 									} 
 									//System.out.println(og.getProduct());
 								//	if (og.getRealnum() > 0) {
+									
 										count++; 
 			%> 
 			<tr class="<%=cla%>"> 
-				<td align="center"><%=count%></td>
+			<td align="center"><input type="checkbox" 
+					value="<%=og.getId()%>" name="ogid" id="check_box"></input>
+				<%=count%></td> 
+				 
+				 
 				<td align="center"><%=branch.getLocateName()%></td>
 				<td align="center"></td>
 				<td align="center"></td> 
@@ -174,7 +199,7 @@ function check(){
 			%>
 
 		</table>
-
+</form>
 	</div>
 
 </body>

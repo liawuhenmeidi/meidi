@@ -484,7 +484,8 @@ public class GoodsReceitManager {
 						+ " and  type = '" 
 						+ gr.getTid()    
 						+ "' and typestatues = "+gr.getGoodtypeStatues() +")*1" 
-						+ papermark + Integer.valueOf(gr.getRecevenum()) + ")";
+						+ papermark + Integer.valueOf(gr.getRecevenum()) + ",1,"+ gr.getGoodtypeStatues()
+											+ ")"; 
   
 			} 
 			list.add(sql);   

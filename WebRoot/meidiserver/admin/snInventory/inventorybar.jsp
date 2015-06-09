@@ -8,9 +8,9 @@ String endtime = request.getParameter("endtime");
 String branch = request.getParameter("branch");  
 String type = request.getParameter("type");
 
- 
-String filename = ""; 
-String graphURL = ""; 
+   
+String filename = "";  
+String graphURL = "";  
 boolean flag = false ; 
 if(!StringUtill.isNull(starttime) && !StringUtill.isNull(endtime))   {
 	//filename = JfreeBar.getDynamicsales(starttime,endtime,branch,type); 

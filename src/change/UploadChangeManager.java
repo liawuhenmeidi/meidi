@@ -173,29 +173,32 @@ public class UploadChangeManager {
 		    	if(!set.contains(up.getShop())){
 		    		rightb.add(up.getShop());
 		    	}
-		    	 
+		    	  
 		    	String sendtypestr = up.getSendType();
+		    	//logger.info(sendtypestr);
 				String[] sendtypestrs = sendtypestr.split(",");
 				for (int j = 0; j < sendtypestrs.length; j++) {
 					String sendtype = sendtypestrs[j];
 					// System.out.println(sendtypestrs[j]);
 					String[] sendtypes = sendtype.split(":");
 					String realtype = sendtypes[0];
-					if(!set.contains(realtype)){
-						rightt.add(realtype);
+					if(!set.contains(realtype)){ 
+						//logger.info(realtype); 
+						//set.add(realtype); 
+						rightt.add(realtype.trim());
 					}
 				}
 		    }else {
 		    	rightb.add(up.getShop());
-
+ 
 				String sendtypestr = up.getSendType();
 				String[] sendtypestrs = sendtypestr.split(",");
 				for (int j = 0; j < sendtypestrs.length; j++) {
 					String sendtype = sendtypestrs[j];
 					// System.out.println(sendtypestrs[j]);
 					String[] sendtypes = sendtype.split(":");
-					String realtype = sendtypes[0];
-					rightt.add(realtype);
+					String realtype = sendtypes[0].trim();
+					rightt.add(realtype.trim());
 				}
 		    }
 			
@@ -291,11 +294,12 @@ public class UploadChangeManager {
 				if ("all".equals(statues)) {
 					realtype =mc.getName();
 				} else if ("cn".equals(statues)) {
+					
 					realtype = StringUtill.getStringNocn(mc.getName());
 				} else if ("en".equals(statues)) {
 					realtype =StringUtill.getNumbers(mc.getName()); 
 				} 
-				
+				 
 				//logger.info(realtype);  
 				if(!StringUtill.isNull(realtype)){
 					mapletft.put(realtype, mc); 

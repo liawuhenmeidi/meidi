@@ -32,16 +32,16 @@ if(!StringUtill.isNull(branchtype)){
 
 // System.out.println("type"+type);  
 // 门店  ，型号   
-     Map<String,List<Inventory>> map = new LinkedHashMap<String,List<Inventory>>(); 
+     Map<String,List<SNInventory>> map = new LinkedHashMap<String,List<SNInventory>>(); 
 	 
-	Collection<Inventory> listend = InventoryChange.get(TimeUtill.dataAdd(endtime, 1));
+	Collection<SNInventory> listend = InventoryChange.get(TimeUtill.dataAdd(endtime, 1));
 //	System.out.println("listend"+listend.size());
 	//Map<String, Inventory> mapstart = InventoryChange.changeMap(listend );
 	 // 样机   
-	 Map<String,Inventory> mapModel = InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd(endtime, 1));
+	 Map<String,SNInventory> mapModel = InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd(endtime, 1));
 	       
 	 // 销量    
-	Map<String,Inventory> mapsale = SaleDownLoad.getMap(starttime,endtime); 
+	Map<String,SNInventory> mapsale = SaleDownLoad.getMap(starttime,endtime); 
 	 
 	// 未入库数量    
 	Map<Integer,Map<String,InventoryBranch>> mapout = InventoryBranchManager.getmapType(user);
@@ -50,9 +50,9 @@ if(!StringUtill.isNull(branchtype)){
 	//Collection<Inventory> sales = SaleDownLoad.get(starttime, endtime);
  
 	if(!listend.isEmpty()){  
-		 Iterator<Inventory> it = listend.iterator();
+		 Iterator<SNInventory> it = listend.iterator();
 		 while(it.hasNext()){     
-	 Inventory inve = it.next();
+			 SNInventory inve = it.next();
 	 String bnum = "";
              if("常规机库".equals(inve.getBranchName())){
              	 bnum = "1";
@@ -60,7 +60,7 @@ if(!StringUtill.isNull(branchtype)){
              	 bnum = "2";
             }else { 
          	   bnum = StringUtill.getStringNocn(inve.getBranchName());
-            } 	
+            } 	 
              
 	String key = bnum+"_"+inve.getGoodNum();  
 	 
@@ -81,8 +81,8 @@ if(!StringUtill.isNull(branchtype)){
 	} 
 		// logger.info(key);    
 	  
-	Inventory sale =  mapsale.get(key);
-	Inventory model = mapModel.get(key);
+	SNInventory sale =  mapsale.get(key);
+	SNInventory model = mapModel.get(key);
 	InventoryBranch inout = null ; 
 	try{  
 		inout = mapout.get(bid).get(tname);  
@@ -115,9 +115,9 @@ if(!StringUtill.isNull(branchtype)){
 	 String branchnum = BranchService.getNameMap().get(branch).getEncoded(); 
 	 keyin = branchnum ; 
 	 if(branchnum.equals(bnum)){ 
-		 List<Inventory> li = map.get(keyin);
+		 List<SNInventory> li = map.get(keyin);
 	if(null == li){ 
-		li = new ArrayList<Inventory>();
+		li = new ArrayList<SNInventory>();
 		map.put(keyin, li);
 	}
 	 
@@ -127,9 +127,9 @@ if(!StringUtill.isNull(branchtype)){
 		 }else {
 	 keyin = bnum ;
 	 
-		 List<Inventory> li = map.get(keyin);
+		 List<SNInventory> li = map.get(keyin);
 	if(null == li){ 
-		li = new ArrayList<Inventory>();
+		li = new ArrayList<SNInventory>();
 		map.put(keyin, li);
 	}
 	 
@@ -142,11 +142,11 @@ if(!StringUtill.isNull(branchtype)){
 	 
 	 
 	 if(!mapsale.isEmpty()){
-		 Set<Map.Entry<String,Inventory>> set= mapsale.entrySet();
-		 Iterator<Map.Entry<String,Inventory>>  it = set.iterator();
+		 Set<Map.Entry<String,SNInventory>> set= mapsale.entrySet();
+		 Iterator<Map.Entry<String,SNInventory>>  it = set.iterator();
 		 while(it.hasNext()){
-	 Map.Entry<String,Inventory> mapent =  it.next();
-	 Inventory inve = mapent.getValue();
+	 Map.Entry<String,SNInventory> mapent =  it.next();
+	 SNInventory inve = mapent.getValue();
 	 String keyin = "";
 	 String bnum = "";
              if("常规机库".equals(inve.getBranchName())){
@@ -161,9 +161,9 @@ if(!StringUtill.isNull(branchtype)){
 	 String branchnum = BranchService.getNameMap().get(branch).getEncoded(); 
 	 keyin = branchnum ; 
 	 if(branchnum.equals(bnum)){ 
-		 List<Inventory> li = map.get(keyin);
+		 List<SNInventory> li = map.get(keyin);
 	if(null == li){ 
-		li = new ArrayList<Inventory>();
+		li = new ArrayList<SNInventory>();
 		map.put(keyin, li);
 	}
 	 
@@ -173,9 +173,9 @@ if(!StringUtill.isNull(branchtype)){
 		 }else {
 	 keyin = bnum ;
 	 
-		 List<Inventory> li = map.get(keyin);
+		 List<SNInventory> li = map.get(keyin);
 	if(null == li){ 
-		li = new ArrayList<Inventory>();
+		li = new ArrayList<SNInventory>();
 		map.put(keyin, li);
 	}
 	 
@@ -264,7 +264,7 @@ if(!StringUtill.isNull(branchtype)){
 		  
 		<input type="submit" value="查看">
 		</form> 
-		
+		 
 		
 	 <form action="../OrderGoodsServlet"  method = "post"  onsubmit="return check()">
       <input type="hidden" name="method" value="add"/>  
@@ -288,17 +288,17 @@ if(!StringUtill.isNull(branchtype)){
 			    List<Integer> list = new ArrayList<Integer>();  
 			     
 				if (!map.isEmpty()) {
-					Set<Map.Entry<String, List<Inventory>>> set = map.entrySet();
-					Iterator<Map.Entry<String, List<Inventory>>> it = set
+					Set<Map.Entry<String, List<SNInventory>>> set = map.entrySet();
+					Iterator<Map.Entry<String, List<SNInventory>>> it = set
 							.iterator(); 
 					while (it.hasNext()) { 
-						Map.Entry<String, List<Inventory>> mapen = it.next();
-						List<Inventory> li = mapen.getValue();
+						Map.Entry<String, List<SNInventory>> mapen = it.next();
+						List<SNInventory> li = mapen.getValue();
 						Inventoryomparator c = new Inventoryomparator();
 						Collections.sort(li, c);
 						if (null != li) {
 							for (int i = 0; i < li.size(); i++) {
-								Inventory in = li.get(i);
+								SNInventory in = li.get(i);
 								
 										
 								

@@ -24,7 +24,7 @@ if(!listib.isEmpty()){
 			og.setRealnum(0);
 			og.setStatues(ib.getTypeStatues());
 			list.add(og); 
-		}
+		} 
 		 
 	} 
 }
@@ -35,12 +35,12 @@ String branchtype = ""+b.getPid();
   
 String jsoninventory = StringUtill.GetJson(map); 
     
-Map<String,List<httpClient.download.Inventory>> mapsn = InventoryChange.getMapBranchType(user,time,Integer.valueOf(branch));
+Map<String,List<SNInventory>> mapsn = InventoryChange.getMapBranchType(user,time,Integer.valueOf(branch));
  
-Map<String,List<httpClient.download.Inventory>> mapsnModel = InventoryModelDownLoad.getMapBranchType(user, time,Integer.valueOf(branch));
+Map<String,List<SNInventory>> mapsnModel = InventoryModelDownLoad.getMapBranchType(user, time,Integer.valueOf(branch));
 //  
-Map<String,httpClient.download.Inventory> mapsale = SaleDownLoad.getMap(TimeUtill.dataAdd(time, -29),time,Integer.valueOf(branch)); 
-    
+Map<String,SNInventory> mapsale = SaleDownLoad.getMap(TimeUtill.dataAdd(time, -29),time,Integer.valueOf(branch)); 
+     
 //System.out.println(mapsn); 
 String jsoninventorysn = StringUtill.GetJson(mapsn);   
 String jsoninventorysnmodel = StringUtill.GetJson(mapsnModel); 

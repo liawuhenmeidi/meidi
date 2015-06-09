@@ -326,13 +326,18 @@ if(total){ %>
 					<td align="center"><%=tpe %></td> 
 					<td align="center"><%=realtype %></td> 
 					
-					<% if(null==map.get(realtype)){
+					<% 
+					  String re = map.get(realtype);
+					  if(null == re){
+						  re = map.get(realtype.trim());
+					  }
+					  if(null==re){
 						%>
 						<td align="center" bgcolor="red"><%=realtype%></td>
 					  <% 
 					}else { 
 						%> 
-						<td align="center" ><%=map.get(realtype) %></td>
+						<td align="center" ><%=re %></td>
 					<%
 					}%>    
 					
@@ -463,13 +468,18 @@ if(total){ %>
 					
 					<td align="center" class="noprinln3"><%=tpe%></td>
 					<td align="center" class="noprinln4"><%=up.getType()%></td>
-					<% if(null==map.get(up.getType())){
+					<% 
+					String re = map.get(up.getType());
+					  if(null == re){
+						  re = map.get(up.getType().trim());
+					  }
+					if(null==re){
 						%>
 						<td align="center" bgcolor="red" class="noprinln10"><%=up.getType()%></td>
 					  <% 
 					}else {
 						%> 
-						<td align="center"  class="noprinln10"><%=map.get(up.getType()) %></td>
+						<td align="center"  class="noprinln10"><%=re %></td>
 					<%
 					}%>  
 					<td align="center" class="noprinln6"><%=up.getCount() %></td>  
@@ -632,7 +642,7 @@ if(total){ %>
 	    </tr>
 	   <%
       } 
-  } 
+  }  
 
    if(null != maptypeinit){
 	   Set<Map.Entry<String, List<UploadTotal>>> setmaptype =  maptypeinit.entrySet();
@@ -649,7 +659,7 @@ if(total){ %>
 				Iterator<String> it = jsObj.keys();
 				while(it.hasNext()){ 
 					String t = it.next();
-					if(key.equals(t)){ 
+					if(key.equals(t)){  
 						key = jsObj.getString(key);
 					}
 				}

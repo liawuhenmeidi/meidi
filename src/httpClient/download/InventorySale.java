@@ -19,8 +19,8 @@ import utill.TimeUtill;
 public class InventorySale {
 	protected static Log logger = LogFactory.getLog(InventorySale.class);
 	
-	public static List<Inventory> compare(String starttime, String endtime) {
-		List<Inventory> list = new ArrayList<Inventory>();
+	public static List<SNInventory> compare(String starttime, String endtime) {
+		List<SNInventory> list = new ArrayList<SNInventory>();
         
 		if(StringUtill.isNull(starttime)){
         	return list;
@@ -29,19 +29,19 @@ public class InventorySale {
         	endtime = TimeUtill.getdateString();
         }
          
-		List<Inventory> listIn = InventoryChange.compare(starttime,endtime); 
+		List<SNInventory> listIn = InventoryChange.compare(starttime,endtime); 
 		      
 		logger.info(StringUtill.GetJson(listIn));  
 		logger.info(listIn.size());
 		  
-		Map<String,Inventory> mapsale = SaleDownLoad.getMap(starttime,endtime); 
+		Map<String,SNInventory> mapsale = SaleDownLoad.getMap(starttime,endtime); 
 		//logger.info(mapsale);
 		logger.info( mapsale.size());
 		  
 		if(!listIn.isEmpty()){
-			Iterator<Inventory> it = listIn.iterator();
+			Iterator<SNInventory> it = listIn.iterator();
 			while(it.hasNext()){
-				Inventory in = it.next();
+				SNInventory in = it.next();
 				
 				/*if(StringUtill.isNull(StringUtill.getStringNocn(in.getBranchName()))){
 					logger.info(in.getBranchName()); 
@@ -58,7 +58,7 @@ public class InventorySale {
                  
 				String key = bnum+"_"+in.getGoodNum(); 
 				// logger.info(key);  
-				Inventory insale= mapsale.get(key);
+				SNInventory insale= mapsale.get(key);
 				 
 				if(null != insale){
 					mapsale.remove(key); 
@@ -87,11 +87,11 @@ public class InventorySale {
 		 
 		 
 		if(null != mapsale){  
-			Set<Map.Entry<String, Inventory>> set = mapsale.entrySet();
-			 Iterator<Map.Entry<String, Inventory>> it = set.iterator();
+			Set<Map.Entry<String, SNInventory>> set = mapsale.entrySet();
+			 Iterator<Map.Entry<String, SNInventory>> it = set.iterator();
 			 while(it.hasNext()){
-				 Map.Entry<String, Inventory> mapent = it.next();
-				 Inventory in = mapent.getValue(); 
+				 Map.Entry<String, SNInventory> mapent = it.next();
+				 SNInventory in = mapent.getValue(); 
 				 //logger.info(in.getGoodpName()+in.getBranchName());
 				 //in.setSaleNum(in.getInreduce());
 				 if(in.getSaleNum() != 0 ){
@@ -106,11 +106,11 @@ public class InventorySale {
 		return list;
 	}
 
-	public static Map<String, Inventory> changeMap(List<Inventory> list) {
-		Map<String, Inventory> map = new HashMap<String, Inventory>();
+	public static Map<String, SNInventory> changeMap(List<SNInventory> list) {
+		Map<String, SNInventory> map = new HashMap<String, SNInventory>();
 		if (null != list) {
 			for (int i = 0; i < list.size(); i++) {
-				Inventory in = list.get(i);
+				SNInventory in = list.get(i);
 				map.put(in.getBranchNum() + "_" + in.getGoodNum(), in);
 			}
 		}

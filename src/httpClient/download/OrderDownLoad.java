@@ -51,10 +51,10 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 	
 	private static String url = "http://scs.suning.com/sps/PurchaseOrderConfirm/downLoadpurchaseOrderDetails.action"; 
 	
-	public static Map<String,Inventory> getMap(String startTime,String endTime) {
+	public static Map<String,SNInventory> getMap(String startTime,String endTime) {
 		// startTime = "2015-05-03"; 
 		
-		Map<String,Inventory> map = new HashMap<String,Inventory>();
+		Map<String,SNInventory> map = new HashMap<String,SNInventory>();
 		save(startTime, endTime); 
 		if(StringUtill.isNull(startTime) || StringUtill.isNull(endTime)){
 			return map ;
@@ -81,7 +81,7 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 				String[] strs = reader.getValues();
 				if (null != strs) {
 					
-					Inventory in = new Inventory();
+					SNInventory in = new SNInventory();
 					
 					for (int i = 0; i < strs.length; i++) {
 						// logger.info(i);
@@ -103,7 +103,7 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 					}
 					String key = in.getBranchNum()+"_"+in.getGoodNum();
 					//logger.info(key);
-					Inventory inmap = map.get(key);
+					SNInventory inmap = map.get(key);
 					
 					if(null == inmap){ 
 						map.put(key, in);
@@ -146,8 +146,8 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 			String tempPath =PathUtill.getXMLpath();
  
 			tempPath += "data" + File.separator
-					+ "DownloadOrder";    
-			logger.info(tempPath);
+					+ "DownloadOrder"+File.separator+"SuNing";    
+			logger.info(tempPath);  
 			
 			File file = new File(tempPath);
 			if (!file.exists()) {
@@ -256,10 +256,10 @@ HttpEntity entity = response2.getEntity();
 			
 			String tempPath = PathUtill.getXMLpath(); 
 			logger.info(tempPath); 
-			tempPath +="data" + File.separator + "DownloadOrder"+File.separator;  
+			tempPath +="data" + File.separator + "DownloadOrder"+File.separator+"SuNing";  
 		 
 			
-			logger.info(tempPath);  
+			logger.info(tempPath);   
 			  
 			File file = new File(tempPath);
 			if (!file.exists()) { 

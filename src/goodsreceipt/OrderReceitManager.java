@@ -79,10 +79,25 @@ public class OrderReceitManager {
 					+ "',"
 					+ gr.getDisable() + "," + gr.getStatues() + ",'"+gr.getStatuesName()+"');";
 			list.add(sql);
-		//}
+		//} 
 		return list;
 	}  
-    
+     
+	public static List<String> update(OrderReceipt gr) {
+		List<String> list = new ArrayList<String>(); 
+		//if (0 != gr.getRefusenum()) { 
+			String sql = " update orderreceipt set ordernum ='"
+					+ gr.getOrderNum()
+					+ "' ,recevenum = '"
+					+ gr.getRecevenum()
+					+ "',refusenum = '"
+					+ gr.getRefusenum()
+					+ "',statuesName = '"+gr.getStatuesName()+"' where uuid = '"+gr.getUuid()+"'";
+			list.add(sql);  
+		//} 
+		return list;
+	}  
+	
 	public static List<String> billing(User user ,Map<String,OrderReceipt> map,String[] ids,String buyid) { 
 		List<String> list = OrderGoodsAllManager.save(user, map,ids,buyid);    
 		return list;
@@ -140,7 +155,7 @@ public class OrderReceitManager {
 	public static List<OrderReceipt> getList(String typenum,String branchName) {
 		List<OrderReceipt> list = new ArrayList<OrderReceipt>(); 
 		String sql = " select * from orderreceipt where goodsnum = '"+typenum+"' and branchname = '"+branchName+"' order by  recevetime";
-		logger.info(sql);
+		logger.info(sql); 
 		Connection conn = DB.getConn();   
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -164,8 +179,8 @@ public class OrderReceitManager {
   
 	public static List<OrderReceipt> getList() { 
 		List<OrderReceipt> list = new ArrayList<OrderReceipt>();
-		String sql = " select * from orderreceipt where refusenum != 0 and disable = 0  order by  recevetime";
-		logger.info(sql);
+		String sql = " select * from orderreceipt where refusenum != 0 and disable != 2  order by  recevetime";
+		logger.info(sql); 
 		Connection conn = DB.getConn();   
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -189,8 +204,8 @@ public class OrderReceitManager {
 	
 	public static List<OrderReceipt> getListAll() {
 		List<OrderReceipt> list = new ArrayList<OrderReceipt>();
-		String sql = " select * from orderreceipt  order by  recevetime";
-		logger.info(sql); 
+		String sql = " select * from orderreceipt  where  disable != 2 order by  recevetime";
+		logger.info(sql);  
 		Connection conn = DB.getConn();   
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
@@ -328,15 +343,15 @@ public class OrderReceitManager {
 				// logger.info(or.getReceveTime()); 
 					map.put(or.getId()+"", or);  
 				
-				
+				 
 			}
 		}
-		
+		 
 		return map;
-	}
-	
+	}  
+	  
 	public static void delete(String[] ids) {  
-		String sql = "delete from orderreceipt where id in "+StringUtill.getStr(ids);
+		String sql = "update orderreceipt set disable = 2 where id in "+StringUtill.getStr(ids);
 		DBUtill.sava(sql); 
 	}
 	
@@ -778,13 +793,17 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 			Iterator<Map.Entry<String, OrderReceipt>> it = en.iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, OrderReceipt> ent = it.next();
-				OrderReceipt gr = ent.getValue();
-				// logger.info(StringUtill.GetJson(gr));
-				// logger.info(gr.getUuid());
+				OrderReceipt gr = ent.getValue();  
+				// logger.info(StringUtill.GetJson(gr)); 
+				// logger.info(gr.getUuid()); 
 				OrderReceipt db = mapdb.get(gr.getUuid());
-				// logger.info(db);
-				if (null == db) {
+				// logger.info(db);      
+				if (null == db) {       
 					List<String> sql = saveOut(gr);
+					// logger.info(sql.size());
+					list.addAll(sql);
+				}else {  
+					List<String> sql = update(gr);
 					// logger.info(sql.size());
 					list.addAll(sql);
 				}

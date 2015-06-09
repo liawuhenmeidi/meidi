@@ -5,9 +5,9 @@
 	request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user");
   
-Map<String,List<Inventory>> map = InventoryChange.getMap(TimeUtill.getdateString());
+Map<String,List<SNInventory>> map = InventoryChange.getMap(TimeUtill.getdateString());
 %>
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -49,19 +49,18 @@ Map<String,List<Inventory>> map = InventoryChange.getMap(TimeUtill.getdateString
 				<td align="center">库存数量</td>
 
 			</tr>
-
 			<% 
 				if (!map.isEmpty()) {
-					Set<Map.Entry<String, List<Inventory>>> set = map.entrySet();
+					Set<Map.Entry<String, List<SNInventory>>> set = map.entrySet();
 
-					Iterator<Map.Entry<String, List<Inventory>>> it = set
+					Iterator<Map.Entry<String, List<SNInventory>>> it = set
 							.iterator();
 					int count = 0 ;
 					String cl = ""; 
 					while (it.hasNext()) {
 						// for(int i=0;i<list.size();i++){
-						Map.Entry<String, List<Inventory>> ent = it.next();
-						List<Inventory> list = ent.getValue(); 
+						Map.Entry<String, List<SNInventory>> ent = it.next();
+						List<SNInventory> list = ent.getValue(); 
 						
 						if(count%2 == 0){
 							cl = "class=\"asc\"";
@@ -71,9 +70,9 @@ Map<String,List<Inventory>> map = InventoryChange.getMap(TimeUtill.getdateString
 						if (null != list && list.size() > 1) {
 							count ++;
 					
-							Iterator<Inventory> itlist = list.iterator();
+							Iterator<SNInventory> itlist = list.iterator();
 							while (itlist.hasNext()) {
-								Inventory in = itlist.next();
+								SNInventory in = itlist.next();
 			%>
 			<tr <%=cl %>>
                 <td align="center"><%=count%></td>
@@ -89,7 +88,7 @@ Map<String,List<Inventory>> map = InventoryChange.getMap(TimeUtill.getdateString
 			</tr>
 
 
-
+ 
 
 			<%
 				}

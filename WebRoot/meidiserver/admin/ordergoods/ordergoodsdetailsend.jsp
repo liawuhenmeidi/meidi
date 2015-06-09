@@ -116,8 +116,8 @@ String json = StringUtill.GetJson(list);
 	     ' <td align=center   ><input type="checkbox" name="ogid"  value="'+json.id+'" id="check_box" onclick="changecolor(this)"></td> '
 	     ;  
 	         
-	     if(json.statues == 6 || json.statues == 7 || json.statues == 8 || json.statues == 9){ 
-	    	//alert(json.statues); 
+	     if(json.statues == 6 || json.statues == 7 || json.statues == 8 || json.statues == 9  || json.statues == 10){ 
+	    	//alert(json.statues);  
 	    	 str += '<td align=center >'+ 
 	    	 '</td> '+  
 	    		 '<td align=center  bgcolor="red">'+   

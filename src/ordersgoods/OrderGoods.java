@@ -313,7 +313,9 @@ public class OrderGoods {
 			statuesName = "已入库特价退货";
 		} else if (9 == statues) {
 			statuesName = "已入库样机退货";
-		}
+		}else if (10 == statues) {
+			statuesName = "店外样机退货";
+		} 
 		return statuesName;
 	}
 

@@ -70,7 +70,7 @@ function search(statues){
 	    	if(i%2 == 0){
 	    		col = "style='background-color:yellow'";
 	    	}  
-	    	
+	    	 
   %>       
    
  <tr <%=col %> onclick="detail('ordergoods.jsp?id=<%=key%>')"> 

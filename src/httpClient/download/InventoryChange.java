@@ -1,6 +1,6 @@
 package httpClient.download;
 
-import enums.SaleModel;
+import enums.SaleModel; 
 import goodsreceipt.GoodsReceipt;
 import goodsreceipt.GoodsReceitManager;
 
@@ -39,9 +39,9 @@ public class InventoryChange {
 
 	}
 
-	public static List<Inventory> compare(String startTime, String endTime) {
+	public static List<SNInventory> compare(String startTime, String endTime) {
 
-		List<Inventory> list = new ArrayList<Inventory>();
+		List<SNInventory> list = new ArrayList<SNInventory>();
 		if (StringUtill.isNull(startTime)) {
 			return list;
 		}
@@ -53,11 +53,11 @@ public class InventoryChange {
 
 		logger.info(mapgr.size());
 
-		Collection<Inventory> liststart = get(startTime);
+		Collection<SNInventory> liststart = get(startTime);
 
-		Map<String, Inventory> mapstart = changeMap(liststart);
+		Map<String, SNInventory> mapstart = changeMap(liststart);
 
-		Collection<Inventory> listend = get(TimeUtill.dataAdd(endTime, 1));
+		Collection<SNInventory> listend = get(TimeUtill.dataAdd(endTime, 1));
 
 		logger.info(liststart.size());
 		logger.info(listend.size());
@@ -65,14 +65,14 @@ public class InventoryChange {
 		int samecount = 0;
 
 		if (!listend.isEmpty()) {
-			Iterator<Inventory> it = listend.iterator();
+			Iterator<SNInventory> it = listend.iterator();
 			while (it.hasNext()) {
-				Inventory inend = it.next();
+				SNInventory inend = it.next();
 				// logger.info(inend.getBranchNum() + "_" + inend.getGoodNum());
 				String key = StringUtill.getStringNocn(inend.getBranchName())
 						+ "_" + inend.getGoodNum();
 
-				Inventory instart = mapstart.get(key);
+				SNInventory instart = mapstart.get(key);
 
 				if (null != mapgr) {
 					// logger.info(inend.getGoodNum());
@@ -112,14 +112,14 @@ public class InventoryChange {
 
 					if (instart.getNum() == inend.getNum()) {
 						if (inend.getInInbranch() != 0) {
-							Inventory in = inend;
+							SNInventory in = inend;
 							list.add(in);
 
 						} else {
 							samecount++;
 						}
 					} else if (instart.getNum() - inend.getNum() != 0) {
-						Inventory in = inend;
+						SNInventory in = inend;
 						in.setInreduce(instart.getNum() - inend.getNum());
 						// logger.info(in.getInInbranch());
 						list.add(in);
@@ -127,7 +127,7 @@ public class InventoryChange {
 				} else {
 					if (inend.getNum() == 0) {
 						if(inend.getInInbranch() != 0){
-							Inventory in = inend;
+							SNInventory in = inend;
 							// logger.info(in.getInInbranch());
 							in.setInreduce(0 - in.getNum());
 							list.add(in);   
@@ -135,7 +135,7 @@ public class InventoryChange {
 						// logger.info(inend.getGoodpName());
 					} else {   
 						// logger.info("none");
-						Inventory in = inend; 
+						SNInventory in = inend; 
 						// logger.info(in.getInInbranch());
 						in.setInreduce(0 - in.getNum());
 						list.add(in);
@@ -155,11 +155,11 @@ public class InventoryChange {
 		// logger.info("mapstart" + mapstart.size());
 
 		if (null != mapstart) {
-			Set<Map.Entry<String, Inventory>> set = mapstart.entrySet();
-			Iterator<Map.Entry<String, Inventory>> it = set.iterator();
+			Set<Map.Entry<String, SNInventory>> set = mapstart.entrySet();
+			Iterator<Map.Entry<String, SNInventory>> it = set.iterator();
 			while (it.hasNext()) {
-				Map.Entry<String, Inventory> mapent = it.next();
-				Inventory in = mapent.getValue();
+				Map.Entry<String, SNInventory> mapent = it.next();
+				SNInventory in = mapent.getValue();
 				int count = 0;
 				if (null != mapgr) {
 					// logger.info(inend.getGoodNum());
@@ -199,12 +199,12 @@ public class InventoryChange {
 		return list;
 	}
 
-	public static Map<String, Inventory> changeMap(Collection<Inventory> list) {
-		Map<String, Inventory> map = new HashMap<String, Inventory>();
+	public static Map<String, SNInventory> changeMap(Collection<SNInventory> list) {
+		Map<String, SNInventory> map = new HashMap<String, SNInventory>();
 		if (!list.isEmpty()) {
-			Iterator<Inventory> it = list.iterator();
+			Iterator<SNInventory> it = list.iterator();
 			while (it.hasNext()) {
-				Inventory in = it.next();
+				SNInventory in = it.next();
 				String key = StringUtill.getStringNocn(in.getBranchName())
 						+ "_" + in.getGoodNum();
 				map.put(key, in);
@@ -215,16 +215,16 @@ public class InventoryChange {
 		return map;
 	}
 	// type branch 
-	public static Map<String,Map<String, Inventory>> changeMapTypeBranch(Collection<Inventory> list) {
-		Map<String,Map<String, Inventory>> map = new HashMap<String,Map<String, Inventory>>();
+	public static Map<String,Map<String, SNInventory>> changeMapTypeBranch(Collection<SNInventory> list) {
+		Map<String,Map<String, SNInventory>> map = new HashMap<String,Map<String, SNInventory>>();
 		if (!list.isEmpty()) {
-			Iterator<Inventory> it = list.iterator();
+			Iterator<SNInventory> it = list.iterator();
 			while (it.hasNext()) {
-				Inventory in = it.next();
+				SNInventory in = it.next();
 				
-				Map<String, Inventory> mapb = map.get(in.getGoodNum());
+				Map<String, SNInventory> mapb = map.get(in.getGoodNum());
 				if(null == mapb){ 
-					mapb = new HashMap<String, Inventory>();
+					mapb = new HashMap<String, SNInventory>();
 					map.put(in.getGoodNum(), mapb);  
 				}
 				
@@ -236,16 +236,16 @@ public class InventoryChange {
 		return map;
 	} 
 	
-	public static Map<String,Map<String, Inventory>> changeMapTypeBranchNum(Collection<Inventory> list) {
-		Map<String,Map<String, Inventory>> map = new HashMap<String,Map<String, Inventory>>();
+	public static Map<String,Map<String, SNInventory>> changeMapTypeBranchNum(Collection<SNInventory> list) {
+		Map<String,Map<String, SNInventory>> map = new HashMap<String,Map<String, SNInventory>>();
 		if (!list.isEmpty()) {
-			Iterator<Inventory> it = list.iterator();
+			Iterator<SNInventory> it = list.iterator();
 			while (it.hasNext()) {
-				Inventory in = it.next();
+				SNInventory in = it.next();
 				
-				Map<String, Inventory> mapb = map.get(in.getGoodNum());
+				Map<String, SNInventory> mapb = map.get(in.getGoodNum());
 				if(null == mapb){ 
-					mapb = new HashMap<String, Inventory>();
+					mapb = new HashMap<String, SNInventory>();
 					map.put(in.getGoodNum(), mapb);  
 				}
 				 
@@ -257,13 +257,13 @@ public class InventoryChange {
 		return map;
 	}
 
-	public static Map<String, Inventory> changeMap(Collection<Inventory> list,
+	public static Map<String, SNInventory> changeMap(Collection<SNInventory> list,
 			String branch, String type) {
-		Map<String, Inventory> map = new HashMap<String, Inventory>();
+		Map<String, SNInventory> map = new HashMap<String, SNInventory>();
 		if (!list.isEmpty()) {
-			Iterator<Inventory> it = list.iterator();
+			Iterator<SNInventory> it = list.iterator();
 			while (it.hasNext()) {
-				Inventory in = it.next();
+				SNInventory in = it.next();
 				String key = "";
 				if (StringUtill.isNull(branch) && StringUtill.isNull(type)) {
 					key = in.getGoodNum();
@@ -280,19 +280,19 @@ public class InventoryChange {
 		return map;
 	}
 
-	public static Collection<Inventory> get(String startTime) {
+	public static Collection<SNInventory> get(String startTime) {
 		// startTime = "2015-05-03";
 		// List<Inventory> list = new ArrayList<Inventory>();
-		Map<String, Inventory> map = new HashMap<String, Inventory>();
+		Map<String, SNInventory> map = new HashMap<String, SNInventory>();
 		try {
 			String tempPath = PathUtill.getXMLpath();
 			tempPath += "data" + File.separator + "DownloadInventory"
-					+ File.separator + startTime;
+					+ File.separator + startTime+File.separator+"SuNing";
 			logger.info(tempPath);
 			File file = new File(tempPath);
 			if (!file.exists()) {
 				file.mkdirs();
-			}
+			} 
 
 			File file2 = new File(tempPath + File.separator + "common.csv");
 			// file2.createNewFile();
@@ -301,11 +301,11 @@ public class InventoryChange {
 					Charset.forName("GBK")); // 一般用这编码读就可以了
 
 			reader.readHeaders();
-
+            int count = 0 ;
 			while (reader.readRecord()) { // 逐行读入除表头的数据
 				String[] strs = reader.getValues();
 				if (null != strs) {
-					Inventory in = new Inventory();
+					SNInventory in = new SNInventory();
 					for (int i = 0; i < strs.length; i++) {
 						// logger.info(i);
 						String str = strs[i];
@@ -336,10 +336,10 @@ public class InventoryChange {
 
 					String key = StringUtill.getStringNocn(in.getBranchName())
 							+ "_" + in.getGoodNum();
-
-					Inventory inmap = map.get(key);
-
-					if (inmap == null) {
+                   // logger.info(key); 
+					SNInventory inmap = map.get(key);
+//count ++;
+					if (inmap == null) { 
 						map.put(key, in);
 					} else {
 						// logger.info(in.getGoodpName());
@@ -347,9 +347,9 @@ public class InventoryChange {
 						inmap.setNum(in.getNum() + inmap.getNum());
 					}
 
-				}
-			}
-
+			 	}
+			}   
+ //    logger.info(count);
 			logger.info(map.size());
 			reader.close();
 		} catch (IOException e) {
@@ -360,12 +360,12 @@ public class InventoryChange {
 	}
 
 	// 型号 , 状态
-	public static Map<String, List<Inventory>> getMapBranchType(User user,
+	public static Map<String, List<SNInventory>> getMapBranchType(User user,
 			String startTime, int branchid) {
 		// startTime = "2015-05-03";　
 		// List<Inventory> list = new ArrayList<Inventory>();
 		Branch branch = BranchService.getMap().get(branchid);
-		Map<String, List<Inventory>> map = new HashMap<String, List<Inventory>>();
+		Map<String, List<SNInventory>> map = new HashMap<String, List<SNInventory>>();
 		if (null != branch &&branch.getBranchtype().getSaletype() == SaleModel.Model.苏宁
 				.getValue()) {
 			String bnum = branch.getEncoded();
@@ -376,7 +376,7 @@ public class InventoryChange {
 			try {
 				String tempPath = PathUtill.getXMLpath();
 				tempPath += "data" + File.separator + "DownloadInventory"
-						+ File.separator + startTime;
+						+ File.separator + startTime+File.separator+"SuNing";
 				logger.info(tempPath);
 				File file = new File(tempPath);
 				if (!file.exists()) {
@@ -394,7 +394,7 @@ public class InventoryChange {
 				while (reader.readRecord()) { // 逐行读入除表头的数据
 					String[] strs = reader.getValues();
 					if (null != strs) {
-						Inventory in = new Inventory();
+						SNInventory in = new SNInventory();
 						for (int i = 0; i < strs.length; i++) {
 							// logger.info(i);
 							String str = strs[i];
@@ -430,10 +430,10 @@ public class InventoryChange {
 							if (null != mapp.get(key)) {
 								String pname = mapp.get(key).getType();
 
-								List<Inventory> inmap = map.get(pname);
+								List<SNInventory> inmap = map.get(pname);
 
 								if (inmap == null) {
-									inmap = new ArrayList<Inventory>();
+									inmap = new ArrayList<SNInventory>();
 									map.put(pname, inmap);
 								}
 
@@ -455,12 +455,12 @@ public class InventoryChange {
 	}
 
 	// 型号 , 状态
-	public static Map<String, List<Inventory>> getMapBranchTypeNum(User user,
+	public static Map<String, List<SNInventory>> getMapBranchTypeNum(User user,
 			String startTime, int branchid) {
 		// startTime = "2015-05-03";
 		// List<Inventory> list = new ArrayList<Inventory>();
 		Branch branch = BranchService.getMap().get(branchid);
-		Map<String, List<Inventory>> map = new HashMap<String, List<Inventory>>();
+		Map<String, List<SNInventory>> map = new HashMap<String, List<SNInventory>>();
 		if (branch.getBranchtype().getSaletype() == SaleModel.Model.苏宁
 				.getValue()) {
 			String bnum = branch.getEncoded();
@@ -471,7 +471,7 @@ public class InventoryChange {
 			try {
 				String tempPath = PathUtill.getXMLpath();
 				tempPath += "data" + File.separator + "DownloadInventory"
-						+ File.separator + startTime;
+						+ File.separator + startTime+File.separator+"SuNing";
 				logger.info(tempPath);
 				File file = new File(tempPath);
 				if (!file.exists()) {
@@ -485,11 +485,11 @@ public class InventoryChange {
 						Charset.forName("GBK")); // 一般用这编码读就可以了
 
 				reader.readHeaders();
-
+ 
 				while (reader.readRecord()) { // 逐行读入除表头的数据
 					String[] strs = reader.getValues();
 					if (null != strs) {
-						Inventory in = new Inventory();
+						SNInventory in = new SNInventory();
 						for (int i = 0; i < strs.length; i++) {
 							// logger.info(i);
 							String str = strs[i];
@@ -525,10 +525,10 @@ public class InventoryChange {
 							if (null != mapp.get(key)) {
 								// String pname = mapp.get(key).getType();
 
-								List<Inventory> inmap = map.get(key);
+								List<SNInventory> inmap = map.get(key);
 
 								if (inmap == null) {
-									inmap = new ArrayList<Inventory>();
+									inmap = new ArrayList<SNInventory>();
 									map.put(key, inmap);
 								}
 
@@ -549,15 +549,15 @@ public class InventoryChange {
 		return map;
 	}
 
-	public static Map<String, List<Inventory>> getMap(String startTime) {
+	public static Map<String, List<SNInventory>> getMap(String startTime) {
 		// startTime = "2015-05-03";
 		// List<Inventory> list = new ArrayList<Inventory>();
 
-		Map<String, List<Inventory>> map = new HashMap<String, List<Inventory>>();
+		Map<String, List<SNInventory>> map = new HashMap<String, List<SNInventory>>();
 		try {
 			String tempPath = PathUtill.getXMLpath();
 			tempPath += "data" + File.separator + "DownloadInventory"
-					+ File.separator + startTime;
+					+ File.separator + startTime+File.separator+"SuNing";
 			logger.info(tempPath);
 			File file = new File(tempPath);
 			if (!file.exists()) {
@@ -575,7 +575,7 @@ public class InventoryChange {
 			while (reader.readRecord()) { // 逐行读入除表头的数据
 				String[] strs = reader.getValues();
 				if (null != strs) {
-					Inventory in = new Inventory();
+					SNInventory in = new SNInventory();
 					for (int i = 0; i < strs.length; i++) {
 						// logger.info(i);
 						String str = strs[i];
@@ -604,10 +604,10 @@ public class InventoryChange {
 					String key = StringUtill.getStringNocn(in.getBranchName())
 							+ "_" + in.getGoodNum();
 
-					List<Inventory> inmap = map.get(key);
+					List<SNInventory> inmap = map.get(key);
 
 					if (inmap == null) {
-						inmap = new ArrayList<Inventory>();
+						inmap = new ArrayList<SNInventory>();
 						map.put(key, inmap);
 					}
 

@@ -73,12 +73,12 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 		logger.info(new File("").getAbsolutePath());
 	}
 
-	public static Map<String, Inventory> getMap(String starttime, String endtime) {
+	public static Map<String, SNInventory> getMap(String starttime, String endtime) {
 		// startTime = "2015-05-03";
-		Map<String, Inventory> map = new HashMap<String, Inventory>();
+		Map<String, SNInventory> map = new HashMap<String, SNInventory>();
 
 		try {
-
+ 
 			save(starttime, endtime);
 
 			if (StringUtill.isNull(starttime) || StringUtill.isNull(endtime)) {
@@ -107,7 +107,7 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 				String[] strs = reader.getValues();
 				if (null != strs) {
 
-					Inventory in = new Inventory();
+					SNInventory in = new SNInventory();
 
 					for (int i = 0; i < strs.length; i++) {
 						// logger.info(i);
@@ -122,14 +122,14 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 
 						} else if (i == 7) {
 							in.setGoodNum(str);
-						} else if (i == 8) {
+						} else if (i == 8) { 
 							in.setSaleNum(Integer.valueOf(str));
 						}
 
 					}
 					String key = in.getBranchNum() + "_" + in.getGoodNum();
 					// logger.info(key);
-					Inventory inmap = map.get(key);
+					SNInventory inmap = map.get(key);
 
 					if (null == inmap) {
 						map.put(key, in);
@@ -148,7 +148,7 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 		return map;
 	}
 
-	public static Map<String, Inventory> getMap(String starttime,
+	public static Map<String, SNInventory> getMap(String starttime,
 			String endtime, int branchid) {
 		// startTime = "2015-05-03"; 
 		Branch branch = BranchService.getMap().get(branchid);
@@ -157,7 +157,7 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 			bnum = branch.getEncoded();
 		}
 
-		Map<String, Inventory> map = new HashMap<String, Inventory>();
+		Map<String, SNInventory> map = new HashMap<String, SNInventory>();
 		Map<String, Product> mapp = ProductService.gettypeNUmmap();
 		if (StringUtill.isNull(starttime) || StringUtill.isNull(endtime)) {
 			return map;
@@ -190,7 +190,7 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 					String[] strs = reader.getValues();
 					if (null != strs) {
 
-						Inventory in = new Inventory();
+						SNInventory in = new SNInventory();
 
 						for (int i = 0; i < strs.length; i++) {
 							// logger.info(i);
@@ -219,7 +219,7 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 							Product p = mapp.get(key);
 							if (null != p) {
 								String pname = p.getType();
-								Inventory inmap = map.get(pname);
+								SNInventory inmap = map.get(pname);
 								if (null == inmap) {
 									map.put(pname, in);
 								} else {
@@ -242,10 +242,10 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 		return map;
 	}
 
-	public static List<Inventory> get(String starttime, String endtime) {
+	public static List<SNInventory> get(String starttime, String endtime) {
 		// startTime = "2015-05-03";
 
-		List<Inventory> list = new ArrayList<Inventory>();
+		List<SNInventory> list = new ArrayList<SNInventory>();
 		save(starttime, endtime);
 		if (StringUtill.isNull(starttime) || StringUtill.isNull(endtime)) {
 			return list;
@@ -272,7 +272,7 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 				String[] strs = reader.getValues();
 				if (null != strs) {
 
-					Inventory in = new Inventory();
+					SNInventory in = new SNInventory();
 					for (int i = 0; i < strs.length; i++) {
 						// logger.info(i);
 						String str = strs[i];

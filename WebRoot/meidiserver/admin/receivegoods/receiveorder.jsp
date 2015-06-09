@@ -83,6 +83,39 @@ String type= request.getParameter("type");
 
 		return flag;
 	}
+	 
+	
+	function getInventory(){
+		  
+		var mydate = new Date();  
+		var dates = mydate.getTime();  
+		//alert((dates - date)/1000/60); 
+		//if((dates - date)/1000/60<5){  
+		//	alert("您的操作过于频繁，请稍后重试");
+		//	return ;
+		//}   
+		//alert(1);  
+		$("#initInventory").html("正在刷新");
+		//alert(dates - date);
+		$("#initInventory").attr("disabled","true");
+		     
+			 $.ajax({      
+			        type: "post",   
+			         url: "../server.jsp",
+			         data:"method=InitInventoryReceiveorder", 
+			         dataType: "",        
+			         success: function (data) { 
+			        	 date = dates;
+			        	 $("#initInventory").html("库存刷新");
+			        	 $("#initInventory").removeAttr("disabled"); 
+			           },  
+			         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+			        // alert(errorThrown); 
+			            } 
+			           });
+		 } 
+	
+	
 </script>
 </head>
 <body>
@@ -91,6 +124,7 @@ String type= request.getParameter("type");
 			<jsp:param name="dmsn" value="" />
 		</jsp:include>
 		<div class="weizhi_head">现在位置：退货订单</div>
+		
 		<form action="receiveorder.jsp" method="post" id="post">
 			<select name="branch">
 				<option value=""></option>
@@ -106,12 +140,15 @@ String type= request.getParameter("type");
 
 					}
 				%>
-
+ 
 
 			</select> <input type="submit" value="查看" />
+			<input type="button" value="刷新" onclick="getInventory();" id="initInventory"/>
 
 		</form>
-		<!--  头 单种类  -->
+		
+		
+		<!--  头 单种类  --> 
 
 		<table width="100%" border="0" cellspacing="1" id="Ntable">
 

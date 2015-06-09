@@ -7,15 +7,15 @@ String branchname = request.getParameter("branchname");
 String typenum = request.getParameter("typenum"); 
 String time = TimeUtill.getdateString();
 String method = request.getParameter("method");
+    
    
-  
 if(!StringUtill.isNull(method)){  
 	String ids[] = request.getParameterValues("id");
 	OrderReceitManager.delete(ids); 
 	 
 	response.sendRedirect("receiveordertype.jsp");
-} 
-Map<String,List<httpClient.download.Inventory>> mapsn = null ;
+}  
+Map<String,List<SNInventory>> mapsn = null ;
 if(null != BranchService.getNameSNMap().get(branchname)){ 
 	//System.out.println(branchname);
 	//System.out.println(BranchService.getNameSNMap().get(branchname).getId()); 
@@ -141,7 +141,7 @@ String type= request.getParameter("type");
 						OrderReceipt gr = mapent.getValue();
 						if(!"取消".equals(gr.getStatuesName())){
 							String clb = "";
-							String clt = "";
+							String clt = ""; 
 							if (0 == gr.getBid()) {
 								clb = "style=color:red";
 							}
@@ -152,12 +152,12 @@ String type= request.getParameter("type");
 							if(null == mapsn){
 								innum = "门店不存在"; 
 							}else { 
-								List<httpClient.download.Inventory> list = mapsn.get(gr.getGoodsnum());
+								List<SNInventory> list = mapsn.get(gr.getGoodsnum());
 								
 								if(null != list){
 									
 									for(int i=0;i<list.size();i++){
-										httpClient.download.Inventory in = list.get(i);
+										SNInventory in = list.get(i);
 										innum += in.getGoodType()+":"+in.getATP()+"_";
 									}  
 								}else { 

@@ -55,7 +55,8 @@ function clear(){
    if(UserManager.checkPermissions(user, Group.ordergoods,"r")){ 	 
 	   %>          
 	  <li><a href="inventory/inventorycome.jsp">查看入库单号 </a></li> 
-	    <%          
+	    <li><a href="inventory/inventorycheck.jsp">盘点</a></li> 
+	    <%           
 	     }  
    if(UserManager.checkPermissions(user, Group.sale,"r")){
       %>    

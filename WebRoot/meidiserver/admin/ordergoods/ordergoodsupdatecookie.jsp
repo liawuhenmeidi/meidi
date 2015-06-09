@@ -3,11 +3,12 @@
 <%@ page language="java" import="httpClient.*"%>
 <%@ include file="../../common.jsp"%>
 
-<%   
+<%    
      
 String id = request.getParameter("id"); 
 String inventory  = request.getParameter("inventory"); 
-String message = "调货单审核";  
+String realtime = request.getParameter("time"); 
+String message = "调货单审核";   
  String time = TimeUtill.getdateString();
 //System.out.println(statues+"&&"+type);
 OrderGoodsAll oa = null;   
@@ -15,7 +16,7 @@ List<OrderGoods> list = null;
 String branchname = ""; 
 String branchtype = "";   
 String remark = ""; 
-String json = "[]"; 
+String json = "[]";   
 int branchid = -1;
 if(!StringUtill.isNull(id)){ 
 	oa = OrderGoodsAllManager.getOrderGoodsAllexamByid(user,id); 
@@ -25,38 +26,57 @@ if(!StringUtill.isNull(id)){
 	list = oa.getList();     
 	 json = StringUtill.GetJson(list); 
 	 branchid = oa.getOm().getBranchid(); 
-}        
-       
-if(!StringUtill.isNull(inventory)){  
+}         
+        
+if(!StringUtill.isNull(inventory)){   
 	branchname = request.getParameter("branch");
 	branchtype =request.getParameter("branchtype");  
-	String tids = request.getParameter("tids"); 
-	System.out.println("branchname"+branchname+"***branchtype"+branchtype+"**tids"+tids);
-	String[] tidss = tids.split(","); 
-	list = new ArrayList<OrderGoods> ();
-	for(int i=0;i<tidss.length;i++){
-		String tid = tidss[i];
-		OrderGoods og = new OrderGoods();
-		og.setTid(Integer.valueOf(tid));
-		list.add(og); 
-	}  
+	
+	branchid = BranchService.getNameMap().get(branchname).getId(); 
+	String tids = request.getParameter("tids");   
+	list = new ArrayList<OrderGoods> ();  
+	//System.out.println(branchtype);
+	//System.out.println("pp"+ProductService.gettypemap(user, Integer.valueOf(branchtype))); 
+	//System.out.println("branchname"+branchname+"***branchtype"+branchtype+"**tids"+tids);
+	if(!StringUtill.isNull(tids)){
+		String[] tidss = tids.split(",");   
+		  
+		for(int i=0;i<tidss.length;i++){
+			String tid = tidss[i];  
+			//System.out.println(tid);
+			if(!NumbleUtill.isNumeric(tid)){ 
+				try{    
+					
+					 tid = ProductService.gettypemap(user, Integer.valueOf(branchtype)).get(tid).getId()+"";
+				}catch (Exception e){
+					tid = "-1" ;
+				}   
+				 System.out.println(tid);
+			} 
+			//System.out.println("tid"+tid);
+			OrderGoods og = new OrderGoods();
+			og.setTid(Integer.valueOf(tid));
+			list.add(og); 
+		}   
+	}
+	
 	 json = StringUtill.GetJson(list); 
 }  
- 
+     
 Map<String,InventoryBranch> map = InventoryBranchManager.getmapType(user,branchid+"");
 String jsoninventory = StringUtill.GetJson(map);  
      
 Map<String,List<SNInventory>> mapsn = InventoryChange.getMapBranchType(user,time,branchid);
  
 Map<String,List<SNInventory>> mapsnModel = InventoryModelDownLoad.getMapBranchType(user, time,branchid);
-//   
+//    
 Map<String,SNInventory> mapsale = SaleDownLoad.getMap(TimeUtill.dataAdd(time, -29),time,branchid); 
-      
-//System.out.println(mapsn); 
+     
+//System.out.println(mapsn);  
 String jsoninventorysn = StringUtill.GetJson(mapsn);   
 String jsoninventorysnmodel = StringUtill.GetJson(mapsnModel); 
 String jsoninventorysnsale = StringUtill.GetJson(mapsale); 
- 
+
 //String SNjson = StringUtill.GetJson(map); 
 //System.out.println(json); 
 
@@ -95,12 +115,12 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 //alert( $.cookie("branch")); 
 //alert( $.cookie("branchtype"));
 //  alert(jsoninventorysn);
- var row = 10;   
+ var row = 10;    
  var rows = new Array();
- var count = 1 ; 
-   
+ var count = 1 ;  
+    
  var ctypes = new Array();  
- 
+// alert( $.cookie("inventorycheck"));   
  $(function () {
 	 
 	 var num = jsons.length;
@@ -110,16 +130,37 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	 }   
 	  
 	 addrowinti();
-	  
+	   
 	 getproduct(); 
 	 
 	 if(num > 0){
 		 init();
 	 } 
- }); 
-   
- function getMessage(id,tid,tname,row,statues){   
+ });     
+    
+ function getMessage(tname,row,statues){    
 	 var jsonsale = jsoninventorysnsale[tname];
+	      
+	 var num = $.cookie("orderproductNum"+tname);
+		$("#orderproductNum"+row).val(num); 
+		//alert(jsoninventory);  
+		if(null != jsoninventory  ){ 
+			// alert(jsoninventory); 
+			 var ishava = jsoninventory[tname];
+			// alert(ishava);    
+			 if(null != ishava && ""!= ishava && undefined  != ishava){
+				 $("#Ipapercount"+row).val(ishava.papercount);
+				 $("#papercount"+row).html(ishava.papercount);
+			 }else {   
+				 $("#papercount"+row).html(0);
+			 } 
+		}else {
+			$("#papercount"+row).html(0); 
+		}
+		 
+	  
+	 
+	 
 	        if(9 == statues || 3 == statues){ 
 	       
 	        	 var jsons = jsoninventorysnmodel[tname];
@@ -135,7 +176,7 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 			        	}
 			        }else {   
 			        	var num = ""; 
-			        	var st = "";
+			        	var st = ""; 
 			        	for(var i=0;i<jsons.length;i++){
 			        		var json = jsons[i]; 
 			        		if(i == 0 ){  
@@ -219,12 +260,34 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
  }
    
  function init(){
-	 for(var i=0;i<jsons.length;i++){
-		 var json = jsons[i];   
-		 //alert(json.tname); s
+	 for(var i=0;i<jsons.length;i++){ 
+		 var json = jsons[i];    
+		 //alert(json.tname);   
 		$("#product"+i).val(json.tname);  
-		$("#statues"+i).val(json.realstatues); 
-		// alert(json.realstatues);
+		var sta = $.cookie("statues"+json.tname);
+		if(sta != "" && sta != null) { 
+			//rows.push(i);     
+			$("#statues"+i).val(sta);
+			     
+			getMessage(json.tname,i,sta); 
+			//}     
+			
+			 
+			  
+			$("#uuid").val(json.uuid); 
+			
+			if(sta != "" && sta!= null){
+				rows.push(i); 
+				var only = json.tname+"_"+sta; 
+				ctypes.push(only);  
+			}
+			
+			
+			
+			
+			
+		} 
+		 
 		// $("#table"+i+" td").remove(); 
 		//var str = '<td colspan=5 align=center style="color:red" >苏宁库存信息(退货显示库存信息)</td>';
   		// $("#table"+i).append(str);    
@@ -234,46 +297,17 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 			//$("#table"+i+" td").remove();  
 			//var str = '<td colspan=5 align=center style="color:red" >数据更新中</td>';
 	  		//$("#table"+i).append(str); 
-			getMessage(json.id,json.tid,json.tname,i,json.statues); 
-		//}    
-		      
-		$("#orderproductNum"+i).val(json.realnum);
-		//alert(jsoninventory); 
-		if(null != jsoninventory  ){
-			// alert(jsoninventory); 
-			 var ishava = jsoninventory[json.tname];
-			// alert(ishava);    
-			 if(null != ishava && ""!= ishava && undefined  != ishava){
-				 $("#Ipapercount"+i).val(ishava.papercount);
-				 $("#papercount"+i).html(ishava.papercount);
-			 }else {   
-				 $("#papercount"+i).html(0);
-			 }
-		}else {
-			$("#papercount"+i).html(0); 
-		}
-		 
-		  
-		$("#uuid").val(json.uuid); 
-		if(json.realstatues != "" && json.realstatues!= null){
-			rows.push(i); 
-			var only = json.tname+"_"+json.realstatues; 
-			ctypes.push(only); 
-		}
+			
 		  
 	 }  
 	 addcount();
- }
- 
+ } 
+  
  function addrowinti(){
 	//  alert(rows); 
 	 for(var i=0;i<row;i++){  
 		 if($.inArray(i,rows) == -1){ 
-			 addrow(i);
-			 $("#product"+i).autocomplete({  
-				 source: jsonallp
-			    }); 
-			  
+			 addrow(i); 
 		 }  
 		    
 	}
@@ -312,12 +346,12 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	  var str = '<tr '+cl+'>' +    
 	     ' <td align=center  >'+(row*1+1*1)*1+'</td> '+
 	     ' <td  align=center ><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
-	     ' <td align=center ><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'"  placeholder="订单数"  style="border-style:none;width:50px;"   onBlur="addcount()" /></td> ' +
+	     
 	     '<td align=center><input type="hidden" name="papercount'+row+'" id="Ipapercount'+row+'"><span style="color:red;font-size:15px;" id="papercount'+row+'"  ></span></td>'+
 	     '<td align=center><span style="color:red;font-size:15px;" id="sncount'+row+'"  ></span></td>'+
 	     '<td align=center><span style="color:red;font-size:15px;" id="snstatues'+row+'"  ></span></td>'+
 	     '<td  align=center ><select name="statues'+row+'" id="statues'+row+'">'+
-	        
+	       
 	     '<option value=""></option>'+    
 	     '<option value="1">常规机订货</option>'+
 	     '<option value="2">特价机订货</option>'+
@@ -330,6 +364,7 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	      '<option value="8">已入库特价退货</option>'+
 	      '<option value="9">已入库样机退货</option>'+
 	     '<select></td>'+ 
+	     ' <td align=center ><input type="text"  id="orderproductNum'+row+'" name="orderproductNum'+row+'"  placeholder="订单数"  style="border-style:none;width:50px;"   onBlur="addcount()" /></td> ' +
 	     ' <td  align=center><input type="button" value="删除" onclick="delet('+row+')"/></td> ' +
 	     '</tr>'
 	     ;  
@@ -339,14 +374,14 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	//alert($("#td"+row).css("width")-10);
 	//$("#product"+row).css("width",$("#td"+row).css("width"));
 	
-	//$("#product"+row).autocomplete({  
-		// source: jsonallp
-	  //  });     
+	$("#product"+row).autocomplete({  
+		 source: jsonallp
+	    });      
 	   
-	$("#product"+row).blur(function (){
+	$("#product"+row).blur(function (){ 
 		initctypes(row); 
 		addresultp(row);
-	});
+	}); 
 	   
 	$("#product"+row).keydown(function (){
 		initctypes(row);
@@ -357,14 +392,19 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 		initctypes(row); 
 		addresults(row); 
 	});
-	
-	
+	  
+	$("#orderproductNum"+row).blur(function (){
+		 var ctype = $("#product"+row).val();
+		 var num = $("#orderproductNum"+row).val();
+		 $.cookie("orderproductNum"+ctype,num);
+		
+	});
  }  
-             
+                             
  function addresultp(row){  
 	 var ctype = $("#product"+row).val();
 	 var statues = $("#statues"+row).val();
-	 if(ctype == ""){      
+	 if(ctype == ""){        
 		// alert("型号不能为空");   
 		 return false ;    
 	 }else {      
@@ -394,6 +434,7 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	 var ctype = $("#product"+row).val();
 	 var statues = $("#statues"+row).val();
 	 //alert(statues); 
+	 
 	if("" != statues && null != statues){
 		
 		 //alert(ctype);  
@@ -432,21 +473,26 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	   //alert(num);
 	   if(rows.length == row){   
 		    row = row +5;    
-			addrowinti();  
+			addrowinti(); 
 		 }   
-	    
+	     
 	   for(var i=0;i<rows.length;i++){
-		   var realnum = rows[i]; 
-		   if(realnum != num){  
+		   var realnum = rows[i];  
+		   if(realnum != num){   
 			   var ctype = $("#product"+realnum).val();
+			   // alert(ctype);
 			   var statues = $("#statues"+realnum).val();
 			   if($.inArray(ctype,jsonallp) != -1  && statues != ""){
-				   var only = ctype+"_"+statues;
-				   ctypes.push(only);     
+				   var only = ctype+"_"+statues; 
+				   ctypes.push(only);                 
+				   getMessage(ctype,realnum,statues);  
+				   $.cookie("statues"+ctype,statues);  
+				  
+				   
 			   }
 		   }
 	   }  
-	     
+	      
 	  // alert("length"+ctypes);
   } 
      
@@ -463,19 +509,23 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
  }
    
  function check(sta){
-	 
-	ctypes = new Array();  
+	  
+	ctypes = new Array(); 
+	//alert(rows);      
 	if(rows.length <1){ 
 		//alert("没有记录可以提交");  
 		//return false ;
 	}else {
 		for(var i=0;i<row;i++){ 
+			
 			if($.inArray(i,rows) == -1){
-				//alert(i);
-				//alert(type);
+				//alert(i); 
+				 
+				//alert(type);  
 				var type =  $("#product"+i).val();
 				//alert(type);
-				if("" != type){  
+				if("" != type){ 
+					//alert(num+"#####"+type);
 					alert("您有产品未选择状态，请检查");
 					return false;
 				}
@@ -541,6 +591,7 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 					type="hidden" name="id" id="id" value="<%=id%>" /> <input
 					type="hidden" name="rows" id="rows" value="" /> <input
 					type="hidden" name="opstatues" id="opstatues" value="" />
+					<input type="hidden" name="time" value="<%=realtime%>"/>  
 				<table style="width:100% ">
 					<tr class="asc">
 						<td align=center>门店</td>
@@ -555,8 +606,8 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
  	}
  %>
 						</td>
-						<td align=center>单号：</td>
-						<td align=center>日期：<%=TimeUtill.getdateString()%></td>
+						<td align=center>单号：</td> 
+						<td align=center>日期：<%=realtime%></td>
 					</tr>
 					<tr class="asc">
 						<td colspan=4 align=center>
@@ -564,12 +615,13 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 								<tr class="dsc">
 									<td align=center width="5%">编号</td>
 									<td align=center width="20%">产品型号</td>
-									<td align=center width="20%">订货数</td>
+									
 
 									<td align=center width="10%">店外库存数量</td>
 <td align=center width="10%">卖场库存</td> 
 <td align=center width="10%">(30天销售数量)</td>
 									<td align=center width="25%">状态</td>
+									<td align=center width="20%">订货数</td>
 									<td align=center width="20%">删除</td>
 								</tr>
 								<!-- 
@@ -588,10 +640,10 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 						</td>
 					</tr>
 
-					<tr class="asc"> 
+					  <tr class="asc"> 
 						<td align=center colspan=2><input type="button" id="submit1"
 							value="保存刷新" onclick="check('0')" />
-						</td>
+						</td> 
 						<td align=center colspan=2><input type="button" id="submit2"
 							value="审核通过" onclick="check('1')" />
 						</td>

@@ -287,7 +287,7 @@ logger.info("statusCode2"+statusCode);
 			URI uri = new URI(inventoryOrder.url);
   
 			String responseContent = getHtmlStringOut(uri, starttime, endtime,
-					"", mc);    
+					"", mc);     
 			 
 			logger.info(StringUtill.isNull(responseContent));
 			int num = getNum(responseContent);

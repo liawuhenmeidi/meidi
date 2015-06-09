@@ -85,7 +85,7 @@ public class InventoryBranchMessageManager {
 	}
 	
 	public static List<String> update(
-			Map<Integer, Map<Integer, InventoryBranchMessage>> map) {
+			Map<String, InventoryBranchMessage> map) {
 		/*
 		 * String sql = "UPDATE categories" + " SET display_order = CASE id " +
 		 * " WHEN 1 THEN 3 " + " WHEN 2 THEN 4 " + " WHEN 3 THEN 5 " + " END" +
@@ -93,29 +93,18 @@ public class InventoryBranchMessageManager {
 		 */
 		List<String> list = new ArrayList<String>(); 
 		if (null != map) {
-			Set<Map.Entry<Integer, Map<Integer, InventoryBranchMessage>>> set = map
+			Set<Map.Entry<String, InventoryBranchMessage>> set = map
 					.entrySet();
-			Iterator<Map.Entry<Integer, Map<Integer, InventoryBranchMessage>>> it = set
+			Iterator<Map.Entry<String, InventoryBranchMessage>> it = set
 					.iterator();
-			while (it.hasNext()) {
-				Map.Entry<Integer, Map<Integer, InventoryBranchMessage>> mapen = it
+			while (it.hasNext()) { 
+				Map.Entry<String, InventoryBranchMessage> mapen = it
 						.next();
-				Map<Integer, InventoryBranchMessage> mapin = mapen.getValue();
-				if (null != mapin) {
-					Set<Map.Entry<Integer, InventoryBranchMessage>> setin = mapin
-							.entrySet();
-					Iterator<Map.Entry<Integer, InventoryBranchMessage>> itin = setin
-							.iterator();
-					while (itin.hasNext()) {
-						Map.Entry<Integer, InventoryBranchMessage> mapenin = itin
-								.next();
-						InventoryBranchMessage inm = mapenin.getValue();
+				 
+						InventoryBranchMessage inm = mapen.getValue();
 						String sql = update(inm);
 						list.add(sql);
 					}
-				}
-
-			}
 		}
 		return list;
 	}
@@ -231,13 +220,13 @@ public class InventoryBranchMessageManager {
 		return mapAnalyze;
 	}
  
-	public static Map<String, Map<String,List<InventoryBranchMessage>>> getmap(int branchid) {
+	public static Map<String, Map<String,List<InventoryBranchMessage>>> getmap(int branchid,int inventoryid) {
  
 		Map<String, Map<String,List<InventoryBranchMessage>>> categorys = new HashMap<String, Map<String,List<InventoryBranchMessage>>>();
 		Connection conn = DB.getConn();
-		String sql = "select * from mdinventorybranchmessage where  branchid = "
-				+ branchid + " order by id "; 
-		logger.info(sql);
+		String sql = "select * from mdinventorybranchmessage where  inventoryid = "
+				+ inventoryid + " and branchid = "+branchid+" order by id ";  
+		logger.info(sql); 
 		Statement stmt = DB.getStatement(conn);
 		ResultSet rs = DB.getResultSet(stmt, sql); 
 		try {
@@ -354,7 +343,7 @@ public class InventoryBranchMessageManager {
 			DB.close(stmt);
 			DB.close(conn);
 		}
-		logger.info(categorys.size());
+		//logger.info(categorys.size());
 		return categorys;
 	}
 	
@@ -367,7 +356,10 @@ public class InventoryBranchMessageManager {
 			c.setAllotRealcount(rs.getInt("allotRealcount"));
 			c.setInventoryid(rs.getInt("inventoryid"));
 			c.setInventoryString(rs.getString("inventoryString"));
-			c.setTypeid(rs.getString("type"));  
+			c.setTypeid(rs.getString("type")); 
+			//logger.info(Integer.valueOf(c.getTypeid())); 
+			//logger.info(ProductService.getIDmap() 
+					//.get(Integer.valueOf(c.getTypeid())));  
 			c.setType(ProductService.getIDmap()
 					.get(Integer.valueOf(c.getTypeid())).getType());
 			c.setTime(rs.getString("time"));
