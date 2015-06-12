@@ -53,7 +53,7 @@ public class UploadManager {
 		List <UploadSalaryModel> uploadSalaryModelList = new ArrayList<UploadSalaryModel>();
 		uploadSalaryModelList = xlsreader.readSalaryModelXLS(path, fileName);
 		if(saveSalaryModelList(uploadSalaryModelList)){
-			logger.info("上传提成标准保存成功");
+			logger.info("上传提成标准保存成功"); 
 			return true;
 		}else{
 			logger.info("上传提成标准保存失败");
@@ -440,15 +440,14 @@ public class UploadManager {
 		}
 		return result;
 	}
-	
+	 
 	public static boolean checkUploadOrder(int uploadOrderId){
 		boolean flag = false;
 		Connection conn = DB.getConn();
 		String sql = "update uploadorder set checked = ? ,checkedtime = ? ,checkorderid= ? where id = " + uploadOrderId;
 		PreparedStatement pstmt = DB.prepare(conn, sql);
 		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		try {
-
+		try {  
 			pstmt.setInt(1,0);
 			pstmt.setString(2, fmt.format(new Date()));
 			pstmt.setInt(3, -1);

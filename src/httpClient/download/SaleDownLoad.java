@@ -310,13 +310,16 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 		List<SaleSN> list = new ArrayList<SaleSN>();
 
 		save(starttime, endtime);
+		 
+		 
 		if (StringUtill.isNull(starttime) || StringUtill.isNull(endtime)) {
 			return list;
-		}
+		} 
 		try {
-			String tempPath = PathUtill.getXMLpath();
-
+			String tempPath = PathUtill.getXMLpath(); 
+ 
 			tempPath += "data" + File.separator + "DownloadSale";
+			
 			logger.info(tempPath);
 			File file = new File(tempPath);
 			if (!file.exists()) {
@@ -329,7 +332,7 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 			CsvReader reader = new CsvReader(file2.getAbsolutePath(), ',',
 					Charset.forName("GBK")); // 一般用这编码读就可以了
 
-			reader.readHeaders();
+			reader.readHeaders();   
 
 			while (reader.readRecord()) { // 逐行读入除表头的数据
 				String[] strs = reader.getValues();
@@ -359,7 +362,6 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 					list.add(in);
 				}
 			}
-
 			logger.info(list.size());
 			reader.close();
 		} catch (IOException e) {
@@ -368,45 +370,45 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 		} // 跳过表头 如果需要表头的话，不要写这句。
 		return list;
 	}
- 
+  
 	public static void saveDB(String starttime, String endtime) {
 		List<SaleSN> listsql = new ArrayList<SaleSN>();
-
-		List<SaleSN> list = getSaleSN(starttime, endtime);
-         
-		logger.info(list.size());
+   
+		List<SaleSN> list = getSaleSN(starttime, endtime); 
+		logger.info(list.size());           
+		           
 		Map<String, Map<String, List<SaleSN>>> map = new HashMap<String, Map<String, List<SaleSN>>>();
- 
+     
 		Map<String, Map<String, List<SaleSN>>> mapdb = SaleSNManager.getMapDB(
-				starttime, endtime); 
-		   
-        logger.info(mapdb);  
-         
+				starttime, endtime,"苏宁网上数据");  
+		              
+        logger.info(mapdb);      
+               
 		if (null == mapdb) {
-			listsql =  list;
+			listsql =  list; 
 		} else {  
 			if (!list.isEmpty()) { 
 				Iterator<SaleSN> it = list.iterator();
 				while (it.hasNext()) {
 					SaleSN as = it.next();
-					Map<String, List<SaleSN>> maps = map.get(as.getSaletime());
+					String key = TimeUtill.yyyyMMddChangeto(as.getSaletime());
+					Map<String, List<SaleSN>> maps = map.get(key);
 					if (null == maps) {
 						maps = new HashMap<String, List<SaleSN>>();
-						map.put(as.getSaletime(), maps);
+						map.put(key, maps);
 					}
 
-					List<SaleSN> li = maps.get(as.getBranchnum() + "_"
-							+ as.getGoodnum());
-
+					List<SaleSN> li = maps.get(as.getBranchname() + "_"
+							+ as.getGoodname());
+ 
 					if (null == li) {
 						li = new ArrayList<SaleSN>();
-						maps.put(as.getBranchnum() + "_" + as.getGoodnum(), li);
+						maps.put(as.getBranchname() + "_" + as.getGoodname(), li);
 					}
-
-					li.add(as);
+					li.add(as); 
 				}
 			}
-
+logger.info(map);
 			if (!map.isEmpty()) {
 				Set<Map.Entry<String, Map<String, List<SaleSN>>>> set = map
 						.entrySet();
@@ -454,7 +456,7 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 													itli.remove();
 												}
 											}
-										} 
+										}  
 										listsql.addAll(li);
 									}
 								}
@@ -462,13 +464,13 @@ public class SaleDownLoad extends HttpServlet implements DownLoad {
 						}
 					}
 				}
-			}
-		}
-  // logger.info(listsql);
-		 
+			} 
+		} 
+ //logger.info(listsql);
+		  
 		SaleSNManager.save(listsql);
 	}
-
+ 
 	public static void save(String starttime, String endtime) {
 		logger.info(starttime + "_" + endtime);
 		URI uri;

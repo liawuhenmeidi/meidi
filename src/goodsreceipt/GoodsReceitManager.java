@@ -596,7 +596,45 @@ public class GoodsReceitManager {
 
 		return map;
 	}
+ 
+	public static Map<String,Map<String,List<GoodsReceipt>> > getMapAllTime(String starttime,
+			String endtime) {
+		Map<String,Map<String,List<GoodsReceipt>> > map = new HashMap<String,Map<String,List<GoodsReceipt>> >();
+		String sql = " select * from goodsreceipt where  recevetime BETWEEN  '"
+				+ starttime + "'  and '" + endtime + "'";
+		logger.info(sql);  
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn);
 
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try { 
+			while (rs.next()) { 
+				GoodsReceipt as = getGoodsReceitFromRs(rs);
+				Map<String,List<GoodsReceipt>> mapo = map.get(as.getReceveTime());
+				if(null == mapo){
+					mapo = new HashMap<String,List<GoodsReceipt>>();
+					map.put(as.getReceveTime(), mapo);
+				}  
+				List<GoodsReceipt> list = mapo.get(as.getOrdertype());
+				
+				if(null == list){
+					list = new ArrayList<GoodsReceipt>();
+					mapo.put(as.getOrdertype(), list); 
+				}
+				 
+				list.add(as);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(stmt);
+			DB.close(rs);
+			DB.close(conn);
+		}
+
+		return map;
+	}
+	
 	public static Map<String, GoodsReceipt> getMap(String starttime,
 			String endtime) {
 		Map<String, GoodsReceipt> map = new HashMap<String, GoodsReceipt>();

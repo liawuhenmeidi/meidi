@@ -179,7 +179,7 @@ function getInventory(){
               <%  if(UserManager.checkPermissions(user, Group.change)){%>
               <p ><a href="javascript:void(0);"  onclick="reloadopned('changedetail.jsp')">转化规则</a></p>
                
-             <%} 
+             <%}  
               if(UserManager.checkPermissions(user, Group.change,"w")){
             	  %>
             	  <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadchange.jsp')">生成转化规则</a></p>
@@ -192,7 +192,6 @@ function getInventory(){
           <%
           }
          if(UserManager.checkPermissions(user, Group.ManagerUser)){
-
           %> 
           <li >
             <h4 >职工管理</h4>
@@ -222,19 +221,23 @@ function getInventory(){
                <%
                }
            if(UserManager.checkPermissions(user, Group.ordergoods,"r")){
-               %>
+               %> 
                   <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodbilling.jsp')">查看订单</a></p> 
                <%
                }
-           
-         
-           %>
-          
-            </div> 
+           %>      
+            </div>  
           </li>   
-          
-          
-          
+          <li>   
+            <h4 >数据管理</h4> 
+            <div class="list-item none"> 
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('date/dateinventory.jsp')">库存数据</a></p>
+               <p ><a href="javascript:void(0);"  onclick="reloadopned('date/datesale.jsp')">销售数据</a></p>
+            <p ><a href="javascript:void(0);"  onclick="reloadopned('date/dateinventorychange.jsp')">出入库数据</a></p>
+            </div>
+          </li> 
+           
+           
              <li >
             <h4 >发货管理</h4>
             <div class="list-item none">

@@ -27,7 +27,25 @@ public class TimeUtill {
 		String submitTime= df2.format(date1);
 		return submitTime;
 	}
+	 
+	public static String yyyyMMddChangeto(String time){ 
+		String str = "";  
+		//logger.info(time);
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		   try {   
+		    date = format.parse(time); 
+		    str = format2.format(date); 
+		   } catch (ParseException e) {
+		    e.printStackTrace();
+		   } 
+		  // logger.info(str);
+		return str;
+	}
 	
+	   
+	   
 	public static String gettimeString(){ 
 		SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         Date date1 = new Date();   

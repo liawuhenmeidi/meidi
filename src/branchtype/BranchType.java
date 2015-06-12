@@ -1,12 +1,13 @@
 package branchtype;
 
+import enums.SaleModel;
 import exportModel.ExportModel;
 import utill.StringUtill;
 
 public class BranchType {
 	public static int sale = 1;
 	public static int install = 2 ;
-	 
+	
 	private int id;
 	private String name;
 	// 导购是否可见
@@ -18,6 +19,8 @@ public class BranchType {
 	 
 	private int saletype ; //  1 苏宁   2 国美     ExportModel.SuNing
 	
+	private String saletypeStr;
+	
 	private int exportmodel ;  //  
 
 	public int getIsSystem() {
@@ -27,9 +30,17 @@ public class BranchType {
 	public void setIsSystem(int isSystem) {
 		this.isSystem = isSystem;
 	}
-
+ 
 	public int getStatues() {
 		return statues;
+	}
+ 
+	public String getSaletypeStr() {
+		return SaleModel.get(saletype );
+	}
+
+	public void setSaletypeStr(String saletypeStr) {
+		this.saletypeStr = saletypeStr;
 	}
 
 	public void setStatues(int statues) {

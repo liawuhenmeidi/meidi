@@ -31,7 +31,7 @@ public class MyMainClient {
     // 圣荣 
 	private static String cacheUsername = "haoyuely@163.com";
 	private static String cachePassword = "sn26524316";
- 
+     
 	// 九阳  
 	// private static String cacheUsername = "tjhdlshm@163.com";
 	// private static String cachePassword = "lxn123456";
@@ -62,9 +62,9 @@ public class MyMainClient {
 	}   
               
 	public synchronized void run() {
-		try {                      
+		try {                          
 		    startinventoryIN(this);
-			//round(this);     
+		//	round(this);      
 			// sdi.selectDeliverInform(new
 			// URI("http://scs.suning.com/sps/PurchaseOrderDelivery/orderDelivery.action?menuid=100000111&scspageexptime=1427005676454"),"","",this);
 		} catch (Exception e) { 
@@ -97,36 +97,23 @@ public class MyMainClient {
 	public static void round(MyMainClient mc) {
 		String starttime = TimeUtill.getdateString();
 		String endtime = TimeUtill.getdateString();
-                              
-		            
-		starttime = "2015-05-24"; 
-		endtime = "2015-06-02";      
-		while (TimeUtill.compare(starttime,"2015-05-01"))  {                             
-			int num = -10;                               
-		//	count++;       
-			   
-			 
-		//	inventoryOrder.getinventoryOut(starttime, endtime, mc);
-			//inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
-			
-			inventoryModelOut.getinventoryOutModel(starttime, endtime, mc);
-			//inventoryOrder.getinventoryOut(starttime, endtime, mc);
-			//inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
-			 
+                                    
+		starttime = "2015-06-03";    
+		endtime = "2015-06-12";         
+		while (TimeUtill.compare(starttime,"2013-06-09"))  {                             
+			int num = -10;       
+			//SaleDownLoad.saveDB(starttime, endtime);  
+		//	count++;              
+			///inventoryOut.get(starttime, endtime);  
+			//inventoryModelOut.getinventoryOutModel(start, endtime, mc);
+			//inventoryModelOut.get(starttime, endtime);
 			     
-			//OrderDownLoad.saveDB(starttime, endtime);
-			                                 
-			//inventoryOut.getinventoryOut(starttime, endtime, mc);  
-			//inventoryOut.get(starttime, endtime);   
-			                                              
-			//inventoryModelOut.getinventoryOutModel(starttime, endtime, mc);
-			//inventoryModelOut.get(starttime, endtime);  
-			          
-	   // inventoryIN.getinventoryIN(starttime, endtime, mc);
+	       // inventoryIN.getinventoryIN(start, endtime, mc);
 		  // inventoryIN.get(starttime, endtime);  
+			inventoryOrder.getinventoryOut(starttime, endtime, mc);
+			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
 			
-			// inventoryIN.get(starttime, endtime); 
-			// SaleDownLoad.saveDB(starttime, endtime);  
+			
 			starttime = TimeUtill.dataAdd(starttime, num);
 			endtime = TimeUtill.dataAdd(endtime, num);
 			   
@@ -138,20 +125,20 @@ public class MyMainClient {
 			String starttime = TimeUtill.getdateString(); 
 			//String start = TimeUtill.dataAdd(starttime, -6); 
 			String endtime = TimeUtill.getdateString();  
-			                         
-			// int count = 0 ; 
+			                          
+			// int count = 0 ;  
 			//start = "2015-06-02"; 
 			//endtime = "2015-06-02";      
                                 
 			// 异常退货订单          
 			inventoryOrder.getinventoryOut(starttime, endtime, mc);
 			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
-                 
+                  
 			// 入库退货信息           
                   
 			//inventoryOut.getinventoryOut(start, endtime, mc); 
 			inventoryOut.get(starttime, endtime);  
-			                  
+			                   
 			//inventoryModelOut.getinventoryOutModel(start, endtime, mc);
 			inventoryModelOut.get(starttime, endtime);
 			     
@@ -170,16 +157,14 @@ public class MyMainClient {
      
 			// 更新过期订单(系统内)   
 			InventoryBranchManager.initOrderNumSN();
-      
+       
 			logger.info("更新订单加订单号"); 
-			// 更新订单信息   
+			// 更新订单信息    
 			OrderDownLoad.saveDB(starttime, endtime);
-                 
-			      
+                    
 			ProductSN.save(mc); 
-			// 销售数据
-			     
-			//SaleDownLoad.saveDB(starttime, endtime);  
+			// 销售数据                            
+			SaleDownLoad.saveDB(starttime, endtime);  
 			// 样机退货数据未采集
 		} catch (Exception e) {
 			logger.info(e);

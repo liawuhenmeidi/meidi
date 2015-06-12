@@ -77,7 +77,7 @@ function check(){
 								for (int i = 0; i < listgt.size(); i++) {
 									BranchType bt = listgt.get(i);
 									if (bt.getTypestatues() == 1) {
-						%>
+						%> 
 						<option value="<%=bt.getId()%>"><%=bt.getName()%></option>
 						<% 
 							}

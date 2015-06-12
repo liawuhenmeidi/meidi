@@ -4,13 +4,9 @@
 <%  
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user"); 
-String category = request.getParameter("category"); 
-String branch = request.getParameter("branch");
+
 String time = request.getParameter("time");  
 String realtime = "";   
-   
-int branchid = -1 ; 
-int branchtype = -1 ;  
 if(StringUtill.isNull(time)){
 	time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
 	realtime = time ;
@@ -18,28 +14,10 @@ if(StringUtill.isNull(time)){
 	realtime = time ;
 	if(time.equals(TimeUtill.getdateString())){ 
 		time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
-	}
+	} 
 }     
-if(!StringUtill.isNull(branch)){  
-	//branch = new String(branch.getBytes("ISO8859-1"), "UTF-8");
-	   
-	//System.out.println(branch); 
-	branchid = BranchService.getNameMap().get(branch).getId(); 
-	branchtype =  BranchService.getNameMap().get(branch).getPid();
-	
-}  
-//boolean flag = UserManager.checkPermissions(user, Group.ordergoods, "f"); 
-Category c = CategoryManager.getCategory(category);
-   
-List<String> listp = ProductService.getlist(Integer.valueOf(category));
  
-String allp = StringUtill.GetJson(listp); 
-      
-List<String> listbranchp = BranchService.getListStr(); 
-String listall = StringUtill.GetJson(listbranchp); 
-  
-     
-Map<String,Map<String,SNInventory>> mapin = InventoryMerger.get(user,branch,category,"",time);  		 
+Collection<SNInventory> coc = InventoryChange.get(TimeUtill.dataAdd(realtime, 1));		 
  
 		  
 %> 
@@ -70,25 +48,13 @@ td {
 <link rel="stylesheet" href="../../css/jquery-ui.css" />
 <script type="text/javascript" src="../../js/jquery-ui.js"></script>
 <script type="text/javascript">
-var jsonall = <%=listall%>;
-var allp = <%=allp%>; 
  var row = 1;   
  var rows = new Array();  
  var winPar = null; 
   var typeid = "";  
-  var branch = "<%=branch%>"; 
-  var branchtype = "<%=branchtype%>"; 
   var tids = new Array();
         
  $(function () {   
-	 $("#branch").autocomplete({ 
-		 source: jsonall
-	    }); 
-	  
-	 
-	 $("#product").autocomplete({ 
-		 source: allp
-	    });
 	 
 	 //allp
 	 //add();
@@ -215,85 +181,10 @@ function serchclick(category,type,branchid,obj){
 		<jsp:param name="dmsn" value="" />
 	</jsp:include>
 
-	<!--   头部结束   --> 
-    
-<input type="hidden" id="time" value="" />
-	<input type="hidden" id="starttime" value="" />
-	<input type="hidden" id="endtime" value="" />
- 
-<form action="inventory1Newcheck.jsp" id="mypost" > 
-<input type="hidden" name="category" value="<%=category%>"/>
-	<table width="100%" id="head">  
-		<tr>    
-			<td>现在位置：盘点</td> 
-			<td>仓库:<input type="text" name="branch" id="branch" value="<%=branch %>" />
-			</td>   
-			<%         
-			// System.out.print("branchid"+branchid);
-			 List<User> list = UserService.getMapBranchid().get(branchid+"") ; 
-			 
-			      if(null != list){
-			    	   
-			    	  for(int i=0;i<list.size();i++){
-			    		  User u = list.get(i);  
-			    		  String str = u.getProductIDS();
-			    		 // System.out.println(str);
-			    		  str = str.substring(1,str.length()-2);
-			    		//  System.out.println(str);
-			               boolean flag = false ;  
-			    		  String[] p = str.split(",");
-			    		  for(int j=0;j<p.length;j++){
-			    			  String pid = p[j];  
-			    			 // System.out.println(pid+"&&&&"+c.getId());
-			    			  if(pid.trim().equals(c.getId()+"")){
-			    				  flag = true ;
-			    			  }
-			    		  }
-			    		  
-			    		 if(flag){
-			    		 
-			    		  %> 
-			    		<td> 
-			    		<%=u.getUsername() %>::
-
-			    		  <%=u.getPhone() %>
-			    		  
-			    		  </td> 
-			    		  <% 
-			    	  }}
-			      }
-			 
-			 
-			 
-			 
-			 
-			 %>
-			<td>
-			  
-			
-			</td>  
-                 <td>时间:<input name="time" type="text" id="time"
-						value="<%=time%>" size="10" maxlength="10"
-						onclick="new Calendar().show(this);" placeholder="必填" 
-						 /></td>    
-			<td><input type="button" onclick="winfirm()" value="查询" /></td> 
-			<td><label id="l" onclick="addtid('')">[调拨单]</label></td>
-			<!--  
-             <td> <input type="text" name="product" id="product" placeholder="调拨单增加产品"/><label id="l" onclick="addtid('')">[调拨单]</label></td> --> 
-			<td><a href="javascript:history.go(-1);"><font
-					style="color:blue;font-size:20px;">返回</font>
-			</a></td>
-		</tr>
-
-	</table>
-</form> 
 	<div class="table-list"> 
 <form action="../server.jsp" >    
 <input type="hidden" name="method" value ="pandians"/> 
   
-<input type="hidden" name="branchid" value ="<%=branchid%>"/> 
-<input type="hidden" name="branch" value ="<%=branch%>"/>
-<input type="hidden" name="category" value ="<%=category%>"/>  
  <input type="hidden" name="time" value ="<%=time%>"/> 
  <div style="height:400px">   
 		<table width="100%"    cellspacing="1" id="table">
@@ -325,23 +216,11 @@ function serchclick(category,type,branchid,obj){
   		 int snbadall = 0 ; 
   		 int ccount = 0 ;
   	     int allNomention  = 0 ; 
-         Map<Integer, Product>  maps =  ProductService.getIDmap();
-         if(null != mapin && !mapin.isEmpty()){  
-        	 Set<Map.Entry<String,Map<String,SNInventory>>> set = mapin.entrySet();
-        	 Iterator<Map.Entry<String,Map<String,SNInventory>>> it = set.iterator();
-             while(it.hasNext()){  
-            	 Map.Entry<String,Map<String,SNInventory>> mapent = it.next();
-            	  // 型号
-            	 String tnum = mapent.getKey();
-            	 Map<String,SNInventory> mapb = mapent.getValue();
-
-            	 Set<Map.Entry<String,SNInventory>> setb = mapb.entrySet();
-            	 Iterator<Map.Entry<String,SNInventory>> itb = setb.iterator();      
-            	 while(itb.hasNext()){  
-  
-            		 Map.Entry<String,SNInventory> mapentb = itb.next();
-            		 String bnum = mapentb.getKey();
-            		 SNInventory in = mapentb.getValue();
+         Map<Integer, Product>  maps =  ProductService.getIDmap();  
+        	  if(null != coc){
+                 Iterator<SNInventory> it = coc.iterator();    
+            	 while(it.hasNext()){  
+            		 SNInventory in = it.next();
             		 //long start111 = System.currentTimeMillis();  
             		 String cname = in.getGoodGroupName();
             		 String tname =in.getGoodpName(); 
@@ -399,7 +278,7 @@ function serchclick(category,type,branchid,obj){
             		// inmodelnumall += inmodelnum;  
  
             		 %>    
-            		 <tr <%=cl %> id="<%=tid %>" ondblclick="search('<%=tid%>','<%=branchid%>')">  
+            		 <tr <%=cl %> id="<%=tid %>" >  
             		    <td><%=count %></td>   
             		 <td><%=cname %></td>  
             		  <td><%=tname %></td>    
@@ -431,11 +310,9 @@ function serchclick(category,type,branchid,obj){
             		 <% 
             	 //long start22 = System.currentTimeMillis();  
             	// System.out.println("***"+(start22 - start11));
-             }
-             }
             // long start2 = System.currentTimeMillis();  
         	// System.out.println("**"+(start2 - start1)); 
-         } 
+         } }
    
  		//System.out.println("mapc.size()"+mapc.size());
  		//System.out.println("mapm.size()"+mapm.size());   
