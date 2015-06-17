@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,category.*,group.*,user.*,product.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+ <%@ page language="java" import="java.util.*,category.*,group.*,user.*,product.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
@@ -87,6 +87,7 @@ if(!StringUtill.isNull(categoryID)){
       <% }%>
       </td>    
       <td> <a href="../DownloadServlet?name=productmuban&type=model"><font style="color:blue;font-size:20px;" >模板</font> </a></td> 
+        
       <td align="center" > <font style="color:red;font-size:20px;" >导入数据 : </font></td>
       <td align="center" ><input id="File1"   name="UpLoadFile" type="file" /> </td>
       <td align="center" >

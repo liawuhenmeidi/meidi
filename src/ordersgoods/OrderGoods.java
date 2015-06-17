@@ -73,18 +73,18 @@ public class OrderGoods {
 	}
 
 	public String getRealsendnumName() {
-		if (2 == billingstatues) {
-
+		if (2 == billingstatues || 3 == billingstatues) {
+ 
 			realsendnumName = realsendnum + "";
 
-		} else {
+		} else { 
 			realsendnumName = "";
 		}
 		return realsendnumName;
 	}
 
 	public String getReturnrealsendnumName() {
-		if (2 == billingstatues) {
+		if (2 == billingstatues || 3 == billingstatues) {
 
 			returnrealsendnumName = returnrealsendnum + "";
 

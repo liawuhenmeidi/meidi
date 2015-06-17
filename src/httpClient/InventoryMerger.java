@@ -206,11 +206,12 @@ public class InventoryMerger {
              		} 
              		       
              		SNInventory snm = mapt.get(bnum);
-             		    
-             		if(null == snm){
+             		     
+             		if(null == snm){ 
              			//logger.info(sn.getModelnum());
              			mapt.put(bnum, sn); 
              		}else { 
+             			snm.setQuerymonth(sn.getQuerymonth()); 
              			//logger.info(snm.getModelnum());
              			//logger.info(sn.getModelnum());
              			snm.setIncommonnum(snm.getIncommonnum()+sn.getIncommonnum());

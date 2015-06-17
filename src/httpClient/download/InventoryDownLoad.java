@@ -88,13 +88,13 @@ public class InventoryDownLoad extends HttpServlet implements DownLoad {
 			File file = new File(tempPath);
 			if (!file.exists()) {
 				file.mkdirs();
-			}
+			} 
 
 			File file2 = new File(tempPath + File.separator + "common.csv");
  
 			
 			file2.createNewFile();
- 
+  
 			try { 
 				FileOutputStream fout = new FileOutputStream(file2);
 				int l = -1; 

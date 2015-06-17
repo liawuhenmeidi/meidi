@@ -75,7 +75,7 @@ public class OrderGoodsManager {
 	   
 	   
 	   list.add(sqld);   
-	       
+	        
 	   for(int i=0;i<ogs.size();i++){    
 		   OrderGoods og = ogs.get(i);  
 		    String value = "";   
@@ -90,11 +90,11 @@ public class OrderGoodsManager {
 					  value = mapent.getValue(); 
 				  } 
 		    } 
-		       
-			// DBUtill.sava(list);
-		   String sql = "insert into mdordergoods (id,oid,submitid,submittime,cid,tid,statues,ordernum,realnum,opstatues,uuid,mid,billingstatues,serialnumber) " +
-				   		"values ("+og.getId()+","+og.getOid()+",'"+og.getSubmitid()+"','"+og.getSubmittime()+"','"+og.getCid()+"','"+og.getTid()+"','"+og.getStatues()+"','"+og.getOrdernum()+"','"+og.getRealnum()+"','"+og.getOpstatues()+"','"+og.getUuid()+"',"+oa.getOm().getId()+","+og.getBillingstatues()+",'"+value+"') ;" ; 
-		   list.add(sql); 
+		        
+			// DBUtill.sava(list); 
+		   String sql = "insert into mdordergoods (id,oid,submitid,submittime,cid,tid,statues,ordernum,realnum,opstatues,uuid,mid,billingstatues,serialnumber,realsendnum,returnrealsendnum) " +
+				   		"values ("+og.getId()+","+og.getOid()+",'"+og.getSubmitid()+"','"+og.getSubmittime()+"','"+og.getCid()+"','"+og.getTid()+"','"+og.getStatues()+"','"+og.getOrdernum()+"','"+og.getRealnum()+"','"+og.getOpstatues()+"','"+og.getUuid()+"',"+oa.getOm().getId()+","+og.getBillingstatues()+",'"+value+"',"+og.getRealsendnum()+","+og.getReturnrealsendnum()+") ;" ; 
+		   list.add(sql);  
 	   }   
    return list ;
 	   

@@ -184,34 +184,27 @@ if(!StringUtill.isNull(starttime) && !StringUtill.isNull(endtime)){
 								SNInventory in = li.get(i);
 								//bnum = StringUtill.getStringNocn(in.getBranchName()); 
 								String bname = "";
-								try{   
-									 
-									bname = BranchService 
-											.getNumMap(SaleModel.SuNing)
-											.get(in.getBranchNum()).getLocateName();
-			//System.out.println("*"+bname);  
-								}catch(Exception e){   
-									try{
-										if(!StringUtill.isNull(StringUtill.getStringNocn(in.getBranchName()))){
-											bname = BranchService 
-													.getNumMap(SaleModel.SuNing)
-										 			.get(StringUtill.getStringNocn(in.getBranchName())).getLocateName();
-										}else {
-											bname = in.getBranchName(); 
+								try{      
+									bname = BranchService.getMap().get(in.getBranchid()).getLocateName();
+						//System.out.println("*"+bname);			
+								}catch(Exception e){ 
+					//System.out.println("**"+in.getBranchName());					
+									String bnum = StringUtill.getStringNocn(in.getBranchName());
+									if(StringUtill.isNull(bnum)){  
+										bname = in.getBranchName();      
+					//System.out.println(StringUtill.GetJson(in)+"**"+bname+"**"+in.getBranchid());						
+									}else {
+										try{ 
+											bname = BranchService.getNumMap(SaleModel.SuNing).get(bnum).getLocateName();
+				//System.out.println("***"+bname);
+										}catch(Exception em){
+										   bname = in.getBranchName();
+				//System.out.println("****"+bname);
 										}
-										 
-										//System.out.println("**"+in.getBranchName()); 
-										//System.out.println("**"+bname);						
-									}catch(Exception e1){  
-										//System.out.println(in.getBranchNum());
-										//System.out.println("error:"+bnum+"&&&&&right:"+in.getBranchName());
-										bname = in.getBranchName(); 
 									}
-									
-									
-									 
-								} 
- // System.out.println("***"+bname);
+								}  
+					 			
+//System.out.println("bname******"+bname);
 									count++;
 								allnum += in.getNum() ;
 								modelnum += in.getModelnum() ;

@@ -439,9 +439,7 @@ public class InventoryModelDownLoad extends HttpServlet implements DownLoad {
 
 			File file2 = new File(tempPath + File.separator + "model.csv");
 
-			if (file2.exists()) {
-				return;
-			}
+		
 			file2.createNewFile();
 
 			try {

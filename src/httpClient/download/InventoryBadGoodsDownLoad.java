@@ -201,9 +201,9 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 						// logger.info(i);
 						String str = strs[i];  
 						// logger.info(str);
-						if (i == 4) { 
+						if (i == 1) {  
 							// logger.info(str);
-							in.setGoodType("样机");
+							in.setGoodType("坏机"); 
 						} else if (i == 4) { 
 							in.setBranchName(str);
 						} else if (i == 5) {
@@ -439,9 +439,7 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 
 			File file2 = new File(tempPath + File.separator + "badgoods.csv");
 
-			if (file2.exists()) {
-				return;
-			}
+			
 			file2.createNewFile();
 
 			try {

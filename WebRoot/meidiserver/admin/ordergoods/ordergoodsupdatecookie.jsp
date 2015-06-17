@@ -8,6 +8,7 @@
 String id = request.getParameter("id"); 
 String inventory  = request.getParameter("inventory"); 
 String realtime = request.getParameter("time"); 
+System.out.println(realtime);
 String message = "调货单审核";   
  String time = TimeUtill.getdateString();
 //System.out.println(statues+"&&"+type);
@@ -512,6 +513,17 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	  
 	ctypes = new Array(); 
 	//alert(rows);      
+	var type = $("#conmittype").val();   
+	if("" == type || null == type){
+		alert("单据类型不能为空");
+		return false ;
+	}else{  
+		//if(type != "add"){
+		//	$("#submit1").css("display","none");
+		//}
+		$("#method").val(type);
+		
+	}
 	if(rows.length <1){ 
 		//alert("没有记录可以提交");  
 		//return false ;
@@ -575,18 +587,30 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	   // alert( $("#mypost"));
 	 $("#mypost").submit();  
  }
- 
+  
+ function changeDisplay(){
+	 var type = $("#conmittype").val();   
+	if(type != "add"){
+		$("#submit1").css("display","none");
+	}else {
+		$("#submit1").css("display","block");
+	}
+			 
+	 
+	 
+	 
+ }
 </script>
 </head>
 
 <body>
-
+ 
 	<div class="main">
 		<div class="weizhi_head">
 			现在位置：<%=message%></div>
-		<div>
+		<div> 
 			<form action="../../user/OrderGoodsServlet" method="post" id="mypost">
-				<input type="hidden" name="method" value="add" /> <input
+				<input type="hidden" name="method" id="method" value="" /> <input
 					type="hidden" name="token" value="<%=token%>" /> <input
 					type="hidden" name="id" id="id" value="<%=id%>" /> <input
 					type="hidden" name="rows" id="rows" value="" /> <input
@@ -606,7 +630,13 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
  	}
  %>
 						</td>
-						<td align=center>单号：</td> 
+						<td align=center>  
+						 单据类型：<select id="conmittype" name="conmittype" onchange=changeDisplay()>  
+						 <option></option> 
+						   <option value="add_send">调账单(不发货调账)</option> 
+						   <option value="add">调货单(生成订单发货)</option>   
+						 </select>
+						</td> 
 						<td align=center>日期：<%=realtime%></td>
 					</tr>
 					<tr class="asc">

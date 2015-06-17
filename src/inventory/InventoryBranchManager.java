@@ -918,8 +918,9 @@ logger.info(sql);
 							if(null == mapt){
 								mapt = new HashMap<String,Map<Integer,InventoryBranch>>();
 								map.put(orders.getBranchid(), mapt);
-							} 
-							  
+							}  
+							  //logger.info(orders.getTypeid());
+							  //logger.info(orders.getType()); 
 							Map<Integer,InventoryBranch> maptp = mapt.get(orders.getTypeid()); 
 							if(null == maptp){
 								maptp = new HashMap<Integer,InventoryBranch>();
@@ -1051,19 +1052,25 @@ logger.info(sql);
 	}
 	public static int update(User user ,String branchid,String[] types,String time){
 		   Map<Integer,Map<String,Map<Integer,InventoryBranch>>> map = InventoryBranchManager.getInventoryMap(); 
+		 //  logger.info(map); 
 		   int count = -1 ;    
 		   List<String> listsql = new ArrayList<String>(); 
-		  
-		   for(int i=0;i<types.length;i++){
+		   
+		   for(int i=0;i<types.length;i++){ 
 			   String type = types[i]; 
-			   int m = 0 ;
-			   try{
-				   m = map.get(branchid).get(type).size() ;
-			   }catch(Exception e){
+			    logger.info(type);   
+			   logger.info(branchid);   
+			   int m = 0 ;   
+			   try{   
+				   logger.info(map.get(Integer.valueOf(branchid)));
+				   logger.info(map.get(Integer.valueOf(branchid)).get(type)); 
+				   m = map.get(Integer.valueOf(branchid)).get(type).size() ;
+				   logger.info(map);
+			   }catch(Exception e){ 
 				   m = 0 ; 
-			   }
+			   } 
 			   String sql = "";
-			   if(m>1){
+			   if(m>0){
 				   sql = "update mdinventorybranch  set  isquery = 1 , querymonth = '"+time+"' where branchid = "+ branchid + " and type = '" + type+"'";  
 			   }else {
 				   int cid = ProductService.getIDmap().get(Integer.valueOf(type)).getCategoryID();

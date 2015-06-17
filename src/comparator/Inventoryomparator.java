@@ -8,7 +8,7 @@ public class Inventoryomparator implements Comparator{
 		   
 	    public int compare(Object o1, Object o2) {  
 	    	
-	    	System.out.println("********");
+	    	//System.out.println("********");
 	        if(null!=o1&&null!=o2)   
 	        {      
 	        	SNInventory menu1=(SNInventory)o1;  

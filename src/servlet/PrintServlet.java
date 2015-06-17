@@ -2246,11 +2246,11 @@ public class PrintServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
- 
+     
 	public void OrderGoodssend(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
-
+ 
 		String ids = request.getParameter("ids");
 		String statues = request.getParameter("statues");
 		String[] ogid = request.getParameterValues("ogid");
@@ -2405,7 +2405,6 @@ public class PrintServlet extends HttpServlet {
 								cell.setCellValue("");
 								cell.setCellStyle(style);
 							}
-
 							// 第四步，创建单元格，并设置值
 						}
 					}
@@ -2413,9 +2412,7 @@ public class PrintServlet extends HttpServlet {
 			} 
 
 		} 
-		
-		  
-		
+ 
 		// System.out.println(count);
 		// 第六步，将文件存到指定位置
 		try { 

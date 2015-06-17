@@ -5,9 +5,10 @@
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user"); 
 
-String time = request.getParameter("time");  
+String time = request.getParameter("time"); 
+String type = request.getParameter("type");
 String realtime = "";   
-if(StringUtill.isNull(time)){
+if(StringUtill.isNull(time)){ 
 	time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
 	realtime = time ;
 }else {
@@ -15,9 +16,16 @@ if(StringUtill.isNull(time)){
 	if(time.equals(TimeUtill.getdateString())){ 
 		time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
 	} 
-}     
+}      
+Collection<SNInventory> coc = null ;
+if("common".equals(type)){
+	coc = InventoryChange.get(TimeUtill.dataAdd(realtime, 1));		
+}else if("model".equals(type)){
+	coc =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd(time, 1)).values(); 
+}else if("bad".equals(type)){ 
+	coc = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd(time, 1)).values();
+}
  
-Collection<SNInventory> coc = InventoryChange.get(TimeUtill.dataAdd(realtime, 1));		 
  
 		  
 %> 
@@ -182,10 +190,24 @@ function serchclick(category,type,branchid,obj){
 	</jsp:include>
 
 	<div class="table-list"> 
-<form action="../server.jsp" >    
-<input type="hidden" name="method" value ="pandians"/> 
-  
- <input type="hidden" name="time" value ="<%=time%>"/> 
+<form action="../server.jsp" > 
+<input type="hidden" name="time" value ="<%=time%>"/> 
+<input type="hidden" name="type" value ="<%=type%>"/> 
+<table>
+<tr>
+<td> <a href="../DownloadServlet?name=productmuban&type=model"><font style="color:blue;font-size:20px;" >模板</font> </a></td> 
+        
+      <td align="center" > <font style="color:red;font-size:20px;" >导入数据 : </font></td>
+      <td align="center" ><input id="File1"   name="UpLoadFile" type="file" /> </td>
+      <td align="center" >
+       <input type="submit" name="Button1" value="提交文件" id="Button1" />
+</tr>
+
+</table>
+
+ </form>   
+ 
+ 
  <div style="height:400px">   
 		<table width="100%"    cellspacing="1" id="table">
 			<thead>  
@@ -193,16 +215,26 @@ function serchclick(category,type,branchid,obj){
 				<th align="left">编号</th>
 					<th align="left">产品类别</th>
 					<th align="left">产品型号</th>
-					<th align="left">常规特价实货未入库</th>
-					<th align="left">样机未入库</th> 
-					<th align="left">入库样机</th> 
-					
-					<th align="left">苏宁系统库存</th>
+			<%if("common".equals(type)){
+				%>
+				    <th align="left">苏宁系统库存</th>
 					<th align="left">已销未提数</th>
-					<th align="left">入库坏机</th> 
-					<th align="left">上次盘点日期</th>
-					<th align="left">调账调拨</th>
-					<th align="left">盘点</th>  
+				
+				<%
+			}else if("model".equals(type)){
+				%>
+				 <th align="left">样机库存</th>
+				
+				
+				<%
+			} else if("bad".equals(type)){ 
+				%>
+				 <th align="left">坏机库存</th>
+				
+				<%
+			}%>
+					
+					
 				</tr> 
 			</thead> 
          <%  
@@ -282,29 +314,31 @@ function serchclick(category,type,branchid,obj){
             		    <td><%=count %></td>   
             		 <td><%=cname %></td>  
             		  <td><%=tname %></td>    
-            		  <td><%=outnum %></td> 
-            		  <td><%=outmodel %></td>
-            		  <td><%=inmodelnum %></td>   
-            		   <td><%=num %></td> 
+            		<%if("common".equals(type)){
+				%>
+				     <td><%=num %></td> 
             		      <td><%=Nomention  %></td>  
-            		      <td><%=badnum %></td>
-            		   <td><%=querytime%></td> 
+            		      
+				
+				<%
+			}else if("model".equals(type)){
+				%>
+				  <td><%=inmodelnum %></td> 
+            		      
+				
+				
+				<%
+			} else if("bad".equals(type)){ 
+				%>
+				  <td><%=badnum%></td> 
+            		
+            		      
+				
+				<%
+			}%>
+            		 
             		   
-            		    <td> 
-            		    <% if(flag){
-            		    	%>
-            		    	<label id="l<%=tid %>"  onclick="addtid('<%=tid %>')">[调拨单]</label>
-            		    	<%
-            		    } %>
-            		    
-            		    </td>  
-            		   <td >
-            		   <% if(flag){
-            			   %>
-            			   <input type="checkbox" name="type"  value="<%=tid %>" onclick="changecolor(this)"></input>
-            			   <%
-            		   } %>
-            		   </td>
+            		
             		 </tr>  
      
             		 <% 
@@ -322,24 +356,36 @@ function serchclick(category,type,branchid,obj){
 		    <td></td> 
 		 <td></td> 
 		  <td></td> 
-		  <td><%=outnumall%></td> 
-		  <td><%=outmodelnumall %></td>
-		  <td><%=inmodelnumall %></td> 
-		   <td><%=snnumall %></td> 
+		 <%if("common".equals(type)){
+				%>
+				   <td><%=snnumall %></td> 
 		   <td><%=allNomention %></td>
-		   <td><%=snbadall %></td>
-		    <td></td>
-		   <td ></td>  
-		    <td ></td> 
+            		      
+				
+				<%
+			}else if("model".equals(type)){
+				%>
+				 <td><%=inmodelnumall %></td> 
+            		      
+				
+				
+				<%
+			} else if("bad".equals(type)){ 
+				%>
+				  <td><%=snbadall %></td>
+            		
+            		      
+				
+				<%
+			}%>
+		   
+		  
 		 </tr>
 		       
-		 <tr class="asc"> 
-		 <td colspan=12 align="center"><input type="submit" value="提交"/> </td>
-		    
-		  </tr>
+		
 		</table>
 </div>
- </form>
+
 	</div>
 
 

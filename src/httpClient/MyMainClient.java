@@ -54,16 +54,16 @@ public class MyMainClient {
 		// String branch = StringUtill.toUtf8String("天津宁河店");
 		// branch = "天津宁河店";
 		// branch = "";
-		mc.run(); 
+		mc.run();  
 		// List<String> s = InventorySN.getinventory("122707928","9367");
 		// List<String> s = InventorySN.getinventoryModel("105057044",branch,);
 		// List<String> s = InventorySN.getinventoryModel("105057044","");
 		// logger.info(s);
 	}   
-              
+               
 	public synchronized void run() {
-		try {                          
-		    startinventoryIN(this);
+		try {                            
+		   // startinventoryIN(this);
 		//	round(this);      
 			// sdi.selectDeliverInform(new
 			// URI("http://scs.suning.com/sps/PurchaseOrderDelivery/orderDelivery.action?menuid=100000111&scspageexptime=1427005676454"),"","",this);
@@ -125,7 +125,7 @@ public class MyMainClient {
 			String starttime = TimeUtill.getdateString(); 
 			//String start = TimeUtill.dataAdd(starttime, -6); 
 			String endtime = TimeUtill.getdateString();  
-			                          
+			                           
 			// int count = 0 ;  
 			//start = "2015-06-02"; 
 			//endtime = "2015-06-02";      
@@ -133,12 +133,12 @@ public class MyMainClient {
 			// 异常退货订单          
 			inventoryOrder.getinventoryOut(starttime, endtime, mc);
 			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
-                  
+                   
 			// 入库退货信息           
-                  
+                   
 			//inventoryOut.getinventoryOut(start, endtime, mc); 
 			inventoryOut.get(starttime, endtime);  
-			                   
+			                    
 			//inventoryModelOut.getinventoryOutModel(start, endtime, mc);
 			inventoryModelOut.get(starttime, endtime);
 			     

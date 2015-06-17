@@ -4,11 +4,10 @@ import inventory.InventoryBranch;
 import inventory.InventoryBranchManager;
 import inventory.InventoryBranchMessage;
 import inventory.InventoryBranchMessageManager;
-import inventory.InventoryManager;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
+ 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -56,16 +55,16 @@ public class OrderGoodsServlet extends HttpServlet {
 	/**
 	 * 确认请求来自微信服务器
 	 */
- 
+  
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
 		String method = request.getParameter("method");
 
 		// String uuid = request.getParameter("uuid");
-		logger.info(method);
+		logger.info(method); 
 		if ("add".equals(method) || "disableadd".equals(method)) {
 			add(request, response);
-
+ 
 		} else if ("updaterealsendnum".equals(method)) {
 			updaterealsendnum(request, response);
 		} else if ("updaterealInstoragenum".equals(method)) {
@@ -75,14 +74,128 @@ public class OrderGoodsServlet extends HttpServlet {
 			updateIOS(request, response);
 		} else if ("addrealInstoragenum".equals(method)) {
 			addrealInstoragenum(request, response);
+		}else if("add_send".equals(method)){ 
+			add_send(request, response); 
 		}
 
 	}
 
 	/**
 	 * 处理微信服务器发来的消息
-	 */
+	 */ 
+    public void add_send(HttpServletRequest request, HttpServletResponse response){
+    	User user = (User) request.getSession().getAttribute("user");
+    	String time = request.getParameter("time");
+		if(StringUtill.isNull(time)){
+			time = TimeUtill.getdateString(); 
+		}  
+		  
+		String branchid = request.getParameter("branchid");
+		if (StringUtill.isNull(branchid)) {
+			branchid = user.getBranchName();
+		}  
+		 
+		OrderGoodsAll oa = new OrderGoodsAll();
+		OrderMessage om = new OrderMessage();
+		List<OrderGoods> list = new ArrayList<OrderGoods>();
+		
+		String rows = request.getParameter("rows"); 
+		String id = OrderMessageManager.getMaxid() + "";
+		om.setId(Integer.valueOf(id));
+		// om.setOid(oid);
+		om.setOpstatues(1); 
+		om.setSubmitid(user.getId());
+		om.setSubmittime(time);
+		if (!StringUtill.isNull(branchid)) {
+			om.setBranchid(BranchService.getNameMap().get(branchid).getId());
+		} else { 
+			om.setBranchid(Integer.valueOf(user.getBranch()));
+		}
+		 
+		String[] rowss = rows.split(",");
 
+		for (int i = 0; i < rowss.length; i++) {
+			String row = rowss[i].trim();  
+			 //System.out.println("row"+row);
+			String type = request.getParameter("product" + row);
+            // System.out.println("type"+type);
+			Product p = ProductService.gettypemap(user, branchid).get(type);
+			int cid = p.getCategoryID(); 
+			int itype = p.getId();
+			String sta = request.getParameter("statues" + row);
+			String num = request.getParameter("orderproductNum" + row);
+			String invenNum = request.getParameter("papercount" + row);
+			// logger.info(invenNum);
+			if (StringUtill.isNull(num)) {
+				num = 0 + "";
+			}
+
+			if (StringUtill.isNull(invenNum)) {
+				invenNum = "0";
+			}
+			if (!StringUtill.isNull(type) && !StringUtill.isNull(sta)) {
+				OrderGoods op = new OrderGoods();
+				// op.setOid(oid);
+				// op.setOpstatues(Integer.valueOf(opstatues));
+				// logger.info(Integer.valueOf(sta));
+				if (Integer.valueOf(sta) == 3) {
+					op.setOrdernum(Integer.valueOf(num));
+				} else {
+					op.setOrdernum(Integer.valueOf(num)
+							+ Integer.valueOf(invenNum));
+				}
+  
+				op.setRealnum(Integer.valueOf(num));
+				if (Integer.valueOf(sta) == 6 ||Integer.valueOf(sta) == 7
+						|| Integer.valueOf(sta) == 8
+						|| Integer.valueOf(sta) == 9 
+						||Integer.valueOf(sta) == 10) {
+					op.setReturnrealsendnum(Integer.valueOf(num));
+				} else if ( Integer.valueOf(sta) == 4 ) {
+					op.setReturnrealsendnum(Integer.valueOf(num));
+					op.setRealsendnum(Integer.valueOf(num));
+				} else if(Integer.valueOf(sta) == 5 ){
+					 
+				}else {
+					op.setRealsendnum(Integer.valueOf(num));
+				}
+			
+				op.setStatues(Integer.valueOf(sta));
+				op.setSubmitid(user.getId());
+				op.setSubmittime(time);
+				op.setCid(cid);  
+				op.setTid(Integer.valueOf(itype));
+				op.setMid(Integer.valueOf(id));
+				op.setOpstatues(2);  
+				op.setBillingstatues(2);  
+				// op.setUuid(uuid); 
+				list.add(op);
+			} 
+
+		}
+		     
+		oa.setOm(om);
+		oa.setList(list); 
+	 	 
+		OrderGoodsAllManager.save(user, oa);
+		    
+		List<String> sql = OrderGoodsAllManager.updateSendcountALl(user, oa);
+		 
+		DBUtill.sava(sql);  
+		logger.info(sql);  
+		//System.out.println(time);
+		 
+		try { 
+			response.sendRedirect("../jieguo.jsp?type=updated&mark=" + 1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+    }
+    
+    
+    
 	public void add(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
 		String method = request.getParameter("method");
@@ -90,7 +203,7 @@ public class OrderGoodsServlet extends HttpServlet {
 		if(StringUtill.isNull(time)){
 			time = TimeUtill.getdateString(); 
 		}
-		int statues = -1;
+		int statues = -1;  
 		// String oid = request.getParameter("oid");
 		String branchid = request.getParameter("branchid");
 		if (StringUtill.isNull(branchid)) {
@@ -245,7 +358,7 @@ public class OrderGoodsServlet extends HttpServlet {
 		if (!StringUtill.isNull(id)) { 
 			if ((OrderMessage.billing + "").equals(type)) {
 				oa = OrderGoodsAllManager.getOrderGoodsAllBySendid(user, id,
-						statues);
+						statues); 
 			} else { 
 				oa = OrderGoodsAllManager.getOrderGoodsAllByid(user, id,
 						Integer.valueOf(statues), type);

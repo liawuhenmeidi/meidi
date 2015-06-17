@@ -41,9 +41,9 @@ System.out.println("time"+time);
 	 $("#branchtype").val("<%=bid%>");
  });         
    
- function wincom(){
-	 alert(1); 
-	 window.location.href="showinventory.jsp";
+ function wincom(time,type){
+	 alert(1);  
+	 winPar = window.open("showinventory.jsp?time="+time+"&type="+type,"time","resizable=yes,modal=yes,scroll=no,width="+screen.width*0.8+",top="+(screen.height-300)/2+",left="+(screen.width*0.1)+",height=400px,dialogTop:0px,scroll=no");  	
  } 
 </script> 
 </head>
@@ -140,8 +140,8 @@ System.out.println("time"+time);
 			   <tr> 
 		     <td><%=i %>  
 		     <table>
-		      <tr><td onclick="wincom()">实货库存: 
-		      <%
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','common')">实货库存: 
+		      <%  
 		      if(flagc){
 		    	  %>
 		    <input type="checkbox" checked="checked" onclick="return false"/>	  
@@ -149,7 +149,7 @@ System.out.println("time"+time);
 		      }%>
 		      
 		        </td></tr>
-		      <tr><td>样机库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','model')">样机库存: 
 		       <% 
 		      if(flagm){
 		    	  %>
@@ -158,7 +158,7 @@ System.out.println("time"+time);
 		      }%>
 		      
 		       </td></tr>
-		      <tr><td>坏货库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','bad')">坏货库存: 
 		       <%
 		      if(flagb){
 		    	  %>
@@ -180,7 +180,7 @@ System.out.println("time"+time);
 				   <tr> 
 		           <td><%=i %>
 		            <table>
-		      <tr><td>实货库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','common')">实货库存: 
 		      <%
 		      if(flagc){
 		    	  %>
@@ -189,7 +189,7 @@ System.out.println("time"+time);
 		      }%>
 		      
 		        </td></tr>
-		      <tr><td>样机库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','model')">样机库存: 
 		       <% 
 		      if(flagm){
 		    	  %>
@@ -198,7 +198,7 @@ System.out.println("time"+time);
 		      }%>
 		      
 		       </td></tr>
-		      <tr><td>坏货库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','bad')">坏货库存: 
 		       <%
 		      if(flagb){
 		    	  %>
@@ -215,7 +215,7 @@ System.out.println("time"+time);
 				   %>
 				     <td><%=i %>
 				      <table>
-		      <tr><td>实货库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','common')">实货库存: 
 		      <%
 		      if(flagc){
 		    	  %> 
@@ -224,7 +224,7 @@ System.out.println("time"+time);
 		      }%>
 		      
 		        </td></tr>
-		      <tr><td>样机库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','model')"> 样机库存: 
 		       <% 
 		      if(flagm){ 
 		    	  %>
@@ -233,7 +233,7 @@ System.out.println("time"+time);
 		      }%>
 		       
 		       </td></tr>
-		      <tr><td>坏货库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','bad')">坏货库存: 
 		       <%
 		      if(flagb){
 		    	  %>
@@ -242,7 +242,6 @@ System.out.println("time"+time);
 		      }%>
 		       </td></tr>
 		     </table>
-				     
 				     </td>
 				    <%
 			   }

@@ -557,12 +557,12 @@
 		String branch = request.getParameter("branch");
 	   String time = request.getParameter("time");
 	//System.out.println("servicebranch"+branch ); 
-	   branch = new String(branch.getBytes("UTF-8"), "ISO8859-1");
-		String branchid = request.getParameter("branchid"); 
-		String[] types = request.getParameterValues("type");
+	    branch = new String(branch.getBytes("UTF-8"), "ISO8859-1");
+		String branchid = request.getParameter("branchid");  
+		String[] types = request.getParameterValues("type"); 
 		String category = request.getParameter("category");  
 		InventoryBranchManager.update(user, branchid, types,time);    
-		             
+		              
 		response.sendRedirect("inventory/inventory1check.jsp?branch="+branch+"&category="+category+"&time="+time);
 		
 	}else if ("savesalecategory".equals(method)) {

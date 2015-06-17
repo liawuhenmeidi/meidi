@@ -11,22 +11,12 @@ String realtime = "";
    
 int branchid = -1 ; 
 int branchtype = -1 ;  
-if(StringUtill.isNull(time)){
-	time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
-	realtime = time ;
-}else {
-	realtime = time ;
-	if(time.equals(TimeUtill.getdateString())){ 
-		time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
-	}
-}     
+     
 if(!StringUtill.isNull(branch)){  
-	//branch = new String(branch.getBytes("ISO8859-1"), "UTF-8");
-	   
 	//System.out.println(branch); 
 	branchid = BranchService.getNameMap().get(branch).getId(); 
 	branchtype =  BranchService.getNameMap().get(branch).getPid();
-	
+	 
 }  
 //boolean flag = UserManager.checkPermissions(user, Group.ordergoods, "f"); 
 Category c = CategoryManager.getCategory(category);
@@ -37,17 +27,16 @@ String allp = StringUtill.GetJson(listp);
       
 List<String> listbranchp = BranchService.getListStr(); 
 String listall = StringUtill.GetJson(listbranchp); 
-  
-     
-Map<String,Map<String,SNInventory>> mapin = InventoryMerger.get(user,branch,category,"",time);  		 
- 
-		  
+Map<String,Map<String,SNInventory>> mapin = null;
+if(!StringUtill.isNull(time)){
+	mapin = InventoryMerger.get(user,branch,category,"",time);  
+}	  
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <style type="text/css">
-td {
+td { 
 	width: 100px;
 	line-height: 30px;
 }
@@ -139,7 +128,7 @@ var allp = <%=allp%>;
 	 
 	 //    
 	 if(null == winPar){  
-		 winPar = window.open("../ordergoods/ordergoodsupdatecookie.jsp?inventory=inventory&branch="+branch+"&tids="+tids.toString()+"&branchtype="+branchtype,"time","resizable=yes,modal=yes,scroll=no,width="+screen.width*0.8+",top="+(screen.height-300)/2+",left="+(screen.width*0.1)+",height=400px,dialogTop:0px,scroll=no");  	
+		 winPar = window.open("../ordergoods/ordergoodsupdatecookie.jsp?inventory=inventory&branch="+branch+"&tids="+tids.toString()+"&branchtype="+branchtype+"&time=<%=time%>","time","resizable=yes,modal=yes,scroll=no,width="+screen.width*0.8+",top="+(screen.height-300)/2+",left="+(screen.width*0.1)+",height=400px,dialogTop:0px,scroll=no");  	
 	 }else {     
 		 if(winPar.closed){    
 			 window.location.reload();
@@ -194,9 +183,9 @@ function serchclick(category,type,branchid,obj){
  
 	function addlInstorage(branchid, type) {
 		window.location.href = '../ordergoods/addlInstorage.jsp?branchid='
-				+ branchid + '&type=' + type;
+				+ branchid + '&type=' + type+"&time=<%=time%>";
 	} 
-	  
+	    
 	function winfirm(){ 
 		var branch = $("#branch").val();
 		//alert(branch); 
@@ -221,7 +210,7 @@ function serchclick(category,type,branchid,obj){
 	<input type="hidden" id="starttime" value="" />
 	<input type="hidden" id="endtime" value="" />
  
-<form action="inventory1Newcheck.jsp" id="mypost" > 
+<form action="inventory1check.jsp" id="mypost" > 
 <input type="hidden" name="category" value="<%=category%>"/>
 	<table width="100%" id="head">  
 		<tr>    
@@ -272,7 +261,7 @@ function serchclick(category,type,branchid,obj){
 			  
 			
 			</td>  
-                 <td>时间:<input name="time" type="text" id="time"
+                 <td>库存时间:<input name="time" type="text" id="time"
 						value="<%=time%>" size="10" maxlength="10"
 						onclick="new Calendar().show(this);" placeholder="必填" 
 						 /></td>    
@@ -343,15 +332,34 @@ function serchclick(category,type,branchid,obj){
             		 String bnum = mapentb.getKey();
             		 SNInventory in = mapentb.getValue();
             		 //long start111 = System.currentTimeMillis();  
-            		 String cname = in.getGoodGroupName();
-            		 String tname =in.getGoodpName(); 
-            		 try{ 
-            			 if(StringUtill.isNull(cname)){
-                			 cname = CategoryService.getmap().get(in.getCid()).getName();
-                		 }
-            			 
-            			 if(StringUtill.isNull(tname)){
-            				 tname = in.getType(); 
+            		 String cname = in.getGoodGroupName(); 
+            		 
+            		// System.out.println("cname"+cname);  
+            		// System.out.println("in.getCid()"+in.getCid());
+            		 String tname =in.getGoodpName();
+            		 boolean flag = true ;
+            		 int tid = 0 ; 
+            		  
+            		 try { 
+      					tid = ProductService.gettypeNUmmap().get(in.getGoodNum())
+      							.getId();
+      				} catch (Exception e) {
+      					//tname = in.getGoodpName();
+      					flag = false ;
+      				} 
+            		  
+            		 try{    
+            			 if(StringUtill.isNull(cname)){  
+            				// System.out.println("in.getCid()"+StringUtill.GetJson(in.getProduct()));
+            				  
+                			 cname = in.getProduct().getCname(); 
+                			 tid = in.getProduct().getId();
+                			 flag = true ; 
+                		 } 
+            			  
+            			 if(StringUtill.isNull(tname)){ 
+            				// System.out.println("*******"+tname+"****"+in.getProduct().getType());  
+            				 tname = in.getProduct().getType(); 
             			 }
             		 }catch(Exception e){
             			 
@@ -379,22 +387,16 @@ function serchclick(category,type,branchid,obj){
             		int outmodel = in.getInmodelnum();
             		outmodelnumall += outmodel; 
             		
-            		 boolean flag = true ;
-            		 int tid = 0 ; 
+            		
             		 
-            		 try { 
-      					tid = ProductService.gettypeNUmmap().get(in.getGoodNum())
-      							.getId();
-      				} catch (Exception e) {
-      					tname = in.getGoodpName();
-      					flag = false ;
-      				} 
-            		 
-            		 String querytime = "";  
+            		 String querytime = in.getQuerymonth();  
+            		 if(StringUtill.isNull(querytime)){
+            			 querytime = ""; 
+            		 }
             		 
             		 String cl = "class=\"asc\""; 
   
-            		 count++;          
+            		 count++;           
             		 //snnumall += snnum;  
             		// inmodelnumall += inmodelnum;  
  
