@@ -79,9 +79,12 @@ public class InventoryAllManager {
 					in.setTypeid(inm.getTypeid()); 
 					if(inm.getTypeStatues() == 1 || inm.getTypeStatues() == 2){
 						in.setIncommonnum(inm.getAllotPapercount());
-					}else {
+					}else { 
 						in.setInmodelnum(inm.getAllotPapercount());
 					} 
+					if(inm.getOperatortype() == 10){
+						in.getMap().put(inm.getTypeStatues(), inm.getTime());
+					}
 					
 					//in.setTypeStatues(inm.getTypeStatues());
 					//in.setRealcount(inm.getAllotRealcount());
@@ -100,19 +103,19 @@ public class InventoryAllManager {
 					}else {
 						in.setInmodelnum(in.getInmodelnum()+inm.getAllotPapercount());
 					}  
-					 
+					  
 					//in.setRealcount(in.getRealcount() + inm.getAllotRealcount());
 					if (inm.getOperatortype() == 10) {
-						in.setQuerymonth(inm.getTime());
-					}
-					 
+						in.getMap().put(inm.getTypeStatues(), inm.getTime());
+					} 
+					   
 					if(in.getIsOverStatues() ==1 ){
 						in.setIsOverStatues(inm.getIsOverStatues());
-					}
+					} 
 					
 				}
 			}
-		}
+		} 
          }catch(Exception e){
         	 logger.info(e); 
          }

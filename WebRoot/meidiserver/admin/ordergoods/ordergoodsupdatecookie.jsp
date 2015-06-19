@@ -220,10 +220,10 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 		        	for(var i=0;i<jsons.length;i++){
 		        		var json = jsons[i]; 
 		        		if(i == 0 ){
-		        			num = json.ATP+":"+json.goodType;
+		        			num = json.num+":"+json.goodType;
 			        		//st = json.goodType;
 		        		}else {  
-		        			num += "_"+json.ATP+":"+json.goodType;
+		        			num += "_"+json.num+":"+json.goodType;
 			        		//st += "_"+json.goodType;
 		        		}
 		        		

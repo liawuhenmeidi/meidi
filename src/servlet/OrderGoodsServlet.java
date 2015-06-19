@@ -15,11 +15,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import java.util.List;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import makeInventory.MakeInventory;
+import makeInventory.MakeInventoryManager;
 import ordersgoods.OrderGoods;
 import ordersgoods.OrderGoodsAll;
 import ordersgoods.OrderGoodsAllManager;
@@ -54,8 +58,8 @@ public class OrderGoodsServlet extends HttpServlet {
 
 	/**
 	 * 确认请求来自微信服务器
-	 */
-  
+	 */ 
+   
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
 		String method = request.getParameter("method");
@@ -75,8 +79,10 @@ public class OrderGoodsServlet extends HttpServlet {
 		} else if ("addrealInstoragenum".equals(method)) {
 			addrealInstoragenum(request, response);
 		}else if("add_send".equals(method)){ 
-			add_send(request, response); 
-		}
+			add_send(request, response);  
+		}else if("add_inventory".equals(method)){
+			add_inventory(request, response);
+		} 
 
 	}
 
@@ -95,6 +101,7 @@ public class OrderGoodsServlet extends HttpServlet {
 			branchid = user.getBranchName();
 		}  
 		 
+	
 		OrderGoodsAll oa = new OrderGoodsAll();
 		OrderMessage om = new OrderMessage();
 		List<OrderGoods> list = new ArrayList<OrderGoods>();
@@ -193,8 +200,85 @@ public class OrderGoodsServlet extends HttpServlet {
 		} 
 		
     }
-    
-    
+      
+    public void add_inventory(HttpServletRequest request, HttpServletResponse response){
+    	User user = (User) request.getSession().getAttribute("user");
+    	String time = request.getParameter("time"); 
+    	String intype = request.getParameter("type");
+    	String uuid = request.getParameter("uuid");
+    	boolean flag = true ;   // 表示是否为修改  
+    	if(StringUtill.isNull(uuid)){
+    		uuid =  UUID.randomUUID().toString();
+    		flag = false ; 
+    	}  
+    	   
+    	int statues = -1;
+		if(StringUtill.isNull(time)){  
+			time = TimeUtill.getdateString(); 
+		}   
+		    
+		if("model".equals(intype)){
+			statues =MakeInventory.model;
+		}else if("out".equals(intype)){ 
+			statues =MakeInventory.out; 
+		}else if("in".equals(intype)){
+			statues =MakeInventory.in; 
+		} 
+		
+		
+		String branchid = request.getParameter("branchid");
+		if (StringUtill.isNull(branchid)) {
+			branchid = user.getBranch();
+		}else { 
+			branchid = BranchService.getNameMap().get(branchid).getId()+"";
+		}   
+		  
+		List<MakeInventory> list = new ArrayList<MakeInventory>();
+		    
+		String rows = request.getParameter("rows");  
+		String[] rowss = rows.split(","); 
+ logger.info(StringUtill.GetJson(rowss)); 
+		for (int i = 0; i < rowss.length; i++) {
+			String row = rowss[i].trim();  
+			 //System.out.println("row"+row); 
+			String type = request.getParameter("product" + row);
+            // System.out.println("type"+type); 
+			Product p = ProductService.gettypemapBid(user, branchid).get(type);
+			int cid = p.getCategoryID();  
+			int itype = p.getId();  
+			String num = request.getParameter("num" + row);
+			String id = request.getParameter("id"+row);
+			// logger.info(invenNum);
+			if (StringUtill.isNull(num)) {
+				num = 0 + ""; 
+			}
+			MakeInventory mi = new MakeInventory();
+			mi.setCid(cid);
+			mi.setTid(itype);
+			mi.setSubmitid(user.getId());
+			mi.setSubmittime(TimeUtill.gettime());
+			mi.setBid(Integer.valueOf(branchid));
+			mi.setStatues(0);  
+			mi.setTypestatues(statues); 
+			mi.setNum(Integer.valueOf(num)); 
+			mi.setUuid(uuid);
+			if(!StringUtill.isNull(id)){
+				mi.setId(Integer.valueOf(id));
+			} 
+			list.add(mi);
+		}    
+       logger.info(list);
+       MakeInventoryManager.save(user, list,flag,uuid);    
+		//System.out.println(time); 
+		    
+		try {    
+			response.sendRedirect("jieguo.jsp?type=updated&mark=" + 1+"&type1="+intype);
+		} catch (IOException e) { 
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+    }
     
 	public void add(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");

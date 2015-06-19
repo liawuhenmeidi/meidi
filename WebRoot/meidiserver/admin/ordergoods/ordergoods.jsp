@@ -13,7 +13,7 @@ String branchtype = StringUtill.GetJson(map);
 ProductSaleModel.Model[] model = ProductSaleModel.Model.values();
  
 String sm = StringUtill.GetJson(model); 
-// System.out.println(json);
+// System.out.println(json); 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

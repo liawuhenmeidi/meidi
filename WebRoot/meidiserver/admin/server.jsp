@@ -1,5 +1,5 @@
 <%@ page language="java"
-	import="java.util.*,orderproduct.*,httpClient.*,ordersgoods.*,httpClient.*,httpClient.download.*,saledealsend.*,uploadtotalgroup.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;"
+	import="java.util.*,orderproduct.*,httpClient.*,makeInventory.*,ordersgoods.*,httpClient.*,httpClient.download.*,saledealsend.*,uploadtotalgroup.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;"
 	pageEncoding="utf-8"%>
 <%
 	request.setCharacterEncoding("utf-8"); 
@@ -552,20 +552,61 @@
 		String type = request.getParameter("type"); 
 		String typestatues = request.getParameter("typestatues"); 
 		InventoryBranchManager.updateSN(user, branchid, type,typestatues);
-	}else if ("pandians".equals(method)) {     
+	}else if ("pandians".equals(method)) {    
 		//data:"method=pandian&branchid="+branchid+"&type="+type,
 		String branch = request.getParameter("branch");
-	   String time = request.getParameter("time");
-	//System.out.println("servicebranch"+branch ); 
+	   String time = request.getParameter("time");   
+	   String[] typestatues = request.getParameterValues("typestatues"); 
+	  
 	    branch = new String(branch.getBytes("UTF-8"), "ISO8859-1");
 		String branchid = request.getParameter("branchid");  
 		String[] types = request.getParameterValues("type"); 
-		String category = request.getParameter("category");  
-		InventoryBranchManager.update(user, branchid, types,time);    
-		              
+		String category = request.getParameter("category");   
+		InventoryBranchManager.update(user, branchid, types,time,typestatues);    
+		                 
 		response.sendRedirect("inventory/inventory1check.jsp?branch="+branch+"&category="+category+"&time="+time);
 		
-	}else if ("savesalecategory".equals(method)) {
+	}else if ("pandiansall".equals(method)) {      
+		//data:"method=pandian&branchid="+branchid+"&type="+type,
+	   String branch = request.getParameter("branch");
+	   branch = new String(branch.getBytes("UTF-8"), "ISO8859-1");
+	   String time = request.getParameter("time");   
+	    
+		String branchid = request.getParameter("branchid");  
+		String[] types = request.getParameterValues("type");  
+		String uuids = "";
+		
+		String[] typestatues = new String[5];    
+		String muuid = request.getParameter("smodel");
+		String inuuid = request.getParameter("sin");
+		String outuuid = request.getParameter("sout");
+
+		if(!StringUtill.isNull(muuid)){
+			uuids += ",'"+muuid+"'";
+			typestatues[0] ="3";
+		} 
+		if(!StringUtill.isNull(inuuid)){
+			uuids += ",'"+inuuid+"'";
+			typestatues[1] ="0";
+		} 
+		if(!StringUtill.isNull(outuuid)){
+			uuids += ",'"+outuuid+"'";
+			typestatues[2] ="1";
+			typestatues[3] ="2";
+		}  
+		
+		String category = request.getParameter("category");  
+		  
+		if(null != types && types.length >0){
+			InventoryBranchManager.update(user, branchid, types,time,typestatues);    
+			List<String> listsql = MakeInventoryManager.update(uuids, types);
+			DBUtill.sava(listsql); 
+		}
+		//System.out.println(StringUtill.GetJson(types));  
+		
+		response.sendRedirect("inventory/inventory2check.jsp?branch="+branch+"&category="+category+"&time="+time+"&smodel="+muuid+"&sin="+inuuid+"&sout="+outuuid);
+		
+	}else if ("savesalecategory".equals(method)) { 
 		String isuid = request.getParameter("isuid");
 		String chargetype = request.getParameter("chargetype");
 		String uid = request.getParameter("uid");

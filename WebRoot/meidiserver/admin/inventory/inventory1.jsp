@@ -147,8 +147,8 @@ var allp = <%=allp%>;
   var typeid = ""; 
   var branch = "<%=branchid%>"; 
   var userbranch = "<%=userbranch%>";
-  
- $(function () { 
+   
+ $(function () {  
 	 $("#branch").autocomplete({ 
 		 source: jsonall
 	    });

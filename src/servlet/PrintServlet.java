@@ -2246,7 +2246,7 @@ public class PrintServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-     
+      
 	public void OrderGoodssend(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");

@@ -66,7 +66,7 @@ public class InventoryModelDownLoad extends HttpServlet implements DownLoad {
 		logger.info(nowpath);
 		logger.info(new File("").getAbsolutePath());
 	}
-
+ 
 	// 型号 , 状态
 	public static Map<String, List<SNInventory>> getMapBranchType(User user,
 			String startTime, int branchid) {

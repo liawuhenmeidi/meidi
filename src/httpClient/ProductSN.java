@@ -315,7 +315,7 @@ public class ProductSN {
 										}
 								}
 							} 
-							logger.info(gr); 
+							//logger.info(gr); 
 							list.add(gr);
 						} 
 					} 

@@ -60,6 +60,24 @@ public class ProductService {
 		return map;
 	}
     
+	public static Map<String, Product> gettypemapBid(User user, String bid) {
+		init();
+		HashMap<String, Product> map = new HashMap<String, Product>();
+		// long start = System.currentTimeMillis();
+ 
+		List<Integer> li = ProductService.getlistallCid(BranchService.getMap().get(Integer.valueOf(bid)));
+		//logger.info(li); 
+		if (null != listall) { 
+			for (int i = 0; i < listall.size(); i++) {
+				Product op = listall.get(i);
+				if (li.contains(op.getCategoryID())) {
+					map.put(op.getType(), op);
+				}
+			}
+		}
+		return map;
+	}
+	
 	public static Map<String, Product> gettypemap(User user, Integer branchtype) {
 		init();
 		HashMap<String, Product> map = new HashMap<String, Product>();

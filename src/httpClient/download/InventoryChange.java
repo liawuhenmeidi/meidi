@@ -399,7 +399,7 @@ public class InventoryChange {
 							// logger.info(i);
 							String str = strs[i];
 							if (i == 6) {
-								// logger.info(str);
+								 //logger.info(str);
 								in.setBranchName(str);
 							} else if (i == 7) {
 								in.setBranchNum(str);
@@ -413,9 +413,11 @@ public class InventoryChange {
 								in.setGoodpName(str);
 							} else if (i == 16) {
 								in.setGoodNum(str);
-							} else if (i == 17) {
+							} else if (i == 17) { 
+								//logger.info(str); 
 								in.setATP(Integer.valueOf(str));
 							} else if (i == 18) {
+								//logger.info(str);
 								in.setNum(Integer.valueOf(str));
 							}
 						}

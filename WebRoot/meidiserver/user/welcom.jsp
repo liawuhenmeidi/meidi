@@ -16,10 +16,10 @@ String realPath = "http://" + request.getServerName() + ":" + request.getServerP
 
  
 <link rel="stylesheet" href="../css/songhuo.css">
- 
+  
 <script type = "text/javascript" language = "javascript">
 function clear(){
-	if (confirm("确定要退出吗？")) {
+	if (confirm("确定要退出吗？")) { 
 		location.href = "server.jsp?method=quit";
 	}
   } 
@@ -50,12 +50,16 @@ function clear(){
 	    <li><a href="OrderGoods/inventoryDynamic.jsp">智能要货 </a></li> 
 	    -->
 	  
-	    <%          
+	    <%           
 	     }  
    if(UserManager.checkPermissions(user, Group.ordergoods,"r")){ 	 
-	   %>          
-	  <li><a href="inventory/inventorycome.jsp">查看入库单号 </a></li> 
-	    <li><a href="inventory/inventorycheck.jsp">盘点</a></li> 
+	   %>            
+	   <li><a href="inventory/inventorycome.jsp">查看入库单号 </a></li> 
+	       
+	   <li><a href="makeInventory/makeinventoryall.jsp">盘点</a></li>
+	  <!--   
+	    <li><a href="inventory/inventorycheck.jsp">盘点</a></li>
+	    --> 
 	    <%           
 	     }  
    if(UserManager.checkPermissions(user, Group.sale,"r")){

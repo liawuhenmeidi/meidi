@@ -1,6 +1,8 @@
 package inventory;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import enums.ProductModel;
 
@@ -50,6 +52,15 @@ public class InventoryBranch {
 	private int incommonnum ;
 	private int inmodelnum ;   
 	
+	  private Map<Integer,String> map = new  HashMap<Integer,String>();
+	    
+	  public Map<Integer, String> getMap() {
+		return map;
+	}
+
+	public void setMap(Map<Integer, String> map) {
+		this.map = map;
+	}
 	 
 	public int getIncommonnum() {
 		return incommonnum;
@@ -105,6 +116,21 @@ public class InventoryBranch {
 		//System.out.println(goodtypeStatues);   
 		return typestatuesName; 
 	}
+	
+	public String getTypestatuesName(int statues) { 
+		//System.out.println(typestatues);  
+		if(ProductModel.Model.标准采购订单.getValue() == statues){     
+			typestatuesName = ProductModel.Model.标准采购订单.toString();
+		}else if(ProductModel.Model.特价机采购订单.getValue()== statues){
+			typestatuesName = ProductModel.Model.特价机采购订单.toString();
+		}else if(ProductModel.Model.样机采购订单.getValue()==statues){ 
+			typestatuesName = ProductModel.Model.样机采购订单.toString();
+		}     
+		//System.out.println(goodtypeStatues);   
+		return typestatuesName; 
+	}
+	
+	
 	public void setTypestatuesName(String typestatuesName) {
 		this.typestatuesName = typestatuesName;
 	}

@@ -29,12 +29,75 @@ private int outmodelnum ; // 未入库样机
   private int badnum ;    //坏机  
   private int outnum ;    // 未入库数量  
   private int bid ; 
-  private int tid ;   
+  private int tid ;    
   private int cid ;   
-  
-  
-  
-  public int getBadnum() {
+  // 产品状态  ， 盘点时间 
+  // 0  默认  1  已赋值  2 已对比    3 未对比
+  private int flag = 0 ;  // 0 未提交  1  已提交
+ private int flagupm = 0; 
+ private int flagupin = 0;
+ private int flagupout = 0;
+ private int upmodel ;
+ private int upin ;
+ private int upout ;
+
+public int getFlag() {
+	return flag;
+}
+
+public void setFlag(int flag) {
+	this.flag = flag;
+}
+
+public int getFlagupm() {
+	return flagupm;
+}
+
+public void setFlagupm(int flagupm) {
+	this.flagupm = flagupm;
+}
+
+public int getFlagupin() {
+	return flagupin;
+}
+
+public void setFlagupin(int flagupin) {
+	this.flagupin = flagupin;
+}
+
+public int getFlagupout() {
+	return flagupout;
+}
+
+public void setFlagupout(int flagupout) {
+	this.flagupout = flagupout;
+}
+
+public int getUpmodel() {
+	return upmodel;
+}
+
+public void setUpmodel(int upmodel) {
+	this.upmodel = upmodel;
+}
+
+public int getUpin() {
+	return upin;
+}
+
+public void setUpin(int upin) {
+	this.upin = upin;
+}
+
+public int getUpout() {
+	return upout;
+}
+
+public void setUpout(int upout) {
+	this.upout = upout;
+}
+
+public int getBadnum() {
 	return badnum;
 }
 

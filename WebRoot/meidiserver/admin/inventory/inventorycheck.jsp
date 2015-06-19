@@ -171,7 +171,7 @@ td {
 				<option value="-1">全部显示</option>
 				<option value=0>只显示库存不为0</option>
 			</select> <input type="button" name="" value="查询" onclick="add()" />
-
+ 
 		</div>
 		<div class="table-list">
 			<br />

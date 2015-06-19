@@ -60,10 +60,10 @@ public class MyMainClient {
 		// List<String> s = InventorySN.getinventoryModel("105057044","");
 		// logger.info(s);
 	}   
-               
+                
 	public synchronized void run() {
 		try {                            
-		   // startinventoryIN(this);
+		   startinventoryIN(this);
 		//	round(this);      
 			// sdi.selectDeliverInform(new
 			// URI("http://scs.suning.com/sps/PurchaseOrderDelivery/orderDelivery.action?menuid=100000111&scspageexptime=1427005676454"),"","",this);

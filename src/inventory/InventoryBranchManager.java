@@ -1050,60 +1050,65 @@ logger.info(sql);
 	       DBUtill.sava(listsql);
 		   return count ;
 	}
-	public static int update(User user ,String branchid,String[] types,String time){
+	
+	public static int update(User user ,String branchid,String[] types,String time,String[] typestatuess){
 		   Map<Integer,Map<String,Map<Integer,InventoryBranch>>> map = InventoryBranchManager.getInventoryMap(); 
 		 //  logger.info(map); 
-		   int count = -1 ;    
-		   List<String> listsql = new ArrayList<String>(); 
-		   
-		   for(int i=0;i<types.length;i++){ 
-			   String type = types[i]; 
-			    logger.info(type);   
-			   logger.info(branchid);   
-			   int m = 0 ;   
-			   try{   
-				   logger.info(map.get(Integer.valueOf(branchid)));
-				   logger.info(map.get(Integer.valueOf(branchid)).get(type)); 
-				   m = map.get(Integer.valueOf(branchid)).get(type).size() ;
-				   logger.info(map);
-			   }catch(Exception e){ 
-				   m = 0 ; 
-			   } 
-			   String sql = "";
-			   if(m>0){
-				   sql = "update mdinventorybranch  set  isquery = 1 , querymonth = '"+time+"' where branchid = "+ branchid + " and type = '" + type+"'";  
-			   }else {
-				   int cid = ProductService.getIDmap().get(Integer.valueOf(type)).getCategoryID();
-				   
-				   sql = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
-							+ "  values ( null,"
-							+ cid
-							+ ", '" 
-							+ type  
-							+ "', '"  
-							+ 0 
-							+ "', '"
-							+ 0 + "'," + branchid+ ","
-									+ 0+ ")";
-			   }
- 
-			  
-			   // (select realcount from mdinventorybranch where branchid = " +branchid + " and  type = '"+type+"' and typstatues = 1 )*1
-			   String sql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount)" + 
-	                    "  values ( null, "+branchid+",0, 0,'"+time+"','"+type+"','0',0,"+10+",0,0,"+user.getId()+",0,0,0,0)";     
-	        
-			   listsql.add(sql); 
-		       listsql.add(sql1); 
-			    
+		   int count = -1 ;       
+		   List<String> listsql = new ArrayList<String>();  
+		      
+		   for(int i=0;i<types.length;i++){  
+			   String type = types[i];  
+			
+			   for(int j=0;j<typestatuess.length;j++){
+				   String sta = typestatuess[j]; 
+				   logger.info(type);    
+				   logger.info(branchid);   
+				   if(!StringUtill.isNull(sta)){
+				   InventoryBranch in = null ;   
+				   try{   
+					   logger.info(map.get(Integer.valueOf(branchid)));
+					   in = map.get(Integer.valueOf(branchid)).get(type).get(Integer.valueOf(sta)) ;
+					   logger.info(map);
+				   }catch(Exception e){ 
+					   in = null ;  
+				   }  
+				    
+				   String sql = ""; 
+				   if(null != in){  
+					   sql = "update mdinventorybranch  set  isquery = 1 , querymonth = '"+time+"' where branchid = "+ branchid + " and type = '" + type+"' and typestatues = "+sta;   
+				   }else {
+					   int cid = ProductService.getIDmap().get(Integer.valueOf(type)).getCategoryID();
+					   
+					   sql = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
+								+ "  values ( null,"
+								+ cid 
+								+ ", '" 
+								+ type  
+								+ "', '"  
+								+ 0  
+								+ "', '" 
+								+ 0 + "'," + branchid+ ","
+										+ sta+ ")";
+				   }
+	 
+				  
+				   // (select realcount from mdinventorybranch where branchid = " +branchid + " and  type = '"+type+"' and typstatues = 1 )*1
+				   String sql1 = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString, time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,typestatues)" + 
+		                    "  values ( null, "+branchid+",0, 0,'"+time+"','"+type+"','0',0,"+10+",0,0,"+user.getId()+",0,0,0,0,'"+sta +"')";     
+		        
+				   listsql.add(sql); 
+			       listsql.add(sql1);  
+				   }
+			   }   
 		   }
-		   
-		  
-		   
 		   //String sql1 = "insert into mdpandian (id,mdinventorybranchid,mdtime,userid,mdmonth) values (null,(select id from mdinventorybranch  where branchid = "+ branchid + " and type = '" + type+"'),'"+TimeUtill.gettime()+"',"+user.getId()+",'"+TimeUtill.getMonth()+"')";
 	      //logger.info(listsql); 
 	      DBUtill.sava(listsql);
 		   return count ;
 	}
+	 
+	
 	public static boolean isEmpty(String bid){
 		
 		boolean flag = true ;
@@ -1154,7 +1159,7 @@ logger.info(sql);
 		    c.setQuerymonth(rs.getString("querymonth"));  
 		    c.setTypeStatues(rs.getInt("typestatues")); 
 		    c.setOrderNUmSN(rs.getString("ordernumsn"));
-		    c.setActivetime(rs.getString("activetime")); 
+		    c.setActivetime(rs.getString("activetime"));  
 		} catch (SQLException e) { 
 			e.printStackTrace();
 		}	 
