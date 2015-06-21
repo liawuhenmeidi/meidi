@@ -62,6 +62,18 @@ td {
  
 <link rel="stylesheet" href="../../css/jquery-ui.css" />
 <script type="text/javascript" src="../../js/jquery-ui.js"></script>
+<style type="text/css"> 
+td { 
+	width: 100px;
+	line-height: 30px;
+}  
+
+#head td {
+	white-space: nowrap;
+} 
+</style>
+
+
 <script type="text/javascript">
 var jsonall = <%=listall%>;
 var allp = <%=allp%>; 
@@ -314,26 +326,27 @@ function serchclick(category,type,branchid,obj){
     
 <input type="hidden" name="branchid" value ="<%=branchid%>"/> 
     
- <div style="height:400px">   
-		<table width="100%"    cellspacing="1" id="table">
-			<thead>  
-				<tr>  
-				<th align="left">编号</th>
-					<th align="left">产品类别</th>
-					<th align="left">产品型号</th>
-					<th align="left">常规特价实货未入库</th>
-					<th align="left">样机未入库</th> 
-					<th align="left">入库样机</th> 
+       
+ <div style="width:100%; height:400px; overflow:scroll;" >      
+		<table width="100%"    cellspacing="1" id="table" >
+				<tr  style="position:fixed;height:40px;width:97.5%;" class="dsc"> 
+				<td align="left">编号</td>
+					<td align="left">产品类别</td>
+					<td align="left">产品型号</td>
+					<td align="left">常规特价实货未入库</td>
 					
-					<th align="left">苏宁系统库存</th>
-					<th align="left">已销未提数</th>
-					<th align="left">入库坏机</th> 
-					<th align="left">月销量</th> 
-					<th align="left">上次盘点日期</th>
-					<th align="left">调账调拨</th>
-					<th align="left">盘点</th>  
+					<td align="left">样机未入库</td> 
+					<td align="left">入库样机</td> 
+					
+					<td align="left">苏宁系统库存</td>
+					<td align="left">已销未提数</td>
+					<td align="left">入库坏机</td> 
+					<td align="left">月销量</td> 
+					<td align="left">上次盘点日期</td>
+					<td align="left">调账调拨</td>
+					<td align="left">盘点</td>   
 				</tr> 
-			</thead>  
+			<tr style="width:100%; height:40px;"></tr>
          <%  
           
          //long start1 = System.currentTimeMillis(); 
@@ -396,17 +409,14 @@ function serchclick(category,type,branchid,obj){
             		 }catch(Exception e){
             			 
             		 }
-            		 
-            		//  System.out.println(StringUtill.GetJson(in)); 
-            		 
-            		 
+            		  
             		 int num = in.getNum();
             		 snnumall+= num ; 
             		
             		 int Nomention = in.getNomention();
             		 allNomention += Nomention;
             		 
-            		 
+            		 // 入库样机 
             		 int inmodelnum = in.getModelnum();
             		 inmodelnumall += inmodelnum;
             		 
@@ -445,32 +455,25 @@ function serchclick(category,type,branchid,obj){
             					} 
             					
             				}
-            				
-            				
-            				
-            			}
-            		}
-
+            			} 
+            		} 
+    
             		 String cl = "class=\"asc\""; 
-  
-            		 count++;           
-            		 //snnumall += snnum;  
-            		// inmodelnumall += inmodelnum;  
- 
-            		 %>    
+            		 count++;              
+                 
+            		 %>     
             		 <tr <%=cl %> id="<%=tid %>" ondblclick="search('<%=tid%>','<%=branchid%>')">  
-            		    <td><%=count %></td>   
+            		 <td><%=count %></td>     
             		 <td><%=cname %></td>  
-            		  <td><%=tname %></td>     
-            		  <td><%=outnum %></td>  
-            		  <td><%=outmodel %></td>
-            		  <td><%=inmodelnum %></td>   
-            		   <td><%=num %></td>  
-            		      <td><%=Nomention  %></td>  
-            		      <td><%=badnum %></td> 
-            		        <td><%=salenum %></td>  
-            		   <td><%=querytime%></td> 
-            		     
+            		 <td><%=tname %></td>     
+            		 <td><%=outnum %></td>  
+            		 <td><%=outmodel %></td>
+            		 <td><%=inmodelnum %></td>   
+            		 <td><%=num %></td>  
+            		 <td><%=Nomention  %></td>  
+            		 <td><%=badnum %></td> 
+            		 <td><%=salenum %></td>  
+            		 <td><%=querytime%></td> 
             		    <td> 
             		    <% if(flag){
             		    	%>
@@ -487,20 +490,10 @@ function serchclick(category,type,branchid,obj){
             		   } %>
             		   </td>
             		 </tr>  
-     
-            		 <% 
-            	 //long start22 = System.currentTimeMillis();  
-            	// System.out.println("***"+(start22 - start11));
-             }
-             }
-            // long start2 = System.currentTimeMillis();  
-        	// System.out.println("**"+(start2 - start1)); 
-         } 
-   
- 		//System.out.println("mapc.size()"+mapc.size());
- 		//System.out.println("mapm.size()"+mapm.size());   
-      
-		
+            		 <%   
+               }  
+            }
+         }     
         %> <tr class="asc">
 		    <td></td>  
 		 <td></td> 

@@ -34,12 +34,44 @@ private int outmodelnum ; // 未入库样机
   // 产品状态  ， 盘点时间 
   // 0  默认  1  已赋值  2 已对比    3 未对比
   private int flag = 0 ;  // 0 未提交  1  已提交
+  
+  // 是否对比
+  
+  private boolean isupm = true ;
+  private boolean isin = true ;
+  private boolean isout = true ; 
+   
+  // 对比结果 
  private int flagupm = 0; 
  private int flagupin = 0;
  private int flagupout = 0;
  private int upmodel ;
  private int upin ;
  private int upout ;
+
+public boolean isIsupm() {
+	return isupm;
+}
+
+public void setIsupm(boolean isupm) {
+	this.isupm = isupm;
+}
+
+public boolean isIsin() {
+	return isin;
+}
+
+public void setIsin(boolean isin) {
+	this.isin = isin;
+}
+
+public boolean isIsout() {
+	return isout;
+}
+
+public void setIsout(boolean isout) {
+	this.isout = isout;
+}
 
 public int getFlag() {
 	return flag;
@@ -49,8 +81,14 @@ public void setFlag(int flag) {
 	this.flag = flag;
 }
 
-public int getFlagupm() {
-	return flagupm;
+public int getFlagupm() { 
+	int flag = 3;     
+	//logger.info(p.getType()+"upmodel::"+sn.getUpmodel()+"::Modelnum::"+snm.getModelnum()+"::Outmodelnum"+snm.getOutmodelnum());   
+	if(this.getUpmodel() == (this.getModelnum()+this.getInmodelnum())){  
+		 flag = 2 ;  
+		// logger.info(p.getType());
+	 }     
+return flag; 
 }
 
 public void setFlagupm(int flagupm) {
@@ -58,15 +96,23 @@ public void setFlagupm(int flagupm) {
 }
 
 public int getFlagupin() {
-	return flagupin;
+	int flag = 3 ;
+		 if(this.getUpin() == this.getNum()){
+			flag = 2 ;
+		 } 
+		 return flag;
 }
-
+ 
 public void setFlagupin(int flagupin) {
 	this.flagupin = flagupin;
 }
 
 public int getFlagupout() {
-	return flagupout;
+	int flag = 3; 
+		 if(this.getUpout() == this.getIncommonnum()){
+			flag =2 ;
+		 }  
+		 return flag;
 }
 
 public void setFlagupout(int flagupout) {

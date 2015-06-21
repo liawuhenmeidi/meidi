@@ -27,7 +27,16 @@ public class MakeInventory {
 	 
 	private int num ;  // 盘点数
 	
-	 
+	private String remark;
+	  
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
 	public String getUuid() {
 		return uuid;
 	}

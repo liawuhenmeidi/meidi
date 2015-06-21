@@ -22,7 +22,7 @@ if(!StringUtill.isNull(branchtype)){
 // 门店  ，型号     
 
   
-	 // 库存   
+	 // 库存    
 	 Map<String,SNInventory> map  = null;
 	 if(!StringUtill.isNull(starttime) && !StringUtill.isNull(endtime)){ 
 	 	map = InventoryMerger.getType(user,"50",branchtype,type,starttime,endtime);
@@ -54,6 +54,19 @@ if(!StringUtill.isNull(branchtype)){
 <script type="text/javascript" src="../../js/common.js"></script>
 <link rel="stylesheet" href="../../css/jquery-ui.css" />
 <script type="text/javascript" src="../../js/jquery-ui.js"></script>
+
+<style type="text/css"> 
+td { 
+	width: 100px;
+	line-height: 30px;
+}   
+
+#head td {
+	white-space: nowrap;
+} 
+</style>
+
+
 <script type="text/javascript">
 	var jsonall =<%=listall%>;
 	var json =<%=json%>;
@@ -103,15 +116,16 @@ if(!StringUtill.isNull(branchtype)){
 		<jsp:include flush="true" page="../head.jsp">
 			<jsp:param name="dmsn" value="" />
 		</jsp:include> 
-		<div class="weizhi_head">现在位置:动销率</div>
-		<div class="main_r_tianjia">
-   <ul>                                                                                                          
-     <li><a href="javascript:history.go(-1);">返回</a></li>
-     </ul>    
-   </div>   
+		<div class="weizhi_head">现在位置:动销率
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="javascript:history.go(-1);"><font
+					style="color:blue;font-size:20px;">返回</font>
+			</a> 
+		</div>
+
 		<form action="inventoryDynamictype.jsp" method="post" id="post"
-			onsubmit="return checked()"> 
-			<table cellpadding="1" cellspacing="0">
+			onsubmit="return checked()">  
+			<table cellpadding="1" cellspacing="0" width="100%">
 				<tr>
 					<td>销售系统： <select id="branchtype" name="branchtype">
 							<option></option> 
@@ -127,23 +141,19 @@ if(!StringUtill.isNull(branchtype)){
 									}
 								}
 							%>
-					</select></td>
+					</select></td> 
 
-					<td>开始时间</td>
-					<td><input name="starttime" type="text" id="starttime"
+					<td>开始时间:<input name="starttime" type="text" id="starttime"
 						value="<%=starttime%>" size="10" maxlength="10"
 						onclick="new Calendar().show(this);" placeholder="必填"
 						readonly="readonly" /></td>
 
-					<td>结束时间</td>
-					<td><input name="endtime" type="text" id="endtime" size="10"
+					<td>结束时间:<input name="endtime" type="text" id="endtime" size="10"
 						onclick="new Calendar().show(this);" placeholder="必填"
 						value="<%=TimeUtill.dataAdd(TimeUtill.getdateString(), -1)%>"
 						maxlength="10" readonly="readonly" />
 					</td> 
-					<td>型号</td>
-
-					<td><input type="text" name="product" id="product"
+					<td>型号:<input type="text" name="product" id="product"
 						value="<%=type%>" /></td>
 
 
@@ -155,8 +165,9 @@ if(!StringUtill.isNull(branchtype)){
 		</form>
 		<!--  头 单种类  -->
 
-		<table width="100%" border="0" cellspacing="1" id="Ntable">
-			<tr class="dsc">
+	<div style="width:100%; height:400px; overflow:scroll;" >      
+		<table     cellspacing="1" id="Ntable" > 
+			<tr style="position:fixed;height:40px;width:97.5%;" class="dsc" >
 				<td align="center">序号</td>
 				<td align="center">商品名称</td>
 				<td align="center">商品编码</td>
@@ -165,8 +176,8 @@ if(!StringUtill.isNull(branchtype)){
 				<td align="center">未入库数量</td>
 				<td align="center">销售数量</td>
 				<td align="center">动销率</td>
-			</tr> 
-  
+			</tr>  
+   <tr style="width:100%; height:40px;"></tr>
 			<%
 			int count = 0;
 			int allnum = 0 ;
@@ -230,9 +241,9 @@ if(!StringUtill.isNull(branchtype)){
 			</tr>		 
 						 
 
-
+ 
 		</table>
-		</form>
+		</div>
 	</div>
 
 </body>

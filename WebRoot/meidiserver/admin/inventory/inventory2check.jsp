@@ -14,6 +14,7 @@ String muuid = request.getParameter("smodel");
 String inuuid = request.getParameter("sin");
 String outuuid = request.getParameter("sout");
 
+
 if(!StringUtill.isNull(muuid)){
 	uuids += ",'"+muuid+"'";
 } 
@@ -48,7 +49,7 @@ String listall = StringUtill.GetJson(listbranchp);
 Map<String,Map<String,SNInventory>> mapin = null; 
 if(!StringUtill.isNull(time)){          
 	mapin = InventoryMerger.getMap(user,branch,category,TimeUtill.dataAdd(time, -30),time,typestatues,uuids);   
-} 
+}  
           
 Map<Integer,Map<String,MakeInventory>> mapmi = MakeInventoryManager.getMap(user, branchid); 
      
@@ -208,19 +209,18 @@ function serchclick(category,type,branchid,obj){
 	function winfirm(num){ 
 		if(num == 0){ 
 			var branch = $("#branch").val();
-			//alert(branch); 
+			//alert(branch);  
 			if(null == branch || "" == branch){
 				$("#mypost").attr("action","inventory1checkall.jsp");
-			}else {
-				var model = $("#smodel").val();
+			}else { 
+				var model = $("#smodel").val(); 
 				var ind = $("#sin").val();
 				var out = $("#sout").val();
-	
+	 
 				if(("" == model || null == model) && ("" == ind || null == ind) && ("" == out || null == out)){
-					alert("请选择对比盘点表");
-					return false ;
-				}
-			}  
+					$("#mypost").attr("action","inventory1check.jsp");
+				}  
+			}   
 		}else { 
 			$("#mypost").attr("action","../server.jsp"); 
 		}
@@ -247,15 +247,12 @@ function serchclick(category,type,branchid,obj){
 <input type="hidden" name="category" value="<%=category%>"/> 
 <input type="hidden" name="method" value ="pandiansall"/>   
 <input type="hidden" name="branchid" value ="<%=branchid%>"/>  
-
-
+ 	<div class="weizhi_head">
 	<table width="100%" id="head">   
-		<tr>    
-			<td>现在位置：盘点</td> 
-			<td>仓库:<input type="text" name="branch" id="branch" value="<%=branch %>" />
+		<tr>     
+			<td>现在位置：盘点&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;仓库:<input type="text" name="branch" id="branch" value="<%=branch %>" />
 			</td>   
 			<td>
-			<table> 
  
 			<%         
 			// System.out.print("branchid"+branchid);
@@ -282,19 +279,14 @@ function serchclick(category,type,branchid,obj){
 			    		 if(flag){
 			    		 
 			    		  %> 
-			    		  <tr>
-			    		<td> 
+			    		 
 			    		<%=u.getUsername() %>::
 
 			    		  <%=u.getPhone() %>
-			    		  
-			    		  </td> 
-			    		  </tr> 
 			    		  <% 
 			    	  }}
 			      }
 			 %>
-			 </table> 
 			</td>
 			<!-- 
 			<td>  
@@ -310,19 +302,37 @@ function serchclick(category,type,branchid,obj){
 			 
 			</td>  
 			 -->
-                 <td>库存时间:<input name="time" type="text" id="time"
+                 <td >库存时间:<input name="time" type="text" id="time"
 						value="<%=time%>" size="10" maxlength="10"
 						onclick="new Calendar().show(this);" placeholder="必填" 
 						 /></td>    
 			
-        <td colspan="2">
+       
+         <td rowspan="2"><input type="button" onclick="winfirm(0)" value="查询" /></td> 
+			<td rowspan="2"><label id="l" onclick="addtid('')">[调拨单]</label></td>
+			<!--  
+             <td> <input type="text" name="product" id="product" placeholder="调拨单增加产品"/><label id="l" onclick="addtid('')">[调拨单]</label></td> --> 
+			<td rowspan="2"><a href="javascript:history.go(-1);"><font
+					style="color:blue;font-size:20px;">返回</font>
+			</a></td>
+          
+        </tr>
+        
+        </table>
+         </div>
+        <table width="60%">
+        <tr>
+         <td colspan="1" >
 			   <div id="dmodel">
-			    样机：
+			   <font size="3" color="red">  盘点样机：</font>
+			
 				<select id="smodel" name="smodel">
 					<option></option>
 				<% 
 				
-				
+				String mremark = "";
+				String inremark = "";
+				String outremark = "";
 				Map<String,MakeInventory>  mapmodel = mapmi.get(MakeInventory.model);
 				   if(null != mapmodel){
 				  Set<Map.Entry<String,MakeInventory>> setmodel = mapmodel.entrySet();
@@ -331,10 +341,12 @@ function serchclick(category,type,branchid,obj){
 					  Map.Entry<String,MakeInventory> mapent = itmodel.next(); 
 					  MakeInventory mi = mapent.getValue();
 					  if(null != mi){
-					  
-					  %>
-					  <option value="<%= mi.getUuid()%>"><%=mi.getSubmittime() %></option>
-					  
+					  if(!StringUtill.isNull(mi.getRemark())){ 
+						  mremark = "";
+					  }
+					  %> 
+					  <option value="<%= mi.getUuid()%>"><%=mi.getSubmittime()%></option>
+					   
 					  
 					  <%
 				  }}
@@ -344,10 +356,17 @@ function serchclick(category,type,branchid,obj){
 				%>
 				</select>
 				</div>
+				
 				</td>
-				<td colspan="2">
+				<td align="center">
+				备注：<%= mremark%>
+				</td>
+				</tr>
+				<tr>
+				<td colspan="1">
 				<div id="din">
-				已入库库存： 
+				 <font size="3" color="red"> 盘点入库库存： </font>
+				
 				<select id="sin" name = "sin">
 				<option></option>
 				<%
@@ -359,10 +378,12 @@ function serchclick(category,type,branchid,obj){
 					  Map.Entry<String,MakeInventory> mapent = itin.next(); 
 					  MakeInventory mi = mapent.getValue();
 					  if(null != mi){
-					 
+						  if(!StringUtill.isNull(mi.getRemark())){ 
+							  inremark = "";
+						  }
 					  %>
 					  
-					  <option value="<%= mi.getUuid()%>"><%=mi.getSubmittime() %></option>
+					  <option value="<%= mi.getUuid()%>"><%=mi.getSubmittime()%></option>
 					  
 					  
 					  <%
@@ -372,14 +393,25 @@ function serchclick(category,type,branchid,obj){
 				
 				</select>
 				</div>
-				</td>
-				<td colspan="2">
+				
+				</td> 
+				<td align="center">备注：<%= inremark%></td>
+				</tr>
+				<tr>
+				<td colspan="1" >
 				<div id="out">
-				  
-				店外库存 
+				   <font size="3" color="red"> 盘点店外库存:  </font>
+				
 				<select id="sout" name="sout">  
 				 	<option></option>
-					<% Map<String,MakeInventory>  mapout = mapmi.get(MakeInventory.out);
+					<% 
+					
+					
+					 String upmremark = "";
+			  	     String upinremark = "";
+			  	     String upoutremark = "";  
+			  	     
+					Map<String,MakeInventory>  mapout = mapmi.get(MakeInventory.out);
 					if(null != mapout){
 				  Set<Map.Entry<String,MakeInventory>> setout = mapout.entrySet();
 				  Iterator<Map.Entry<String,MakeInventory>> itout =  setout.iterator();
@@ -387,26 +419,25 @@ function serchclick(category,type,branchid,obj){
 					  Map.Entry<String,MakeInventory> mapent = itout.next(); 
 					  MakeInventory mi = mapent.getValue();
 					  if(null != mi){
-					  
+						  if(!StringUtill.isNull(mi.getRemark())){ 
+							  outremark = "";
+						  }
 					  %>
 					  <option value="<%= mi.getUuid()%>"><%=mi.getSubmittime() %></option>
 					    
-					  
+					   
 					  <%
 				  }} }
 				%>
 				
 				</select>
 				</div>
+			
 			</td>
-         <td><input type="button" onclick="winfirm(0)" value="查询" /></td> 
-			<td><label id="l" onclick="addtid('')">[调拨单]</label></td>
-			<!--  
-             <td> <input type="text" name="product" id="product" placeholder="调拨单增加产品"/><label id="l" onclick="addtid('')">[调拨单]</label></td> --> 
-			<td><a href="javascript:history.go(-1);"><font
-					style="color:blue;font-size:20px;">返回</font>
-			</a></td>
-          
+              <td align="center">
+              备注：	<%= outremark%>
+              </td>
+        
         </tr>
 	</table>   
 <div class="table-list">  
@@ -415,21 +446,23 @@ function serchclick(category,type,branchid,obj){
  <div style="width:100%; height:400px; overflow:scroll;" >      
 		<table width="100%"    cellspacing="1" id="table" >
 				<tr  style="position:fixed;height:40px;width:97.5%;" class="dsc">   
-				<td align="left">编号</td>  
+				<td align="left">编号</td>   
 					<td align="left">产品类别</td>
 					<td align="left">产品型号</td> 
 					<td align="left">常规特价实货未入库</td>
-					<td align="left">盘点未入库</td> 
+					<td align="left" > <font size="3" color="red"> 盘点店外库存  </font></td> 
 					<td align="left">样机未入库</td> 
 				 
 					<td align="left">入库样机</td> 
-					<td align="left">盘点样机</td>   
+					<td align="left" > <font size="3" color="red"> 盘点样机 </font></td>   
 					<td align="left">苏宁系统库存</td>
 				
 					<td align="left">已销未提数</td>  
-						<td align="left">盘点库存</td>    
+						<td align="left" ><font size="3" color="red"> 盘点入库库存 </font></td>    
 					<td align="left">入库坏机</td> 
-					<td align="left">月销量</td> 
+					<!-- 
+					<td align="left">月销量</td>
+					 -->  
 					<td align="left">上次盘点日期</td>
 					<td align="left">调账调拨</td>
 					<td align="left">盘点</td>  
@@ -450,6 +483,7 @@ function serchclick(category,type,branchid,obj){
   	     int upmodelall = 0 ;
   	     int upinall = 0 ;
   	     int upoutall = 0 ;
+  	     
          Map<Integer, Product>  maps =  ProductService.getIDmap();
          if(null != mapin && !mapin.isEmpty()){  
         	 Set<Map.Entry<String,Map<String,SNInventory>>> set = mapin.entrySet();
@@ -470,6 +504,8 @@ function serchclick(category,type,branchid,obj){
             		 //long start111 = System.currentTimeMillis();  
             		 String cname = in.getGoodGroupName(); 
             		 
+            		 
+              	     
             		// System.out.println("cname"+cname);  
             		// System.out.println("in.getCid()"+in.getCid());
             		 String tname =in.getGoodpName();
@@ -534,6 +570,10 @@ function serchclick(category,type,branchid,obj){
             		
             		int upout = in.getUpout();
             		upoutall += upout ;
+            		
+
+             	     
+            		
             		String querytime = "";  
             		Map<Integer, String> map = in.getMap(); 
             		if(null != map){
@@ -574,39 +614,46 @@ function serchclick(category,type,branchid,obj){
             		    <td><%=count %></td>   
             		 <td><%=cname %></td>  
             		  <td><%=tname %></td>     
-            		  <td><%=outnum %></td>  
-            		     <td><%=upout %></td>
-            		  <td><%=outmodel %></td>
+            		  <td bgcolor="#B0C4DE"><%=outnum %></td>  
+            		  <td bgcolor="#B0C4DE" style="border:2px #000"><%=upout %></td>
+            		  <td><%=outmodel %></td>  
             		
             		  <td><%=inmodelnum %></td>   
-            		  <td><%=upmodel %></td>
-            		   <td><%=num %></td>  
-            		   <td><%=Nomention  %></td> 
-            		       <td><%=upin%></td> 
+            		  <td ><%=upmodel %></td>
+            		   <td bgcolor="#B0C4DE"><%=num %></td>   
+            		   <td bgcolor="#B0C4DE"><%=Nomention  %></td> 
+            		       <td bgcolor="#B0C4DE"><%=upin%></td> 
             		      <td><%=badnum %></td> 
-            		        <td><%=salenum %></td>  
+            		      <!--  
+            		        <td><%=salenum %></td>
+            		        -->   
             		   <td><%=querytime%></td> 
             		     
             		    <td> 
-            		    <% if(flag){
+            		    <% if(flag){ 
             		    	%>
             		    	<label id="l<%=tid %>"  onclick="addtid('<%=tid %>')">[调拨单]</label>
             		    	<%
             		    } %>
-            		       
+
             		    </td>  
             		   <td > 
-            		   <% if(flag ){ 
-            			   if(in.getFlag() == 0){
-            			   if((in.getFlagupin()== 0 || in.getFlagupin() == 2) && (in.getFlagupm() ==0 || in.getFlagupm() ==2 ) == false && (in.getFlagupout() == 0 || in.getFlagupout() == 2) ){
-            				   
-            			   %>
-            			   <input type="checkbox" name="type"  value="<%=tid %>" checked="checked" onclick="return false"></input>
+            		   <% if(flag ){       
+            			   if(in.getFlag() == 0){   
+            				  if((in.getFlagupin() == 2 || StringUtill.isNull(inuuid)) && in.getFlagupm() ==2 || StringUtill.isNull(muuid) && ( StringUtill.isNull(outuuid) || in.getFlagupout() == 2)){  
+            			   %>   
+            			   <input type="checkbox" name="type"  value="<%=tid %>" checked="checked" ></input>
             			   
             			    <script type="text/javascript">
             			    $("#<%=tid %>").attr("class","dsc");
             			    </script> 
-            			   <% 
+            			   <%   
+            		         }else {
+            		        	 %>
+            		        	 
+            		     <input type="checkbox" name="type"  value="<%=tid %>" ></input>   	 
+            		        	 
+            		        	 <%
             		         }   
             			   }else {
             				     %>
@@ -636,7 +683,11 @@ function serchclick(category,type,branchid,obj){
  		//System.out.println("mapm.size()"+mapm.size());   
       
 		
-        %> <tr class="asc">
+        %>
+       
+		 
+        
+         <tr class="asc">
 		    <td></td>  
 		 <td></td> 
 		  <td></td> 
@@ -649,14 +700,16 @@ function serchclick(category,type,branchid,obj){
 		   <td><%=allNomention %></td>
 		    <td><%=upinall %></td> 
 		   <td><%=snbadall %></td>
+		   <!--  
 		    <td><%=saleall %></td>
+		    --> 
 		    <td></td>
 		   <td ></td>  
 		    <td ></td>  
 		 </tr> 
 		         
 		 <tr class="asc">  
-		 <td colspan=16 align="center"><input type="button"  onclick="winfirm(1)" value="提交"/> </td>
+		 <td colspan=15 align="center"><input type="button"  onclick="winfirm(1)" value="提交"/> </td>
 		    
 		  </tr>
 		</table>

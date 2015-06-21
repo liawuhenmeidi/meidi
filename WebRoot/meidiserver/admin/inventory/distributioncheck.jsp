@@ -345,9 +345,9 @@ Map<String,SNInventory> map = new HashMap<String,SNInventory>();
 									
 									   
 			%>     
-			<tr class="asc" ondblclick="window.location.href='inventory1check.jsp?&branch=<%=bname%>&category=<%=category%>'"> 
+			<tr class="asc" ondblclick="window.location.href='inventory2check.jsp?&branch=<%=bname%>&category=<%=category%>'"> 
 				<td align="center"><%=count%></td> 
-				<td align="center"><%=bname%></td>  
+				<td align="center"><%=bname%></td>   
  
 				
 				<td align="center"><%=in.getNum()%></td>

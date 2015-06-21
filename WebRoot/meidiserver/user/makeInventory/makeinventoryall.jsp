@@ -7,7 +7,7 @@ String type = request.getParameter("type");
   
 if(StringUtill.isNull(type)){ 
 	type = "model";  
-} 
+}  
 int typestatues = 0 ;
 String typeName = "";  
  
@@ -19,10 +19,10 @@ if("model".equals(type)){
 	typestatues = MakeInventory.out;
 }else if("in".equals(type)){
 	typeName = "入库盘点";
-	typestatues = MakeInventory.in;
+	typestatues = MakeInventory.in; 
 }   
-  
-List<MakeInventory> list =MakeInventoryManager.get(user, typestatues);
+    
+List<MakeInventory> list =MakeInventoryManager.get(user, typestatues); 
 
 
 

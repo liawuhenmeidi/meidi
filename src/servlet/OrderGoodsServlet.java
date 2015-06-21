@@ -92,10 +92,12 @@ public class OrderGoodsServlet extends HttpServlet {
     public void add_send(HttpServletRequest request, HttpServletResponse response){
     	User user = (User) request.getSession().getAttribute("user");
     	String time = request.getParameter("time");
+    	String remark = request.getParameter("remark");
+    
 		if(StringUtill.isNull(time)){
 			time = TimeUtill.getdateString(); 
 		}  
-		  
+		   
 		String branchid = request.getParameter("branchid");
 		if (StringUtill.isNull(branchid)) {
 			branchid = user.getBranchName();
@@ -110,14 +112,16 @@ public class OrderGoodsServlet extends HttpServlet {
 		String id = OrderMessageManager.getMaxid() + "";
 		om.setId(Integer.valueOf(id));
 		// om.setOid(oid);
-		om.setOpstatues(1); 
+		om.setOpstatues(1);  
 		om.setSubmitid(user.getId());
 		om.setSubmittime(time);
 		if (!StringUtill.isNull(branchid)) {
 			om.setBranchid(BranchService.getNameMap().get(branchid).getId());
 		} else { 
 			om.setBranchid(Integer.valueOf(user.getBranch()));
-		}
+		} 
+		om.setRemark(remark);
+		
 		 
 		String[] rowss = rows.split(",");
 
@@ -198,14 +202,16 @@ public class OrderGoodsServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		
-    }
+		 
+    } 
       
     public void add_inventory(HttpServletRequest request, HttpServletResponse response){
     	User user = (User) request.getSession().getAttribute("user");
     	String time = request.getParameter("time"); 
     	String intype = request.getParameter("type");
     	String uuid = request.getParameter("uuid");
+    	String remark = request.getParameter("remark"); 
+    	logger.info("remark"+remark);  
     	boolean flag = true ;   // 表示是否为修改  
     	if(StringUtill.isNull(uuid)){
     		uuid =  UUID.randomUUID().toString();
@@ -242,6 +248,7 @@ public class OrderGoodsServlet extends HttpServlet {
 			String row = rowss[i].trim();  
 			 //System.out.println("row"+row); 
 			String type = request.getParameter("product" + row);
+			if(!StringUtill.isNull(type)){
             // System.out.println("type"+type); 
 			Product p = ProductService.gettypemapBid(user, branchid).get(type);
 			int cid = p.getCategoryID();  
@@ -249,12 +256,12 @@ public class OrderGoodsServlet extends HttpServlet {
 			String num = request.getParameter("num" + row);
 			String id = request.getParameter("id"+row);
 			// logger.info(invenNum);
-			if (StringUtill.isNull(num)) {
-				num = 0 + ""; 
+			if (StringUtill.isNull(num)) { 
+				num = 0 + "";  
 			}
 			MakeInventory mi = new MakeInventory();
 			mi.setCid(cid);
-			mi.setTid(itype);
+			mi.setTid(itype); 
 			mi.setSubmitid(user.getId());
 			mi.setSubmittime(TimeUtill.gettime());
 			mi.setBid(Integer.valueOf(branchid));
@@ -265,7 +272,9 @@ public class OrderGoodsServlet extends HttpServlet {
 			if(!StringUtill.isNull(id)){
 				mi.setId(Integer.valueOf(id));
 			} 
+			mi.setRemark(remark); 
 			list.add(mi);
+			}
 		}    
        logger.info(list);
        MakeInventoryManager.save(user, list,flag,uuid);    
@@ -295,6 +304,7 @@ public class OrderGoodsServlet extends HttpServlet {
 		}
 		String id = request.getParameter("id");
 		String remark = request.getParameter("remark");
+		//logger.info(remark);  
 		String opstatues = request.getParameter("opstatues");
 		// logger.info(opstatues);
 		String types = request.getParameter("type");

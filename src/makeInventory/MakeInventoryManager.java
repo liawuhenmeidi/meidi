@@ -39,9 +39,9 @@ public class MakeInventoryManager {
 		   MakeInventory mi = list.get(i);
 		   String sql = "";   
 		//   if(mi.getId() == 0 ){    
-			    
-			   sql = "insert into makeinventory (id,tid,bid,cid,submitid,submittime,statues,typestatues,num,uuid) " +
-				   		"values (null,"+mi.getTid()+",'"+mi.getBid()+"','"+mi.getCid()+"','"+mi.getSubmitid()+"','"+mi.getSubmittime()+"','"+mi.getStatues()+"','"+mi.getTypestatues()+"','"+mi.getNum()+"','"+mi.getUuid()+"') ;" ; 
+			     
+			   sql = "insert into makeinventory (id,tid,bid,cid,submitid,submittime,statues,typestatues,num,uuid,remark) " +
+				   		"values (null,"+mi.getTid()+",'"+mi.getBid()+"','"+mi.getCid()+"','"+mi.getSubmitid()+"','"+mi.getSubmittime()+"','"+mi.getStatues()+"','"+mi.getTypestatues()+"','"+mi.getNum()+"','"+mi.getUuid()+"','"+mi.getRemark()+"') ;" ; 
 		 //  }else {
 			
 			     //sql = "update makeinventory set num="+mi.getNum()+" where id = "+mi.getId(); 
@@ -79,10 +79,10 @@ public class MakeInventoryManager {
 	  return list ;
   }
   
-  public static List<MakeInventory> get(User user ,int typestatues,Map<Integer,String> maps){
+  public static List<MakeInventory> get(User user ,int typestatues){
 	  List<MakeInventory> list = new ArrayList<MakeInventory>(); 
 	   
-	  Connection conn = DB.getConn();
+	  Connection conn = DB.getConn(); 
 	    
 	   String sql = " select * from makeinventory where submitid ="+user.getId()+" and typestatues="+typestatues+" group by uuid";
 		 logger.info(sql); 
@@ -200,18 +200,19 @@ public class MakeInventoryManager {
   
    public static MakeInventory getMakeInventoryFromRs(ResultSet rs){
 	   MakeInventory mi = null;
-		try {   
+		try {    
 			mi = new MakeInventory();   
 			 mi.setBid(rs.getInt("bid")); 
 			 mi.setCid(rs.getInt("cid"));
-			 mi.setId(rs.getInt("id"));
-			 mi.setNum(rs.getInt("num"));
-			 mi.setStatues(rs.getInt("statues")); 
-			 mi.setSubmitid(rs.getInt("submitid"));
+			 mi.setId(rs.getInt("id")); 
+			 mi.setNum(rs.getInt("num")); 
+			 mi.setStatues(rs.getInt("statues"));  
+			 mi.setSubmitid(rs.getInt("submitid")); 
 			 mi.setSubmittime(rs.getString("submittime"));
 			 mi.setTid(rs.getInt("tid"));
-			 mi.setUuid(rs.getString("uuid"));  
-			 mi.setTypestatues(rs.getInt("typestatues"));
+			 mi.setUuid(rs.getString("uuid"));   
+			 mi.setTypestatues(rs.getInt("typestatues")); 
+			 mi.setRemark(rs.getString("remark")); 
 		} catch (SQLException e) {    
 			e.printStackTrace();
 		}  

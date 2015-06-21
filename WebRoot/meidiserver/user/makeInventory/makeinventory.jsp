@@ -8,7 +8,7 @@ List<String> listallp = ProductService.getlistsale(user);
 String id = request.getParameter("id"); 
 String type = request.getParameter("type"); 
 String uuid = request.getParameter("uuid");
-System.out.println("uuid"+uuid); 
+//System.out.println("uuid"+uuid); 
 int num = 0 ; 
 int typestatues = 0 ;
 String typeName = ""; 
@@ -34,7 +34,7 @@ if(!StringUtill.isNull(uuid)){
 
 
 String json = StringUtill.GetJson(list);
-System.out.println("list"+json );  
+//System.out.println("list"+json );  
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -91,8 +91,13 @@ addrowNuminti();
 		 //alert(json.tname);
 		$("#product"+i).val(json.product.type);  
 		$("#num"+i).val(json.num); 
-		$("#id"+i).val(json.id);   
-		rows.push(i); 
+		$("#id"+i).val(json.id);
+		rows.push(i);  
+		if(json.statues == 1){
+			$("#product"+i).attr("disabled","disabled");
+			$("#num"+i).attr("disabled","disabled");
+		}
+	     
 		var only = json.product.type;  
 		ctypes.push(only);   
 	 }   
@@ -146,9 +151,9 @@ addrowNuminti();
 	 if(row%2 == 0){
 		 cl = 'class="asc"';
 	 }else {    
-		 cl = 'class="bsc"';
+		 cl = 'class="bsc"'; 
 	 }    
-	  var str = '<tr '+cl+'>' +       
+	  var str = '<tr '+cl+' id=tr'+row+'>' +       
 	     ' <td align=center>'+(row*1+1*1)*1+'<input type="hidden" id="id'+row+'" name="id'+row+'"></td> '+   
 	     ' <td  align=center><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
 	     ' <td align=center ><input type="text" class="cl"  id="num'+row+'" style="width: 40px" '+num+' name="num'+row+'"  placeholder="数量" onBlur="addcount()" /></td> ' +
@@ -331,9 +336,15 @@ addrowNuminti();
         </font>
        </td>
        </tr> 
-       <tr class="asc" > 
+       <tr class="asc" >   
        </tr>
-
+       <tr class="asc">
+       <td align=center >备注：</td>
+       <td align=center >
+       <textarea name="remark" ></textarea>
+       </td>  
+       
+       </tr>  
        <tr class="asc">
        <td align=center colspan=2>
        <input type="submit" id="submit" value="确认提 交" />
@@ -341,10 +352,6 @@ addrowNuminti();
        
        </tr>
       </table>
-      
-   
-   
- 
  </form>
      </div>
 

@@ -54,7 +54,7 @@ td {
 	 if("" == branchid || null == branchid){
 		 src = "inventory1checkall.jsp";
 	 }else { 
-		 src = "inventory1check.jsp";
+		 src = "inventory2check.jsp";
 	 } 
 	  window.location.href=src+'?category='+category+'&branch='+branchid;
 		// window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 

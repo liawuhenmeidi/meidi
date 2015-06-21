@@ -257,7 +257,7 @@ public class InventoryMerger {
          
     	return map;
     }
-    
+     
   public static Map<String,Map<String,SNInventory>> getMap(User user ,String branch,String category,String starttime,String endtime,String[] typestatues,String str){
     	 
     	String branchnum = BranchService.getNameMap().get(branch).getEncoded();
@@ -490,37 +490,45 @@ public class InventoryMerger {
            		} 
            		        
            		SNInventory snm = mapt.get(b.getEncoded());
-           		if(null == snm){    
+           		if(null == snm){     
            			//logger.info("add");
            			//logger.info(StringUtill.GetJson(sn)); 
            			mapt.put(b.getEncoded(), sn);
-           		}else {
-           		
+           		}else { 
+           		//	logger.info("update"); 
            		 if(sn.getFlagupm() == 1){
-           			int flag = 3;
-           			 if(sn.getUpmodel() == (snm.getModelnum()+snm.getOutmodelnum())){
-           				 flag = 2 ; 
-           			 }
-           			 snm.setFlagupm(flag);
-           		 }
-        		      
-           		 if(sn.getFlagupin() == 1){
+           			 // snm.setIsupm(false);
+           			 snm.setUpmodel(sn.getUpmodel());
+           			 logger.info("updatem");
+           			/*int flag = 3;   
+           			//logger.info(p.getType()+"upmodel::"+sn.getUpmodel()+"::Modelnum::"+snm.getModelnum()+"::Outmodelnum"+snm.getOutmodelnum()); 
+           			   
+           			if(sn.getUpmodel() == (snm.getModelnum()+snm.getInmodelnum())){  
+           				 flag = 2 ;  
+           				// logger.info(p.getType());
+           			 }     
+           			 snm.setFlagupm(flag);*/
+           		 }else if(sn.getFlagupin() == 1){
+           			 logger.info("upin");
+           			 snm.setUpin(sn.getUpin());
+           			/* snm.setIsin(false);
            			int flag = 3 ;
+           			
+           			logger.info("upin::"+sn.getUpin()+":::num"+snm.getNum());
            			 if(sn.getUpin() == snm.getNum()){
            				flag = 2 ;
-         				 
+         				  
            			 } 
-           			snm.setFlagupin(flag);
-           		 }
-           		     
-           		 if(sn.getFlagupout() == 1){
+           			snm.setFlagupin(flag);*/
+           		 }else if(sn.getFlagupout() == 1){
+           		    snm.setUpout(sn.getUpout()); 
+           		   /* snm.setIsout(false); 
            			int flag = 3;
            			 if(sn.getUpout() == snm.getIncommonnum()){
            				flag =2 ;
-        				
-           			 }
-           			snm.setFlagupout(flag);  
-           		 } 
+           			 }  
+           			snm.setFlagupout(flag);  */
+           		 }
            		 
            		 snm.setFlag(sn.getFlag());
         	  }

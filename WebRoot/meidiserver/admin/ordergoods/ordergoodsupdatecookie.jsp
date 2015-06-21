@@ -659,7 +659,7 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 								 -->
 							</table></td>
 					</tr>
-
+ 
 					<tr class="asc">
 						<td align=center colspan=2><font
 							style="color:blue;font-size:20px;">合计: <span
