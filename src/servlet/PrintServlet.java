@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -72,6 +73,7 @@ import category.Category;
 import category.CategoryService;
 
 import company.Company;
+import comparator.BranchComparator;
 
 import branch.Branch;
 import branch.BranchService;
@@ -1166,6 +1168,10 @@ public class PrintServlet extends HttpServlet {
 		cell.setCellStyle(style3);
 		// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
 
+		 
+		BranchComparator c = new BranchComparator();
+		Collections.sort(list, c);  
+		 
 		for (int i = 0; i < list.size(); i++) {
 
 			OrderGoodsAll o = list.get(i);

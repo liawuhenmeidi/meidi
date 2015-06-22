@@ -200,34 +200,45 @@ function getInventory(){
             </div>
           </li>
           <%} %>
-          <li >  
+        
+           <%
+           boolean ordergoods_w = UserManager.checkPermissions(user, Group.ordergoods,"w");
+           boolean ordergoods_q =UserManager.checkPermissions(user, Group.ordergoods,"q");
+           boolean ordergoods_c= UserManager.checkPermissions(user, Group.ordergoods,"c");
+           boolean ordergoods_r= UserManager.checkPermissions(user, Group.ordergoods,"r");
+           boolean ordergoods_e= UserManager.checkPermissions(user, Group.ordergoods,"e");
+           
+           if(ordergoods_w || ordergoods_q || ordergoods_c || ordergoods_r){
+           %>
+             <li >  
             <h4 >卖场开单</h4> 
             <div class="list-item none">   
          
            <%
-           if(UserManager.checkPermissions(user, Group.ordergoods,"w")){
+           if(ordergoods_w){
            %>
             <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoods.jsp')">增加调货单</a></p> 
            <%
            }
-           if(UserManager.checkPermissions(user, Group.ordergoods,"q")){
+           if(ordergoods_q){
                %>
                   <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodsall.jsp')">调货单审核</a></p> 
                <%
                }
-           if(UserManager.checkPermissions(user, Group.ordergoods,"c")){
+           if(ordergoods_c){
                %>
                  <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodexamine.jsp')">调货单生成订单</a></p> 
                <%
                }
-           if(UserManager.checkPermissions(user, Group.ordergoods,"r")){
+           if(ordergoods_r){
                %> 
                   <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodbilling.jsp')">查看订单</a></p> 
                <%
-               }
+               } 
            %>      
-            </div>  
-          </li>   
+            </div>   
+          </li>    
+            
           <li>   
             <h4 >数据管理</h4> 
             <div class="list-item none"> 
@@ -236,18 +247,23 @@ function getInventory(){
             <p ><a href="javascript:void(0);"  onclick="reloadopned('date/dateinventorychange.jsp')">出入库数据</a></p>
             </div>
           </li> 
+           <%} %>  
+           <%  
+          
+           if(ordergoods_e || ordergoods_c){
            
+           %>
            
              <li >
             <h4 >发货管理</h4>
             <div class="list-item none">
                 <%  
-                if(UserManager.checkPermissions(user, Group.ordergoods,"c")){
+                if(ordergoods_c){
                     %>
                       <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssend.jsp')">开单发货</a></p> 
                     <%
                     } 
-                if(UserManager.checkPermissions(user, Group.ordergoods,"e")){
+                if(ordergoods_e){
                     %> 
                      <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssended.jsp')">修改实收数量</a></p> 
                       <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodsInstorage.jsp')">卖场入库</a></p> 
@@ -257,13 +273,19 @@ function getInventory(){
                     <%
                     }  
                 %>
-            </div> 
+            </div>  
           </li>
+          <%}
+           
+           
+           
+           if(ordergoods_r){
+           %>
            <li >
             <h4 >盘点库存管理</h4>
             <div class="list-item none">
               <% 
-              if(UserManager.checkPermissions(user, Group.ordergoods,"r")){
+              if(ordergoods_r){
                   %>   
                     <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">库存刷新</a></p> 
                      
@@ -285,8 +307,8 @@ function getInventory(){
               
               %>
             </div>
-          </li>
-          
+          </li> 
+        
            <li >
             <h4 >增值服务</h4>
             <div class="list-item none">
@@ -301,7 +323,7 @@ function getInventory(){
             </div>
           </li>
            
-          
+            <%} %>
           <%  
          if(UserManager.checkPermissions(user,Group.inventory) || UserManager.checkPermissions(user, Group.inventoryquery) || UserManager.checkPermissions(user, Group.inventoryreserve)){
          %>
@@ -400,7 +422,7 @@ function getInventory(){
         <% 
         }if(UserManager.checkPermissions(user, Group.sencondDealsend)){
         	%>
-        	<li > 
+        	<li >  
             <h4 >安装网点派工</h4>     
             <div class="list-item none">
               <p ><a  href="javascript:void(0);"  onclick="reloadopned('dispatch/dingdanpeidan2.jsp')">安装网点派工</a></p>
@@ -425,54 +447,65 @@ function getInventory(){
  	 
         <%	  
         }
-        %>  
+        %>   
+        
+        <%
+        boolean installOrderupload_w = UserManager.checkPermissions(user, Group.installOrderupload,"w");
+        boolean installOrderupload_q = UserManager.checkPermissions(user, Group.installOrderupload,"q");
+        boolean aftersaleCharge = UserManager.checkPermissions(user, Group.aftersaleCharge);
+        boolean maintainOrder_w = UserManager.checkPermissions(user, Group.maintainOrder,"w");
+        boolean faultOrder_w = UserManager.checkPermissions(user, Group.faultOrder,"w");
+        boolean faultOrder_q = UserManager.checkPermissions(user, Group.faultOrder,"q");
+        if(installOrderupload_w || installOrderupload_q ||aftersaleCharge||maintainOrder_w||faultOrder_w||faultOrder_q){
+        %>
+         
        <li > 
              <h4 >售后服务</h4>     
             <div class="list-item none">
             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSaleall.jsp')" >售后查询</a></p>
             	 
             <%
-              if(UserManager.checkPermissions(user, Group.installOrderupload,"w")){ 
+              if(installOrderupload_w){ 
             %> 
               <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmit.jsp')" >自营售后报单</a></p>
 
              <%     
              } 
-            if(UserManager.checkPermissions(user, Group.installOrderupload,"q")){  
+            if(installOrderupload_q){  
              %>   
             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalerepare.jsp')" >遗留数据处理</a></p>
                 
               <% }
-            if(UserManager.checkPermissions(user, Group.installOrderupload,"q") || UserManager.checkPermissions(user, Group.installOrderupload,"w") ){
+            if(installOrderupload_q || installOrderupload_w){
             	 %>         
             	<p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSale.jsp')" >未上报工厂单据</a></p> 
            
             	 <%  
               }   
-            if(UserManager.checkPermissions(user, Group.aftersaleCharge)){
+            if(aftersaleCharge){
             	%>   
             	    <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintaincharge.jsp')" >工厂未结算单据</a></p>
             	 <% 
               } 
-            if(UserManager.checkPermissions(user, Group.maintainOrder,"w")){
+            if(maintainOrder_w){
             	%>   
             	   <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmitmaintain.jsp')" >系统外维修保养配工</a></p>
             	 <% 
               } 
             
-            if(UserManager.checkPermissions(user, Group.faultOrder,"w")){
+            if(faultOrder_w){
             	%>  
             	  
             	 <!--   <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdansubmitfault.jsp')" >维修单配工</a></p> -->
             	   
             	 <%
               }
-            if(UserManager.checkPermissions(user, Group.faultOrder,"q") && !UserManager.checkPermissions(user, Group.faultOrder,"w") || UserManager.checkPermissions(user, Group.maintainOrder,"q") && !UserManager.checkPermissions(user, Group.faultOrder,"w")){
+            if(faultOrder_q && !faultOrder_w ){
             	%>  
             	              <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintaindealsend.jsp')" >网点保养单待配工</a></p>
             	 <% 
               }  
-            if(UserManager.checkPermissions(user, Group.faultOrder,"w") || UserManager.checkPermissions(user, Group.faultOrder,"w")){
+            if(faultOrder_w ){
             	%>               
             	             <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalephone.jsp')" >当月需保养用户电话回访</a></p>
                           <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintain.jsp')" >网点驳回单据</a></p> 
@@ -480,7 +513,7 @@ function getInventory(){
 
             	 <%
               }   
-            if(UserManager.checkPermissions(user, Group.faultOrder,"q") || UserManager.checkPermissions(user, Group.faultOrder,"q")){
+            if(faultOrder_q ){
             	%>               
             	             
                                <p ><a href="javascript:void(0);"  onclick="reloadopned('afterSale/dingdanAfterSalemaintainupload.jsp')" >维修保养未完成单据</a></p> 
@@ -493,7 +526,7 @@ function getInventory(){
 
             </div>        
           </li>  
-         
+         <%} %>
    
         
          </ul> 

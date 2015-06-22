@@ -33,11 +33,11 @@ public class RegulateDB {
 		List<String> listsql = new ArrayList<String>();
 		     
 		Map<Integer,Map<String,Map<Integer,InventoryBranch>>> mapDB = InventoryBranchManager.getInventoryMap();
-		   
+		     
 		// String sql = 
 		// "SELECT mdinventorybranchmessage.* from mdinventorybranchmessage,tmp_table where mdinventorybranchmessage.type = tmp_table.type and mdinventorybranchmessage.branchid = tmp_table.branchid order by mdinventorybranchmessage.id";
-		String sql = "SELECT mdinventorybranchmessage.* from mdinventorybranchmessage where mdinventorybranchmessage.type in (select id from mdproduct where categoryID = 50)";
-		//String sql = "SELECT mdinventorybranchmessage.* from mdinventorybranchmessage";
+		//String sql = "SELECT mdinventorybranchmessage.* from mdinventorybranchmessage where mdinventorybranchmessage.type in (select id from mdproduct where categoryID = 50)";
+		String sql = "SELECT mdinventorybranchmessage.* from mdinventorybranchmessage";
 		List<InventoryBranchMessage> list = InventoryBranchMessageManager
 				.getMap(sql);
 
@@ -64,7 +64,7 @@ public class RegulateDB {
 					maps = new HashMap<Integer, List<InventoryBranchMessage>>();
 					mapb.put(in.getTypeid(), maps);
 				}
-logger.info(in.getTypeStatues()); 
+//logger.info(in.getTypeStatues());  
 				List<InventoryBranchMessage> li = maps.get(in.getTypeStatues());
 				if (null == li) {
 					li = new ArrayList<InventoryBranchMessage>();
@@ -148,14 +148,16 @@ logger.info(in.getTypeStatues());
 											// +",oldpapercount="+oldp +
 											// " where type = "+inm.getTypeid()+" and branchid = "+inm.getBranchid()+" and id = "+inm.getId();
 											// logger.info(sqls);
-											// || oldp != inm.getOldpapercount()
+											// || oldp != inm.getOldpapercount() 
 											// || oldr != inm.getOldrealcount()
-											if (real != inm.getRealcount()
-													|| paper != inm
-															.getPapercount()) {
+											if (real != inm.getRealcount()  
+													|| paper != inm.getPapercount()) {    
+												      
+												logger.info("real**:"+(real != inm.getRealcount() )+":::paper**"+(paper != inm.getPapercount()));
+												
 												 String sqls =
 												 "update mdinventorybranchmessage set realcount = "+real
-												 +" , papercount = "+paper
+										 		 +" , papercount = "+paper
 												 +",oldrealcount = "+oldr
 												 +",oldpapercount="+oldp +
 												 " where type = "+inm.getTypeid()+" and branchid = "+inm.getBranchid()+" and id = "+inm.getId();
@@ -170,20 +172,23 @@ logger.info(in.getTypeStatues());
 									try{
 										inb = mapDB.get(branchid).get(type).get(statues);
 									}catch(Exception e){
-										inb = null ;
+										inb = null ; 
 									} 
 									  
-									if(null == inb){
-										sqlin= "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
-												+ "  values ( null,"
-												+ cid
-												+ ", '"
-												+ type
-												+ "', '" 
-												+ real 
-												+ "', '"
-												+ paper + "'," +branchid+ ","
-														+ statues+ ")";
+									if(null == inb ){   
+										if(real != 0 || paper != 0){
+											sqlin= "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
+													+ "  values ( null,"
+													+ cid
+													+ ", '"
+													+ type
+													+ "', '" 
+													+ real 
+													+ "', '"
+													+ paper + "'," +branchid+ ","
+															+ statues+ ")";
+										}
+										
 									}else {
 										if(inb.getRealcount() != real || inb.getPapercount() != paper){
 											sqlin = "update mdinventorybranch  set realcount = "
@@ -196,7 +201,7 @@ logger.info(in.getTypeStatues());
 										}
 										  
 									}  
-									// if(flag){
+									// if(flag){ 
 									if(!StringUtill.isNull(sqlin)){
 										logger.info(sqlin);
 										listsql.add(sqlin);
@@ -217,7 +222,7 @@ logger.info(in.getTypeStatues());
 			} 
 		}     
 		logger.info(listsql.size()); 
-    
+       
 		DBUtill.sava(listsql);
 	}
 
