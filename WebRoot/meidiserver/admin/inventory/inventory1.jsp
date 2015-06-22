@@ -270,7 +270,15 @@ function pandian(type,branchid){
 	     		  '</tr>'+
 	     			'</thead> ';
 	        	 var json =  $.parseJSON(data);
-	        	
+	        	 json.sort(   
+	                     function(a, b)  
+	                     {  
+	                         if(a.type< b.type) return -1;  
+	                         if(a.type > b.type) return 1;  
+	                         return 0;   
+	                     }  
+	                 );
+	        	 
 	        	 for(var i=0;i<json.length;i++){
 	        		 var str = json[i]; 
 	                 var pandian = "是";
