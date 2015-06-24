@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,utill.*,product.*,order.*,net.sf.json.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,product.*,order.*,comparator.*,net.sf.json.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
@@ -143,6 +143,9 @@ function checkedd(type){
      			
 		</tr>      
             <% 
+            
+            InventoryMessageComparator c = new InventoryMessageComparator();
+            Collections.sort(list, c); 
              Iterator<InventoryMessage> it = list.iterator();
              while(it.hasNext()){
             	 InventoryMessage in = it.next();

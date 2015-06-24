@@ -1,12 +1,12 @@
-<%@ page language="java" import="java.util.*,utill.*,product.*,order.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,product.*,order.*,comparator.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
-request.setCharacterEncoding("utf-8");
+request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user");  
 String ctype = request.getParameter("ctype");
  
 String branchName = request.getParameter("branch");
 String starttime = request.getParameter("starttime");
-
+ 
 String endtimeH = request.getParameter("endtime");
 String endtime = TimeUtill.dataAdd(endtimeH,1); 
 
@@ -48,7 +48,13 @@ Map<String,Integer> list = null ;
 Map<String,InventoryBranch> maptype = null ;
 if(!StringUtill.isNull(branchid) && !StringUtill.isNull(starttime)  && !StringUtill.isNull(endtimeH)){
 	listInventory = InventoryBranchManager.getCategoryid(user,branchid, "");
-	list = InventoryBranchMessageManager.getMapAnalyze(branchid,starttime,endtime); 
+
+InventoryBranchComparator c = new InventoryBranchComparator();
+	Collections.sort(listInventory,c);
+	
+	list = InventoryBranchMessageManager.getMapAnalyze(branchid,starttime,endtime);
+	
+	
 	 maptype = InventoryBranchManager.getBranchTypeObject(user,branchid); 
 }
 
