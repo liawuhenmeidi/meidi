@@ -5,10 +5,10 @@
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user"); 
 List<BranchType> listgt = BranchTypeManager.getLocate();
-
+ 
 String time = request.getParameter("mytime"); 
 String bid = request.getParameter("branchtype");
-
+ 
 System.out.println("time"+time);
 
 %> 
@@ -42,7 +42,7 @@ System.out.println("time"+time);
  });         
    
  function wincom(time,type){
-	 alert(1);  
+	 // alert(1);  
 	 winPar = window.open("showinventory.jsp?time="+time+"&type="+type,"time","resizable=yes,modal=yes,scroll=no,width="+screen.width*0.8+",top="+(screen.height-300)/2+",left="+(screen.width*0.1)+",height=400px,dialogTop:0px,scroll=no");  	
  } 
 </script> 
@@ -117,29 +117,37 @@ System.out.println("time"+time);
 	    	 strday = "0"+i;
 	     }else { 
 	    	 strday = i+""; 
-	     }
-	         
-	     String tempPath = PathUtill.getXMLpath();
-		 tempPath += "data" + File.separator + "DownloadInventory"+File.separator+time+"-"+strday+File.separator+type+File.separator; 
-		 System.out.println(tempPath); 
-	     File filec = new File(tempPath+"common.csv"); 
-	     File filem = new File(tempPath+"model.csv");
-	     File fileb = new File(tempPath+"badgoods.csv"); 
-	        
-	     if(filec.exists()){
-	    	 flagc = true ;
-	     }
-	     if(filem.exists()){
-	    	 flagm = true ;
-	     }  
-	     if(fileb.exists()){
-	    	 flagb = true ;
 	     } 
-		   if(i == 1){ 
-			  %> 
+	          
+	     String realtime = time+"-"+strday ;  
+	    // String tempPath = PathUtill.getXMLpath();
+		/// tempPath += "data" + File.separator + "DownloadInventory"+File.separator+time+"-"+strday+File.separator+type+File.separator; 
+		// System.out.println(tempPath); 
+		 System.out.println(time);  
+		 Collection<SNInventory> coc = InventoryChange.get(TimeUtill.dataAdd( realtime, 1));
+	        // 苏宁样机 
+	    	Collection<SNInventory> com =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd( realtime, 1)).values(); 
+	        // 苏宁坏机 
+	        Collection<SNInventory> cob = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd( realtime, 1)).values();
+	     //File filec = new File(tempPath+"common.csv"); 
+	     
+	    // File filem = new File(tempPath+"model.csv");
+	    // File fileb = new File(tempPath+"badgoods.csv"); 
+	         
+	     if(null !=coc  && coc.size() > 0){
+	    	 flagc = true ; 
+	     }
+	     if(null != com && com.size() > 0){
+	    	 flagm = true ; 
+	     }  
+	     if(null != cob && cob.size() > 0){
+	    	 flagb = true ;
+	     }   
+		   if(i == 1){  
+			  %>  
 			   <tr> 
 		     <td><%=i %>  
-		     <table>
+		     <table> 
 		      <tr><td onclick="wincom('<%=time+"-"+strday %>','common')">实货库存: 
 		      <%  
 		      if(flagc){

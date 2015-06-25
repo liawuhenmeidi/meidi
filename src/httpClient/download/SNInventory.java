@@ -81,13 +81,18 @@ public void setFlag(int flag) {
 	this.flag = flag;
 }
 
-public int getFlagupm() { 
-	int flag = 3;     
+ 
+public int getFlagupmCompare() {  
+	int flag = 3;    
+	//System.out.println("flagupm"+flagupm);
+	if(flagupm == 1){
+		if(this.getUpmodel() == (this.getModelnum()+this.getInmodelnum())){  
+			 flag = 2 ;  
+			// logger.info(p.getType());
+		 }   
+	}
 	//logger.info(p.getType()+"upmodel::"+sn.getUpmodel()+"::Modelnum::"+snm.getModelnum()+"::Outmodelnum"+snm.getOutmodelnum());   
-	if(this.getUpmodel() == (this.getModelnum()+this.getInmodelnum())){  
-		 flag = 2 ;  
-		// logger.info(p.getType());
-	 }     
+	    
 return flag; 
 }
 
@@ -95,11 +100,14 @@ public void setFlagupm(int flagupm) {
 	this.flagupm = flagupm;
 }
 
-public int getFlagupin() {
+public int getFlagupinCompare() {
 	int flag = 3 ;
+	if(flagupin == 1){
 		 if(this.getUpin() == this.getNum()){
-			flag = 2 ;
-		 } 
+				flag = 2 ;
+			 } 
+	}
+		
 		 return flag;
 }
  
@@ -107,16 +115,30 @@ public void setFlagupin(int flagupin) {
 	this.flagupin = flagupin;
 }
 
-public int getFlagupout() {
+public int getFlagupoutCompare() {
 	int flag = 3; 
+	if(flagupout == 1){
 		 if(this.getUpout() == this.getIncommonnum()){
 			flag =2 ;
 		 }  
-		 return flag;
+	} 
+	return flag;
 }
 
 public void setFlagupout(int flagupout) {
 	this.flagupout = flagupout;
+}
+
+public int getFlagupm() {
+	return flagupm;
+}
+
+public int getFlagupin() {
+	return flagupin;
+}
+
+public int getFlagupout() {
+	return flagupout;
 }
 
 public int getUpmodel() {

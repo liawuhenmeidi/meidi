@@ -84,6 +84,9 @@ public class User {
 	}
 
 	public String getEntryTime() {
+		if(StringUtill.isNull(entryTime)){
+			entryTime = ""; 
+		}
 		return entryTime;
 	}
 

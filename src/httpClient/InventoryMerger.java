@@ -283,6 +283,7 @@ public class InventoryMerger {
         
         List<SNInventory> listup = MakeInventoryManager.get(user, str);
          
+       // logger.info(listup.size()); 
        // logger.info(mapmi); 
         //logger.info(coin);   
         logger.info(" branchnum"+ branchnum);
@@ -474,7 +475,7 @@ public class InventoryMerger {
         	}
            // logger.info(count);  
         } 
-         
+          
           //logger.info(listup);
           if(null != listup){
         	  Iterator<SNInventory> it =  listup.iterator();
@@ -482,24 +483,26 @@ public class InventoryMerger {
         		  SNInventory sn =  it.next();
         		  Branch b = BranchService.getMap().get(sn.getBranchid());
         		  Product p = ProductService.getIDmap().get(Integer.valueOf(sn.getTypeid()));
-        		//   logger.info("tnum+**"+p.getEncoded()+"&&&&&&bnum"+b.getEncoded());         
+        		//logger.info("tnum+**"+p.getEncoded()+"&&&&&&bnum"+b.getEncoded());         
         		  Map<String,SNInventory> mapt = map.get(p.getEncoded()); 
            		if(null == mapt){
            			mapt = new HashMap<String,SNInventory>(); 
            			map.put(p.getEncoded(), mapt);
            		} 
-           		        
+           		         
            		SNInventory snm = mapt.get(b.getEncoded());
            		if(null == snm){     
-           			//logger.info("add");
+           			logger.info("add");
            			//logger.info(StringUtill.GetJson(sn)); 
            			mapt.put(b.getEncoded(), sn);
-           		}else { 
-           		//	logger.info("update"); 
-           		 if(sn.getFlagupm() == 1){
+           		}else {  
+           			logger.info("update");  
+           			logger.info(sn.getFlagupm()); 
+           		// if(sn.getFlagupm() == 1){
            			 // snm.setIsupm(false);
+           			 snm.setFlagupm(sn.getFlagupm());
            			 snm.setUpmodel(sn.getUpmodel());
-           			 logger.info("updatem");
+           			 logger.info("updatem"); 
            			/*int flag = 3;   
            			//logger.info(p.getType()+"upmodel::"+sn.getUpmodel()+"::Modelnum::"+snm.getModelnum()+"::Outmodelnum"+snm.getOutmodelnum()); 
            			   
@@ -508,28 +511,30 @@ public class InventoryMerger {
            				// logger.info(p.getType());
            			 }     
            			 snm.setFlagupm(flag);*/
-           		 }else if(sn.getFlagupin() == 1){
+           		// }else if(sn.getFlagupin() == 1){
            			 logger.info("upin");
-           			 snm.setUpin(sn.getUpin());
+           			 snm.setFlagupin(sn.getFlagupin());
+           			 snm.setUpin(sn.getUpin()); 
            			/* snm.setIsin(false);
-           			int flag = 3 ;
-           			
+           			int flag = 3 ; 
+           			 
            			logger.info("upin::"+sn.getUpin()+":::num"+snm.getNum());
            			 if(sn.getUpin() == snm.getNum()){
            				flag = 2 ;
-         				  
+         				   
            			 } 
            			snm.setFlagupin(flag);*/
-           		 }else if(sn.getFlagupout() == 1){
+           		// }else if(sn.getFlagupout() == 1){
+           			 snm.setFlagupout(sn.getFlagupout()); 
            		    snm.setUpout(sn.getUpout()); 
-           		   /* snm.setIsout(false); 
+           		   /* snm.setIsout(false);  
            			int flag = 3;
            			 if(sn.getUpout() == snm.getIncommonnum()){
            				flag =2 ;
            			 }  
            			snm.setFlagupout(flag);  */
-           		 }
-           		 
+           		// }
+           		  
            		 snm.setFlag(sn.getFlag());
         	  }
         	  }

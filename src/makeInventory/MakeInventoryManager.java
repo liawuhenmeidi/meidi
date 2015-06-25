@@ -140,10 +140,10 @@ public class MakeInventoryManager {
   public static SNInventory change(MakeInventory mi){
 	  SNInventory sn = new SNInventory();
 	  sn.setBranchid(mi.getBid()); 
-	  sn.setTypeid(mi.getTid()+"");  
-	 // logger.info(mi.getTypestatues());  
+	  sn.setTypeid(mi.getTid()+"");   
+	  logger.info(mi.getTypestatues());  
 	  if(mi.getTypestatues() ==MakeInventory.model ){
-		  sn.setFlagupm(1);
+		  sn.setFlagupm(1); 
 		  sn.setUpmodel(mi.getNum());
 	  }else if(mi.getTypestatues() ==MakeInventory.in ){
 		  sn.setUpin(mi.getNum());

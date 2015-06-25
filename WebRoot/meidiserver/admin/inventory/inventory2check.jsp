@@ -636,13 +636,13 @@ function serchclick(category,type,branchid,obj){
             		    	<%
             		    } %>
 
-            		    </td>  
-            		   <td > 
-            		   <% if(flag ){       
-            			   if(in.getFlag() == 0){   
-            				  if((in.getFlagupin() == 2 || StringUtill.isNull(inuuid)) && in.getFlagupm() ==2 || StringUtill.isNull(muuid) && ( StringUtill.isNull(outuuid) || in.getFlagupout() == 2)){  
+            		    </td>   
+            		   <td >  
+            		   <% if(flag ){        
+            			   if(in.getFlag() == 0){    
+            				  if((in.getFlagupinCompare() == 2 || StringUtill.isNull(inuuid)) && in.getFlagupmCompare() ==2 || StringUtill.isNull(muuid) && ( StringUtill.isNull(outuuid) || in.getFlagupoutCompare() == 2)){  
             			   %>   
-            			   <input type="checkbox" name="type"  value="<%=tid %>" checked="checked" ></input>
+            			   <input type="checkbox" name="type"  value="<%=tid %>" checked="checked" ></input> 
             			   
             			    <script type="text/javascript">
             			    $("#<%=tid %>").attr("class","dsc");

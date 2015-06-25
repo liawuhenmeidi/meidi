@@ -183,10 +183,11 @@ String json = StringUtill.GetJson(list);
 			if(realsendnum <0 ){
 				 alert("实际发货数不能小于0");
 				 return false ; 
-			 }else if(realnum < realsendnum){
-				 alert("实际发货数不能大于订单数");
-				 return false ;
-			 }
+			 } 
+			//else if(realnum < realsendnum){
+			//	 alert("实际发货数不能大于订单数");
+			//	 return false ;
+			// }
 		}
   
 	 }
