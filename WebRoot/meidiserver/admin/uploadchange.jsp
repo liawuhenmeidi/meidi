@@ -23,6 +23,7 @@
 	 
 	List<UploadChange> uploadOrders = UploadChangeManager.getUnCheckedUploadOrders();
 	List<String>  orderNames= UploadChangeManager.getAllUploadOrderNames(uploadOrders);
+	//System.out.println(orderNames); 
 	String selectOrderName1 = ""; 
 	String selectOrderName2 = "";  
 	String checkBoxStatus = "";    
@@ -56,11 +57,11 @@
 		}  
 		//System.out.println("source"+source); 
 	    right = UploadManager.getTotalUploadOrders(selectOrderName2,-1+"",BasicUtill.send);
-	 // System.out.println(" right"+right);  
+	// System.out.println(" right"+right);  
 		checkBoxStatus = request.getParameter("ridiocheck");
 		//初始化要对比的orders      
 		ri = UploadChangeManager.getsetbranch(right,Integer.valueOf(statues));
-		//  System.out.println("ri"+ri); 
+		 System.out.println("ri"+ri);  
 		Map<String,String> mapchange = UploadChangeManager.getmatch(left, ri,checkBoxStatus,statues); 
 		//System.out.println(StringUtill.GetJson(mapchange)); 
 		change = StringUtill.GetJson(mapchange);   

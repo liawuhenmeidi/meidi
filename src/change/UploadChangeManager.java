@@ -160,16 +160,20 @@ public class UploadChangeManager {
     
 	public static Set<String> getsetbranch(List<UploadOrder> right,int type){
 		Map<String,String> mapnew  = BranchTypeChange.getinstance().getMap();
-		
+		// logger.info(mapnew); 
 		Set<String> rightb = new HashSet<String>();
 		Set<String> rightt = new HashSet<String>();
-		
+		   
 		Iterator<UploadOrder> it = right.iterator();
-		while (it.hasNext()) {
+		 
+		Set<String> set = mapnew.keySet();
+    	logger.info(set);  
+    	 
+		while (it.hasNext()) { 
 			UploadOrder up = it.next();
-			
+			//logger.info(up.getShop()); 
 			if(null != mapnew){
-		    	Set<String> set = mapnew.keySet();
+		    	
 		    	if(!set.contains(up.getShop())){
 		    		rightb.add(up.getShop());
 		    	}
@@ -264,8 +268,8 @@ public class UploadChangeManager {
 					realname = StringUtill.getStringNocn(br);
 				} else if ("en".equals(statues)) {
 					realname = StringUtill.getNumbers(br);
-				}
-				// logger.info(realname);
+				} 
+				//logger.info(realname);
 				UploadChange up = mapletfb.get(realname);
 				if (null != up) {
 					map.put(br, up.getName());
