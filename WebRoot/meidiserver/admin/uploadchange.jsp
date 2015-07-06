@@ -54,7 +54,7 @@
 	             source = StringUtill.GetJson(leftnew.getBranch());
 		}else if(Integer.valueOf(statues) == 1){
 	             source = StringUtill.GetJson(leftnew.getTypes());
-		}  
+		}   
 		//System.out.println("source"+source); 
 	    right = UploadManager.getTotalUploadOrders(selectOrderName2,-1+"",BasicUtill.send);
 	// System.out.println(" right"+right);  

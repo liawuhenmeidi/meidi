@@ -1,18 +1,15 @@
 <%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
    
- String  resCode = (String)session.getAttribute("message");
- session.removeAttribute("message"); 
+ String  resCode = "";
    
  String type = request.getParameter("type");
-String type1 = request.getParameter("type1");
-     
-String mark = request.getParameter("mark");
-  
- if(!StringUtill.isNull(mark)){  
-		resCode = RemarkUtill.getMessage(Integer.valueOf(mark));
+ 
+ if("updated".equals(type)){
+	 resCode = "保存成功";
+ }else {
+	 resCode = "保存失败";
  }
- // System.out.println("oid"+oid);
 %>
  
 
@@ -52,14 +49,14 @@ function checkedd(){
 </script>
 
 	 
-<body> 
- <div class="s_main_tit"><span class="qiangdan"><a href="makeInventory/makeinventoryall.jsp?type=<%=type1%>">返回</a></span></div> 
+<body>  
+ <div class="s_main_tit"><span class="qiangdan"></span></div> 
 <!--  zhanghao  -->  
   
 <div class="shwo_main"> 
    
    <!--   登陆开始   -->
-  
+   
    <br>  
    <div class="s_main_tit"><%=resCode %></div>
  

@@ -7,7 +7,7 @@ public class Grouptype {
    private int type ;  // 标记组类别 
    
 	public int getType() {
-	return type;
+	return type; 
 }
 
 public void setType(int type) {

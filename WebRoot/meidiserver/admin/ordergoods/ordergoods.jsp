@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html;charset=utf-8"%>
 <%@ include file="../../common.jsp"%>
-
+ 
 <%
 	List<BranchType> listgt = BranchTypeManager.getLocate(); 
 //System.out.println(statues+"&&"+type);
@@ -90,9 +90,7 @@ String sm = StringUtill.GetJson(model);
 	        	 jsonallp = jQuery.parseJSON(josns["strp"]);
 	        	 addrowproductinit();       
 	        	 jsoninventory = jQuery.parseJSON(josns["strin"]); 
-	        	// alert(jsoninventory);
-	        	  
-	        	// alert(jsonallp);  
+	        	// alert(jsoninventory); 
 	        	 jsoninventorysn =jQuery.parseJSON(josns["mapsn"]); 
 	        	 jsoninventorysnmodel = jQuery.parseJSON(josns["strmodel"]);
 	        	 jsoninventorysnsale = jQuery.parseJSON(josns["strsale"]);
@@ -396,17 +394,15 @@ String sm = StringUtill.GetJson(model);
 		        	var st = "";  
 		        	for(var i=0;i<jsons.length;i++){
 		        		var json = jsons[i]; 
-		        		if(i == 0 ){
-		        			num = json.ATP+":"+json.goodType;
+		        		if(i == 0 ){ 
+		        			num = json.num+":"+json.goodType;
 			        		//st = json.goodType;
-		        		}else {  
-		        			num += "_"+json.ATP+":"+json.goodType;
+		        		}else {   
+		        			num += "_"+json.num+":"+json.goodType;
 			        		//st += "_"+json.goodType;
-		        		}
-		        		
-		        		
-		        	}     
-		        	
+		        		}  
+		        	}         
+		        	 
 		        	//alert(jsonsale );
 		        	if(undefined != jsonsale){
 		        		$("#snstatues"+row).html(jsonsale.saleNum);

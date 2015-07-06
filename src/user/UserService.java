@@ -99,7 +99,7 @@ public static  List<User> getsencondDealsend(User user){
 	  			   if(null != li && li.contains(user.getUsertype()) && u.getStatues() == 1){
 	  				   if(UserManager.checkPermissions(u, Group.sencondDealsend)){
 	  					   list.add(u);
-	  				   } 
+	  				   }  
 	  			   } 
 	  		   }   
 	   }
@@ -124,11 +124,29 @@ public static  List<User> getsend(User user){
 	  					   list.add(u); 
 	  				   }
 	  			  }
-	  			   
-	  			   
-	  			 
-	  			 
-	  			   
+	  		   }   
+	   }
+	    
+	   return list;
+}
+
+public static  List<User> getLogistics(User user){
+	 init(); 
+	 List<User> list = new ArrayList<User>(); 
+	// logger.info(listall);  
+	  	   if(null != listall){     
+	  		   for(int i=0;i<listall.size();i++){ 
+	  			   User u = listall.get(i);   
+	  			   List<Integer> li = GroupService.getidMap().get(u.getUsertype()).getPid();
+	  			  // logger.info(li);
+	  			 // logger.info(user.getUsertype()); 
+	  			 // logger.info(null != li && li.contains(user.getUsertype())); 
+	  			   if(null != li && li.contains(user.getUsertype()) && u.getStatues() == 1){
+	  				  // logger.info(u.getId());  
+	  				 if(UserManager.checkPermissions(u, Group.logistics)){
+	  					   list.add(u);  
+	  				   }
+	  			  }
 	  		   }   
 	   }
 	    

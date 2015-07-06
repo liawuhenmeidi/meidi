@@ -28,11 +28,11 @@ body, html,#l-map {width: 100%;height: 100%;overflow: hidden;hidden;margin:0;}
 </html>  
 <script type="text/javascript">
 var locate = "<%=locate%>";
-var nowlocate = "";
+var nowlocate = ""; 
 var pisition = "<%=pisition%>" ;
-function getLocation(){
+function getLocation(){ 
 	    if(navigator.geolocation){
-	
+	 
 	       navigator.geolocation.getCurrentPosition(showPosition);
 	
 	      }else{

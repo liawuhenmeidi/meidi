@@ -207,7 +207,7 @@ function getInventory(){
            boolean ordergoods_c= UserManager.checkPermissions(user, Group.ordergoods,"c");
            boolean ordergoods_r= UserManager.checkPermissions(user, Group.ordergoods,"r");
            boolean ordergoods_e= UserManager.checkPermissions(user, Group.ordergoods,"e");
-           
+             
            if(ordergoods_w || ordergoods_q || ordergoods_c || ordergoods_r){
            %>
              <li >  
@@ -526,7 +526,42 @@ function getInventory(){
 
             </div>        
           </li>  
-         <%} %>
+         <%} 
+          
+         
+        boolean logistics_p = UserManager.checkPermissions(user, Group.logistics,"p");
+        boolean logistics_c = UserManager.checkPermissions(user, Group.logistics,"c");
+         if(logistics_p || logistics_c){
+        	%>   
+        	 <li > 
+        	 <h4 >物流系統</h4>     
+            <div class="list-item none"> 
+            <% 
+            if(logistics_p){
+            	%>
+            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logistics.jsp')" >物流配工</a></p> 
+            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslist.jsp')" >配工信息</a></p> 
+            	  
+            	<%
+            }  
+            if(logistics_c){ 
+            	  
+            	%>  
+            	<p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/caradd.jsp')" >车辆登记</a></p> 
+            	<p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/carlist.jsp')" >查看车辆</a></p> 
+            	<%
+            }
+            
+            %>
+
+            </div> 
+           </li>
+        	
+        	<%
+         }
+         
+         
+         %>
    
         
          </ul> 

@@ -89,7 +89,16 @@ function clear(){
    %>
    <li><a href="inventory/inventory.jsp">库存查询</a></li>
    <% 
-     }  
+     }   
+   
+    
+   boolean logistics_d = UserManager.checkPermissions(user, Group.logistics,"d");
+   if(logistics_d){ 
+	   %> 
+	 <li><a href="logistics/logistic.jsp">待处理物流信息</a> </li> 
+	  <li><a href="logistics/maptest.jsp">地图测试</a> </li>  
+	   <% 
+   }  
    %> 
     
    

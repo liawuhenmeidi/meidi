@@ -88,6 +88,7 @@ public class XLSReader {
 				
 				
 				String tmpDate = sheet0.getCell(SALETIME_POS,i).getContents().replace("-", "").replace("/", "").trim();
+				//logger.info(tmpDate); 
 				if(tmpDate.length() == 7){
 					tmpDate = tmpDate.substring(0,4) + "0" + tmpDate.substring(4,tmpDate.length());
 				}
@@ -99,6 +100,7 @@ public class XLSReader {
 					uo.setBackPoint(Double.parseDouble(sheet0.getCell(BACKPOINT_POS,i).getContents().trim()));
 				}
 				uo.setFileName(srcFile.getName());
+				//logger.info(StringUtill.GetJson(uo)); 
 				UploadOrders.add(uo);
 				uo = new UploadOrder();
 			}

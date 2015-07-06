@@ -650,6 +650,7 @@ public class UploadManager {
 				pstmt.setString(2, uo.getSaleManName());
 				pstmt.setString(3, uo.getShop());
 				pstmt.setString(4, uo.getPosNo());
+				//logger.info(uo.getSaleTime());  
 				pstmt.setString(5, uo.getSaleTime());
 				pstmt.setString(6, uo.getType());
 				pstmt.setInt(7, uo.getNum());
