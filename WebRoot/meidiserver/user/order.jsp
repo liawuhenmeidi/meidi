@@ -704,6 +704,9 @@ if(null != conorderprice){
 		 if(pos == "" || pos == null || pos == "null"){
 			 alert("pos(厂送)单号不能为空");
 			 return false;
+		 }else if(pos.length != 9){
+			 alert("pos(厂送)单号必须是九位数");
+			 return false ;
 		 }
      } 
      
