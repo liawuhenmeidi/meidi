@@ -58,8 +58,7 @@ String sm = StringUtill.GetJson(model);
 	 });   
 	    
 	 $("#branchid").blur(function(){
-		  
-		 
+
 		 initBranch();  
 		  
 	 });   

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.util.Collection;
 
 import javax.servlet.http.HttpServlet;
 
@@ -22,6 +24,8 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.util.EntityUtils;
+
+import com.csvreader.CsvReader;
 
 import utill.PathUtill;
 import utill.TimeUtill;
@@ -77,39 +81,50 @@ public class InventoryDownLoad extends HttpServlet implements DownLoad {
 			 * URI(MyLogin.url)); response2 = MyMainClient.getHttpclient()
 			 * .execute(request); entity = response2.getEntity(); } }
 			 */
-			InputStream in = entity.getContent(); 
-
-			String tempPath = PathUtill.getXMLpath();
-			tempPath += "data" + File.separator + "DownloadInventory"
-					+ File.separator + TimeUtill.getdateString()+File.separator+"SuNing";
-  
-			logger.info(tempPath);  
+			InputStream in = entity.getContent();  
+              
+			// CsvReader reader = new CsvReader(in,Charset.forName("GBK"));
+			    
+			//Collection<SNInventory> co = InventoryChange.getbyRead(reader);  
+			     
+			//if(null != co && co.size() >0){ 
+				in = entity.getContent(); 
+				//logger.info(in);
+				String tempPath = PathUtill.getXMLpath();
+				tempPath += "data" + File.separator + "DownloadInventory"
+						+ File.separator + TimeUtill.getdateString()+File.separator+"SuNing";
+	  
+				logger.info(tempPath);  
+	 
+				File file = new File(tempPath);
+				if (!file.exists()) {
+					file.mkdirs();
+				} 
  
-			File file = new File(tempPath);
-			if (!file.exists()) {
-				file.mkdirs();
-			} 
-
-			File file2 = new File(tempPath + File.separator + "common.csv");
- 
-			
-			file2.createNewFile();
-  
-			try { 
-				FileOutputStream fout = new FileOutputStream(file2);
-				int l = -1; 
-				byte[] tmp = new byte[1024];
-				while ((l = in.read(tmp)) != -1) {
-					fout.write(tmp, 0, l);
-					// 注意这里如果用OutputStream.write(buff)的话，图片会失真，大家可以试试
+				File file2 = new File(tempPath + File.separator + "common.csv");
+	 
+				file2.createNewFile();
+	   
+				try { 
+					FileOutputStream fout = new FileOutputStream(file2);
+					int l = -1; 
+					byte[] tmp = new byte[1024];
+					while ((l = in.read(tmp)) != -1) {
+						fout.write(tmp, 0, l);
+						// 注意这里如果用OutputStream.write(buff)的话，图片会失真，大家可以试试
+					}
+					fout.flush();
+					fout.close();
+					response2.close();
+				} finally { 
+					// 关闭低层流。
+					in.close();
+					//reader.close(); 
 				}
-				fout.flush();
-				fout.close();
-				response2.close();
-			} finally {
-				// 关闭低层流。
-				in.close();
-			}
+			//}
+			
+			
+			
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			logger.info(e);

@@ -170,7 +170,64 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 		}
 		return map;
 	} 
- 
+	public static Map<String, SNInventory> getMap(CsvReader reader) {
+		Map<String, SNInventory> map = new HashMap<String,SNInventory>();
+		
+		try { 
+			reader.readHeaders();
+		while (reader.readRecord()) { // 逐行读入除表头的数据
+			String[] strs = reader.getValues();
+			if (null != strs) {
+				SNInventory in = new SNInventory();
+				for (int i = 0; i < strs.length; i++) {
+					// logger.info(i);
+					String str = strs[i];  
+					// logger.info(str);
+					if (i == 1) {  
+						// logger.info(str);
+						in.setGoodType("坏机"); 
+					} else if (i == 4) { 
+						in.setBranchName(str);
+					} else if (i == 5) {
+						in.setBranchNum(str);
+					} else if (i == 8) {
+						in.setOldbranchNum(str);
+					} else if (i == 11) {
+						in.setGoodGroupName(str);
+					}else if (i == 12) {
+						in.setGoodGroupNum(str);
+					}  else if (i == 13) {
+						in.setGoodpName(str);
+					} else if (i == 14) {
+						in.setGoodNum(str);
+					} else if (i == 15) {
+						double realnum = Double.valueOf(str);
+						int re = (int) realnum;
+						in.setNum(re);
+					} else if (i == 17) {
+						in.setSerialNumber(str);
+					} 
+				}     
+				String key = in.getBranchNum() + "_" + in.getGoodNum();
+				// logger.info(key);  
+				SNInventory inmap = map.get(key);
+
+				if (null == inmap) {
+					map.put(key, in); 
+				} else {  
+					inmap.setNum(inmap.getNum()+in.getNum());
+				} 
+			} 
+		}
+
+		logger.info(map.size());
+		reader.close();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} // 跳过表头 如果需要表头的话，不要写这句。
+		return map; 
+	}
 	public static Map<String, SNInventory> getMap(User user, String startTime) {
 		// startTime = "2015-05-03";  
 		Map<String, SNInventory> map = new HashMap<String,SNInventory>();
@@ -179,67 +236,22 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 			String tempPath = PathUtill.getXMLpath();
 			tempPath += "data" + File.separator + "DownloadInventory"
 					+ File.separator + startTime+File.separator+"SuNing";
-			logger.info(tempPath);
+			//logger.info(tempPath);
 			File file = new File(tempPath);
 			if (!file.exists()) {
 				file.mkdirs();
 			}
-
-			File file2 = new File(tempPath + File.separator + "badgoods.csv");
-			// file2.createNewFile();
-
-			CsvReader reader = new CsvReader(file2.getPath(), ',',
-					Charset.forName("GBK")); // 一般用这编码读就可以了
-
-			reader.readHeaders();
-
-			while (reader.readRecord()) { // 逐行读入除表头的数据
-				String[] strs = reader.getValues();
-				if (null != strs) {
-					SNInventory in = new SNInventory();
-					for (int i = 0; i < strs.length; i++) {
-						// logger.info(i);
-						String str = strs[i];  
-						// logger.info(str);
-						if (i == 1) {  
-							// logger.info(str);
-							in.setGoodType("坏机"); 
-						} else if (i == 4) { 
-							in.setBranchName(str);
-						} else if (i == 5) {
-							in.setBranchNum(str);
-						} else if (i == 8) {
-							in.setOldbranchNum(str);
-						} else if (i == 11) {
-							in.setGoodGroupName(str);
-						}else if (i == 12) {
-							in.setGoodGroupNum(str);
-						}  else if (i == 13) {
-							in.setGoodpName(str);
-						} else if (i == 14) {
-							in.setGoodNum(str);
-						} else if (i == 15) {
-							double realnum = Double.valueOf(str);
-							int re = (int) realnum;
-							in.setNum(re);
-						} else if (i == 17) {
-							in.setSerialNumber(str);
-						} 
-					}     
-					String key = in.getBranchNum() + "_" + in.getGoodNum();
-					// logger.info(key);  
-					SNInventory inmap = map.get(key);
  
-					if (null == inmap) {
-						map.put(key, in); 
-					} else {  
-						inmap.setNum(inmap.getNum()+in.getNum());
-					} 
-				} 
-			}
+			File file2 = new File(tempPath + File.separator + "badgoods.csv");
+			logger.info(file2.getAbsolutePath()); 
+            if(file2.exists()){ 
+            	CsvReader reader = new CsvReader(file2.getPath(), ',',
+    					Charset.forName("GBK")); // 一般用这编码读就可以了
 
-			logger.info(map.size());
-			reader.close();
+    			map= getMap(reader); 
+            }
+			
+             
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

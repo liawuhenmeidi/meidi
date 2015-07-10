@@ -62,26 +62,23 @@ LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
 		}
 		#info{margin-top:5px;}
 	</style>
-</head>
+</head> 
 <body> 
-
+   
 <div id="mapContainer"  style="display:none"></div>
 <div class="main">  
-<div class="s_main_tit"><span class="qiangdan"><a href="../welcom.jsp">返回</a></span></div>
-     <div>    
-                  
-     <form method = "post"  >
-     
-            
+<div class="s_main_tit"><span class="qiangdan"><a href="../welcom.jsp">返回</a></span><span class="qiangdan"><a href="javascript:showLocationInfo()">送货已完成</a></span></div>
+     <div>               
+     <form method = "post"  >  
       <table style="width:100% "> 
       <tr class="asc">
 <td align="center">  
-	车牌号
-</td>  
+	车牌号  
+</td>   
 <td align="center"> 
 <%=lm.getCars().getNum() %>  
 	</td>   
-</tr><tr class="asc">
+</tr><tr class="asc"> 
 <td align="center"> 送货地址</td> 
 <td align="center">    
 	  <%=lm.getBranch().getLocateName() %>
@@ -101,14 +98,13 @@ LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
 	<td colspan="2" align="center"> 
 	<input type="button" value="中转站记录地点" onclick="showLocationInfo()"/>
 	</td>   
-	</tr>  
-	<tr class="asc">  
-	<td colspan="2" align="center"> 
-	<input type="button" value="送货已完成" onclick="showLocationInfo()"/>
-	</td>   
-	</tr> 		 
-
+	</tr>
+	
+			 
+   
+     
       </table>
+      
  </form>
      </div>
 
@@ -169,7 +165,7 @@ LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
 		//alert("定位点坐标：("+locationX+","+locationY+")");
 		init();  
 	} 
-	  
+	   
 	function saveLocation(){
 		 alert(address);
 	}

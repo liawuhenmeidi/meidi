@@ -14,16 +14,16 @@ if(StringUtill.isNull(time)){
 }else {
 	realtime = time ;
 	if(time.equals(TimeUtill.getdateString())){ 
-		time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
+		//time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
 	} 
 }      
 Collection<SNInventory> coc = null ;
 if("common".equals(type)){
-	coc = InventoryChange.get(TimeUtill.dataAdd(realtime, 1));		
+	coc = InventoryChange.get(TimeUtill.dataAdd(realtime, 0));		
 }else if("model".equals(type)){
-	coc =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd(time, 1)).values(); 
+	coc =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd(time, 0)).values(); 
 }else if("bad".equals(type)){ 
-	coc = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd(time, 1)).values();
+	coc = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd(time, 0)).values();
 }
  
  

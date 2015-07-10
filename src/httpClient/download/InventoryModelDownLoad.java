@@ -172,8 +172,67 @@ public class InventoryModelDownLoad extends HttpServlet implements DownLoad {
 			} // 跳过表头 如果需要表头的话，不要写这句。
 		}
 		return map;
-	}
+	} 
  
+	public static Map<String, SNInventory> getMapByreader(CsvReader reader) {
+		Map<String, SNInventory> map = new HashMap<String,SNInventory>();
+		try {
+		reader.readHeaders();
+
+		while (reader.readRecord()) { // 逐行读入除表头的数据
+			String[] strs = reader.getValues();
+			if (null != strs) {
+				SNInventory in = new SNInventory();
+				for (int i = 0; i < strs.length; i++) {
+					// logger.info(i);
+					String str = strs[i];
+					// logger.info(str);
+					if (i == 0) {
+						// logger.info(str);
+						in.setGoodType("样机");
+					} else if (i == 2) {
+
+						in.setBranchName(str);
+					} else if (i == 3) {
+						in.setBranchNum(str);
+					} else if (i == 6) {
+						in.setGoodGroupName(str);
+					} else if (i == 7) {
+						in.setGoodGroupNum(str);
+					} else if (i == 10) {
+						in.setGoodpName(str);
+					} else if (i == 11) { 
+						in.setGoodNum(str);
+					} else if (i == 12) {
+						double realnum = Double.valueOf(str);
+						int re = (int) realnum;
+						in.setModelnum(re); 
+					} else if (i == 13) {
+						in.setSerialNumber(str);
+					}
+				} 
+				String key = in.getBranchNum() + "_" + in.getGoodNum();
+				// logger.info(key);  
+				SNInventory inmap = map.get(key);
+
+				if (null == inmap) {
+					map.put(key, in); 
+				} else {   
+					inmap.setModelnum(inmap.getModelnum()+in.getModelnum()); 
+				}
+			}
+		}
+
+		logger.info(map.size());
+		reader.close();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} // 跳过表头 如果需要表头的话，不要写这句。
+	return map; 
+		
+	}
+	
 	public static Map<String, SNInventory> getMap(User user, String startTime) {
 		// startTime = "2015-05-03";  
 		Map<String, SNInventory> map = new HashMap<String,SNInventory>();
@@ -182,66 +241,23 @@ public class InventoryModelDownLoad extends HttpServlet implements DownLoad {
 			String tempPath = PathUtill.getXMLpath();
 			tempPath += "data" + File.separator + "DownloadInventory"
 					+ File.separator + startTime+File.separator+"SuNing";
-			logger.info(tempPath);
-			File file = new File(tempPath);
+			
+			File file = new File(tempPath); 
 			if (!file.exists()) {
 				file.mkdirs();
 			}
 
 			File file2 = new File(tempPath + File.separator + "model.csv");
-			// file2.createNewFile();
+			logger.info(file2.getAbsolutePath());
+            if(file2.exists()){ 
+            	logger.info("model.csv");
+            	CsvReader reader = new CsvReader(file2.getPath(), ',',
+    					Charset.forName("GBK")); // 一般用这编码读就可以了
 
-			CsvReader reader = new CsvReader(file2.getPath(), ',',
-					Charset.forName("GBK")); // 一般用这编码读就可以了
-
-			reader.readHeaders();
-
-			while (reader.readRecord()) { // 逐行读入除表头的数据
-				String[] strs = reader.getValues();
-				if (null != strs) {
-					SNInventory in = new SNInventory();
-					for (int i = 0; i < strs.length; i++) {
-						// logger.info(i);
-						String str = strs[i];
-						// logger.info(str);
-						if (i == 0) {
-							// logger.info(str);
-							in.setGoodType("样机");
-						} else if (i == 2) {
-
-							in.setBranchName(str);
-						} else if (i == 3) {
-							in.setBranchNum(str);
-						} else if (i == 6) {
-							in.setGoodGroupName(str);
-						} else if (i == 7) {
-							in.setGoodGroupNum(str);
-						} else if (i == 10) {
-							in.setGoodpName(str);
-						} else if (i == 11) { 
-							in.setGoodNum(str);
-						} else if (i == 12) {
-							double realnum = Double.valueOf(str);
-							int re = (int) realnum;
-							in.setModelnum(re); 
-						} else if (i == 13) {
-							in.setSerialNumber(str);
-						}
-					} 
-					String key = in.getBranchNum() + "_" + in.getGoodNum();
-					// logger.info(key);  
-					SNInventory inmap = map.get(key);
- 
-					if (null == inmap) {
-						map.put(key, in); 
-					} else {   
-						inmap.setModelnum(inmap.getModelnum()+in.getModelnum()); 
-					}
-				}
-			}
-
-			logger.info(map.size());
-			reader.close();
+    			map = getMapByreader(reader);
+            }
+			
+			logger.info(map.size()); 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -391,6 +407,9 @@ public class InventoryModelDownLoad extends HttpServlet implements DownLoad {
 		logger.info(li.size());
 		DBUtill.sava(li); 
 	}
+	
+	
+	
 	public static void save() {
 		URI uri;
 		try {

@@ -279,11 +279,74 @@ public class InventoryChange {
 		// logger.info(map.size());
 		return map;
 	}
+    
+	public static Collection<SNInventory> getbyRead(CsvReader reader){
+		Map<String, SNInventory> map = new HashMap<String, SNInventory>();
+		try {
+			reader.readHeaders();
+		
+        int count = 0 ;
+		while (reader.readRecord()) { // 逐行读入除表头的数据
+			String[] strs = reader.getValues();
+			if (null != strs) {
+				SNInventory in = new SNInventory();
+				for (int i = 0; i < strs.length; i++) {
+					// logger.info(i);
+					String str = strs[i];
+					if (i == 6) {
+						// logger.info(str);
+						in.setBranchName(str);
+					} else if (i == 7) {
+						in.setBranchNum(str);
+					} else if (i == 8) {
+						in.setGoodType(str);
+					} else if (i == 13) {
+						in.setGoodGroupName(str);
+					} else if (i == 14) {
+						in.setGoodGroupNum(str);
+					} else if (i == 15) {
+						in.setGoodpName(str);
+					} else if (i == 16) {
+						in.setGoodNum(str);
+					} else if (i == 17) {
+						in.setATP(Integer.valueOf(str));
+					} else if (i == 18) { 
+						in.setNum(Integer.valueOf(str));
+					}else if(i == 19){ 
+						in.setNomention(Integer.valueOf(str));
+					}
 
+				}
+
+				String key = StringUtill.getStringNocn(in.getBranchName())
+						+ "_" + in.getGoodNum();
+               // logger.info(key); 
+				SNInventory inmap = map.get(key);
+//count ++;
+				if (inmap == null) { 
+					map.put(key, in);
+				} else {
+					// logger.info(in.getGoodpName());
+					inmap.setATP(in.getATP() + inmap.getATP());
+					inmap.setNum(in.getNum() + inmap.getNum());
+				}
+
+		 	}
+		}   
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+//    logger.info(count);
+		logger.info(map.size());
+
+		return map.values(); 
+	} 
+	 
 	public static Collection<SNInventory> get(String startTime) {
 		// startTime = "2015-05-03";
 		// List<Inventory> list = new ArrayList<Inventory>();
-		Map<String, SNInventory> map = new HashMap<String, SNInventory>();
+		Collection<SNInventory> co = null;
 		try {
 			String tempPath = PathUtill.getXMLpath();
 			tempPath += "data" + File.separator + "DownloadInventory"
@@ -292,73 +355,24 @@ public class InventoryChange {
 			File file = new File(tempPath);
 			if (!file.exists()) {
 				file.mkdirs();
-			} 
-
+			}  
+ 
 			File file2 = new File(tempPath + File.separator + "common.csv");
 			// file2.createNewFile();
-
-			CsvReader reader = new CsvReader(file2.getAbsolutePath(), ',',
-					Charset.forName("GBK")); // 一般用这编码读就可以了
-
-			reader.readHeaders();
-            int count = 0 ;
-			while (reader.readRecord()) { // 逐行读入除表头的数据
-				String[] strs = reader.getValues();
-				if (null != strs) {
-					SNInventory in = new SNInventory();
-					for (int i = 0; i < strs.length; i++) {
-						// logger.info(i);
-						String str = strs[i];
-						if (i == 6) {
-							// logger.info(str);
-							in.setBranchName(str);
-						} else if (i == 7) {
-							in.setBranchNum(str);
-						} else if (i == 8) {
-							in.setGoodType(str);
-						} else if (i == 13) {
-							in.setGoodGroupName(str);
-						} else if (i == 14) {
-							in.setGoodGroupNum(str);
-						} else if (i == 15) {
-							in.setGoodpName(str);
-						} else if (i == 16) {
-							in.setGoodNum(str);
-						} else if (i == 17) {
-							in.setATP(Integer.valueOf(str));
-						} else if (i == 18) { 
-							in.setNum(Integer.valueOf(str));
-						}else if(i == 19){ 
-							in.setNomention(Integer.valueOf(str));
-						}
-
-					}
-
-					String key = StringUtill.getStringNocn(in.getBranchName())
-							+ "_" + in.getGoodNum();
-                   // logger.info(key); 
-					SNInventory inmap = map.get(key);
-//count ++;
-					if (inmap == null) { 
-						map.put(key, in);
-					} else {
-						// logger.info(in.getGoodpName());
-						inmap.setATP(in.getATP() + inmap.getATP());
-						inmap.setNum(in.getNum() + inmap.getNum());
-					}
-
-			 	}
-			}   
- //    logger.info(count);
-			logger.info(map.size());
-			reader.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} // 跳过表头 如果需要表头的话，不要写这句。
-		return map.values();
+            if(file2.exists()){
+            	CsvReader reader = new CsvReader(file2.getAbsolutePath(), ',',
+    					Charset.forName("GBK")); // 一般用这编码读就可以了
+    			co = getbyRead(reader);  
+    			reader.close(); 
+            }
+			
+			 
+	}catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
+		return co;
 	}
-
 	// 型号 , 状态
 	public static Map<String, List<SNInventory>> getMapBranchType(User user,
 			String startTime, int branchid) {

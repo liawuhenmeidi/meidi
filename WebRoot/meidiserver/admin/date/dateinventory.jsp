@@ -8,7 +8,7 @@ List<BranchType> listgt = BranchTypeManager.getLocate();
  
 String time = request.getParameter("mytime"); 
 String bid = request.getParameter("branchtype");
- 
+  
 System.out.println("time"+time);
 
 %> 
@@ -124,11 +124,11 @@ System.out.println("time"+time);
 		/// tempPath += "data" + File.separator + "DownloadInventory"+File.separator+time+"-"+strday+File.separator+type+File.separator; 
 		// System.out.println(tempPath); 
 		 System.out.println(time);  
-		 Collection<SNInventory> coc = InventoryChange.get(TimeUtill.dataAdd( realtime, 1));
-	        // 苏宁样机 
-	    	Collection<SNInventory> com =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd( realtime, 1)).values(); 
+		 Collection<SNInventory> coc = InventoryChange.get(TimeUtill.dataAdd( realtime, 0));
+	        // 苏宁样机  
+	    	Collection<SNInventory> com =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd( realtime, 0)).values(); 
 	        // 苏宁坏机 
-	        Collection<SNInventory> cob = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd( realtime, 1)).values();
+	        Collection<SNInventory> cob = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd( realtime, 0)).values();
 	     //File filec = new File(tempPath+"common.csv"); 
 	     
 	    // File filem = new File(tempPath+"model.csv");

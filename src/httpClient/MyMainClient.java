@@ -138,14 +138,14 @@ public class MyMainClient {
                    
 			//inventoryOut.getinventoryOut(start, endtime, mc); 
 			inventoryOut.get(starttime, endtime);  
-			                    
+			                     
 			//inventoryModelOut.getinventoryOutModel(start, endtime, mc);
 			inventoryModelOut.get(starttime, endtime);
 			     
 	       // inventoryIN.getinventoryIN(start, endtime, mc);
-		   inventoryIN.get(starttime, endtime);  
-			          // 开始    
-			// 库存                       
+		    inventoryIN.get(starttime, endtime);  
+			// 开始    
+			// 库存                          
 			InventoryDownLoad.save();   
                   
 			InventoryModelDownLoad.save();
