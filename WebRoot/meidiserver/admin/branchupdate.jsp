@@ -62,7 +62,7 @@ function changes(){
         type: "post",  
          url: "server.jsp",
          data:"method=branchtypeupdate&id="+str1+"&bid="+bid+"&typestatues="+typestatues+"&modelstatues="+modelstatues,
-         dataType: "",  
+         dataType: "",
          success: function (data) { 
            window.location.href="branch.jsp";
            }, 

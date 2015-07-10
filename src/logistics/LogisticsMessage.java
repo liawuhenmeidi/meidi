@@ -17,12 +17,20 @@ public class LogisticsMessage {
    private int uid ;   //   司机
    private int bid ;   // 目的地
    private int price ;  // 价位
-   private int statues ; 
+   private int statues ;   // 0 未完成  1 已完成  2 已结账
    private String submittime;
    private String sendtime ;  // 送货时间
-   
-    
-   public String getSendtime() {
+   private String locateMessage;   //路线
+     
+   public String getLocateMessage() {
+	return locateMessage;
+}
+
+public void setLocateMessage(String locateMessage) {
+	this.locateMessage = locateMessage;
+}
+
+public String getSendtime() {
 	return sendtime;
 }
 

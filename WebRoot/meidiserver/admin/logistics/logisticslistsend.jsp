@@ -2,8 +2,9 @@
 <% 
 request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user"); 
-List<LogisticsMessage>	list = LogisticsMessageManager.getlist();
-  
+ 
+List<LogisticsMessage>	list = LogisticsMessageManager.getlist(0);
+    
 //System.out.println("CarsService.getmap()"+CarsService.getmap());
 
 %>
@@ -18,9 +19,11 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist();
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
 
+function detail(id){
+	window.location.href="logisticDetail.jsp?id="+id;
+}
+
  
-
-
 </script>
 </head>
 
@@ -58,7 +61,7 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist();
 			 LogisticsMessage ca = list.get(i);
 			 
 			 %>  
-			 <tr class="asc"> 
+			 <tr class="asc" ondblclick="detail('<%=ca.getId()%>')"> 
 			 <td >  
 			<%=ca.getUser().getUsername() %>
 	 </td>

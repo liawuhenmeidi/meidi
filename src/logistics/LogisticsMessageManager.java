@@ -12,6 +12,7 @@ import database.DB;
 import makeInventory.MakeInventory;
 import user.User;
 import utill.DBUtill;
+import utill.TimeUtill;
 
 public class LogisticsMessageManager {
 	public static   List<String> save(User user ,LogisticsMessage lm){
@@ -23,9 +24,20 @@ public class LogisticsMessageManager {
 			   listsql.add(sql);
 	 
 		  return  listsql;
-		   
+		    
 	   }    
+	  
+	public static   boolean updateLocate(User user ,String locate,String id ){
+		  String sql = "update mdlogistics set locateMessage =  CONCAT(locateMessage,',"+TimeUtill.gettimeString()+"::"+locate+"') where id ="+id;
+		  return  DBUtill.sava(sql);  
+		    
+	   }     
 	
+	public static   boolean updatestatues(User user ,String id ){
+		  String sql = "update mdlogistics set statues = 1  where id ="+id;
+		  return  DBUtill.sava(sql);  
+		    
+	   }
 	public static   boolean  saveDB(User user ,LogisticsMessage lm){
 		List<String> sqls= save(user,lm);
 		 return DBUtill.sava(sqls); 
@@ -51,8 +63,50 @@ public class LogisticsMessageManager {
 				DB.close(conn);
 			} 
 			return list;
+	  } 
+	     
+	 public static List<LogisticsMessage>	getlist(int statues){
+		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
+		  Connection conn = DB.getConn(); 
+			String sql = "select * from  mdlogistics where statues = "+statues;
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) {
+					LogisticsMessage ca = getLogisticsMessageFromRs(rs);
+					list.add(ca);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			} 
+			return list;
+	  } 
+	 
+	 public static List<LogisticsMessage>	getlist(int uid,int statues){
+		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
+		  Connection conn = DB.getConn(); 
+			String sql = "select * from  mdlogistics where statues = "+statues +" and uid="+uid;
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) {
+					LogisticsMessage ca = getLogisticsMessageFromRs(rs);
+					list.add(ca);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			} 
+			return list;
 	  }
-	      
+	 
 	 public static LogisticsMessage	getByid(int id){ 
 		 LogisticsMessage ca = null; 
 		  Connection conn = DB.getConn();       
@@ -95,6 +149,32 @@ public class LogisticsMessageManager {
 			return list;
 	  } 
 	 
+	 public static boolean updatecharge(String ids){
+		 String sql = "update mdlogistics set statues = 2 where id in "+ids;
+		 return  DBUtill.sava(sql);
+		 		  
+	 }
+	 public static List<LogisticsMessage>	getlist(String ids){
+		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
+		  Connection conn = DB.getConn();    
+			String sql = "select * from  mdlogistics where id in "+ ids;
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try { 
+				while (rs.next()) {
+					LogisticsMessage ca = getLogisticsMessageFromRs(rs);
+					list.add(ca);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			} 
+			return list;
+	  } 
+	 
 	 private static LogisticsMessage getLogisticsMessageFromRs(ResultSet rs){
 		 LogisticsMessage ca = new LogisticsMessage();
 			try { 
@@ -106,6 +186,7 @@ public class LogisticsMessageManager {
 				ca.setStatues(rs.getInt("statues"));
 				ca.setSubmittime(rs.getString("submittime"));
 				ca.setSendtime(rs.getString("sendtime"));
+				ca.setLocateMessage(rs.getString("locateMessage"));
 			} catch (SQLException e) { 
 				e.printStackTrace();
 			}	

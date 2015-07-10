@@ -30,7 +30,7 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.value
  $(function () {    
  	$("#"+type).css("color","red");
  }); 
-   
+    
  function search(statues){
 		window.location.href="logistic.jsp?statues="+statues;
 	}  
@@ -40,9 +40,9 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.value
 </script> 
 </head> 
 <body>  
-<div class="main"> 
+<div class="main">  
 <div class="s_main_tit"><span class="qiangdan"><a href="../welcom.jsp">返回</a></span></div>
-<div class="s_main_tit"><span style="cursor:hand" id="0" onclick="search('0')">待送货</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="1" onclick="search('1')">已送货</span>&nbsp;&nbsp;</div>
+<div class="s_main_tit"><span style="cursor:hand" id="0" onclick="search('0')">待送货</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="1" onclick="search('1')">已送货</span>&nbsp;&nbsp;<span style="cursor:hand" id="2" onclick="search('2')">已结款</span></div>
  
      <div>   
                 

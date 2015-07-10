@@ -540,10 +540,10 @@ function getInventory(){
             if(logistics_p){
             	%>
             	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logistics.jsp')" >物流配工</a></p> 
-            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslist.jsp')" >配工信息</a></p> 
-            	  
+            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistsend.jsp')" >待送货</a></p> 
+            	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistcharge.jsp')" >待结款</a></p> 
             	<%
-            }  
+            }   
             if(logistics_c){ 
             	  
             	%>  

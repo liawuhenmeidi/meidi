@@ -3,17 +3,28 @@
 <%           
 User user = (User)session.getAttribute("user"); 
 String id = request.getParameter("id");
- 
+String method = request.getParameter("method"); 
+boolean flag = false ; 
+if("savelocate".equals(method)){ 
+	String locate = request.getParameter("locate"); 
+	LogisticsMessageManager.updateLocate(user, locate, id);
+}else if("savestatues".equals(method)){
+	LogisticsMessageManager.updatestatues(user, id);
+	response.sendRedirect("logistic.jsp");
+}   
+
 LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
-         
+
+int statues = lm.getStatues();
+
+          
 %>  
 <!DOCTYPE HTML>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
 <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=yes"/> 
-  
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <link rel="stylesheet" type="text/css" href="../../css/songhuo.css"/>  
 <style type="text/css">
@@ -67,7 +78,11 @@ LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
    
 <div id="mapContainer"  style="display:none"></div>
 <div class="main">  
-<div class="s_main_tit"><span class="qiangdan"><a href="../welcom.jsp">返回</a></span><span class="qiangdan"><a href="javascript:showLocationInfo()">送货已完成</a></span></div>
+<div class="s_main_tit"><span class="qiangdan"><a href="logistic.jsp">返回</a></span>
+<% if(statues == 0) {%>
+<span class="qiangdan"><a href="javascript:savestatues()">送货已完成</a></span>
+<% }%>
+</div>
      <div>               
      <form method = "post"  >  
       <table style="width:100% "> 
@@ -94,13 +109,43 @@ LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
 	  <%=lm.getSendtime() %>
 	  </td> 
  </tr>    
+ <tr class="asc">
+ <td align="center">行车记录</td>
+ <td align="center"> 
+ <table>
+	 
+ <%  
+ String locateM = lm.getLocateMessage();
+ if(!StringUtill.isNull(locateM)){
+	 String[] locateMs = locateM.split(",");
+	 for(int i=1;i<locateMs.length;i++){
+		 String locate = locateMs[i];  
+		 String[] locates = locate.split("::");
+		 String time = locates[0]; 
+		 String l = locates[1];
+		 
+		 %>
+		 <tr><td><%= time%></td><td><%=l %></td></tr>
+		 
+		 <%
+	 }
+	 
+	 
+ }
+ 
+ 
+ %>
+ </table>
+ </td>  
+ </tr>
+ <% if(statues == 0){ %>
     	<tr class="asc">  
 	<td colspan="2" align="center"> 
 	<input type="button" value="中转站记录地点" onclick="showLocationInfo()"/>
 	</td>   
 	</tr>
 	
-			 
+<% }%>			 
    
      
       </table>
@@ -142,32 +187,35 @@ LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
 		            radius: 1000,
 		            extensions: "all"
 		        }); 
-		        //逆地理编码
+		        //逆地理编码 
 		        MGeocoder.getAddress(locationInfo, function(status, result){
 		        	if(status === 'complete' && result.info === 'OK'){
 		        		geocoder_CallBack(result);
 		        	} 
 		        });
 		    }); 
-		      
-		    
-			function geocoder_CallBack(data) {
+		       
+		     
+			function geocoder_CallBack(data) { 
 				address = data.regeocode.formattedAddress;
-				alert(address); 
+				window.location.href="logisticDetail.jsp?method=savelocate&locate="+address+"&id=<%=id%>";
+ 
+				//alert(address); 
 			} 
 	}  
 	 
 	function showLocationInfo() 
-	{  
+	{   
+		//alert(1); 
 		//var locationX = locationInfo.lng; //定位坐标经度值
 		//var locationY = locationInfo.lat; //定位坐标纬度值
 		//document.getElementById('info').innerHTML = "定位点坐标：("+locationX+","+locationY+")";
 		//alert("定位点坐标：("+locationX+","+locationY+")");
-		init();  
+		init();   
 	} 
-	   
-	function saveLocation(){
-		 alert(address);
+	    
+	function savestatues(){
+		window.location.href="logisticDetail.jsp?method=savestatues&id=<%=id%>";
 	}
  </script>   
 
