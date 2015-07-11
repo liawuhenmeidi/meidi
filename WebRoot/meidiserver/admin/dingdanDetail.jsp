@@ -27,6 +27,8 @@ HashMap<String,ArrayList<String>> listt = ProductManager.getProductName();
 
 String plist = StringUtill.GetJson(listt);
 Message message = MessageManager.getMessagebyoid(id); 
+
+boolean flag = UserManager.checkPermissions(user, Group.dealSend);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -58,7 +60,7 @@ position:fixed;
 var id = "<%=id%>";
 var jsons = <%=plist%> ; 
 var jsonallp =  <%=listallpp%>; 
-
+var flag = "<%=flag%>"; 
 $(function () {
 	initproductSerch("#dingmaordercategory","#dingmatype");
 	
@@ -218,6 +220,20 @@ function checkedd(type){
 			return false ;
 		}
 	}
+	if(flag){
+		var pos = $("#pos").val();
+		if(pos != "" && pos != null){
+			if(pos.length != 9){
+				alert("pos(厂送)单号为九位数");
+				return false ;
+			}
+		}else {
+			alert("");
+			return false ;
+		}
+	}
+	
+	
 	$("#print").val(type);
 	$("#form").submit();
 	 
@@ -271,8 +287,8 @@ function checkedd(type){
 		<tr class="asc">	 
 			<td align="center">pos(厂送)单号</td>
 			<td align="center" <%=o.getPosremark()==1?tdcol:"" %>>
-	          <% if(UserManager.checkPermissions(user, Group.dealSend)){
-	        	  %>
+	          <% if(flag){
+	        	  %> 
 			    <input type="text"  name="pos" id="pos" value="<%=o.getPos() %>"  />
 			   <% }else {    
 			   %>  
@@ -284,7 +300,7 @@ function checkedd(type){
 				<td align="center">OMS订单号</td>
 			<td align="center" <%=o.getSailidrecked()==1?tdcol:"" %>>
 			
-			 <% if(UserManager.checkPermissions(user, Group.dealSend)){
+			 <% if(flag){
 	        	  %>
 			    <input type="text"  name="sailid" id="sailid" value="<%=o.getSailId() %>"  />
 			   <% }else {    
@@ -297,7 +313,7 @@ function checkedd(type){
 			<td align="center">验证码(联保单)</td>
 			 <td align="center" <%=o.getReckedremark()==1?tdcol:"" %>>
 			 
-			 <% if(UserManager.checkPermissions(user, Group.dealSend)){
+			 <% if(flag){
 	        	  %> 
 			    <input type="text"  name="check" id="chek" value="<%=o.getCheck() %>"  />
 			   <% }else {  
@@ -317,7 +333,7 @@ function checkedd(type){
 		<tr class="asc">
 		<td align="center">票面名称</td>
 			<td align="center">
-				<% if(UserManager.checkPermissions(user, Group.dealSend) ){
+				<% if(flag ){
 	        	  %> 
 			      <select class="category" name="dingmaordercategory" id="dingmaordercategory" style="width:95% ">
                       <option>&nbsp;&nbsp;&nbsp;&nbsp;</option>
@@ -347,7 +363,7 @@ function checkedd(type){
 		
 		    <td align="center">票面型号</td> 
 			<td align="center">
-			<% if(UserManager.checkPermissions(user, Group.dealSend) ){
+			<% if(flag ){
 	        	  %> 
 	        	 <input type="text" name="dingmatype" id ="dingmatype"  value="<%=o.getSendType(1,"")%>" style="width:90% "></input>
 			   <% }else {      
@@ -361,7 +377,7 @@ function checkedd(type){
 			<td align="center">票面数量</td>
 			 
 			<td align="center">
-			<% if(UserManager.checkPermissions(user, Group.dealSend) ){
+			<% if(flag ){
 	        	  %> 
 	        	  <input type="text" id="dingmaproductNum" name="dingmaproductNum" value="<%= o.getSendCount(1,"")%>" style="width:50%" />
 			   <% }else {      
@@ -405,7 +421,7 @@ function checkedd(type){
 			<td align="center">顾客信息</td>
 			<td align="center">
 			
-			 <% if(UserManager.checkPermissions(user, Group.dealSend) || UserManager.checkPermissions(user, Group.sencondDealsend)){
+			 <% if(flag || UserManager.checkPermissions(user, Group.sencondDealsend)){
 	        	  %>
 	        	   
 	        	  <%=o.getUsername()  +"</p>" %>  
@@ -423,7 +439,7 @@ function checkedd(type){
 		</td>
             <td align="center">开票日期</td> 
             <td align="center">
-            <% if(UserManager.checkPermissions(user, Group.dealSend) ){
+            <% if(flag ){
 	        	  %> 
 			     <input class="date" type="text" name="saledate"   id = "serviceDate2" value="<%=o.getSaleTime() %>"   onclick="new Calendar().show(this);" readonly="readonly" style="width:90% "></input> 
 			   <% }else {      
@@ -436,7 +452,7 @@ function checkedd(type){
             </td>  
             <td align="center">预约日期</td>
             <td align="center">
-             <% if(UserManager.checkPermissions(user, Group.dealSend) || UserManager.checkPermissions(user, Group.sencondDealsend) ||  UserManager.checkPermissions(user, Group.sencondDealsend)){
+             <% if(flag || UserManager.checkPermissions(user, Group.sencondDealsend) ||  UserManager.checkPermissions(user, Group.sencondDealsend)){
 	        	  %> 
 	        	 <!--<input class="date2" type="text" name="andate" id ="serviceDate"  value="<%=o.getOdate() %>"   style="width:90% "></input>  -->
 			     <input class="date" type="text" name="andate"  id = "serviceDate" onclick="new Calendar().show(this);" value="<%=o.getOdate() %>"  readonly="readonly" style="width:90% "></input> 
@@ -453,7 +469,7 @@ function checkedd(type){
 		<tr  class="asc">
 		    <td align="center">送货地区</td>
             <td align="center">
-            <% if(UserManager.checkPermissions(user, Group.dealSend)){
+            <% if(flag){
 	        	  %>
 	        	 <select class = "quyu" name="diqu" id="quyu">
 			        <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
@@ -481,7 +497,7 @@ function checkedd(type){
             <td align="center">送货地址</td>
             <td align="center">
             
-            <% if(UserManager.checkPermissions(user, Group.dealSend)){
+            <% if(flag){
 	        	  %>
 	        	 <textarea  id="locations"  name="locations" ><%=o.getLocateDetail() %></textarea> 
 			   
@@ -500,7 +516,7 @@ function checkedd(type){
 		  <tr class="asc"> 
 			<td align="center">备注</td>
 			  <td align="center"> 
-			  <% if(UserManager.checkPermissions(user, Group.dealSend)){
+			  <% if(flag){
 	        	  %>  
 	        	<textarea  id="remark" name="remark" ><%=o.getRemark() %></textarea>   
 			   <% }else {    
@@ -541,7 +557,7 @@ function checkedd(type){
           <td></td>
     <td width="100%" class="center"><input type="button"  style="background-color:red;font-size:25px;"  value="确认修改" onclick="checkedd('query')"  /></td>
     <td width="100%" class="center"> 
-    <% if(o.getPrintSatues() == 1 && UserManager.checkPermissions(user, Group.dealSend)){ %>
+    <% if(o.getPrintSatues() == 1 && flag){ %>
     <input type="button"  style="background-color:red;font-size:25px;"  value="打印" onclick="checkedd('print')"/>
     <% }%>
     </td>
