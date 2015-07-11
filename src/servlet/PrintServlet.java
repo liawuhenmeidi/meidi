@@ -5,6 +5,9 @@ import gift.GiftManager;
 import gift.GiftService;
 import group.Group;
 
+import inventory.InventoryBranch;
+import inventory.InventoryBranchManager;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -40,6 +43,7 @@ import utill.BasicUtill;
 import utill.DoubleUtill;
 import utill.HttpRequestUtill;
 import utill.StringUtill;
+import utill.TimeUtill;
 import wilson.upload.UploadManager;
 import wilson.upload.UploadSalaryModel;
 
@@ -57,8 +61,11 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 
+import branch.BranchService;
+
 import category.Category;
 import category.CategoryManager;
+import category.CategoryService;
  
 
 /**
@@ -80,11 +87,14 @@ public class PrintServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		 
 		String method = request.getParameter("method");
+		logger.info(method); 
 		if("exportall".equals(method)){
-			exportOrders( request,response);
+			exportOrders( request,response); 
 		}else if("total".equals(method) || "totalcategory".equals(method) || "typetotal".equals(method) ){
 			exporttotalExport(request,response);
-		}
+		}else if("database".equals(method)){
+			exportDatabase(request,response);
+		} 
     }
 	/**
 	 * 处理微信服务器发来的消息
@@ -798,7 +808,74 @@ public class PrintServlet extends HttpServlet {
 				}
 	}
 	
-	
+	public void exportDatabase(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("user");
+		
+		String branch = request.getParameter("branch");
+		String branchid = BranchService.getNameMap().get(branch).getId()+"";
+   	    String categoryid = request.getParameter("categoryid");
+   	    
+	   	List<InventoryBranch> list = InventoryBranchManager.getCategoryid(branchid, categoryid);
+
+		       // 第一步，创建一个webbook，对应一个Excel文件
+				HSSFWorkbook wb = new HSSFWorkbook();
+				// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+				HSSFSheet sheet = wb.createSheet("库存");
+				// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+				HSSFRow row = sheet.createRow((int) 0);
+				// 第四步，创建单元格，并设置值表头 设置表头居中
+				HSSFCellStyle style = wb.createCellStyle();
+				
+				style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+				int x = 0 ; 
+				HSSFCell cell = row.createCell((short) x++);
+				cell.setCellValue("品类");
+				cell.setCellStyle(style);  
+				cell = row.createCell((short) x++);
+				cell.setCellValue("型号");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("账面库存");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("实际库存");
+				cell.setCellStyle(style);
+				// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
+ 
+                 int count = 0 ;
+				for (int i = 0; i < list.size(); i++){
+					
+					InventoryBranch ib = list.get(i);
+                   
+						if(ib.getPapercount() != 0 || ib.getRealcount() != 0){
+							row = sheet.createRow((int) count + 1);
+							count++;
+							int y = 0 ;   
+							Category c = CategoryService.getmap().get(ib.getInventoryid());
+							// 第四步，创建单元格，并设置值
+							row.createCell((short) y++).setCellValue(c.getName()); 
+							row.createCell((short) y++).setCellValue(ib.getType()); 
+							row.createCell((short) y++).setCellValue(ib.getPapercount());
+							row.createCell((short) y++).setCellValue(ib.getRealcount()); 
+					 }
+
+				}
+				//System.out.println(count);
+				// 第六步，将文件存到指定位置
+				try    
+				{     
+					response.setContentType("APPLICATION/OCTET-STREAM");
+					response.setHeader("Content-Disposition", "attachment; filename=\""+ TimeUtill.getdatesimple() + branch+".xls\"");
+					//FileOutputStream fout = new FileOutputStream("E:/报装单"+printlntime+".xls");
+					wb.write(response.getOutputStream());
+					response.getOutputStream().close();
+			
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 将请求、响应的编码均设置为UTF-8（防止中文乱码）

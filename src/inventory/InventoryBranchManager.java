@@ -79,9 +79,9 @@ public static List<InventoryBranch> getCategoryid(String branch , String categor
 		Connection conn = DB.getConn();
 		String sql = ""; 
 		if(!StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and branchid in ("+branch+")  and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
-		}else if(!StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){
-			sql = "select * from mdinventorybranch where inventoryid = '"+categoryid +"' and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
+			sql = "select * from mdinventorybranch where inventoryid in ("+categoryid +") and branchid in ("+branch+")  and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
+		}else if(!StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){  
+			sql = "select * from mdinventorybranch where inventoryid in ("+categoryid +") and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
 		}else if(StringUtill.isNull(categoryid) && !StringUtill.isNull(branch)){
 			sql = "select * from mdinventorybranch where  branchid in ("+branch+") and branchid not in (select id from mdbranch where statues = 1 ) order by  id desc";  
 		}else if(StringUtill.isNull(categoryid) && StringUtill.isNull(branch)){

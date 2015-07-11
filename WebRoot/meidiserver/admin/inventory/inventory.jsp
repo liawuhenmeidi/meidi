@@ -98,7 +98,8 @@ td {
 	         dataType: "",   
 	         success: function (data) { 
 	        	 var addstr =  '<thead>'+
-	     		  '<tr>'+
+	     		  '<tr>'+ 
+	     		    ' <th align="left" ><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </th>'+
 	        		'<th align="left">产品类别</th>'+
 	     			'<th align="left">产品型号</th>'+
 	     			'<th align="left">账面库存数量</th>'+
@@ -113,12 +114,12 @@ td {
 	        		 var str = json[i]; 
 	        		 var pandian ="否";
 	        		 if(str.isquery == true){
-	        			 pandian = "是";
+	        			 pandian = "是"; 
 	        		 }
 	        		 if(counttype != 0 || counttype == 0 && str.papercount != 0 ){
 		        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branch+'\')"  onclick="serchclick(\''+str.categoryid+'\',\''+branch+'\',this)" >' +  
-		        		      
-		        		     ' <td>'+str.cateoryName+'</td> ' +  
+		        		    ' <td><input type="checkbox" id="check_box" name="'+str.categoryid+'"/></td> ' +  
+		        		     ' <td>'+str.cateoryName+'</td> ' +   
 		        		     ' <td>'+str.type+'</td> ' +    
 		        		     ' <td>'+str.papercount+'</td> ' +  
 		        		     // inventoryid
@@ -138,7 +139,34 @@ td {
 
  }
   
-
+function exportd(){
+	var branch = $("#branch").val();
+	var attract = new Array(); 
+	var i = 0 ;
+	$("input[type='checkbox'][id='check_box']").each(function(){          
+   		if($(this).attr("checked")){
+   				var str = this.name; 
+   				
+   				if(str != null  &&  str != ""){
+	   				   attract[i] = str; 
+		   	            i++;
+	   				}	
+   		}
+   	}); 
+	
+	if(branch == "" || null == branch){
+		alert("仓库不能为空"); 
+		return ;
+	}
+	
+	if(attract.length <= 0){
+		alert("请选择产品类别");
+		return ;
+	}
+	
+	 window.location.href='../../Print?branch='+branch+"&categoryid="+attract.toString()+"&method=database"; 
+	
+}
 </script>
 </head>
 
@@ -169,6 +197,8 @@ td {
      </select> 
   
 	   <input type="button" name="" value="查询" onclick="add()"/>   
+	   
+	   <input type="button" name="" value="导出库存" onclick="exportd()"/>   
 			   <%
 	} 
    %>
@@ -179,6 +209,8 @@ td {
    <table width="100%"  cellspacing="1" id="table" >
    <thead>
 		<tr>
+		    <th align="left" ><input type="checkbox" value="" id="allselect" onclick="seletall(allselect)"></input> </th>
+		    <th align="left">产品类别</th>
 			<th align="left">产品类别</th>
 			<th align="left">产品型号</th>
 			<th align="left">账面库存数量</th>
