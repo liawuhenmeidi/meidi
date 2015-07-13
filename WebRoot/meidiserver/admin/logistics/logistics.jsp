@@ -4,6 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
 TokenGen.getInstance().saveToken(request); 
 
+String time = TimeUtill.getdateString(); 
 String token = (String)session.getAttribute("token"); 
 String method = request.getParameter("method");
 List<Cars> list = CarsManager.getlist();
@@ -20,17 +21,27 @@ if("add".equals(method)){
 	 String uid = request.getParameter("uid");
 	 String carid = request.getParameter("carid");
 	 String prince = request.getParameter("prince");
-	 String bid = request.getParameter("branch");
-	 String sendtime = request.getParameter("sendtime");    
+	 String advancePrice = request.getParameter("advancePrice"); 
+	 if(StringUtill.isNull(advancePrice)){
+		 advancePrice = 0+""; 
+	 }
+	 String realbranch = request.getParameter("realbranch");
+	 String sendtime = request.getParameter("sendtime"); 
+	 String remark = request.getParameter("remark");
+	 String startlocate = request.getParameter("startlocate");
 	 LogisticsMessage ls = new LogisticsMessage();
-	 ls.setBid(Integer.valueOf(bid)); 
+	  
 	 ls.setCarid(Integer.valueOf(carid));
 	 ls.setPrice(Integer.valueOf(prince));
 	 ls.setUid(Integer.valueOf(uid));   
-	 ls.setSubmittime(TimeUtill.getdateString()) ;
-	 ls.setSendtime(sendtime);
+	 ls.setSubmittime(TimeUtill.gettime()) ; 
+	 ls.setSendtime(sendtime); 
+	 ls.setLocates(realbranch); 
+	 ls.setRemark(remark); 
+	 ls.setAdvancePrice(Integer.valueOf(advancePrice));
+	 ls.setStartLocate(startlocate); 
 	 boolean flag = LogisticsMessageManager.saveDB(user, ls);
-	 String type = "";
+	 String type = ""; 
 	  if(flag){
 		  type = "updated";
 	  }     
@@ -52,21 +63,33 @@ if("add".equals(method)){
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
 var jsonmap = '<%=mapjosn%>';
+var time = '<%=time%>';  
+time=new Date(time.replace("-", "/").replace("-", "/"));  
+var locates = new Array(); 
 $(function () {
-$("#branchtype").change(function(){
-	  $("#branch").html("");   
-	  var num = ($("#branchtype").children('option:selected').val());
-	  var jsons =  $.parseJSON(jsonmap);
- 
-	  var json = jsons[num];
-	  //alert(json); 
-    var options = '<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>'; 
-    for(var i=0; i<json.length; i++) 
-  	 {
-  	 options +=  "<option value='"+json[i].id+"'>"+json[i].locateName+"</option>";
-  	 }
-  	 $("#branch").html(options);    	  
-}); 
+	$("#branchtype").change(function(){
+		  $("#branch").html("");   
+		  var num = ($("#branchtype").children('option:selected').val());
+		  var jsons =  $.parseJSON(jsonmap);
+	 
+		  var json = jsons[num];
+		  //alert(json); 
+	    var options = '<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>'; 
+	    for(var i=0; i<json.length; i++) 
+	  	 {
+	  	 options +=  "<option value='"+json[i].id+"'>"+json[i].locateName+"</option>";
+	  	 }
+	  	 $("#branch").html(options);    	  
+	}); 
+
+	
+	$("#branch").change(function(){
+		var b = $("#branch option:selected").text();
+		 
+		$("#addbranch").val(b); 
+	});
+
+
 });
 
 
@@ -76,7 +99,10 @@ function mysubmit(){
 	var uid = $("#uid").val();
 	var carid = $("#carid").val();
     var prince = $("#prince").val();
-    var branch = $("#branch").val();
+   
+    var sendtime = $("#sendtime").val();   
+    var send=new Date(sendtime.replace("-", "/").replace("-", "/"));  
+    //alert(send);
 	if(null == uid || "" == uid){
 		alert("司机不能为空"); 
 		return false; 
@@ -87,28 +113,64 @@ function mysubmit(){
 		return false;
 	} 
 	 
-	if(null == branch || "" == branch){
-		alert("送货地址不能为空");
+	if(locates.length < 1 ){
+		alert("送货地址不能为空"); 
 		return false;
-	}
-	
+	} 
+	     
 	if(null ==prince || "" == prince){
-		alert("价格不能为空");
-		return false;
+		alert("运费不能为空");
+		return false; 
 	}else {
 		if(isNaN(prince)){
-			alert("价格必须是数字");
+			alert("运费必须是数字");
 			return false; 
 		}
 	}
 	
+	if(null == sendtime || "" == sendtime){
+		alert("送货时间不能为空");
+		return  false;
+	}else { 
+		if(send <time){
+			alert("送货时间过期");
+			return  false ;
+		}
+	}
 	
 	$("#myform").submit();
 }
 
-
-</script>
-</head>
+function addlocate(){
+	var locate = $("#addbranch").val();
+	var num =$.inArray(locate,locates);
+	//alert(num); 
+	if(num == -1){ 
+		locates.push(locate);
+		initLocate();
+	}
+	 
+	 $("#addbranch").val(""); 
+}
+  
+function initLocate(){
+	$("#addlocate td").remove(); 
+	var html = '';   
+	for(var i=0;i<locates.length;i++){
+		lo = locates[i]; 
+		html +='<td bgcolor="white" onclick="delLocate(\''+lo+'\')">['+lo+']</td>';
+		 
+	}  
+    $("#realbranch").val(locates.toString());
+	$("#addlocate").append(html);
+}
+function delLocate(lo){
+	
+	locates.splice($.inArray(lo,locates),1);
+	initLocate(); 
+} 
+</script> 
+</head> 
 
 <body>
 <!--   头部开始   -->
@@ -130,11 +192,13 @@ function mysubmit(){
  <form id="myform">   
  <input type="hidden" name="method" value="add"/> 
    <input  type="hidden" name="token" value="<%=token%>" />
+    <input  type="hidden" name="realbranch" id="realbranch" />
 <table width="100%" cellspacing="1" id="table"> 
 	<tr class="asc"> 
 	<td>司机<span style=" color:#F00;">*</span></td>
 	 <td >  
-	 <select id="uid" name="uid">
+	
+	 <select id="uid" name="uid" >
 	 <option></option>
 	   <%   
 	    if(null != listu){
@@ -175,10 +239,30 @@ function mysubmit(){
 	 </select></td> 
 	 
 	</tr>
-	 <tr class="asc">
-    <td width="25%">送货地址<span style=" color:#F00;">*</span></td>
+	<tr class="asc">
+	<td>起始地址</td>
+	<td>   
+     <input type="text" name="startlocate" placeholder="起始地址"/>
+	</td>
+	</tr>
+	
+	<tr class="asc">
+	<td>送货地址</td>
+	<td>
+      <table>
+      <tr id="addlocate">
+         
+      </tr>
+      </table>
+	</td> 
+	</tr>
+	
+	 <tr class="asc"> 
+    <td width="25%">选择地址<span style=" color:#F00;">*</span></td>
     <td width="65%">
-     <select class = "quyu" name="branchtype" id="branchtype" >
+     <table width="100%">  
+	    <tr class="asc">
+	    <td> <select class = "quyu" name="branchtype" id="branchtype" >
           <option >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
 		<%
 		 for(int i=0;i<listb.size();i++){
@@ -190,26 +274,50 @@ function mysubmit(){
 			 }
 		 }
 		%>
-	</select>
+	</select> 
     <select id="branch" name="branch">
           <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option> 
-       </select>
- 
+       </select></td>
+	    </tr> 
+	    <tr class="asc"> 
+	    <td>
+	    <input type="text" name="addbranch" id="addbranch" value="" placeholder="增加地址"/>
+	    <input type="button" value="增加" onclick="addlocate()"/>
+	    
+	    </td>
+	    
+	    </tr>
+	 </table>
+	 
     
+  
+  
     </td>
   </tr>
 	<tr class="asc">
-	<td>价格</td>
+	<td>运费</td>
 	<td>
-	<input type="text" name="prince" id="prince"/>(元)
+	<input type="text" name="prince" id="prince" placeholder="运费"/>(元)
+	</td>
+	</tr>
+	<tr class="asc">
+	<td>垫付金额</td> 
+	<td>
+	<input type="text" name="advancePrice" id="advancePrice" placeholder="垫付金额"/>(元)
 	</td>
 	</tr>
 	<tr class="asc"> 
 	<td>送货时间</td> 
 	<td> 
 	<input type="text" name="sendtime" id="sendtime" maxlength="10"
-						onclick="new Calendar().show(this);" placeholder="必填" />(元)
+						onclick="new Calendar().show(this);" placeholder="必填" />
 	</td>
+	</tr>
+	<tr class="asc"> 
+	<td>备注</td>     
+	<td> 
+	<textarea name="remark" id="remark" placeholder="备注"></textarea>
+	</td> 
 	</tr>
 	<tr class="asc">
 	<td colspan="2"> 

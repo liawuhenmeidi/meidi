@@ -3,13 +3,13 @@
 request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user");   
 String uid = request.getParameter("uid"); 
-List<LogisticsMessage>	list = null;
+List<LogisticsMessage>	list = null; 
 if(StringUtill.isNull(uid)){  
-	list = LogisticsMessageManager.getlist("2,3"); 
-}else {  
-	list = LogisticsMessageManager.getlist(Integer.valueOf(uid),"2,3");
-}     
-
+	list = LogisticsMessageManager.getlist();  
+}else {    
+	list = LogisticsMessageManager.getlist(Integer.valueOf(uid));
+} 
+ 
 List<User>  listu = UserService.getLogistics(user);  
 //System.out.println("CarsService.getmap()"+CarsService.getmap());
 
@@ -90,10 +90,14 @@ function totalInit(){
      
      <div class="">
    <div class="weizhi_head">
+
+   
+   
+  
     <form id="mypost">
        <table>
    <tr>
-   <td> 现在位置：结款页</td>
+   <td> 现在位置：车辆登记</td>
    <td>司机</td>
    <td> <select id="uid" name="uid"> 
 	 <option></option>
@@ -123,10 +127,9 @@ function totalInit(){
 	 
    </form>
    </div> 
- 
+
    <div class="table-list">   
    <form action="logisticschargePrint.jsp" id="myformLG"> 
-   <input type="hidden" value="4" name="statues"/>
 <table width="100%" cellspacing="1" id="table"> 
 <tr class="dsc">
 <td width="5%" class="s_list_m" align="center"><input
@@ -139,10 +142,10 @@ function totalInit(){
 	车牌号
 </td>
 <td>送货地址</td> 
-<td>运费</td>
-<td>垫付运费</td>
+<td>价格</td>
 <td>送货时间</td>
 <td>提交时间</td>
+<td>状态</td>
 </tr>
 	 
 	 <%
@@ -152,17 +155,8 @@ function totalInit(){
 			
 			 %>    
 			 <tr class="asc" ondblclick="detail('<%=ca.getId()%>')"> 
-			 <td align="center">
-			 <%
-			   if(ca.getStatues() == 3){
-				   %>
-				   
-				  <input type="checkbox"
-						value="<%= ca.getId()%>" name="lid" id="check_box" onclick="totalInit()"></input> 
-				   <%
-			   }
-			 %>
-			       
+			       <td align="center"><input type="checkbox"
+						value="<%= ca.getId()%>" name="lid" id="check_box" onclick="totalInit()"></input>
 				   </td> 
 			  <td>
 			  <%=ca.getId() %>
@@ -174,14 +168,11 @@ function totalInit(){
 <%=ca.getCars().getNum() %>  
 	</td>   
 	  <td>   
-	    <%=ca.getLocates()%>
+	  <%=ca.getLocates()%> 
 	  </td> 
 	  <td> 
 	  <label id="p<%=ca.getId()%>"><%=ca.getPrice() %></label> 
 	  
-	  </td> 
-	  <td> 
-	  <%=ca.getAdvancePrice() %>
 	  </td>
 	  <td>
 	  <%=ca.getSendtime() %>
@@ -189,12 +180,13 @@ function totalInit(){
 	  <td>
 	  <%=ca.getSubmittime() %>
 	  </td>
+	   <td> 
+	  <%=ca.getStatuesName()%>
+	  </td>
 	</tr> 
-			 
 			 <% 
 		 }
-		 
-		  
+ 
 		 %> 
 		 <tr class="asc">
 		  <td >合计</td>
@@ -202,16 +194,7 @@ function totalInit(){
 		 <td><label id="total"></label></td>
 		 <td colspan="3"></td>
 		 </tr>
-		<tr class="asc"> 
-		<td colspan="7">
-		 
-		</td>
-		<td colspan="2"> 
-		<input type="button" onclick="chager()" value="结款打印" />
-		 
-		</td>
-		 
-		</tr> 
+	
 		 
 		 
 		 <%

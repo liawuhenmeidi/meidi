@@ -93,10 +93,17 @@ int statues = lm.getStatues();
 <td align="center"> 
 <%=lm.getCars().getNum() %>  
 	</td>   
-</tr><tr class="asc"> 
+</tr>
+<tr class="asc"> 
+<td align="center"> 起始地址</td> 
+<td align="center">     
+	 <%=lm.getStartLocate() %> 
+	  </td> 
+</tr>
+<tr class="asc"> 
 <td align="center"> 送货地址</td> 
 <td align="center">    
-	  <%=lm.getBranch().getLocateName() %>
+	 <%=lm.getLocates() %> 
 	  </td>
 </tr><tr class="asc">
 <td align="center"> 价格</td>

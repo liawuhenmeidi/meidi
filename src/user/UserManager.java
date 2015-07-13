@@ -969,7 +969,7 @@ logger.info(sql);
 		boolean flag = false ;
 		
 		User user = UserService.getMapId().get(id);
-		 
+		 logger.info(user); 
 		List<String> sqls = new ArrayList<String>();
 		if(statues != 0){
 			if(!check(user)){

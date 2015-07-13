@@ -93,7 +93,7 @@ String sm = StringUtill.GetJson(model);
 	        	 jsoninventorysn =jQuery.parseJSON(josns["mapsn"]); 
 	        	 jsoninventorysnmodel = jQuery.parseJSON(josns["strmodel"]);
 	        	 jsoninventorysnsale = jQuery.parseJSON(josns["strsale"]);
-	        	
+	        	 
 	           },   
 	         error: function (XMLHttpRequest, textStatus, errorThrown) { 
 	        // alert(errorThrown); 
@@ -129,7 +129,6 @@ String sm = StringUtill.GetJson(model);
 		 if($.inArray(i,rows) == -1){ 
 			 addrow(i); 
 		 }  
-		    
 	}
  }  
        
@@ -155,7 +154,6 @@ String sm = StringUtill.GetJson(model);
 			 return ; 
 		 }
 	 }  
-	  
 	 $("#addcount").html(totalcount);
  }
   
@@ -448,6 +446,7 @@ String sm = StringUtill.GetJson(model);
 		if("" == statues){
 			alert("型号状态不能为空");
 		}
+		
 		var only = ctype+"_"+statues;  
 		 if(ctype == ""){ 
 			 alert("型号不能为空");
@@ -457,18 +456,18 @@ String sm = StringUtill.GetJson(model);
 				 if($.inArray(only,ctypes) != -1){
 					 alert("您录入的型号重复，请检查");
 					 return false;  
-				 } 
-			 }else {  
+				 }  
+			 }else {   
 				 alert("您录入的型号不存在，请检查");
 				 return false; 
 			 } 
 		 }
 	}     
-	  
+	    
 	 $("#submit").css("display","none");
 	 $("#rows").val(rows.toString());
  }
- 
+  
 </script>
 </head>
 

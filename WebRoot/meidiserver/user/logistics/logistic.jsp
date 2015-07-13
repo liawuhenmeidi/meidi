@@ -3,9 +3,15 @@
 <%           
 User user = (User)session.getAttribute("user"); 
 String statues = request.getParameter("statues");
+String method = request.getParameter("method");
 if(StringUtill.isNull(statues)){
 	statues = "0" ;
 } 
+ 
+if("agree".equals(method)){ 
+	LogisticsMessageManager.updateAgree(user); 
+}
+
 List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.valueOf(statues));
   
 //System.out.println("list"+json );     
@@ -37,15 +43,20 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.value
  function detail(id){
 		window.location.href="logisticDetail.jsp?id="+id;
 	}
+ 
+ 
+ function Agree(){  
+	 window.location.href="logistic.jsp?method=agree&statues="+type;
+ }
 </script> 
 </head> 
 <body>  
 <div class="main">  
 <div class="s_main_tit"><span class="qiangdan"><a href="../welcom.jsp">返回</a></span></div>
-<div class="s_main_tit"><span style="cursor:hand" id="0" onclick="search('0')">待送货</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="1" onclick="search('1')">已送货</span>&nbsp;&nbsp;<span style="cursor:hand" id="2" onclick="search('2')">已结款</span></div>
+<div class="s_main_tit"><span style="cursor:hand" id="0" onclick="search('0')">待送货</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="cursor:hand" id="1" onclick="search('1')">已送货</span>&nbsp;&nbsp;<span style="cursor:hand" id="2" onclick="search('2')">待同意</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="cursor:hand" id="3" onclick="search('3')">待结算</span></div>
  
-     <div>   
-                
+     <div>    
+                 
      <form method = "post"  >
      
             
@@ -59,11 +70,13 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.value
 <td align="center"> 送货时间</td>
   
 </tr>
-  
-       <% if(null != list){
+      
+       <% 
+       int total = 0 ;
+       if(null != list){
     	   for(int i=0;i<list.size();i++){
     		   LogisticsMessage lm = list.get(i);
-    		   
+    		   total += lm.getPrice();
     		   %> 
     		  <tr class="asc" onclick="detail('<%=lm.getId()%>')"> 
 			  
@@ -71,9 +84,9 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.value
 <%=lm.getCars().getNum() %>  
 	</td>   
 	  <td align="center">   
-	  <%=lm.getBranch().getLocateName() %>
-	  </td>
-	  <td align="center">  
+	  <%=lm.getLocates() %>
+	  </td> 
+	  <td align="center">   
 	  <%=lm.getPrice() %>
 	  </td>  
 	  <td align="center"> 
@@ -86,7 +99,47 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.value
     		   
     		   <%
     	   }
-       } %>
+    	   %>
+    	   
+    	   <tr class="asc" > 
+			  
+	<td align="center"> 
+	合计： 
+	</td>   
+	  <td align="center">   
+	 
+	  </td> 
+	  <td align="center">   
+	  <%=total %>
+	  </td>  
+	  <td align="center"> 
+	 
+	  </td>
+	</tr> 
+	<%
+       } 
+       
+       if("2".equals(statues)){ 
+    	    %>
+    	    
+    	  <tr class="asc" > 
+			  
+	<td align="center"> 
+	</td>   
+	  <td align="center">   
+	 
+	  </td>   
+	  <td align="center" colspan="2">   
+       <input type="button" value="同意结款" onclick="Agree()"/>
+	  </td>  
+	 
+	</tr>   
+    	    
+    	    
+    	    <%
+       }
+       
+       %>
   
       
       

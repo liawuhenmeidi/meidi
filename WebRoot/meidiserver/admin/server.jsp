@@ -79,6 +79,7 @@
 	} else if ("jihuo".equals(method)) {
 		String id = request.getParameter("id");
 		String statues = request.getParameter("statues");
+		//System.out.println("id"+id+"&&&statues"+statues); 
 		UserManager.setStatues(Integer.valueOf(id),
 				Integer.valueOf(statues));
 	} else if ("duanhuo".equals(method)) {

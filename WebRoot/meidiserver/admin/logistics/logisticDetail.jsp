@@ -7,9 +7,7 @@ boolean flag = false ;
 
 
 LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
- 
- 
-          
+         
 %>  
 <!DOCTYPE HTML>
 <html>
@@ -29,14 +27,14 @@ LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
  
    <div class="">
    <div class="weizhi_head">现在位置：查看明细
-   
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>
     
    </div>      
      
       <table style="width:80% "> 
       <tr class="asc">
-<td align="center">  
+<td align="center" >   
 	车牌号  
 </td>   
 <td align="center"> 
@@ -45,8 +43,8 @@ LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
 </tr><tr class="asc"> 
 <td align="center"> 送货地址</td> 
 <td align="center">    
-	  <%=lm.getBranch().getLocateName() %>
-	  </td>
+	  <%=lm.getLocates()%>
+	  </td> 
 </tr><tr class="asc">
 <td align="center"> 价格</td>
 <td align="center">  

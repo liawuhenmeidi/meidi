@@ -1,13 +1,14 @@
 <%@ page language="java"  import="java.util.*,utill.*,category.*,logistics.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <% 
-request.setCharacterEncoding("utf-8");   
+request.setCharacterEncoding("utf-8");    
 User user = (User)session.getAttribute("user");   
-String uid = request.getParameter("uid"); 
+String statues = request.getParameter("statues"); 
+String uid = request.getParameter("uid");  
 List<LogisticsMessage>	list = null;
-if(StringUtill.isNull(uid)){  
-	list = LogisticsMessageManager.getlist("2,3"); 
-}else {  
-	list = LogisticsMessageManager.getlist(Integer.valueOf(uid),"2,3");
+if(StringUtill.isNull(uid)){    
+	list = LogisticsMessageManager.getlist("1");  
+}else {       
+	list = LogisticsMessageManager.getlist(Integer.valueOf(uid),"1"); 
 }     
 
 List<User>  listu = UserService.getLogistics(user);  
@@ -90,10 +91,14 @@ function totalInit(){
      
      <div class="">
    <div class="weizhi_head">
+
+   
+   
+  
     <form id="mypost">
        <table>
    <tr>
-   <td> 现在位置：结款页</td>
+   <td> 现在位置：车辆登记</td>
    <td>司机</td>
    <td> <select id="uid" name="uid"> 
 	 <option></option>
@@ -123,11 +128,11 @@ function totalInit(){
 	 
    </form>
    </div> 
- 
+  
    <div class="table-list">   
    <form action="logisticschargePrint.jsp" id="myformLG"> 
-   <input type="hidden" value="4" name="statues"/>
-<table width="100%" cellspacing="1" id="table"> 
+   <input type="hidden" name="statues" value="2"/>  
+<table width="100%" cellspacing="1" id="table">  
 <tr class="dsc">
 <td width="5%" class="s_list_m" align="center"><input
 						type="checkbox" value="" id="allselect"
@@ -152,17 +157,8 @@ function totalInit(){
 			
 			 %>    
 			 <tr class="asc" ondblclick="detail('<%=ca.getId()%>')"> 
-			 <td align="center">
-			 <%
-			   if(ca.getStatues() == 3){
-				   %>
-				   
-				  <input type="checkbox"
-						value="<%= ca.getId()%>" name="lid" id="check_box" onclick="totalInit()"></input> 
-				   <%
-			   }
-			 %>
-			       
+			       <td align="center"><input type="checkbox"
+						value="<%= ca.getId()%>" name="lid" id="check_box" onclick="totalInit()"></input>
 				   </td> 
 			  <td>
 			  <%=ca.getId() %>
@@ -207,7 +203,7 @@ function totalInit(){
 		 
 		</td>
 		<td colspan="2"> 
-		<input type="button" onclick="chager()" value="结款打印" />
+		<input type="button" onclick="chager()" value="预约结款" />
 		 
 		</td>
 		 

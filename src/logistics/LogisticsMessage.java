@@ -14,15 +14,87 @@ public class LogisticsMessage {
 	protected static Log logger = LogFactory.getLog(LogisticsMessage.class);
    private int id ;
    private int carid;   // 车号
-   private int uid ;   //   司机
+   private int uid ;   //   司机  
    private int bid ;   // 目的地
-   private int price ;  // 价位
-   private int statues ;   // 0 未完成  1 已完成  2 已结账
-   private String submittime;
-   private String sendtime ;  // 送货时间
-   private String locateMessage;   //路线
-     
-   public String getLocateMessage() {
+   private int price ;  // 运费（给司机结款） 
+   private String startLocate; // 起始地点  
+   private int advancePrice;  // 给（聚美）垫付  
+   private int statues ;   // 0 未完成  1 已完成  2 提出结款请求   3 同意结款   4 已结款   -1 被删除
+   private String submittime; 
+   private String sendtime ;  // 送货时间 
+   private String locateMessage;   //路线>行车记录
+   private String locates;  // 送货地点    
+   private String remark ; 
+   private String statuesName ;
+   private int advanceStatues; 
+   private int pid ;    // 关联ID
+   
+   public int getPid() {
+	return pid;
+}
+
+public void setPid(int pid) {
+	this.pid = pid;
+}
+
+public String getStatuesName() {
+	   if(0 == statues){
+		   statuesName = "待送货";
+	   }else if(1 == statues){ 
+		   statuesName = "已送货";
+	   }else if(2 == statues){
+		   statuesName = "请求结款";
+	   }else if(3 == statues){
+		   statuesName = "同意结款";
+	   }else if(4 == statues){
+		   statuesName = "已结款";
+	   }else if(-1 == statues){
+		   statuesName = "取消";
+	   }
+	return statuesName;
+}
+
+public int getAdvanceStatues() {
+	return advanceStatues;
+}
+
+public void setAdvanceStatues(int advanceStatues) {
+	this.advanceStatues = advanceStatues;
+}
+
+public String getStartLocate() {
+	return startLocate;
+}
+
+public void setStartLocate(String startLocate) {
+	this.startLocate = startLocate;
+}
+
+public int getAdvancePrice() {
+	return advancePrice;
+}
+
+public void setAdvancePrice(int advancePrice) {
+	this.advancePrice = advancePrice;
+}
+
+public String getLocates() {
+	return locates;
+}
+
+public void setLocates(String locates) {
+	this.locates = locates;
+}
+
+public String getRemark() {
+	return remark;
+}
+
+public void setRemark(String remark) {
+	this.remark = remark;
+}
+
+public String getLocateMessage() {
 	return locateMessage;
 }
 

@@ -7,6 +7,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import database.DB;
 
 import makeInventory.MakeInventory;
@@ -15,18 +18,26 @@ import utill.DBUtill;
 import utill.TimeUtill;
 
 public class LogisticsMessageManager {
+	protected static Log logger = LogFactory.getLog(LogisticsMessageManager.class);
 	public static   List<String> save(User user ,LogisticsMessage lm){
 		   List<String> listsql = new ArrayList<String>();
 		    
-			String sql = "insert into mdlogistics (id,uid,bid,carid,submittime,statues,prince,sendtime) " +
-					   		"values (null,"+lm.getUid()+",'"+lm.getBid()+"','"+lm.getCarid()+"','"+lm.getSubmittime()+"','"+lm.getStatues()+"','"+lm.getPrice()+"','"+lm.getSendtime()+"') ;" ; 
+			String sql = "insert into mdlogistics (id,uid,bid,carid,submittime,statues,prince,sendtime,locates,remark,advanceprice,startlocate) " +
+					   		"values (null,"+lm.getUid()+",'"+lm.getBid()+"','"+lm.getCarid()+"','"+lm.getSubmittime()+"','"+lm.getStatues()+"','"+lm.getPrice()+"','"+lm.getSendtime()+"'" +
+					   				",'"+lm.getLocates()+"','"+lm.getRemark()+"','"+lm.getAdvancePrice()+"','"+lm.getStartLocate()+"') ;" ; 
 			 
 			   listsql.add(sql);
-	 
+	  
 		  return  listsql;
 		    
-	   }    
+	   }     
 	  
+	public static   boolean delete(User user ,String ids ){
+		  String sql ="update mdlogistics set statues = -1  where id in ("+ids+")";
+		  return  DBUtill.sava(sql);   
+		    
+	   }  
+	
 	public static   boolean updateLocate(User user ,String locate,String id ){
 		  String sql = "update mdlogistics set locateMessage =  CONCAT(locateMessage,',"+TimeUtill.gettimeString()+"::"+locate+"') where id ="+id;
 		  return  DBUtill.sava(sql);  
@@ -37,7 +48,14 @@ public class LogisticsMessageManager {
 		  String sql = "update mdlogistics set statues = 1  where id ="+id;
 		  return  DBUtill.sava(sql);  
 		    
+	   } 
+	
+	public static   boolean updateAgree(User user ){
+		  String sql = "update mdlogistics set statues = 3  where statues = 2 and uid = "+ user.getId();
+		  return  DBUtill.sava(sql);  
+		    
 	   }
+	
 	public static   boolean  saveDB(User user ,LogisticsMessage lm){
 		List<String> sqls= save(user,lm);
 		 return DBUtill.sava(sqls); 
@@ -64,12 +82,14 @@ public class LogisticsMessageManager {
 			} 
 			return list;
 	  } 
-	     
-	 public static List<LogisticsMessage>	getlist(int statues){
+	 
+	 
+	 public static List<LogisticsMessage>	getlist( String statues){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
 		  Connection conn = DB.getConn(); 
-			String sql = "select * from  mdlogistics where statues = "+statues;
-			Statement stmt = DB.getStatement(conn);
+			String sql = "select * from  mdlogistics where statues in ("+statues+")";
+			logger.info(sql);  
+			Statement stmt = DB.getStatement(conn); 
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {
 				while (rs.next()) {
@@ -80,22 +100,67 @@ public class LogisticsMessageManager {
 				e.printStackTrace();
 			} finally {
 				DB.close(rs);
+				DB.close(stmt); 
+				DB.close(conn);
+			} 
+			return list; 
+	  }  
+	 
+	 public static List<LogisticsMessage>	getAdvancePrince(User user,String statues){
+		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>(); 
+		  Connection conn = DB.getConn(); 
+			String sql = "select * from  mdlogistics where  advanceprice != 0 and advancestatues in ("+statues+")";
+		   logger.info(sql); 
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try { 
+				while (rs.next()) { 
+					LogisticsMessage ca = getLogisticsMessageFromRs(rs);
+					list.add(ca); 
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
 				DB.close(stmt);
 				DB.close(conn);
 			} 
-			return list;
-	  } 
+			return list; 
+	  }
 	 
-	 public static List<LogisticsMessage>	getlist(int uid,int statues){
+	 public static List<LogisticsMessage>	getlist(int uid,String statues){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
-		  Connection conn = DB.getConn(); 
-			String sql = "select * from  mdlogistics where statues = "+statues +" and uid="+uid;
+		  Connection conn = DB.getConn();
+			String sql = "select * from  mdlogistics where statues in ("+statues +") and uid="+uid;
+		   logger.info(sql);
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
-			try {
-				while (rs.next()) {
+			try { 
+				while (rs.next()) { 
 					LogisticsMessage ca = getLogisticsMessageFromRs(rs);
-					list.add(ca);
+					list.add(ca); 
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt);
+				DB.close(conn);
+			} 
+			return list; 
+	  }
+	 
+	 public static List<LogisticsMessage>	getlist(int uid){
+		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
+		  Connection conn = DB.getConn();
+			String sql = "select * from  mdlogistics where  and uid="+uid;
+		   logger.info(sql);
+			Statement stmt = DB.getStatement(conn);
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try { 
+				while (rs.next()) { 
+					LogisticsMessage ca = getLogisticsMessageFromRs(rs);
+					list.add(ca); 
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -106,6 +171,7 @@ public class LogisticsMessageManager {
 			} 
 			return list;
 	  }
+	 
 	 
 	 public static LogisticsMessage	getByid(int id){ 
 		 LogisticsMessage ca = null; 
@@ -149,12 +215,18 @@ public class LogisticsMessageManager {
 			return list;
 	  } 
 	 
-	 public static boolean updatecharge(String ids){
-		 String sql = "update mdlogistics set statues = 2 where id in "+ids;
-		 return  DBUtill.sava(sql);
-		 		  
+	 public static boolean updateAdvancePrince(String ids,String statues){
+		 String sql = "update mdlogistics set advancestatues = "+statues+" where id in "+ids;
+		 return  DBUtill.sava(sql);  
+		 		   
 	 }
-	 public static List<LogisticsMessage>	getlist(String ids){
+	 public static boolean updatecharge(String ids,String statues){
+		 String sql = "update mdlogistics set statues = "+statues+" where id in "+ids;
+		 return  DBUtill.sava(sql); 
+		 		   
+	 }
+	 
+	 public static List<LogisticsMessage>	getlistByIds(String ids){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
 		  Connection conn = DB.getConn();    
 			String sql = "select * from  mdlogistics where id in "+ ids;
@@ -177,7 +249,7 @@ public class LogisticsMessageManager {
 	 
 	 private static LogisticsMessage getLogisticsMessageFromRs(ResultSet rs){
 		 LogisticsMessage ca = new LogisticsMessage();
-			try { 
+			try {  
 				ca.setId(rs.getInt("id"));
 				ca.setUid(rs.getInt("uid")); 
 				ca.setBid(rs.getInt("bid"));
@@ -187,8 +259,14 @@ public class LogisticsMessageManager {
 				ca.setSubmittime(rs.getString("submittime"));
 				ca.setSendtime(rs.getString("sendtime"));
 				ca.setLocateMessage(rs.getString("locateMessage"));
-			} catch (SQLException e) { 
-				e.printStackTrace();
+				ca.setAdvancePrice(rs.getInt("advanceprice"));
+				ca.setLocates(rs.getString("locates"));
+				ca.setStartLocate(rs.getString("startlocate"));
+				ca.setRemark(rs.getString("remark")); 
+				ca.setAdvanceStatues(rs.getInt("advancestatues"));
+				ca.setPid(rs.getInt("pid"));
+			} catch (SQLException e) {  
+				e.printStackTrace(); 
 			}	
 			return ca ; 
 		}

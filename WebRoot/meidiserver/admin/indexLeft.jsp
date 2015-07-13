@@ -347,7 +347,7 @@ function getInventory(){
                 %> 
                <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/analyzrecepts.jsp')">调货处理</a></p>   
                <%}
-            
+             
             %>
 
             </div>
@@ -537,15 +537,18 @@ function getInventory(){
         	 <h4 >物流系統</h4>     
             <div class="list-item none"> 
             <% 
-            if(logistics_p){
-            	%>
+            if(logistics_p){ 
+            	%> 
             	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logistics.jsp')" >物流配工</a></p> 
             	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistsend.jsp')" >待送货</a></p> 
+            	  <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistCharging.jsp')" >预约结款</a></p> 
             	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistcharge.jsp')" >待结款</a></p> 
-            	<%
-            }   
-            if(logistics_c){ 
-            	  
+            	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistAdvancecharge.jsp')" >预付款结款</a></p> 
+            	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslisthistory.jsp')" >历史记录</a></p> 
+            	<%     
+            }      
+            if(logistics_c){    
+            	   
             	%>  
             	<p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/caradd.jsp')" >车辆登记</a></p> 
             	<p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/carlist.jsp')" >查看车辆</a></p> 

@@ -3,10 +3,24 @@
 request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user");    
 String[] lids = request.getParameterValues("lid");
-
-List<LogisticsMessage>	list =  LogisticsMessageManager.getlist(StringUtill.getStr(lids));
-if(null != list && list.size() >0){
-	LogisticsMessageManager.updatecharge(StringUtill.getStr(lids));  
+String statues = request.getParameter("statues");
+String method = request.getParameter("method");
+String message = "司机";
+List<LogisticsMessage>	list =  LogisticsMessageManager.getlistByIds(StringUtill.getStr(lids));
+if(null != list && list.size() >0){ 
+	if("AdvancePrince".equals(method)){ 
+		LogisticsMessageManager.updateAdvancePrince(StringUtill.getStr(lids),statues);
+		message = "单位";
+	}else {
+		if("2".equals(statues)){   
+		     LogisticsMessageManager.updatecharge(StringUtill.getStr(lids),statues);
+			 response.sendRedirect("logisticslistCharging.jsp?");
+		}else {
+			LogisticsMessageManager.updatecharge(StringUtill.getStr(lids),statues);
+		}
+	}
+	
+	
 }
 
 %>
@@ -46,15 +60,21 @@ function println(){
       if(null != list){
     	 for(int i=0;i<list.size();i++){
     		 LogisticsMessage lm = list.get(i);
-    		 total += lm.getPrice();
-    		 uname = lm.getUser().getUsername();
+    		 if("AdvancePrince".equals(method)){
+    			 total += lm.getAdvancePrice(); 
+    		 }else { 
+    			 total += lm.getPrice();
+    			 uname = lm.getUser().getUsername();
+    		 }
+    		 
+    		
     	 }
      } %>
  
    <tr class="asc">
-   <td>司机：</td>
+   <td><%=message %></td>
    <td><%=uname  %></td>
-   </tr>
+   </tr> 
    <tr class="asc">
    <td>
     金额：
