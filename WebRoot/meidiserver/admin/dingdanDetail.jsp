@@ -220,7 +220,7 @@ function checkedd(type){
 			return false ;
 		}
 	}
-	if(flag){
+	/*if(flag){
 		var pos = $("#pos").val();
 		if(pos != "" && pos != null){
 			if(pos.length != 9){
@@ -230,9 +230,9 @@ function checkedd(type){
 		}else {
 			alert("");
 			return false ;
-		}
+		} 
 	}
-	
+	*/
 	
 	$("#print").val(type);
 	$("#form").submit();
