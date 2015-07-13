@@ -77,8 +77,14 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.value
     	   for(int i=0;i<list.size();i++){
     		   LogisticsMessage lm = list.get(i);
     		   total += lm.getPrice();
+    		   String cl = "class=\"asc\"";
+  			 if(lm.getPid() != 0){
+  				 cl = "class=\"bsc\"";
+  			 } 
+    		   
+    		   
     		   %> 
-    		  <tr class="asc" onclick="detail('<%=lm.getId()%>')"> 
+    		  <tr <%=cl %> onclick="detail('<%=lm.getId()%>')"> 
 			  
 	<td align="center"> 
 <%=lm.getCars().getNum() %>  

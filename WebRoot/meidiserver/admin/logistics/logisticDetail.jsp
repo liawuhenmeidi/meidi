@@ -7,7 +7,8 @@ boolean flag = false ;
 
 
 LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
-         
+ int uid = lm.getUser().getId();
+int carid = lm.getCars().getId(); 
 %>  
 <!DOCTYPE HTML>
 <html>
@@ -17,7 +18,14 @@ LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <link rel="stylesheet" type="text/css" href="../../css/songhuo.css"/>  
-
+<script type="text/javascript">
+var id = "<%=id%>";  
+var uid = "<%=uid%>"; 
+var carid = "<%=carid%>";
+function addLogistic(){  
+	window.location.href="logistics.jsp?pid="+id+"&uid="+uid+"&carid="+carid; 
+} 
+</script>
 </head> 
 <body>  
  
@@ -31,8 +39,18 @@ LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
     <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>
     
    </div>      
-     
-      <table style="width:80% "> 
+      
+      <table style="width:80%">  
+      <tr class="asc"></tr> 
+      <tr class="asc">
+<td align="center" >   
+	司机
+</td>   
+<td align="center"> 
+<%=lm.getUser().getUsername() %>
+	</td>   
+</tr> 
+
       <tr class="asc">
 <td align="center" >   
 	车牌号  
@@ -85,7 +103,11 @@ LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
  </table>
  </td>  
  </tr>
-	 
+ <tr class="asc">
+ <td></td>
+ <td align="center" ><input type="button" value="补充配工" onclick="addLogistic()" /></td>
+ 
+ </tr>	 
    
      
       </table>

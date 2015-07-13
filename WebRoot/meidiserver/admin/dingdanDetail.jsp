@@ -229,7 +229,7 @@ function checkedd(type){
 
 </script>
 <div style="position:fixed;width:100%;height:100px;">
-  
+    
   <jsp:include flush="true" page="head.jsp">
   <jsp:param name="dmsn" value="" />
   </jsp:include>

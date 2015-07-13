@@ -7,10 +7,18 @@ TokenGen.getInstance().saveToken(request);
 String time = TimeUtill.getdateString(); 
 String token = (String)session.getAttribute("token"); 
 String method = request.getParameter("method");
+String pid = request.getParameter("pid"); 
+String uid = request.getParameter("uid"); 
+String carid = request.getParameter("carid");
+if(StringUtill.isNull(pid)){
+	pid = "0"; 
+}
 List<Cars> list = CarsManager.getlist();
  
 List<User>  listu = UserService.getLogistics(user); 
    
+
+
 List<BranchType> listb = BranchTypeManager.getLocate();
 
 Map<String,List<Branch>> map = BranchManager.getLocateMapBranch(); 
@@ -18,8 +26,8 @@ Map<String,List<Branch>> map = BranchManager.getLocateMapBranch();
 String mapjosn = StringUtill.GetJson(map);
  
 if("add".equals(method)){  
-	 String uid = request.getParameter("uid");
-	 String carid = request.getParameter("carid");
+	 uid = request.getParameter("uid");
+	 carid = request.getParameter("carid");
 	 String prince = request.getParameter("prince");
 	 String advancePrice = request.getParameter("advancePrice"); 
 	 if(StringUtill.isNull(advancePrice)){
@@ -29,6 +37,7 @@ if("add".equals(method)){
 	 String sendtime = request.getParameter("sendtime"); 
 	 String remark = request.getParameter("remark");
 	 String startlocate = request.getParameter("startlocate");
+	 pid = request.getParameter("pid"); 
 	 LogisticsMessage ls = new LogisticsMessage();
 	  
 	 ls.setCarid(Integer.valueOf(carid));
@@ -40,6 +49,7 @@ if("add".equals(method)){
 	 ls.setRemark(remark); 
 	 ls.setAdvancePrice(Integer.valueOf(advancePrice));
 	 ls.setStartLocate(startlocate); 
+	 ls.setPid(Integer.valueOf(pid)); 
 	 boolean flag = LogisticsMessageManager.saveDB(user, ls);
 	 String type = ""; 
 	  if(flag){
@@ -64,9 +74,14 @@ if("add".equals(method)){
 <script type="text/javascript">
 var jsonmap = '<%=mapjosn%>';
 var time = '<%=time%>';  
+var pid = '<%=pid%>';  
+var uid = '<%=uid%>';  
+var carid = '<%=carid%>';  
 time=new Date(time.replace("-", "/").replace("-", "/"));  
 var locates = new Array(); 
 $(function () {
+	$("#uid").val(uid);
+	$("#carid").val(carid);
 	$("#branchtype").change(function(){
 		  $("#branch").html("");   
 		  var num = ($("#branchtype").children('option:selected').val());
@@ -101,7 +116,8 @@ function mysubmit(){
     var prince = $("#prince").val();
    
     var sendtime = $("#sendtime").val();   
-    var send=new Date(sendtime.replace("-", "/").replace("-", "/"));  
+    var send=new Date(sendtime.replace("-", "/").replace("-", "/"));
+    var startlocate = $("#startlocate").val();
     //alert(send);
 	if(null == uid || "" == uid){
 		alert("司机不能为空"); 
@@ -111,8 +127,13 @@ function mysubmit(){
 	if(null == carid || "" == carid){
 		alert("车牌号不能为空");
 		return false;
+	}   
+	if(pid != 0){
+		if(null == startlocate || "" == startlocate){
+			alert("起始地址不能为空");
+			return false ;
+		}
 	} 
-	 
 	if(locates.length < 1 ){
 		alert("送货地址不能为空"); 
 		return false;
@@ -193,7 +214,8 @@ function delLocate(lo){
  <input type="hidden" name="method" value="add"/> 
    <input  type="hidden" name="token" value="<%=token%>" />
     <input  type="hidden" name="realbranch" id="realbranch" />
-<table width="100%" cellspacing="1" id="table"> 
+     <input  type="hidden" name="pid" value="<%=pid%>" />
+<table width="100%" cellspacing="1" id="table">  
 	<tr class="asc"> 
 	<td>司机<span style=" color:#F00;">*</span></td>
 	 <td >  
@@ -242,7 +264,7 @@ function delLocate(lo){
 	<tr class="asc">
 	<td>起始地址</td>
 	<td>   
-     <input type="text" name="startlocate" placeholder="起始地址"/>
+     <input type="text" name="startlocate" id="startlocate" placeholder="起始地址"/>
 	</td>
 	</tr>
 	

@@ -143,15 +143,19 @@ function totalInit(){
 <td>垫付运费</td>
 <td>送货时间</td>
 <td>提交时间</td>
+<td>关联送货号</td>
 </tr>
 	 
 	 <%
 	 if(null != list){
 		 for(int i=0;i<list.size();i++){
 			 LogisticsMessage ca = list.get(i);
-			
+			 String cl = "class=\"asc\"";
+			 if(ca.getPid() != 0){
+				 cl = "class=\"bsc\"";
+			 }  
 			 %>    
-			 <tr class="asc" ondblclick="detail('<%=ca.getId()%>')"> 
+			 <tr <%=cl %> ondblclick="detail('<%=ca.getId()%>')"> 
 			 <td align="center">
 			 <%
 			   if(ca.getStatues() == 3){
@@ -189,6 +193,10 @@ function totalInit(){
 	  <td>
 	  <%=ca.getSubmittime() %>
 	  </td>
+	  <td>
+	  <%=ca.getPid() %>
+	  </td>
+	  
 	</tr> 
 			 
 			 <% 
@@ -200,10 +208,10 @@ function totalInit(){
 		  <td >合计</td>
 		 <td colspan="4"></td>
 		 <td><label id="total"></label></td>
-		 <td colspan="3"></td>
+		 <td colspan="4"></td>
 		 </tr>
 		<tr class="asc"> 
-		<td colspan="7">
+		<td colspan="8">
 		 
 		</td>
 		<td colspan="2"> 

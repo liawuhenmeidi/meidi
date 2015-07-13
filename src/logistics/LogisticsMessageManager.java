@@ -22,10 +22,10 @@ public class LogisticsMessageManager {
 	public static   List<String> save(User user ,LogisticsMessage lm){
 		   List<String> listsql = new ArrayList<String>();
 		    
-			String sql = "insert into mdlogistics (id,uid,bid,carid,submittime,statues,prince,sendtime,locates,remark,advanceprice,startlocate) " +
+			String sql = "insert into mdlogistics (id,uid,bid,carid,submittime,statues,prince,sendtime,locates,remark,advanceprice,startlocate,pid) " +
 					   		"values (null,"+lm.getUid()+",'"+lm.getBid()+"','"+lm.getCarid()+"','"+lm.getSubmittime()+"','"+lm.getStatues()+"','"+lm.getPrice()+"','"+lm.getSendtime()+"'" +
-					   				",'"+lm.getLocates()+"','"+lm.getRemark()+"','"+lm.getAdvancePrice()+"','"+lm.getStartLocate()+"') ;" ; 
-			 
+					   				",'"+lm.getLocates()+"','"+lm.getRemark()+"','"+lm.getAdvancePrice()+"','"+lm.getStartLocate()+"','"+lm.getPid()+"') ;" ; 
+			  
 			   listsql.add(sql);
 	  
 		  return  listsql;
