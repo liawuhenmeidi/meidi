@@ -64,9 +64,15 @@ function addLogistic(){
 	  <%=lm.getLocates()%>
 	  </td> 
 </tr><tr class="asc">
-<td align="center"> 价格</td>
+<td align="center"> 运费</td>
 <td align="center">  
 	  <%=lm.getPrice() %>
+	  </td>  
+</tr>
+<tr class="asc">
+<td align="center">垫付金额</td>
+<td align="center">  
+	  <%=lm.getAdvancePrice() %>
 	  </td>  
 </tr><tr class="asc">
 <td align="center"> 送货时间</td>
@@ -104,11 +110,19 @@ function addLogistic(){
  </td>  
  </tr>
  <tr class="asc">
+<td align="center"> 关联送货号</td>
+<td align="center">  
+	  <%=lm.getPid()%>
+	  </td>  
+</tr>
+
+ <% if(lm.getStatues() == 0) {%>
+ <tr class="asc">
  <td></td>
  <td align="center" ><input type="button" value="补充配工" onclick="addLogistic()" /></td>
  
  </tr>	 
-   
+   <%} %>
      
       </table>
       

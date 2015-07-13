@@ -12,7 +12,7 @@ import user.UserService;
 
 public class LogisticsMessage {
 	protected static Log logger = LogFactory.getLog(LogisticsMessage.class);
-   private int id ;
+   private int id ; 
    private int carid;   // 车号
    private int uid ;   //   司机  
    private int bid ;   // 目的地
@@ -20,8 +20,8 @@ public class LogisticsMessage {
    private String startLocate; // 起始地点  
    private int advancePrice;  // 给（聚美）垫付  
    private int statues ;   // 0 未完成  1 已完成  2 提出结款请求   3 同意结款   4 已结款   -1 被删除
-   private String submittime; 
-   private String sendtime ;  // 送货时间 
+   private String submittime; // 提交日期
+   private String sendtime ;  // 送货时间  
    private String locateMessage;   //路线>行车记录
    private String locates;  // 送货地点    
    private String remark ; 
