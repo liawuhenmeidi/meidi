@@ -97,7 +97,7 @@ function totalInit(){
     <form id="mypost">
        <table>
    <tr>
-   <td> 现在位置：车辆登记</td>
+   <td> 现在位置：历史记录</td>
    <td>司机</td>
    <td> <select id="uid" name="uid"> 
 	 <option></option>
@@ -145,7 +145,8 @@ function totalInit(){
 <td>价格</td>
 <td>送货时间</td>
 <td>提交时间</td>
-<td>状态</td>
+<td>运费结款状态</td>
+<td>垫付结款状态</td>
 <td>关联送货号</td>
 </tr>
 	 
@@ -187,6 +188,9 @@ function totalInit(){
 	   <td> 
 	  <%=ca.getStatuesName()%>
 	  </td>
+	  <td> 
+	  <%=ca.getadvancestatuesName()%>
+	  </td>
 	  <td>
 	  <%=ca.getPid() %>
 	  </td>
@@ -199,7 +203,7 @@ function totalInit(){
 		  <td >合计</td>
 		 <td colspan="4"></td>
 		 <td><label id="total"></label></td>
-		 <td colspan="4"></td>
+		 <td colspan="5"></td>
 		 </tr>
 		 <%
 	 }

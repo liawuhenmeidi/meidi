@@ -26,6 +26,7 @@ public class LogisticsMessage {
    private String locates;  // 送货地点    
    private String remark ; 
    private String statuesName ;
+   private String advancestatuesName ;
    private int advanceStatues; 
    private int pid ;    // 关联ID
    
@@ -52,6 +53,17 @@ public String getStatuesName() {
 		   statuesName = "取消";
 	   }
 	return statuesName;
+}
+
+public String getadvancestatuesName() {
+	   if(0 == advanceStatues){
+		   advancestatuesName = "未结款";
+	   }else if(1 == advanceStatues){ 
+		   advancestatuesName = "已结款";
+	   }else{
+		   
+	   }
+	return advancestatuesName;
 }
 
 public int getAdvanceStatues() {

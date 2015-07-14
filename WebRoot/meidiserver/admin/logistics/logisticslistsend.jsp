@@ -59,7 +59,7 @@ function del(){
  <!--       -->    
      
      <div class="">
-   <div class="weizhi_head">现在位置：车辆登记</div> 
+   <div class="weizhi_head">现在位置：待送货</div> 
 
    <div class="table-list">  
 <table width="100%" cellspacing="1" id="table"> 
