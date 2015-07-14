@@ -3,6 +3,7 @@
     <wb-module deploy-name="meidi">
         <wb-resource deploy-path="/" source-path="/WebRoot"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/test"/>
         <property name="context-root" value="/meidi"/>
         <property name="java-output-path" value="/meidi/WebRoot/WEB-INF/classes"/>
     </wb-module>
