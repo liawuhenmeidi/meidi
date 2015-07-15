@@ -124,6 +124,13 @@ function addLogistic(){
  </tr>	 
    <%} %>
      
+     <tr class="asc">
+<td align="center"> 备注</td>
+<td align="center">  
+	  <%=lm.getRemark()%>
+	  </td>  
+</tr>
+
       </table>
       
      </div>

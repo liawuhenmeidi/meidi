@@ -332,7 +332,7 @@ function delLocate(lo){
 	<td>送货时间</td> 
 	<td> 
 	<input type="text" name="sendtime" id="sendtime" maxlength="10"
-						onclick="new Calendar().show(this);" placeholder="必填" />
+						onclick="new Calendar().show(this);" value="<%=time %>" placeholder="必填" />
 	</td>
 	</tr>
 	<tr class="asc"> 
