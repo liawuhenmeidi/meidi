@@ -1,5 +1,7 @@
 package logistics;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -9,6 +11,7 @@ import branch.BranchService;
 import servlet.OrderServlet;
 import user.User;
 import user.UserService;
+import utill.StringUtill;
 
 public class LogisticsMessage {
 	protected static Log logger = LogFactory.getLog(LogisticsMessage.class);
@@ -24,13 +27,51 @@ public class LogisticsMessage {
    private String sendtime ;  // 送货时间  
    private String locateMessage;   //路线>行车记录
    private String locates;  // 送货地点    
-   private String remark ; 
-   private String statuesName ;
+   private String remark ;  
+   private String statuesName ;  
    private String advancestatuesName ;
-   private int advanceStatues; 
-   private int pid ;    // 关联ID
-   
-   public int getPid() {
+   private int advanceStatues;   
+   private int pid ;    // 关联ID   
+   private int operation ;    // 0 无状态  1  要删除申请   2 同意删除   3 已删除  
+   private String operationMessage; // 操作信息  
+   private int upid ;  
+     
+   public int getUpid() {
+	return upid;
+} 
+ 
+public void setUpid(int upid) {
+	this.upid = upid;
+}
+
+public int getOperation() {
+	return operation;
+}
+
+public void setOperation(int operation) {
+	this.operation = operation;
+}
+
+public String getOperationMessage() {
+	return operationMessage;
+}
+
+public JSONObject getOperationMessageJSON() {
+	JSONObject a = null;
+	if(!StringUtill.isNull(operationMessage)){
+		a = JSONObject.fromObject(operationMessage);  
+	}   
+	 
+	return a;
+}
+
+
+
+public void setOperationMessage(String operationMessage) {
+	this.operationMessage = operationMessage;
+}
+
+public int getPid() {
 	return pid;
 }
 

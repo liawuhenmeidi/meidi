@@ -7,12 +7,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
+import org.apache.commons.logging.Log; 
 import org.apache.commons.logging.LogFactory;
-
+ 
 import database.DB;
-
-import makeInventory.MakeInventory;
 import user.User;
 import utill.DBUtill;
 import utill.TimeUtill;
@@ -25,18 +23,101 @@ public class LogisticsMessageManager {
 			String sql = "insert into mdlogistics (id,uid,bid,carid,submittime,statues,prince,sendtime,locates,remark,advanceprice,startlocate,pid) " +
 					   		"values (null,"+lm.getUid()+",'"+lm.getBid()+"','"+lm.getCarid()+"','"+lm.getSubmittime()+"','"+lm.getStatues()+"','"+lm.getPrice()+"','"+lm.getSendtime()+"'" +
 					   				",'"+lm.getLocates()+"','"+lm.getRemark()+"','"+lm.getAdvancePrice()+"','"+lm.getStartLocate()+"','"+lm.getPid()+"') ;" ; 
-			  
-			   listsql.add(sql);
+			   
+			listsql.add(sql);
 	  
-		  return  listsql;
+		  return  listsql; 
 		    
-	   }     
-	  
+	   }       
+	    
+	 public static int getMaxid(){
+		    int id = 1 ; 
+		    Connection conn = DB.getConn();
+			Statement stmt = DB.getStatement(conn);
+			String  sql = "select max(id)+1 as id from mdlogistics" ;
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) {
+					id = rs.getInt("id");
+					logger.info(id);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(stmt);
+				DB.close(rs);
+				DB.close(conn);
+			 }
+			return id;
+
+	   }
+	public static   List<String> saveID(User user ,LogisticsMessage lm){
+		   List<String> listsql = new ArrayList<String>();
+		    
+			String sql = "insert into mdlogistics (id,uid,bid,carid,submittime,statues,prince,sendtime,locates,remark,advanceprice,startlocate,pid) " +
+					   		"values ("+lm.getId()+","+lm.getUid()+",'"+lm.getBid()+"','"+lm.getCarid()+"','"+lm.getSubmittime()+"','"+lm.getStatues()+"','"+lm.getPrice()+"','"+lm.getSendtime()+"'" +
+					   				",'"+lm.getLocates()+"','"+lm.getRemark()+"','"+lm.getAdvancePrice()+"','"+lm.getStartLocate()+"','"+lm.getPid()+"') ;" ; 
+			   
+			listsql.add(sql); 
+	   
+		  return  listsql; 
+		    
+	   }  
+	
+	
+	
 	public static   boolean delete(User user ,String ids ){
-		  String sql ="update mdlogistics set statues = -1  where id in ("+ids+")";
+		  String sql ="update mdlogistics set statues = -1 ,operation = 0 where id in ("+ids+")";
+		  logger.info(sql);   
+		  return  DBUtill.sava(sql);    
+		     
+	   }   
+	    
+	
+	public static   boolean updaterequest(User user ,String ids ,LogisticsMessage lm){ 
+		List<String> sqls = new ArrayList<String>();
+		  int id = getMaxid();
+		  lm.setId(id); 
+		  sqls.addAll(saveID(user, lm)); 
+		  String sql ="update mdlogistics set operation = 4 ,upid = "+id+" where id in ("+ids+")";
+		  sqls.add(sql);  
+		  logger.info(sql);   
+		  return  DBUtill.sava(sqls);     
+		    
+	   }  
+	
+	public static   boolean updateAgree(User user ,String ids ){
+		  String sql ="update mdlogistics set operation = 5 where id in ("+ids+")";
+		  logger.info(sql);   
+		  return  DBUtill.sava(sql);    
+		    
+	   } 
+	    
+	public static   boolean update(User user ,LogisticsMessage lm){ 
+		  List<String> sqls = new ArrayList<String>();  
+		// id,uid,bid,carid,submittime,statues,prince,sendtime,locates,remark,advanceprice,startlocate,pid
+ 
+		  String sqlu ="update mdlogistics set statues = 0  where id ="+lm.getUpid();
+		  String sqld ="delete from mdlogistics where id = "+lm.getId(); 
+		  sqls.add(sqlu);
+		  sqls.add(sqld);  
+		  logger.info(sqls);    
+		  return  DBUtill.sava(sqls);        
+	   } 
+	
+	public static   boolean deleteRequest(User user ,String ids ){
+		  String sql ="update mdlogistics set operation = 1  where id in ("+ids+")";
 		  return  DBUtill.sava(sql);   
 		    
 	   }  
+	  
+	public static   boolean deleteAgree(User user ,String ids ){
+		  String sql ="update mdlogistics set operation = 2  where id in ("+ids+")";
+		  logger.info(sql);
+		  return  DBUtill.sava(sql);   
+		    
+	   }  
+	
 	
 	public static   boolean updateLocate(User user ,String locate,String id ){
 		  String sql = "update mdlogistics set locateMessage =  CONCAT(locateMessage,',"+TimeUtill.gettimeString()+"::"+locate+"') where id ="+id;
@@ -249,7 +330,7 @@ public class LogisticsMessageManager {
 	 
 	 private static LogisticsMessage getLogisticsMessageFromRs(ResultSet rs){
 		 LogisticsMessage ca = new LogisticsMessage();
-			try {  
+			try {   
 				ca.setId(rs.getInt("id"));
 				ca.setUid(rs.getInt("uid")); 
 				ca.setBid(rs.getInt("bid"));
@@ -262,9 +343,14 @@ public class LogisticsMessageManager {
 				ca.setAdvancePrice(rs.getInt("advanceprice"));
 				ca.setLocates(rs.getString("locates"));
 				ca.setStartLocate(rs.getString("startlocate"));
-				ca.setRemark(rs.getString("remark")); 
+				ca.setRemark(rs.getString("remark"));  
 				ca.setAdvanceStatues(rs.getInt("advancestatues"));
-				ca.setPid(rs.getInt("pid"));
+				ca.setPid(rs.getInt("pid"));    
+				ca.setOperation(rs.getInt("operation")); 
+                ca.setUpid(rs.getInt("upid")); 
+		   
+	                
+	             
 			} catch (SQLException e) {  
 				e.printStackTrace(); 
 			}	

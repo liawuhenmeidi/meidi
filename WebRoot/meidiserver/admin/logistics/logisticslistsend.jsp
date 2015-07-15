@@ -2,14 +2,10 @@
 <% 
 request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user"); 
-String method = request.getParameter("method");  
-if("del".equals(method)){
-	String ids = request.getParameter("ids"); 
-	LogisticsMessageManager.delete(user, ids); 
-	
-}
+String method = request.getParameter("method");
+
 List<LogisticsMessage>	list = LogisticsMessageManager.getlist("0");
-      
+       
 //System.out.println("CarsService.getmap()"+CarsService.getmap());
   
 %>
@@ -24,7 +20,7 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist("0");
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
 
-function detail(id){
+function detail(id){ 
 	window.location.href="logisticDetail.jsp?id="+id;
 }
  
@@ -39,8 +35,13 @@ function del(){
 	   				}	
    		} 
    	});   
-	 
-	window.location.href="logisticslistsend.jsp?ids="+ids.toString()+"&method=del";
+	
+	if(ids.length >1){
+		window.location.href="logisticslistsend.jsp?ids="+ids.toString()+"&method=del";
+	}else {
+		alert("请选择需要删除的单据");
+	}
+	
 }
  
 </script>
@@ -64,10 +65,12 @@ function del(){
    <div class="table-list">  
 <table width="100%" cellspacing="1" id="table"> 
 <tr class="dsc">
+<!-- 
 <td width="5%" class="s_list_m" align="center"><input
 						type="checkbox" value="" id="allselect"
 						onclick="seletall(allselect);totalInit()"></input>
 					</td> 
+					 -->
 					<td>单号</td>
 <td>司机</td> 
 <td>
@@ -88,18 +91,19 @@ function del(){
 			 String cl = "class=\"asc\"";
 			 if(ca.getPid() != 0){
 				 cl = "class=\"bsc\"";
-			 }  
-			 %>   
+			 }   
+			 %>     
 			 <tr <%=cl %> ondblclick="detail('<%=ca.getId()%>')"> 
-			 
+			 <!-- 
 			<td align="center">
-			 
-				   
+			 <% if(ca.getOperation() == 2){ %>
+				 <% }%>    
 				  <input type="checkbox"
 						value="<%= ca.getId()%>" name="lid" id="check_box" onclick="totalInit()"></input> 
 				  
-			       
+			     
 				   </td> 
+				   -->
 			  <td>
 			  <%=ca.getId() %>
 			  </td>
@@ -135,16 +139,7 @@ function del(){
 	 }
 	 %>
 	 
-	<tr class="asc"> 
-		<td colspan="8">
-		 
-		</td> 
-		<td colspan="2"> 
-		<input type="button" onclick="del()" value="删除" />
-		 
-		</td>
-		 
-		</tr> 
+	
 	
 </table>
 

@@ -81,7 +81,10 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.value
   			 if(lm.getPid() != 0){
   				 cl = "class=\"bsc\"";
   			 } 
-    		   
+    		 
+  			 if(lm.getOperation() != 0){
+  				 cl = "class=\"rsc\"";
+  			 } 
     		   
     		   %> 
     		  <tr <%=cl %> onclick="detail('<%=lm.getId()%>')"> 

@@ -103,7 +103,15 @@ $(function () {
 		 
 		$("#addbranch").val(b); 
 	});
+   
+	$("#uid").change(function(){
+		var b = $("#uid option:selected").val();
+		 
+		$("#u"+b).css("display","block");
 
+	});
+
+	
 
 });
 
@@ -248,9 +256,9 @@ function delLocate(lo){
 	    if(null != list){
 	    	for(int i=0;i<list.size();i++){
 	    		Cars ca = list.get(i);
-	    		
+	    		  
 	    		%>
-	    		<option value="<%= ca.getId()%>"><%=ca.getNum() %></option>
+	    		<option value="<%= ca.getId()%>" id="u<%=ca.getUid() %>" style="display: none"><%=ca.getNum() %></option>
 	    		
 	    		<%
 	    	}

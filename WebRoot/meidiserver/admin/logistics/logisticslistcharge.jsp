@@ -164,6 +164,10 @@ function totalInit(){
 				  <input type="checkbox"
 						value="<%= ca.getId()%>" name="lid" id="check_box" onclick="totalInit()"></input> 
 				   <%
+			   }else { 
+				   %>
+				   司机手机端同意
+				   <%
 			   }
 			 %>
 			       
