@@ -84,23 +84,29 @@ public class LogisticsMessageManager {
 		  logger.info(sql);   
 		  return  DBUtill.sava(sqls);     
 		    
-	   }  
-	
-	public static   boolean updateAgree(User user ,String ids ){
-		  String sql ="update mdlogistics set operation = 5 where id in ("+ids+")";
-		  logger.info(sql);   
-		  return  DBUtill.sava(sql);    
+	   }   
+	  
+	public static   boolean updateAgree(User user ,String ids,String num,String upid ){
+		 List<String> sqls = new ArrayList<String>();  
+		  String sql ="update mdlogistics set operation = "+num+" where id in ("+ids+")";
+		  if(num.equals(0)){
+			  String sqld ="delete from mdlogistics where id = "+upid; 
+			  sqls.add(sqld);
+		  } 
+		  sqls.add(sql);  
+		  logger.info(sqls);    
+		  return  DBUtill.sava(sqls);     
 		    
 	   } 
 	    
-	public static   boolean update(User user ,LogisticsMessage lm){ 
+	public static   boolean update(User user ,LogisticsMessage lm){
 		  List<String> sqls = new ArrayList<String>();  
 		// id,uid,bid,carid,submittime,statues,prince,sendtime,locates,remark,advanceprice,startlocate,pid
- 
-		  String sqlu ="update mdlogistics set statues = 0  where id ="+lm.getUpid();
+  
+		  String sqlu ="update mdlogistics set statues ="+lm.getStatues()+",locatemessage= '"+lm.getLocateMessage()+"',advancestatues='"+lm.getAdvanceStatues()+"'  where id ="+lm.getUpid();
 		  String sqld ="delete from mdlogistics where id = "+lm.getId(); 
 		  sqls.add(sqlu);
-		  sqls.add(sqld);  
+		  sqls.add(sqld);   
 		  logger.info(sqls);    
 		  return  DBUtill.sava(sqls);        
 	   } 
@@ -108,14 +114,15 @@ public class LogisticsMessageManager {
 	public static   boolean deleteRequest(User user ,String ids ){
 		  String sql ="update mdlogistics set operation = 1  where id in ("+ids+")";
 		  return  DBUtill.sava(sql);   
-		    
-	   }  
-	  
-	public static   boolean deleteAgree(User user ,String ids ){
-		  String sql ="update mdlogistics set operation = 2  where id in ("+ids+")";
-		  logger.info(sql);
-		  return  DBUtill.sava(sql);   
-		    
+	   }    
+	      
+	public static   boolean deleteAgree(User user ,String ids,String num){
+		  List<String> sqls = new ArrayList<String>();
+		  String sql ="update mdlogistics set operation = "+num+"  where id in ("+ids+")";
+		  logger.info(sql);   
+		  sqls.add(sql);
+		  return  DBUtill.sava(sqls);   
+		     
 	   }  
 	
 	

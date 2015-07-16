@@ -32,7 +32,7 @@ public class LogisticsMessage {
    private String advancestatuesName ;
    private int advanceStatues;   
    private int pid ;    // 关联ID   
-   private int operation ;    // 0 无状态  1  要删除申请   2 同意删除   3 已删除  
+   private int operation ;    // 0 无状态  1  要删除申请   2 同意删除   3 已删除          4 修改申请  5 同意修改
    private String operationMessage; // 操作信息  
    private int upid ;  
      

@@ -18,7 +18,7 @@ if("delRequest".equals(method)){
 }else if("del".equals(method)){ 
 	LogisticsMessageManager.delete(user, id);
 }else if("updateRequest".equals(method)){
-	
+	 
 	 LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id)); 
 	 String uid = request.getParameter("uid"); 
 	 System.out.println("uid"+uid);  
@@ -30,9 +30,9 @@ if("delRequest".equals(method)){
 	 }
 	 String realbranch = request.getParameter("realbranch");
 	 String sendtime = request.getParameter("sendtime"); 
-	 String remark = request.getParameter("remark");
+	 String remark = request.getParameter("remark"); 
 	 String startlocate = request.getParameter("startlocate");
-	 String pid = request.getParameter("pid"); 
+	 String pid = request.getParameter("pid");  
 	 LogisticsMessage ls = new LogisticsMessage();
 	 if(!StringUtill.isNull(uid)){
 		lm.setUid(Integer.valueOf(uid));   
@@ -61,19 +61,26 @@ if("delRequest".equals(method)){
 	 lm.setStatues(-2);  
 	LogisticsMessageManager.updaterequest(user, id,lm);
 	
-}else if("update".equals(method)){ 
+}else if("update".equals(method)){  
 	LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
 	LogisticsMessageManager.update(user, lm); 
+	id= lm.getUpid()+""; 
+	
+	
 }  
 boolean flag = false ;  
    
 LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
 LogisticsMessage lmup = LogisticsMessageManager.getByid(Integer.valueOf(lm.getUpid()));
- int uid = lm.getUser().getId(); 
-int carid = lm.getCars().getId();  
-boolean flagop = false ; 
-if(lm.getOperation() == 0){
-	flagop = true ;  
+int uid = lm.getUser().getId(); 
+int carid = lm.getCars().getId();
+
+boolean flags = false ; 
+String col = "colspan=\"2\"";   
+
+if(lm.getStatues() == 0 || lm.getStatues() == 1){  
+	col = "colspan=\"2\""; 
+	flags = true ; 
 }
 
 %>  
@@ -172,6 +179,7 @@ function initLocate(){
     $("#realbranch").val(locates.toString());
 	$("#addlocate").append(html);
 }
+
 function delLocate(lo){
 	
 	locates.splice($.inArray(lo,locates),1);
@@ -202,12 +210,19 @@ function addlocate(){
     <a href="javascript:history.go(-1);"><font style="color:blue;font-size:20px;" >返回</font></a>
     
    </div>       
-      <form id="myform">
+      <form id="myform"> 
       <input type="hidden" name="method" value="updateRequest"/>
        <input type="hidden" name="id" value="<%=id%>"/>
-       
+          <input  type="hidden" name="realbranch" id="realbranch" />
       
-      <table  id="table" width="80%" cellspacing="1" >  
+      <table  id="table" width="80%" cellspacing="1" >
+      <tr class="dsc">
+<td align="center" <%=col%>> 单据信息</td>
+ <td align="center">  
+	修改内容
+	</td>
+ </tr>      
+    
       <tr class="asc">
 <td align="center" >    
 	司机
@@ -215,12 +230,12 @@ function addlocate(){
 <td align="center"> 
 <%=lm.getUser().getUsername() %>
 	</td> 
-	
-	<td class="ras" >  
-	<%if(flagop){ %>
+	                     
+	<td class="ras" align="center">   
+	<%if(lm.getStatues() == 0 && lm.getOperation() == 0 ){ %>
 	 <select id="uid" name="uid" >
 	 <option></option>
-	   <%   
+	   <%    
 	    if(null != listu){
 	    	for(int i=0;i<listu.size();i++){
 	    		User u = listu.get(i);
@@ -233,9 +248,9 @@ function addlocate(){
 	    }
 	   
 	   %>
-	  
+	   
 	 </select>
-	 <%}else {
+	 <%}else if(flags && (lm.getOperation() == 4 ||lm.getOperation() == 5)){
 	 
 		 
 		  %>  
@@ -245,7 +260,7 @@ function addlocate(){
 	 } %>
 	 </td>
 	   
-</tr> 
+</tr>  
 
       <tr class="asc">
 <td align="center" >   
@@ -254,8 +269,8 @@ function addlocate(){
 <td align="center"> 
 <%=lm.getCars().getNum() %>  
 	</td>
-	<td >
-  	<%if(flagop){ %>
+	<td align="center">
+  	<%if(lm.getStatues() == 0  && lm.getOperation() == 0 ){ %>
 	<select id="carid" name="carid">
 	 <option></option>
 	   <% 
@@ -273,7 +288,7 @@ function addlocate(){
 	   %>
 	 
 	 </select>
-	  <%}else {
+	  <%}else if(flags && (lm.getOperation() == 4 ||lm.getOperation() == 5)){
 		 
 		
 			  %>  
@@ -292,14 +307,14 @@ function addlocate(){
 	  <%=lm.getLocates()%>
 	  </td> 
 	  <td align="center">
-	  <%if(flagop){ %>
+	  <%if(lm.getStatues() == 0  && lm.getOperation() == 0 ){ %>
       <table>
       <tr id="addlocate">
          
       </tr>
       </table>
       
-       <%}else {
+       <%}else if(flags && (lm.getOperation() == 4 ||lm.getOperation() == 5)) {
     	   
     			  %>
     			  <%=lmup.getLocates()%>
@@ -308,15 +323,15 @@ function addlocate(){
 	 
 	</td> 
 </tr>
-<tr class="asc"> 
+<tr class="asc">  
 <td align="center"> 增加送货地址</td> 
-<td align="center">    
-	  </td> 
- <td width="65%">
-  <%if(flagop){ %>
+<td align="center">     
+	  </td>  
+ <td width="65%"> 
+  <%if(lm.getStatues() == 0  && lm.getOperation() == 0 ){ %>
      <table width="100%">  
 	    <tr class="asc">
-	    <td> <select class = "quyu" name="branchtype" id="branchtype" >
+	    <td align="center"> <select class = "quyu" name="branchtype" id="branchtype" >
           <option >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
 		<%
 		 for(int i=0;i<listb.size();i++){
@@ -334,7 +349,7 @@ function addlocate(){
        </select></td>
 	    </tr> 
 	    <tr class="asc"> 
-	    <td>
+	    <td align="center">
 	    <input type="text" name="addbranch" id="addbranch" value="" placeholder="增加地址"/>
 	    <input type="button" value="增加" onclick="addlocate()"/>
 	    
@@ -343,7 +358,7 @@ function addlocate(){
 	    </tr>
 	 </table>
 	 
-    <%}else {
+    <%}else if(flags && (lm.getOperation() == 4 ||lm.getOperation() == 5)){
     	%>
     	<%
     } %>
@@ -360,10 +375,10 @@ function addlocate(){
 <td align="center">  
 	  <%=lm.getPrice() %>
 	  </td>  
-	  <td > 
-	  <%if(flagop){ %>
+	  <td align="center"> 
+	  <%if(flags && lm.getOperation() == 0 ){ %>
 	<input type="text" name="prince" id="prince" placeholder="运费"/>(元)
-	 <%}else {
+	 <%}else if(flags && (lm.getOperation() == 4 ||lm.getOperation() == 5)){
 		 %>
 		  <%=lmup.getPrice()
 		  
@@ -379,13 +394,13 @@ function addlocate(){
 <td align="center">  
 	  <%=lm.getAdvancePrice() %>
 	  </td>
-	  <td>
-	  <%if(flagop){ %>
+	  <td align="center">
+	  <%if(flags && lm.getOperation() == 0 ){ %>
 	<input type="text" name="advancePrice" id="advancePrice" placeholder="垫付金额"/>(元)
-	<%}else {
+	<%}else if(flags && (lm.getOperation() == 4 ||lm.getOperation() == 5)){
 		%>
-		
-		
+		<%=lmup.getAdvancePrice() %>
+		 
 		<%
 	} %>
 	</td>  
@@ -394,11 +409,11 @@ function addlocate(){
  <td align="center"> 
 	  <%=lm.getSendtime() %>
 	  </td>
-	  <td> 
-	  <%if(flagop){ %>
+	  <td align="center"> 
+	  <%if(lm.getStatues() == 0 && lm.getOperation() == 0 ){ %>
 	<input type="text" name="sendtime" id="sendtime" maxlength="10"
 						onclick="new Calendar().show(this);" value="<%=time %>" placeholder="必填" />
-	 <%}else {  
+	 <%}else if(flags && (lm.getOperation() == 4 ||lm.getOperation() == 5)){  
 		  %> 
 		  <%=lmup.getSendtime()
 		  
@@ -411,7 +426,7 @@ function addlocate(){
  </tr>    
  <tr class="asc">
  <td align="center">行车记录</td>
- <td align="center"> 
+ <td align="center" <%=col %>> 
  <table>
 	 
  <%  
@@ -425,26 +440,20 @@ function addlocate(){
 		 String l = locates[1];
 		 
 		 %>
-		 <tr><td><%= ti%></td><td><%=l %></td></tr>
+		 <tr><td align="center"><%= ti%></td><td align="center"><%=l %></td></tr>
 		 
 		 <%
 	 }
-	 
-	 
  }
- 
- 
  %>
  </table>
  </td>  
- <td align="center"> </td>
  </tr>
  <tr class="asc">
 <td align="center"> 关联送货号</td>
-<td align="center">  
+<td align="center" <%=col %>>  
 	  <%=lm.getPid()%>
 	  </td>  
-	  <td align="center"> </td>
 </tr>
  
  
@@ -454,10 +463,10 @@ function addlocate(){
 <td align="center">  
 	  <%=lm.getRemark()%>
 	  </td> 
-	  <td>
-	  <%if(flagop){ %>  
+	  <td align="center">
+	  <%if(flags && lm.getOperation() == 0 ){ %>  
 	<textarea name="remark" id="remark" placeholder="备注"></textarea>
-	 <%}else { 
+	 <%}else if(flags && (lm.getOperation() == 4 ||lm.getOperation() == 5)){ 
 	  
 		  %>
 		  <%=lmup.getRemark()
@@ -472,33 +481,33 @@ function addlocate(){
 </tr>
 
  <tr class="asc">
- 
+  
  <td align="center" >
  <% if(lm.getStatues() == 0) {%>
  <input type="button" value="补充配工" onclick="addLogistic()" />
- <%} %>
- </td>
+ <%} %> 
+ </td> 
 <td align="center">  
-    <% if(lm.getOperation() == 0){
+    <% if(lm.getOperation() == 0 && lm.getStatues() == 0){
 	 %> 
  <input type="button" value="删除申请" onclick="deleteRequestLogistic()" />  
 	    
 	 <%
  } else if(lm.getOperation() == 1){
-	 %> 
+	 %>  
 	  等待司机同意删除
 	  <%
  } else if(lm.getOperation() == 2){
 	%> 
 	  <input type="button" value="删除" onclick="deleteLogistic()" />
 	<%
- }%>
+ }%> 
 	  </td>   
 <td align="center">  
-	 <% if(lm.getOperation() == 0){
+	 <% if(lm.getOperation() == 0 && (lm.getStatues() == 0 || lm.getStatues() == 1 || lm.getStatues() == 2)){
 	 %> 
  <input type="button" value="修改申请" onclick="updateRequestLogistic()" />
-	    
+	     
 	 <%
  } else if(lm.getOperation() == 4){
 	 %> 
@@ -509,12 +518,12 @@ function addlocate(){
 	  <input type="button" value="修改" onclick="updateLogistic()" />
 	<%
  }else {
-	 
+	  
  }%>
 	  </td> 
-</tr>
+</tr> 
 
-   
+    
  
       </table>
       </form>

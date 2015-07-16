@@ -8,7 +8,7 @@ if(StringUtill.isNull(statues)){
 	statues = "0" ;
 } 
  
-if("agree".equals(method)){ 
+if("agree".equals(method)){  
 	LogisticsMessageManager.updateAgree(user); 
 }
 
@@ -39,9 +39,9 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.value
     
  function search(statues){
 		window.location.href="logistic.jsp?statues="+statues;
-	}  
+	}   
  function detail(id){
-		window.location.href="logisticDetail.jsp?id="+id;
+		window.location.href="logisticDetail.jsp?id="+id+"&statues="+type;
 	}
  
  

@@ -114,8 +114,8 @@ function totalInit(){
 	    	}
 	    }
 	    
-	   %>
-	 
+	   %> 
+	  
 	 </select>
 	 </td>
    <td><input type="submit"  value="确定"/></td>

@@ -154,6 +154,9 @@ function totalInit(){
 			 if(ca.getPid() != 0){
 				 cl = "class=\"bsc\"";
 			 }  
+			 if(ca.getOperation() != 0){
+  				 cl = "class=\"rsc\"";
+  			 } 
 			 %>    
 			 <tr <%=cl %> ondblclick="detail('<%=ca.getId()%>')"> 
 			 <td align="center">
