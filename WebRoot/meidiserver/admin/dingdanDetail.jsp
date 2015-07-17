@@ -241,10 +241,7 @@ function checkedd(type){
 <div style=" height:100px;">
 </div>
 
-
- 
 <br/>  
- 
 <div id="wrap" style="text-align:center;">  
 <form  action="server.jsp"  name = "myForm" method ="post"  id="form"   >
 
