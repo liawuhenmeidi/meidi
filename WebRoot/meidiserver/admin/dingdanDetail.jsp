@@ -1,6 +1,6 @@
-<%@ page language="java" import="java.util.*,message.*,locate.*,utill.*,category.*,product.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,message.*,branch.*,locate.*,utill.*,category.*,product.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
-<%      
+<%       
 
 request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");
@@ -11,7 +11,21 @@ List<String> listallp = ProductManager.getProductlist();
 String listallpp = StringUtill.GetJson(listallp); 
 
 Order o = OrderManager.getOrderID(user,Integer.valueOf(id));
+boolean flagb = false ;
+Branch branch = BranchService.getMap().get(o.getBranch());
+String  branchmessage = branch.getMessage();
+if(StringUtill.isNull( branchmessage)){ 
+	 branchmessage = "";
+}    
+//System.out.println("branchmessage"+branchmessage);
+String[] branlist =  branchmessage.split("_");
+for(int i = 0; i<branlist.length;i++){
+	if("pos".equals(branlist[i])){
+		flagb = true ;
+	} 
+} 
 
+//System.out.println("flagb"+flagb);
 List<Locate> listl = LocateManager.getLocate();
 
 HashMap<Integer,User> usermap = UserManager.getMap();
@@ -61,7 +75,8 @@ var id = "<%=id%>";
 var jsons = <%=plist%> ; 
 var jsonallp =  <%=listallpp%>; 
 var flag = "<%=flag%>"; 
-$(function () {
+var flagb = "<%=flagb%>";
+$(function () { 
 	initproductSerch("#dingmaordercategory","#dingmatype");
 	
 }); 
@@ -218,9 +233,11 @@ function checkedd(type){
 		if( null == $("#dingmaproductNum").val() || "" == $("#dingmaproductNum").val()){
 			alert("票面数量不能为空");
 			return false ;
-		}
-	}
-	/*if(flag){
+		} 
+	}  
+	
+ 
+	if((flag && flagb) == "true"){
 		var pos = $("#pos").val();
 		if(pos != "" && pos != null){
 			if(pos.length != 9){
@@ -232,7 +249,7 @@ function checkedd(type){
 			return false ;
 		} 
 	}
-	*/
+	
 	
 	$("#print").val(type);
 	$("#form").submit();
