@@ -1,15 +1,15 @@
 import java.io.Reader;
 import java.util.List;
 
-import logistics.LogisticsMessage;
-import mybatis.inter.LogisticsMessageOperation;
- 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory; 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+import com.zhilibao.mapper.LogisticsMessageOperation;
+import com.zhilibao.model.LogisticsMessage;
 
 import utill.StringUtill; 
 
@@ -19,7 +19,7 @@ public class Test {
     private static SqlSessionFactory sqlSessionFactory;
     private static Reader reader; 
 
-    static{  
+    static{   
         try{  
             reader    = Resources.getResourceAsReader("Configuration.xml");
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
@@ -44,18 +44,13 @@ public class Test {
     } */ 
        
     public static void main(String[] args) { 
-    	 
+    	  
         SqlSession session = sqlSessionFactory.openSession();
         try {       
         	   
         	LogisticsMessageOperation userOperation=session.getMapper(LogisticsMessageOperation.class);
         	
-        	
-        	 List<LogisticsMessage> users = userOperation.selectUsers("");
-             for(LogisticsMessage lm:users){
-            	 logger.info(StringUtill.GetJson(lm));   
-             } 
-        	
+ 
         	
         	//LogisticsMessage lm = userOperation.selectUserByID(23);
             

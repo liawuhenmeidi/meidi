@@ -54,7 +54,7 @@ public class MyMainClient {
 		// String branch = StringUtill.toUtf8String("天津宁河店");
 		// branch = "天津宁河店";
 		// branch = "";
-		mc.run();  
+		//mc.run();  
 		// List<String> s = InventorySN.getinventory("122707928","9367");
 		// List<String> s = InventorySN.getinventoryModel("105057044",branch,);
 		// List<String> s = InventorySN.getinventoryModel("105057044","");
@@ -62,8 +62,8 @@ public class MyMainClient {
 	}   
                 
 	public synchronized void run() {
-		try {                            
-		   startinventoryIN(this);
+		try {                             
+		  // startinventoryIN(this);
 		//	round(this);      
 			// sdi.selectDeliverInform(new
 			// URI("http://scs.suning.com/sps/PurchaseOrderDelivery/orderDelivery.action?menuid=100000111&scspageexptime=1427005676454"),"","",this);

@@ -1,23 +1,24 @@
-package logistics;
+package com.zhilibao.model;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.zhilibao.cache.CarsCache;
+
 import branch.Branch;
 import branch.BranchService;
 
-import servlet.OrderServlet;
 import user.User;
 import user.UserService;
 
 public class LogisticsMessage {
-	protected static Log logger = LogFactory.getLog(LogisticsMessage.class);
+   protected static Log logger = LogFactory.getLog(LogisticsMessage.class);
    private int id ; 
    private int carid;   // 车号
    private int uid ;   //   司机  
    private int bid ;   // 目的地
-   private int price ;  // 运费（给司机结款） 
-   private String startLocate; // 起始地点  
+   private int prince ;  // 运费（给司机结款） 
+   private String startLocate; // 起始地点   
    private int advancePrice;  // 给（聚美）垫付  
    private int statues ;   // 0 未完成  1 已完成  2 提出结款请求   3 同意结款   4 已结款   -1 被删除
    private String submittime; // 提交日期
@@ -25,11 +26,10 @@ public class LogisticsMessage {
    private String locateMessage;   //路线>行车记录
    private String locates;  // 送货地点    
    private String remark ; 
-   private String statuesName ;
+   private String statuesName ; 
    private int advanceStatues; 
    private int pid ;    // 关联ID
-   
-   public int getPid() {
+public int getPid() {
 	return pid;
 }
 
@@ -123,8 +123,8 @@ public User getUser(){
 	   Cars ca = null;    
 	  // logger.info("CarsService.getmap()"+CarsService.getmap());
 	   //logger.info(carid);  
-	   if(carid != 0 ){ 
-		   ca = CarsService.getmap().get(carid);
+	   if(carid != 0 ){   
+		   ca =CarsCache.getmap().get(carid);
 	   } 
 	   return ca;
    }
@@ -166,12 +166,15 @@ public int getBid() {
 public void setBid(int bid) {
 	this.bid = bid;
 }
-public int getPrice() {
-	return price;
+ 
+public int getPrince() {
+	return prince;
 }
-public void setPrice(int price) {
-	this.price = price;
+
+public void setPrince(int prince) {
+	this.prince = prince;
 }
+
 public int getStatues() {
 	return statues;
 }

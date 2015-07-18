@@ -1,4 +1,4 @@
-package logistics;
+package com.zhilibao.model;
 
 import user.User;
 import user.UserService;

@@ -1,24 +1,21 @@
-<%@ page language="java"  import="java.util.*,category.*,utill.*,branchtype.*,logistics.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<% 
-request.setCharacterEncoding("utf-8");  
+<%@ page language="java"  import="java.util.*,category.*,utill.*,branchtype.*,com.zhilibao.model.*,com.zhilibao.service.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%
+	request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user");
 TokenGen.getInstance().saveToken(request); 
-
-String time = TimeUtill.getdateString(); 
+  
+String time = TimeUtill.getdateString();  
 String token = (String)session.getAttribute("token"); 
 String method = request.getParameter("method");
 String pid = request.getParameter("pid"); 
 String uid = request.getParameter("uid"); 
 String carid = request.getParameter("carid");
-if(StringUtill.isNull(pid)){
-	pid = "0"; 
-}
-List<Cars> list = CarsManager.getlist();
- 
+if(StringUtill.isNull(pid)){  
+	pid = "0";  
+}      
+List<Cars> list = MapperService.getCarsOperation().getlist();
+     
 List<User>  listu = UserService.getLogistics(user); 
-   
-
-
 List<BranchType> listb = BranchTypeManager.getLocate();
 
 Map<String,List<Branch>> map = BranchManager.getLocateMapBranch(); 
@@ -39,27 +36,26 @@ if("add".equals(method)){
 	 String startlocate = request.getParameter("startlocate");
 	 pid = request.getParameter("pid"); 
 	 LogisticsMessage ls = new LogisticsMessage();
-	  
+	    
 	 ls.setCarid(Integer.valueOf(carid));
-	 ls.setPrice(Integer.valueOf(prince));
+	 ls.setPrince(Integer.valueOf(prince));
 	 ls.setUid(Integer.valueOf(uid));   
 	 ls.setSubmittime(TimeUtill.gettime()) ; 
 	 ls.setSendtime(sendtime); 
 	 ls.setLocates(realbranch); 
-	 ls.setRemark(remark); 
+	 ls.setRemark(remark);  
 	 ls.setAdvancePrice(Integer.valueOf(advancePrice));
 	 ls.setStartLocate(startlocate); 
 	 ls.setPid(Integer.valueOf(pid)); 
-	 boolean flag = LogisticsMessageManager.saveDB(user, ls);
-	 String type = ""; 
-	  if(flag){
+	 int flag = MapperService.getLogisticsMessageOperation().sava(ls);
+	 String type = "";  
+	  if(flag > 0){
 		  type = "updated";
-	  }     
+	  }      
 	   
 	 response.sendRedirect("../jieguo.jsp?type="+type);
 
 }
-
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

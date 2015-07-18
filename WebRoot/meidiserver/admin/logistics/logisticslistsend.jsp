@@ -1,15 +1,15 @@
-<%@ page language="java"  import="java.util.*,utill.*,category.*,logistics.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,utill.*,category.*,com.zhilibao.service.*,com.zhilibao.model.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <% 
 request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user"); 
 String method = request.getParameter("method");  
 if("del".equals(method)){
 	String ids = request.getParameter("ids"); 
-	LogisticsMessageManager.delete(user, ids); 
-	
+	//LogisticsMessageManager.delete(user, ids); 
+	  
 }
-List<LogisticsMessage>	list = LogisticsMessageManager.getlist("0");
-      
+List<LogisticsMessage>	list = MapperService.getLogisticsMessageOperation().getlistByStatues("0");
+         
 //System.out.println("CarsService.getmap()"+CarsService.getmap());
   
 %>
@@ -107,17 +107,17 @@ function del(){
 			 <td >  
 			<%=ca.getUser().getUsername() %>
 	 </td> 
-	<td> 
-<%=ca.getCars().getNum() %>  
-	</td>   
+	<td>  
+<%=ca.getCars().getNum() %>   
+	</td>    
 	  <td>   
 	  <%=ca.getLocates()%>
 	  </td> 
 	  <td> 
-	  <%=ca.getPrice() %>
-	  </td>
+	  <%=ca.getPrince() %>
+	  </td> 
 	   <td> 
-	  <%=ca.getAdvancePrice() %>
+	  <%=ca.getAdvancePrice() %> 
 	  </td>
 	  <td>
 	  <%=ca.getSendtime() %>
