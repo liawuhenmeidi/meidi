@@ -244,10 +244,7 @@ function checkedd(type){
 				alert("pos(厂送)单号为九位数");
 				return false ;
 			}
-		}else {
-			alert("");
-			return false ;
-		} 
+		}
 	}
 	
 	
