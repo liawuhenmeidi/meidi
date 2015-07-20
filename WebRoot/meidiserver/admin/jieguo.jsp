@@ -1,21 +1,4 @@
 <%@ page language="java" import="java.util.*,utill.*,category.*,gift.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%
-   
- String  resCode = "";
-   
- String type = request.getParameter("type");
- 
- if("updated".equals(type)){
-	 resCode = "保存成功";
- }else {
-	 resCode = "保存失败";
- }
-%>
- 
-
-
-
-
 <!DOCTYPE html>
 <html> 
 <head> 
@@ -26,19 +9,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="stylesheet" href="../css/songhuo.css">
 <title>处理结果</title> 
-</head> 
-
+</head>  
+ 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
-var type = '<%=type%>';
-
-$(function () {  
+  
+$(function () {   
 	if("updated" == type){
 		//alert(1);
 		checkedd(); 
 	}
 	
-});
+}); 
 function checkedd(){
 	//parent.location.reload(); 
 	//window.returnValue='refresh'; 
@@ -54,11 +36,11 @@ function checkedd(){
 <!--  zhanghao  -->  
   
 <div class="shwo_main"> 
-   
+    
    <!--   登陆开始   -->
    
-   <br>  
-   <div class="s_main_tit"><%=resCode %></div>
+   <br>   
+   <div class="s_main_tit"> ${message} </div>
  
 </div>
 

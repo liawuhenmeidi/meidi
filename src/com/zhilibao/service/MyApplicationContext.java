@@ -5,9 +5,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class MyApplicationContext { 
            
-    public static ApplicationContext getInstance(){
-    	return  new ClassPathXmlApplicationContext("ApplicationContext.xml");   
+    public static ApplicationContext getInstance(){ 
+    	return  new ClassPathXmlApplicationContext("com/zhilibao/config/ApplicationContext.xml");   
     } 
- 
+   
 }
  

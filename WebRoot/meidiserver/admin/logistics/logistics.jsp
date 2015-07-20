@@ -1,75 +1,38 @@
 <%@ page language="java"  import="java.util.*,category.*,utill.*,branchtype.*,com.zhilibao.model.*,com.zhilibao.service.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
-<%
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<% 
 	request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user");
-TokenGen.getInstance().saveToken(request); 
+TokenGen.getInstance().saveToken(request);  
   
 String time = TimeUtill.getdateString();  
 String token = (String)session.getAttribute("token"); 
 String method = request.getParameter("method");
-String pid = request.getParameter("pid"); 
+String pid = request.getParameter("pid");  
 String uid = request.getParameter("uid"); 
 String carid = request.getParameter("carid");
 if(StringUtill.isNull(pid)){  
 	pid = "0";  
-}      
-List<Cars> list = MapperService.getCarsOperation().getlist();
-     
-List<User>  listu = UserService.getLogistics(user); 
-List<BranchType> listb = BranchTypeManager.getLocate();
+}
 
 Map<String,List<Branch>> map = BranchManager.getLocateMapBranch(); 
 //Map<String,List<Branch>> map = BranchService.g
 String mapjosn = StringUtill.GetJson(map);
- 
-if("add".equals(method)){  
-	 uid = request.getParameter("uid");
-	 carid = request.getParameter("carid");
-	 String prince = request.getParameter("prince");
-	 String advancePrice = request.getParameter("advancePrice"); 
-	 if(StringUtill.isNull(advancePrice)){
-		 advancePrice = 0+""; 
-	 }
-	 String realbranch = request.getParameter("realbranch");
-	 String sendtime = request.getParameter("sendtime"); 
-	 String remark = request.getParameter("remark");
-	 String startlocate = request.getParameter("startlocate");
-	 pid = request.getParameter("pid"); 
-	 LogisticsMessage ls = new LogisticsMessage();
-	    
-	 ls.setCarid(Integer.valueOf(carid));
-	 ls.setPrince(Integer.valueOf(prince));
-	 ls.setUid(Integer.valueOf(uid));   
-	 ls.setSubmittime(TimeUtill.gettime()) ; 
-	 ls.setSendtime(sendtime); 
-	 ls.setLocates(realbranch); 
-	 ls.setRemark(remark);  
-	 ls.setAdvancePrice(Integer.valueOf(advancePrice));
-	 ls.setStartLocate(startlocate); 
-	 ls.setPid(Integer.valueOf(pid)); 
-	 int flag = MapperService.getLogisticsMessageOperation().sava(ls);
-	 String type = "";  
-	  if(flag > 0){
-		  type = "updated";
-	  }      
-	   
-	 response.sendRedirect("../jieguo.jsp?type="+type);
-
-}
+  
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<head> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>职工管理</title>
-   
+<title>物流送货增加</title> 
+    
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/calendar.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
 var jsonmap = '<%=mapjosn%>';
-var time = '<%=time%>';  
+var time = '<%=time%>';   
 var pid = '<%=pid%>';  
 var uid = '<%=uid%>';  
 var carid = '<%=carid%>';  
@@ -178,7 +141,7 @@ function initLocate(){
 		html +='<td bgcolor="white" onclick="delLocate(\''+lo+'\')">['+lo+']</td>';
 		 
 	}  
-    $("#realbranch").val(locates.toString());
+    $("#locates").val(locates.toString());
 	$("#addlocate").append(html);
 }
 function delLocate(lo){
@@ -197,64 +160,45 @@ function delLocate(lo){
   </jsp:include>
 
 <!--   头部结束   -->
- 
+  
      
  <!--       -->    
      
      <div class="">
    <div class="weizhi_head">现在位置：物流配工</div> 
-
-   <div class="table-list"> 
    
- <form id="myform">   
- <input type="hidden" name="method" value="add"/> 
+   <div class="table-list"> 
+      
+ <form id="myform" action="save.do"  method="post">     
+   <input type="hidden" name="method" value="add"/> 
    <input  type="hidden" name="token" value="<%=token%>" />
-    <input  type="hidden" name="realbranch" id="realbranch" />
-     <input  type="hidden" name="pid" value="<%=pid%>" />
+   <input  type="hidden" name="locates" id="locates" />
+   <input  type="hidden" name="pid" value="<%=pid%>" /> 
+   <input  type="hidden" name="submittime" value="<%=TimeUtill.gettime()%>" />
 <table width="100%" cellspacing="1" id="table">  
 	<tr class="asc"> 
 	<td>司机<span style=" color:#F00;">*</span></td>
 	 <td >  
 	
 	 <select id="uid" name="uid" >
-	 <option></option>
-	   <%   
-	    if(null != listu){
-	    	for(int i=0;i<listu.size();i++){
-	    		User u = listu.get(i);
-	    		 
-	    		%>
-	    		<option value="<%=u.getId()%>"><%=u.getUsername() %></option>
-	    		
-	    		<% 
-	    	}
-	    }
-	   
-	   %>
-	 
+	 <option></option> 
+	  <c:forEach var="user"  items="${users}" >
+     <option value="${user.id }">${user.username }</option>
+      </c:forEach>  
 	 </select>
 	 </td>
-	
+	 
 	</tr>
 	<tr class="asc"> 
     <td>车牌号<span style=" color:#F00;">*</span></td>   
 	<td><select id="carid" name="carid">
 	 <option></option>
-	   <% 
-	    if(null != list){
-	    	for(int i=0;i<list.size();i++){
-	    		Cars ca = list.get(i);
-	    		
-	    		%>
-	    		<option value="<%= ca.getId()%>"><%=ca.getNum() %></option>
-	    		
-	    		<%
-	    	}
-	    }
-	   
-	   %>
 	 
-	 </select></td> 
+	 <c:forEach var="car"  items="${cars}" >
+     <option value="${car.id }">${car.num }</option>
+      </c:forEach> 
+	 
+	 </select></td>  
 	 
 	</tr>
 	<tr class="asc">
@@ -282,22 +226,17 @@ function delLocate(lo){
 	    <tr class="asc">
 	    <td> <select class = "quyu" name="branchtype" id="branchtype" >
           <option >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
-		<%
-		 for(int i=0;i<listb.size();i++){
-			 BranchType lo = listb.get(i); 
-			 if(lo.getId() != 2){ 
-		%>	    
-		 <option value="<%=lo.getId()%>"><%=lo.getName()%></option>
-		<%
-			 }
-		 }
-		%>
-	</select> 
+		
+		 <c:forEach var="BranchType"  items="${BranchTypes}" >
+           <option value="${BranchType.id }">${BranchType.name }</option>
+      </c:forEach>  
+ 
+	</select>  
     <select id="branch" name="branch">
           <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option> 
        </select></td>
 	    </tr> 
-	    <tr class="asc"> 
+	    <tr class="asc">  
 	    <td>
 	    <input type="text" name="addbranch" id="addbranch" value="" placeholder="增加地址"/>
 	    <input type="button" value="增加" onclick="addlocate()"/>
