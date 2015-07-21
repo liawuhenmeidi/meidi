@@ -1,41 +1,23 @@
 <%@ page language="java"  import="java.util.*,category.*,utill.*,branchtype.*,com.zhilibao.model.*,com.zhilibao.service.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<% 
-	request.setCharacterEncoding("utf-8");   
-User user = (User)session.getAttribute("user");
-TokenGen.getInstance().saveToken(request);  
-  
-String time = TimeUtill.getdateString();  
-String token = (String)session.getAttribute("token"); 
-String method = request.getParameter("method");
-String pid = request.getParameter("pid");  
-String uid = request.getParameter("uid"); 
-String carid = request.getParameter("carid");
-if(StringUtill.isNull(pid)){  
-	pid = "0";  
-}
-
-Map<String,List<Branch>> map = BranchManager.getLocateMapBranch(); 
-//Map<String,List<Branch>> map = BranchService.g
-String mapjosn = StringUtill.GetJson(map);
-  
-%>
+ 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head> 
+<head>  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>物流送货增加</title> 
-    
+<title>物流送货增加</title>  
+     
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../js/calendar.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
-var jsonmap = '<%=mapjosn%>';
-var time = '<%=time%>';   
-var pid = '<%=pid%>';  
-var uid = '<%=uid%>';  
-var carid = '<%=carid%>';  
+var time = '${time}';    
+var pid = '${pid}';   
+var uid = '${uid}';        
+var carid = '${carid}';  
+var jsonmap = '${mapjosn}';  
+
 time=new Date(time.replace("-", "/").replace("-", "/"));  
 var locates = new Array(); 
 $(function () {
@@ -161,22 +143,20 @@ function delLocate(lo){
 
 <!--   头部结束   -->
   
-     
- <!--       -->    
-     
+       
+ <!--       -->     
+         
      <div class="">
-   <div class="weizhi_head">现在位置：物流配工</div> 
-   
-   <div class="table-list"> 
-      
- <form id="myform" action="save.do"  method="post">     
-   <input type="hidden" name="method" value="add"/> 
-   <input  type="hidden" name="token" value="<%=token%>" />
-   <input  type="hidden" name="locates" id="locates" />
-   <input  type="hidden" name="pid" value="<%=pid%>" /> 
-   <input  type="hidden" name="submittime" value="<%=TimeUtill.gettime()%>" />
-<table width="100%" cellspacing="1" id="table">  
-	<tr class="asc"> 
+   <div class="weizhi_head">现在位置：物流配工${token}</div> 
+   <div class="table-list">     
+              
+ <form id="myform" action="save.do"  method="post">      
+   <input  type="hidden" name="token" value="${token}" /> 
+   <input  type="hidden" name="locates" id="locates" />   
+   <input  type="hidden" name="pid" value="${pid}" />     
+   <input  type="hidden" name="submittime" value="${submittime}" />
+<table width="100%" cellspacing="1" id="table">    
+	<tr class="asc">  
 	<td>司机<span style=" color:#F00;">*</span></td>
 	 <td >  
 	
@@ -230,7 +210,7 @@ function delLocate(lo){
 		 <c:forEach var="BranchType"  items="${BranchTypes}" >
            <option value="${BranchType.id }">${BranchType.name }</option>
       </c:forEach>  
- 
+  
 	</select>  
     <select id="branch" name="branch">
           <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option> 
@@ -263,15 +243,15 @@ function delLocate(lo){
 	<input type="text" name="advancePrice" id="advancePrice" placeholder="垫付金额"/>(元)
 	</td>
 	</tr>
-	<tr class="asc"> 
+	<tr class="asc">  
 	<td>送货时间</td> 
 	<td> 
-	<input type="text" name="sendtime" id="sendtime" maxlength="10"
+	<input type="text" name="sendtime" id="sendtime" maxlength="10" value="${time}"
 						onclick="new Calendar().show(this);" placeholder="必填" />
 	</td>
-	</tr>
+	</tr> 
 	<tr class="asc"> 
-	<td>备注</td>     
+	<td>备注</td>      
 	<td> 
 	<textarea name="remark" id="remark" placeholder="备注"></textarea>
 	</td> 
@@ -281,9 +261,7 @@ function delLocate(lo){
 	<input type="button" value="提交" onclick="mysubmit()"/>
 	</td> 
 	</tr>
-	
-	
-	
+ 
 </table>
  
    </form>  

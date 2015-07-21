@@ -534,12 +534,12 @@ function getInventory(){
          if(logistics_p || logistics_c){
         	%>   
         	 <li > 
-        	 <h4 >物流系統</h4>     
+        	 <h4 >物流系統</h4>      
             <div class="list-item none"> 
             <% 
-            if(logistics_p){ 
+            if(logistics_p){  
             	%> 
-            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logistics.jsp')" >物流配工</a></p> 
+            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/add.do')" >物流配工</a></p> 
             	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistsend.jsp')" >待送货</a></p> 
             	  <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistCharging.jsp')" >预约结款</a></p> 
             	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistcharge.jsp')" >待结款</a></p> 

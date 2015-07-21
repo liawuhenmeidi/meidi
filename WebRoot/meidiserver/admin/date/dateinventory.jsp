@@ -76,8 +76,8 @@ System.out.println("time"+time);
 							}
 						%>
 				</select>
-				<input class="mytime" name="mytime" value="" style="paddind-top: 100px; padding-left:100px;"/>
- <input type="submit" value="查看"/>
+				<input class="mytime" name="mytime" value="" style="text-align:center;"/>
+                <input type="submit" value="查看"/>
     
 
 </td>
@@ -123,7 +123,7 @@ System.out.println("time"+time);
 	    // String tempPath = PathUtill.getXMLpath();
 		/// tempPath += "data" + File.separator + "DownloadInventory"+File.separator+time+"-"+strday+File.separator+type+File.separator; 
 		// System.out.println(tempPath); 
-		 System.out.println(time);  
+		// System.out.println(time);  
 		 Collection<SNInventory> coc = InventoryChange.get(TimeUtill.dataAdd( realtime, 0));
 	        // 苏宁样机  
 	    	Collection<SNInventory> com =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd( realtime, 0)).values(); 

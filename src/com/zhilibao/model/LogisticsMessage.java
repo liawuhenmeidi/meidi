@@ -109,10 +109,10 @@ public String getSendtime() {
 public void setSendtime(String sendtime) {
 	this.sendtime = sendtime;
 }
-
+ 
 public User getUser(){
 	   User u = null;
-	   
+	   //logger.info(uid); 
 	   if(uid != 0){
 		   u = UserService.getMapId().get(uid);
 	   } 
