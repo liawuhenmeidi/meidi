@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <% 
 	request.setCharacterEncoding("utf-8");       
-User user = (User)session.getAttribute("user");  
+User user = (User)session.getAttribute("user");   
 String category = request.getParameter("category");
 String endtime = TimeUtill.getdateString(); 
    
@@ -17,7 +17,7 @@ Map<String,SNInventory> map = new HashMap<String,SNInventory>();
 	//Map<String, SNInventory> mapstart = SNInventoryChange.changeMap(listend );
 	 // 样机    
 	 Map<String,SNInventory> mapModel = InventoryModelDownLoad.getMap(user, endtime);
-	         
+	          
 	 // 销量     
 	// 未入库数量        
 	  

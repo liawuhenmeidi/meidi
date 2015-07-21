@@ -258,7 +258,38 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 		} // 跳过表头 如果需要表头的话，不要写这句。
 		return map; 
 	}
+  
+	public static Map<String, SNInventory> getMap(User user, String startTime) { 
+		// startTime = "2015-05-03";  
+		Map<String, SNInventory> map = new HashMap<String,SNInventory>();
+
+		try {   
+			String tempPath = PathUtill.getXMLpath();
+			tempPath += "data" + File.separator + "DownloadInventory"
+					+ File.separator + startTime+File.separator+"SuNing";
+			//logger.info(tempPath);
+			File file = new File(tempPath);
+			if (!file.exists()) {
+				file.mkdirs();
+			}
  
+			File file2 = new File(tempPath + File.separator + "badgoods.csv");
+			logger.info(file2.getAbsolutePath()); 
+            if(file2.exists()){ 
+            	CsvReader reader = new CsvReader(file2.getPath(), ',',
+    					Charset.forName("GBK")); // 一般用这编码读就可以了
+
+    			map= getMap(reader); 
+            }
+			
+             
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // 跳过表头 如果需要表头的话，不要写这句。
+		return map; 
+	}
+	
 	public static List<SNInventory> getMap() { 
 		// startTime = "2015-05-03";  
 		List<SNInventory> list = new ArrayList<SNInventory>();

@@ -49,13 +49,13 @@ function clear(){
 	   <!--   
 	    <li><a href="OrderGoods/inventoryDynamic.jsp">智能要货 </a></li> 
 	    -->
-	  
-	    <%           
+	   
+	    <%            
 	     }  
    if(UserManager.checkPermissions(user, Group.ordergoods,"r")){ 	 
-	   %>            
+	   %>             
 	   <li><a href="inventory/inventorycome.jsp">查看入库单号 </a></li> 
-	       
+	   <li><a href="OrderGoods/SNOrder.jsp">查看苏宁入库单号 </a></li> 
 	   <li><a href="makeInventory/makeinventoryall.jsp">盘点</a></li>
 	  <!--   
 	    <li><a href="inventory/inventorycheck.jsp">盘点</a></li>

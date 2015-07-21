@@ -8,7 +8,7 @@ String userbranch = user.getBranch();
 String category = request.getParameter("category"); 
 String branch = request.getParameter("branch");
 String time = request.getParameter("time");
-int branchid = -1 ;  
+int branchid = -1 ;   
 if(StringUtill.isNull(time)){ 
 	time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
 }     

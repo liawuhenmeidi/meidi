@@ -39,7 +39,7 @@ public class InventoryMerger {
    
 	// 型号   门店 
     public static Map<String,Map<String,SNInventory>> get(User user ,String branch,String category,String starttime,String endtime,String[] typestatues){
-    	
+    	 
     	String branchnum = BranchService.getNameMap().get(branch).getEncoded();   
     	// 型号   门店  
     	Map<String,Map<String,SNInventory>> map = new HashMap<String,Map<String,SNInventory>>();
@@ -50,12 +50,12 @@ public class InventoryMerger {
     	Collection<SNInventory> com =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd(endtime, 1)).values(); 
         // 苏宁坏机 
         Collection<SNInventory> cob = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd(endtime, 1)).values();
-         
+          
         List<SNInventory> cos = null ;
         if(!StringUtill.isNull(starttime)){
         	 cos = SaleDownLoad.get(starttime, endtime); 
         }
-
+ 
         // 销量  
        // logger.info(123); 
         Collection<SNInventory> coin = InventoryAllManager.get(user,category, branch, endtime).values();

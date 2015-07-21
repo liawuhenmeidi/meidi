@@ -173,7 +173,7 @@ function getInventory(){
            <li >
             <h4 >销售统计</h4>  
             <div class="list-item none">
-              
+               
               <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadSaleCount.jsp')">票面销售统计</a></p>
               <p ><a href="javascript:void(0);"  onclick="reloadopned('uploadSendCount.jsp')">送货销售统计</a></p>
               <%  if(UserManager.checkPermissions(user, Group.change)){%>
@@ -239,6 +239,15 @@ function getInventory(){
             </div>   
           </li>    
             
+            <% if(ordergoods_r){ %>
+             <li>    
+            <h4 >查看苏宁采购订单报表</h4>  
+            <div class="list-item none"> 
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/SNOrder.jsp')">查看苏宁采购订单</a></p> 
+            </div>
+          </li>  
+          <%} %>
+          
           <li>   
             <h4 >数据管理</h4> 
             <div class="list-item none"> 
