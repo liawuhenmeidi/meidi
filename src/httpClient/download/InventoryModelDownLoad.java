@@ -233,14 +233,14 @@ public class InventoryModelDownLoad extends HttpServlet implements DownLoad {
 		
 	}
 	
-	public static Map<String, SNInventory> getMap(User user, String startTime) {
+	public static Map<String, SNInventory> getMap(User user, String startTime,String type) {
 		// startTime = "2015-05-03";  
 		Map<String, SNInventory> map = new HashMap<String,SNInventory>();
 
-		try {  
+		try {   
 			String tempPath = PathUtill.getXMLpath();
 			tempPath += "data" + File.separator + "DownloadInventory"
-					+ File.separator + startTime+File.separator+"SuNing";
+					+ File.separator + startTime+File.separator+type;
 			
 			File file = new File(tempPath); 
 			if (!file.exists()) {

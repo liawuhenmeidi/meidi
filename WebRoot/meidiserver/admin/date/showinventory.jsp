@@ -1,29 +1,32 @@
 <%@ page language="java"
 	import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,httpClient.download.*,httpClient.*,httpClient.download.InventoryModelDownLoad,httpClient.download.InventoryBadGoodsDownLoad,httpClient.download.InventoryChange,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
-<%  
+<%   
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user"); 
-
+  
 String time = request.getParameter("time"); 
-String type = request.getParameter("type");
-String realtime = "";   
+String type = request.getParameter("type");  
+String saletype = request.getParameter("saletype");
+String end = "";
+String realtime = "";       
 if(StringUtill.isNull(time)){ 
 	time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
 	realtime = time ;
-}else {
-	realtime = time ;
+}else { 
+	realtime = time ; 
 	if(time.equals(TimeUtill.getdateString())){ 
 		//time = TimeUtill.dataAdd(TimeUtill.getdateString(), -1);
 	} 
 }      
 Collection<SNInventory> coc = null ;
-if("common".equals(type)){
-	coc = InventoryChange.get(TimeUtill.dataAdd(realtime, 0));		
-}else if("model".equals(type)){
-	coc =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd(time, 0)).values(); 
+
+if("common".equals(type)){  
+	coc = InventoryChange.get(TimeUtill.dataAdd(realtime, 0),saletype);
+}else if("model".equals(type)){ 
+	coc =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd(time, 0),saletype).values(); 
 }else if("bad".equals(type)){ 
-	coc = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd(time, 0)).values();
+	coc = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd(time, 0),saletype).values();
 }
  
  
@@ -189,17 +192,17 @@ function serchclick(category,type,branchid,obj){
 		<jsp:param name="dmsn" value="" />
 	</jsp:include>
 
-	<div class="table-list"> 
+	<div class="table-list">    
 <form action="../server.jsp" > 
 <input type="hidden" name="time" value ="<%=time%>"/> 
-<input type="hidden" name="type" value ="<%=type%>"/> 
-<table>
-<tr>
-<td> <a href="../DownloadServlet?name=productmuban&type=model"><font style="color:blue;font-size:20px;" >模板</font> </a></td> 
-        
+<input type="hidden" name="type" value ="<%=type%>"/>  
+<table>   
+<tr>    
+<td> <a href="../../../data/model/inventory/<%=saletype%>/<%=type%>.csv"><font style="color:blue;font-size:20px;" >模板</font> </a></td> 
+           
       <td align="center" > <font style="color:red;font-size:20px;" >导入数据 : </font></td>
       <td align="center" ><input id="File1"   name="UpLoadFile" type="file" /> </td>
-      <td align="center" >
+      <td align="center" >  
        <input type="submit" name="Button1" value="提交文件" id="Button1" />
 </tr>
 

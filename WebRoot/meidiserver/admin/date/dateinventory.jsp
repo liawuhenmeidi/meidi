@@ -5,13 +5,13 @@
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user"); 
 List<BranchType> listgt = BranchTypeManager.getLocate();
- 
-String time = request.getParameter("mytime"); 
-String bid = request.getParameter("branchtype");
   
-System.out.println("time"+time);
+String time = request.getParameter("mytime"); 
+String type = request.getParameter("branchtype");
+   
+System.out.println("time"+time+"&&&bid"+type);
 
-%> 
+%>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -38,12 +38,12 @@ System.out.println("time"+time);
 	 $(".mytime").simpleCanleder(); 
 	 
 	 $(".mytime").val("<%=time%>"); 
-	 $("#branchtype").val("<%=bid%>");
+	 $("#branchtype").val("<%=type%>");
  });         
    
- function wincom(time,type){
+ function wincom(time,type,saletype){ 
 	 // alert(1);  
-	 winPar = window.open("showinventory.jsp?time="+time+"&type="+type,"time","resizable=yes,modal=yes,scroll=no,width="+screen.width*0.8+",top="+(screen.height-300)/2+",left="+(screen.width*0.1)+",height=400px,dialogTop:0px,scroll=no");  	
+	 winPar = window.open("showinventory.jsp?time="+time+"&type="+type+"&saletype="+saletype,"time","resizable=yes,modal=yes,scroll=no,width="+screen.width*0.8+",top="+(screen.height-300)/2+",left="+(screen.width*0.1)+",height=400px,dialogTop:0px,scroll=no");  	
  } 
 </script> 
 </head>
@@ -62,14 +62,14 @@ System.out.println("time"+time);
  
   销售系统： <select id="branchtype" name="branchtype">
 						<option></option> 
-						<%
+						<% 
 							if (null != listgt) {
 								for (int i = 0; i < listgt.size(); i++) {
 									BranchType bt = listgt.get(i);
-									if (bt.getTypestatues() == 1) {
-										
-						%>
-						<option value="<%=bt.getId()%>"><%=bt.getName()%></option>
+									if (bt.getTypestatues() == 1 && !StringUtill.isNull(bt.getSaletypeStr())) {
+									 	  
+						%>  
+						<option value="<%=bt.getSaletypeStr()%>"><%=bt.getName()%></option>
 						<%  
 							}  
 								} 
@@ -86,10 +86,7 @@ System.out.println("time"+time);
  <table>
  
  <% if(!StringUtill.isNull(time)) {
-	String type ="";
-	 if(!StringUtill.isNull(bid)){
-		 type = BranchTypeService.getMap().get(Integer.valueOf(bid)).getSaletypeStr();
-	 }
+	
 	    
 	 String times[] = time.split("-");
 	 String day = times[1];  
@@ -122,15 +119,15 @@ System.out.println("time"+time);
 	     String realtime = time+"-"+strday ;  
 	    // String tempPath = PathUtill.getXMLpath();
 		/// tempPath += "data" + File.separator + "DownloadInventory"+File.separator+time+"-"+strday+File.separator+type+File.separator; 
-		// System.out.println(tempPath); 
-		// System.out.println(time);  
-		 Collection<SNInventory> coc = InventoryChange.get(TimeUtill.dataAdd( realtime, 0));
+		// System.out.println(tempPath);     
+		// System.out.println(time);   
+		 Collection<SNInventory> coc = InventoryChange.get(TimeUtill.dataAdd( realtime, 0),type);
 	        // 苏宁样机  
-	    	Collection<SNInventory> com =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd( realtime, 0)).values(); 
+	     Collection<SNInventory> com =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd( realtime, 0),type).values(); 
 	        // 苏宁坏机 
-	        Collection<SNInventory> cob = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd( realtime, 0)).values();
-	     //File filec = new File(tempPath+"common.csv"); 
-	     
+	     Collection<SNInventory> cob = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd( realtime, 0),type).values();
+	     //File filec = new File(tempPath+"common.csv");  
+	      
 	    // File filem = new File(tempPath+"model.csv");
 	    // File fileb = new File(tempPath+"badgoods.csv"); 
 	         
@@ -146,9 +143,9 @@ System.out.println("time"+time);
 		   if(i == 1){  
 			  %>  
 			   <tr> 
-		     <td><%=i %>  
+		     <td><%=i %>   
 		     <table> 
-		      <tr><td onclick="wincom('<%=time+"-"+strday %>','common')">实货库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','common','<%=type%>')">实货库存: 
 		      <%  
 		      if(flagc){
 		    	  %>
@@ -157,7 +154,7 @@ System.out.println("time"+time);
 		      }%>
 		      
 		        </td></tr>
-		      <tr><td onclick="wincom('<%=time+"-"+strday %>','model')">样机库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','model','<%=type%>')">样机库存: 
 		       <% 
 		      if(flagm){
 		    	  %>
@@ -166,7 +163,7 @@ System.out.println("time"+time);
 		      }%>
 		      
 		       </td></tr>
-		      <tr><td onclick="wincom('<%=time+"-"+strday %>','bad')">坏货库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','bad','<%=type%>')">坏货库存: 
 		       <%
 		      if(flagb){
 		    	  %>
@@ -175,10 +172,6 @@ System.out.println("time"+time);
 		      }%>
 		       </td></tr>
 		     </table>
-		
-		 
-		 
-		     
 		     </td>
 			  <%
 		   }else { 
@@ -188,7 +181,7 @@ System.out.println("time"+time);
 				   <tr> 
 		           <td><%=i %>
 		            <table>
-		      <tr><td onclick="wincom('<%=time+"-"+strday %>','common')">实货库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','common','<%=type%>')">实货库存: 
 		      <%
 		      if(flagc){
 		    	  %>
@@ -197,7 +190,7 @@ System.out.println("time"+time);
 		      }%>
 		      
 		        </td></tr>
-		      <tr><td onclick="wincom('<%=time+"-"+strday %>','model')">样机库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','model','<%=type%>')">样机库存: 
 		       <% 
 		      if(flagm){
 		    	  %>
@@ -206,7 +199,7 @@ System.out.println("time"+time);
 		      }%>
 		      
 		       </td></tr>
-		      <tr><td onclick="wincom('<%=time+"-"+strday %>','bad')">坏货库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','bad','<%=type%>')">坏货库存: 
 		       <%
 		      if(flagb){
 		    	  %>
@@ -223,7 +216,7 @@ System.out.println("time"+time);
 				   %>
 				     <td><%=i %>
 				      <table>
-		      <tr><td onclick="wincom('<%=time+"-"+strday %>','common')">实货库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','common','<%=type%>')">实货库存: 
 		      <%
 		      if(flagc){
 		    	  %> 
@@ -232,7 +225,7 @@ System.out.println("time"+time);
 		      }%>
 		      
 		        </td></tr>
-		      <tr><td onclick="wincom('<%=time+"-"+strday %>','model')"> 样机库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','model','<%=type%>')"> 样机库存: 
 		       <% 
 		      if(flagm){ 
 		    	  %>
@@ -241,7 +234,7 @@ System.out.println("time"+time);
 		      }%>
 		       
 		       </td></tr>
-		      <tr><td onclick="wincom('<%=time+"-"+strday %>','bad')">坏货库存: 
+		      <tr><td onclick="wincom('<%=time+"-"+strday %>','bad','<%=type%>')">坏货库存: 
 		       <%
 		      if(flagb){
 		    	  %>

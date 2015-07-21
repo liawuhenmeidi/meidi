@@ -228,14 +228,14 @@ public class InventoryBadGoodsDownLoad extends HttpServlet implements DownLoad {
 	} // 跳过表头 如果需要表头的话，不要写这句。
 		return map; 
 	}
-	public static Map<String, SNInventory> getMap(User user, String startTime) {
+	public static Map<String, SNInventory> getMap(User user, String startTime,String type) {
 		// startTime = "2015-05-03";  
 		Map<String, SNInventory> map = new HashMap<String,SNInventory>();
 
-		try { 
+		try {  
 			String tempPath = PathUtill.getXMLpath();
 			tempPath += "data" + File.separator + "DownloadInventory"
-					+ File.separator + startTime+File.separator+"SuNing";
+					+ File.separator + startTime+File.separator+type;
 			//logger.info(tempPath);
 			File file = new File(tempPath);
 			if (!file.exists()) {

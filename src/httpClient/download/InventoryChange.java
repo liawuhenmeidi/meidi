@@ -364,6 +364,35 @@ public class InventoryChange {
     					Charset.forName("GBK")); // 一般用这编码读就可以了
     			co = getbyRead(reader);  
     			reader.close(); 
+            }   
+	}catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}  
+		return co;
+	}
+	
+	public static Collection<SNInventory> get(String startTime,String type) {
+		// startTime = "2015-05-03";
+		// List<Inventory> list = new ArrayList<Inventory>();
+		Collection<SNInventory> co = null; 
+		try {
+			String tempPath = PathUtill.getXMLpath();
+			tempPath += "data" + File.separator + "DownloadInventory"
+					+ File.separator + startTime+File.separator+type;
+			logger.info(tempPath);
+			File file = new File(tempPath);
+			if (!file.exists()) {
+				file.mkdirs();
+			}  
+ 
+			File file2 = new File(tempPath + File.separator + "common.csv");
+			// file2.createNewFile();
+            if(file2.exists()){
+            	CsvReader reader = new CsvReader(file2.getAbsolutePath(), ',',
+    					Charset.forName("GBK")); // 一般用这编码读就可以了
+    			co = getbyRead(reader);  
+    			reader.close(); 
             }
 			
 			 
@@ -373,6 +402,8 @@ public class InventoryChange {
 	} 
 		return co;
 	}
+	
+	
 	// 型号 , 状态
 	public static Map<String, List<SNInventory>> getMapBranchType(User user,
 			String startTime, int branchid) {
