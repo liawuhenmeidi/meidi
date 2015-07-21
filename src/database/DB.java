@@ -9,11 +9,11 @@ import java.sql.Statement;
 public class DB {                                 
 	public static Connection getConn() {            
 		Connection conn = null;                     
-		try {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+		try {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 			Class.forName("com.mysql.jdbc.Driver");                        
 			//conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/meidi?user=root&password=liaowuhen&characterEncoding=utf-8");
-	conn = DriverManager.getConnection("jdbc:mysql://voip022.gotoftp3.com/voip022?user=voip022&password=808080&characterEncoding=utf-8");
- //conn = DriverManager.getConnection("jdbc:mysql://liaowuhentest.gotoftp5.com/liaowuhentest?user=liaowuhentest&password=liaowuhen&characterEncoding=utf-8");
+	//conn = DriverManager.getConnection("jdbc:mysql://voip022.gotoftp3.com/voip022?user=voip022&password=808080&characterEncoding=utf-8");
+ conn = DriverManager.getConnection("jdbc:mysql://liaowuhentest.gotoftp5.com/liaowuhentest?user=liaowuhentest&password=liaowuhen&characterEncoding=utf-8");
 			//conn = DriverManager.getConnection("jdbc:mysql://liaowuhendg.gotoftp1.com/liaowuhendg?user=liaowuhendg&password=eWp2046Mdaq76&characterEncoding=utf-8");
 		 //   conn = DriverManager.getConnection("jdbc:mysql://liaowuhen.gotoftp3.com/liaowuhen?user=liaowuhen&password=liaowuhen&characterEncoding=utf-8");   //   聚美
 		} catch (ClassNotFoundException e) {                     

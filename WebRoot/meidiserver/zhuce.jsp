@@ -160,7 +160,7 @@ $(function () {
 	 var password = $("#password").val();
 	 var password2 = $("#password2").val(); 
 	 var zhuguan = $("#zhuguan").val();
-	
+	 var serviceDate = $("#serviceDate").val(); 
 	 if(username == "" || username == null || username == "null"){
 		 alert("职工姓名不能为空");
 		 return false;
@@ -196,7 +196,11 @@ $(function () {
 				 return false;  
 			 }
 		 }
-	
+	 
+	 if(serviceDate == "" || serviceDate == null || serviceDate == "null"){
+		 alert("入职时间不能为空");
+		 return false;
+	 }
 	 
 	 if(password == "" || password == null || password == "null"){
 		 alert("密码不能为空");
