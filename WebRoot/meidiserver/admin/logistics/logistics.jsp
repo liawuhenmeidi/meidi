@@ -45,7 +45,12 @@ $(function () {
 		$("#addbranch").val(b); 
 	});
 
+	$("#uid").change(function(){
+		var b = $("#uid option:selected").val();
+		 
+		$("#u"+b).css("display","block");
 
+	});
 });
 
 
@@ -145,11 +150,11 @@ function delLocate(lo){
   
        
  <!--       -->     
-         
+          
      <div class="">
    <div class="weizhi_head">现在位置：物流配工${token}</div> 
    <div class="table-list">     
-              
+               
  <form id="myform" action="save.do"  method="post">      
    <input  type="hidden" name="token" value="${token}" /> 
    <input  type="hidden" name="locates" id="locates" />   
@@ -175,9 +180,9 @@ function delLocate(lo){
 	 <option></option>
 	 
 	 <c:forEach var="car"  items="${cars}" >
-     <option value="${car.id }">${car.num }</option>
+     <option value="${car.id }" id="u${car.uid }"  style="display: none">${car.num }</option>
       </c:forEach> 
-	 
+	  
 	 </select></td>  
 	 
 	</tr>

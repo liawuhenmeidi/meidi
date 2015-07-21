@@ -27,21 +27,21 @@ import com.zhilibao.model.Cars;
 import com.zhilibao.model.LogisticsMessage;
 import com.zhilibao.service.MapperService;
 import com.zhilibao.token.Token;
-  
-@Controller  //类似Struts的Action
+      
+@Controller  //类似Struts的Action 
 @RequestMapping("/meidiserver/admin/logistics/")
-public class LogisticsMessageController { 
+public class LogisticsMessageController {  
 	 protected static Log logger = LogFactory.getLog(LogisticsMessageController.class);
-	     
+	       
 	    @RequestMapping("add.do")  // 请求url地址映射，类似Struts的action-mapping
-	    @Token(save=true)    
-	    //  
+	    @Token(save=true)     
+	    //          
 	    public ModelAndView add(HttpSession session,@Param("pid")String pid){  
 	        // request和response不必非要出现在方法中，如果用不上的话可以去掉 
 	        // 参数的名称是与页面控件的name相匹配，参数类型会自动被转换 
 	    	ModelAndView modelAndView = new ModelAndView();  
 	    	User user = (User)session.getAttribute("user");
-	    	//logger.info(user);        
+	    	//logger.info(user);          
 	    	List<Cars> cars = MapperService.getCarsOperation().getlist();
 	    	//logger.info(cars);    
 	    	List<User>  users= UserService.getLogistics(user);
@@ -84,7 +84,7 @@ public class LogisticsMessageController {
 	    	context.put("message","保存成功");  
 	    	ModelAndView modelAndView = new ModelAndView("jieguo",context);
 	        return modelAndView;  // 采用重定向方式跳转页面
-	        // 重定向还有一种简单写法 
+	        // 重定向还有一种简单写法  
 	        // return new ModelAndView("redirect:../index.jsp");
 	    }
 	   
