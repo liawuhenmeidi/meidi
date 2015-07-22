@@ -1,9 +1,9 @@
-<%@ page language="java"  import="java.util.*,utill.*,category.*,logistics.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,utill.*,category.*,com.zhilibao.service.*,com.zhilibao.model.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <% 
 request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user");      
-List<LogisticsMessage>	list = LogisticsMessageManager.getAdvancePrince(user,"0"); 
-   
+List<LogisticsMessage>	list = MapperService.getLogisticsMessageOperation().getAdvancePrince("0"); 
+    
 //System.out.println("CarsService.getmap()"+CarsService.getmap());
 
 %>
@@ -136,9 +136,9 @@ function totalInit(){
 	    <%=ca.getLocates()%>
 	  </td> 
 	  <td> 
-	  <%=ca.getPrice() %>
+	  <%=ca.getPrince() %>
 	  
-	  </td>  
+	  </td>   
 	  <td> 
 	  <label id="p<%=ca.getId()%>"> <%=ca.getAdvancePrice() %></label> 
 	 

@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,logistics.*,branch.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,category.*,com.zhilibao.service.*,com.zhilibao.model.*,branch.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
         
 <%           
 User user = (User)session.getAttribute("user"); 
@@ -6,14 +6,14 @@ String statues = request.getParameter("statues");
 String method = request.getParameter("method");
 if(StringUtill.isNull(statues)){
 	statues = "0" ;
-} 
+}  
  
 if("agree".equals(method)){ 
-	LogisticsMessageManager.updateAgree(user); 
+	MapperService.getLogisticsMessageOperation().updateAgree(user); 
 }
-
-List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.valueOf(statues));
-  
+ 
+List<LogisticsMessage>	list = MapperService.getLogisticsMessageOperation().getlistUidStatues(user,statues);
+    
 //System.out.println("list"+json );     
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -76,7 +76,7 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.value
        if(null != list){
     	   for(int i=0;i<list.size();i++){
     		   LogisticsMessage lm = list.get(i);
-    		   total += lm.getPrice();
+    		   total += lm.getPrince();
     		   String cl = "class=\"asc\"";
   			 if(lm.getPid() != 0){
   				 cl = "class=\"bsc\"";
@@ -93,7 +93,7 @@ List<LogisticsMessage>	list = LogisticsMessageManager.getlist(user,Integer.value
 	  <%=lm.getLocates() %>
 	  </td> 
 	  <td align="center">   
-	  <%=lm.getPrice() %>
+	  <%=lm.getPrince() %>
 	  </td>  
 	  <td align="center"> 
 	  <%=lm.getSendtime() %>

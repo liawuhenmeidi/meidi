@@ -1,12 +1,12 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,logistics.*,branch.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,category.*,com.zhilibao.service.*,com.zhilibao.model.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
         
 <%            
 User user = (User)session.getAttribute("user"); 
 String id = request.getParameter("id"); 
 boolean flag = false ; 
 
-
-LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
+ 
+LogisticsMessage lm  = MapperService.getLogisticsMessageOperation().getByid(Integer.valueOf(id));
  int uid = lm.getUser().getId();
 int carid = lm.getCars().getId(); 
 %>  
@@ -66,9 +66,9 @@ function addLogistic(){
 </tr><tr class="asc">
 <td align="center"> 运费</td>
 <td align="center">  
-	  <%=lm.getPrice() %>
+	  <%=lm.getPrince() %>
 	  </td>  
-</tr>
+</tr>  
 <tr class="asc">
 <td align="center">垫付金额</td>
 <td align="center">  

@@ -22,10 +22,10 @@ public interface LogisticsMessageOperation {
 	   
 	   @Update("update mdlogistics set statues = -1  where id in #{ids}")
 	   public int delete(String ids); 
-	    
-	   @Update("update mdlogistics set locateMessage = CONCAT(locateMessage,',#{time}::#{locate}') where id =#{id}")
-	   public int updateLocate(@Param("locate")String locate,@Param("time")String time,@Param("id")String id);
-	   
+	     
+	   @Update("update mdlogistics set locateMessage = CONCAT(locateMessage,',#{ti}::#{locate}') where id =#{id}")
+	   public int updateLocate(@Param("locate")String locate,@Param("ti")String ti,@Param("id")String id);
+	     
 	   @Update("update mdlogistics set statues = 1  where id =#{id}")
 	   public int updatestatues(String id );
 	   
@@ -42,14 +42,27 @@ public interface LogisticsMessageOperation {
 	   @Select("select * from  mdlogistics where  advanceprice != 0 and advancestatues in (#{statues})")
 	   public List<LogisticsMessage> getAdvancePrince(String statues);
 	   
-	 /*  @Select("select * from  mdlogistics where statues in (#{statues}) and uid=#{uid}")
+	  @Select("select * from  mdlogistics where statues in (#{statues}) and uid=#{uid}")
 	   
-	   public List<LogisticsMessage> getlist(@Param("uid")int uid,@Param("statues")String statues);
-	    */
-	   /*@Select("select * from  mdlogistics where  and uid=#{uid}")
+	   public List<LogisticsMessage> getChargelistUid(@Param("uid")int uid,@Param("statues")String statues);
+	     
+	   @Select("select * from  mdlogistics where  statues in (#{statues})")
 	   
-	   public List<LogisticsMessage> getlist(int uid);*/
+	   public List<LogisticsMessage> getChargelist(@Param("statues")String statues);
+	      
 	   
+	   
+	   
+	   
+	   @Select("select * from  mdlogistics where  uid=#{uid}")
+
+	   public List<LogisticsMessage> getlistsUid(int uid);
+	    
+	   @Select("select * from  mdlogistics where  uid=#{user.id} and statues in (#{statues})" )
+	   public List<LogisticsMessage> getlistUidStatues(@Param("user")User user,@Param("statues")String statues);
+	   
+	   
+	    
 	   @Select("select * from  mdlogistics where id = #{id}")
 	    
 	   

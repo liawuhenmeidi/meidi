@@ -1,19 +1,20 @@
-<%@ page language="java" import="java.util.*,utill.*,category.*,logistics.*,branch.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,category.*,com.zhilibao.service.*,com.zhilibao.model.*,branch.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
         
-<%           
+<%            
 User user = (User)session.getAttribute("user"); 
 String id = request.getParameter("id");
-String method = request.getParameter("method"); 
+String method = request.getParameter("method");
+String ti = TimeUtill.gettime();
 boolean flag = false ; 
-if("savelocate".equals(method)){ 
-	String locate = request.getParameter("locate"); 
-	LogisticsMessageManager.updateLocate(user, locate, id);
-}else if("savestatues".equals(method)){
-	LogisticsMessageManager.updatestatues(user, id);
-	response.sendRedirect("logistic.jsp");
+if("savelocate".equals(method)){   
+	String locate = request.getParameter("locate");  
+	MapperService.getLogisticsMessageOperation().updateLocate(locate,ti, id); 
+}else if("savestatues".equals(method)){ 
+	MapperService.getLogisticsMessageOperation().updatestatues(id);
+	response.sendRedirect("logistic.jsp"); 
 }   
 
-LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
+LogisticsMessage lm  = MapperService.getLogisticsMessageOperation().getByid(Integer.valueOf(id));
 
 int statues = lm.getStatues();
 
@@ -108,8 +109,8 @@ int statues = lm.getStatues();
 </tr><tr class="asc">
 <td align="center"> 价格</td>
 <td align="center">  
-	  <%=lm.getPrice() %>
-	  </td>  
+	  <%=lm.getPrince()%>
+	  </td>   
 </tr><tr class="asc">
 <td align="center"> 送货时间</td>
  <td align="center"> 

@@ -23,22 +23,26 @@
   <context:annotation-config /> 
     <!-- 拦截器配置 -->  
    <mvc:interceptors>
+       
      
-        <!-- 配置Token拦截器，防止用户重复提交数据 -->  
         <mvc:interceptor>   
             <mvc:mapping path="/**"/> 
             <bean class="com.zhilibao.token.TokenInterceptor"/>
         </mvc:interceptor> 
-    </mvc:interceptors> 
-  <!-- 设置使用注解的类所在的jar包 -->
-  <context:component-scan base-package="com.zhilibao.controller"></context:component-scan> 
+    </mvc:interceptors>  
    
-  <!-- 完成请求和注解POJO的映射 -->
-  <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" /> 
-  
+         
+  <context:component-scan base-package="com.zhilibao.controller"></context:component-scan>      
+ 
+<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>  
+   
+ <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+ 
+<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
+ 
   <!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/meidiserver/admin/" p:suffix=".jsp" /> 
- 
+  
 
 
 </beans> 

@@ -152,7 +152,7 @@ function delLocate(lo){
  <!--       -->     
           
      <div class="">
-   <div class="weizhi_head">现在位置：物流配工${token}</div> 
+   <div class="weizhi_head">现在位置：物流配工</div> 
    <div class="table-list">     
                
  <form id="myform" action="save.do"  method="post">      
