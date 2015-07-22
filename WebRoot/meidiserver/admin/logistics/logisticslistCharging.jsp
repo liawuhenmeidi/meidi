@@ -1,13 +1,14 @@
-<%@ page language="java"  import="java.util.*,utill.*,category.*,com.zhilibao.service.*,com.zhilibao.model.*,category.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,utill.*,category.*,logistics.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <% 
 request.setCharacterEncoding("utf-8");    
 User user = (User)session.getAttribute("user");   
+String statues = request.getParameter("statues"); 
 String uid = request.getParameter("uid");  
-List<LogisticsMessage>	list = null; 
-if(StringUtill.isNull(uid)){     
-	list = MapperService.getLogisticsMessageOperation().getChargelist("1");  
+List<LogisticsMessage>	list = null;
+if(StringUtill.isNull(uid)){    
+	list = LogisticsMessageManager.getlist("1");  
 }else {       
-	list = MapperService.getLogisticsMessageOperation().getChargelistUid(Integer.valueOf(uid),"1"); 
+	list = LogisticsMessageManager.getlist(Integer.valueOf(uid),"1"); 
 }     
 
 List<User>  listu = UserService.getLogistics(user);  
@@ -113,8 +114,8 @@ function totalInit(){
 	    	}
 	    }
 	    
-	   %>
-	 
+	   %> 
+	  
 	 </select>
 	 </td>
    <td><input type="submit"  value="确定"/></td>
@@ -176,7 +177,7 @@ function totalInit(){
 	    <%=ca.getLocates()%>
 	  </td> 
 	  <td> 
-	  <label id="p<%=ca.getId()%>"><%=ca.getPrince() %></label> 
+	  <label id="p<%=ca.getId()%>"><%=ca.getPrice() %></label> 
 	  
 	  </td> 
 	  <td> 

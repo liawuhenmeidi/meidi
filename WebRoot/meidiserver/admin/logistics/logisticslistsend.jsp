@@ -1,15 +1,11 @@
-<%@ page language="java"  import="java.util.*,utill.*,category.*,com.zhilibao.service.*,com.zhilibao.model.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,utill.*,category.*,logistics.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <% 
 request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user"); 
-String method = request.getParameter("method");  
-if("del".equals(method)){ 
-	String ids = request.getParameter("ids"); 
-	//LogisticsMessageManager.delete(user, ids); 
-	    
-}  
-List<LogisticsMessage>	list = MapperService.getLogisticsMessageOperation().getlistByStatues("0");
-         
+String method = request.getParameter("method");
+
+List<LogisticsMessage>	list = LogisticsMessageManager.getlist("0");
+       
 //System.out.println("CarsService.getmap()"+CarsService.getmap());
   
 %>
@@ -24,7 +20,7 @@ List<LogisticsMessage>	list = MapperService.getLogisticsMessageOperation().getli
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
 
-function detail(id){
+function detail(id){ 
 	window.location.href="logisticDetail.jsp?id="+id;
 }
  
@@ -39,8 +35,13 @@ function del(){
 	   				}	
    		} 
    	});   
-	 
-	window.location.href="logisticslistsend.jsp?ids="+ids.toString()+"&method=del";
+	
+	if(ids.length >1){
+		window.location.href="logisticslistsend.jsp?ids="+ids.toString()+"&method=del";
+	}else {
+		alert("请选择需要删除的单据");
+	}
+	
 }
  
 </script>
@@ -59,15 +60,17 @@ function del(){
  <!--       -->    
      
      <div class="">
-   <div class="weizhi_head">现在位置：车辆登记</div> 
+   <div class="weizhi_head">现在位置：待送货</div> 
 
    <div class="table-list">  
 <table width="100%" cellspacing="1" id="table"> 
 <tr class="dsc">
+<!-- 
 <td width="5%" class="s_list_m" align="center"><input
 						type="checkbox" value="" id="allselect"
 						onclick="seletall(allselect);totalInit()"></input>
 					</td> 
+					 -->
 					<td>单号</td>
 <td>司机</td> 
 <td>
@@ -88,18 +91,23 @@ function del(){
 			 String cl = "class=\"asc\"";
 			 if(ca.getPid() != 0){
 				 cl = "class=\"bsc\"";
-			 }  
-			 %>   
+			 }   
+
+  			 if(ca.getOperation() != 0){
+  				 cl = "class=\"rsc\"";
+  			 } 
+			 %>     
 			 <tr <%=cl %> ondblclick="detail('<%=ca.getId()%>')"> 
-			 
+			 <!-- 
 			<td align="center">
-			 
-				   
+			 <% if(ca.getOperation() == 2){ %>
+				 <% }%>    
 				  <input type="checkbox"
 						value="<%= ca.getId()%>" name="lid" id="check_box" onclick="totalInit()"></input> 
 				  
-			       
+			     
 				   </td> 
+				   -->
 			  <td>
 			  <%=ca.getId() %>
 			  </td>
@@ -107,17 +115,17 @@ function del(){
 			 <td >  
 			<%=ca.getUser().getUsername() %>
 	 </td> 
-	<td>  
-<%=ca.getCars().getNum() %>   
-	</td>    
+	<td> 
+<%=ca.getCars().getNum() %>  
+	</td>   
 	  <td>   
 	  <%=ca.getLocates()%>
 	  </td> 
 	  <td> 
-	  <%=ca.getPrince() %>
-	  </td> 
+	  <%=ca.getPrice() %>
+	  </td>
 	   <td> 
-	  <%=ca.getAdvancePrice() %> 
+	  <%=ca.getAdvancePrice() %>
 	  </td>
 	  <td>
 	  <%=ca.getSendtime() %>
@@ -135,16 +143,7 @@ function del(){
 	 }
 	 %>
 	 
-	<tr class="asc"> 
-		<td colspan="8">
-		 
-		</td> 
-		<td colspan="2"> 
-		<input type="button" onclick="del()" value="删除" />
-		 
-		</td>
-		 
-		</tr> 
+	
 	
 </table>
 

@@ -1,10 +1,10 @@
-<%@ page language="java"  import="java.util.*,utill.*,category.*,com.zhilibao.service.*,com.zhilibao.model.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,utill.*,category.*,logistics.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <% 
 request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user");
  String method = request.getParameter("method");
  TokenGen.getInstance().saveToken(request); 
-   
+  
  String token = (String)session.getAttribute("token"); 
  
  List<User>  list = UserService.getLogistics(user); 
@@ -15,8 +15,8 @@ User user = (User)session.getAttribute("user");
 	 Cars ca = new Cars();  
 	 ca.setNum(num);     
 	 ca.setUid(Integer.valueOf(uid)); 
-	   
-	 MapperService.getCarsOperation().save(ca);
+	  
+	 CarsManager.saveDB(user, ca);
 	 
  } 
  

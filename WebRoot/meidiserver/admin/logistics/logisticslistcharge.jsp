@@ -1,14 +1,14 @@
-<%@ page language="java"  import="java.util.*,utill.*,com.zhilibao.service.*,com.zhilibao.model.*,category.*,com.zhilibao.model.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,utill.*,category.*,logistics.*,branch.*,group.*,user.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <% 
 request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user");   
 String uid = request.getParameter("uid"); 
 List<LogisticsMessage>	list = null;
 if(StringUtill.isNull(uid)){  
-	list = MapperService.getLogisticsMessageOperation().getChargelist("2,3"); 
-}else {    
-	list = MapperService.getLogisticsMessageOperation().getChargelistUid(Integer.valueOf(uid),"2,3");
-}      
+	list = LogisticsMessageManager.getlist("2,3"); 
+}else {  
+	list = LogisticsMessageManager.getlist(Integer.valueOf(uid),"2,3");
+}     
 
 List<User>  listu = UserService.getLogistics(user);  
 //System.out.println("CarsService.getmap()"+CarsService.getmap());
@@ -154,6 +154,9 @@ function totalInit(){
 			 if(ca.getPid() != 0){
 				 cl = "class=\"bsc\"";
 			 }  
+			 if(ca.getOperation() != 0){
+  				 cl = "class=\"rsc\"";
+  			 } 
 			 %>    
 			 <tr <%=cl %> ondblclick="detail('<%=ca.getId()%>')"> 
 			 <td align="center">
@@ -163,6 +166,10 @@ function totalInit(){
 				   
 				  <input type="checkbox"
 						value="<%= ca.getId()%>" name="lid" id="check_box" onclick="totalInit()"></input> 
+				   <%
+			   }else { 
+				   %>
+				   司机手机端同意
 				   <%
 			   }
 			 %>
@@ -181,10 +188,10 @@ function totalInit(){
 	    <%=ca.getLocates()%>
 	  </td> 
 	  <td> 
-	  <label id="p<%=ca.getId()%>"><%=ca.getPrince() %></label> 
-	   
-	  </td>    
-	  <td>       
+	  <label id="p<%=ca.getId()%>"><%=ca.getPrice() %></label> 
+	  
+	  </td> 
+	  <td> 
 	  <%=ca.getAdvancePrice() %>
 	  </td>
 	  <td>

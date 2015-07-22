@@ -4,9 +4,7 @@
 User user = (User)session.getAttribute("user"); 
 String id = request.getParameter("id");
 String method = request.getParameter("method");
-String sta = request.getParameter("statues");
-String num = request.getParameter("num");
- 
+System.out.println(method);
 boolean flag = false ;  
 if("savelocate".equals(method)){ 
 	String locate = request.getParameter("locate"); 
@@ -14,18 +12,16 @@ if("savelocate".equals(method)){
 }else if("savestatues".equals(method)){
 	LogisticsMessageManager.updatestatues(user, id);
 	response.sendRedirect("logistic.jsp");
-}else if("delAgree".equals(method)){  
-	   
-	LogisticsMessageManager.deleteAgree(user, id,num); 
-	    
-}else if("updateAgree".equals(method)){   
-	String upid = request.getParameter("upid"); 
-	LogisticsMessageManager.updateAgree(user, id,num,upid); 
+}else if("delAgree".equals(method)){ 
+	LogisticsMessageManager.deleteAgree(user, id); 
+	 
+}else if("updateAgree".equals(method)){ 
+	LogisticsMessageManager.updateAgree(user, id); 
 }     
 
 LogisticsMessage lm  = LogisticsMessageManager.getByid(Integer.valueOf(id));
 LogisticsMessage lmup = LogisticsMessageManager.getByid(Integer.valueOf(lm.getUpid()));
-int upid = lm.getUpid();
+
 int statues = lm.getStatues();
 
 String col = "";
@@ -41,8 +37,7 @@ if(lm.getOperation() == 4 || lm.getOperation() == 5){
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
 <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=yes"/> 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-<script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>   
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <link rel="stylesheet" type="text/css" href="../../css/songhuo.css"/>  
 <style type="text/css">
@@ -96,33 +91,21 @@ if(lm.getOperation() == 4 || lm.getOperation() == 5){
 	
 	<script type="text/javascript">
 var id = "<%=id%>";  
-var upid = "<%=upid%>";
 function addLogistic(){   
 	window.location.href="logistics.jsp?pid="+id+"&uid="+uid+"&carid="+carid; 
 } 
  
- function AgreedeleteLogistic(num){
-	 var  question = 0; 
-	 if(num == 0){ 
-		 question = confirm("您确定不同意删除吗？");  
-	 }else {
-		 question = confirm("您确定同意删除吗？");
-	 }
-	 
-	if (question != "0"){    
-			window.location.href="logisticDetail.jsp?method=delAgree&id="+id+"&num="+num+"&upid="+upid;
-		}    
+ function AgreedeleteLogistic(){ 
+	 var  question = confirm("您确定同意删除吗？");  
+		if (question != "0"){    
+			window.location.href="logisticDetail.jsp?method=delAgree&id="+id;
+		}  
  } 
-  
-function AgreeupdateLogistic(num){ 
-	var  question = 0;   
-	if(num == 0){ 
-		 question = confirm("您确定不同意修改吗？");
-	 }else { 
-		 question = confirm("您确定同意修改吗？");
-	 } 
-	if (question != "0"){   
-		window.location.href="logisticDetail.jsp?method=updateAgree&id="+id+"&num="+num+"&upid="+upid;
+ 
+function AgreeupdateLogistic(){ 
+	var  question = confirm("您确定要提交修改请求吗？");
+	if (question != "0"){  
+		window.location.href="logisticDetail.jsp?method=updateAgree&id="+id;
 	}
 }
 
@@ -141,8 +124,8 @@ function AgreeupdateLogistic(num){
 	</div> 
 	
 	
-<div class="main">   
-<div class="s_main_tit"><span class="qiangdan"><a href="logistic.jsp?statues=<%=sta%>">返回</a></span>
+<div class="main">  
+<div class="s_main_tit"><span class="qiangdan"><a href="logistic.jsp">返回</a></span>
 <% if(statues == 0 && lm.getOperation() == 0 ) {%>
 <span class="qiangdan"><a href="javascript:savestatues()">送货已完成</a></span>
 <% }%>
@@ -151,17 +134,10 @@ function AgreeupdateLogistic(num){
      <form method = "post"  >  
       <table style="width:98% "> 
       <tr class="dsc">
-<td align="center" colspan="2"> 单据信息</td>
-
-<%if(flagop){
-	%>  
-	<td>  
-		  修改内容
+<td align="center" <%=col%>> 单据信息</td>
+ <td align="center">  
+	修改内容
 	</td>
-	
-	<%
-} %>	   
-
  </tr>    
   <tr class="asc">
 <td align="center">  
@@ -337,8 +313,7 @@ function AgreeupdateLogistic(num){
 	 <%
    if(lm.getOperation() == 1){
 	 %> 
-	 <input type="button" value="同意删除" onclick="AgreedeleteLogistic(2)" />
-	 <input type="button" value="不同意删除" onclick="AgreedeleteLogistic(0)" />
+	 <input type="button" value="同意删除" onclick="AgreedeleteLogistic()" />
 	  <%
  } else if(lm.getOperation() == 2){
 	%> 
@@ -354,8 +329,7 @@ function AgreeupdateLogistic(num){
 	 <%
 if(lm.getOperation() == 4){ 
 	 %> 
-	<input type="button" value="同意修改" onclick="AgreeupdateLogistic(5)" />
-	<input type="button" value="不同意修改" onclick="AgreeupdateLogistic(0)" />
+	<input type="button" value="同意修改" onclick="AgreeupdateLogistic()" />
 	  <% 
  } else if(lm.getOperation() == 5){
 	%>  
@@ -368,10 +342,9 @@ if(lm.getOperation() == 4){
 </tr>
  
      <% if(statues == 0 && lm.getOperation() == 0){ %>
-    	<tr class="asc">   
-	<td <%=col%> align="center" colspan="2">   
-	<label id="mylocate" style="color: red">位置加载中</label>   
-	<input type="button" value="中转站记录地点"    onclick="showLocationInfo()"/>
+    	<tr class="asc">  
+	<td <%=col%> align="center" colspan="2"> 
+	<input type="button" value="中转站记录地点" onclick="showLocationInfo()"/>
 	</td>   
 	</tr>
 	
@@ -389,49 +362,34 @@ if(lm.getOperation() == 4){
    
  	var toolBar, locationInfo; 
  	
- 	 function hello(){   
- 		   if(null != locationInfo){
- 			   $("#mylocate").text("位置加载完成");
- 		   }
- 	 }    
- 		 //重复执行某个方法 
- 	var t1 = window.setInterval(hello,1000); 
- 		// var t2 = window.setInterval("hello()",3000); 
- 		 //去掉定时器的方法 
- 		//  window.clearInterval(t1); 
- 		 
- 		 
  	map = new AMap.Map("mapContainer", {
 			resizeEnable: true
 		}); 
- 	 
  	
- 	 
- 	//alert("map"+map);   
  	
  	map.plugin(["AMap.ToolBar"],function(){		
 			toolBar = new AMap.ToolBar(); //设置地位标记为自定义标记
-			//  alert("toolBar"+toolBar); 
 			map.addControl(toolBar);		 
 			AMap.event.addListener(toolBar,'location',function callback(e){ 	   
-				locationInfo = e.lnglat;
-				//alert("locationInfo "+locationInfo );
+				locationInfo = e.lnglat;     			 
 			});  
-		});  
+		});
  	 
+   
  	toolBar.doLocation();  
  
-	//init();   
- 	  
+ 	
+ 	 
 	//初始化地图对象，加载地图
-	 
-	//地图中添加地图操作ToolBar插件 
+	
+	//地图中添加地图操作ToolBar插件
+	
+		     
+	
+	init();   
+ 	  
 	
 	function init(){ 
-		  if(null == locationInfo || "" == locationInfo){
-			  alert("定位加载中,请稍后重试");
-			  return ; 
-		  }
 		   var MGeocoder;
 		    //加载地理编码插件 
 		    AMap.service(["AMap.Geocoder"], function() {        
@@ -439,15 +397,10 @@ if(lm.getOperation() == 4){
 		            radius: 1000,
 		            extensions: "all"
 		        }); 
-		        //逆地理编码   
-		       // alert("MGeocoder"+MGeocoder);
+		        //逆地理编码 
 		        MGeocoder.getAddress(locationInfo, function(status, result){
-		        	//alert("status"+status);  
-		        	//alert("result.info"+result.info);
 		        	if(status === 'complete' && result.info === 'OK'){
 		        		geocoder_CallBack(result);
-		        	}else {
-		        		alert("定位功能未开启,请在微信设置中开启定位功能");
 		        	} 
 		        });
 		    }); 
@@ -455,12 +408,11 @@ if(lm.getOperation() == 4){
 		     
 			function geocoder_CallBack(data) { 
 				address = data.regeocode.formattedAddress;
-				//alert(address);
 				window.location.href="logisticDetail.jsp?method=savelocate&locate="+address+"&id=<%=id%>";
  
 				//alert(address); 
-			}  
-	}   
+			} 
+	}  
 	 
 	function showLocationInfo() 
 	{   
@@ -471,9 +423,8 @@ if(lm.getOperation() == 4){
 		//alert("定位点坐标：("+locationX+","+locationY+")");
 		init();   
 	} 
-	       
+	    
 	function savestatues(){
-		// init();   
 		window.location.href="logisticDetail.jsp?method=savestatues&id=<%=id%>";
 	}
  </script>   
