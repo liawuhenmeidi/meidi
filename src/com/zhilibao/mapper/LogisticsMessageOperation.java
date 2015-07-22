@@ -17,9 +17,7 @@ public interface LogisticsMessageOperation {
 	   @Insert("insert into mdlogistics (id,uid,bid,carid,submittime,statues,prince,sendtime,locates,remark,advancePrice,startlocate,pid) " +
 					   		"values (null,#{uid},#{bid},#{carid},#{submittime},#{statues},#{prince},#{sendtime},#{locates},#{remark},#{advancePrice},#{startLocate},#{pid}) ;")
 	   public int sava(LogisticsMessage lm); 
-	    
-	    
-	   
+      
 	   @Update("update mdlogistics set statues = -1  where id in #{ids}")
 	   public int delete(String ids); 
 	     
@@ -49,13 +47,9 @@ public interface LogisticsMessageOperation {
 	   @Select("select * from  mdlogistics where  statues in (#{statues})")
 	   
 	   public List<LogisticsMessage> getChargelist(@Param("statues")String statues);
-	      
-	   
-	   
-	   
 	   
 	   @Select("select * from  mdlogistics where  uid=#{uid}")
-
+ 
 	   public List<LogisticsMessage> getlistsUid(int uid);
 	    
 	   @Select("select * from  mdlogistics where  uid=#{user.id} and statues in (#{statues})" )
@@ -71,14 +65,14 @@ public interface LogisticsMessageOperation {
 	  /* @Select("select * from  mdlogistics where uid = #{user.id} and statues = #{statues}")
 	   public List<LogisticsMessage> getlist(@Param("user")User user ,@Param("statues")int statues);
 	   */
-	   @Select("update mdlogistics set advancestatues = #{statues} where id in #{ids}")
-	   
+	   @Update("update mdlogistics set advancestatues = #{statues} where id in #{ids}")
+	    
 	   public int updateAdvancePrince(@Param("ids")String ids,@Param("statues")String statues); 
 	   
-	   @Select("update mdlogistics set statues = #{statues} where id in #{ids}")
+	   @Update("update mdlogistics set statues = #{statues} where id in #{ids}")
 	   public int updatecharge(@Param("ids")String ids,@Param("statues")String statues);
 	   
-	   @Select("select * from  mdlogistics where id in #{ids}")
-	   public List<LogisticsMessage>	getlistByIds(String ids); 
+	   @Select("select * from  mdlogistics ")  
+	   public List<LogisticsMessage>  getlistByIds(@Param("ids")String ids); 
 }  
  

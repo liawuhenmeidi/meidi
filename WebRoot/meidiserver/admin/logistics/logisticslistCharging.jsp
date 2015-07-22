@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");   
 String uid = request.getParameter("uid");  
 List<LogisticsMessage>	list = null; 
-if(StringUtill.isNull(uid)){    
+if(StringUtill.isNull(uid)){     
 	list = MapperService.getLogisticsMessageOperation().getChargelist("1");  
 }else {       
 	list = MapperService.getLogisticsMessageOperation().getChargelistUid(Integer.valueOf(uid),"1"); 

@@ -6,7 +6,7 @@ String uid = request.getParameter("uid");
 List<LogisticsMessage>	list = null;
 if(StringUtill.isNull(uid)){  
 	list = MapperService.getLogisticsMessageOperation().getChargelist("2,3"); 
-}else {   
+}else {    
 	list = MapperService.getLogisticsMessageOperation().getChargelistUid(Integer.valueOf(uid),"2,3");
 }      
 
@@ -181,10 +181,10 @@ function totalInit(){
 	    <%=ca.getLocates()%>
 	  </td> 
 	  <td> 
-	  <label id="p<%=ca.getId()%>"><%=ca.getPrice() %></label> 
-	  
-	  </td> 
-	  <td> 
+	  <label id="p<%=ca.getId()%>"><%=ca.getPrince() %></label> 
+	   
+	  </td>    
+	  <td>       
 	  <%=ca.getAdvancePrice() %>
 	  </td>
 	  <td>

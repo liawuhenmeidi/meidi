@@ -6,8 +6,11 @@ String[] lids = request.getParameterValues("lid");
 String statues = request.getParameter("statues");
 String method = request.getParameter("method");
 String message = "司机";  
+ 
+System.out.println(StringUtill.getStr(lids));
 List<LogisticsMessage>	list =  MapperService.getLogisticsMessageOperation().getlistByIds(StringUtill.getStr(lids));
-if(null != list && list.size() >0){ 
+
+if(null != list && list.size() >0){  
 	if("AdvancePrince".equals(method)){ 
 		MapperService.getLogisticsMessageOperation().updateAdvancePrince(StringUtill.getStr(lids),statues);
 		message = "单位";
@@ -15,7 +18,7 @@ if(null != list && list.size() >0){
 		if("2".equals(statues)){   
 			MapperService.getLogisticsMessageOperation().updatecharge(StringUtill.getStr(lids),statues);
 			 response.sendRedirect("logisticslistCharging.jsp?");
-		}else {
+		}else { 
 			MapperService.getLogisticsMessageOperation().updatecharge(StringUtill.getStr(lids),statues);
 		}
 	}

@@ -6,7 +6,7 @@ String method = request.getParameter("method");
 if("del".equals(method)){ 
 	String ids = request.getParameter("ids"); 
 	//LogisticsMessageManager.delete(user, ids); 
-	   
+	    
 }  
 List<LogisticsMessage>	list = MapperService.getLogisticsMessageOperation().getlistByStatues("0");
          

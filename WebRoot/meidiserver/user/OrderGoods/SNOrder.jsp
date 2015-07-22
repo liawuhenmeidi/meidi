@@ -58,7 +58,7 @@ List<OrderSN > list = OrderDownLoad.geteffective(starttime,TimeUtill.dataAdd(sta
 									%>
 									<tr class="asc">    
 				
-				<td align="center" ><%=in.getBranchName() %></td> 
+				<td align="center" ><%=in.getOrderNum() %></td> 
 				<td align="center" ><%=in.getGoodpName()%></td>  
 				<td align="center"><%=in.getGoodNum()%></td> 
 				<td align="center" ><%=in.getGoodType() %></td>
