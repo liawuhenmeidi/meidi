@@ -303,7 +303,7 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 	public static void effectivesave(String starttime,String endtime){  
     	URI uri;  
 		try { 
-			uri = new URI(url); 
+			uri = new URI(url);  
     	 HttpUriRequest request = RequestBuilder.post().setUri(uri)
 					.addParameter("orderEffectiveDate1", starttime) 
 					.addParameter("orderEffectiveDate2", endtime)

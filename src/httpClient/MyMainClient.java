@@ -63,7 +63,7 @@ public class MyMainClient {
                 
 	public synchronized void run() {
 		try {                             
-		  // startinventoryIN(this);
+		   startinventoryIN(this);
 		//	round(this);      
 			// sdi.selectDeliverInform(new
 			// URI("http://scs.suning.com/sps/PurchaseOrderDelivery/orderDelivery.action?menuid=100000111&scspageexptime=1427005676454"),"","",this);
@@ -161,7 +161,7 @@ public class MyMainClient {
 			logger.info("更新订单加订单号"); 
 			// 更新订单信息    
 			OrderDownLoad.saveDB(starttime, endtime);
-                    
+                     
 			ProductSN.save(mc); 
 			// 销售数据                            
 			SaleDownLoad.saveDB(starttime, endtime);  
