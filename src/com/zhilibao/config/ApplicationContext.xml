@@ -18,16 +18,21 @@
      </property>  
      <property name="url"> 
      <!-- conn = DriverManager.getConnection("jdbc:mysql://voip022.gotoftp3.com/voip022?user=voip022&password=808080&characterEncoding=utf-8");
+      conn = DriverManager.getConnection("jdbc:mysql://liaowuhentest.gotoftp5.com/liaowuhentest?user=liaowuhentest&password=liaowuhen&characterEncoding=utf-8");
      
+      <value>jdbc:mysql://voip022.gotoftp3.com/voip022?useUnicode=true&amp;characterEncoding=UTF-8</value>  
       --> 
-         <value>jdbc:mysql://voip022.gotoftp3.com/voip022?useUnicode=true&amp;characterEncoding=UTF-8</value>  
+         <value>jdbc:mysql://liaowuhentest.gotoftp5.com/liaowuhentest?useUnicode=true&amp;characterEncoding=UTF-8</value>  
+       
+       
+       
         <!--springmybaitis是我的数据库  -->
+     </property>    
+     <property name="username">   
+        <value>liaowuhentest</value>  
      </property>   
-     <property name="username">  
-        <value>voip022</value>  
-     </property>  
-    <property name="password">  
-         <value>808080</value>   
+    <property name="password">   
+         <value>liaowuhen</value>   
      </property>  
  </bean>   
     

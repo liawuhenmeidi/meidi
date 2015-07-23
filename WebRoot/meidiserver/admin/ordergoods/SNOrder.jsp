@@ -2,12 +2,12 @@
 	import="java.util.*,httpClient.*,ordersgoods.*,branchtype.*,inventory.InventoryBranch,inventory.InventoryBranchManager,product.*,comparator.*,branch.*,enums.*,httpClient.download.*,org.apache.commons.logging.*,utill.*,goodsreceipt.*,category.*,orderPrint.*,order.*,user.*,orderproduct.*,group.*,aftersale.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <%
-request.setCharacterEncoding("utf-8");        
+request.setCharacterEncoding("utf-8");         
 String starttime = TimeUtill.getdateString();  
 String branchname = request.getParameter("branchname");
 List<OrderSN > list = OrderDownLoad.geteffective(starttime,TimeUtill.dataAdd(starttime, 29));  
 %> 
-<!DOCTYPE html>  
+<!DOCTYPE html>   
 <html> 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -26,7 +26,7 @@ List<OrderSN > list = OrderDownLoad.geteffective(starttime,TimeUtill.dataAdd(sta
 
 <script type="text/javascript"> 
     var jsonall = new Array();
-    jsonall.push("我们是好人"); 
+    //jsonall.push("我们是好人"); 
 	$(function() {   
 		$("#branchname").autocomplete({ 
 			 source: jsonall  
@@ -42,7 +42,7 @@ List<OrderSN > list = OrderDownLoad.geteffective(starttime,TimeUtill.dataAdd(sta
 		<div class="weizhi_head">
 		<form action="">
 		现在位置>>查看苏宁订单号 
-		<input type="text" name="branchname" id="branchname" class="cba">
+		<input type="text" name="branchname" id="branchname" value="<%=branchname %>" class="cba">
 		<input type="submit" value="查询">
 		</form>
 		
@@ -66,7 +66,7 @@ List<OrderSN > list = OrderDownLoad.geteffective(starttime,TimeUtill.dataAdd(sta
 								//System.out.println(in.getBranchName()); 
 								if(in.getNum() != in.getInNum() && (StringUtill.isNull(branchname) || !StringUtill.isNull(branchname) && branchname.equals(in.getBranchName()))){
 									%>   
-<script type="text/javascript">  
+<script type="text/javascript">   
 if($.inArray("<%=in.getBranchName() %>", jsonall) == -1){
 	jsonall.push("<%=in.getBranchName() %>");  
 }

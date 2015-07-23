@@ -54,7 +54,7 @@ public class MyMainClient {
 		// String branch = StringUtill.toUtf8String("天津宁河店");
 		// branch = "天津宁河店";
 		// branch = "";
-		//mc.run();  
+		mc.run();   
 		// List<String> s = InventorySN.getinventory("122707928","9367");
 		// List<String> s = InventorySN.getinventoryModel("105057044",branch,);
 		// List<String> s = InventorySN.getinventoryModel("105057044","");

@@ -7,7 +7,7 @@ String method = request.getParameter("method");
 List<LogisticsMessage>	list = LogisticsMessageManager.getlist("0");
        
 //System.out.println("CarsService.getmap()"+CarsService.getmap());
-  
+   
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -36,7 +36,7 @@ function del(){
    		} 
    	});   
 	
-	if(ids.length >1){
+	if(ids.length >1){   
 		window.location.href="logisticslistsend.jsp?ids="+ids.toString()+"&method=del";
 	}else {
 		alert("请选择需要删除的单据");
@@ -64,15 +64,15 @@ function del(){
 
    <div class="table-list">  
 <table width="100%" cellspacing="1" id="table"> 
-<tr class="dsc">
+<tr class="dsc">   
 <!-- 
 <td width="5%" class="s_list_m" align="center"><input
 						type="checkbox" value="" id="allselect"
 						onclick="seletall(allselect);totalInit()"></input>
 					</td> 
-					 -->
+					 --> 
 					<td>单号</td>
-<td>司机</td> 
+<td>司机</td>  
 <td>
 	车牌号
 </td>
@@ -91,12 +91,14 @@ function del(){
 			 String cl = "class=\"asc\"";
 			 if(ca.getPid() != 0){
 				 cl = "class=\"bsc\"";
-			 }   
-
+			 }     
+  
   			 if(ca.getOperation() != 0){
   				 cl = "class=\"rsc\"";
   			 } 
-			 %>     
+  			 
+  			  
+			 %>       
 			 <tr <%=cl %> ondblclick="detail('<%=ca.getId()%>')"> 
 			 <!-- 
 			<td align="center">

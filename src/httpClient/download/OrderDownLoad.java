@@ -178,8 +178,7 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 						} else if (i == 1) {
 							num = str ;
 						} else if (i == 2) {
-							in.setGoodNum(str);
-							
+							in.setGoodNum(str);  
 						} else if (i == 3) {
 							in.setGoodpName(str);
 						} else if (i == 6) {
@@ -188,21 +187,20 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 						in.setGoodType(str);
 						} else if (i == 8) {
 							in.setStarttime(str);
-						} else if (i == 9) {
+						} else if (i == 9) {  
 							in.setEndtime(str);
-						}else if (i == 11) {
+						}else if (i == 11) { 
 							double realnum = Double.valueOf(str);
 							int re = (int) realnum;
 							in.setNum(re);
-						} else if (i == 12) {
+						} else if (i == 12) {    
 							double realnum = Double.valueOf(str);
 							int re = (int) realnum;
 							in.setInNum(re);
 						}else if (i == 13) {
 							in.setStatuesName(str);
-						}  
-                        
-					}
+						}   
+					} 
 					in.setUuid(in.getOrderNum()+"_"+num);
 					list.add(in); 
 				}
