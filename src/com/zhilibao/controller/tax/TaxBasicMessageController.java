@@ -1,7 +1,6 @@
 package com.zhilibao.controller.tax;
 
 import net.sf.json.JSONObject;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -19,25 +18,25 @@ import com.zhilibao.utill.bean.BeanUtill;
      
 @Controller  //类似Struts的Action  
 @RequestMapping("/meidiserver/admin/tax/")
-public class TaxBasicMessageController {   
-	   
+public class TaxBasicMessageController {    
+	     
 	protected static Log logger = LogFactory.getLog(TaxBasicMessageController.class);
-	 
-	    @Authority(isverification=true)             
-	    @RequestMapping("add.do")  // 请求url地址映射，类似Struts的action-mapping             
-	    public ModelAndView add(){        
+	                
+	    @Authority(isverification=true)                
+	    @RequestMapping("add.do")             // 请求url地址映射，类似Struts的action-mapping             
+	    public ModelAndView add(){                        
 	    	ModelAndView modelAndView = new ModelAndView();
-	    	                    
-	    	modelAndView.setViewName("tax/taxAdd");        
+	    	                       
+	    	modelAndView.setViewName("tax/taxAdd");          
 	    	ConfigsOperation lmo = MapperService.getConfigsOperation();
-	    //	logger.info("******************8888");     
-	    	logger.info("%%%%%%%%%%%%%*******"+Configs.class.getName());
+	    //	logger.info("******************8888");      
+	    //	logger.info("%%%%%%%%%%%%%*******"+Configs.class.getName());
 	    	Configs cf = lmo.getByName(TaxBasicMessage.class.getName()); 
-	    	String message = cf.getMessage();  
+	    	String message = cf.getMessage();    
 	    	//JSONObject object = (JSONObject)message; 
 	    	JSONObject jsObj = JSONObject.fromObject(message);
 	    	logger.info(message);                                   
-	    	     
+	    	      
 	    	      
 	    	modelAndView.addObject("TaxBasicMessage", jsObj);  
 	    	return modelAndView;  // 采用重定向方式跳转页面  

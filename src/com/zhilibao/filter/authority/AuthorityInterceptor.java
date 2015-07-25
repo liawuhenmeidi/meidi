@@ -10,6 +10,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import user.User;
  
  
 public class AuthorityInterceptor extends HandlerInterceptorAdapter {
@@ -17,7 +19,10 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
     @Override  
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         logger.info(handler instanceof HandlerMethod);  
-    	if (handler instanceof HandlerMethod) {  
+    	
+        User user = (User)request.getSession().getAttribute("user"); 
+        logger.info(user);  
+        if (handler instanceof HandlerMethod) {  
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             /*logger.info(handlerMethod.getBeanType().getMethods());  
             
@@ -36,8 +41,7 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
             if (annotation != null) {  
                 boolean needSaveSession = annotation.isverification();
                 if (needSaveSession) { 
-                    request.getSession(false).setAttribute("token", UUID.randomUUID().toString());
-                    logger.info(123);  
+                      
                 } 
                 boolean needRemoveSession = annotation.verification();
                 if (needRemoveSession) {

@@ -13,9 +13,9 @@ import user.UserService;
 
 public class LogisticsMessage {
    protected static Log logger = LogFactory.getLog(LogisticsMessage.class);
-   private int id ; 
+   private int id ;  
    private int carid;   // 车号
-   private int uid ;   //   司机  
+   private int uid ;   //   司机   
    private int bid ;   // 目的地
    private int prince ;  // 运费（给司机结款） 
    private String startLocate; // 起始地点   

@@ -143,7 +143,7 @@ public class GroupManager {
 			}
 			return true;
 		}
-		*/
+		*/ 
         public static boolean save(User user,Group group) throws Exception {
 			List<String> sqls = new ArrayList<String>(); 
 			if(CategoryManager.getName(group.getName())){
