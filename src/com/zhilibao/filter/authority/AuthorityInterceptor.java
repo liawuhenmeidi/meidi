@@ -1,20 +1,20 @@
-package com.zhilibao.token;
-
+package com.zhilibao.filter.authority;
+ 
 import java.lang.reflect.Method;
 import java.util.UUID;
- 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-   
+ 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-
-public class TokenInterceptor extends HandlerInterceptorAdapter {
-	protected static Log logger = LogFactory.getLog(TokenInterceptor.class);
-    @Override 
+ 
+ 
+public class AuthorityInterceptor extends HandlerInterceptorAdapter {
+	protected static Log logger = LogFactory.getLog(AuthorityInterceptor.class);
+    @Override  
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         logger.info(handler instanceof HandlerMethod);  
     	if (handler instanceof HandlerMethod) {  
@@ -29,17 +29,17 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
            //logger.info(method.getAnnotations() );  
             
           /* for(int i=0;i<method.getAnnotations().length;i++){
-           	logger.info(method.getAnnotations()[i]); 
+           	logger.info(method.getAnnotations()[i]);  
            } */
-           Token annotation = method.getAnnotation(Token.class);
+            Authority annotation = method.getAnnotation(Authority.class);
            // logger.info(annotation);
             if (annotation != null) {  
-                boolean needSaveSession = annotation.save();
+                boolean needSaveSession = annotation.isverification();
                 if (needSaveSession) { 
                     request.getSession(false).setAttribute("token", UUID.randomUUID().toString());
                     logger.info(123);  
                 } 
-                boolean needRemoveSession = annotation.remove();
+                boolean needRemoveSession = annotation.verification();
                 if (needRemoveSession) {
                     if (isRepeatSubmit(request)) {
                         return false;

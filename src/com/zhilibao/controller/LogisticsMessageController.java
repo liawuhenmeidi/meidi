@@ -23,6 +23,8 @@ import branch.BranchManager;
 import branchtype.BranchType;
 import branchtype.BranchTypeManager;
 
+import com.zhilibao.mapper.CarsOperation;
+import com.zhilibao.mapper.LogisticsMessageOperation;
 import com.zhilibao.model.Cars;
 import com.zhilibao.model.LogisticsMessage;
 import com.zhilibao.service.MapperService;
@@ -38,13 +40,13 @@ public class LogisticsMessageController {
 	    @RequestMapping("add.do")  // 请求url地址映射，类似Struts的action-mapping             
 	    public ModelAndView add(HttpSession session,@Param("pid")String pid){  
 	        // request和response不必非要出现在方法中，如果用不上的话可以去掉 
-	        // 参数的名称是与页面控件的name相匹配，参数类型会自动被转换 
-	    	ModelAndView modelAndView = new ModelAndView();  
-	    	User user = (User)session.getAttribute("user");
-	    	//logger.info(user);    
-	    	
-	    	
-	    	List<Cars> cars = MapperService.getCarsOperation().getlist();
+	        // 参数的名称是与页面控件的name相匹配，参数类型会自动被转换  
+	    	ModelAndView modelAndView = new ModelAndView();   
+	    	User user = (User)session.getAttribute("user"); 
+	    	//logger.info(user);     
+	    	   
+	    	CarsOperation co = (CarsOperation)MapperService.getCarsOperation();
+	    	List<Cars> cars =co.getlist();  
 	    	//logger.info(cars);    
 	    	List<User>  users= UserService.getLogistics(user);
 	    	//logger.info(users);  
@@ -77,10 +79,11 @@ public class LogisticsMessageController {
 	    public ModelAndView save(LogisticsMessage lm){  
 	        // request和response不必非要出现在方法中，如果用不上的话可以去掉
 	        // 参数的名称是与页面控件的name相匹配，参数类型会自动被转换  
-	    	logger.info("save");  
-	    	MapperService.getLogisticsMessageOperation().sava(lm);
+	    	logger.info("save");
+	    	LogisticsMessageOperation lmo = (LogisticsMessageOperation)MapperService.getLogisticsMessageOperation();
+	    	lmo.sava(lm);  
 	    	 
-	    	 
+	    	   
 	    	 
 	    	Map<String, Object> context = new HashMap<String, Object>(); 
 	    	context.put("message","保存成功");  

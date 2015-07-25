@@ -21,17 +21,23 @@
       
   <!-- 启用spring mvc 注解 --> 
   <context:annotation-config /> 
-    <!-- 拦截器配置 -->  
+    <!-- 拦截器配置   --> 
    <mvc:interceptors>
-       
-     
+
         <mvc:interceptor>   
             <mvc:mapping path="/**"/> 
             <bean class="com.zhilibao.token.TokenInterceptor"/>
+            
+        </mvc:interceptor>  
+          
+           <mvc:interceptor>   
+            <mvc:mapping path="/**"/> 
+            <bean class="com.zhilibao.filter.authority.AuthorityInterceptor"/>
         </mvc:interceptor> 
+        
     </mvc:interceptors>  
    
-         
+           
   <context:component-scan base-package="com.zhilibao.controller"></context:component-scan>      
  
 <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>  

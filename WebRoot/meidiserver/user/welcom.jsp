@@ -1,12 +1,12 @@
 <%@ page language="java" import="java.util.*,category.*,inventory.*,user.*,group.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <% 
 request.setCharacterEncoding("utf-8");
-boolean flag = true ; 
+boolean flag = true ;   
 User user = (User)session.getAttribute("user");
 List<Inventory> invetorylist = InventoryManager.getCategory(user,"unconfirmed");  
 String path = request.getContextPath();
 String realPath = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+request.getServletPath().substring(0,request.getServletPath().lastIndexOf("/")+1);    
-%>  
+%>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,13 +49,15 @@ function clear(){
 	   <!--   
 	    <li><a href="OrderGoods/inventoryDynamic.jsp">智能要货 </a></li> 
 	    -->
-	   
+	    
 	    <%            
 	     }  
    if(UserManager.checkPermissions(user, Group.ordergoods,"r")){ 	 
 	   %>             
-	   <li><a href="inventory/inventorycome.jsp">查看入库单号 </a></li> 
-	   <li><a href="OrderGoods/SNOrder.jsp">查看苏宁入库单号 </a></li> 
+	   <!--       
+	   <li><a href="inventory/inventorycome.jsp">未入库 </a></li> 
+	    -->   
+	   <li><a href="OrderGoods/SNOrder.jsp">全部订单号 </a></li> 
 	   <li><a href="makeInventory/makeinventoryall.jsp">盘点</a></li>
 	  <!--   
 	    <li><a href="inventory/inventorycheck.jsp">盘点</a></li>
@@ -66,7 +68,7 @@ function clear(){
       %>    
     	     <li><a href="serch_list.jsp">查看报装单</a></li>
     <%	  
-    }
+    } 
    if(UserManager.checkPermissions(user,Group.inventory)){
 	    %>      
  <li><a href="inventory/receipts.jsp">调拨单</a><FONT color=#000000 >&nbsp;<%=invetorylist.size() %></FONT></li>

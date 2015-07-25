@@ -1,6 +1,7 @@
 package com.zhilibao.service;
 
 import com.zhilibao.mapper.CarsOperation;
+import com.zhilibao.mapper.ConfigsOperation;
 import com.zhilibao.mapper.LogisticsMessageOperation;
  
 public class MapperService {  
@@ -14,5 +15,10 @@ public class MapperService {
 	   LogisticsMessageOperation cd = (LogisticsMessageOperation)MyApplicationContext.getInstance().getBean("LogisticsMessageOperation");
 	   return cd ;
    }
-    
+      
+   public static ConfigsOperation getConfigsOperation(){ 
+	   ConfigsOperation cd = (ConfigsOperation)MyApplicationContext.getInstance().getBean("ConfigsOperation");
+	   return cd ;
+   }
+   
 }
