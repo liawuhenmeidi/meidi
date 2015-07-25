@@ -69,14 +69,23 @@ Map<String,List<SNInventory>> map = InventoryChange.getMap(TimeUtill.getdateStri
 						}
 						if (null != list && list.size() > 1) {
 							count ++;
-					
+					 
 							Iterator<SNInventory> itlist = list.iterator();
 							while (itlist.hasNext()) {
 								SNInventory in = itlist.next();
-			%>
+								String name = "";
+								String num = StringUtill.getStringNocn(in.getBranchName());
+								if(!StringUtill.isNull(num)){
+									      
+								    name = BranchService.getNumMap().get(num).getNameSN(); 
+
+								}else {
+									name =in.getBranchName();
+								}
+			%> 
 			<tr <%=cl %>>
                 <td align="center"><%=count%></td>
-				<td align="center"><%=in.getBranchName()%></td>
+				<td align="center"><%=name%></td>
 				<td align="center"><%=in.getBranchNum()%></td>
 				<td align="center"><%=in.getGoodpName()%></td>
 				<td align="center"><%=in.getGoodNum()%></td>
