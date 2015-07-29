@@ -10,8 +10,9 @@ import com.zhilibao.config.Configs;
        
 public interface ConfigsOperation {  
 	@Delete("delete from mdconfigs where name = #{name}") 
+	public int delete(Configs Configs); 
 	@Insert("insert into mdconfigs (id,name,message) " +
-	   		"values (null,#{name},#{message}) ;")
+	   		"values (null,#{name},#{message}) ;") 
 	public int save(Configs Configs);
       
 	@Select("select * from  mdconfigs where name = #{name}") 

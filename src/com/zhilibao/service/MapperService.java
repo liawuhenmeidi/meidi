@@ -3,6 +3,7 @@ package com.zhilibao.service;
 import com.zhilibao.mapper.CarsOperation;
 import com.zhilibao.mapper.ConfigsOperation;
 import com.zhilibao.mapper.LogisticsMessageOperation;
+import com.zhilibao.mapper.TaxBasicMessageOperation;
  
 public class MapperService {  
    public static CarsOperation getCarsOperation(){ 
@@ -19,6 +20,11 @@ public class MapperService {
    public static ConfigsOperation getConfigsOperation(){ 
 	   ConfigsOperation cd = (ConfigsOperation)MyApplicationContext.getInstance().getBean("ConfigsOperation");
 	   return cd ;
+   }
+      
+   public static TaxBasicMessageOperation getTaxBasicMessageOperation(){ 
+	   TaxBasicMessageOperation cd = (TaxBasicMessageOperation)MyApplicationContext.getInstance().getBean("TaxBasicMessageOperation");
+	   return cd ; 
    }
    
 }

@@ -48,47 +48,121 @@ function mysubmit(){
                
  <form id="myform" action="save.do"  method="post">      
    <input  type="hidden" name="token" value="${token}" /> 
-   
-<table width="100%" cellspacing="1" id="table">     
+  
+<table width="100%" cellspacing="1" id="table">    
+	<tr class="asc">   
+	<td>单据号<span style=" color:#F00;"></span></td>
+	 <td >    
+	   <input type="text" name="djh" value="${TaxBasicMessage.djh}" placeholder="专用发票或普通发票"/>
+	 </td>
+    <td>发票种类<span style=" color:#F00;">*</span></td>  
+    <td> 
+	 <input type="text" name="fpzl" value="${TaxBasicMessage.fpzl}" placeholder="专用发票或普通发票"/>
+    </td>   
+	  
+	</tr> 
+	<tr class="asc">
+	<td>类别代码</td>
+	<td>   
+     <input type="text" name="lbdm" id="lbdm" placeholder="10字节" value="${TaxBasicMessage.lbdm}"/>
+	</td> 
+	<td>发票号码</td>
+	<td> 
+      <input type="text" name="fphm" id="fphm" placeholder="8字节" value="${TaxBasicMessage.fphm}"/>
+	</td> 
+	</tr>
+	
 	 <tr class="asc"> 
-   
+    <td width="25%">开票日期<span style=" color:#F00;">*</span></td>
+    <td width="65%">
+     <input type="text" name="kprq" id="kprq" placeholder="YYYYMMDD" value="${TaxBasicMessage.kprq}"/>
+    
+    </td> 
        <td>购方名称</td>
 	    <td>
 	    <input type="text" name="gfmc" id="gfmc" value="" placeholder="100字节" value="${TaxBasicMessage.gfmc}"/>
 	    
 	    </td>
 	    
-	   
+	    </tr>
+
+	<tr class="asc">
 	<td>购方税号</td>
 	<td>
 	<input type="text" name="gfsh" id="gfsh" value="${TaxBasicMessage.gfsh}"/>
 	</td>
-	  </tr>
-
-	<tr class="asc">
+	 
 	<td>购方银行账号</td> 
 	<td>
 	<input type="text" name="gfyhzh" id="gfyhzh" placeholder="100字节" value="${TaxBasicMessage.gfyhzh}"/>
 	</td>
+	</tr>
 	
+	<tr class="asc">  
 	<td>购方地址电话</td> 
 	<td> 
 	<input type="text" name="gfdzdh" id="gfdzdh"  value="${TaxBasicMessage.gfdzdh}"
 						 placeholder="100字节" />
 	</td>
+	<td>销方名称</td>      
+	<td>  
+	<input type="text" name="xfmc" id="xfmc"  value="${TaxBasicMessage.xfmc}"
+						 placeholder="100字节" />
+	</td>
+	</tr> 
+
+	<tr class="asc"> 
+	 <td>销方税号</td> 
+	<td> 
+	<input type="text" name="xfsh" id="xfsh"  value="${TaxBasicMessage.xfsh}"
+						  />
+	</td>
+	<td>销方银行账号</td>      
+	<td>  
+	<input type="text" name="xfyhzh" id="xfyhzh"  value="${TaxBasicMessage.xfyhzh}"
+						 placeholder="100字节" />
+	</td>
+	 
+	 
+	 
+	 
 	</tr>
 	
 
-
+	<tr class="asc"> 
+	 <td>销方地址电话</td> 
+	<td> 
+	<input type="text" name="xfdzdh" id="xfdzdh"  value="${TaxBasicMessage.xfdzdh}"
+				placeholder="100字节"		  />
+	</td>
+	<td>合计金额</td>      
+	<td>  
+	<input type="text" name="hjje" id="hjje"  value="${TaxBasicMessage.hjje}"
+						 />  
+	</td>
+    
+	</tr>
 
 	<tr class="asc"> 
-	  
+	 <td>合计税额</td> 
+	<td> 
+	<input type="text" name="hjse" id="hjse"  value="${TaxBasicMessage.hjse}"
+						  />
+	</td>
 	<td>备注</td>      
 	<td>  
 	<input type="text" name="bz" id="bz"  value="${TaxBasicMessage.bz}"
 						 placeholder="240字节" />
-	</td> 
-	
+	</td>
+
+	</tr>
+
+	<tr class="asc"> 
+	 <td>开票人</td> 
+	<td> 
+	<input type="text" name="kpr" id="kpr" value="${TaxBasicMessage.kpr}"
+		 placeholder="8字节"				  />
+	</td>
 	<td>复核人</td>      
 	<td>  
 	<input type="text" name="fhr" id="fhr" value="${TaxBasicMessage.fhr}"

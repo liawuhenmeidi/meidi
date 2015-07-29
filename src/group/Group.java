@@ -1,6 +1,11 @@
 package group;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import utill.StringUtill;
 
 public class Group {
    //  0  为超级管理员    1 提交报装单         2 送货单   3 管理用户      4 添加产品类别    5 配单    6 抢单    
@@ -68,7 +73,35 @@ public class Group {
   
   private List<Integer> pid ;
   
-   public int getPtype() {
+  private Map<String,List<String>> permissionsMap;
+  
+   public Map<String, List<String>> getPermissionsMap() {
+	   Map<String, List<String>> map = new HashMap<String, List<String>>();
+	   if(!StringUtill.isNull(permissions)){
+		   String[] pres= permissions.split("_");
+		   for(int i=0;i<pres.length;i++){
+			   String aop = pres[i];
+			   String[] aops = aop.split("-");
+			   String ao = aops[0];
+			   String op = aops[1];
+			    
+			   List<String> li = map.get(ao);
+			   if(null == li){ 
+				   li = new ArrayList<String>();
+			   }
+			   li.add(op);
+			   
+		   }
+		   
+	   }  
+	    
+	   
+	return permissionsMap;
+}
+public void setPermissionsMap(Map<String, List<String>> permissionsMap) {
+	this.permissionsMap = permissionsMap;
+}
+public int getPtype() {
 	return ptype;
 }
 public void setPtype(int ptype) {

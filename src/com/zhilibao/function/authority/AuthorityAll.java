@@ -1,7 +1,7 @@
 package com.zhilibao.function.authority;
 
-public class Authority {
-	 public static int Manger = 0;
+public class AuthorityAll { 
+	   public final static int Manger = 0;
 	   public static int sale = 1;
 	   public static int send = 2; 
 	      
@@ -47,8 +47,10 @@ public class Authority {
 	    //  c  生成苏宁订单      d  开单发货     e 修改实收数量    f 确认卖场入库数量
 	       
 	   public static int logistics = 41;   //  物流权限      p 物流配工     d（Delivery） 送货   r 查看物流记录  s(Settlement ) 结算  
-	      
-	   public static int TaxBasicMessage = 42 ;
+	       
+	   public final static int TaxBasicMessage = 42 ;
+	   
+	   
 	   public enum AuthorityValue{ 
 	        //通过括号赋值,而且必须带有一个参构造器和一个属性跟方法，否则编译出错
 	        //赋值必须都赋值或都不赋值，不能一部分赋值一部分不赋值；如果不赋值则不能写构造器，赋值编译也出错

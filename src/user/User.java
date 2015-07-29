@@ -1,5 +1,8 @@
 package user;
 
+import java.util.List;
+import java.util.Map;
+
 import group.Group;
 import group.GroupService;
 import utill.StringUtill;
@@ -23,6 +26,12 @@ public class User {
 	private int chargeid;
 
 	private String location;
+
+	public Map<String, List<String>> getAuthority() {
+		 
+		return UserService.initAuthority().get(id);
+	}
+
 
 	public String getBranchName() {
 		return branchName;

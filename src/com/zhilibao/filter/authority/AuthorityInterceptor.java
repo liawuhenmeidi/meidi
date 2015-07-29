@@ -1,7 +1,8 @@
 package com.zhilibao.filter.authority;
  
 import java.lang.reflect.Method;
-import java.util.UUID;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,11 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
+ 
 import user.User;
+import utill.StringUtill;
  
- 
+  
 public class AuthorityInterceptor extends HandlerInterceptorAdapter {
 	protected static Log logger = LogFactory.getLog(AuthorityInterceptor.class);
     @Override  
@@ -30,7 +33,7 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
             	logger.info(handlerMethod.getBeanType().getMethods()[i]);
             }  */
             Method method = handlerMethod.getMethod()  ;
-   
+    
            //logger.info(method.getAnnotations() );  
             
           /* for(int i=0;i<method.getAnnotations().length;i++){
@@ -39,37 +42,71 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
             Authority annotation = method.getAnnotation(Authority.class);
            // logger.info(annotation);
             if (annotation != null) {  
-                boolean needSaveSession = annotation.isverification();
-                if (needSaveSession) { 
-                      
-                } 
-                boolean needRemoveSession = annotation.verification();
-                if (needRemoveSession) {
-                    if (isRepeatSubmit(request)) {
-                        return false;
-                    }
-                    request.getSession(false).removeAttribute("token");
-                }
+                boolean needAuthority = annotation.isverification();
+                if (needAuthority) {
+                	boolean flag = check(user,annotation);
+                	if(flag){
+                		return true ;
+                	}else {
+                		return true ;
+                		// response.sendRedirect("");
+                		 
+                	}
+                	//return true ;  
+                }  
+        
             }
             return true;
         } else {  
         	//logger.info(super.preHandle(request, response, handler));
+        	
             return super.preHandle(request, response, handler);
         } 
     }
- 
-    private boolean isRepeatSubmit(HttpServletRequest request) {
-        String serverToken = (String) request.getSession(false).getAttribute("token");
-        if (serverToken == null) {
-            return true;
-        }
-        String clinetToken = request.getParameter("token");
-        if (clinetToken == null) {
-            return true;
-        }
-        if (!serverToken.equals(clinetToken)) {
-            return true;
-        }
-        return false;
-    }
+  
+    
+     
+    private boolean check(User user ,Authority annotation){
+    	boolean flag = true ; 
+    	Map<String, List<String>> aosmap =  user.getAuthority();
+    	String[] aoss = annotation.AuthorityMessage();
+    	if(null != aoss && aoss.length >1){
+    		for(int i=0;i<aoss.length;i++){
+    			String aos = aoss[i]; 
+    			String[] aosp = aos.split("_");
+    			String ao = aosp[0];
+    			String op = aosp[1];
+    			
+    			if(null == aosmap){
+    				return false ;
+    			}else {
+    				 List<String> li = aosmap.get(ao);
+    				 if(!StringUtill.isNull(op)){
+    					 if(!li.contains(op)){
+    						 return false ;
+    					 }
+    				 }
+    			}
+    			
+    		}
+    	}else {
+    		return false ;
+    	}
+    	return flag ;
+    } 
+    
+    
+    public void postHandle(    
+            HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)    
+            throws Exception {
+    	
+    	logger.info("postHandle");
+    }    
+    public void afterCompletion(    
+            HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)    
+            throws Exception {  
+    	logger.info("afterCompletion");
+    }  
+    
+    
 }

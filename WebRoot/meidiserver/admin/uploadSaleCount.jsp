@@ -190,11 +190,11 @@ if(total){ %>
 			if(null != up){
 				tpe = up.getCatergory(); 
 			}
-		}
-		 count += sain.getNum();
+		} 
+		 count += sain.getNum(); 
 		 moneycount += Math.abs(sain.getSalePrice())*sain.getNum();
 		 bpmoneycount += Math.abs(sain.getSalePrice())*sain.getNum()*(1-sain.getBackPoint()/100);
-		 
+		  
 	%>
 	<tr class="asc"  onclick="updateClass(this)" id="<%=sain.getId()%>"> 
 					<td align="center"><%=i+1 %></td>

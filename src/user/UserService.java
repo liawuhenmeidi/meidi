@@ -6,6 +6,7 @@ import group.GroupService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,10 +28,12 @@ public class UserService {
     
    public static List<User> listall ;   
    
+   private static Map<Integer,Map<String,List<String>>> authority;
+     
    public static List<Integer> GetListson(User user){ 
-	   init(); 
+	   init();  
 	   List<Integer> list = new ArrayList<Integer>();
-  	   if(null != listall){  
+  	   if(null != listall){   
   		   for(int i=0;i<listall.size();i++){ 
   			   User u = listall.get(i);   
   			   //System.out.println(u.getc); 
@@ -55,7 +58,7 @@ public class UserService {
 	   } 
 	   return listn;
    }
-     
+      
     
    public static HashMap<String,User> getmapSencd(List<User> list){
 	   HashMap<String,User> users = new HashMap<String,User>();
@@ -63,7 +66,7 @@ public class UserService {
 		   for(int i =0;i<list.size();i++){
 			   User u = list.get(i); 
 			   users.put(u.getId()+"", u);
-		   } 
+		   }  
 	   }
 	    
 	   return users ; 
@@ -90,7 +93,7 @@ public class UserService {
    }
    
 public static  List<User> getsencondDealsend(User user){
-	 init();  
+	 init();   
 	 List<User> list = new ArrayList<User>(); 
 	  	   if(null != listall){    
 	  		   for(int i=0;i<listall.size();i++){ 
@@ -129,8 +132,34 @@ public static  List<User> getsend(User user){
 	    
 	   return list;
 }
+    
 
-public static  List<User> getLogistics(User user){
+public static  Map<Integer,Map<String,List<String>>> initAuthority(){
+	  
+	  init(); 
+	  if(null ==authority ){
+		  Map<Integer,Map<String,List<String>>> map = new HashMap<Integer,Map<String,List<String>>>();
+		  
+		  
+		  if(null != listall){     
+	 		   for(int i=0;i<listall.size();i++){ 
+	 			   User u = listall.get(i);   
+	 			   Group g = GroupService.getidMap().get(u.getUsertype());
+	 			   map.put(u.getId(), g.getPermissionsMap());
+	 		   }   
+	    }
+		  
+		  authority = map;
+	  }
+	  
+ 
+	  
+	  return authority ;
+  }
+  
+  
+  
+  public static  List<User> getLogistics(User user){
 	 init(); 
 	 List<User> list = new ArrayList<User>(); 
 	// logger.info(listall);  
@@ -178,6 +207,7 @@ public static HashMap<String,List<User>> getMapBranchid(){
 		 usermapStr = UserManager.getMap(""); 
 		 usermapBranch = UserManager.getMapBranch();
 		 listall = UserManager.getUsers();
+		 authority = initAuthority();  
 	 }
 	 flag = false ;
  }
