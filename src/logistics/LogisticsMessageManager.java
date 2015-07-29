@@ -241,7 +241,7 @@ public class LogisticsMessageManager {
 	 public static List<LogisticsMessage>	getlist(int uid){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
 		  Connection conn = DB.getConn();
-			String sql = "select * from  mdlogistics where  and uid="+uid;
+			String sql = "select * from  mdlogistics where uid="+uid;
 		   logger.info(sql);
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
