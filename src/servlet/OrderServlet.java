@@ -2,6 +2,7 @@ package servlet;
 
 import gift.Gift;
 import group.Group;
+import group.GroupService;
 
 import java.io.IOException;
 import java.util.ArrayList; 
@@ -106,6 +107,8 @@ public class OrderServlet extends HttpServlet {
 		or.setType(Integer.valueOf(opstatues));     
 		or.setUid(user.getId()); 
 		or.setGroupid(user.getUsertype());
+		//Group g = GroupService.getidMap().get(user.getUsertype());
+		//or.setpGroupId()
 		OrderPrintlnManager.save(or); 
 	}
 	
