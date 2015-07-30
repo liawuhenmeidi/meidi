@@ -789,7 +789,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and   deliveryStatues in (1,2,4,5)  and deliverytype = 2  and statuespaigong  = 0 and oderStatus not in (30) "+search+"  order by "+sort+str ; 
 				   }else if(Order.orderquery == statues){  
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )      "+search+"  order by "+sort+str;    
-				   }         
+				   }          
 			   }else if(Group.aftersalerepare == type){  
 				   String prodectsp = GroupService.getidMap().get(user.getUsertype()).getProducts(); 
 				  String pp = prodectsp.replace("_", ",");  
