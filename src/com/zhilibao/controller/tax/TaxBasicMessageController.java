@@ -27,7 +27,7 @@ import com.zhilibao.utill.bean.BeanUtill;
 @RequestMapping("/meidiserver/admin/tax/")
 public class TaxBasicMessageController {    
 	@Resource
-	private TaxBasicMessageOperation taxBasicMessageOperation;
+	//private TaxBasicMessageOperation taxBasicMessageOperation;
 	
 	protected static Log logger = LogFactory.getLog(TaxBasicMessageController.class);
 	                     
@@ -37,12 +37,12 @@ public class TaxBasicMessageController {
 	    	ModelAndView modelAndView = new ModelAndView();
           
 	    //	logger.info("%%%%%%%%%%%%%*******"+Configs.class.getName());
-	    	 List<TaxBasicMessage> cf = taxBasicMessageOperation.getList(); 
-	    	 logger.info(cf); 
-	    	if(null != cf){ 
-	    		
-		    	//modelAndView.addObject("TaxBasicMessage", jsObj);  
-	    	}
+	    	// List<TaxBasicMessage> cf = taxBasicMessageOperation.getList(); 
+	    	// logger.info(cf); 
+	    	//if(null != cf){ 
+	    		 
+		   // 	//modelAndView.addObject("TaxBasicMessage", jsObj);  
+	    //	}
 	    	 
 	    	return modelAndView;  // 采用重定向方式跳转页面  
 	    } 
