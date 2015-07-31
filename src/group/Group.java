@@ -56,7 +56,9 @@ public class Group {
     //  c  生成苏宁订单      d  开单发货     e 修改实收数量    f 确认卖场入库数量
       
    public static int logistics = 41;   //  物流权限      p 物流配工     d（Delivery） 送货   r 查看物流记录  s(Settlement ) 结算  
-      //  c(car)  车辆登记 
+   
+   public final static int TaxBasicMessage = 42 ;  // 税务开票
+   //  c(car)  车辆登记 
     //   从 15开始    
    private int id ;  
    private String name;

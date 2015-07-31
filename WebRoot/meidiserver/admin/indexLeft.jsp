@@ -199,7 +199,11 @@ function getInventory(){
               <p ><a href="javascript:void(0);"  onclick="reloadopned('huiyuan.jsp')">职工管理</a></p>
             </div>
           </li>
-           <li >
+          <%} %>
+          
+           
+           <% if(UserManager.checkPermissions(user, Group.TaxBasicMessage)){ %>
+           <li >  
             <h4 >税务开票</h4> 
             <div class="list-item none"> 
               <p ><a href="javascript:void(0);"  onclick="reloadopned('tax/add.do')">基础信息维护</a></p>
@@ -559,7 +563,7 @@ function getInventory(){
             	<!-- 
             	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/add.do')" >物流配工</a></p> 
             	 -->
-            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logistics.jsp')" >物流配工</a></p> 
+            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/add.do')" >物流配工</a></p> 
             	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistsend.jsp')" >待送货</a></p> 
             	  <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistCharging.jsp')" >预约结款</a></p> 
             	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistcharge.jsp')" >待结款</a></p> 

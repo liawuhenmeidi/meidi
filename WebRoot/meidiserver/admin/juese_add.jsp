@@ -387,7 +387,10 @@ $(function () {
           <tr class="asc"  onclick="updateClass(this)"><td width=25% >物流服务:</td><td width=25% >车辆配工<input type="checkbox" value="41-p" name = "permission" id="p41-p"  /></td><td width=25% >物流送货&nbsp;<input type="checkbox" value="41-d" name = "permission" id="p41-d" /></td><td width=25% >查看物流记录&nbsp;<input type="checkbox" value="41-r" name = "permission" id="p41-r" /></td></tr>
          <tr class="asc"  onclick="updateClass(this)"><td width=25% ></td><td width=25% >结算<input type="checkbox" value="41-s" name = "permission" id="p41-s"  /></td><td width=25% >车辆登记<input type="checkbox" value="41-c" name = "permission" id="p41-c"  /></td><td width=25% ></td></tr>
 
+         <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>财务系统类权限</td><td></td></tr></table></td></tr> 	
+          <tr class="asc"  onclick="updateClass(this)"><td width=25% >财务:</td><td width=25% >基础信息维护<input type="checkbox" value="42-w" name = "permission" id="p42-w"  /></td><td width=25% >单据转化;<input type="checkbox" value="42-c" name = "permission" id="p42-c" /></td><td width=25% ></td></tr>
         
+         
           <tr class="dsc"  onclick="updateClass(this)"><td colspan=4 align="left" ><table><tr><td></td><td>要货单权限</td><td></td></tr></table></td></tr> 
         <tr class="asc"  onclick="updateClass(this)"><td width=25% >要货单:</td><td width=25% >可提交(导购上报)<input type="checkbox" value="40-w" name = "permission" id="p40-w"  /></td><td width=25% >确认审核&nbsp;<input type="checkbox" value="40-q" name = "permission" id="p40-q" /></td><td width=25% >读(查看)&nbsp;<input type="checkbox" value="40-r" name = "permission" id="p40-r" /></td></tr>
         <tr class="asc"  onclick="updateClass(this)"><td width=25% ></td><td width=25% >生成卖场(苏宁，国美)订单<input type="checkbox" value="40-c" name = "permission" id="p40-c"  /></td><td width=25% >开单发货&nbsp;<input type="checkbox" value="40-d" name = "permission" id="p40-d" /></td><td width=25% >确认实货数量&nbsp;<input type="checkbox" value="40-e" name = "permission" id="p40-e" /></td></tr>
