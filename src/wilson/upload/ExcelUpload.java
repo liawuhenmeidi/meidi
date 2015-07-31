@@ -39,7 +39,16 @@ public class ExcelUpload extends HttpServlet {
 	private static String salesFilePath = "data/salesXLS";
 	private static String changeFilePath = "data/changeXLS";
 	private static String productFilePath = "data/productXLS";
-	  
+	private static String taxFilePath = "data/taxXLS";
+	 
+	public static String getTaxFilePath() {
+		return taxFilePath;
+	}
+
+	public static void setTaxFilePath(String taxFilePath) {
+		ExcelUpload.taxFilePath = taxFilePath;
+	}
+
 	public static String getProductFilePath() {
 		return productFilePath;
 	}
@@ -61,6 +70,7 @@ public class ExcelUpload extends HttpServlet {
 		salesFilePath = sc.getRealPath("/") + config.getInitParameter("salesFilePath");
 		changeFilePath = sc.getRealPath("/") + config.getInitParameter("changeFilePath");
 		productFilePath = sc.getRealPath("/") + config.getInitParameter("productFilePath");
+		taxFilePath = sc.getRealPath("/") + config.getInitParameter("taxFilePath");
 	} 
  
 	private ServletConfig config = null;
@@ -138,6 +148,11 @@ public class ExcelUpload extends HttpServlet {
 							//log.info(4); 
 							directUrl = "./admin/upload/uploadproduct.jsp?fileName=";
 							filePath = productFilePath;
+						}else if(type.equals("6")){
+							//产品上传  
+							//log.info(4); 
+							directUrl = "./admin/tax/taxUpload.do?fileName=";
+							filePath = taxFilePath;
 						}else{ 
 							 
 							directUrl = "./admin/uploadManage.jsp?fileName=";
@@ -155,7 +170,7 @@ public class ExcelUpload extends HttpServlet {
 
 			while (iter.hasNext()) {
 				item = (FileItem) iter.next();
-				
+				 
 				if (item.isFormField()) {
 					log.info("表单参数名:" + item.getFieldName() + "，表单参数值:" + item.getString("UTF-8"));
 				}   

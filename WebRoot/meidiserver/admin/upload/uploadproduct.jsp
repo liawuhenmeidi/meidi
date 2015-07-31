@@ -15,18 +15,18 @@
 	boolean showContent =false;
 	       
 	boolean confirmResult = false;  
-	List<Product> list = null ;   
+	List<Product> list = null ;    
 	if(confirm != null && confirm != ""){
 		if(confirm.equals("confirm")){   
 			confirmResult = UploadManager.saveproductFileToDB(filePath,fileName,categoryID);
 		}  
 		response.sendRedirect("../product.jsp?categoryID="+categoryID); 
-		return;  
-	}else{ 
+		return;   
+	}else{  
 		if(fileName != null && fileName != "" && !fileName.equals("")){			
 			list = new XLSReader().readProductXML(filePath,fileName,categoryID); 
 			showContent = true;  
-		}	 
+		}	  
 	} 
 	    
 	//System.out.println(StringUtill.GetJson(list));

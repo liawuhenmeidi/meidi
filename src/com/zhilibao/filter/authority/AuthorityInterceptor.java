@@ -15,7 +15,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  
 import user.User;
 import utill.StringUtill;
- 
+  
   
 public class AuthorityInterceptor extends HandlerInterceptorAdapter {
 	protected static Log logger = LogFactory.getLog(AuthorityInterceptor.class);

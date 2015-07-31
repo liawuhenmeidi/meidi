@@ -40,12 +40,12 @@
  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
      <property name="dataSource" ref="jdbcDataSource" />  
  </bean>      
-    
+     
  <bean id="LogisticsMessageOperation" class="org.mybatis.spring.mapper.MapperFactoryBean">  
       <property name="sqlSessionFactory" ref="sqlSessionFactory"></property> 
       <property name="mapperInterface" value="com.zhilibao.mapper.LogisticsMessageOperation"></property>   
  </bean>    
-   
+    
  <bean id="CarsOperation" class="org.mybatis.spring.mapper.MapperFactoryBean"> 
   <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>   
      <property name="mapperInterface" value="com.zhilibao.mapper.CarsOperation"></property>  
@@ -54,7 +54,13 @@
  <bean id="ConfigsOperation" class="org.mybatis.spring.mapper.MapperFactoryBean"> 
   <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>   
      <property name="mapperInterface" value="com.zhilibao.mapper.ConfigsOperation"></property>  
-    
+ </bean>  
+ <bean id="TaxBasicMessageOperation" class="org.mybatis.spring.mapper.MapperFactoryBean"> 
+  <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>   
+     <property name="mapperInterface" value="com.zhilibao.mapper.TaxBasicMessageOperation"></property>  
  </bean> 
+ 
+ 
+ 
  
  </beans>   

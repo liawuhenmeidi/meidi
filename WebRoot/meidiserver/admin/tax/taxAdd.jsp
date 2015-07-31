@@ -3,7 +3,7 @@
   
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>  
+<head>   
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>税务开票基础信息</title>  
         
@@ -43,7 +43,27 @@ function mysubmit(){
        
  <!--       -->     
      <div class="">
-   <div class="weizhi_head">现在位置：税务系统基本信息维护</div> 
+   <div class="weizhi_head"> 
+   <form action="add.do" method="post">
+  <table>
+  <tr>
+  <td>    
+   现在位置：税务系统基本信息维护</td>
+   <td>  
+ <select name="gfmc" > 
+   <c:forEach var="TM"  items="${TaxBasicMessages}" >
+     <option value="${TM.gfmc }" >${TM.gfmc }</option>
+      </c:forEach> 
+  
+ </select>  
+   </td> 
+   <td>
+   <input type="submit" value="查看"/>
+   </td>
+  </tr>
+  </table> 
+  </form> 
+</div> 
    <div class="table-list">      
                
  <form id="myform" action="save.do"  method="post">      

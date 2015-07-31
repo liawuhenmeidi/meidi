@@ -12,16 +12,20 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import wilson.upload.ExcelUpload;
 import wilson.upload.UploadManager;
 import wilson.upload.UploadOrder;
+import wilson.upload.XLSReader;
  
 import com.zhilibao.config.Configs;
 import com.zhilibao.function.export.TaxExchange;
 import com.zhilibao.mapper.ConfigsOperation;
+import com.zhilibao.model.tax.Tax;
 import com.zhilibao.model.tax.TaxBasicMessage;
 import com.zhilibao.service.MapperService;
 
@@ -34,54 +38,33 @@ public class FileController {
     
 	    @RequestMapping("tax.do")  // 请求url地址映射，类似Struts的action-mapping             
 	    public ModelAndView tax(){   
-	    	        
-	    	List<String> orderNames = UploadManager.getUnTotalUploadOrdersNames();
-	    	     
 	    	ModelAndView modelAndView = new ModelAndView();
-	    	modelAndView.addObject("orderNames", orderNames);  
 	    	modelAndView.setViewName("tax/taxExchange");  
 	    	
 	    	return modelAndView;  // 采用重定向方式跳转页面  
 	    } 
-	      
-	    @RequestMapping("taxDetail.do")  // 请求url地址映射，类似Struts的action-mapping             
-	    public ModelAndView taxDetail(String orderName){  
-	    	logger.info(orderName);    
-	    	List<UploadOrder> list = UploadManager.getTotalUploadOrders(orderName); 
-	    	List<String> orderNames = UploadManager.getUnTotalUploadOrdersNames();
-
-	    	       
-	    	ModelAndView modelAndView = new ModelAndView();
-	    	modelAndView.addObject("UploadOrders", list);   
-	    	modelAndView.addObject("orderNames", orderNames);  
-	    	modelAndView.addObject("orderName", orderName);  
-	    	modelAndView.setViewName("tax/taxExchange");  
-	    	 
-	    	return modelAndView;  // 采用重定向方式跳转页面  
-	    } 
-	    
+	  
 	    
 	    @RequestMapping("taxExchange.do")  // 请求url地址映射，类似Struts的action-mapping             
-	    public ModelAndView taxExchange(HttpServletResponse response,String orderName){ 
-	    	 
-	    	   ConfigsOperation lmo = MapperService.getConfigsOperation();
-		    //	logger.info("******************8888");      
-		    //	logger.info("%%%%%%%%%%%%%*******"+Configs.class.getName());
-		    	Configs cf = lmo.getByName(TaxBasicMessage.class.getName()); 
+	    public ModelAndView taxExchange(HttpServletResponse response,@Param("gfmc") String gfmc,@Param("filename") String filename){ 
+	    	  
 		    	  
-		    	if(null == cf){  
+	    	TaxBasicMessage TaxBasicMessage = MapperService.getTaxBasicMessageOperation().getByName(gfmc);
+    		 
+    		logger.info("gfmc"+gfmc); 
+    		
+		    	if(null == TaxBasicMessage){  
 		    		Map<String, Object> context = new HashMap<String, Object>(); 
 			    	context.put("message","请维护税务基本信息");   
 			    	ModelAndView modelAndView = new ModelAndView("jieguo",context); 
 			    	return modelAndView; 
-		    	}else {
-		    		TaxExchange.export(response,cf,orderName);  
+		    	}else {   
+		    		TaxExchange.export(response, TaxBasicMessage,gfmc,filename);  
 		    	}
 		    	
 		    	
 	    	
-	    	//ModelAndView modelAndView = new ModelAndView();
-	    	logger.info(orderName);      
+	    	//ModelAndView modelAndView = new ModelAndView();     
 	    	//List<UploadOrder> list = UploadManager.getTotalUploadOrders(orderName); 
 	    	//List<String> orderNames = UploadManager.getUnTotalUploadOrdersNames();
 	    	  

@@ -5,7 +5,7 @@ User user = (User)session.getAttribute("user");
 String method = request.getParameter("method");
 
 List<LogisticsMessage>	list = LogisticsMessageManager.getlist("0");
-       
+        
 //System.out.println("CarsService.getmap()"+CarsService.getmap());
    
 %>

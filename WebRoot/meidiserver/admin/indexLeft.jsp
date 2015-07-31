@@ -199,6 +199,14 @@ function getInventory(){
               <p ><a href="javascript:void(0);"  onclick="reloadopned('huiyuan.jsp')">职工管理</a></p>
             </div>
           </li>
+           <li >
+            <h4 >税务开票</h4> 
+            <div class="list-item none"> 
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('tax/add.do')">基础信息维护</a></p>
+               <p ><a href="javascript:void(0);"  onclick="reloadopned('file/tax.do')">单据转化</a></p>
+            </div>
+          </li>
+          
           <%} %>
         
            <%

@@ -10,15 +10,16 @@ import org.springframework.stereotype.Service;
 import com.zhilibao.model.tax.TaxBasicMessage;
 @Service       
 public interface TaxBasicMessageOperation {   
-	@Delete("delete from mdtaxbasicmessage where name = #{name}") 
+	@Delete("delete from mdtaxbasicmessage where gfmc = #{gfmc}") 
 	public int delete(TaxBasicMessage Configs); 
-	@Insert("insert into mdtaxbasicmessage (id,name,message) " +
-	   		"values (null,#{name},#{message}) ;") 
+	 
+	@Insert("insert into mdtaxbasicmessage (gfmc,gfsh,gfyhzh,gfdzdh,bz,fhr,skr) " +
+	   		"values (#{gfmc},#{gfsh},#{gfyhzh},#{gfdzdh},#{bz},#{fhr},#{skr}) ;") 
 	public int save(TaxBasicMessage Configs);
-       
-	@Select("select * from  mdtaxbasicmessage where name = #{name}") 
+        
+	@Select("select * from  mdtaxbasicmessage where gfmc = #{gfmc}") 
 	public TaxBasicMessage getByName(String name); 
-	
+	 
 	@Select("select * from  mdtaxbasicmessage") 
 	public List<TaxBasicMessage> getList(); 
 	

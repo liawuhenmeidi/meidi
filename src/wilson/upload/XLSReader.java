@@ -15,6 +15,8 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.zhilibao.model.tax.Tax;
+
 import product.Product;
 
 import change.BranchTypeChange;
@@ -598,6 +600,115 @@ public class XLSReader {
 					if(flag){
 						list.add(p);
 					}
+				
+
+				}catch(Exception e){
+					logger.info(e);
+				} 
+			}
+	        wb.close();
+			return list;
+		}
+		   
+		public List<Tax> readTaxXML(String path,String fileName){
+			List<Tax> list = new ArrayList<Tax>(); 
+			//Map<String, Set<String>> map = b.getMaplist();
+			if(fileName == null || path == null){
+				return null;  
+			}   
+			//logger.info(path);  
+			String filepath = path.replace("\\", "/");
+			logger.info(filepath); 
+			//List<String> list =   new ArrayList<String>();
+			File srcFile = new File(filepath,fileName); 
+			logger.info(srcFile.getAbsolutePath()); 
+			logger.info(srcFile.getPath());  
+			Workbook wb = null; 
+			try { 
+				wb = Workbook.getWorkbook(srcFile);
+			} catch (BiffException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} 
+			
+			Sheet sheet0 = wb.getSheet(0);
+             
+			int row = sheet0.getRows();
+			int co = sheet0.getColumns();
+			//logger.info(row);  
+			//logger.info(co);   
+			//logger.info(sheet0.getColumns()); 
+			for(int i = 1 ; i < row; i ++){ 
+				Tax p = new Tax();
+
+				//boolean flag = false ;
+				try{
+
+					for(int j=0;j < co;j++){  
+						String str = sheet0.getCell(j,i).getContents().trim();
+						if(j==3){
+							if(StringUtill.isNull(str)){
+								p.setPnum("第"+j+1+"行,第"+i+"列商品编号不能为空");
+								return list;
+								//flag = true ;
+							}else {     
+								p.setPnum(str);
+								
+							};
+						}else if(j == 4){
+							if(StringUtill.isNull(str)){
+								p.setPname("第"+j+1+"行,第"+i+"列商品编码不能为空");
+								return list; 
+							}else {   
+								p.setPname(str); 
+								
+							};
+						}else if(j == 5){
+							if(StringUtill.isNull(str)){
+								p.setUnit("第"+j+1+"行,第"+i+"列商品编码不能为空");
+								return list; 
+							}else {   
+								p.setUnit(str); 
+							};
+						}else if(j == 6){
+							if(StringUtill.isNull(str)){
+								p.setUnit("第"+j+1+"行,第"+i+"列数量不能为空");
+								return list; 
+							}else {   
+								p.setNum(Integer.valueOf(str)); 
+								 
+							}; 
+						}else if(j == 7){
+							try{
+								 double b = Double.parseDouble(str);
+								 p.setPrince(b);
+								}catch(Exception e)
+								{  
+									logger.info(e);
+								}  
+						}else if(j == 8){
+							try{
+								 double b = Double.parseDouble(str);
+								 p.setTotalMoney(b);
+								}catch(Exception e)
+								{  
+									logger.info(e);
+								}  
+						}else if(j == 12){ 
+							try{
+								 double b = Double.parseDouble(str);
+								  p.setTaxRate(b);
+								}catch(Exception e)
+								{   
+								 logger.info(e);
+								}  
+						}	
+					} 
+					
+					
+					
+						list.add(p); 
 				
 
 				}catch(Exception e){

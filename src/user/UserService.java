@@ -132,11 +132,9 @@ public static  List<User> getsend(User user){
 	    
 	   return list;
 }
-    
+     
 
 public static  Map<Integer,Map<String,List<String>>> initAuthority(){
-	  
-	  init(); 
 	  if(null ==authority ){
 		  Map<Integer,Map<String,List<String>>> map = new HashMap<Integer,Map<String,List<String>>>();
 		  
