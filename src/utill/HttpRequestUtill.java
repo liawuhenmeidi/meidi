@@ -103,6 +103,25 @@ public class HttpRequestUtill {
     		        					sear += " and " + sqlstr +  "  < '" + end + "'"; 
     		        				}
     	        				}
+    	        			}else if("installTimestart".equals(str)){
+    	        				//logger.info(str);
+    	        				String start = request.getParameter(str);
+    	        				String end = request.getParameter("installTimeend");
+    	        				String sqlstr = "installTime"; 
+    	        				if(start != null && start != "" && start != "null"){
+    	        					sear += " and " + sqlstr + "  BETWEEN '" + start + "'  and  ";
+    	        				    
+    	        					if(end != null && end != "" && end != "null"){
+    		        					sear += " '" + end + "'";
+    		        				}else {  
+    		        					sear += "now()";
+    		        				} 
+    	        					
+    	        				}else {
+    	        					if(end != null && end != "" && end != "null"){
+    		        					sear += " and " + sqlstr +  "  < '" + end + "'"; 
+    		        				}
+    	        				}
     	        			}else if("statuesChargeSale".equals(str)){
     	        				String strr = request.getParameter(str);
     	        				if(strr != "" && strr != null){
@@ -114,7 +133,7 @@ public class HttpRequestUtill {
       	        				   
       	        				}
     	        				
-    	        			}else if(!"dealsendTimeend".equals(str) && !"saledateend".equals(str)) {      
+    	        			}else if(!"dealsendTimeend".equals(str) && !"saledateend".equals(str) && !"installTimeend".equals(str)) {      
     	        				String strr = request.getParameter(str); 
     	        				if(strr != "" && strr != null){
     	        				  sear += " and " + str + " like '%" + strr +"%'"; 

@@ -26,22 +26,28 @@ import orderproduct.OrderProductManager;
 import user.User;
 import user.UserManager;
 import utill.DBUtill;
+import utill.StringUtill;
+import utill.TimeUtill;
 
 import database.DB;
 
 public class InventoryManager {
 	protected static Log logger = LogFactory.getLog(InventoryManager.class);
 	
-	public static List<Inventory> getCategory(User user,String statues) { 
+	public static List<Inventory> getCategory(User user,String statues,String starttime,String endtime) { 
 		List<Inventory> categorys = new ArrayList<Inventory>();
 		Connection conn = DB.getConn();
 		int branchid = Integer.valueOf(user.getBranch());  
 		String sql = "";
-		if(UserManager.checkPermissions(user, Group.dealSend)){
+		String sear = "";
+		if(!StringUtill.isNull(starttime) && !StringUtill.isNull(endtime)){
+			sear = " and completetime BETWEEN '" + starttime + "'  and  '"+endtime+"'";
+		}
+		if(UserManager.checkPermissions(user, Group.dealSend)){ 
 			if("unconfirmed".equals(statues)){ 
-				sql = "select * from inventory where (instatues = 0 or outstatues = 0) and intype != 2  order by id desc";
+				sql = "select * from inventory where (instatues = 0 or outstatues = 0) and intype != 2 "+sear+" order by id desc";
 			}else if("confirmed".equals(statues)){
-				sql = "select * from inventory where instatues = 1 and outstatues = 1 and intype != 2  order by id desc";
+				sql = "select * from inventory where instatues = 1 and outstatues = 1 and intype != 2  "+sear+" order by id desc";
 			}
 		}else {       
 			if("unconfirmed".equals(statues)){ 
@@ -71,7 +77,7 @@ public class InventoryManager {
 	}
 	 
 	public static boolean updatePrintln(String id ){
-		String sql = "update inventory set outstatues = 1 where id = "+ id ;
+		String sql = "update inventory set outstatues = 1 , outtime = '"+TimeUtill.getdateString()+"' where id = "+ id ;
 		return DBUtill.sava(sql);
 	}
 	
@@ -311,7 +317,10 @@ public class InventoryManager {
 			c.setOutbranchid(rs.getInt("outbranchid")); 
 			c.setOutstatues(rs.getInt("outstatues")); 
 			c.setInstatues(rs.getInt("instatues"));
-			c.setIntype(rs.getInt("intype"));
+			c.setIntype(rs.getInt("intype")); 
+			c.setOuttime(rs.getString("outtime"));
+			c.setInstatuestime(rs.getString("instatuestime"));
+			c.setCompletetime(rs.getString("completetime"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	

@@ -67,8 +67,8 @@ public class InventoryServlet extends HttpServlet {
 			} 
 		logger.info("method"+method);  
 		
-	} 
-	 
+	}  
+	  
 	private synchronized void  saveInventory(HttpServletRequest request, HttpServletResponse response){
 		List<String> sqls = new ArrayList<String>(); 
 		User user  = (User)request.getSession().getAttribute("user");
@@ -76,13 +76,17 @@ public class InventoryServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		String type = request.getParameter("type");
 //System.out.println(type+"type"); 
-		String sql = ""; 
+		String sql = "";  
 		boolean flag =  InventoryManager.check(method,id); 
 		if(method.equals("outbranch")){
-			sql = "update inventory set outstatues = 1 where id = "+ id ;
+			sql = "update inventory set outstatues = 1,outtime = '"+TimeUtill.getdateString()+"', " +
+					"completetime = if(instatues = 1, '"+TimeUtill.getdateString()+"',null)" +
+					" where id = "+ id ;
 		}else if(method.equals("inbranch")){ 
-			sql = "update inventory set instatues = 1 where id = "+ id ;
-		}
+			sql = "update inventory set instatues = 1 ,instatuestime = '"+TimeUtill.getdateString()+"', " +
+					" completetime = if(outstatues = 1, '"+TimeUtill.getdateString()+"',null)" +
+					"where id = "+ id ;
+		} 
 		   
 		sqls.add(sql); 
 		

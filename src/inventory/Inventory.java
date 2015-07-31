@@ -13,13 +13,51 @@ public class Inventory {
   private int outbranchid ;  // 出库仓库id   
   private int inbranchid ;  // 入库仓库id  
   private int outstatues ;   // 出库放确认状态   
+  private String outtime;
+  private String instatuestime;
   private int instatues ;    // 入库方确认状态    
   private String remark ;     
   private int intype ;  //   1 表示调货单   2 预约调货单  3 票面调货单
+  private String completetime;
   
-  public int getIntype() {
+  public String getCompletetime() {
+	return completetime;
+}
+
+
+public void setCompletetime(String completetime) {
+	this.completetime = completetime;
+}
+
+
+public int getIntype() {
 	return intype;
 }
+  
+  
+public String getOuttime() {
+	return outtime;
+}
+
+
+public void setOuttime(String outtime) {
+	this.outtime = outtime;
+}
+
+
+
+
+
+public String getInstatuestime() {
+	return instatuestime;
+}
+
+
+public void setInstatuestime(String instatuestime) {
+	this.instatuestime = instatuestime;
+}
+
+
 public void setIntype(int intype) {
 	this.intype = intype;
 }

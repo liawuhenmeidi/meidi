@@ -74,7 +74,7 @@ public class OrderServiceServlet extends HttpServlet {
     	if(!StringUtill.isNull(search)){ 
     		sear = HttpRequestUtill.getSearch(request);
     	}
-    	 
+    	 logger.info(sear); 
     	//if(!StringUtill.isNull(sear)){  
     		//Cookie cookie=new Cookie("sear",search);
 			//cookie.setMaxAge(10*60);  //设置过期之前的最长时间

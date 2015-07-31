@@ -275,12 +275,10 @@ var disable = '<%=isdisabel %>';
 	      <% 
 	      } 
       }
-      if(inventory.getInstatues() == 1 && inventory.getOutstatues() == 1){
+    
       %> 
       <li><a href="print.jsp?id=<%=inventoryid%>">打印</a></li> 
-      <% 
-      }
-      %> 
+       
       
      </ul>   
    </div>      

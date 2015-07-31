@@ -5,8 +5,11 @@ import gift.GiftManager;
 import gift.GiftService;
 import group.Group;
 
+import inventory.Inventory;
 import inventory.InventoryBranch;
 import inventory.InventoryBranchManager;
+import inventory.InventoryManager;
+import inventory.InventoryMessage;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -94,7 +97,9 @@ public class PrintServlet extends HttpServlet {
 			exporttotalExport(request,response);
 		}else if("database".equals(method)){
 			exportDatabase(request,response);
-		} 
+		}else if("inventory".equals(method)){
+			exportInventory(request,response);
+		}  
     }
 	/**
 	 * 处理微信服务器发来的消息
@@ -805,9 +810,93 @@ public class PrintServlet extends HttpServlet {
 				catch (Exception e)
 				{
 					e.printStackTrace();
-				}
+				} 
 	}
 	
+	public void exportInventory(HttpServletRequest request, HttpServletResponse response){
+		User user = (User)request.getSession().getAttribute("user");
+		 
+		String starttime = request.getParameter("completetimestart");
+		String endtime = request.getParameter("completetimeend"); 
+		 
+		List<Inventory> list = InventoryManager.getCategory(user,"confirmed",starttime,endtime);  
+
+		       // 第一步，创建一个webbook，对应一个Excel文件
+				HSSFWorkbook wb = new HSSFWorkbook();
+				// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+				HSSFSheet sheet = wb.createSheet("库存");
+				// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+				HSSFRow row = sheet.createRow((int) 0);
+				// 第四步，创建单元格，并设置值表头 设置表头居中
+				HSSFCellStyle style = wb.createCellStyle();
+				
+				style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+				int x = 0 ;  
+				HSSFCell cell = row.createCell((short) x++);
+				 
+				cell.setCellValue("出库单位");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("入库单位");
+				cell.setCellStyle(style);  
+				cell = row.createCell((short) x++);
+				cell.setCellValue("型号");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("数量");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("完成日期");
+				cell.setCellStyle(style);
+				cell = row.createCell((short) x++);
+				cell.setCellValue("备注"); 
+				cell.setCellStyle(style);
+				// 第五步，写入实体数据 实际应用中这些数据从数据库得到，
+ 
+                 int count = 0 ;
+				for (int i = 0; i < list.size(); i++){
+					
+					Inventory ib = list.get(i);
+					ib = InventoryManager.getInventoryID(user, ib.getId());  
+					List<InventoryMessage> li = ib.getInventory();
+					
+						if(null != li){
+							 
+							 for(int j=0;j<li.size();j++){
+								 InventoryMessage im = li.get(j); 
+								 row = sheet.createRow((int) count + 1);
+									count++; 
+									int y = 0 ;   
+									// 第四步，创建单元格，并设置值
+									row.createCell((short) y++).setCellValue(BranchService.getMap().get(ib.getOutbranchid()).getLocateName()); 
+									row.createCell((short) y++).setCellValue(BranchService.getMap().get(ib.getInbranchid()).getLocateName()); 
+									row.createCell((short) y++).setCellValue(im.getProductname());
+									row.createCell((short) y++).setCellValue(im.getCount()); 
+									row.createCell((short) y++).setCellValue(ib.getCompletetime()); 
+									row.createCell((short) y++).setCellValue(ib.getRemark()); 
+								 
+							 }
+							 
+							
+					 }
+
+				}
+				//System.out.println(count); 
+				// 第六步，将文件存到指定位置
+				try    
+				{     
+					response.setContentType("APPLICATION/OCTET-STREAM");
+					response.setHeader("Content-Disposition", "attachment; filename=\""+ TimeUtill.getdatesimple()+".xls\"");
+					//FileOutputStream fout = new FileOutputStream("E:/报装单"+printlntime+".xls");
+					wb.write(response.getOutputStream());
+					response.getOutputStream().close();
+			
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+	}
 	public void exportDatabase(HttpServletRequest request, HttpServletResponse response){
 		User user = (User)request.getSession().getAttribute("user");
 		
@@ -876,6 +965,7 @@ public class PrintServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 	}
+	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 将请求、响应的编码均设置为UTF-8（防止中文乱码）

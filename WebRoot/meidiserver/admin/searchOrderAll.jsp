@@ -198,8 +198,19 @@ function checkedd(){
                                          至
 			<input class="date2" name="dealsendTimeend" type="text" id="dealsendTimeend" onclick="new Calendar().show(this);" />
 			</td>	 
+		</tr> 
+		<tr class="bsc"> 
+		<td align="center" >安装日期</td>
+			<td align="center" colspan=2 >
+			<input class="date2" name="installTimestart" type="text" id="installTimestart" onclick="new Calendar().show(this);" />
+                                         至
+			<input class="date2" name="installTimeend" type="text" id="installTimeend" onclick="new Calendar().show(this);" />
+			</td>
+			<td align="center" ></td>
+			<td align="center" colspan=2 > 
+			
+			</td>	 
 		</tr>
-		
 		<tr class="bsc">
 		    <td align="center" >送货名称</td>
 			<td align="center" id="sendcategorynamecd" colspan=5>

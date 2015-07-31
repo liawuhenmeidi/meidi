@@ -1,10 +1,10 @@
 <%@ page language="java" import="java.util.*,inventory.*,branch.*,category.*,branchtype.*,group.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
-request.setCharacterEncoding("utf-8"); 
+request.setCharacterEncoding("utf-8");  
 User user = (User)session.getAttribute("user");
-  
-List<Inventory> invetorylist = InventoryManager.getCategory(user,"unconfirmed"); 
-
+   
+List<Inventory> invetorylist = InventoryManager.getCategory(user,"unconfirmed","",""); 
+ 
 Map<Integer,Branch> branchmap = BranchService.getMap();
 
 boolean flag = UserManager.checkPermissions(user, Group.inventory,"w");
