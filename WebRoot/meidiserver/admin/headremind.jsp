@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
 
-<script type="text/javascript"> 
+<script type="text/javascript">  
 var inventorycount = 0 ;
 
 $(document).ready(function () {  

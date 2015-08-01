@@ -74,8 +74,48 @@ public class InventoryManager {
 		} 
 		logger.info(categorys.size());
 		return categorys;
-	}
+	} 
 	 
+	public static List<Inventory> getCategory(User user,String statues) { 
+		List<Inventory> categorys = new ArrayList<Inventory>();
+		Connection conn = DB.getConn();
+		int branchid = Integer.valueOf(user.getBranch());  
+		String sql = "";
+		
+		 
+		if(UserManager.checkPermissions(user, Group.dealSend)){ 
+			if("unconfirmed".equals(statues)){ 
+				sql = "select * from inventory where (instatues = 0 or outstatues = 0) and intype != 2  order by id desc";
+			}else if("confirmed".equals(statues)){
+				sql = "select * from inventory where instatues = 1 and outstatues = 1 and intype != 2  order by id desc";
+			}
+		}else {       
+			if("unconfirmed".equals(statues)){ 
+				sql = "select * from inventory where (instatues = 0 or outstatues = 0) and (inbranchid = " + branchid +" or outbranchid = "+ branchid+") and intype != 2  order by id desc";
+			}else if("confirmed".equals(statues)){
+				sql = "select * from inventory where instatues = 1 and outstatues = 1 and (inbranchid = " + branchid +" or outbranchid = "+ branchid+")  and intype != 2  order by id desc";
+			}
+			
+		} 
+		
+		Statement stmt = DB.getStatement(conn);
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while (rs.next()) {
+				Inventory u = InventoryManager.getCategoryFromRs(rs);
+				categorys.add(u);
+			}
+		} catch (SQLException e) {
+			logger.error(e);
+		} finally {
+			DB.close(rs);
+			DB.close(stmt);
+			DB.close(conn);
+		} 
+		logger.info(categorys.size());
+		return categorys;
+	}
+	
 	public static boolean updatePrintln(String id ){
 		String sql = "update inventory set outstatues = 1 , outtime = '"+TimeUtill.getdateString()+"' where id = "+ id ;
 		return DBUtill.sava(sql);
