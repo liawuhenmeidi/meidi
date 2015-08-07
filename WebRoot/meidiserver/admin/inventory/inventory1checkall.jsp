@@ -1,12 +1,12 @@
 <%@ page language="java" 
 	import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,httpClient.download.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
-<%  
+<%    
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user"); 
 String userbranch = user.getBranch();   
 String category = request.getParameter("category"); 
-String branch = request.getParameter("branch");
+String branch = request.getParameter("branch"); 
 String time = request.getParameter("time");
 int branchid = -1 ;   
 if(StringUtill.isNull(time)){ 
@@ -31,7 +31,7 @@ Collection<SNInventory> listend = InventoryChange
 Map<String,Map<String, SNInventory>>  mapc = InventoryChange
 				.changeMapTypeBranch(listend);   
        
- 
+   
 Map<String,Map<String, SNInventory>> mapm = InventoryChange
 .changeMapTypeBranchNum(InventoryModelDownLoad
 		.getMap(user, TimeUtill.dataAdd(time, 1)).values());   

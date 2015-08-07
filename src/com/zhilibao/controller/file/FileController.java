@@ -46,9 +46,9 @@ public class FileController {
 	  
 	    
 	    @RequestMapping("taxExchange.do")  // 请求url地址映射，类似Struts的action-mapping             
-	    public ModelAndView taxExchange(HttpServletResponse response,@Param("gfmc") String gfmc,@Param("filename") String filename){ 
+	    public ModelAndView taxExchange(HttpServletResponse response,@Param("gfmc") String gfmc,@Param("Djh") String Djh,@Param("filename") String filename){ 
 	    	  
-		    	  
+		    	   
 	    	TaxBasicMessage TaxBasicMessage = MapperService.getTaxBasicMessageOperation().getByName(gfmc);
     		 
     		logger.info("gfmc"+gfmc); 
@@ -59,7 +59,7 @@ public class FileController {
 			    	ModelAndView modelAndView = new ModelAndView("jieguo",context); 
 			    	return modelAndView; 
 		    	}else {   
-		    		TaxExchange.export(response, TaxBasicMessage,gfmc,filename);  
+		    		TaxExchange.export(response, TaxBasicMessage,gfmc,filename,Djh);  
 		    	}
 		    	
 		    	

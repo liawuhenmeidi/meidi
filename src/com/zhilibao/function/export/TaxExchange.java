@@ -17,6 +17,7 @@ import org.jdom2.output.XMLOutputter;
 import com.zhilibao.config.Configs;
 import com.zhilibao.model.tax.Tax;
 import com.zhilibao.model.tax.TaxBasicMessage;
+import com.zhilibao.utill.bean.BeanUtill;
 
 import utill.StringUtill;
 import utill.TimeUtill;
@@ -38,8 +39,13 @@ public class TaxExchange {
 	/** 
 	 * 确认请求来自微信服务器 
 	 */  
-
-	public static void export(HttpServletResponse response,TaxBasicMessage cf,String orderName,String filename) {
+	private static String getMethodName(String fildeName){
+		char[] chars =fildeName.toCharArray();
+		chars[0] = Character.toUpperCase(chars[0]);
+		return new String(chars);
+		} 
+	
+	public static void export(HttpServletResponse response,TaxBasicMessage cf,String orderName,String filename,String Djh) {
 		
 		//Element root = new Element("Kp").setAttribute("count", "4");    
 		
@@ -62,17 +68,29 @@ public class TaxExchange {
         Element Fp = new Element("Fp"); 
 		
         Fpsj.addContent(Fp);
- 
+          
+       // List<String> li = BeanUtill.getBeanPropertyList(cf);
     	//JSONObject object = (JSONObject)message; 
     	JSONObject jsObj = JSONObject.fromObject(cf);
-    	   
+    	    
     	Iterator<String> it = jsObj.keys();  
-    	while(it.hasNext()){
+    	while(it.hasNext()){ 
         	String pro = it.next();
-            String value = jsObj.getString(pro);
+        	logger.info(pro);
+        	
+        	 
+        	String value = jsObj.getString(pro);
             if(StringUtill.isNull(value)){
             	value = " "; 
-            }
+            } 
+        	
+        	pro = getMethodName(pro);
+        	logger.info(pro);
+            if(("Djh").equals(pro)){
+        		value= Djh; 
+        	}
+             
+          
         	//logger.info(pro); 
         		Element e = new Element(pro).setText(value);  
             	Fp.addContent(e); 
@@ -84,24 +102,26 @@ public class TaxExchange {
   		
     	  Fp.addContent(Spxx);
     	
-    	  Element Sph = new Element("Sph"); 
-    		
-    	  Spxx.addContent(Sph);
+    	  
     	
 	    	String filePath = ExcelUpload.getTaxFilePath();   
 	    List<Tax> li = new XLSReader().readTaxXML(filePath, filename);
     	  
     	  for(int i=0;i<li.size();i++){
-    		  Tax uo = li.get(i); 
+    		  Element Sph = new Element("Sph"); 
+      		
+        	  Spxx.addContent(Sph);
+        	  
+    		  Tax uo = li.get(i);  
     		   
     		  Element Xh = new Element("Xh").setText((i+1)+"");  
     		  Element Spmc = new Element("Spmc").setText(uo.getPname());
     		  Element Ggxh = new Element("Ggxh").setText(uo.getPnum());
     		  Element Jldw = new Element("Jldw").setText(uo.getUnit());
     		  Element Dj = new Element("Dj").setText(uo.getPrince()+"");
-    		  Element Sl = new Element("Sl").setText(uo.getNum()+"");
-    		  Element Je = new Element("Je").setText(uo.getTotalMoney()+""); 
-    		  Element Slv = new Element("Slv").setText(uo.getTaxRate()+"");
+    		  Element Sl = new Element("Sl").setText(uo.getNum()+""); 
+    		  Element Je = new Element("Je").setText(uo.getPrince()*uo.getNum()+""); 
+    		  Element Slv = new Element("Slv").setText(uo.getTaxRate()/100+"");
               
     		  Sph.addContent(Xh);
     		  Sph.addContent(Spmc);

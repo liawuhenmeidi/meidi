@@ -24,6 +24,7 @@ import change.UploadChangeAll;
 
 import utill.StringUtill;
 
+import jxl.NumberCell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
@@ -517,7 +518,7 @@ public class XLSReader {
 			logger.info(srcFile.getAbsolutePath()); 
 			logger.info(srcFile.getPath());  
 			Workbook wb = null; 
-			try { 
+			try {   
 				wb = Workbook.getWorkbook(srcFile);
 			} catch (BiffException e) {
 				e.printStackTrace();
@@ -646,8 +647,9 @@ public class XLSReader {
 				try{
 
 					for(int j=0;j < co;j++){  
-						String str = sheet0.getCell(j,i).getContents().trim();
+						
 						if(j==3){
+							String str = sheet0.getCell(j,i).getContents().trim();
 							if(StringUtill.isNull(str)){
 								p.setPnum("第"+j+1+"行,第"+i+"列商品编号不能为空");
 								return list;
@@ -657,6 +659,7 @@ public class XLSReader {
 								
 							};
 						}else if(j == 4){
+							String str = sheet0.getCell(j,i).getContents().trim();
 							if(StringUtill.isNull(str)){
 								p.setPname("第"+j+1+"行,第"+i+"列商品编码不能为空");
 								return list; 
@@ -665,6 +668,7 @@ public class XLSReader {
 								
 							};
 						}else if(j == 5){
+							String str = sheet0.getCell(j,i).getContents().trim();
 							if(StringUtill.isNull(str)){
 								p.setUnit("第"+j+1+"行,第"+i+"列商品编码不能为空");
 								return list; 
@@ -672,6 +676,7 @@ public class XLSReader {
 								p.setUnit(str); 
 							};
 						}else if(j == 6){
+							String str = sheet0.getCell(j,i).getContents().trim();
 							if(StringUtill.isNull(str)){
 								p.setUnit("第"+j+1+"行,第"+i+"列数量不能为空");
 								return list; 
@@ -680,22 +685,26 @@ public class XLSReader {
 								 
 							}; 
 						}else if(j == 7){
-							try{
-								 double b = Double.parseDouble(str);
+							try{ 
+								NumberCell numberCell = (NumberCell)sheet0.getCell(j, i);
+								 double b = numberCell.getValue();
+								 logger.info(b); 
 								 p.setPrince(b);
 								}catch(Exception e)
 								{  
 									logger.info(e);
 								}  
 						}else if(j == 8){
+							String str = sheet0.getCell(j,i).getContents().trim();
 							try{
 								 double b = Double.parseDouble(str);
 								 p.setTotalMoney(b);
 								}catch(Exception e)
 								{  
 									logger.info(e);
-								}  
-						}else if(j == 12){ 
+								}   
+						}else if(j == 12){
+							String str = sheet0.getCell(j,i).getContents().trim();
 							try{
 								 double b = Double.parseDouble(str);
 								  p.setTaxRate(b);
@@ -703,7 +712,7 @@ public class XLSReader {
 								{   
 								 logger.info(e);
 								}  
-						}	
+						}	 
 					} 
 					
 					

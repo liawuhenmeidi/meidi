@@ -9,7 +9,7 @@ String starttime = request.getParameter("starttime");
  
 String endtimeH = request.getParameter("endtime");
 String endtime = TimeUtill.dataAdd(endtimeH,1); 
-
+ 
 String counttyepe = request.getParameter("counttyepe");
 int countt = -1 ;
 if(StringUtill.isNull(counttyepe)){
@@ -41,11 +41,12 @@ if(UserManager.checkPermissions(user, Group.dealSend)){
 } 
 
 
-
+ 
 
 List<InventoryBranch>  listInventory = null ;
 Map<String,Integer> list = null ;  
 Map<String,InventoryBranch> maptype = null ;
+Map<String,List<OrderProduct>>  mapnosend = null;
 if(!StringUtill.isNull(branchid) && !StringUtill.isNull(starttime)  && !StringUtill.isNull(endtimeH)){
 	listInventory = InventoryBranchManager.getCategoryid(user,branchid, "");
 
@@ -54,8 +55,10 @@ InventoryBranchComparator c = new InventoryBranchComparator();
 	
 	list = InventoryBranchMessageManager.getMapAnalyze(branchid,starttime,endtime);
 	
-	
-	 maptype = InventoryBranchManager.getBranchTypeObject(user,branchid); 
+	 
+    maptype = InventoryBranchManager.getBranchTypeObject(user,branchid); 
+    
+    mapnosend = OrderProductManager.getNoSendMap(); 
 }
 
 //System.out.println(list);
@@ -84,14 +87,14 @@ position:fixed;
     padding:0;
 }
 #table{  
-    width:900px;
+    width:1100px;
     table-layout:fixed ;
 }
-
+ 
 #th{  
     background-color:white;
     position:absolute; 
-    width:900px; 
+    width:1100px; 
     height:30px;
     top:0;
     left:0;
@@ -100,7 +103,7 @@ position:fixed;
 td{
  width:150px; 
 }
-
+   
 #th td{
 width:150px; 
 }
@@ -218,13 +221,14 @@ function checkTime(){
 <input type="hidden" name="starttime" value="<%=starttime %>"/>
 <input type="hidden" name="endtime"  value="<%=endtimeH %>"/>
 
-<table  cellspacing="1" id="table" >
-		<tr id="th">  
+<table  cellspacing="1" id="table" > 
+		<tr id="th">    
      			<td align="center">名称</td>
-     			<td align="center">型号</td> 
+     			<td align="center">型号</td>  
      			<td align="center">账面库存</td>
-     			<td align="center">实际库存</td>  
+     			<td align="center">实际库存</td>   
      			<td align="center">出库数量</td> 
+     			<td align="center" width=350>待配送数量</td>
      			<td align="center">关联门店出样型号</td> 
      			<td align="center">需调货数量</td>
      			
@@ -255,7 +259,9 @@ function checkTime(){
 	            	  
 	            	  if(countt == 0 && in.getRealcount() != 0 || countt != 0  ){
 	            		  List<String> l = map.get(StringUtill.getStringNocn(in.getType()));
-	            		  String branchtypeStr = "";
+	            		  
+	            		  List<OrderProduct> liop  = mapnosend.get(in.getType());
+	            		  String branchtypeStr = ""; 
 	            		  if(null != l){
 	            			  for(int j=0;j<l.size();j++){
 	            				  String s = l.get(j);
@@ -275,12 +281,38 @@ function checkTime(){
             	  %>  
             	  	 
             	   <tr id=""  class="asc"  onclick="updateClass(this)" ondblclick="detail('<%=in.getTypeid()%>')">    
-			 
+			  
         			  <td align="center"><%=mapc.get(in.getInventoryid()).getName() %></td>    
         			  <td align="center"><%=in.getType() %> </td>   
         			  <td align="center"><%=in.getPapercount() %> </td>   
         			  <td align="center"><%=in.getRealcount() %> </td> 
         			  <td align="center"><%=null == list.get(in.getType()) ? "0":list.get(in.getType())*(-1) %> </td> 
+        			  <td align="center" > 
+        			   <table>
+        			   <%  
+        			     if(null != liop){
+        			    	 for(int j=0;j<liop.size();j++){
+        			    		 OrderProduct op = liop.get(j);
+        			    		 %>
+        			    		 <tr> 
+        			    		 <td>
+        			    		 <%=op.getOrder().getPrintlnid()+"::"+op.getOrder().getLocate()+"::::"+op.getCount() %>
+        			    		 </td>
+        			    		 
+        			    		 </tr>
+        			    		 
+        			    		 <%
+        			    		 
+        			    	 }
+        			    	
+        			     }
+        			   
+        			   %>
+        			   
+        			   </table>
+        			   
+        			   
+        			   </td>   
         			  <td align="center"><%=branchtypeStr %> </td>   
         			  <td align="center"> 
         			  <input type="hidden" name="product" value="<%=in.getTypeid() %>"/>
@@ -315,6 +347,7 @@ function checkTime(){
         			  <td align="center"> </td>   
         			  <td align="center"> </td>   
         			  <td align="center"> </td> 
+        			  <td align="center"> </td>   
         			  <td align="center"><%=in.getType() %> </td>  
         			  <td align="center"> 
         			  <input type="hidden" name="product" value="<%=in.getTypeid() %>"/>

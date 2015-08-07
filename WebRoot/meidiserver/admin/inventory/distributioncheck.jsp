@@ -25,8 +25,8 @@ Map<String,SNInventory> map = new HashMap<String,SNInventory>();
 	    
 	//System.out.println("mapout"+mapout); 
 	//Collection<SNInventory> sales = SaleDownLoad.get(starttime, endtime);
- 
-	if(!listend.isEmpty()){  
+   
+	if(null != listend && !listend.isEmpty()){  
 		 Iterator<SNInventory> it = listend.iterator();
 		 while(it.hasNext()){     
 	 SNInventory inve = it.next();
@@ -108,8 +108,8 @@ Map<String,SNInventory> map = new HashMap<String,SNInventory>();
 	 Map.Entry<String,SNInventory> mapent =  it.next();
 	 SNInventory inve = mapent.getValue();
 	 InventoryBranch inout = null ; 
-	 String keyin = "";
-	 String bnum = "";
+	 String keyin = ""; 
+	 String bnum = ""; 
              if("常规机库".equals(inve.getBranchName())){
              	 bnum = "1";
              }else if("特价机库".equals(inve.getBranchName())){

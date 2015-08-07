@@ -73,7 +73,7 @@ public class LogisticsMessageController {
 	        // 重定向还有一种简单写法        
 	        // return new ModelAndView("redirect:../index.jsp");
 	    } 
-	      
+	       
 	     @RequestMapping("save.do")  // 请求url地址映射，类似Struts的action-mapping
 	   //  @Token(remove=true)           
 	    public ModelAndView save(LogisticsMessage lm){  

@@ -214,10 +214,10 @@ public class InventoryChange {
 		// logger.info(map.size());
 		return map;
 	}
-	// type branch 
+	// type branch  
 	public static Map<String,Map<String, SNInventory>> changeMapTypeBranch(Collection<SNInventory> list) {
 		Map<String,Map<String, SNInventory>> map = new HashMap<String,Map<String, SNInventory>>();
-		if (!list.isEmpty()) {
+		if (null != list && !list.isEmpty()) {
 			Iterator<SNInventory> it = list.iterator();
 			while (it.hasNext()) {
 				SNInventory in = it.next();

@@ -11,7 +11,7 @@ import product.ProductService;
 
 import utill.StringUtill;
 import utill.TimeUtill;
- 
+  
 public class InventoryBranch {  
 	private int id;
 	private int inventoryid; // 所包含的产品类别id
@@ -255,8 +255,8 @@ public class InventoryBranch {
 		if(!StringUtill.isNull(this.getTypeid())){
 			product = ProductService.getIDmap().get(Integer.valueOf(this.getTypeid()));
 		}
-		
-		return product;
+		 
+		return new Product(); 
 	}
 
 	public int getIsOverStatues() {

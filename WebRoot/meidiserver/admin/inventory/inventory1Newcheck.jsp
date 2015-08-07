@@ -1,7 +1,7 @@
 <%@ page language="java"
 	import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,httpClient.download.*,httpClient.*,httpClient.download.InventoryModelDownLoad,httpClient.download.InventoryBadGoodsDownLoad,httpClient.download.InventoryChange,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
-<%  
+<%   
 request.setCharacterEncoding("utf-8"); 
 User user = (User)session.getAttribute("user"); 
 String category = request.getParameter("category"); 
@@ -32,13 +32,13 @@ if(!StringUtill.isNull(branch)){
 Category c = CategoryManager.getCategory(category);
    
 List<String> listp = ProductService.getlist(Integer.valueOf(category));
- 
+  
 String allp = StringUtill.GetJson(listp); 
       
 List<String> listbranchp = BranchService.getListStr(); 
 String listall = StringUtill.GetJson(listbranchp); 
-  
-     
+   
+       
 Map<String,Map<String,SNInventory>> mapin = InventoryMerger.get(user,branch,category,"",time);  		 
  
 		  

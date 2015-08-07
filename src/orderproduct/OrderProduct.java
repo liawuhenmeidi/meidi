@@ -1,6 +1,8 @@
 package orderproduct;
 
+import order.Order;
 
+ 
 public class OrderProduct {
 	public static int query = 1;
 	public static int unquery = 0  ;
@@ -15,6 +17,8 @@ public class OrderProduct {
 	private String saleType;
 	
     private  int orderid ;
+      
+    private Order order;
     
     private  int count ;
     
@@ -35,6 +39,14 @@ public class OrderProduct {
     private  int isSubmit;  // 是否提交到苏宁售后      0 表示忽略  1 表示已经确认
     
     
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
 	public int getIsSubmit() {
 		return isSubmit;
 	}

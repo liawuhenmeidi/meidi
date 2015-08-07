@@ -245,7 +245,7 @@ function delLocate(lo){
 	<tr class="asc">
 	<td>垫付金额</td> 
 	<td>
-	<input type="text" name="advancePrice" id="advancePrice" placeholder="垫付金额"/>(元)
+	<input type="text" name="advancePrice" id="advancePrice" placeholder="垫付金额" value="0"/>(元)
 	</td>
 	</tr>
 	<tr class="asc">  

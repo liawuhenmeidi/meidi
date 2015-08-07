@@ -823,7 +823,29 @@ logger.info(sql);
 			return Orders; 
 	 }
     
-     
+    public static List<Order> getNoSend(){
+		   //Map<Integer,List<OrderProduct>> Orders = new HashMap<Integer,List<OrderProduct>>();
+		   List<Order> list = new ArrayList<Order>();
+		    Connection conn = DB.getConn(); 
+			Statement stmt = DB.getStatement(conn);
+			String sql = "select * from  mdorderproduct where orderid in (select id from mdorder where dealSendid = 0 and printSatues = 0) ";
+			ResultSet rs = DB.getResultSet(stmt, sql); 
+			try { 
+				while (rs.next()) {
+					Order Order = gerOrderFromRs(rs);
+					list.add(Order);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(stmt);
+				DB.close(rs);
+				DB.close(conn);
+			 }
+			return list;
+	   }
+    
+    
     public static int getOrderlistcount(User user ,int type,int statues ,int num,int page,String sort,String search){
     	
   	  boolean f = UserManager.checkPermissions(user, Group.Manger);  
@@ -1553,7 +1575,7 @@ public static Map<String,Order> getOrdermapByIds(User user ,String id){
 				opstatues = OrderPrintln.salereleasereturn ;
 			}
 		} 
-
+  
 	   return opstatues;
    } 
    
@@ -1561,60 +1583,60 @@ public static Map<String,Order> getOrdermapByIds(User user ,String id){
 	   Order p = null;
 		try { 
 			p = new Order();
-			p.setId(rs.getInt("id")); 
-			p.setLocate(rs.getString("locates"));
-			p.setLocateDetail(rs.getString("locateDetail"));
-			p.setSaleTime(rs.getString("saledate"));
-			p.setSaleID(rs.getInt("saleID"));
-			p.setSendId(rs.getInt("sendID"));
-			p.setOdate(rs.getString("andate"));
-			p.setPhone1(rs.getString("phone1")); 
-			p.setPhone2(rs.getString("phone2")); 
-			p.setUsername(rs.getString("username"));
-			p.setPrintSatues(rs.getInt("printSatues"));
-			p.setDeliveryStatues(rs.getInt("deliveryStatues"));
-			p.setPos(rs.getString("pos"));
-			p.setSailId(rs.getString("sailId"));
-			p.setCheck(rs.getString("checked"));
-			p.setRemark(rs.getString("remark"));
-			p.setBranch(rs.getInt("orderbranch")); 
-			p.setCategoryID(rs.getString("categoryID"));
-			p.setDealsendId(rs.getInt("dealSendid"));
-			p.setStatues1(rs.getInt("statues1"));
-			p.setStatues2(rs.getInt("statues2")); 
-			p.setStatues3(rs.getInt("statues3"));
-			p.setStatues4(rs.getInt("statues4"));    
-			p.setPrintSatuesP(rs.getInt("printSatuesp"));   
-			p.setStatuesDingma(rs.getInt("statuesdingma"));  
-			p.setInstallid(rs.getInt("installid")); 
-			p.setPrintlnid(rs.getString("printlnid"));  
-			p.setStatuescallback(rs.getInt("statuescallback")); 
-		    p.setStatuesPaigong(rs.getInt("statuespaigong")); 
-		    p.setDayremark(rs.getInt("dayremark")); 
-		    p.setDayID(rs.getInt("dayID"));    
-		    p.setPhoneRemark(rs.getInt("phoneRemark")); 
-		    p.setInstalltime(rs.getString("installTime"));
-		    p.setSendtime(rs.getString("sendTime"));
-		    p.setDeliverytype(rs.getInt("deliverytype"));
-		    p.setPosremark(rs.getInt("posRemark"));
-		    p.setSailidrecked(rs.getInt("sailIdremark"));
-		    p.setReckedremark(rs.getInt("checkedremark")); 
-		    p.setStatuesinstall(rs.getInt("statuesinstall"));
-		    p.setReturnid(rs.getInt("returnid")); 
-		    p.setSubmitTime(rs.getString("submitTime"));
-		    p.setReturnstatuse(rs.getInt("returnstatues"));
-		    p.setReturntime(rs.getString("returntime"));  
-		    p.setReturnprintstatues(rs.getInt("returnprintstatues")); 
-		    p.setReturnwenyuan(rs.getInt("returnwenyuan")); 
-		    p.setPrintdingma(rs.getInt("printdingma"));  
-		    p.setDealSendTime(rs.getString("dealsendTime"));
-		    p.setWenyuancallback(rs.getInt("wenyuancallback"));
-		    p.setOderStatus(rs.getString("oderStatus"));
-		    p.setImagerUrl(rs.getString("imagerUrl")); 
-		    p.setChargeDealsendtime(rs.getString("chargeDealsendtime"));
-		    p.setChargeSendtime(rs.getString("chargeSendtime"));
-		    p.setChargeInstalltime(rs.getString("chargeInstalltime"));
-		    p.setStatuesCharge(rs.getString("statuesChargeSale")); 
+			p.setId(rs.getInt("mdorder.id")); 
+			p.setLocate(rs.getString("mdorder.locates"));
+			p.setLocateDetail(rs.getString("mdorder.locateDetail"));
+			p.setSaleTime(rs.getString("mdorder.saledate"));
+			p.setSaleID(rs.getInt("mdorder.saleID"));
+			p.setSendId(rs.getInt("mdorder.sendID"));
+			p.setOdate(rs.getString("mdorder.andate"));
+			p.setPhone1(rs.getString("mdorder.phone1")); 
+			p.setPhone2(rs.getString("mdorder.phone2")); 
+			p.setUsername(rs.getString("mdorder.username"));
+			p.setPrintSatues(rs.getInt("mdorder.printSatues"));
+			p.setDeliveryStatues(rs.getInt("mdorder.deliveryStatues"));
+			p.setPos(rs.getString("mdorder.pos"));
+			p.setSailId(rs.getString("mdorder.sailId"));
+			p.setCheck(rs.getString("mdorder.checked"));
+			p.setRemark(rs.getString("mdorder.remark"));
+			p.setBranch(rs.getInt("mdorder.orderbranch")); 
+			p.setCategoryID(rs.getString("mdorder.categoryID"));
+			p.setDealsendId(rs.getInt("mdorder.dealSendid"));
+			p.setStatues1(rs.getInt("mdorder.statues1"));
+			p.setStatues2(rs.getInt("mdorder.statues2")); 
+			p.setStatues3(rs.getInt("mdorder.statues3"));
+			p.setStatues4(rs.getInt("mdorder.statues4"));    
+			p.setPrintSatuesP(rs.getInt("mdorder.printSatuesp"));   
+			p.setStatuesDingma(rs.getInt("mdorder.statuesdingma"));  
+			p.setInstallid(rs.getInt("mdorder.installid")); 
+			p.setPrintlnid(rs.getString("mdorder.printlnid"));  
+			p.setStatuescallback(rs.getInt("mdorder.statuescallback")); 
+		    p.setStatuesPaigong(rs.getInt("mdorder.statuespaigong")); 
+		    p.setDayremark(rs.getInt("mdorder.dayremark")); 
+		    p.setDayID(rs.getInt("mdorder.dayID"));    
+		    p.setPhoneRemark(rs.getInt("mdorder.phoneRemark")); 
+		    p.setInstalltime(rs.getString("mdorder.installTime"));
+		    p.setSendtime(rs.getString("mdorder.sendTime"));
+		    p.setDeliverytype(rs.getInt("mdorder.deliverytype"));
+		    p.setPosremark(rs.getInt("mdorder.posRemark"));
+		    p.setSailidrecked(rs.getInt("mdorder.sailIdremark"));
+		    p.setReckedremark(rs.getInt("mdorder.checkedremark")); 
+		    p.setStatuesinstall(rs.getInt("mdorder.statuesinstall"));
+		    p.setReturnid(rs.getInt("mdorder.returnid")); 
+		    p.setSubmitTime(rs.getString("mdorder.submitTime"));
+		    p.setReturnstatuse(rs.getInt("mdorder.returnstatues"));
+		    p.setReturntime(rs.getString("mdorder.returntime"));  
+		    p.setReturnprintstatues(rs.getInt("mdorder.returnprintstatues")); 
+		    p.setReturnwenyuan(rs.getInt("mdorder.returnwenyuan")); 
+		    p.setPrintdingma(rs.getInt("mdorder.printdingma"));  
+		    p.setDealSendTime(rs.getString("mdorder.dealsendTime"));
+		    p.setWenyuancallback(rs.getInt("mdorder.wenyuancallback"));
+		    p.setOderStatus(rs.getString("mdorder.oderStatus")); 
+		    p.setImagerUrl(rs.getString("mdorder.imagerUrl")); 
+		    p.setChargeDealsendtime(rs.getString("mdorder.chargeDealsendtime"));
+		    p.setChargeSendtime(rs.getString("mdorder.chargeSendtime"));
+		    p.setChargeInstalltime(rs.getString("mdorder.chargeInstalltime"));
+		    p.setStatuesCharge(rs.getString("mdorder.statuesChargeSale")); 
 		} catch (SQLException e) {  
 			e.printStackTrace();
 		} 

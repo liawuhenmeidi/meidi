@@ -29,11 +29,19 @@ function mysubmit(){
 
 function taxpost(){
 	var name = $("#gfmc").val();
+	var Djh = $("#Djh").val();
 	if(name == '' || name == null){
 		alert("请选择购方名称");
 		return false ;
 	 
-	}  
+	} 
+	
+	if(Djh == '' || Djh == null){
+		alert("请输入单据号");
+		return false ;
+	  
+	} 
+	
 	$("#taxpost").submit();
 	
 }
@@ -141,6 +149,8 @@ function taxpost(){
       </c:forEach> 
    
  </select>  
+ 单据号：
+ <input type="text" name="Djh" id="Djh"/>
   <input type="button" value="转化文件" onclick="taxpost()"/>
   </form> 
   
