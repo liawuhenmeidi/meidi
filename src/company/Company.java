@@ -5,13 +5,30 @@ public class Company {
   private String phone ;
   private String locate;  // 地区 
   private String location; // 详细地址
-  private int usercount ;
+  private int usercount ; 
   
   private String username;  
   // 苏宁供应商编码  
-  public static String supply = "10056027"; // 供应商编码
-  public static String supplyGM = "10003699"; //国美 
+//  public static String supply = "10056027"; // 供应商编码
+ // public static String supplyGM = "10003699"; //国美 
   
+private String supply ; // 供应商编码
+private String supplyGM; //国美 
+  
+    
+
+public String getSupply() {
+	return supply;
+}
+public void setSupply(String supply) {
+	this.supply = supply;
+}
+public String getSupplyGM() {
+	return supplyGM;
+}
+public void setSupplyGM(String supplyGM) {
+	this.supplyGM = supplyGM;
+}
 public int getUsercount() {
 	return usercount;
 }

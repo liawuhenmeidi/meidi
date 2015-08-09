@@ -17,15 +17,17 @@ public class CompanyManager {
 	 public static boolean  save(Company  c){
 		delete();
 		Connection conn = DB.getConn(); 
-		String sql = "insert into mdcompany(cname,uname,phone,locate,locatedetail) values (?,?,?,?,?)";
+		String sql = "insert into mdcompany(cname,uname,phone,locate,locatedetail,supplyGM,supply) values (?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = DB.prepare(conn, sql);
-		try {       
+		try {        
 			pstmt.setString(1, c.getName());
 			pstmt.setString(2, c.getUsername());
 			pstmt.setString(3, c.getPhone());
 			pstmt.setString(4, c.getLocate()); 
 			pstmt.setString(5, c.getLocation()); 
-			logger.info(pstmt);  
+			pstmt.setString(6, c.getSupplyGM()); 
+			pstmt.setString(7, c.getSupply()); 
+			logger.info(pstmt);   
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -81,6 +83,8 @@ public class CompanyManager {
 					g.setUsername(rs.getString("uname"));
 					g.setLocation(rs.getString("locatedetail"));
 					g.setUsercount(rs.getInt("usetcunt"));
+					g.setSupply(rs.getString("supply")); 
+					g.setSupplyGM(rs.getString("supplyGM")); 
 				}   
 			} catch (SQLException e) { 
 				e.printStackTrace();

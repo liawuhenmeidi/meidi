@@ -73,6 +73,7 @@ import category.Category;
 import category.CategoryService;
 
 import company.Company;
+import company.CompanyManager;
 import comparator.BranchComparator;
 
 import branch.Branch;
@@ -1206,7 +1207,7 @@ public class PrintServlet extends HttpServlet {
 					cell.setCellValue(TimeUtill.getdateString());
 					cell.setCellStyle(style);
 					cell = row.createCell((short) y++);
-					cell.setCellValue(Company.supply);
+					cell.setCellValue(CompanyManager.getLocate().getSupply());
 					cell.setCellStyle(style);
 					// 第四步，创建单元格，并设置值
 				}
@@ -1391,7 +1392,7 @@ public class PrintServlet extends HttpServlet {
 							count++;
 							int y = 0;
 							cell = row.createCell((short) y++);
-							cell.setCellValue(Company.supplyGM);
+							cell.setCellValue(CompanyManager.getLocate().getSupplyGM());
 							cell.setCellStyle(style);
 							cell = row.createCell((short) y++);
 							cell.setCellValue(og.getProduct().getEncoded());
@@ -1640,7 +1641,7 @@ public class PrintServlet extends HttpServlet {
 							cell.setCellValue("");
 							cell.setCellStyle(style);
 							cell = row.createCell((short) y++);
-							cell.setCellValue(Company.supplyGM);
+							cell.setCellValue(CompanyManager.getLocate().getSupplyGM());
 							cell.setCellStyle(style);
 							cell = row.createCell((short) y++);
 							cell.setCellValue(og.getProduct().getType());
@@ -1886,7 +1887,7 @@ public class PrintServlet extends HttpServlet {
 							count++;
 							int y = 0;
 							cell = row.createCell((short) y++);
-							cell.setCellValue(Company.supplyGM);
+							cell.setCellValue(CompanyManager.getLocate().getSupplyGM());
 							cell.setCellStyle(style);
 							cell = row.createCell((short) y++);
 							cell.setCellValue(branch.getNameSN());
@@ -2183,7 +2184,7 @@ public class PrintServlet extends HttpServlet {
 				
 					String serialnumber = og.getSerialnumber();
 					if (StringUtill.isNull(serialnumber)) {
-						serialnumber = Company.supply;
+						serialnumber = CompanyManager.getLocate().getSupply();
 					}
 					row = sheet.createRow((int) count);
 					count++;
@@ -2600,7 +2601,7 @@ public class PrintServlet extends HttpServlet {
 				for (int i = 0; i < 7; i++) {
 					if (i ==1) {
 						cell = row.createCell((short) i);
-						cell.setCellValue("供应商编码：" + Company.supply);
+						cell.setCellValue("供应商编码：" +CompanyManager.getLocate().getSupply());
 						cell.setCellStyle(style1);
 					} else {
 						cell = row.createCell((short) i);

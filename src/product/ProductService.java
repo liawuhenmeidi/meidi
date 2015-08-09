@@ -476,11 +476,11 @@ public class ProductService {
 		}
 
 		// logger.info(li);
-
+           
 		// logger.info(System.currentTimeMillis() - start);
 		return li;
 	}
-
+ 
 	public static List<Integer> getlistallCid(Integer branchtype) {
 		init();
 		List<Integer> li = new ArrayList<Integer>();
@@ -490,14 +490,14 @@ public class ProductService {
 		for (int i = 0; i < listc.size(); i++) {
 			Category c = listc.get(i);
 			String sales = c.getSales();
-			//logger.info(sales);  
+			logger.info(sales);  
 			if (!StringUtill.isNull(sales)) {
 			//	logger.info(sales); 
 			//	logger.info(branch.getPid());  
 				String sale[] = sales.split("_");
 				for (int j = 0; j < sale.length; j++) {
 					if (!StringUtill.isNull(sale[j])) { 
-						//logger.info(branchtype);  
+						logger.info(branchtype);  
 						//logger.info(Integer.valueOf(sale[j]));
 						//logger.info(Integer.valueOf(sale[j]) == branchtype);
 						if (sale[j].equals(branchtype+"")) {
