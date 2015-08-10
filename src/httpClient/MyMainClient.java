@@ -59,12 +59,12 @@ public class MyMainClient {
 		// List<String> s = InventorySN.getinventoryModel("105057044",branch,);
 		// List<String> s = InventorySN.getinventoryModel("105057044","");
 		// logger.info(s);
-	}   
-                
+	}    
+                 
 	public synchronized void run() {
 		try {                             
 		   startinventoryIN(this);
-		//	round(this);      
+			//round(this);      
 			// sdi.selectDeliverInform(new
 			// URI("http://scs.suning.com/sps/PurchaseOrderDelivery/orderDelivery.action?menuid=100000111&scspageexptime=1427005676454"),"","",this);
 		} catch (Exception e) { 
@@ -77,12 +77,11 @@ public class MyMainClient {
 		String starttime = TimeUtill.getdateString();
 		String endtime = TimeUtill.getdateString();
                                
-		            
-		starttime = "2015-05-24";  
-		endtime = "2015-06-02";      
+		endtime = TimeUtill.getdateString(); 
+		starttime = TimeUtill.dataAdd(endtime, -8);       
 		while (TimeUtill.compare(starttime,"2013-01-01"))  {                             
 			int num = -10;                               
-		     
+		      
 		    inventoryOrder.getinventoryOut(starttime, endtime,this);
 		    inventoryOrder.getinventoryOutModel(starttime, endtime, this); 
 			 
@@ -98,9 +97,9 @@ public class MyMainClient {
 		String starttime = TimeUtill.getdateString();
 		String endtime = TimeUtill.getdateString();
                                     
-		starttime = "2015-06-03";    
-		endtime = "2015-06-12";         
-		while (TimeUtill.compare(starttime,"2013-06-09"))  {                             
+		//starttime = "2015-08-01";    
+		//endtime = "2015-08-09";         
+		while (TimeUtill.compare(starttime,"2013-07-30"))  {                             
 			int num = -10;       
 			//SaleDownLoad.saveDB(starttime, endtime);  
 		//	count++;              
@@ -125,12 +124,12 @@ public class MyMainClient {
 			String starttime = TimeUtill.getdateString(); 
 			//String start = TimeUtill.dataAdd(starttime, -6); 
 			String endtime = TimeUtill.getdateString();  
-			                           
+			                            
 			// int count = 0 ;  
-			//start = "2015-06-02"; 
-			//endtime = "2015-06-02";      
-                                
-			// 异常退货订单          
+			//starttime = "2015-08-09"; 
+			//endtime = "2015-08-09";       
+                                  
+			// 异常退货订单           
 			inventoryOrder.getinventoryOut(starttime, endtime, mc);
 			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
                    
