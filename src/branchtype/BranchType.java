@@ -2,6 +2,7 @@ package branchtype;
 
 public class BranchType {
    private int id ;
+   // 大类名称
    private String name ;
    // 导购是否可见
    private int statues; 
