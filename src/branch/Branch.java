@@ -5,17 +5,17 @@ import branchtype.BranchTypeService;
 import utill.StringUtill;
 
 public class Branch {
-	private String locateName;
-	private int id;
-	private int pid;
-	private BranchType branchtype ;
-	private String message; // 门店订单需要的号，是否需要pos号，等
-	private int statues; // 是否作为总库
-	private String branchids;
-	private int disable;
-	private String encoded; 
-	private String nameSN;  // 苏宁国美别名
-	private String Reservoir; // 库位名称 
+	private String locateName;       // 地点
+	private int id;                  // 编号
+	private int pid;                 // 所属类别
+	private BranchType branchtype ;   
+	private String message; //           门店订单需要的号，是否需要pos号，等
+	private int statues; //         是否作为总库（可以考虑不要）
+	private String branchids;       //关联门店 （比如国美南楼导购可以看那些网点的库存）
+	private int disable;          // 是否删除
+	private String encoded;       // 编码
+	private String nameSN;        // 苏宁国美别名
+	private String Reservoir;     // 库位名称 
   
 	public BranchType getBranchtype() {
 		//System.out.println(BranchTypeService.getMap());

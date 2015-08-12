@@ -8,20 +8,20 @@ public class BranchType {
 	public static int sale = 1;
 	public static int install = 2 ;
 	
-	private int id;
-	private String name;
+	private int id;           // 编号
+	private String name;      // 名称
 	// 导购是否可见
-	private int statues;
+	private int statues;      // 
 	// 1 表示系统默认，不可修改
-	private int isSystem; 
+	private int isSystem;      // 是否是系统类别，不可删除
 
-	private int typestatues;  // 1 是卖场 2 售后网点
+	private int typestatues;  //  门店属性          1 是卖场 2 售后网点
 	 
-	private int saletype ; //  1 苏宁   2 国美     ExportModel.SuNing
+	private int saletype ; //   1 苏宁   2 国美     ExportModel.SuNing
 	
-	private String saletypeStr;
+	private String saletypeStr;   // 
 	
-	private int exportmodel ;  //  
+	private int exportmodel ;  //  开订单导出模式
 
 	public int getIsSystem() {
 		return isSystem;
