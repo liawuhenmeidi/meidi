@@ -89,22 +89,18 @@ public class TaxExchange {
             if(("Djh").equals(pro)){
         		value= Djh; 
         	}
-             
-          
         	//logger.info(pro); 
         		Element e = new Element(pro).setText(value);  
             	Fp.addContent(e); 
         } 
-        
-		
-    	
+
     	  Element Spxx = new Element("Spxx"); 
   		
     	  Fp.addContent(Spxx);
     	
     	  
     	
-	    	String filePath = ExcelUpload.getTaxFilePath();   
+	    String filePath = ExcelUpload.getTaxFilePath();   
 	    List<Tax> li = new XLSReader().readTaxXML(filePath, filename);
     	  
     	  for(int i=0;i<li.size();i++){
