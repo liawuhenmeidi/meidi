@@ -24,8 +24,10 @@ boolean flag = UserManager.checkPermissions(user, Group.inventory,"w");
  function detail(id){
 	 window.location.href="receiptsAdd.jsp?id="+id;
  }
- 
-	
+  
+ function copy(id){  
+	 window.location.href="receiptsCopy.jsp?id="+id;
+}	
 	
 </script>
 </head>
@@ -74,6 +76,7 @@ boolean flag = UserManager.checkPermissions(user, Group.inventory,"w");
 			<th align="center">入库单位</th>
 			<th align="center">备注</th>
 			<th align="center">状态</th> 
+			<th align="center">复制单据</th>
 		</tr>
 	</thead>
       <% 
@@ -134,6 +137,10 @@ boolean flag = UserManager.checkPermissions(user, Group.inventory,"w");
 			}
 			%>
 			</td>
+			<td align="center"> 
+		   <a href="#" onclick="copy('<%=invetory.getId()%>')">复制单据</a>
+			</td> 
+			
 		</tr>
 
     	   <%
