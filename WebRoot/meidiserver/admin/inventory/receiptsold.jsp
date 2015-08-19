@@ -21,8 +21,10 @@ Map<Integer,Branch> branchmap = BranchService.getMap();
 <script type="text/javascript">
 function detail(id){
 	 window.location.href="receiptsAdd.jsp?id="+id;
+} 
+function copy(id){ 
+	 window.location.href="receiptsCopy.jsp?id="+id;
 }
-
 function dosearch(){
 	var start = $("#completetimestart").val();
 	var end = $("#completetimeend").val();
@@ -94,7 +96,7 @@ function dosearch(){
     <%
    }
     %>
-    <li><a href="receiptsold.jsp?">查看已确认单据</a></li> 
+    <li><a href="receipts.jsp?">查看未确认单据</a></li> 
      </ul>
      
    </div>  
@@ -109,6 +111,7 @@ function dosearch(){
 			<th align="center">入库单位</th>
 			<th align="center">备注</th>
 			<th align="center">状态</th> 
+			<th align="center">复制单据</th>
 			
 		</tr>
 	</thead>
@@ -167,9 +170,14 @@ function dosearch(){
 			%>
 			双方待确认
 			<%
-			}
+			} 
 			%>
 			</td>
+			
+			<td align="center"> 
+		   <a href="#" onclick="copy('<%=invetory.getId()%>')">复制单据</a>
+			</td>  
+			
 		</tr> 
 
     	   <%
