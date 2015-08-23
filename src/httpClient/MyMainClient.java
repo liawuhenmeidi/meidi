@@ -30,7 +30,7 @@ public class MyMainClient {
 	 */ 
     // 圣荣 
 	private static String cacheUsername = "haoyuely@163.com";
-	private static String cachePassword = "sn26524316";
+	private static String cachePassword = "sn8888sy";
      
 	// 九阳  
 	// private static String cacheUsername = "tjhdlshm@163.com";

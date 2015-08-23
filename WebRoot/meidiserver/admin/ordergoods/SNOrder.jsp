@@ -41,12 +41,10 @@ List<OrderSN > list = OrderDownLoad.geteffective(starttime,TimeUtill.dataAdd(sta
 	<div class="s_main">  
 		<div class="weizhi_head">
 		<form action="">
-		现在位置>>查看苏宁订单号 
-		<input type="text" name="branchname" id="branchname" value="<%=branchname %>" class="cba">
+		现在位置>>查看苏宁订单号   
+		输入门店：<input type="text" name="branchname" id="branchname" value="<%=branchname %>" class="cba">
 		<input type="submit" value="查询">
-		</form>
-		
-		
+		</form> 
 		</div> 
 		<table width="100%" border="0" cellspacing="1" id="Ntable">
 			<tr class="dsc">   

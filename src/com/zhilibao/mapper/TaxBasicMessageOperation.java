@@ -1,14 +1,15 @@
 package com.zhilibao.mapper;
-
+ 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Delete;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.zhilibao.model.tax.TaxBasicMessage;
-@Service       
+@Repository    
 public interface TaxBasicMessageOperation {   
 	@Delete("delete from mdtaxbasicmessage where gfmc = #{gfmc}") 
 	public int delete(TaxBasicMessage Configs); 

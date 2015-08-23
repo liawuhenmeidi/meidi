@@ -212,7 +212,15 @@ function getInventory(){
           </li>
           
           <%} %>
-        
+          
+           <li >  
+            <h4 >小家电信息维护</h4> 
+            <div class="list-item none"> 
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('config/SNSmallApplianceadd.do')">基础信息维护</a></p>
+            </div>
+          </li>
+          
+          
            <%
            boolean ordergoods_w = UserManager.checkPermissions(user, Group.ordergoods,"w");
            boolean ordergoods_q =UserManager.checkPermissions(user, Group.ordergoods,"q");
