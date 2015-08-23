@@ -65,9 +65,7 @@ public class ConfigController {
 	    	modelAndView.addObject("message", "保存成功");  
 	    	return modelAndView;  // 采用重定向方式跳转页面  
 	    } 
-	     
-	    
-	     
+	       
 	    @RequestMapping("taxUpload.do")  // 请求url地址映射，类似Struts的action-mapping             
 	    public ModelAndView taxUpload(HttpServletRequest request){  
 	    	   
@@ -83,9 +81,6 @@ public class ConfigController {
 	    		return modelAndView;  
 	    	}
 	    	
-    
-	    	
-            
 	    	List<TaxBasicMessage> list = MapperService.getTaxBasicMessageOperation().getList();
 	    	modelAndView.addObject("TaxBasicMessages", list); 
 	    	
