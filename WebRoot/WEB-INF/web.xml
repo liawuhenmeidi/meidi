@@ -19,11 +19,14 @@
     <servlet-name>spring</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <!-- 可以自定义servlet.xml配置文件的位置和名称，默认为WEB-INF目录下，名称为[<servlet-name>]-servlet.xml，如spring-servlet.xml
+     
+     &nbsp; 默认
+     -->  
     <init-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/spring-servlet.xml</param-value>&nbsp; 默认
+        <param-value>/WEB-INF/spring-servlet.xml</param-value>
     </init-param> 
-    --> 
+   
     <load-on-startup>1</load-on-startup>
 </servlet>
 

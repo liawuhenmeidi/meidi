@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.springframework.stereotype.Repository;
 
 import com.zhilibao.config.Configs;
-@Repository      
+   
 public interface ConfigsOperation {  
 	@Delete("delete from mdconfigs where name = #{name}") 
 	public int delete(Configs Configs); 

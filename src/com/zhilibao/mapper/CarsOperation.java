@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.zhilibao.model.Cars;
 
 
-@Repository
+
 public interface CarsOperation { 
 	@Insert("insert into mdcars (id,uid,num) " +
 	   		"values (null,#{uid},#{num}) ;")

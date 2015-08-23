@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import user.User;
  
 import com.zhilibao.model.LogisticsMessage;
-@Repository  
+
 public interface LogisticsMessageOperation { 
 	    
 	//  保存物流配送信息

@@ -12,7 +12,7 @@
       http://www.springframework.org/schema/aop    
       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">  
  <!-- 配置数据源--> 
- 	<aop:aspectj-autoproxy/> 
+ 
  	  
      <bean id="jdbcDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
      <property name="driverClassName">  
@@ -43,7 +43,7 @@
      <property name="dataSource" ref="jdbcDataSource" />  
  </bean>      
      
-     <!--  
+
  <bean id="LogisticsMessageOperation" class="org.mybatis.spring.mapper.MapperFactoryBean">  
       <property name="sqlSessionFactory" ref="sqlSessionFactory"></property> 
       <property name="mapperInterface" value="com.zhilibao.mapper.LogisticsMessageOperation"></property>   
@@ -62,8 +62,4 @@
      <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>   
      <property name="mapperInterface" value="com.zhilibao.mapper.TaxBasicMessageOperation"></property>  
  </bean>  
-  --> 
-    
-<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />  
- 
  </beans>   

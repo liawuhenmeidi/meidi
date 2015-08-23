@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.zhilibao.model.tax.TaxBasicMessage;
-@Repository    
+  
 public interface TaxBasicMessageOperation {   
 	@Delete("delete from mdtaxbasicmessage where gfmc = #{gfmc}") 
 	public int delete(TaxBasicMessage Configs); 

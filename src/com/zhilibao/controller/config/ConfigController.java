@@ -34,8 +34,7 @@ import com.zhilibao.utill.bean.BeanUtill;
 @Controller  //类似Struts的Action  
 @RequestMapping("/meidiserver/admin/config/") 
 public class ConfigController {    
-	@Resource
-	private ConfigsOperation configsOperation;
+
 	  
 	protected static Log logger = LogFactory.getLog(ConfigController.class);
 	                       
@@ -58,7 +57,8 @@ public class ConfigController {
 	    	map.put("username", username);
 	    	map.put("password", password);   
 	    	config.setMessage(StringUtill.GetJson(map));
-	    	configsOperation.save(config);      
+	    	//TaxBasicMessage TaxBasicMessage = MapperService.getTaxBasicMessageOperation().getByName(gfmc);
+	    	//configsOperation.save(config);      
 	    	ModelAndView modelAndView = new ModelAndView();
              
 	    	modelAndView.setViewName("jieguo");  
