@@ -307,10 +307,10 @@ public class LogisticsMessageManager {
 		 String sql = "update mdlogistics set advancestatues = "+statues+" where id in "+ids;
 		 return  DBUtill.sava(sql);  
 		 		   
-	 }
+	 } 
 	 public static boolean updatecharge(String ids,String statues){
-		 String sql = "update mdlogistics set statues = "+statues+" where id in "+ids;
-		 return  DBUtill.sava(sql); 
+		 String sql = "update mdlogistics set statues = "+statues+" , chargeTime = '"+TimeUtill.getdateString()+"' where id in "+ids;
+		 return  DBUtill.sava(sql);  
 		 		   
 	 }
 	 

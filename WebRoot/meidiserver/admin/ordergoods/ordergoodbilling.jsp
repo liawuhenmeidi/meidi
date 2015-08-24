@@ -72,7 +72,7 @@ function check(){
 			<tr> 
 				<td>销售系统： <select id="branchtype" name="branchtype">
 						<option></option> 
-						<%
+						<% 
 							if (null != listgt) {
 								for (int i = 0; i < listgt.size(); i++) {
 									BranchType bt = listgt.get(i);
@@ -96,7 +96,7 @@ function check(){
 <form action="ordergoodSN.jsp"  method = "post"  onsubmit="return check()">
 
 <table width="100%" border="0" cellspacing="1"  id="table"> 
-  <tr class="dsc"> 
+  <tr class="dsc">  
 
     <td  class="s_list_m"  align="center">卖场订单号</td> 
   <td  class="s_list_m"  align="center">要货单号</td>

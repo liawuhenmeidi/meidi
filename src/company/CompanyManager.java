@@ -9,9 +9,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import database.DB;
-  
+    
 public class CompanyManager {
-	
+	 
 	 protected static Log logger = LogFactory.getLog(CompanyManager.class);
 	
 	 public static boolean  save(Company  c){
