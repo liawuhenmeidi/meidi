@@ -4,11 +4,9 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+ 
 import branch.Branch;
 import branch.BranchService;
-
-import servlet.OrderServlet;
 import user.User;
 import user.UserService;
 import utill.StringUtill;
@@ -22,7 +20,10 @@ public class LogisticsMessage {
    private int price ;  // 运费（给司机结款） 
    private String startLocate; // 起始地点  
    private int advancePrice;  // 给（聚美）垫付  
+   private String advancePriceTime;
+   
    private int statues ;   // 0 未完成  1 已完成  2 提出结款请求   3 同意结款   4 已结款   -1 被删除
+   private String chargeTime ; // 结款日期
    private String submittime; // 提交日期
    private String sendtime ;  // 送货时间  
    private String locateMessage;   //路线>行车记录
@@ -35,8 +36,16 @@ public class LogisticsMessage {
    private int operation ;    // 0 无状态  1  要删除申请   2 同意删除   3 已删除          4 修改申请  5 同意修改
    private String operationMessage; // 操作信息  
    private int upid ;  
-     
-   public int getUpid() {
+       
+   public String getChargeTime() {
+	return chargeTime;
+}
+
+public void setChargeTime(String chargeTime) {
+	this.chargeTime = chargeTime;
+}
+
+public int getUpid() {
 	return upid;
 } 
  
@@ -230,6 +239,14 @@ public int getStatues() {
 }
 public void setStatues(int statues) {
 	this.statues = statues;
+}
+
+public String getAdvancePriceTime() {
+	return advancePriceTime;
+}
+
+public void setAdvancePriceTime(String advancePriceTime) {
+	this.advancePriceTime = advancePriceTime;
 }    
    
    

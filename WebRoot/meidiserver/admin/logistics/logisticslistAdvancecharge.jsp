@@ -112,9 +112,13 @@ function totalInit(){
 	 
 	 <%
 	 if(null != list){
+		 int count = 0;
+		 int advancecount = 0 ;
 		 for(int i=0;i<list.size();i++){
 			 LogisticsMessage ca = list.get(i);
-			
+			 count += ca.getPrice();
+			 advancecount += ca.getAdvancePrice();   
+			 
 			 %>    
 			 <tr class="asc" ondblclick="detail('<%=ca.getId()%>')"> 
 			 <td align="center">
@@ -158,8 +162,9 @@ function totalInit(){
 		 %> 
 		 <tr class="asc">
 		  <td >合计</td>
-		 <td colspan="5"></td>
-		 <td><label id="total"></label></td>
+		 <td colspan="4"></td>
+		 <td><label id="total"> <%=count %></label></td>
+		  <td><label id="total"> <%=advancecount %></label></td>
 		 <td colspan="2"></td>
 		 </tr>
 		<tr class="asc"> 

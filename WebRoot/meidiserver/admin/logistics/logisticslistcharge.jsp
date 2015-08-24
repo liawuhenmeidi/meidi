@@ -148,6 +148,9 @@ function totalInit(){
 	 
 	 <%
 	 if(null != list){
+		 int count = 0;
+		 int advancecount = 0 ;
+		 
 		 for(int i=0;i<list.size();i++){
 			 LogisticsMessage ca = list.get(i);
 			 String cl = "class=\"asc\"";
@@ -157,6 +160,9 @@ function totalInit(){
 			 if(ca.getOperation() != 0){
   				 cl = "class=\"rsc\"";
   			 } 
+			 count += ca.getPrice();
+			 advancecount += ca.getAdvancePrice();   
+			 
 			 %>    
 			 <tr <%=cl %> ondblclick="detail('<%=ca.getId()%>')"> 
 			 <td align="center">
@@ -214,8 +220,9 @@ function totalInit(){
 		 <tr class="asc">
 		  <td >合计</td>
 		 <td colspan="4"></td>
-		 <td><label id="total"></label></td>
-		 <td colspan="4"></td>
+		 <td><label id="total"> <%=count %></label></td>
+		  <td><label id="total"> <%=advancecount %></label></td>
+		 <td colspan="3"></td>
 		 </tr>
 		<tr class="asc"> 
 		<td colspan="8">

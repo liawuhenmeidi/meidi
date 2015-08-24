@@ -3,13 +3,17 @@
 request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user");   
 String uid = request.getParameter("uid"); 
-List<LogisticsMessage>	list = null; 
-if(StringUtill.isNull(uid)){  
-	list = LogisticsMessageManager.getlist();  
-}else {    
-	list = LogisticsMessageManager.getlist(Integer.valueOf(uid));
-} 
- 
+String chargetype = request.getParameter("chargetype");
+String starttime = request.getParameter("starttime");
+String endtime = request.getParameter("endtime");
+  
+List<LogisticsMessage>	list = null;  
+if(StringUtill.isNull(uid)){   
+	list = LogisticsMessageManager.getlist(chargetype,starttime,endtime);  
+}else {      
+	list = LogisticsMessageManager.getlist(Integer.valueOf(uid),chargetype,starttime,endtime); 
+}  
+  
 List<User>  listu = UserService.getLogistics(user);  
 //System.out.println("CarsService.getmap()"+CarsService.getmap());
 
@@ -22,6 +26,7 @@ List<User>  listu = UserService.getLogistics(user);
   
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../../style/css/bass.css" />
 <script type="text/javascript" src="../../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../js/calendar.js"></script>
 <script type="text/javascript" src="../../js/common.js"></script>
 <script type="text/javascript">
 var uid = "<%=uid%>";
@@ -84,10 +89,7 @@ function totalInit(){
   </jsp:include>
 
 <!--   头部结束   -->
- 
-     
- <!--       -->    
-     
+
      <div class="">
    <div class="weizhi_head">
 
@@ -113,10 +115,26 @@ function totalInit(){
 	    	}
 	    }
 	    
-	   %>
+	   %> 
 	 
 	 </select>
 	 </td>
+	  <td> 
+	  <select id="chargetype" name="chargetype">
+	    <option value="chargetime">运费已结款</option>
+	    <option value="advancepricetime">垫付已结款</option>
+	  </select> 
+	  </td>
+	 <td>  
+	开始时间：<input type="text" name="starttime" id="starttime" maxlength="10" value="<%=starttime %>"
+						onclick="new Calendar().show(this);"  />
+	</td>
+	 
+	 <td>  
+	结束时间：<input type="text" name="endtime" id="endtime" maxlength="10" value="<%=endtime %>"
+						onclick="new Calendar().show(this);"  />
+	</td>
+	
    <td><input type="submit"  value="确定"/></td>
    
    
@@ -142,22 +160,29 @@ function totalInit(){
 	车牌号
 </td>
 <td>送货地址</td> 
-<td>价格</td>
+<td>价格</td> 
+<td>提交时间</td> 
 <td>送货时间</td>
-<td>提交时间</td>
+ 
 <td>运费结款状态</td>
+<td>结款时间</td>
 <td>垫付结款状态</td>
+<td>垫付结款时间</td>
 <td>关联送货号</td>
 </tr>
 	 
 	 <%
 	 if(null != list){
+		 int count = 0;
+		 int advancecount = 0 ;
 		 for(int i=0;i<list.size();i++){
 			 LogisticsMessage ca = list.get(i);
 			 String cl = "class=\"asc\"";
 			 if(ca.getPid() != 0){
 				 cl = "class=\"bsc\"";
-			 } 
+			 }
+			 count += ca.getPrice();
+			 advancecount += ca.getAdvancePrice();   
 			 %>    
 			 <tr <%=cl %> ondblclick="detail('<%=ca.getId()%>')"> 
 			       <td align="center"><input type="checkbox"
@@ -179,18 +204,29 @@ function totalInit(){
 	  <label id="p<%=ca.getId()%>"><%=ca.getPrice() %></label> 
 	  
 	  </td>
+	   <td>
+	  <%=ca.getSubmittime() %>
+	  </td>
+	  
 	  <td>
 	  <%=ca.getSendtime() %>
 	  </td>
-	  <td>
-	  <%=ca.getSubmittime() %>
-	  </td>
+	 
 	   <td> 
 	  <%=ca.getStatuesName()%>
 	  </td>
 	  <td> 
+	  <%=ca.getChargeTime()%>
+	  </td>
+	  
+	  <td> 
 	  <%=ca.getadvancestatuesName()%>
 	  </td>
+	   
+	   <td> 
+	  <%=ca.getAdvancePriceTime()%>
+	  </td>
+	  
 	  <td>
 	  <%=ca.getPid() %>
 	  </td>
@@ -202,9 +238,10 @@ function totalInit(){
 		 <tr class="asc">
 		  <td >合计</td>
 		 <td colspan="4"></td>
-		 <td><label id="total"></label></td>
-		 <td colspan="5"></td>
-		 </tr>
+		 <td><label id="total"> <%=count %></label></td>
+		  <td><label id="total"> <%=advancecount %></label></td>
+		 <td colspan="6"></td>
+		 </tr> 
 		 <%
 	 }
 	 %>

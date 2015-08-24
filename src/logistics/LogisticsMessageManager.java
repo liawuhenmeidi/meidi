@@ -13,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import database.DB;
 import user.User;
 import utill.DBUtill;
+import utill.StringUtill;
 import utill.TimeUtill;
 
 public class LogisticsMessageManager {
@@ -150,10 +151,25 @@ public class LogisticsMessageManager {
 		    
 	   }      
 	  
-	 public static List<LogisticsMessage>	getlist(){
+	 public static List<LogisticsMessage>	getlist(String chargetype,String starttime ,String endtime){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
 		  Connection conn = DB.getConn(); 
-			String sql = "select * from  mdlogistics";
+		  String type ="";
+			String sql = "select * from  mdlogistics  where  (statues in (4,-1)  or advancestatues =  1)" ;
+			      if(!StringUtill.isNull(chargetype)){
+			    	  type = chargetype;  
+			      }  
+			        
+			      if(!StringUtill.isNull(starttime)){
+			    	  sql += " and "+ type +">= '" +starttime+"'";
+			    	  
+			      }
+			      
+			      if(!StringUtill.isNull(endtime)){
+			    	  sql += " and "+ type +"<= '" +endtime+"'";
+			      }
+			      sql += " order by id desc"	;		
+		   logger.info(sql); 
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {
@@ -176,6 +192,7 @@ public class LogisticsMessageManager {
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
 		  Connection conn = DB.getConn(); 
 			String sql = "select * from  mdlogistics where statues in ("+statues+")";
+			sql += " order by id desc"	;
 			logger.info(sql);  
 			Statement stmt = DB.getStatement(conn); 
 			ResultSet rs = DB.getResultSet(stmt, sql);
@@ -198,7 +215,8 @@ public class LogisticsMessageManager {
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>(); 
 		  Connection conn = DB.getConn(); 
 			String sql = "select * from  mdlogistics where  advanceprice != 0 and advancestatues in ("+statues+")";
-		   logger.info(sql); 
+			sql += " order by id desc"	;
+			logger.info(sql); 
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try { 
@@ -220,7 +238,8 @@ public class LogisticsMessageManager {
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
 		  Connection conn = DB.getConn();
 			String sql = "select * from  mdlogistics where statues in ("+statues +") and uid="+uid;
-		   logger.info(sql);
+			sql += " order by id desc"	;
+			logger.info(sql);
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try { 
@@ -237,13 +256,27 @@ public class LogisticsMessageManager {
 			} 
 			return list; 
 	  }
-	 
-	 public static List<LogisticsMessage>	getlist(int uid){
+	  
+	 public static List<LogisticsMessage>	getlist(int uid,String chargetype,String starttime ,String endtime){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
 		  Connection conn = DB.getConn();
-			String sql = "select * from  mdlogistics where uid="+uid;
-		   logger.info(sql);
-			Statement stmt = DB.getStatement(conn);
+		  String type ="";
+			String sql = "select * from  mdlogistics  where uid="+uid + " and (statues in (4,-1)  or advancestatues =  1)" ;
+			      if(!StringUtill.isNull(chargetype)){
+			    	  type = chargetype;  
+			      }  
+			       
+			      if(!StringUtill.isNull(starttime)){
+			    	  sql += " and "+ type +">= '" +starttime+"'";
+			    	  
+			      }
+			      
+			      if(!StringUtill.isNull(endtime)){
+			    	  sql += " and "+ type +"<= '" +endtime+"'";
+			      }
+				sql += " order by id desc"	;
+		   logger.info(sql); 
+			Statement stmt = DB.getStatement(conn); 
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try { 
 				while (rs.next()) { 
@@ -286,31 +319,33 @@ public class LogisticsMessageManager {
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
 		  Connection conn = DB.getConn();    
 			String sql = "select * from  mdlogistics where uid = "+ user.getId()+" and statues = "+statues;
+			sql += " order by id desc"	;
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {
 				while (rs.next()) {
 					LogisticsMessage ca = getLogisticsMessageFromRs(rs);
 					list.add(ca);
-				}
+				} 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
 				DB.close(rs);
 				DB.close(stmt);
 				DB.close(conn);
-			} 
-			return list;
+			}   
+			return list;  
 	  } 
 	 
 	 public static boolean updateAdvancePrince(String ids,String statues){
-		 String sql = "update mdlogistics set advancestatues = "+statues+" where id in "+ids;
+		 String sql = "update mdlogistics set advancestatues = "+statues+",advancepricetime = '"+TimeUtill.getdateString()+"'  where id in "+ids;
 		 return  DBUtill.sava(sql);  
-		 		   
-	 }
+		 		    
+	 }  
+	  
 	 public static boolean updatecharge(String ids,String statues){
-		 String sql = "update mdlogistics set statues = "+statues+" where id in "+ids;
-		 return  DBUtill.sava(sql); 
+		 String sql = "update mdlogistics set statues = "+statues+" , chargeTime = '"+TimeUtill.getdateString()+"' where id in "+ids;
+		 return  DBUtill.sava(sql);  
 		 		   
 	 }
 	 
@@ -318,6 +353,7 @@ public class LogisticsMessageManager {
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
 		  Connection conn = DB.getConn();    
 			String sql = "select * from  mdlogistics where id in "+ ids;
+			sql += " order by id desc"	;
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try { 
@@ -340,17 +376,19 @@ public class LogisticsMessageManager {
 			try {   
 				ca.setId(rs.getInt("id"));
 				ca.setUid(rs.getInt("uid")); 
-				ca.setBid(rs.getInt("bid"));
-				ca.setCarid(rs.getInt("carid")); 
-				ca.setPrice(rs.getInt("prince"));
-				ca.setStatues(rs.getInt("statues"));
-				ca.setSubmittime(rs.getString("submittime"));
+				ca.setBid(rs.getInt("bid")); 
+				ca.setCarid(rs.getInt("carid"));  
+				ca.setPrice(rs.getInt("prince")); 
+				ca.setStatues(rs.getInt("statues"));  
+				ca.setSubmittime(rs.getString("submittime")); 
+				ca.setChargeTime(rs.getString("chargetime")); 
+				ca.setAdvancePriceTime(rs.getString("advancepricetime"));  
 				ca.setSendtime(rs.getString("sendtime"));
 				ca.setLocateMessage(rs.getString("locateMessage"));
 				ca.setAdvancePrice(rs.getInt("advanceprice"));
-				ca.setLocates(rs.getString("locates"));
-				ca.setStartLocate(rs.getString("startlocate"));
-				ca.setRemark(rs.getString("remark"));  
+				ca.setLocates(rs.getString("locates"));  
+				ca.setStartLocate(rs.getString("startlocate")); 
+				ca.setRemark(rs.getString("remark"));   
 				ca.setAdvanceStatues(rs.getInt("advancestatues"));
 				ca.setPid(rs.getInt("pid"));    
 				ca.setOperation(rs.getInt("operation")); 

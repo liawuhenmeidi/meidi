@@ -97,8 +97,8 @@ function totalInit(){
   
     <form id="mypost">
        <table>
-   <tr>
-   <td> 现在位置：车辆登记</td>
+   <tr> 
+   <td> 现在位置：预约结款</td>
    <td>司机</td>
    <td> <select id="uid" name="uid"> 
 	 <option></option>
@@ -153,12 +153,18 @@ function totalInit(){
 	 
 	 <%
 	 if(null != list){
+		 int count = 0;
+		 int advancecount = 0 ;
+		 
 		 for(int i=0;i<list.size();i++){
 			 LogisticsMessage ca = list.get(i);
 			 String cl = "class=\"asc\"";
 			 if(ca.getPid() != 0){
 				 cl = "class=\"bsc\"";
 			 } 
+			 
+			 count += ca.getPrice();
+			 advancecount += ca.getAdvancePrice();   
 			 %>    
 			 <tr <%=cl %> ondblclick="detail('<%=ca.getId()%>')"> 
 			       <td align="center"><input type="checkbox"
@@ -202,9 +208,10 @@ function totalInit(){
 		 <tr class="asc">
 		  <td >合计</td>
 		 <td colspan="4"></td>
-		 <td><label id="total"></label></td>
-		 <td colspan="4"></td>
-		 </tr>
+		 <td><label id="total"> <%=count %></label></td>
+		  <td><label id="total"> <%=advancecount %></label></td>
+		 <td colspan="3"></td>
+		 </tr> 
 		<tr class="asc"> 
 		<td colspan="8">
 		 
