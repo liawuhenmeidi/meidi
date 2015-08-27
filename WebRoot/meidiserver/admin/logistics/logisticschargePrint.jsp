@@ -15,6 +15,9 @@ if(null != list && list.size() >0){
 		if("2".equals(statues)){   
 		     LogisticsMessageManager.updatecharge(StringUtill.getStr(lids),statues);
 			 response.sendRedirect("logisticslistCharging.jsp?");
+		}else if("5".equals(statues)){ 
+			 LogisticsMessageManager.updatecharge(StringUtill.getStr(lids),statues);
+			 response.sendRedirect("logisticslistchargeconfire.jsp?");
 		}else {
 			LogisticsMessageManager.updatecharge(StringUtill.getStr(lids),statues);
 		}
@@ -43,15 +46,11 @@ function println(){
 
 
 </script>
-</head>
-
+</head> 
+ 
 <body>
 <!--   头部结束   -->
  
-      
-        
-<div id="print"  style="position:fixed;text-align:center; top:50%;background-color:white; left:30%; margin:-20% 0 0 -25%; height:50%; width:90%; z-index:999;"> 
-
 <table  cellspacing="1" style="margin:auto;background-color:black; width:400px;height:300px;">  
 
      <% 
@@ -70,44 +69,39 @@ function println(){
      } %>
   
    <tr class="asc">
-   <td><%=message %></td>
-   <td><%=uname  %></td>
+   <td align="center"><%=message %></td>
+   <td align="center"><%=uname  %></td>
    </tr> 
    <tr class="asc">
-   <td>
+   <td align="center">
     金额： 
    </td>
    
-   <td>
+   <td align="center">
    <%= total%>元 
    </td>
     </tr> <tr class="asc">
-   <td>
+   <td align="center">
    日期：
    </td> 
-   <td>
+   <td align="center">
    <%=TimeUtill.gettimeString() %>
    </td>
     </tr> <tr class="asc">
-   <td>
+   <td align="center">
    经理签字：
    </td>
-   <td>
+   <td align="center">
    __________
-   
+    
    </td>
    </tr>
    <tr class="asc">
-  <td colspan="2"> 
+  <td colspan="2" align="center"> 
   <center> <input class="noprint" type=button name='button_export' title='打印1' onclick="println()" value="打印"></input></center>
   </td>
   </tr>
   </table>
-   
-
-
-</div>
-
 
 
 </body>

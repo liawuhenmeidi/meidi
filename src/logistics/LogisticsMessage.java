@@ -21,10 +21,10 @@ public class LogisticsMessage {
    private String startLocate; // 起始地点  
    private int advancePrice;  // 给（聚美）垫付  
    private String advancePriceTime;
-   
+   private String advancePriceReceipts;            // 垫付结款单号 
    private int statues ;   // 0 未完成  1 已完成  2 提出结款请求   3 同意结款   4 已结款     5  财务确认完毕      -1 被删除
    private String chargeTime ; // 结款日期
-               // 结款单号 
+   private String chargeReceipts;            // 结款单号 
    private String submittime; // 提交日期
    private String sendtime ;  // 送货时间  
    private String locateMessage;   //路线>行车记录
@@ -39,7 +39,23 @@ public class LogisticsMessage {
    
    private int upid ;  
        
-   public String getChargeTime() {
+   public String getAdvancePriceReceipts() {
+	return advancePriceReceipts;
+}
+
+public void setAdvancePriceReceipts(String advancePriceReceipts) {
+	this.advancePriceReceipts = advancePriceReceipts;
+}
+
+public String getChargeReceipts() {
+	return chargeReceipts;
+}
+
+public void setChargeReceipts(String chargeReceipts) {
+	this.chargeReceipts = chargeReceipts;
+}
+
+public String getChargeTime() {
 	return chargeTime;
 }
 

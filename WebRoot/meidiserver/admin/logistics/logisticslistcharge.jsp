@@ -4,7 +4,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user");   
 String uid = request.getParameter("uid"); 
 List<LogisticsMessage>	list = null;
-if(StringUtill.isNull(uid)){  
+if(StringUtill.isNull(uid)){   
 	list = LogisticsMessageManager.getlist("2,3"); 
 }else {  
 	list = LogisticsMessageManager.getlist(Integer.valueOf(uid),"2,3");
@@ -30,7 +30,7 @@ $(function () {
 });
 
 
-
+ 
 function detail(id){
 	window.location.href="logisticDetail.jsp?id="+id;
 }
@@ -127,7 +127,7 @@ function totalInit(){
    <form action="logisticschargePrint.jsp" id="myformLG"> 
    <input type="hidden" value="4" name="statues"/>
 <table width="100%" cellspacing="1" id="table"> 
-<tr class="dsc">
+<tr class="dsc"> 
 <td width="5%" class="s_list_m" align="center"><input
 						type="checkbox" value="" id="allselect"
 						onclick="seletall(allselect);totalInit()"></input>

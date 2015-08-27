@@ -158,7 +158,7 @@ public class LogisticsMessageManager {
 			String sql = "select * from  mdlogistics  where  (statues in (4)  or advancestatues =  1)" ;
 			      if(!StringUtill.isNull(chargetype)){
 			    	  type = chargetype;  
-			      }  
+			      }   
 			        
 			      if(!StringUtill.isNull(starttime)){
 			    	  sql += " and "+ type +">= '" +starttime+"'";
@@ -210,6 +210,73 @@ public class LogisticsMessageManager {
 			} 
 			return list; 
 	  }  
+	 
+	 public static List<LogisticsMessage>	getlistByadvancepricereceipts( String statues){
+		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
+		  Connection conn = DB.getConn(); 
+			String sql = "select * from  mdlogistics where advancepricereceipts in ("+statues+")";
+			sql += " order by id desc"	;
+			logger.info(sql);  
+			Statement stmt = DB.getStatement(conn); 
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) {
+					LogisticsMessage ca = getLogisticsMessageFromRs(rs);
+					list.add(ca);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt); 
+				DB.close(conn);
+			} 
+			return list; 
+	  }  
+	 
+	 public static List<LogisticsMessage>	getlistBychargereceipts( String statues){
+		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
+		  Connection conn = DB.getConn(); 
+			String sql = "select * from  mdlogistics where chargereceipts in ('"+statues+"')";
+			sql += " order by id desc"	; 
+			logger.info(sql);  
+			Statement stmt = DB.getStatement(conn); 
+			ResultSet rs = DB.getResultSet(stmt, sql);
+			try {
+				while (rs.next()) {
+					LogisticsMessage ca = getLogisticsMessageFromRs(rs);
+					list.add(ca);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt); 
+				DB.close(conn);
+			} 
+			return list; 
+	  } 
+	 public static List<String>	getStringBychargereceipts(){
+		  List<String> list = new ArrayList<String>(); 
+		  Connection conn = DB.getConn(); 
+			String sql = "select  distinct chargereceipts from  mdlogistics where chargereceipts is not null and statues = 4 ";
+			logger.info(sql);  
+			Statement stmt = DB.getStatement(conn); 
+			ResultSet rs = DB.getResultSet(stmt, sql); 
+			try {  
+				while (rs.next()) {   
+					String ca = rs.getString("chargereceipts");
+					list.add(ca);
+				}  
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
+				DB.close(stmt); 
+				DB.close(conn);
+			} 
+			return list; 
+	  }
 	 
 	 public static List<LogisticsMessage>	getAdvancePrince(User user,String statues){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>(); 
@@ -322,7 +389,7 @@ public class LogisticsMessageManager {
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try {
-				while (rs.next()) {
+				while (rs.next()) { 
 					LogisticsMessage ca = getLogisticsMessageFromRs(rs);
 					list.add(ca);
 				} 
@@ -334,18 +401,30 @@ public class LogisticsMessageManager {
 				DB.close(conn);
 			}   
 			return list;  
-	  } 
-	 
+	  }   
+	     
 	 public static boolean updateAdvancePrince(String ids,String statues){
-		 String sql = "update mdlogistics set advancestatues = "+statues+",advancepricetime = '"+TimeUtill.getdateString()+"'  where id in "+ids;
+		 String sql = "";
+		 if(Integer.valueOf(statues) == 5){
+			 sql = "update mdlogistics set advancestatues = "+statues+",advancepricetime = '"+TimeUtill.gettime()+"',advancepricereceipts =CONCAT(uid,'acr_"+TimeUtill.gettimeString()+"')  where id in "+ids;
+		 }else { 
+			 sql = "update mdlogistics set advancestatues = "+statues+",advancepricetime = '"+TimeUtill.gettime()+"' where id in "+ids;
+		 } 
+		 
+		 return  DBUtill.sava(sql);   
+		 		      
+	 }    
+	    
+	 public static boolean updatecharge(String ids,String statues){ 
+		 String sql = "";
+		 if(Integer.valueOf(statues) == 5){
+			 sql = "update mdlogistics set statues = "+statues+" , chargeTime = '"+TimeUtill.gettime()+"',chargereceipts = CONCAT(uid,'cr_"+TimeUtill.gettimeString()+"') where id in "+ids;
+		 }else { 
+			 sql = "update mdlogistics set statues = "+statues+" , chargeTime = '"+TimeUtill.gettime()+"' where id in "+ids;
+		 } 
+		 
 		 return  DBUtill.sava(sql);  
 		 		    
-	 }  
-	  
-	 public static boolean updatecharge(String ids,String statues){
-		 String sql = "update mdlogistics set statues = "+statues+" , chargeTime = '"+TimeUtill.getdateString()+"' where id in "+ids;
-		 return  DBUtill.sava(sql);  
-		 		   
 	 }
 	 
 	 public static List<LogisticsMessage>	getlistByIds(String ids){
@@ -368,7 +447,7 @@ public class LogisticsMessageManager {
 				DB.close(conn);
 			} 
 			return list;
-	  } 
+	  }  
 	 
 	 private static LogisticsMessage getLogisticsMessageFromRs(ResultSet rs){
 		 LogisticsMessage ca = new LogisticsMessage();
@@ -389,10 +468,11 @@ public class LogisticsMessageManager {
 				ca.setStartLocate(rs.getString("startlocate")); 
 				ca.setRemark(rs.getString("remark"));   
 				ca.setAdvanceStatues(rs.getInt("advancestatues"));
-				ca.setPid(rs.getInt("pid"));    
+				ca.setPid(rs.getInt("pid"));     
 				ca.setOperation(rs.getInt("operation")); 
-                ca.setUpid(rs.getInt("upid")); 
-		   
+                ca.setUpid(rs.getInt("upid"));   
+		        ca.setAdvancePriceReceipts(rs.getString("advancepricereceipts"));
+		        ca.setChargeReceipts(rs.getString("chargereceipts"));
 	                
 	             
 			} catch (SQLException e) {  

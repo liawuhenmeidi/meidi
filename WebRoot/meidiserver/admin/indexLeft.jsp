@@ -552,45 +552,60 @@ function getInventory(){
          
         boolean logistics_p = UserManager.checkPermissions(user, Group.logistics,"p");
         boolean logistics_c = UserManager.checkPermissions(user, Group.logistics,"c");
-         if(logistics_p || logistics_c){
+         
+         if(logistics_p){
         	%>   
         	 <li > 
         	 <h4 >物流系統</h4>      
-            <div class="list-item none"> 
-            <% 
-            if(logistics_p){  
-            	%>  
+            <div class="list-item none">  
             	<!-- 
             	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/add.do')" >物流配工</a></p> 
             	 -->
             	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/add.do')" >物流配工</a></p> 
             	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistsend.jsp')" >待送货</a></p> 
+             </div> 
+           </li>	  
+            <li > 
+        	 <h4 >送货结算管理</h4>      
+            <div class="list-item none">  
+            	<!--   
+            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/add.do')" >物流配工</a></p> 
+            	 -->
             	  <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistCharging.jsp')" >预约结款</a></p> 
             	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistcharge.jsp')" >待结款</a></p> 
+            	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistchargeconfire.jsp')" >财务核对</a></p> 
+             </div>   
+           </li>	  	 
+            <li >    
+        	 <h4 >垫付结算管理</h4>      
+            <div class="list-item none">  
+            	<!-- 
+            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/add.do')" >物流配工</a></p> 
+            	 -->
             	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistAdvancecharge.jsp')" >预付款结款</a></p> 
             	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslisthistory.jsp')" >历史记录</a></p> 
-            	<%     
-            }      
+             </div> 
+           </li>		
+            <%     
+            }       
             if(logistics_c){    
-            	   
-            	%>  
+            	%>   
+            	<li > 
+        	 <h4 >车辆管理</h4>      
+            <div class="list-item none"> 
+            
+            
             	<p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/caradd.jsp')" >车辆登记</a></p> 
             	<p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/carlist.jsp')" >查看车辆</a></p> 
-            	<%
+            	
+            	  </div> 
+           </li>
+            	<% 
             }
             
             %>
 
-            </div> 
-           </li>
-        	
-        	<%
-         }
-         
-         
-         %>
-   
-        
+           
          </ul> 
         <script type="text/javascript" language="javascript">
 			navList(12);
