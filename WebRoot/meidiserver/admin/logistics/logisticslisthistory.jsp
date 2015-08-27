@@ -126,12 +126,9 @@ function totalInit(){
 	  </select> 
 	  </td>
 	 <td>  
-	开始时间：<input type="text" name="starttime" id="starttime" maxlength="10" value="<%=starttime %>"
-						onclick="new Calendar().show(this);"  />
-	</td>
-	 
-	 <td>  
-	结束时间：<input type="text" name="endtime" id="endtime" maxlength="10" value="<%=endtime %>"
+	结款时间：<input type="text" name="starttime" id="starttime" maxlength="10" value="<%=starttime %>"
+						onclick="new Calendar().show(this);"  />  
+	<input type="text" name="endtime" id="endtime" maxlength="10" value="<%=endtime %>"
 						onclick="new Calendar().show(this);"  />
 	</td>
 	

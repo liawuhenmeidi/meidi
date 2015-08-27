@@ -13,7 +13,7 @@ import utill.StringUtill;
 
 public class LogisticsMessage {
 	protected static Log logger = LogFactory.getLog(LogisticsMessage.class);
-   private int id ; 
+   private int id ;  
    private int carid;   // 车号
    private int uid ;   //   司机  
    private int bid ;   // 目的地
@@ -22,8 +22,9 @@ public class LogisticsMessage {
    private int advancePrice;  // 给（聚美）垫付  
    private String advancePriceTime;
    
-   private int statues ;   // 0 未完成  1 已完成  2 提出结款请求   3 同意结款   4 已结款   -1 被删除
+   private int statues ;   // 0 未完成  1 已完成  2 提出结款请求   3 同意结款   4 已结款     5  财务确认完毕      -1 被删除
    private String chargeTime ; // 结款日期
+               // 结款单号 
    private String submittime; // 提交日期
    private String sendtime ;  // 送货时间  
    private String locateMessage;   //路线>行车记录
@@ -31,10 +32,11 @@ public class LogisticsMessage {
    private String remark ;  
    private String statuesName ;  
    private String advancestatuesName ;
-   private int advanceStatues;   
+   private int advanceStatues;   // 1 已结款     
    private int pid ;    // 关联ID   
    private int operation ;    // 0 无状态  1  要删除申请   2 同意删除   3 已删除          4 修改申请  5 同意修改
    private String operationMessage; // 操作信息  
+   
    private int upid ;  
        
    public String getChargeTime() {

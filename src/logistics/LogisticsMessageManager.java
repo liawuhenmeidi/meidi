@@ -153,9 +153,9 @@ public class LogisticsMessageManager {
 	  
 	 public static List<LogisticsMessage>	getlist(String chargetype,String starttime ,String endtime){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
-		  Connection conn = DB.getConn(); 
+		  Connection conn = DB.getConn();  
 		  String type ="";
-			String sql = "select * from  mdlogistics  where  (statues in (4,-1)  or advancestatues =  1)" ;
+			String sql = "select * from  mdlogistics  where  (statues in (4)  or advancestatues =  1)" ;
 			      if(!StringUtill.isNull(chargetype)){
 			    	  type = chargetype;  
 			      }  
@@ -255,21 +255,20 @@ public class LogisticsMessageManager {
 				DB.close(conn);
 			} 
 			return list; 
-	  }
+	  } 
 	  
 	 public static List<LogisticsMessage>	getlist(int uid,String chargetype,String starttime ,String endtime){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
 		  Connection conn = DB.getConn();
 		  String type ="";
-			String sql = "select * from  mdlogistics  where uid="+uid + " and (statues in (4,-1)  or advancestatues =  1)" ;
+			String sql = "select * from  mdlogistics  where uid="+uid + " and (statues in (4)  or advancestatues =  1)" ;
 			      if(!StringUtill.isNull(chargetype)){
 			    	  type = chargetype;  
-			      }  
+			      }   
 			       
 			      if(!StringUtill.isNull(starttime)){
 			    	  sql += " and "+ type +">= '" +starttime+"'";
-			    	  
-			      }
+			      } 
 			      
 			      if(!StringUtill.isNull(endtime)){
 			    	  sql += " and "+ type +"<= '" +endtime+"'";

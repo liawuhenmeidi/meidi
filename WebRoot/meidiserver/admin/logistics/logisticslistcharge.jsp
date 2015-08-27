@@ -123,7 +123,6 @@ function totalInit(){
 	 
    </form>
    </div> 
- 
    <div class="table-list">   
    <form action="logisticschargePrint.jsp" id="myformLG"> 
    <input type="hidden" value="4" name="statues"/>
