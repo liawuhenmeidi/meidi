@@ -581,11 +581,23 @@ function getInventory(){
             <div class="list-item none">  
             	<!-- 
             	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/add.do')" >物流配工</a></p> 
-            	 -->
+            	 --> 
             	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistAdvancecharge.jsp')" >预付款结款</a></p> 
-            	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslisthistory.jsp')" >历史记录</a></p> 
+            	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslistAdvancechargeconfire.jsp')" >垫付财务核对</a></p> 
              </div> 
-           </li>		
+           </li>
+           <li >    
+        	 <h4 >历史单据</h4>      
+            <div class="list-item none">  
+            	<!-- 
+            	 <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/add.do')" >物流配工</a></p> 
+            	 --> 
+            	  
+            	   <p ><a href="javascript:void(0);"  onclick="reloadopned('logistics/logisticslisthistory.jsp')" >历史单据</a></p> 
+             </div> 
+           </li>
+           
+           		
             <%     
             }       
             if(logistics_c){    

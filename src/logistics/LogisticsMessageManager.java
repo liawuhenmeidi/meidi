@@ -234,10 +234,11 @@ public class LogisticsMessageManager {
 			return list; 
 	  }  
 	 
-	 public static List<LogisticsMessage>	getlistBychargereceipts( String statues){
+	
+	 public static List<LogisticsMessage>	getlistByAdvancechargereceipts( String statues){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
 		  Connection conn = DB.getConn(); 
-			String sql = "select * from  mdlogistics where chargereceipts in ('"+statues+"')";
+			String sql = "select * from  mdlogistics where advancepricereceipts in ('"+statues+"')";
 			sql += " order by id desc"	; 
 			logger.info(sql);  
 			Statement stmt = DB.getStatement(conn); 
@@ -256,6 +257,8 @@ public class LogisticsMessageManager {
 			} 
 			return list; 
 	  } 
+	 
+	 
 	 public static List<String>	getStringBychargereceipts(){
 		  List<String> list = new ArrayList<String>(); 
 		  Connection conn = DB.getConn(); 
@@ -272,12 +275,32 @@ public class LogisticsMessageManager {
 				e.printStackTrace();
 			} finally {
 				DB.close(rs);
+				DB.close(stmt);  
+				DB.close(conn);
+			}  
+			return list; 
+	  }
+	 public static List<String>	getStringByAdvancechargereceipts(){
+		  List<String> list = new ArrayList<String>(); 
+		  Connection conn = DB.getConn(); 
+			String sql = "select  distinct advancepricereceipts from  mdlogistics where advancepricereceipts is not null and statues = 1 ";
+			logger.info(sql);   
+			Statement stmt = DB.getStatement(conn); 
+			ResultSet rs = DB.getResultSet(stmt, sql); 
+			try {   
+				while (rs.next()) {   
+					String ca = rs.getString("advancepricereceipts");
+					list.add(ca);
+				}  
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DB.close(rs);
 				DB.close(stmt); 
 				DB.close(conn);
 			} 
 			return list; 
 	  }
-	 
 	 public static List<LogisticsMessage>	getAdvancePrince(User user,String statues){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>(); 
 		  Connection conn = DB.getConn(); 
@@ -404,8 +427,8 @@ public class LogisticsMessageManager {
 	  }   
 	     
 	 public static boolean updateAdvancePrince(String ids,String statues){
-		 String sql = "";
-		 if(Integer.valueOf(statues) == 5){
+		 String sql = ""; 
+		 if(Integer.valueOf(statues) == 1){
 			 sql = "update mdlogistics set advancestatues = "+statues+",advancepricetime = '"+TimeUtill.gettime()+"',advancepricereceipts =CONCAT(uid,'acr_"+TimeUtill.gettimeString()+"')  where id in "+ids;
 		 }else { 
 			 sql = "update mdlogistics set advancestatues = "+statues+",advancepricetime = '"+TimeUtill.gettime()+"' where id in "+ids;
