@@ -82,7 +82,7 @@ function check(){
 		<!--  头 单种类  -->
 		<table width="100%" border="0" cellspacing="1" id="table">
 			<tr class="dsc">
-				<td colspan=11>
+				<td colspan=12>
 					<table width="100%"> 
 						<tr>
 							<td colspan=2 align="center"></td>
@@ -109,6 +109,7 @@ function check(){
 				<td align="center">门店</td>
 				<td align="center">商品编码</td>
 				<td align="center">商品条码</td>
+				<td align="center">订单号</td>
 				<td align="center">商品全名</td>
 				<td align="center">商品单位</td>
 				<td align="center">数量</td>
@@ -168,12 +169,13 @@ function check(){
 					value="<%=og.getId()%>" name="ogid" id="check_box"></input>
 				<%=count%></td> 
 				 
-				 
 				<td align="center"><%=branch.getLocateName()%></td>
 				<td align="center"></td>
+				  <td  align=center ><%=null==og.getOid()?"":og.getOid()%></td>    
+				<td align="center"></td>   
+				<td align="center"><%=type%></td> 
+				  
 				<td align="center"></td> 
-				<td align="center"><%=type%></td>
-				<td align="center"></td>
 				<td align="center"><%=og.getRealnum()%></td>
 				<td align="center"></td>
 				<td align="center"><%=og.getStatuesName()%></td>

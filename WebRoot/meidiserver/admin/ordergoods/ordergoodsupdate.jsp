@@ -555,8 +555,12 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
  	}
  %>
 						</td>
-						<td align=center>单号：</td>
-						<td align=center>日期：<%=TimeUtill.getdateString()%></td>
+						 <td align=center>
+         单号： <%=null == oa?"":oa.getOm().getId() %>
+        </td> 
+       <td align=center> 
+       日期：<%=null == oa ?TimeUtill.getdateString():oa.getOm().getSubmittime() %>
+       </td>
 					</tr>
 					<tr class="asc">
 						<td colspan=4 align=center>

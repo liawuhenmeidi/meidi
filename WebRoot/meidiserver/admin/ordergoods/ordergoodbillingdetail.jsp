@@ -135,7 +135,7 @@ if (null != list) {
 											String str = it.next();
 											String[] strs = str.split("_");
 											String i = strs[0];
-											String oid = strs[1];
+											String oid = strs[1]; 
 											if (StringUtill.isNull(oid)) {
 												oid = "";
 											}
@@ -190,10 +190,10 @@ if (null != list) {
 									&& orderid.equals(og.getOid())
 									|| StringUtill.isNull(orderid)
 									&& StringUtill.isNull(og.getOid())) {
-								count++; 
+								count++;  
 								String serialnumber = og.getSerialnumber();
 								if (StringUtill.isNull(serialnumber)) {
-									serialnumber = Company.supply;
+									serialnumber = CompanyManager.getLocate().getSupply();
 								}
 
 								String cl = "class=\"asc\"";

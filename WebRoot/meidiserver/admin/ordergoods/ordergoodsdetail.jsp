@@ -100,7 +100,8 @@ String json = StringUtill.GetJson(list);
          <tr class="dsc">     
            <td align=center width="5%"   >编号</td> 
            <td align=center width="20%" > 产品型号</td> 
-           <td align=center width="25%" >状态</td>  
+           <td align=center width="25%" >状态</td> 
+           <td align=center width="25%" >订单号</td>   
            <td align=center width="20%"> 订货数</td>  
            <td align=center width="20%">实际发货数</td> 
            <td align=center width="20%">实际退货数</td>      
@@ -123,8 +124,8 @@ String json = StringUtill.GetJson(list);
 	     <td align=center   ><%=i+1 %></td> 
 	     <td  align=center ><%= og.getTname() %></td> 
 	     <td  align=center ><%=og.getStatuesName() %></td>   
-	   
-	     <td align=center ><%= og.getRealnum() %></td>  
+	    <td  align=center ><%=null==og.getOid()?"":og.getOid()%></td>    
+	     <td align=center ><%= og.getRealnum() %></td>   
 	    
 	      <td align=center ><%=  og.getRealsendnumName() %></td>  
 	       <td align=center ><%=  og.getReturnrealsendnumName() %></td> 
@@ -136,7 +137,7 @@ String json = StringUtill.GetJson(list);
 	     <td align=center   >总计</td> 
 	     <td  align=center ></td> 
 	     <td  align=center ></td>   
-	    
+	    <td align=center ></td> 
 	     <td align=center ><%= realcount %></td> 
 	     <td align=center ><%= ordercount %></td> 
 	  
@@ -147,9 +148,9 @@ String json = StringUtill.GetJson(list);
        </td>
         
        </tr>
-  
+   
        <tr class="asc" >
-       <td align=center colspan=2>
+       <td align=center colspan=3>
        
        </td>
                              

@@ -251,24 +251,7 @@ function getInventory(){
             </div>   
           </li>    
             
-            <% if(ordergoods_r){ %>
-             <li>    
-            <h4 >查看苏宁采购订单报表</h4>  
-            <div class="list-item none"> 
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/SNOrder.jsp')">查看苏宁采购订单</a></p> 
-            </div>
-          </li>  
-          <%} %>
-          
-          <li>   
-            <h4 >数据管理</h4> 
-            <div class="list-item none"> 
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('date/dateinventory.jsp')">库存数据</a></p>
-               <p ><a href="javascript:void(0);"  onclick="reloadopned('date/datesale.jsp')">销售数据</a></p>
-            <p ><a href="javascript:void(0);"  onclick="reloadopned('date/dateinventorychange.jsp')">出入库数据</a></p>
-            </div>
-          </li> 
-           <%} %>  
+           
            <%  
           
            if(ordergoods_e || ordergoods_c){
@@ -329,7 +312,26 @@ function getInventory(){
               %>
             </div>
           </li> 
-        
+          
+           <% if(ordergoods_r){ %>
+             <li>    
+            <h4 >查看苏宁采购订单报表</h4>  
+            <div class="list-item none"> 
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/SNOrder.jsp')">查看苏宁采购订单</a></p> 
+            </div>
+          </li>  
+          <%} %> 
+          
+          <li>   
+            <h4 >数据管理</h4> 
+            <div class="list-item none"> 
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('date/dateinventory.jsp')">库存数据</a></p>
+            <p ><a href="javascript:void(0);"  onclick="reloadopned('date/dateinventorychange.jsp')">出入库数据</a></p>
+            </div>
+          </li> 
+           <%} %>  
+           
+           
            <li >
             <h4 >增值服务</h4>
             <div class="list-item none">

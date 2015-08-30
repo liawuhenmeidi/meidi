@@ -525,12 +525,12 @@ if(num >row){
       <input type="hidden" name="rows" id="rows" value=""/>  
           
       <table style="width:100% "> 
-       <tr> 
+       <tr>  
         <td align=center>
-         单号： 
+         单号： <%=null == oa?"":oa.getOm().getId() %>
         </td>
-       <td align=center>
-       日期：<%=TimeUtill.getdateString() %>
+       <td align=center> 
+       日期：<%=null == oa ?TimeUtill.getdateString():oa.getOm().getSubmittime() %>
        </td>
         </tr>    
        <tr>  

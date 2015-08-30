@@ -220,9 +220,15 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 							if(null != list){
 								for(int m=0;m<list.size();m++){
 									OrderGoods og = list.get(m);
-																		%>
+%>
 									<script type="text/javascript">  
+									var falg = false ;
 									$("#statues<%=og.getStatues()%>").css('display','block');
+									
+									if('<%=og.getStatues()%>' == 7 || '<%=og.getStatues()%>' == 8 || '<%=og.getStatues()%>' == 9 || '<%=og.getStatues()%>' == 10){
+										flag = true ;
+										
+									} 
 									</script>
 									
 									<%
@@ -240,20 +246,33 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 					<td align="center"><%=o.getOm().getUser().getUsername()%></td>
 					<td align="center"><%=o.getOm().getRemark()%></td>
 				</tr>
- 
+   
 				<%
 					}
-					}
-				%>
- 
+					} 
+				%>  
+  
 				<tr class="asc"> 
 					<td align="center" colspan=6><input type="button" name="button" value="生成订单"
-						onclick="check(0)" /> <input type="button" name="button" value="生成退货单"
-						onclick="check(1)" /> <input type="button" name="button" value="忽略"
+						onclick="check(0)" /> 
+						<input type="button" name="button" id="buttontui" value="生成退货单" onclick="check(1)" style="display:none"/> 
+						<input type="button" name="button" value="忽略"
 						onclick="check(2)" />
-					</td>
+					</td> 
 				</tr>
+				 
+				
+									
 			</table>
+			
+			<script type="text/javascript">  
+										if(flag){
+											$("#buttontui").css('display','block'); 
+										}
+										
+								
+									</script>
+									
 		</form>
 
 	</div>
