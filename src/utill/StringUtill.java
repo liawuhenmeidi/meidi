@@ -21,6 +21,20 @@ import net.sf.json.JSONObject;
 
 public class StringUtill {
 	protected static Log logger = LogFactory.getLog(StringUtill.class);
+	
+    public static JSONObject getJSONObject(String str){
+    	JSONObject jsObj  = null ;
+    	try{
+    		
+    		jsObj = JSONObject.fromObject(str);
+       	 //logger.info(list.toString());
+    	}catch(Exception e){
+    		  
+    	}
+    	  
+       	 return jsObj; 
+       	 
+    }
     public static boolean isNull(String str){
     	boolean flag = false ;
     	if("".equals(str) || "null".equals(str) || null == str || "undefined".equals(str) || "NULL".equals(str)){

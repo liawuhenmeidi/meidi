@@ -126,28 +126,28 @@ List<OrderGoodsAll> list = OrderGoodsAllManager.getlist(user,OrderMessage.unexam
 										+ o.getOm().getBranchid());
 								String serialnumber = og.getSerialnumber();
 								count++;
-
+ 
 								if (ExportModel.SuNing == Integer.valueOf(exportmodel)) {
 									if (StringUtill.isNull(serialnumber)) {
-										serialnumber = Company.supply;
+										serialnumber = CompanyManager.getLocate().getSupply();
 									}
 								} else if (ExportModel.GuoMei == Integer
 										.valueOf(exportmodel)) {
 									if (StringUtill.isNull(serialnumber)) {
-										serialnumber = Company.supplyGM;
+										serialnumber = CompanyManager.getLocate().getSupplyGM();
 									}
 								}
-
+ 
 								int InNum = 0;
 
 								if (null != in) {
 									InNum = in.getPapercount();
 								}
 								if (og.getStatues() == 9) {
-
+ 
 								}
-				%>
-
+				%> 
+ 
 				<tr class="asc">
 					<td align="center"><%=count%></td>
 					<td align="center"><%=og.getProduct().getEncoded()%></td>

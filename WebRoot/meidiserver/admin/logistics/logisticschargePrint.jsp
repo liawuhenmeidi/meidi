@@ -56,9 +56,11 @@ function println(){
      <% 
       int total = 0 ;
       String uname = "";
+      String oid = "";
       if(null != list){
     	 for(int i=0;i<list.size();i++){
     		 LogisticsMessage lm = list.get(i);
+    		 oid = lm.getChargeReceipts();
     		 if("AdvancePrince".equals(method)){
     			 total += lm.getAdvancePrice(); 
     		 }else { 
@@ -67,7 +69,10 @@ function println(){
     		 }
     	 }
      } %>
-  
+   <tr class="asc">
+   <td align="center">单号</td>
+   <td align="center"><%=oid  %></td>
+   </tr> 
    <tr class="asc">
    <td align="center"><%=message %></td>
    <td align="center"><%=uname  %></td>

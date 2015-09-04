@@ -26,8 +26,24 @@ public class TimeUtill {
         Date date1 = new Date();   
 		String submitTime= df2.format(date1);
 		return submitTime;
-	}
+	} 
 	 
+	public static int getMax(String time){
+		int dateOfMonth = 0 ;
+		if(!StringUtill.isNull(time)){
+			String[] da = time.split("-"); 
+			 
+			Calendar cal = Calendar.getInstance(); 
+			cal.set(Calendar.YEAR,Integer.valueOf(da[0]));
+			cal.set(Calendar.MONTH, Integer.valueOf(da[1]) - 1);//Java月份才0开始算
+			dateOfMonth = cal.getActualMaximum(Calendar.DATE);
+			
+			
+		}
+		
+		
+		return dateOfMonth;
+	}
 	public static String yyyyMMddChangeto(String time){ 
 		String str = "";  
 		//logger.info(time);
@@ -43,7 +59,20 @@ public class TimeUtill {
 		  // logger.info(str);
 		return str;
 	}
-	
+	 
+	public static Date getyyyyMMDate(String time,String type){ 
+		SimpleDateFormat format = new SimpleDateFormat(type);
+		
+		Date date = null; 
+		   try {   
+		    date = format.parse(time); 
+		  
+		   } catch (ParseException e) {
+		    e.printStackTrace();
+		   }  
+		  // logger.info(str);
+		return date;
+	}
 	   
 	   
 	public static String gettimeString(){ 

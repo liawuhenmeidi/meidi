@@ -369,10 +369,10 @@ public class OrderGoodsServlet extends HttpServlet {
 				if (StringUtill.isNull(num)) {
 					num = 0 + "";
 				}
-
+ 
 				if (StringUtill.isNull(invenNum)) {
 					invenNum = "0";
-				}
+				} 
 				if (!StringUtill.isNull(type) && !StringUtill.isNull(sta)) {
 					OrderGoods op = new OrderGoods();
 					// op.setOid(oid);
@@ -381,8 +381,13 @@ public class OrderGoodsServlet extends HttpServlet {
 					if (Integer.valueOf(sta) == 3) {
 						op.setOrdernum(Integer.valueOf(num));
 					} else {
-						op.setOrdernum(Integer.valueOf(num)
-								+ Integer.valueOf(invenNum));
+						if(Integer.valueOf(invenNum) <=0){
+							op.setOrdernum(Integer.valueOf(num));
+						}else { 
+							op.setOrdernum(Integer.valueOf(num)
+									+ Integer.valueOf(invenNum));
+						}
+						
 					}
  
 					op.setRealnum(Integer.valueOf(num));

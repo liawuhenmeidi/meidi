@@ -3,12 +3,12 @@
 request.setCharacterEncoding("utf-8");   
 User user = (User)session.getAttribute("user");   
 String chargereceipts = request.getParameter("chargereceipts");
-
-List<LogisticsMessage>	list = null;  
-if(!StringUtill.isNull(chargereceipts)){   
-	list = LogisticsMessageManager.getlistBychargereceipts(chargereceipts);  
-} 
-
+ 
+List<LogisticsMessage>	list = null;    
+if(!StringUtill.isNull(chargereceipts)){     
+	list = LogisticsMessageManager.getlistBypricereceipts(chargereceipts);  
+}  
+ 
 List<String>	li = LogisticsMessageManager.getStringBychargereceipts();
 
 //System.out.println("CarsService.getmap()"+CarsService.getmap());
@@ -140,7 +140,7 @@ function totalInit(){
 <td>送货时间</td>
  
 <td>运费结款状态</td>
-<td>结款时间</td>
+<td>结款时间</td> 
 <td>垫付结款状态</td>
 <td>垫付结款时间</td>
 <td>关联送货号</td>

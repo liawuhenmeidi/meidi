@@ -234,7 +234,7 @@ Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getmap(user,OrderMessage.e
 									<%
 								}
 							}  
-				%>
+				%> 
 				<tr class="asc"
 					ondblclick="detail('ordergoodsdetail.jsp?id=<%=key%>&type=<%=OrderMessage.examine%>&statues=<%=OrderMessage.unexamine%>')">
 					<td align="center"><input type="checkbox"

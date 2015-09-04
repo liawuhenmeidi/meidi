@@ -417,8 +417,10 @@ HttpEntity entity = response2.getEntity();
 				response2 = MyMainClient.getHttpclient().execute(request);
 
 			}
-HttpEntity entity = response2.getEntity();
-			
+           HttpEntity entity = response2.getEntity();
+
+   
+           MyMainClient.map.put("OrderDownLoad",statusCode+"");  
 			//EntityUtils.consume(entity);
 			
 			InputStream in = entity.getContent(); 

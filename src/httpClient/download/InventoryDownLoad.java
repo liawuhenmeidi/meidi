@@ -48,32 +48,42 @@ public class InventoryDownLoad extends HttpServlet implements DownLoad {
        
 	
 	public static void save() {
-		URI uri;  
-		try {
-			uri = new URI(url);
+		URI uri;    
+		try {  
+			uri = new URI(url);  
 			HttpUriRequest request = RequestBuilder.post().setUri(uri)
 					.addParameter("brandNm", "")
-					// .addParameter("formName", "reportQueryConditon")
-					// .addParameter("receiveCode", "")
-
-					// .addParameter("buyerProductcode", "101123403")
+					.addParameter("areaNm", "") 
+					.addParameter("catentryGroupNm", "")
+					.addParameter("cmpnyCd", "")
+					.addParameter("gdsId", "") 
+					.addParameter("placeNm", "")
+					.addParameter("catentryCataId", "")
 					.build();   
   
 			CloseableHttpResponse response2 = MyMainClient.getHttpclient()
 					.execute(request);
-			
+			  
 			int statusCode = response2.getStatusLine().getStatusCode();
-
+           //  logger.info(statusCode);  
 			if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY
 					|| statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
-					MyLogin.loginpost(new URI(MyLogin.url));
-				
+				    
+				MyLogin.loginpost(new URI(MyLogin.url));
+					  
 				response2 = MyMainClient.getHttpclient().execute(request);
-
-			}
-			
+				//String locationURL = response2.getHeaders("location")[0].toString();
+				//logger.info(locationURL); 
+				statusCode = response2.getStatusLine().getStatusCode();
+				 
+			} 
+			 
+		  
+		      
+			MyMainClient.map.put("InventoryDownLoadstatue",statusCode+"");  
+           logger.info(statusCode);
 			HttpEntity entity = response2.getEntity();
-
+            
 			//EntityUtils.consume(entity);
 			/*
 			 * if (entity != null) { String str = EntityUtils.toString(entity,
@@ -83,6 +93,7 @@ public class InventoryDownLoad extends HttpServlet implements DownLoad {
 			 */
 			InputStream in = entity.getContent();  
               
+			logger.info(in); 
 			// CsvReader reader = new CsvReader(in,Charset.forName("GBK"));
 			    
 			//Collection<SNInventory> co = InventoryChange.getbyRead(reader);  
@@ -93,23 +104,25 @@ public class InventoryDownLoad extends HttpServlet implements DownLoad {
 				String tempPath = PathUtill.getXMLpath();
 				tempPath += "data" + File.separator + "DownloadInventory"
 						+ File.separator + TimeUtill.getdateString()+File.separator+"SuNing";
-	  
+	   
 				logger.info(tempPath);  
 	 
 				File file = new File(tempPath);
 				if (!file.exists()) {
 					file.mkdirs();
-				} 
- 
+				}  
+  
 				File file2 = new File(tempPath + File.separator + "common.csv");
-	 
-				file2.createNewFile();
-	   
-				try { 
+	  
+				file2.createNewFile(); 
+	      
+				try {  
 					FileOutputStream fout = new FileOutputStream(file2);
 					int l = -1; 
 					byte[] tmp = new byte[1024];
+					//logger.info(in.read(tmp)); 
 					while ((l = in.read(tmp)) != -1) {
+						//logger.info(tmp); 
 						fout.write(tmp, 0, l);
 						// 注意这里如果用OutputStream.write(buff)的话，图片会失真，大家可以试试
 					}

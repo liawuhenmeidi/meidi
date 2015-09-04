@@ -2257,8 +2257,8 @@ public class PrintServlet extends HttpServlet {
 	public void OrderGoodssend(HttpServletRequest request,
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("user");
- 
-		String ids = request.getParameter("ids");
+   
+		String ids = request.getParameter("ids"); 
 		String statues = request.getParameter("statues");
 		String[] ogid = request.getParameterValues("ogid");
 		       

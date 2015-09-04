@@ -7,7 +7,7 @@ User user = (User)session.getAttribute("user");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<head> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>订单管理</title> 
 <base target="_parent"/>
@@ -39,13 +39,20 @@ function getInventory(){
 	$("#initInventory").attr("disabled","true");
 	    
 		 $.ajax({    
-		        type: "post",   
-		         url: "server.jsp",
+		        type: "post",     
+		         url: "server.jsp", 
 		         data:"method=InitInventorySN", 
-		         dataType: "",        
-		         success: function (data) { 
-		        	 date = dates;
-		        	 $("#initInventory").html("库存刷新");
+		         dataType: "json",         
+		         success: function (data) {   
+		        	// alert(data.src); 
+		        	 if(null != data.src || "" != data.src){
+		        		 var aToStr=JSON.stringify(data); 
+		        		// alert(aToStr);
+		        		 $("#main",window.parent.document).find("#contentpage").attr("src","login/loginSN.jsp?data="+aToStr);
+		        	 }   
+		        	 date = dates; 
+		        	  
+		        	 $("#initInventory").html("与苏宁数据同步");
 		        	 $("#initInventory").removeAttr("disabled"); 
 		           },  
 		         error: function (XMLHttpRequest, textStatus, errorThrown) { 
@@ -273,60 +280,31 @@ function getInventory(){
                       <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodsInstorage.jsp')">卖场入库</a></p> 
                  <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssendhistory.jsp')">历史订单</a></p> 
                  <p ><a href="javascript:void(0);"  onclick="reloadopned('receivegoods/receivegoods.jsp')">收货记录</a></p> 
-                    
+                     
                     <%
                     }  
-                %>
+                %> 
             </div>  
           </li>
-          <%}
+          <%} 
            
            
-           
+            
            if(ordergoods_r){
            %>
-           <li >
-            <h4 >盘点库存管理</h4>
-            <div class="list-item none">
-              <% 
-              if(ordergoods_r){
-                  %>   
-                    <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">库存刷新</a></p> 
-                     
-<!--  
-                    <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventory.jsp')">库存查询</a></p>
-                     -->
-                    <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventorycheck.jsp')">库存盘点</a></p>
-                  
-               
-               
-                 <!-- 
-               <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventoryline.jsp')">线性图</a></p>
-                
-                 <p ><a  href="javascript:void(0);"  onclick="reloadopned('snInventory/inventorybar.jsp')">柱形图</a></p>
-                   -->
-                 
-                  <% 
-                  } 
-              
-              %>
-            </div>
-          </li> 
-          
-           <% if(ordergoods_r){ %>
+
              <li>    
             <h4 >查看苏宁采购订单报表</h4>  
             <div class="list-item none"> 
               <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/SNOrder.jsp')">查看苏宁采购订单</a></p> 
             </div>
           </li>  
-          <%} %> 
-          
-          <li>   
-            <h4 >数据管理</h4> 
+           
+          <li>    
+            <h4 >苏宁同步数据管理</h4> 
             <div class="list-item none"> 
-              <p ><a href="javascript:void(0);"  onclick="reloadopned('date/dateinventory.jsp')">库存数据</a></p>
-            <p ><a href="javascript:void(0);"  onclick="reloadopned('date/dateinventorychange.jsp')">出入库数据</a></p>
+             <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">与苏宁数据同步</a></p> 
+             
             </div>
           </li> 
            <%} %>  
@@ -370,9 +348,15 @@ function getInventory(){
                 %> 
                <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/analyzrecepts.jsp')">调货处理</a></p>   
                <%}
-             
-            %>
+              if(ordergoods_r){
+                  %>   
+                   
+                    <p ><a  href="javascript:void(0);"  onclick="reloadopned('inventory/inventorycheck.jsp')">库存盘点</a></p>
 
+                  <% 
+                  } 
+              
+              %>
             </div>
           </li>  
           

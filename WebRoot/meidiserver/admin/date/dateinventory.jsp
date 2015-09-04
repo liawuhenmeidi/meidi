@@ -49,10 +49,7 @@ System.out.println("time"+time+"&&&bid"+type);
 </head>
     
 <body> 
-	<!--   头部开始   -->
-	<jsp:include flush="true" page="../head.jsp">
-		<jsp:param name="dmsn" value="" />
-	</jsp:include>  
+	
 	<!--   头部结束   -->
 	<div class="table-list"> 
 <form action="dateinventory.jsp" >       
@@ -78,6 +75,8 @@ System.out.println("time"+time+"&&&bid"+type);
 				</select>
 				<input class="mytime" name="mytime" value="" style="text-align:center;"/>
                 <input type="submit" value="查看"/>
+                
+                
     
 
 </td>

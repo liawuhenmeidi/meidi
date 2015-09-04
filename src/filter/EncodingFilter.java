@@ -96,12 +96,13 @@ public class EncodingFilter implements Filter {
                 "declare|sitename|net user|xp_cmdshell|;|create|drop|" +  
                 "table|grant|group_concat|column_name|" +   
                 "information_schema.columns|table_schema|union|*|" +  
-                "--|//|#";//过滤掉的sql关键字，可以手动添加  
-          
+                "--|#";//过滤掉的sql关键字，可以手动添加  
+           
         String[] badStrs = badStr.split("\\|");  
         for (int i = 0; i < badStrs.length; i++) {  
             if (str.indexOf(badStrs[i]) >= 0) { 
-            	logger.info(badStrs[i]); 
+            	logger.info(badStrs[i]);
+            	logger.info(str);
                 return true;  
             }  
         }  

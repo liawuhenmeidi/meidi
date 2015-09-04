@@ -128,7 +128,7 @@ function check(){
 					int count = 0;
 					while (it.hasNext()) {
 						Map.Entry<Integer, Map<Integer, OrderGoodsAll>> mapent = it
-								.next();
+								.next(); 
 
 						Map<Integer, OrderGoodsAll> mapb = mapent.getValue();
 						if (null != mapb) {

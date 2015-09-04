@@ -5,7 +5,9 @@
 request.setCharacterEncoding("utf-8");         
 String starttime = TimeUtill.getdateString();  
 String branchname = request.getParameter("branchname");
-List<OrderSN > list = OrderDownLoad.geteffective(starttime,TimeUtill.dataAdd(starttime, 29));  
+List<OrderSN > list = OrderDownLoad.geteffective(starttime,TimeUtill.dataAdd(starttime, 29)); 
+
+
 %> 
 <!DOCTYPE html>   
 <html> 

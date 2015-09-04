@@ -210,16 +210,16 @@ public class LogisticsMessageManager {
 			} 
 			return list; 
 	  }  
-	 
-	 public static List<LogisticsMessage>	getlistByadvancepricereceipts( String statues){
+	  
+	 public static List<LogisticsMessage>	getlistBypricereceipts( String statues){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
-		  Connection conn = DB.getConn(); 
-			String sql = "select * from  mdlogistics where advancepricereceipts in ("+statues+")";
+		  Connection conn = DB.getConn();     
+			String sql = "select * from  mdlogistics where chargereceipts in ('"+statues+"')";
 			sql += " order by id desc"	;
 			logger.info(sql);  
 			Statement stmt = DB.getStatement(conn); 
 			ResultSet rs = DB.getResultSet(stmt, sql);
-			try {
+			try { 
 				while (rs.next()) {
 					LogisticsMessage ca = getLogisticsMessageFromRs(rs);
 					list.add(ca);
@@ -439,8 +439,8 @@ public class LogisticsMessageManager {
 	 }    
 	    
 	 public static boolean updatecharge(String ids,String statues){ 
-		 String sql = "";
-		 if(Integer.valueOf(statues) == 5){
+		 String sql = "";  
+		 if(Integer.valueOf(statues) == 4){
 			 sql = "update mdlogistics set statues = "+statues+" , chargeTime = '"+TimeUtill.gettime()+"',chargereceipts = CONCAT(uid,'cr_"+TimeUtill.gettimeString()+"') where id in "+ids;
 		 }else { 
 			 sql = "update mdlogistics set statues = "+statues+" , chargeTime = '"+TimeUtill.gettime()+"' where id in "+ids;

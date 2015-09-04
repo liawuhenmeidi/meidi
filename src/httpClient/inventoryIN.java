@@ -177,10 +177,10 @@ public class inventoryIN {
 				response2 = MyMainClient.getHttpclient().execute(request);
 
 			}
-
-			HttpEntity entity = response2.getEntity();
-
-			// EntityUtils.consume(entity);
+ 
+			HttpEntity entity = response2.getEntity(); 
+			MyMainClient.map.put("InventoryInstatue",statusCode+"");  
+			// EntityUtils.consume(entity); 
 			/*
 			 * if (entity != null) { String str = EntityUtils.toString(entity,
 			 * "UTF-8"); if(StringUtill.isNull(str)){ MyLogin.loginpost(new

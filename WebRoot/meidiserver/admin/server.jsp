@@ -818,15 +818,52 @@
 				response.getWriter().write(StringUtill.GetJson(map));
 				response.getWriter().flush();
 				response.getWriter().close(); //
-			} else if ("InitInventorySN".equals(method)) {
-		MyMainClient.getinstance().run();
-		response.getWriter().write(1);
+		} else if ("InitInventorySN".equals(method)) { 
+			
+			
+	   Map<String,String> map = MyMainClient.getinstance().run();
+	  // String src = map.get("src");   
+      // System.out.println("login/loginSN.jsp?src="+src); 
+	  // response.sendRedirect("login/loginSN.jsp?src="+src);
+	    
+		response.getWriter().write(StringUtill.GetJson(map)); 
 		response.getWriter().flush();
 		response.getWriter().close(); // 
-	}else if ("InitInventoryReceiveorder".equals(method)) {
+	} else if ("InitInventoryInAndOut".equals(method)) { 
+		
+		   String time = request.getParameter("time"); 
+		   //Map<String,String> map = 
+				     
+		MyMainClient.getinstance().initInventoryInAndOut(time);
+		  // String src = map.get("src");   
+	      // System.out.println("login/loginSN.jsp?src="+src); 
+		  // response.sendRedirect("login/loginSN.jsp?src="+src);
+		  //  StringUtill.GetJson(map) 
+			response.getWriter().write(1); 
+			response.getWriter().flush();
+			response.getWriter().close(); // 
+		} 
+	
+	else if ("InitInventorySNverifyCode".equals(method)) { 
+		   Map<String,String> maps = new HashMap<String,String>();
+		   
+		   String verifyCode = request.getParameter("verifyCode");
+		   
+		   maps.put("verifyCode", verifyCode);
+		   
+		  //  System.out.println(verifyCode); 
+		   Map<String,String> map = MyMainClient.getinstance().run(maps);
+		  // String src = map.get("src");   
+	      // System.out.println("login/loginSN.jsp?src="+src); 
+		  // response.sendRedirect("login/loginSN.jsp?src="+src);
+		     
+			response.getWriter().write(StringUtill.GetJson(map)); 
+			response.getWriter().flush();
+			response.getWriter().close(); // 
+		}else if ("InitInventoryReceiveorder".equals(method)) {
 		MyMainClient.getinstance().refresh();
 		response.getWriter().write(1);
 		response.getWriter().flush();
-		response.getWriter().close(); //
+		response.getWriter().close();       //
 	}
 %>

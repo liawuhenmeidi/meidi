@@ -44,24 +44,60 @@ String btype = request.getParameter("branchtype");
       
  });         
   
+ function getInventoryInAndOut(){
+	  
+		var dates = $("#mytime").val();
+		//alert((dates - date)/1000/60); 
+		//if((dates - date)/1000/60<5){  
+		//	alert("您的操作过于频繁，请稍后重试");
+		//	return ;
+		//}   
+		//alert(1);  
+		$("#mybutton").attr("disabled","true");;
+		//alert(dates - date);
+	 
+		     
+			 $.ajax({     
+			        type: "post",       
+			         url: "../server.jsp",  
+			         data:"method=InitInventoryInAndOut&time="+dates, 
+			         dataType: "",           
+			         success: function (data) {   
+			        	// alert(data.src); 
+			        	 
+			        		alert("更新完毕");
+			            
+			        	   
+			        	 $("#mybutton").attr("disabled",false); 
+			           },  
+			         error: function (XMLHttpRequest, textStatus, errorThrown) { 
+			        // alert(errorThrown); 
+			            } 
+			           });
+		 } 
+	  
+	  
+	  
+	  
+	  </script>
+ 
+ 
+ 
 </script>
 </head>
     
 <body> 
-	<!--   头部开始   -->
-	<jsp:include flush="true" page="../head.jsp">
-		<jsp:param name="dmsn" value="" />
-	</jsp:include>  
 	<!--   头部结束   -->
 	<div class="table-list"> 
 <form action="dateinventorychange.jsp" >       
 
- <table width="100%" height="100%"  border="0" cellspacing="0" cellpadding="0">
+ <table width="100%" height="100%"  border="0" cellspacing="0" cellpadding="0"  id="table">
  
- <tr><td align="center" valign="middle">
- <table   >
-<tr>  
-<td align="center">   
+ <tr class="asc" align="left">
+ <td >  
+ <table  width=100%>
+<tr class="asc" >   
+<td  >    
    
   销售系统： <select id="branchtype" name="branchtype">
 						<option></option> 
@@ -79,20 +115,27 @@ String btype = request.getParameter("branchtype");
 							}
 						%>
 				</select>
-				<input class="mytime" name="mytime" value="" style="paddind-top: 100px; padding-left:100px;"/>
+				<input class="mytime" name="mytime" id="mytime" value="" style="paddind-top: 100px; padding-left:100px;"/>
  <input type="submit" value="查看"/>
     
 
 </td>
+ </tr> 
+ 
+     
+ <tr class="asc" align="left">
+     
+ <td><input type="button" value="与苏宁系统数据同步" id="mybutton" onclick="getInventoryInAndOut();"></input></td>
+ 
  </tr>
  </table>
  
  </td>
  </tr>
- <tr><td align="center" valign="middle"> 
+ <tr class="asc"><td align="center" valign="middle"> 
   
   
- <table width="70%"  border="1" cellpadding="0" cellspacing="0">
+ <table width="100%"  border="1" cellpadding="0" cellspacing="0">
   
  <% if(!StringUtill.isNull(time)) {
 	 String type = "";  

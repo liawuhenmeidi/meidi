@@ -181,7 +181,7 @@ public class inventoryModelOut {
 	
 	
 	public static void get(String starttime, String endtime) {
-		// startTime = "2015-05-03";
+		// startTime = "2015-05-03"; 
 		save(starttime, endtime);
 		if (StringUtill.isNull(starttime) || StringUtill.isNull(endtime)) {
 			return; 
@@ -192,7 +192,7 @@ public class inventoryModelOut {
 			tempPath += "data" + File.separator + "InventoryOutModel"
 					;
 			logger.info(tempPath);
-
+ 
 			File file = new File(tempPath);
 			if (!file.exists()) {
 				file.mkdirs();
@@ -239,7 +239,9 @@ public class inventoryModelOut {
 				
 				response2 = MyMainClient.getHttpclient().execute(request);
 
-			}
+			} 
+			 
+			MyMainClient.map.put("InventoryModeloutstatue",statusCode+"");  
 			
 			HttpEntity entity = response2.getEntity();
 

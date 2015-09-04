@@ -27,6 +27,7 @@ import database.DB;
 
 import user.User;
 import utill.DBUtill;
+import utill.StringUtill;
 import utill.TimeUtill;
  
 public class GoodsReceitManager {
@@ -190,50 +191,56 @@ public class GoodsReceitManager {
 
 		list.add(sql);
 		return list; 
-	}
+	} 
   
 	public static List<String> saveOut(Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin ,GoodsReceipt gr,Set<String> setup) {
 		User user = new User();
 		boolean flag = true;   
 		List<String> list = new ArrayList<String>();
-           
+            
 		//logger.info(gr.getTid() + "***" + gr.getBidSN());
-		if (gr.getTid() == 0 || gr.getBidSN() == 0) {
+		if (gr.getTid() == 0 || gr.getBidSN() == 0 || gr.getRecevenum() == 0) {
 			 
 			gr.setDisable(1); 
 			flag = false;  
 		} 
-		 
-       
+		
+        if(gr.getRecevenum() != 0 ){
+        	String sql = " insert into goodsreceipt (id,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,recevenum,refusenum,branchid,branchname,uuid,disable,statues)"
+    				+ " values ('"
+    				+ gr.getId()
+    				+ "','" 
+    				+ gr.getReceveid()
+    				+ "','"
+    				+ gr.getReceveTime()
+    				+ "','"
+    				+ gr.getSendid()
+    				+ "','" 
+    				+ gr.getBuyid()
+    				+ "','"
+    				+ gr.getOrdertype()
+    				+ "'," 
+    				+ "'" 
+    				+ gr.getGoodsnum()
+    				+ "','" 
+    				+ gr.getGoodsName()
+    				+ "','"
+    				+ gr.getRecevenum()
+    				+ "','"
+    				+ gr.getRefusenum()
+    				+ "','" 
+    				+ gr.getBranchid() 
+    				+ "','" 
+    				+ gr.getBranchName() 
+    				+ "','"  
+    				+ gr.getUuid() + "'," + gr.getDisable() + ","+gr.getStatues()+");";
+        	
+        	list.add(sql);
+        }
           
-		String sql = " insert into goodsreceipt (id,receveid,recevetime,sendid,buyid,ordertype,goodsnum,goodsname,recevenum,refusenum,branchid,branchname,uuid,disable,statues)"
-				+ " values ('"
-				+ gr.getId()
-				+ "','" 
-				+ gr.getReceveid()
-				+ "','"
-				+ gr.getReceveTime()
-				+ "','"
-				+ gr.getSendid()
-				+ "','" 
-				+ gr.getBuyid()
-				+ "','"
-				+ gr.getOrdertype()
-				+ "'," 
-				+ "'" 
-				+ gr.getGoodsnum()
-				+ "','" 
-				+ gr.getGoodsName()
-				+ "','"
-				+ gr.getRecevenum()
-				+ "','"
-				+ gr.getRefusenum()
-				+ "','" 
-				+ gr.getBranchid() 
-				+ "','" 
-				+ gr.getBranchName()
-				+ "','"  
-				+ gr.getUuid() + "'," + gr.getDisable() + ","+gr.getStatues()+");";
+		
+		
+		
 		if (flag) { 
 
 			String sqlIB = "";
@@ -350,7 +357,7 @@ public class GoodsReceitManager {
 			list.add(sqlIBM);  
 		} 
  
-		list.add(sql);
+		
 		return list;
 	}
  
@@ -1098,21 +1105,25 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 				}
 			}
 		}
-
+         
+		logger.info(StringUtill.GetJson(list));
 		flag = DBUtill.sava(list);
-		return flag;
+		return flag;  
 	} 
  
 	public static boolean saveOut(Map<String, GoodsReceipt> map,String starttime, String endtime) {
 		boolean flag = false; 
-		 
+		 logger.info(map.size()); 
 		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryBranchManager
 				.getInventoryMap();  
 		  
 		Set<String> setup = new HashSet<String>();
 		List<String> list = new ArrayList<String>();
+		
+		
 		Map<String, GoodsReceipt> mapdb = getMapAll(starttime,
 				endtime);  
+		
 		Set<Map.Entry<String, GoodsReceipt>> en = map.entrySet();
 		if (!en.isEmpty()) { 
 			Iterator<Map.Entry<String, GoodsReceipt>> it = en.iterator();
@@ -1120,13 +1131,14 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
 				Map.Entry<String, GoodsReceipt> ent = it.next();
 				GoodsReceipt gr = ent.getValue(); 
 				GoodsReceipt db = mapdb.get(gr.getUuid());
-				if (null == db) {
+				if (null == db) { 
 					List<String> sql = saveOut(mapin,gr,setup);
-					list.addAll(sql);
-				} 
-			}
-		}
-
+					list.addAll(sql); 
+				}  
+			}   
+		}      
+        logger.info(list.size());
+		logger.info(StringUtill.GetJson(list));
 		flag = DBUtill.sava(list);
 		return flag;
 	}

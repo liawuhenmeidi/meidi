@@ -126,30 +126,30 @@ public class inventoryOut {
 		if (StringUtill.isNull(starttime) || StringUtill.isNull(endtime)) {
 			return;  
 		}  
-		try { 
+		try {  
 			String tempPath = PathUtill.getXMLpath();
- 
+  
 			tempPath += "data" + File.separator + "InventoryOut";
 			logger.info(tempPath);
-  
+   
 			File file = new File(tempPath);
 			if (!file.exists()) {
 				file.mkdirs();
 			}
-
+ 
 			String file2 = tempPath + File.separator + "InventoryOut.csv";
 			/*
 			 * File file2 = new File(tempPath + File.separator +
 			 * "InventoryOut.csv"); 
 			 */  
 			// file2.createNewFile();
-
+ 
 			// logger.info(file2.getAbsolutePath());
-			// logger.info(file2.);
+			// logger.info(file2.); 
 			CsvReader reader = new CsvReader(file2, ',', Charset.forName("GBK")); // 一般用这编码读就可以了
  
 			GoodsReceitManager.saveOut(reader, starttime, endtime);
-  
+            
 			reader.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -231,7 +231,11 @@ public class inventoryOut {
 			}
 
 		}
-
+           
+		
+		MyMainClient.map.put("Inventoryoutstatue",statusCode+"");  
+		
+		
 		HttpEntity entity = response2.getEntity();
 
 		// EntityUtils.consume(entity);
@@ -256,7 +260,7 @@ public class inventoryOut {
 		String tempPath = PathUtill.getXMLpath();
 		tempPath += "data" + File.separator + "InventoryOut";
 		File file = new File(tempPath);
-		 
+		  
 		logger.info(file.exists());  
 		if (!file.exists()) { 
 			try{logger.info(file.mkdirs());

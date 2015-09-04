@@ -22,6 +22,11 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import utill.StringUtill;
    
 public class MyLogin { 
 	protected static Log logger = LogFactory.getLog( MyLogin.class); 
@@ -32,7 +37,17 @@ public class MyLogin {
 	public static boolean loginpost(URI uri) {  
     	// 创建默认的httpClient实例.     	   
         try{    
-        	String uuid = UUID.randomUUID().toString();
+        	String uuid = "";
+        	if(StringUtill.isNull(MyMainClient.getUuid())){
+        		uuid = UUID.randomUUID().toString();
+        	}else {
+        		logger.info("uuid is not null"); 
+        		uuid = MyMainClient.getUuid();
+        	} 
+      logger.info(uuid);
+      logger.info(MyMainClient.getVerifyCode());
+      logger.info(MyMainClient.getCacheUsername());
+      logger.info(MyMainClient.getCachePassword()); 
         	HttpUriRequest login = RequestBuilder.post()
             .setUri(uri)     
             .addParameter("service", "https://scs.suning.com/sps/auth?targetUrl=http%3A%2F%2Fscs.suning.com%2Fsps%2Fmember%2Flogon.do")
@@ -40,19 +55,50 @@ public class MyLogin {
             .addParameter("loginTheme", "scs")   
             .addParameter("username", MyMainClient.getCacheUsername()) 
             .addParameter("password", MyMainClient.getCachePassword())
-            .build();     
+            .addParameter("verifyCode",MyMainClient.getVerifyCode())
+            .build();      
+        	
+        	
+      
 	//logger.info("executing request " + login.getURI());  
 	        CloseableHttpResponse response2 = MyMainClient.getHttpclient().execute(login);
+	       /* Header[] header = response2.getAllHeaders();
+	        if(null != header){
+	        	for(int i=0;i<header.length;i++){
+	        		logger.info(header[i]); 
+	        	}
+	        }*/
+	        
+	          
+	        int statusCode = response2.getStatusLine().getStatusCode();
 	         
-	        try { 
-	        	
+            logger.info(statusCode);
+            
+	        try {  
+	        	if(statusCode != HttpStatus.SC_MOVED_PERMANENTLY && statusCode!= HttpStatus.SC_MOVED_TEMPORARILY){
 	        	HttpEntity entity = response2.getEntity();
                 if (entity != null) {  
                     String str = EntityUtils.toString(entity, "UTF-8");
-                   // logger.info(str);
-                }  
-
-	            EntityUtils.consume(entity);
+                    logger.info(str); 
+                    Document doc = MyJsoup.getDocumnetByStr(str); 
+    				Element en = doc.getElementById("vcodeimg1");
+    				logger.info(en);
+    				String src = en.attr("src"); 
+    				logger.info(src); 
+    				if(!StringUtill.isNull(src)){
+    					String[] me = src.split("=");
+    					String uid = me[1]; 
+        				logger.info(uid);  
+        				MyMainClient.setUuid(uid);
+    				}
+    				
+    				MyMainClient.map.put("src", src);
+    				
+    			
+    				 EntityUtils.consume(entity);
+                 }  
+	        	}
+	           
                 /*List<Cookie> cookies = MyMainClient.getCookieStore().getCookies();
                 if (cookies.isEmpty()) {
                 	logger.info("None"); 
@@ -60,10 +106,10 @@ public class MyLogin {
                     for (int i = 0; i < cookies.size(); i++) {
                     	logger.info(cookies.get(i)); 
                     } 
-                }*/
+                }*/ 
 
-                int statusCode = response2.getStatusLine().getStatusCode();
-               
+              
+
 	            if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY || 
 	            		statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
 	            logger.info(statusCode);     
@@ -116,6 +162,7 @@ public class MyLogin {
             .addParameter("loginTheme", "scs") 
             .addParameter("username", MyMainClient.getCacheUsername()) 
             .addParameter("password", MyMainClient.getCachePassword())
+           .addParameter("verifyCode",MyMainClient.getVerifyCode())
             .build();
         	//logger.info(1);
 	      //  System.out.println("executing request " + login.getURI());  
@@ -153,7 +200,7 @@ public class MyLogin {
 	        } finally {  
 	        	response2.close();
 	        }  
-	        return true;
+	        return true; 
         } catch (UnsupportedEncodingException e) {
 			logger.info(e);
 		} catch (ClientProtocolException e) {
