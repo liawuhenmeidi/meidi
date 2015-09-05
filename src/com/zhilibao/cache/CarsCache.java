@@ -7,15 +7,16 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  
-import com.zhilibao.mapper.CarsOperation;
+import com.zhilibao.dao.CarsDao;
 import com.zhilibao.model.Cars;
    
 @Service 
 public class CarsCache {
     public static List<Cars> list = null ;
     public static boolean flag = false ;
-    @Autowired
-    private CarsOperation carsOperation;
+    
+    @Autowired 
+    private CarsDao carsDao;
     public  Map<Integer,Cars> getmap(){
     	init(); 
     	Map<Integer,Cars> map = new HashMap<Integer,Cars>();
@@ -27,10 +28,10 @@ public class CarsCache {
     	}   
     	return map;
     }    
-           
-    public  void init(){     
+             
+    public  void init(){      
     	if(flag || null == list){     
-    		list = carsOperation.getlist() ;
+    		list = carsDao.getlist() ;
     	}   
     }
 }

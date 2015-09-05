@@ -1,6 +1,8 @@
-package com.zhilibao.model.tax;
+package com.zhilibao.model;
+
+import java.io.Serializable;
   
-public class TaxBasicMessage {
+public class TaxBasicMessage implements Serializable{
 	private String djh;        //单据号（20字节）
   //  private String fpzl;       //发票种类（专用发票或普通发票）   
   //  private String lbdm;       //  类别代码（10字节）

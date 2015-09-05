@@ -32,12 +32,19 @@
  
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="typeAliasesPackage" value="cn.lives.model" />
+		 
 		<!--  
+		<property name="typeAliasesPackage" value="cn.lives.model" />
+		-->  
 		<property name="mapperLocations" value="classpath:com/lives/model/mapper/*.xml" />
-		--> 
 		<property name="configLocation" value="classpath:mybatis.xml" />
-	</bean> 
+	</bean>  
+    
+    <bean id="Mapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+    <property name="sqlSessionFactory" ref="testSqlSessionFactory" />  
+    <property name="mapperInterface" value="com.zhilibao.mapper" />  
+</bean> 
+
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource">

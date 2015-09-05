@@ -1,4 +1,4 @@
-package com.zhilibao.controller.file;
+package com.zhilibao.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,18 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import com.zhilibao.function.export.TaxExchange;
-import com.zhilibao.mapper.TaxBasicMessageOperation;
-import com.zhilibao.model.tax.TaxBasicMessage;
 
-     
+import com.zhilibao.dao.TaxBasicMessageDao;
+import com.zhilibao.function.export.TaxExchange;
+import com.zhilibao.model.TaxBasicMessage;
+
+      
 @Controller  //类似Struts的Action  
 @RequestMapping("/meidiserver/admin/file/")
 public class FileController {    
-	     
+	      
 	protected static Log logger = LogFactory.getLog(FileController.class);
-    @Autowired
-	private TaxBasicMessageOperation taxBasicMessageOperation;
+    @Autowired   
+	private TaxBasicMessageDao taxBasicMessageDao;
 	 
 	    @RequestMapping("tax.do")  // 请求url地址映射，类似Struts的action-mapping             
 	    public ModelAndView tax(){   
@@ -36,7 +37,7 @@ public class FileController {
 	    public ModelAndView taxExchange(HttpServletResponse response,@Param("gfmc") String gfmc,@Param("Djh") String Djh,@Param("filename") String filename){ 
 	    	  
 		    	   
-	    	TaxBasicMessage TaxBasicMessage = taxBasicMessageOperation.getByName(gfmc);
+	    	TaxBasicMessage TaxBasicMessage = taxBasicMessageDao.getByName(gfmc);
     		 
     		logger.info("gfmc"+gfmc); 
     		

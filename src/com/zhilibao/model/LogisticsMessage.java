@@ -1,5 +1,7 @@
 package com.zhilibao.model;
 
+import java.io.Serializable;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -11,7 +13,7 @@ import branch.BranchService;
 import user.User;
 import user.UserService;
 
-public class LogisticsMessage {
+public class LogisticsMessage implements Serializable{
    protected static Log logger = LogFactory.getLog(LogisticsMessage.class);
    
    

@@ -13,17 +13,12 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
- 
-import com.zhilibao.config.Configs;
-import com.zhilibao.model.tax.Tax;
-import com.zhilibao.model.tax.TaxBasicMessage;
-import com.zhilibao.utill.bean.BeanUtill;
+import com.zhilibao.model.Tax;
+import com.zhilibao.model.TaxBasicMessage;
 
 import utill.StringUtill;
 import utill.TimeUtill;
 import wilson.upload.ExcelUpload;
-import wilson.upload.UploadManager;
-import wilson.upload.UploadOrder;
 import wilson.upload.XLSReader;
 
 /** 

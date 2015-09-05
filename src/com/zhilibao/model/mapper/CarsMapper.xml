@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lives.dao.CarsDao">
+
+	<select id="selectCarsById" resultType="Cars"
+		parameterType="java.lang.Long">
+		select * from Cars where id = #{id}
+    </select>
+
+	<delete id="deleteCarsById" parameterType="java.lang.Long">
+		delete from
+		Cars where id = #{id}
+    </delete>
+
+	<insert id="insertCars" parameterType="com.lives.model.Cars" useGeneratedKeys="true" keyProperty="id">
+		insert into Cars
+		(name,personNum,contact,tel,content,userId,pic,smallVillageId) values
+		(#{name},#{personNum},#{contact},#{tel},#{content},#{userId},#{pic},#{smallVillageId})
+    </insert>
+    
+    <update id="updateRateAndCommCountOfCars" parameterType="java.util.Map">
+		update Cars set rate=#{rate},assessmentnum=#{assessmentnum} where id=#{id}	
+	</update>
+
+	<update id="updateCarsById" parameterType="com.lives.model.Cars">
+		update Cars
+		<set>
+			<include refid="updateCars"></include>
+		</set>
+		where id = #{id}
+    </update>
+    <sql id="updateCars">
+    <if test="name!=null and name!=''">
+    	name=#{name},
+    </if>
+     <if test="personNum!=null and personNum!=''">
+    	personNum=#{personNum},
+    </if>
+     <if test="contact!=null and contact!=''">
+    	contact=#{contact},
+    </if>
+     <if test="tel!=null and tel!=''">
+    	tel=#{tel},
+    </if>
+     <if test="content!=null and content!=''">
+    	content=#{content},
+    </if>
+     <if test="userId!=null and userId!=''">
+    	userId=#{userId},
+    </if>
+    <if test="checkState!=null and checkState!=''">
+    	checkState=#{checkState},
+    </if>
+    <if test="pic!=null and pic!=''">
+    	pic=#{pic},
+    </if>
+    <if test="smallVillageId!=null and smallVillageId!=''">
+    	smallVillageId=#{smallVillageId},
+    </if>
+    <if test="browseNum!=null and browseNum!=''">
+    	browseNum=#{browseNum}
+    </if>
+    </sql>
+    
+	<select id="getAllCarsCount" parameterType="java.util.Map" resultType="int">
+		select count(*) from Cars where 1=1
+		<if test="groupId!=null and groupId!=0">
+			and smallVillageId=#{groupId}
+		</if>
+	</select>
+	
+	<select id="getAllCarsList" parameterType="java.util.Map" resultType="Cars">
+		select * from Cars where 1=1
+		<if test="groupId!=null and groupId!=0">
+			and smallVillageId=#{groupId}
+		</if>
+		order by id desc limit #{offset},#{size}
+	</select>
+	
+	<select id="getCarsCountByCol" parameterType="java.util.Map" resultType="int">
+		select count(*) from Cars where 1=1
+		<if test="contact != null and contact != ''">
+			and contact like "%"#{contact}"%"
+		</if>
+		<if test="tel != null and tel != ''">
+			and tel like "%"#{tel}"%"
+		</if>
+		<if test="name != null and name != ''">
+			and name like "%"#{name}"%"
+		</if>
+		<if test="startDate != null and startDate != ''">
+			<![CDATA[and DATE(publishDate) >= #{startDate}]]>
+		</if>
+		<if test="endDate != null and endDate != ''">
+			<![CDATA[and DATE(publishDate) <= #{endDate}]]>
+		</if>
+	</select>
+	
+	<select id="getCarsListByCol" parameterType="java.util.Map" resultType="Cars">
+		select * from Cars where 1=1
+		<if test="contact != null and contact != ''">
+			and contact like "%"#{contact}"%"
+		</if>
+		<if test="tel != null and tel != ''">
+			and tel like "%"#{tel}"%"
+		</if>
+		<if test="name != null and name != ''">
+			and name like "%"#{name}"%"
+		</if>
+		<if test="startDate != null and startDate != ''">
+			<![CDATA[and DATE(publishDate) >= #{startDate}]]>
+		</if>
+		<if test="endDate != null and endDate != ''">
+			<![CDATA[and DATE(publishDate) <= #{endDate}]]>
+		</if>
+		order by id desc 
+		limit #{offset},#{size}
+	</select>
+	<select id="getCarsByArea" parameterType="java.util.Map" resultType="Cars">
+		select a.*, g.groupName as smallVillageName from Cars a inner join groupinfo g on g.id=a.smallVillageId
+		where g.groupName=#{area} and checkState=1  order by a.publishDate desc limit #{offset},#{size}
+	</select>
+	<select id="getCarsCountByArea" parameterType="java.util.Map" resultType="int">
+		select count(*) from Cars a inner join groupinfo g on g.id=a.smallVillageId
+		where g.groupName=#{area} and checkState=1
+	</select>
+	<select id="getActivityLimitThree" parameterType="java.util.Map" resultType="Cars">
+		select * from Cars 
+		<where>
+			<if test="id!=null and id!=0">
+				id!=#{id}
+			</if>
+			<if test="groupId!=null and groupId!=0">
+				and smallVillageId=#{groupId}
+			</if>
+			and and checkState=1
+		</where>
+		 order by publishDate desc
+		 limit #{offset},#{size} 
+	</select>
+	
+	<select id="getAllCarsListByTimeAndArea" parameterType="java.util.Map" resultType="Cars">
+	select a.* from Cars a 
+	<if test="area!=null and area!=''">
+			inner join groupinfo g on g.id=a.smallVillageId
+	</if>
+	<where>
+		<if test="area!=null and area!=''">
+			g.groupName=#{area}
+		</if>
+		<if test="week!=null and week!=''">
+			<![CDATA[and DATE(a.publishDate)>=#{week}]]>
+		</if>
+		<if test="afterweek!=null and afterweek!=''">
+			<![CDATA[and DATE(a.publishDate)<=#{afterweek}]]>
+		</if>
+		and a.checkState=1
+	</where>
+	order by a.publishDate desc
+		 limit #{offset},#{size}  
+	</select>
+	<select id="getCountCarsListByTimeAndArea" parameterType="java.util.Map" resultType="int">
+	select count(*) from Cars a 
+	<if test="area!=null and area!=''">
+			inner join groupinfo g on g.id=a.smallVillageId
+	</if>
+	<where>
+		<if test="area!=null and area!=''">
+			g.groupName=#{area}
+		</if>
+		<if test="week!=null and week!=''">
+			<![CDATA[and DATE(a.publishDate)>=#{week}]]>
+		</if>
+		<if test="afterweek!=null and afterweek!=''">
+			<![CDATA[and DATE(a.publishDate)<=#{afterweek}]]>
+		</if>
+		and a.checkState=1
+	</where>
+	</select>
+
+</mapper>

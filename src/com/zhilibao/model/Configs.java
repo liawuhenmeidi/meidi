@@ -1,6 +1,8 @@
-package com.zhilibao.config;
+package com.zhilibao.model;
 
-public class Configs {
+import java.io.Serializable;
+
+public class Configs implements Serializable{
    private int id ;
    private String name ;
    private String message;

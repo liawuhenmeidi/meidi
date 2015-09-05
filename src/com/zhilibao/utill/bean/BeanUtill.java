@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.zhilibao.model.tax.TaxBasicMessage;
+import com.zhilibao.model.TaxBasicMessage;
  
 public class BeanUtill { 
 	protected static Log logger = LogFactory.getLog(BeanUtill.class);   

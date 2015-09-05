@@ -1,9 +1,11 @@
 package com.zhilibao.model;
 
+import java.io.Serializable;
+
 import user.User;
 import user.UserService;
 
-public class Cars {
+public class Cars implements Serializable{
    public int id ; 
    public int uid ;
    public String num ;

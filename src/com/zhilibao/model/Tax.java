@@ -1,6 +1,8 @@
-package com.zhilibao.model.tax;
+package com.zhilibao.model;
+
+import java.io.Serializable;
   
-public class Tax {
+public class Tax implements Serializable{
 	private String pnum; //  商品编号
     private String pname ; //商品全名
     private String unit;  // 单位

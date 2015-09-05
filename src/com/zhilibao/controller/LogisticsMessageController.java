@@ -24,8 +24,8 @@ import branch.BranchManager;
 import branchtype.BranchType;
 import branchtype.BranchTypeManager;
 
-import com.zhilibao.mapper.CarsOperation;
-import com.zhilibao.mapper.LogisticsMessageOperation;
+import com.zhilibao.dao.CarsDao;
+import com.zhilibao.dao.LogisticsMessageDao;
 import com.zhilibao.model.Cars;
 import com.zhilibao.model.LogisticsMessage;
 import com.zhilibao.token.Token;
@@ -34,12 +34,12 @@ import com.zhilibao.token.Token;
 @RequestMapping("/meidiserver/admin/logistics/")
 public class LogisticsMessageController { 
 	@Autowired 
-	private CarsOperation carsOperation;
-	
+	private CarsDao carsDao;
+	 
 	@Autowired 
-	private LogisticsMessageOperation logisticsMessageOperation;
+	private LogisticsMessageDao logisticsMessageDao;
 	 protected static Log logger = LogFactory.getLog(LogisticsMessageController.class);
-	  
+	   
 	         
 	   // @Token(save=true)     
 	    @RequestMapping("add.do")  // 请求url地址映射，类似Struts的action-mapping             
@@ -51,7 +51,7 @@ public class LogisticsMessageController {
 	    	logger.info(user);     
 	    	    
 	    	
-	    	List<Cars> cars =carsOperation.getlist();  
+	    	List<Cars> cars =carsDao.getlist();  
 	    	//logger.info(cars);    
 	    	List<User>  users= UserService.getLogistics(user);
 	    	//logger.info(users);  
@@ -86,10 +86,8 @@ public class LogisticsMessageController {
 	        // 参数的名称是与页面控件的name相匹配，参数类型会自动被转换  
 	    	logger.info("save");
 	    	
-	    	logisticsMessageOperation.sava(lm);  
-	    	 
-	    	   
-	    	 
+	    	//logisticsMessageDao.sava(lm);  
+	    	  
 	    	Map<String, Object> context = new HashMap<String, Object>(); 
 	    	context.put("message","保存成功");  
 	    	ModelAndView modelAndView = new ModelAndView("jieguo",context);

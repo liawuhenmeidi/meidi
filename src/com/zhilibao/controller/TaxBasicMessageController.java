@@ -1,4 +1,4 @@
-package com.zhilibao.controller.tax;
+package com.zhilibao.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -13,28 +13,29 @@ import org.springframework.web.servlet.ModelAndView;
 import utill.StringUtill;
 import wilson.upload.ExcelUpload;
 import wilson.upload.XLSReader;
-import com.zhilibao.mapper.TaxBasicMessageOperation;
-import com.zhilibao.model.tax.Tax;
-import com.zhilibao.model.tax.TaxBasicMessage;
+
+import com.zhilibao.dao.TaxBasicMessageDao;
+import com.zhilibao.model.Tax;
+import com.zhilibao.model.TaxBasicMessage;
        
 @Controller  //类似Struts的Action  
 @RequestMapping("/meidiserver/admin/tax/")
 public class TaxBasicMessageController {    
 	@Autowired
-	private TaxBasicMessageOperation taxBasicMessageOperation;
+	private TaxBasicMessageDao taxBasicMessageDao;
 	 
 	protected static Log logger = LogFactory.getLog(TaxBasicMessageController.class);
 	                      
-	  //  @Authority(isverification=true,AuthorityMessage={AuthorityAll.TaxBasicMessage+"_"+OperationAuthority.write})       
+	  //  @Authority(isverification=true,AuthorityMessage={AuthorityAll.TaxBasicMessage+"_"+DaoAuthority.write})       
 	    @RequestMapping("add.do")             // 请求url地址映射，类似Struts的action-mapping             
 	    public ModelAndView add(@Param("gfmc") String gfmc){                              
 	    	ModelAndView modelAndView = new ModelAndView();
-	    	modelAndView.setViewName("tax/taxAdd");  
-	    	List<TaxBasicMessage> list = taxBasicMessageOperation.getList();
-	    	modelAndView.addObject("TaxBasicMessages", list); 
+	    	modelAndView.setViewName("tax/taxAdd");   
+	    	//List<TaxBasicMessage> list = taxBasicMessageDao.getList();
+	    	//modelAndView.addObject("TaxBasicMessages", list); 
 	    	logger.info(gfmc); 
 	    	if(!StringUtill.isNull(gfmc)){
-	    		TaxBasicMessage TaxBasicMessage =taxBasicMessageOperation.getByName(gfmc);
+	    		TaxBasicMessage TaxBasicMessage =taxBasicMessageDao.getByName(gfmc);
 	    		modelAndView.addObject("TaxBasicMessage",TaxBasicMessage); 
 	    	
 	    	} 
@@ -43,8 +44,8 @@ public class TaxBasicMessageController {
 	     
 	    @RequestMapping("save.do")  // 请求url地址映射，类似Struts的action-mapping             
 	    public ModelAndView save(TaxBasicMessage tbm){  
-	    	taxBasicMessageOperation.delete(tbm);   
-	    	taxBasicMessageOperation.save(tbm);         
+	    	//taxBasicMessageDao.delete(tbm);   
+	    	//taxBasicMessageDao.save(tbm);         
 	    	ModelAndView modelAndView = new ModelAndView();
              
 	    	modelAndView.setViewName("jieguo");  
@@ -70,10 +71,10 @@ public class TaxBasicMessageController {
 	    	}
 	    	
     
-	    	
+	    	 
             
-	    	List<TaxBasicMessage> list = taxBasicMessageOperation.getList();
-	    	modelAndView.addObject("TaxBasicMessages", list); 
+	    	//List<TaxBasicMessage> list = taxBasicMessageDao.getList();
+	    	//modelAndView.addObject("TaxBasicMessages", list); 
 	    	
 	    	modelAndView.setViewName("tax/taxExchange");  
 	    	
