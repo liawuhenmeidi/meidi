@@ -647,11 +647,15 @@ private List<Gift> ordergift = new ArrayList<Gift>();
 public void setRemark(String remark) {
 	this.remark = remark;
 }
-
+   
 public String getPhone1() {
-	return phone1;
+	return phone1; 
 }
-
+  
+public String getPhone() {
+	return phone1+"</p>"+phone2; 
+}
+ 
 public void setPhone1(String phone1) {
 	this.phone1 = phone1;
 }

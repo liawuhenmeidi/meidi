@@ -168,6 +168,7 @@ String sm = StringUtill.GetJson(model);
 	     '<td  align=center ><select name="statues'+row+'" id="statues'+row+'">'+
 	     '<option value=""></option>'+   
 	     '<option value="1">订货</option>'+ 
+	     '<option value="11">只生成订单不发货</option>'+ 
 	      '<option value="3">样机订货</option>'+
 	      '<option value="4">换货订货</option>'+
 	      '<option value="5">赠品订货</option>'+ 

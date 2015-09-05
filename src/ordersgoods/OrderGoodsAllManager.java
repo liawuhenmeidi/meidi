@@ -413,20 +413,20 @@ public class OrderGoodsAllManager {
 		List<Integer> listids = UserService.GetListson(user);
 		if(OrderMessage.all == opstatues){
 			opstatuess = "(2,3)";
-		}else { 
-			opstatuess = "("+opstatues+")";
-		}
-		// logger.info(listids);
-		Connection conn = DB.getConn();
-
+		}else {  
+			opstatuess = "("+opstatues+")"; 
+		}  
+		// logger.info(listids) ; 
+		Connection conn = DB.getConn();  
+  
 		String sql = " select * from mdordergoods,mdordermessage  where mdordergoods.mid = mdordermessage.id and mdordergoods.billingstatues in "
 				+ opstatuess
-				+ " and mdordermessage.opstatues = 1 and mdordermessage.submitid in ("
+				+ " and mdordermessage.opstatues = 1 and mdordergoods.statues not in (11,12) and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
 						listids.toString().length() - 1)
 				+ " ) order by mdordermessage.submittime desc";
 
-		logger.info(sql);
+		logger.info(sql); 
 		Statement stmt = DB.getStatement(conn);
 
 		ResultSet rs = DB.getResultSet(stmt, sql);

@@ -122,15 +122,16 @@ select{width: 200px; height: 30px;font-size:100%;}
 	      '<td align=center    >编号</td> '+
 	     ' <td align=center   >'+(row*1+1*1)*1+'</td> '+
 	     ' </tr>'+  
-	     '<tr '+cl+'>'+ 
+	     '<tr '+cl+'>'+  
 	     ' <td align=center  > 产品型号</td> '+
 	     ' <td colspan=2 align=center ><input type="text" name="product'+row+'"  id="product'+row+'" placeholder="型号"  style="border-style:none" /></td> ' +    
-	     ' </tr>'+ 
-	     '<tr '+cl+'>'+ 
+	     ' </tr>'+  
+	     '<tr '+cl+'>'+  
 	     ' <td align=center  >状态</td>  '+ 
 	     '<td  align=center ><select name="statues'+row+'" id="statues'+row+'">'+
-	     '<option value=""></option>'+   
+	     '<option value=""></option>'+    
 	     '<option value="1">常规特价机订货</option>'+ 
+	     '<option value="11">只生成订单不发货</option>'+
 	      '<option value="3">样机订货</option>'+  
 	      '<option value="4">换货订货</option>'+
 	      '<option value="5">赠品订货</option>'+

@@ -50,5 +50,5 @@
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/meidiserver/admin/" p:suffix=".jsp" /> 
   
 
-
+ 
 </beans> 

@@ -24,9 +24,11 @@ public class OrderGoods {
 	private Product product;
   
 	private int statues; // 1常规 2 特价 3 样机 4 换货 5 赠品 6 店外退货 7 已入库常规退货 8 已入库特价退货 9
-							// 已入库样机退货     10 店外样机退货
-	private int realstatues; // 
-	private int ordernum;    
+							// 已入库样机退货     10 店外样机退货      11 常规只生成订单不发货   12 特价只生成订单不发货
+	
+	 
+	private int realstatues; //   
+	private int ordernum;     
 	private int realnum; // 送货数量  
 	private int opstatues; // 0 未生成订单 1 生成订单 2 已导出订单
 	private int billingstatues; // 0 未发货 1 已发货  2 已修改实发数量   3 已入库 
@@ -152,20 +154,22 @@ public class OrderGoods {
 	public int getTid() {
 		return tid;
 	}
-
+ 
 	public void setTid(int tid) {
 		this.tid = tid;
-	}
-  
+	} 
+   
 	public int getRealstatues() {
-	    	Product p = getProduct();   
+	    	Product p = getProduct();    
 		  //System.out.println(statues);
 		if (null != p && p.getSaleType() != -1) {
 			if (1 == statues) {
 				realstatues = p.getSaleType();
 			} else if (7 == statues) {
 				realstatues = p.getSaleType() + 6;
-			} else {
+			} else if(11 == statues){
+				realstatues = p.getSaleType() + 10;
+			}else {   
 				realstatues = statues;
 			}
 		} else {
@@ -277,7 +281,11 @@ public class OrderGoods {
 			Branch = "0002";
 		} else if (9 == statues) {
 			Branch = "样机";
-		} else {
+		} else if(11 == statues){
+			Branch = "0001"; 
+		}else if(12 == statues){
+			Branch = "0002";
+		}else{
 			Branch = "";
 		}
 		return Branch;
@@ -315,7 +323,11 @@ public class OrderGoods {
 			statuesName = "已入库样机退货";
 		}else if (10 == statues) {
 			statuesName = "店外样机退货";
-		} 
+		}else if (11 == statues) {
+			statuesName = "常规机订货";
+		} else if (12 == statues) { 
+			statuesName = "特价机订货";
+		}  
 		return statuesName;
 	}
 

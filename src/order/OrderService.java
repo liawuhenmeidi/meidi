@@ -92,7 +92,7 @@ public class OrderService {
 					if(null == phonemap){
 						phonemap = new HashMap<String,Map<String,Map<String,List<Order>>>>();
 						umap.put(o.getPhone1(), phonemap);
-					}
+					} 
 				}else { 
 					phonemap = umap.get("same") ;
 					if(null == phonemap){
@@ -468,7 +468,7 @@ public class OrderService {
 								if(o.getPhoneRemark()!=1){    
 									tdcol = ""; 
 								}
-								html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+"<p><font color=\""+tdcol+"\"> "+o.getPhone1()+"</td>  "); 
+								html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+"<p><font color=\""+tdcol+"\"> "+o.getPhone()+"</td>  "); 
 								html.append("<td align=\"center\">"+o.getCategory(0, "</p>")+"</td> ");
 								html.append("<td align=\"center\" >"+o.getSendType(0, "</p>")+"</td>  ");
 								html.append("<td align=\"center\" >"+o.getSendCount(0, "</p>")+"</td> ");
@@ -560,7 +560,7 @@ public class OrderService {
 							if(o.getPhoneRemark()!=1){   
 								tdcol = ""; 
 							}
-							html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+"<p><font color=\""+tdcol+"\"> "+o.getPhone1()+"</td>  "); 
+							html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+"<p><font color=\""+tdcol+"\"> "+o.getPhone()+"</td>  "); 
 							html.append("<td align=\"center\">"+o.getCategory(0, "</p>")+"</td> ");
 							html.append("<td align=\"center\" >"+o.getSendType(0, "</p>")+"</td>  ");
 							html.append("<td align=\"center\" >"+o.getSendCount(0, "</p>")+"</td> ");
@@ -641,7 +641,7 @@ public class OrderService {
 				 
 				Map<String,Map<String,Map<String,List<Order>>>> phonemap = null ;
 				if(1 == en.getPhone()){
-					phonemap = umap.get(o.getPhone1()) ;
+					phonemap = umap.get(o.getPhone()) ;
 					if(null == phonemap){
 						phonemap = new HashMap<String,Map<String,Map<String,List<Order>>>>();
 						umap.put(o.getPhone1(), phonemap);
@@ -1384,7 +1384,7 @@ public class OrderService {
 				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 				
 				html.append("<td align=\"center\">"+ o.getCategory(1,"</p>")+"</td>");
@@ -1484,7 +1484,7 @@ public class OrderService {
 				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
 				
@@ -1626,7 +1626,7 @@ public class OrderService {
 								}
 								
 								html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-								"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+								"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 								
 								html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
 								
@@ -1744,7 +1744,7 @@ public class OrderService {
 						}
 						
 						html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-						"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+						"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 						
 						html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
 						
@@ -1905,7 +1905,7 @@ public class OrderService {
 								}
 								
 								html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-								"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+								"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 								
 								html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
 								
@@ -2033,7 +2033,7 @@ public class OrderService {
 						}
 						
 						html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-						"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+						"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 						
 						html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
 						
@@ -2206,7 +2206,7 @@ public class OrderService {
 								}
 								
 								html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-								"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+								"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 								
 								html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
 								
@@ -2319,7 +2319,7 @@ public class OrderService {
 							}
 							
 							html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-							"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+							"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 							
 							html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
 							
@@ -2436,7 +2436,7 @@ public class OrderService {
 				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 				html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
 				
@@ -2528,7 +2528,7 @@ public class OrderService {
 				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
 				
@@ -2762,7 +2762,7 @@ public class OrderService {
 				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
 				
@@ -3030,7 +3030,7 @@ public class OrderService {
 				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 			    
 				
@@ -3113,7 +3113,7 @@ public class OrderService {
 				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 				html.append("<td align=\"center\">"+ o.getCategory(1,"</p>")+"</td>");
 				
@@ -3186,7 +3186,7 @@ public class OrderService {
 				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 				
 				html.append("<td align=\"center\">"+ o.getCategory(1,"</p>")+"</td>");
@@ -3286,7 +3286,7 @@ public class OrderService {
 				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 				
 				
@@ -3353,7 +3353,7 @@ public class OrderService {
 				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 				
 				html.append("<td align=\"center\">"+ o.getCategory(1,"</p>")+"</td>");
@@ -3475,7 +3475,7 @@ public class OrderService {
 				}
 				
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 				html.append("<td align=\"center\">"+OrderManager.getDeliveryStatues(o) +"</td> ");
 				
@@ -3553,7 +3553,7 @@ public class OrderService {
 					tdcol = ""; 
 				}
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
 				
@@ -3767,7 +3767,7 @@ public class OrderService {
 					tdcol = ""; 
 				}
 				html.append("<td align=\"center\">"+o.getUsername()  +"</p>"+
-				"<p><font color=\""+tdcol+"\"> "+ o.getPhone1()+"</td>  ");
+				"<p><font color=\""+tdcol+"\"> "+ o.getPhone()+"</td>  ");
 				
 				html.append("<td align=\"center\">"+ o.getCategory(0,"</p>")+"</td>");
 				

@@ -194,8 +194,9 @@ if(num >row){
 	     '<tr '+cl+'>'+   
 	      
 	     '<td align=center colspan = 2>状态:<select name="statues'+row+'" id="statues'+row+'">'+
-	     '<option value=""></option>'+  
-	     '<option value="1">订货</option>'+
+	     '<option value=""></option>'+   
+	     '<option value="1">订货</option>'+ 
+	     '<option value="11">只生成订单不发货</option>'+
 	      '<option value="3">样机订货</option>'+
 	      '<option value="4">换货订货</option>'+
 	      '<option value="5">赠品订货</option>'+
@@ -515,7 +516,7 @@ if(num >row){
 <div class="main">
 
 		     
-   <div class="s_main_tit"><span class="qiangdan"><a href="ordergoods.jsp?intelligent=intelligent">智能要货</a></span><span class="qiangdan"><a href="../welcom.jsp">返回</a></span></div>    
+   <div class="s_main_tit"><span class="qiangdan"></span><span class="qiangdan"><a href="../welcom.jsp">返回</a></span></div>    
      <div>
             
      <form action="../OrderGoodsServlet"  method = "post"  onsubmit="return check()">

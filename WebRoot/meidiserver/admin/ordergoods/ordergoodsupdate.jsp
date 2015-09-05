@@ -317,10 +317,12 @@ var jsoninventorysnsale = <%=jsoninventorysnsale%>;
 	     '<td align=center><span style="color:red;font-size:15px;" id="sncount'+row+'"  ></span></td>'+
 	     '<td align=center><span style="color:red;font-size:15px;" id="snstatues'+row+'"  ></span></td>'+
 	     '<td  align=center ><select name="statues'+row+'" id="statues'+row+'">'+
-	        
+	         
 	     '<option value=""></option>'+    
 	     '<option value="1">常规机订货</option>'+
 	     '<option value="2">特价机订货</option>'+
+	     '<option value="11">常规只生成订单不发货</option>'+
+	     '<option value="12">特价只生成订单不发货</option>'+
 	      '<option value="3">样机订货</option>'+
 	      '<option value="4">换货订货</option>'+
 	      '<option value="5">赠品订货</option>'+    

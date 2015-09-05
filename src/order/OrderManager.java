@@ -1578,10 +1578,10 @@ public static Map<String,Order> getOrdermapByIds(User user ,String id){
   
 	   return opstatues;
    } 
-   
+    
    public static Order gerOrderFromRs(ResultSet rs){
 	   Order p = null;
-		try { 
+		try {  
 			p = new Order();
 			p.setId(rs.getInt("mdorder.id")); 
 			p.setLocate(rs.getString("mdorder.locates"));

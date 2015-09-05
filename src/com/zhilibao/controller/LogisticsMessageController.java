@@ -35,16 +35,16 @@ import com.zhilibao.token.Token;
 public class LogisticsMessageController {  
 	 protected static Log logger = LogFactory.getLog(LogisticsMessageController.class);
 	  
-	     
-	    @Token(save=true)    
+	         
+	   // @Token(save=true)     
 	    @RequestMapping("add.do")  // 请求url地址映射，类似Struts的action-mapping             
 	    public ModelAndView add(HttpSession session,@Param("pid")String pid){  
 	        // request和response不必非要出现在方法中，如果用不上的话可以去掉 
 	        // 参数的名称是与页面控件的name相匹配，参数类型会自动被转换  
 	    	ModelAndView modelAndView = new ModelAndView();   
 	    	User user = (User)session.getAttribute("user"); 
-	    	//logger.info(user);     
-	    	   
+	    	logger.info(user);     
+	    	    
 	    	CarsOperation co = (CarsOperation)MapperService.getCarsOperation();
 	    	List<Cars> cars =co.getlist();  
 	    	//logger.info(cars);    
@@ -75,7 +75,7 @@ public class LogisticsMessageController {
 	    } 
 	       
 	     @RequestMapping("save.do")  // 请求url地址映射，类似Struts的action-mapping
-	   //  @Token(remove=true)           
+	   //   @Token(remove=true)           
 	    public ModelAndView save(LogisticsMessage lm){  
 	        // request和response不必非要出现在方法中，如果用不上的话可以去掉
 	        // 参数的名称是与页面控件的name相匹配，参数类型会自动被转换  

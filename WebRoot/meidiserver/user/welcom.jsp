@@ -44,7 +44,10 @@ function clear(){
      }  
    if(UserManager.checkPermissions(user, Group.ordergoods,"w")){ 	 
 	   %>          
-	   <li><a href="OrderGoods/ordergoods.jsp">订货 </a></li> 
+	   <li><a href="OrderGoods/ordergoods.jsp">订货 </a></li>  
+	    <li> <a href="OrderGoods/ordergoods.jsp?intelligent=intelligent">智能订货</a></li> 
+	    
+	    
 	   <li><a href="OrderGoods/ordergoodsall.jsp">未审核订单 </a></li> 
 	   <!--   
 	    <li><a href="OrderGoods/inventoryDynamic.jsp">智能要货 </a></li> 
@@ -56,8 +59,8 @@ function clear(){
 	   %>             
 	   <!--       
 	   <li><a href="inventory/inventorycome.jsp">未入库 </a></li> 
-	    -->   
-	   <li><a href="OrderGoods/SNOrder.jsp">全部订单号 </a></li> 
+	    -->    
+	   <li><a href="OrderGoods/SNOrder.jsp">入库订单号查询 </a></li> 
 	   <li><a href="makeInventory/makeinventoryall.jsp">盘点</a></li>
 	  <!--   
 	    <li><a href="inventory/inventorycheck.jsp">盘点</a></li>
