@@ -7,7 +7,7 @@ User user = (User)session.getAttribute("user");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head> 
+<head>  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>订单管理</title> 
 <base target="_parent"/>
@@ -276,8 +276,11 @@ function getInventory(){
                     } 
                 if(ordergoods_e){
                     %> 
-                     <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssended.jsp')">修改实收数量</a></p> 
+                     <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssended.jsp')">修改实收数量</a></p>
+                     <!-- 
                       <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodsInstorage.jsp')">卖场入库</a></p> 
+                  
+                  -->
                  <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/ordergoodssendhistory.jsp')">历史订单</a></p> 
                  <p ><a href="javascript:void(0);"  onclick="reloadopned('receivegoods/receivegoods.jsp')">收货记录</a></p> 
                      

@@ -22,11 +22,14 @@
         <setting name="defaultExecutorType" value="BATCH" />  
                 <!-- 数据库超过25000秒仍未响应则超时 -->  
         <setting name="defaultStatementTimeout" value="25000" />  
-    </settings>  
+    </settings>    
     
-    
+      
     <typeAliases>
- 		    	  
+ 		    	   <typeAlias type="com.zhilibao.model.Tax" alias="tax"/>
+          <typeAlias type="com.zhilibao.model.TaxBasicMessage" alias="taxBasicMessage"/>
+ 		  <typeAlias type="com.zhilibao.model.LogisticsMessage" alias="logisticsMessage"/>
+          <typeAlias type="com.zhilibao.model.Cars" alias="cars"/>
   
     	
     </typeAliases>

@@ -3,7 +3,7 @@
 request.setCharacterEncoding("utf-8");
  
 User user = (User)session.getAttribute("user");
-
+ 
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
@@ -14,7 +14,7 @@ if("0".equals(message)){
 }else if("1".equals(message)){
 	message = "修改失败"; 
 }
-
+ 
 String resetpassword = request.getParameter("resetpassword");
 
 if("resetpassword".equals(resetpassword)){

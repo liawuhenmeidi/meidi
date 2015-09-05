@@ -2,6 +2,8 @@ package com.zhilibao.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,9 +23,9 @@ import com.zhilibao.model.TaxBasicMessage;
 public class FileController {    
 	      
 	protected static Log logger = LogFactory.getLog(FileController.class);
-    @Autowired   
+    @Resource
 	private TaxBasicMessageDao taxBasicMessageDao;
-	 
+	  
 	    @RequestMapping("tax.do")  // 请求url地址映射，类似Struts的action-mapping             
 	    public ModelAndView tax(){   
 	    	ModelAndView modelAndView = new ModelAndView();

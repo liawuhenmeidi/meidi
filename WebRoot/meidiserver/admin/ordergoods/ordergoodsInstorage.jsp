@@ -6,7 +6,7 @@ String branchtype = request.getParameter("branchtype");
 List<BranchType> listgt = BranchTypeManager.getLocate(); 
 Map<String,OrderGoodsAll> map  = OrderGoodsAllManager.getsendmap(user,OrderMessage.billing); 
  // System.out.println(StringUtill.GetJson(map));      
-%>             
+%>              
 <!DOCTYPE html>   
 <html> 
 <head> 

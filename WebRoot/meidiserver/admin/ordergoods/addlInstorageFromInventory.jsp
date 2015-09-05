@@ -3,12 +3,10 @@
 <%@ include file="../../common.jsp"%>
  
 <% 
-	List<BranchType> listgt = BranchTypeManager.getLocate(); 
-//System.out.println(statues+"&&"+type);
  String time = TimeUtill.getdateString();   
-Map<String, List<String>> map = BranchService.getPtypeMap();
-String branchtype = StringUtill.GetJson(map);
-
+String branch = request.getParameter("branch"); 
+String branchtypeid = request.getParameter("branchtypeid");  
+//System.out.println(branchtypeid+"------"+branch);
 ProductSaleModel.Model[] model = ProductSaleModel.Model.values();
 String sm = StringUtill.GetJson(model); 
 // System.out.println(json); 
@@ -34,7 +32,7 @@ String sm = StringUtill.GetJson(model);
 //alert(listallp);   
   var jsonallp = null;
  //alert(listall); 
-   var map = <%=branchtype%>
+ var branch = "<%=branch%>"; 
  var row = 10;    
  var rows = new Array();
  var count = 1 ;    
@@ -44,23 +42,14 @@ String sm = StringUtill.GetJson(model);
  var jsoninventorysn = null;
  var jsoninventorysnmodel = null;
  var jsoninventorysnsale = null;
-  
+   
  $(function () {      
-	 $("#branchtype").change(function(){ 
-		 //var str = $("#branchid").find("option:selected").text();
-		var branchtype = $("#branchtype").val(); 
-		// alert(map[branchtype]); 
-		 $("#branchid").autocomplete({   
-			 source: map[branchtype]
-		    });	  
-	 });   
+	
 	    
-	 $("#branchid").blur(function(){
-		  
+	 $("#branchid").val(branch);
+		   
 		 
-		 initBranch();  
-		  
-	 });   
+	  initBranch();     
 	 
 	 addrowinti();
 
@@ -72,16 +61,17 @@ String sm = StringUtill.GetJson(model);
 	 getInventory();
  }
   
- function getInventory(){
-	 var branchtype = $("#branchtype").val();
+ function getInventory(){ 
+	
 	 var branch = $("#branchid").val();
+	 
 	 if(branch == "" || branch == null){
 		 return ;
-	 }    
+	 }     
 	 $.ajax({   
-	        type: "post",   
+	        type: "post",    
 	         url: "../server.jsp", 
-	         data:"method=getInventoryOut&branch="+branch+"&branchtype="+branchtype,
+	         data:"method=getInventoryOut&branch="+branch+"&branchtype=<%=branchtypeid%>",
 	         dataType: "",     
 	         success: function (data) {  
 	        	 var josns = jQuery.parseJSON(data); 
@@ -440,27 +430,11 @@ String sm = StringUtill.GetJson(model);
 				<input type="hidden" name="rows" id="rows" value="" />
 				
 				<table style="width:100% ">
-					<tr class="asc"> 
-						<td>销售系统： <select id="branchtype" name="branchtype">
-								<option></option>
-								<% 
-									if (null != listgt) {
-										for (int i = 0; i < listgt.size(); i++) {
-											BranchType bt = listgt.get(i);
-											if (bt.getTypestatues() == 1) {
-								%> 
-								<option value="<%=bt.getId()%>"><%=bt.getName()%></option>
-								<%
-									} 
-										}
-									}
-								%> 
-						</select>
-						</td>
- 
-						<td align=center>门店</td>
+					<tr class="asc">   
+    
+						<td align=center>门店</td>    
 						<td align=center><input type="text" name="branchid"
-							id="branchid" placeholder="请先输入门店" value="" class="cba" /></td>
+							id="branchid" readonly class="cba"/></td>
 						<td align=center>卖场入库单号：<input type="text" name="oid"
 							id="oid" placeholder="请先输入卖场订单号" value="" class="cba" /></td>
 						<td align=center>日期：<%=TimeUtill.getdateString()%></td>

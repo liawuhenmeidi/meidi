@@ -60,7 +60,8 @@ td {
 
 <script type="text/javascript">
  
- var row = 1; 
+ var row = 1;  
+
  var rows = new Array();
  var branchstr = <%=branchstr%>; 
 
@@ -69,9 +70,10 @@ td {
 	 add();
  });
  
- function search(category,branchid){
+ function search(category,branchid,pid){
+	// alert(pid); 
 	// window.open('inventory1.jsp?category='+category+'&branchid='+branchid, 'abc', 'resizable:yes;dialogWidth:400px;dialogHeight:500px;dialogTop:0px;dialogLeft:center;scroll:no'); 
-	 window.location.href='inventory1.jsp?category='+category+'&branchid='+branchid;
+	 window.location.href='inventory1.jsp?category='+category+'&branchid='+branchid+'&branchtypeid='+pid;
  }
   
  function add(){    
@@ -104,8 +106,8 @@ td {
 	        			 pandian = "是";
 	        		 }
 	        		 
-	        		 if(counttype != 0 || counttype == 0 && str.papercount != 0 ){
-		        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branchstr[str.branchid].locateName+'\')">' +  
+	        		 if(counttype != 0 || counttype == 0 && str.papercount != 0 ){ 
+		        		 addstr += '<tr id="record'+row+'" class="asc" ondblclick="search(\''+str.categoryid+'\',\''+branchstr[str.branchid].locateName+'\',\''+branchstr[str.branchid].pid+'\')">' +  
 		        		  
 		        		     ' <td>'+branchstr[str.branchid].locateName+'</td> ' + 
 		        		     ' <td>'+str.cateoryName+'</td> ' +   

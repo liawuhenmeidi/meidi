@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -33,10 +34,10 @@ import com.zhilibao.token.Token;
 @Controller  //类似Struts的Action 
 @RequestMapping("/meidiserver/admin/logistics/")
 public class LogisticsMessageController { 
-	@Autowired 
+	 @Resource
 	private CarsDao carsDao;
 	 
-	@Autowired 
+	 @Resource
 	private LogisticsMessageDao logisticsMessageDao;
 	 protected static Log logger = LogFactory.getLog(LogisticsMessageController.class);
 	   
@@ -50,7 +51,7 @@ public class LogisticsMessageController {
 	    	User user = (User)session.getAttribute("user"); 
 	    	logger.info(user);     
 	    	    
-	    	
+	    	 
 	    	List<Cars> cars =carsDao.getlist();  
 	    	//logger.info(cars);    
 	    	List<User>  users= UserService.getLogistics(user);
@@ -60,6 +61,7 @@ public class LogisticsMessageController {
 	    	Map<String,List<Branch>> map = BranchManager.getLocateMapBranch(); 
 	    	//Map<String,List<Branch>> map = BranchService.g
 	    	String mapjosn = StringUtill.GetJson(map);
+	    	
 	    	String time = TimeUtill.getdateString(); 
 	    	String submittime = TimeUtill.gettime();
 	    	if(StringUtill.isNull(pid)){ 

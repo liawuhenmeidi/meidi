@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lives.dao.CarsDao">
-
-	<select id="selectCarsById" resultType="Cars"
+<mapper namespace="com.zhilibao.dao.CarsDao"> 
+  
+	<select id="selectCarsById" resultType="cars"
 		parameterType="java.lang.Long">
-		select * from Cars where id = #{id}
+		select * from Cars where id = #{id} 
     </select>
 
 	<delete id="deleteCarsById" parameterType="java.lang.Long">
@@ -12,7 +12,7 @@
 		Cars where id = #{id}
     </delete>
 
-	<insert id="insertCars" parameterType="com.lives.model.Cars" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insertCars" parameterType="cars" useGeneratedKeys="true" keyProperty="id">
 		insert into Cars
 		(name,personNum,contact,tel,content,userId,pic,smallVillageId) values
 		(#{name},#{personNum},#{contact},#{tel},#{content},#{userId},#{pic},#{smallVillageId})
@@ -22,7 +22,7 @@
 		update Cars set rate=#{rate},assessmentnum=#{assessmentnum} where id=#{id}	
 	</update>
 
-	<update id="updateCarsById" parameterType="com.lives.model.Cars">
+	<update id="updateCarsById" parameterType="cars">
 		update Cars
 		<set>
 			<include refid="updateCars"></include>
@@ -69,7 +69,7 @@
 		</if>
 	</select>
 	
-	<select id="getAllCarsList" parameterType="java.util.Map" resultType="Cars">
+	<select id="getAllCarsList" parameterType="java.util.Map" resultType="cars">
 		select * from Cars where 1=1
 		<if test="groupId!=null and groupId!=0">
 			and smallVillageId=#{groupId}
@@ -96,7 +96,7 @@
 		</if>
 	</select>
 	
-	<select id="getCarsListByCol" parameterType="java.util.Map" resultType="Cars">
+	<select id="getCarsListByCol" parameterType="java.util.Map" resultType="cars">
 		select * from Cars where 1=1
 		<if test="contact != null and contact != ''">
 			and contact like "%"#{contact}"%"
@@ -116,7 +116,7 @@
 		order by id desc 
 		limit #{offset},#{size}
 	</select>
-	<select id="getCarsByArea" parameterType="java.util.Map" resultType="Cars">
+	<select id="getCarsByArea" parameterType="java.util.Map" resultType="cars">
 		select a.*, g.groupName as smallVillageName from Cars a inner join groupinfo g on g.id=a.smallVillageId
 		where g.groupName=#{area} and checkState=1  order by a.publishDate desc limit #{offset},#{size}
 	</select>
@@ -124,7 +124,7 @@
 		select count(*) from Cars a inner join groupinfo g on g.id=a.smallVillageId
 		where g.groupName=#{area} and checkState=1
 	</select>
-	<select id="getActivityLimitThree" parameterType="java.util.Map" resultType="Cars">
+	<select id="getActivityLimitThree" parameterType="java.util.Map" resultType="cars">
 		select * from Cars 
 		<where>
 			<if test="id!=null and id!=0">
@@ -139,7 +139,7 @@
 		 limit #{offset},#{size} 
 	</select>
 	
-	<select id="getAllCarsListByTimeAndArea" parameterType="java.util.Map" resultType="Cars">
+	<select id="getAllCarsListByTimeAndArea" parameterType="java.util.Map" resultType="cars">
 	select a.* from Cars a 
 	<if test="area!=null and area!=''">
 			inner join groupinfo g on g.id=a.smallVillageId
@@ -157,7 +157,7 @@
 		and a.checkState=1
 	</where>
 	order by a.publishDate desc
-		 limit #{offset},#{size}  
+		 limit #{offset},#{size} 
 	</select>
 	<select id="getCountCarsListByTimeAndArea" parameterType="java.util.Map" resultType="int">
 	select count(*) from Cars a 

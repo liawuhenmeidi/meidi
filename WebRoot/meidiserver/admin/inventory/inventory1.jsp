@@ -7,7 +7,9 @@ User user = (User)session.getAttribute("user");
 String userbranch = user.getBranch(); 
 String category = request.getParameter("category");
 String branchid = request.getParameter("branchid");  
+String branchtypeid = request.getParameter("branchtypeid");
 
+ 
 //boolean flag = UserManager.checkPermissions(user, Group.ordergoods, "f"); 
 Category c = CategoryManager.getCategory(category);
  
@@ -99,6 +101,10 @@ if(!StringUtill.isNull(inventoryid)){
     	isdisabel = ""; 
     }
 }
+ 
+boolean ordergoods_e= UserManager.checkPermissions(user, Group.ordergoods,"e");
+
+
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -147,7 +153,7 @@ var allp = <%=allp%>;
   var typeid = ""; 
   var branch = "<%=branchid%>"; 
   var userbranch = "<%=userbranch%>";
-   
+    
  $(function () {  
 	 $("#branch").autocomplete({ 
 		 source: jsonall
@@ -155,9 +161,7 @@ var allp = <%=allp%>;
 	 $("#product").autocomplete({ 
 		 source: allp
 	    });
-	 
-	 
-	 //allp
+
 	 add();
      
  }); 
@@ -336,35 +340,52 @@ function pandian(type,branchid){
 					error : function(XMLHttpRequest, textStatus, errorThrown) {
 					}
 				});
-
+ 
 	}
-
-	function addlInstorage(branchid, type) {
-		window.location.href = '../ordergoods/addlInstorage.jsp?branchid='
-				+ branchid + '&type=' + type;
+    
+	function addlInstorage(branchid) {    
+		//window.location.href = '../ordergoods/addlInstorage.jsp?branchid='
+		//		+ branchid;      
+		var branch = $("#branch").val();
+		//alert(branch+<%=branchtypeid%>);    
+		window.open('../ordergoods/addlInstorageFromInventory.jsp?branch='
+				+ branch+'&branchtypeid=<%=branchtypeid%>'); 
 	}
+	 
+	
+	
 </script>
 </head>
 
-<body>
+<body> 
 	<!--   头部开始   -->
 	<jsp:include flush="true" page="../head.jsp">
 		<jsp:param name="dmsn" value="" />
 	</jsp:include>
 
 	<!--   头部结束   -->
-
+ 
 	<input type="hidden" id="time" value="" />
 	<input type="hidden" id="starttime" value="" />
 	<input type="hidden" id="endtime" value="" />
 
 	<table width="100%" id="head">
-		<tr>
+		<tr> 
 			<td>现在位置：库存查询</td>
 
 			<td><a href="javascript:distri();"> 查看分布</a></td>
 			<td>仓库:<input type="text" name="branch" id="branch" value="" />
-
+               <% 
+                if(ordergoods_e){  
+                    %>     
+                     <a href="javascript:void(0);"  onclick="addlInstorage()" target="_blank"><span style="font-size:20px;color:red;">卖场入库</span></a>  
+                     
+                    <% 
+                    }  
+                %>
+               
+               
+               
 			</td>
 			<td>产品型号:<input type="text" name="product" id="product" value="" />
  
@@ -385,8 +406,9 @@ function pandian(type,branchid){
 			<td><a href="javascript:history.go(-1);"><font
 					style="color:blue;font-size:20px;">返回</font>
 			</a></td>
-		</tr>
 
+		</tr>
+        
 
 
 

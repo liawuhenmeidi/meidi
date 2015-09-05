@@ -961,13 +961,12 @@ public class OrderGoodsServlet extends HttpServlet {
 
 				boolean flag = false;
 
-				if (Integer.valueOf(sta) == 7 || Integer.valueOf(sta) == 8
+				if (Integer.valueOf(sta) == 7 
 						|| Integer.valueOf(sta) == 9) {
 					flag = true; 
 					operatortype = 19; 
 					realcont = -Integer.valueOf(realsendnum);
 				} else if (Integer.valueOf(sta) == 1
-						|| Integer.valueOf(sta) == 2
 						|| Integer.valueOf(sta) == 3) {
 					flag = true;
 					operatortype = 21;
@@ -980,9 +979,10 @@ public class OrderGoodsServlet extends HttpServlet {
 				op.setStatues(Integer.valueOf(sta));
 				op.setSubmitid(user.getId());
 				op.setSubmittime(TimeUtill.getdateString());
-				op.setCid(cid);
-				op.setTid(Integer.valueOf(itype));
+				op.setCid(cid); 
+				op.setTid(Integer.valueOf(itype)); 
 				op.setMid(Integer.valueOf(id));
+				op.setStatues(op.getRealstatues());  
 				op.setBillingstatues(OrderMessage.all);
 				op.setInstoragenum(realcont);
 				op.setOpstatues(OrderMessage.billing);
@@ -991,11 +991,17 @@ public class OrderGoodsServlet extends HttpServlet {
 
 				if (flag) {
 					String sqlIB = "";
-					String sqlIBM = "";
+					String sqlIBM = ""; 
 					InventoryBranch in = null;
-					try {
+					try { 
+						logger.info(mapin);
+						logger.info(mapin.get(Integer.valueOf(branchid)));
+						logger.info(mapin.get(Integer.valueOf(branchid))
+								.get(itype + ""));
+						logger.info(mapin.get(Integer.valueOf(branchid))
+								.get(itype + "").get(Integer.valueOf(sta)));
 						in = mapin.get(Integer.valueOf(branchid))
-								.get(itype + "").get(sta);
+								.get(itype + "").get(Integer.valueOf(sta));
 					} catch (Exception e) {
 						in = null;
 					}
@@ -1016,14 +1022,14 @@ public class OrderGoodsServlet extends HttpServlet {
 								+ "', '"
 								+ +realcont
 								+ "', '"
-								+ -realcont
+								+ -realcont 
 								+ "'," + branchid + "," + sta + ")";
 
 						sqlIBM = "insert into  mdinventorybranchmessage (id,branchid,inventoryid,inventoryString ,time,type,allotRealcount,allotPapercount,operatortype,realcount,papercount,sendUser,receiveuser,devidety,oldrealcount,oldpapercount,isoverstatues,typestatues)"
 								+ "  values ( null, '"
 								+ branchid
 								+ "', '','"
-								+ oid
+								+ oid 
 								+ "','"
 								+ TimeUtill.getdateString()
 								+ "','"

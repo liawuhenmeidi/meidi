@@ -1,6 +1,8 @@
 package com.zhilibao.controller;
 
 import java.util.List;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,7 +23,7 @@ import com.zhilibao.model.TaxBasicMessage;
 @Controller  //类似Struts的Action  
 @RequestMapping("/meidiserver/admin/tax/")
 public class TaxBasicMessageController {    
-	@Autowired
+	 @Resource
 	private TaxBasicMessageDao taxBasicMessageDao;
 	 
 	protected static Log logger = LogFactory.getLog(TaxBasicMessageController.class);
