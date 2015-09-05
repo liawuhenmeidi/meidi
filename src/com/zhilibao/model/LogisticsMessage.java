@@ -13,6 +13,9 @@ import user.UserService;
 
 public class LogisticsMessage {
    protected static Log logger = LogFactory.getLog(LogisticsMessage.class);
+   
+   
+   private CarsCache carsCache;
    private int id ;  
    private int carid;   // 车号
    private int uid ;   //   司机   
@@ -123,8 +126,8 @@ public User getUser(){
 	   Cars ca = null;    
 	  // logger.info("CarsService.getmap()"+CarsService.getmap());
 	   //logger.info(carid);  
-	   if(carid != 0 ){   
-		   ca =CarsCache.getmap().get(carid);
+	   if(carid != 0 ){    
+		   ca =carsCache.getmap().get(carid);
 	   } 
 	   return ca;
    }

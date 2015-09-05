@@ -1,39 +1,27 @@
 package com.zhilibao.controller.tax;
 
 import java.util.List;
-
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
-import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import utill.StringUtill;
 import wilson.upload.ExcelUpload;
-import wilson.upload.UploadManager;
 import wilson.upload.XLSReader;
-
-import com.zhilibao.config.Configs;
-import com.zhilibao.filter.authority.Authority;
-import com.zhilibao.function.authority.AuthorityAll;
-import com.zhilibao.function.authority.OperationAuthority;
-import com.zhilibao.mapper.ConfigsOperation;
 import com.zhilibao.mapper.TaxBasicMessageOperation;
 import com.zhilibao.model.tax.Tax;
 import com.zhilibao.model.tax.TaxBasicMessage;
-import com.zhilibao.service.MapperService;
-import com.zhilibao.utill.bean.BeanUtill;
        
 @Controller  //类似Struts的Action  
 @RequestMapping("/meidiserver/admin/tax/")
 public class TaxBasicMessageController {    
-	//@Resource
-	//private TaxBasicMessageOperation taxBasicMessageOperation;
+	@Autowired
+	private TaxBasicMessageOperation taxBasicMessageOperation;
 	 
 	protected static Log logger = LogFactory.getLog(TaxBasicMessageController.class);
 	                      
@@ -42,11 +30,11 @@ public class TaxBasicMessageController {
 	    public ModelAndView add(@Param("gfmc") String gfmc){                              
 	    	ModelAndView modelAndView = new ModelAndView();
 	    	modelAndView.setViewName("tax/taxAdd");  
-	    	List<TaxBasicMessage> list = MapperService.getTaxBasicMessageOperation().getList();
+	    	List<TaxBasicMessage> list = taxBasicMessageOperation.getList();
 	    	modelAndView.addObject("TaxBasicMessages", list); 
 	    	logger.info(gfmc); 
 	    	if(!StringUtill.isNull(gfmc)){
-	    		TaxBasicMessage TaxBasicMessage = MapperService.getTaxBasicMessageOperation().getByName(gfmc);
+	    		TaxBasicMessage TaxBasicMessage =taxBasicMessageOperation.getByName(gfmc);
 	    		modelAndView.addObject("TaxBasicMessage",TaxBasicMessage); 
 	    	
 	    	} 
@@ -55,11 +43,8 @@ public class TaxBasicMessageController {
 	     
 	    @RequestMapping("save.do")  // 请求url地址映射，类似Struts的action-mapping             
 	    public ModelAndView save(TaxBasicMessage tbm){  
-	    	
-	    	    
-	    	TaxBasicMessageOperation lmo = MapperService.getTaxBasicMessageOperation();
-	    	lmo.delete(tbm);   
-	    	lmo.save(tbm);         
+	    	taxBasicMessageOperation.delete(tbm);   
+	    	taxBasicMessageOperation.save(tbm);         
 	    	ModelAndView modelAndView = new ModelAndView();
              
 	    	modelAndView.setViewName("jieguo");  
@@ -87,7 +72,7 @@ public class TaxBasicMessageController {
     
 	    	
             
-	    	List<TaxBasicMessage> list = MapperService.getTaxBasicMessageOperation().getList();
+	    	List<TaxBasicMessage> list = taxBasicMessageOperation.getList();
 	    	modelAndView.addObject("TaxBasicMessages", list); 
 	    	
 	    	modelAndView.setViewName("tax/taxExchange");  

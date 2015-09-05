@@ -9,13 +9,14 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import user.User;
 import user.UserService;
-import utill.StringUtill;
+import utill.StringUtill; 
 import utill.TimeUtill;
 
 import branch.Branch;
@@ -27,12 +28,16 @@ import com.zhilibao.mapper.CarsOperation;
 import com.zhilibao.mapper.LogisticsMessageOperation;
 import com.zhilibao.model.Cars;
 import com.zhilibao.model.LogisticsMessage;
-import com.zhilibao.service.MapperService;
 import com.zhilibao.token.Token;
        
 @Controller  //类似Struts的Action 
 @RequestMapping("/meidiserver/admin/logistics/")
-public class LogisticsMessageController {  
+public class LogisticsMessageController { 
+	@Autowired 
+	private CarsOperation carsOperation;
+	
+	@Autowired 
+	private LogisticsMessageOperation logisticsMessageOperation;
 	 protected static Log logger = LogFactory.getLog(LogisticsMessageController.class);
 	  
 	         
@@ -45,8 +50,8 @@ public class LogisticsMessageController {
 	    	User user = (User)session.getAttribute("user"); 
 	    	logger.info(user);     
 	    	    
-	    	CarsOperation co = (CarsOperation)MapperService.getCarsOperation();
-	    	List<Cars> cars =co.getlist();  
+	    	
+	    	List<Cars> cars =carsOperation.getlist();  
 	    	//logger.info(cars);    
 	    	List<User>  users= UserService.getLogistics(user);
 	    	//logger.info(users);  
@@ -80,8 +85,8 @@ public class LogisticsMessageController {
 	        // request和response不必非要出现在方法中，如果用不上的话可以去掉
 	        // 参数的名称是与页面控件的name相匹配，参数类型会自动被转换  
 	    	logger.info("save");
-	    	LogisticsMessageOperation lmo = (LogisticsMessageOperation)MapperService.getLogisticsMessageOperation();
-	    	lmo.sava(lm);  
+	    	
+	    	logisticsMessageOperation.sava(lm);  
 	    	 
 	    	   
 	    	 

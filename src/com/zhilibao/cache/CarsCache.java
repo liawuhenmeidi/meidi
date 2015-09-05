@@ -3,15 +3,20 @@ package com.zhilibao.cache;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
  
+import com.zhilibao.mapper.CarsOperation;
 import com.zhilibao.model.Cars;
-import com.zhilibao.service.MapperService;
    
+@Service 
 public class CarsCache {
     public static List<Cars> list = null ;
     public static boolean flag = false ;
-           
-    public static Map<Integer,Cars> getmap(){
+    @Autowired
+    private CarsOperation carsOperation;
+    public  Map<Integer,Cars> getmap(){
     	init(); 
     	Map<Integer,Cars> map = new HashMap<Integer,Cars>();
     	if(null != list){ 
@@ -21,11 +26,11 @@ public class CarsCache {
     		}
     	}   
     	return map;
-    }   
+    }    
            
-    public  static void init(){     
+    public  void init(){     
     	if(flag || null == list){     
-    		list =MapperService.getCarsOperation().getlist() ;
+    		list = carsOperation.getlist() ;
     	}   
     }
 }
