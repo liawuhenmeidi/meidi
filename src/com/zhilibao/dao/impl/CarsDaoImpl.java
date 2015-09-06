@@ -2,6 +2,7 @@ package com.zhilibao.dao.impl;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +12,8 @@ import com.zhilibao.model.Cars;
    
 @Repository
 public class CarsDaoImpl extends LivesBaseDao<Cars> implements CarsDao {
-  
-	@Override 
+   
+	@Override  
 	public int save(Cars cars) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -37,11 +38,16 @@ public class CarsDaoImpl extends LivesBaseDao<Cars> implements CarsDao {
 	}
 
 	@Override
-	public List<Cars> getlist() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Cars> getList(Map<String, Object> params) {
+		 
+		return this.getList("getCarList", params);
 	}
 
+	@Override
+	public int getCount(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 
 	 

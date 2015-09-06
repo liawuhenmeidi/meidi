@@ -1,23 +1,18 @@
 package com.zhilibao.dao.impl;
 
-
-import java.util.List;
-
 import org.springframework.stereotype.Repository;
-
 import com.zhilibao.base.LivesBaseDao;
-import com.zhilibao.dao.CarsDao;
 import com.zhilibao.dao.LogisticsMessageDao;
 import com.zhilibao.model.Cars;
 import com.zhilibao.model.LogisticsMessage;
-    
+     
 @Repository
-public class LogisticsMessageDaoImpl extends LivesBaseDao<Cars> implements LogisticsMessageDao {
-
+public class LogisticsMessageDaoImpl extends LivesBaseDao<LogisticsMessage> implements LogisticsMessageDao {
+ 
 	@Override
 	public int save(LogisticsMessage logisticsMessage) {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.save("insertLogisticsMessage", logisticsMessage);
 	}
 
 	@Override

@@ -13,6 +13,9 @@ public interface CarsDao {
 	public int update(Cars cars);
 	 
 	public Cars getCars(long id);
+	   
+	public List<Cars> getList(Map<String, Object> params);
 	
-	public List<Cars> getlist();
+	public int getCount(Map<String, Object> params);
+	
 }

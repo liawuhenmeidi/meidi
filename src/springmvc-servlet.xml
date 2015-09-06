@@ -27,14 +27,15 @@
   <!-- 启用spring mvc 注解 --> 
   <context:annotation-config /> 
     <!-- 拦截器配置   --> 
+  
    <mvc:interceptors>
-
+ 
         <mvc:interceptor>   
             <mvc:mapping path="/**"/> 
             <bean class="com.zhilibao.token.TokenInterceptor"/>
-            
+             
         </mvc:interceptor>  
-          
+           
            <mvc:interceptor>   
             <mvc:mapping path="/**"/> 
             <bean class="com.zhilibao.filter.authority.AuthorityInterceptor"/>
@@ -42,7 +43,7 @@
         
     </mvc:interceptors>  
   
- 
+  
   <!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/meidiserver/admin/" p:suffix=".jsp" /> 
 

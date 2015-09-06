@@ -6,9 +6,15 @@ import user.User;
 import user.UserService;
 
 public class Cars implements Serializable{
-   public int id ; 
+	
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+public int id ; 
    public int uid ;
    public String num ;
+   
    public User getUser(){
 	   User u = null; 
 	   if(uid != 0 ){

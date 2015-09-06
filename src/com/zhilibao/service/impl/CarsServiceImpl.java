@@ -47,11 +47,15 @@ public class CarsServiceImpl implements CarsService {
 		return null;
 	}
 
-
-	@Override
+      
+	@Override  
 	public QueryResult<Cars> getList(Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		return null;
+		int total = carsDao.getCount(params); 
+		List<Cars> result = carsDao.getList(params);
+		QueryResult<Cars> queryResult = new QueryResult<Cars>();
+		queryResult.setRows(result);
+		queryResult.setTotal(total);
+		return queryResult;
 	}
 
 

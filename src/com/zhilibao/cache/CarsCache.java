@@ -28,10 +28,10 @@ public class CarsCache {
     	}   
     	return map;
     }    
-             
+              
     public  void init(){      
     	if(flag || null == list){     
-    		list = carsDao.getlist() ;
+    		//list = carsDao.getlist() ;
     	}   
     }
 }

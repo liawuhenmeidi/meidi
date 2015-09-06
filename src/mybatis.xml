@@ -26,7 +26,7 @@
     
       
     <typeAliases>
- 		    	   <typeAlias type="com.zhilibao.model.Tax" alias="tax"/>
+ 		  <typeAlias type="com.zhilibao.model.Tax" alias="tax"/>
           <typeAlias type="com.zhilibao.model.TaxBasicMessage" alias="taxBasicMessage"/>
  		  <typeAlias type="com.zhilibao.model.LogisticsMessage" alias="logisticsMessage"/>
           <typeAlias type="com.zhilibao.model.Cars" alias="cars"/>

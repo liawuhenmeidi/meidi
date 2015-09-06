@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import servlet.LogisticsServlet;
 import user.User;
 import user.UserService;
 import utill.StringUtill; 
@@ -25,20 +26,26 @@ import branch.BranchManager;
 import branchtype.BranchType;
 import branchtype.BranchTypeManager;
 
+import com.google.common.collect.Maps;
 import com.zhilibao.dao.CarsDao;
 import com.zhilibao.dao.LogisticsMessageDao;
 import com.zhilibao.model.Cars;
 import com.zhilibao.model.LogisticsMessage;
+import com.zhilibao.service.CarsService;
+import com.zhilibao.service.LogisticsMessageService;
 import com.zhilibao.token.Token;
+import com.zhilibao.utill.QueryResult;
        
 @Controller  //类似Struts的Action 
 @RequestMapping("/meidiserver/admin/logistics/")
 public class LogisticsMessageController { 
 	 @Resource
-	private CarsDao carsDao;
+	private CarsService carsService;
 	 
 	 @Resource
-	private LogisticsMessageDao logisticsMessageDao;
+	private LogisticsMessageService logisticsMessageService;
+	 
+	 
 	 protected static Log logger = LogFactory.getLog(LogisticsMessageController.class);
 	   
 	         
@@ -49,10 +56,14 @@ public class LogisticsMessageController {
 	        // 参数的名称是与页面控件的name相匹配，参数类型会自动被转换  
 	    	ModelAndView modelAndView = new ModelAndView();   
 	    	User user = (User)session.getAttribute("user"); 
-	    	logger.info(user);     
-	    	    
-	    	 
-	    	List<Cars> cars =carsDao.getlist();  
+	    	logger.info(user);      
+	    	  
+	    	Map<String, Object> params =new HashMap<String, Object>();
+	    	     
+	    	QueryResult<Cars> result = carsService.getList(params);
+	    	
+	    	
+	    	List<Cars> cars =result.getRows();;  
 	    	//logger.info(cars);    
 	    	List<User>  users= UserService.getLogistics(user);
 	    	//logger.info(users);  
@@ -86,9 +97,8 @@ public class LogisticsMessageController {
 	    public ModelAndView save(LogisticsMessage lm){  
 	        // request和response不必非要出现在方法中，如果用不上的话可以去掉
 	        // 参数的名称是与页面控件的name相匹配，参数类型会自动被转换  
-	    	logger.info("save");
-	    	
-	    	//logisticsMessageDao.sava(lm);  
+	    	logger.info("save"); 
+	    	logisticsMessageService.save(lm);
 	    	  
 	    	Map<String, Object> context = new HashMap<String, Object>(); 
 	    	context.put("message","保存成功");  

@@ -8,7 +8,7 @@ import com.zhilibao.model.LogisticsMessage;
 public interface LogisticsMessageDao {
   
 	public int save(LogisticsMessage logisticsMessage);
-	
+	 
 	public int delete(long id);
 	
 	public int update(Cars cars);

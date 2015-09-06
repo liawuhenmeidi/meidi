@@ -6,6 +6,6 @@ import com.zhilibao.utill.QueryResult;
 
  
 public interface CarsService extends BaseService<Cars> {
-
-	public int save(Cars t);
-}
+    
+	public int save(Cars t); 
+} 
