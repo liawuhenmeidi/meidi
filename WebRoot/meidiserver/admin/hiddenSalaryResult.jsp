@@ -3,7 +3,7 @@
 <%@page import="wilson.salaryCalc.HiddenFileManager"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="utill.StringUtill"%>
-<%@ page language="java" import="java.util.*,user.*,wilson.upload.*,utill.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,user.*,wilson.upload.*,utill.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%      
 

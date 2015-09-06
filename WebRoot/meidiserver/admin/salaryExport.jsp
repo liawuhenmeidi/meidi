@@ -1,7 +1,7 @@
 <%@page import="utill.StringUtill"%>
 <%@page import="wilson.salaryCalc.SalaryCalcManager"%>
 <%@page import="wilson.salaryCalc.SalaryResult"%>
-<%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,wilson.salaryCalc.*,java.text.SimpleDateFormat,wilson.catergory.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,wilson.salaryCalc.*,java.text.SimpleDateFormat,wilson.catergory.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%
 	request.setCharacterEncoding("utf-8");

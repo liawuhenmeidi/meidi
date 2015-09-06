@@ -1,6 +1,6 @@
 <%@page import="wilson.catergory.CatergoryMaping"%>
 <%@page import="wilson.catergory.CatergoryManager"%>
-<%@ page language="java" import="java.util.*,utill.*,wilson.upload.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,utill.*,wilson.upload.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%      
 

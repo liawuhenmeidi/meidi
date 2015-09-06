@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.LogisticsMessageDao">     
-<resultMap id="BaseResultMap" type="logisticsMessageDao" > 
-    <id column="Id" property="id" jdbcType="BIGINT" />  
+<resultMap id="BaseResultMap" type="logisticsMessage" > 
+    <id column="id" property="id" jdbcType="BIGINT" />  
     <result column="uid" property="uid" jdbcType="INTEGER" />
-    <result column="num" property="num" jdbcType="VARCHAR" /> 
-    
-    
-    
-    
-    
+     <result column="bid" property="bid" jdbcType="INTEGER" /> 
+       
+      <result column="carid" property="carid" jdbcType="INTEGER" /> 
+      <result column="submittime" property="submittime" jdbcType="VARCHAR" /> 
+      <result column="statues" property="statues" jdbcType="INTEGER" /> 
+      <result column="prince" property="prince" jdbcType="INTEGER" /> 
+      <result column="sendtime" property="sendtime" jdbcType="VARCHAR" /> 
+      <result column="locates" property="locates" jdbcType="VARCHAR" /> 
+      <result column="remark" property="remark" jdbcType="VARCHAR" /> 
+      <result column="advanceprice" property="advancePrice" jdbcType="INTEGER" /> 
+      <result column="startlocate" property="startLocate" jdbcType="VARCHAR" /> 
+    <result column="pid" property="pid" jdbcType="INTEGER" /> 
   </resultMap>  
- 
+  
    <sql id="search_condition" > 
 	   	<if test="num!=null and num!='' ">   
 	   	    and num like "%"#{num}"%"
 	    </if> 
 	</sql>
 	
-	
+	 
 	<sql id="limit_condition" >
 
 	   	<if test="offset!=null and offset!='' and size!=null and size!='' ">   
@@ -27,51 +33,50 @@
 	    
 	     <if test="(offset ==null or offset=='') and size!=null and size!='' ">   
 	   	  limit #{size}
-	    </if> 
+	    </if>  
 
-	</sql> 
-	
-  <insert id="insertCars" parameterType="cars">
-		insert into mdcars  
-		(Id,uid,num) values
-		(null,#{uid},#{num})
-    </insert>  
+	</sql>   
+	   
+  <insert id="insertLogisticsMessage" parameterType="logisticsMessage"> 
+		insert into mdlogistics (id,uid,bid,carid,submittime,statues,prince,sendtime,locates,remark,advanceprice,startlocate,pid) 
+					   		values (null,#{uid},#{bid},#{carid},#{submittime},#{statues},#{prince},#{sendtime},#{locates},#{remark},#{advancePrice},#{startLocate},#{pid})
+    </insert>   
             
-    <select id="getCarList" parameterType="java.util.Map" resultMap="BaseResultMap">
-		select * from mdcars
+    <select id="getLogisticsMessageList" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select * from mdLogisticsMessages
    
 	<include refid="search_condition"></include>
-	order by mdcars.id desc   
+	order by mdLogisticsMessages.id desc   
 	<include refid="limit_condition"></include>
 	</select> 
        
-     <select  id = "getCarsCount" parameterType="java.util.Map" resultType="int">
-		select count(*) from mdcars   
+     <select  id = "getLogisticsMessagesCount" parameterType="java.util.Map" resultType="int">
+		select count(*) from mdLogisticsMessages   
 		<where> 
 			 <include refid="search_condition" /> 
 		</where> 
 	</select> 
 	
-     <select id="getCarsById" resultMap="BaseResultMap" parameterType="long">
-		select * from mdcars 
-	     and mdcars.id = #{id,jdbcType=BIGINT}
+     <select id="getLogisticsMessagesById" resultMap="BaseResultMap" parameterType="long">
+		select * from mdLogisticsMessages 
+	     and mdLogisticsMessages.id = #{id,jdbcType=BIGINT}
 	</select> 
 
-  <update id="updateCarsByPrimaryKey" parameterType="cars" >
-    update mdcars 
+  <update id="updateLogisticsMessagesByPrimaryKey" parameterType="logisticsMessage" >
+    update mdLogisticsMessages 
     <set >
       <if test="uid != null" >
        uid = #{uid,jdbcType=INT}, 
       </if>
        <if test="num != null" >
         num = #{num,jdbcType=VARCHAR},
-      </if>
-       
+      </if> 
+        
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-    <delete id="deleteCarsById" parameterType="java.lang.Long">
-		delete from mdcars  where id = #{id}
+    <delete id="deleteLogisticsMessagesById" parameterType="java.lang.Long">
+		delete from mdLogisticsMessages  where id = #{id}
     </delete>
        
 </mapper>

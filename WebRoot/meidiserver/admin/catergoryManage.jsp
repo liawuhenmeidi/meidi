@@ -1,6 +1,6 @@
 <%@page import="wilson.salaryCalc.SalaryCalcManager"%>
 <%@page import="wilson.upload.UploadManager"%>
-<%@ page language="java" import="java.util.*,locate.*,utill.*,category.*,product.*,user.*,group.*,branchtype.*,branch.*,wilson.catergory.*,wilson.salaryCalc.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,locate.*,utill.*,category.*,product.*,user.*,group.*,branchtype.*,branch.*,wilson.catergory.*,wilson.salaryCalc.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%      
 

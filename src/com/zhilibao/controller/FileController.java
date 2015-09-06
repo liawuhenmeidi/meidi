@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.zhilibao.dao.TaxBasicMessageDao;
 import com.zhilibao.function.export.TaxExchange;
 import com.zhilibao.model.TaxBasicMessage;
+import com.zhilibao.service.TaxBasicMessageService;
 
       
 @Controller  //类似Struts的Action  
@@ -23,23 +24,24 @@ import com.zhilibao.model.TaxBasicMessage;
 public class FileController {    
 	      
 	protected static Log logger = LogFactory.getLog(FileController.class);
+	
     @Resource
-	private TaxBasicMessageDao taxBasicMessageDao;
+	private TaxBasicMessageService taxBasicMessageService;
 	  
 	    @RequestMapping("tax.do")  // 请求url地址映射，类似Struts的action-mapping             
 	    public ModelAndView tax(){   
 	    	ModelAndView modelAndView = new ModelAndView();
 	    	modelAndView.setViewName("tax/taxExchange");  
-	    	
+	    	 
 	    	return modelAndView;  // 采用重定向方式跳转页面  
 	    } 
 	   
 	    
 	    @RequestMapping("taxExchange.do")  // 请求url地址映射，类似Struts的action-mapping             
 	    public ModelAndView taxExchange(HttpServletResponse response,@Param("gfmc") String gfmc,@Param("Djh") String Djh,@Param("filename") String filename){ 
-	    	  
+	    	   
 		    	   
-	    	TaxBasicMessage TaxBasicMessage = taxBasicMessageDao.getByName(gfmc);
+	    	TaxBasicMessage TaxBasicMessage = taxBasicMessageService.getByName(gfmc);
     		 
     		logger.info("gfmc"+gfmc); 
     		
@@ -57,7 +59,7 @@ public class FileController {
 	    	//ModelAndView modelAndView = new ModelAndView();     
 	    	//List<UploadOrder> list = UploadManager.getTotalUploadOrders(orderName); 
 	    	//List<String> orderNames = UploadManager.getUnTotalUploadOrdersNames();
-	    	  
+	    	   
 	    	//
 	    	//modelAndView.addObject("UploadOrders", list);   
 	    	//modelAndView.addObject("orderNames", orderNames);  

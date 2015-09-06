@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,user.*,group.*,category.*;" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*,user.*,group.*,category.*" pageEncoding="utf-8"%>
 
 <%
 

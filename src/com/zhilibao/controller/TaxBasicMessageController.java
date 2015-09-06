@@ -1,12 +1,15 @@
 package com.zhilibao.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.annotations.Param;
+import org.apache.poi.hssf.record.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,25 +22,33 @@ import wilson.upload.XLSReader;
 import com.zhilibao.dao.TaxBasicMessageDao;
 import com.zhilibao.model.Tax;
 import com.zhilibao.model.TaxBasicMessage;
+import com.zhilibao.service.TaxBasicMessageService;
+import com.zhilibao.utill.QueryResult;
        
 @Controller  //类似Struts的Action  
 @RequestMapping("/meidiserver/admin/tax/")
 public class TaxBasicMessageController {    
-	 @Resource
-	private TaxBasicMessageDao taxBasicMessageDao;
+	 @Resource 
+	private TaxBasicMessageService taxBasicMessageService;
 	 
 	protected static Log logger = LogFactory.getLog(TaxBasicMessageController.class);
-	                      
+	                       
 	  //  @Authority(isverification=true,AuthorityMessage={AuthorityAll.TaxBasicMessage+"_"+DaoAuthority.write})       
 	    @RequestMapping("add.do")             // 请求url地址映射，类似Struts的action-mapping             
-	    public ModelAndView add(@Param("gfmc") String gfmc){                              
+	    public ModelAndView add(@Param("gfmc") String gfmc){  
+	    	 
 	    	ModelAndView modelAndView = new ModelAndView();
-	    	modelAndView.setViewName("tax/taxAdd");   
-	    	//List<TaxBasicMessage> list = taxBasicMessageDao.getList();
-	    	//modelAndView.addObject("TaxBasicMessages", list); 
-	    	logger.info(gfmc); 
-	    	if(!StringUtill.isNull(gfmc)){
-	    		TaxBasicMessage TaxBasicMessage =taxBasicMessageDao.getByName(gfmc);
+	    	modelAndView.setViewName("tax/taxAdd");    
+	    	
+	    	Map<String,Object> params = new HashMap<String,Object>();
+	    	QueryResult<TaxBasicMessage>  result = taxBasicMessageService.getList(params);
+	    	     
+	    	List<TaxBasicMessage> list = result.getRows(); 
+	    	modelAndView.addObject("TaxBasicMessages", list); 
+	    	  
+	    	logger.info(gfmc);    
+	    	if(!StringUtill.isNull(gfmc)){ 
+	    		TaxBasicMessage TaxBasicMessage =taxBasicMessageService.getByName(gfmc);
 	    		modelAndView.addObject("TaxBasicMessage",TaxBasicMessage); 
 	    	
 	    	} 
@@ -73,10 +84,11 @@ public class TaxBasicMessageController {
 	    	}
 	    	
     
-	    	 
-            
-	    	//List<TaxBasicMessage> list = taxBasicMessageDao.getList();
-	    	//modelAndView.addObject("TaxBasicMessages", list); 
+	    	  
+	    	Map<String,Object> params = new HashMap<String,Object>();   
+	    	QueryResult<TaxBasicMessage> result = taxBasicMessageService.getList(params);
+	    	List<TaxBasicMessage> list = result.getRows();  
+	    	modelAndView.addObject("TaxBasicMessages", list);   
 	    	
 	    	modelAndView.setViewName("tax/taxExchange");  
 	    	

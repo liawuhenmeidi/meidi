@@ -1,7 +1,7 @@
 <%@page import="com.sun.net.httpserver.HttpContext"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java"
-	import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,order.*,change.*,orderproduct.*,branchtype.*,branch.*,utill.*;"
+	import="java.util.*,wilson.upload.*,wilson.matchOrder.*,user.*,order.*,change.*,orderproduct.*,branchtype.*,branch.*,utill.*"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 
 <%

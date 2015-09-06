@@ -1,6 +1,9 @@
 package com.zhilibao.service.impl;
 
 import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -9,12 +12,13 @@ import com.zhilibao.dao.LogisticsMessageDao;
 import com.zhilibao.model.LogisticsMessage;
 import com.zhilibao.service.LogisticsMessageService;
 import com.zhilibao.utill.QueryResult;
-
+ 
 @Service
 public class LogisticsMessageServiceImpl implements LogisticsMessageService {
  
 	private static final Log log = LogFactory.getLog(LogisticsMessageServiceImpl.class);
-    
+     
+	@Resource
 	private LogisticsMessageDao logisticsMessageDao;
 	
 	

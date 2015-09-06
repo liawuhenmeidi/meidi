@@ -7,15 +7,16 @@ import com.zhilibao.model.TaxBasicMessage;
  
 public interface TaxBasicMessageDao {
 
-	public int save(Cars cars);
+	public int save(TaxBasicMessage taxBasicMessage);
 	
-	public int delete(long id);
+	public int delete(long id); 
 	
-	public int update(Cars cars);
+	public int update(TaxBasicMessage taxBasicMessage);
 	  
-	public Cars getCars(long id);
-	
-	public TaxBasicMessage getByName(String gfmc);
-	
+	public TaxBasicMessage getTaxBasicMessage(long id);
+	 
+    public List<TaxBasicMessage> getList(Map<String, Object> params);
+	 
+	public int getCount(Map<String, Object> params);
 	
 }

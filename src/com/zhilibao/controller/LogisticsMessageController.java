@@ -92,14 +92,16 @@ public class LogisticsMessageController {
 	        // return new ModelAndView("redirect:../index.jsp");
 	    } 
 	       
+	    
 	     @RequestMapping("save.do")  // 请求url地址映射，类似Struts的action-mapping
 	   //   @Token(remove=true)           
 	    public ModelAndView save(LogisticsMessage lm){  
 	        // request和response不必非要出现在方法中，如果用不上的话可以去掉
 	        // 参数的名称是与页面控件的name相匹配，参数类型会自动被转换  
-	    	logger.info("save"); 
+	    	logger.info("save"+lm);  
+	     
 	    	logisticsMessageService.save(lm);
-	    	  
+	    	   
 	    	Map<String, Object> context = new HashMap<String, Object>(); 
 	    	context.put("message","保存成功");  
 	    	ModelAndView modelAndView = new ModelAndView("jieguo",context);

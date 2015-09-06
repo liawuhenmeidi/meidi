@@ -7,8 +7,6 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-
-import com.zhilibao.mapper.LogisticsMessageOperation;
 import com.zhilibao.model.LogisticsMessage;
 
 import utill.StringUtill; 
@@ -23,7 +21,7 @@ public class Test {
         try{  
             reader    = Resources.getResourceAsReader("Configuration.xml");
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            sqlSessionFactory.getConfiguration().addMapper(LogisticsMessageOperation.class); 
+          //  sqlSessionFactory.getConfiguration().addMapper(LogisticsMessageOperation.class); 
         }catch(Exception e){
             e.printStackTrace();
         }  
@@ -48,7 +46,7 @@ public class Test {
         SqlSession session = sqlSessionFactory.openSession();
         try {       
         	   
-        	LogisticsMessageOperation userOperation=session.getMapper(LogisticsMessageOperation.class);
+        	//LogisticsMessageOperation userOperation=session.getMapper(LogisticsMessageOperation.class);
         	
  
         	

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.TaxBasicMessageDao">       
+<resultMap id="BaseResultMap" type="taxBasicMessage" >  
+    <id column="gfmc" property="gfmc" jdbcType="VARCHAR" />  
+    <result column="gfsh" property="gfsh" jdbcType="VARCHAR" />
+     <result column="gfyhzh" property="gfyhzh" jdbcType="VARCHAR" /> 
+         
+      <result column="gfdzdh" property="gfdzdh" jdbcType="VARCHAR" /> 
+      <result column="bz" property="bz" jdbcType="VARCHAR" /> 
+      <result column="fhr" property="fhr" jdbcType="VARCHAR" /> 
+      <result column="skr" property="skr" jdbcType="VARCHAR" /> 
+      
+  </resultMap>    
+  
+   <insert id="insertTaxBasicMessage" parameterType="TaxBasicMessage"> 
+		insert into  mdtaxbasicmessage (gfmc,gfsh,gfyhzh,gfdzdh,bz,fhr,skr)
+	   		values (#{gfmc},#{gfsh},#{gfyhzh},#{gfdzdh},#{bz},#{fhr},#{skr})
+    </insert> 
+    
+    
+   <sql id="search_condition" > 
+	   	<if test="num!=null and num!='' ">   
+	   	    and num like "%"#{num}"%"
+	    </if> 
+	</sql>
+	
+	 
+	<sql id="limit_condition" >
+
+	   	<if test="offset!=null and offset!='' and size!=null and size!='' ">   
+	   	  limit #{offset},#{size}
+	    </if>   
+	    
+	     <if test="(offset ==null or offset=='') and size!=null and size!='' ">   
+	   	  limit #{size}
+	    </if>  
+
+	</sql>      
+	     
+   
+            
+    <select id="getTaxBasicMessageList" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select * from  mdtaxbasicmessage
+   
+	<include refid="search_condition"></include>
+	<include refid="limit_condition"></include>
+	</select> 
+       
+     <select  id = "getTaxBasicMessagesCount" parameterType="java.util.Map" resultType="int">
+		select count(*) from  mdtaxbasicmessage  
+		<where> 
+			 <include refid="search_condition" /> 
+		</where> 
+	</select> 
+	
+     <select id="getTaxBasicMessagesById" resultMap="BaseResultMap" parameterType="long">
+		select * from  mdtaxbasicmessage
+	     and  mdtaxbasicmessage.id = #{id,jdbcType=BIGINT}
+	</select> 
+
+  <update id="updateTaxBasicMessagesByPrimaryKey" parameterType="TaxBasicMessage" >
+    update  mdtaxbasicmessage
+    <set >
+      <if test="uid != null" > 
+       uid = #{uid,jdbcType=INT}, 
+      </if>
+       <if test="num != null" >
+        num = #{num,jdbcType=VARCHAR},
+      </if> 
+         
+    </set>  
+    where gfmc = #{gfmc,jdbcType=BIGINT}
+  </update>
+    <delete id="deleteTaxBasicMessagesById" parameterType="java.lang.Long">
+		delete from  mdtaxbasicmessage  where id = #{id}
+    </delete>
+       
+</mapper>

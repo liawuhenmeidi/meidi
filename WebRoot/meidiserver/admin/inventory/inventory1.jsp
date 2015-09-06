@@ -1,5 +1,5 @@
 <%@ page language="java"
-	import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*;"
+	import="java.util.*,utill.*,product.*,inventory.*,orderproduct.*,branch.*,branchtype.*,grouptype.*,category.*,group.*,user.*"
 	pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
 <%
 	request.setCharacterEncoding("utf-8");

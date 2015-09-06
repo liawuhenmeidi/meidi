@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*,locate.*,category.*,group.*,user.*,utill.*,product.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,locate.*,category.*,group.*,user.*,utill.*,product.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
 
 User user = (User)session.getAttribute("user");

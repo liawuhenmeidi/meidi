@@ -299,14 +299,14 @@ public class LogisticsMessageManager {
 				DB.close(stmt); 
 				DB.close(conn);
 			} 
-			return list; 
+			return list;  
 	  }
 	 public static List<LogisticsMessage>	getAdvancePrince(User user,String statues){
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>(); 
 		  Connection conn = DB.getConn(); 
-			String sql = "select * from  mdlogistics where  advanceprice != 0 and advancestatues in ("+statues+")";
+			String sql = "select * from  mdlogistics where  statues != -1 and advanceprice != 0 and advancestatues in ("+statues+")";
 			sql += " order by id desc"	;
-			logger.info(sql); 
+			logger.info(sql);  
 			Statement stmt = DB.getStatement(conn);
 			ResultSet rs = DB.getResultSet(stmt, sql);
 			try { 

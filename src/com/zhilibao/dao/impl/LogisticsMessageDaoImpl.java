@@ -9,9 +9,10 @@ import com.zhilibao.model.LogisticsMessage;
 @Repository
 public class LogisticsMessageDaoImpl extends LivesBaseDao<LogisticsMessage> implements LogisticsMessageDao {
  
-	@Override
+	@Override 
 	public int save(LogisticsMessage logisticsMessage) {
 		// TODO Auto-generated method stub
+		logger.info("insertLogisticsMessage"); 
 		return this.save("insertLogisticsMessage", logisticsMessage);
 	}
 

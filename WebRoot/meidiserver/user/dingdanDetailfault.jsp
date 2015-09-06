@@ -1,4 +1,4 @@
-<%@ page language="java"  import="java.util.*,aftersale.*,category.*,group.*,user.*,utill.*,product.*,user.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,aftersale.*,category.*,group.*,user.*,utill.*,product.*,user.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%  
 String id = request.getParameter("id");
 User user = (User)session.getAttribute("user");

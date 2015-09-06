@@ -1,5 +1,5 @@
 <%@ page language="java"
-	import="java.util.*,orderproduct.*,httpClient.*,makeInventory.*,ordersgoods.*,httpClient.*,httpClient.download.*,saledealsend.*,uploadtotalgroup.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*;"
+	import="java.util.*,orderproduct.*,httpClient.*,makeInventory.*,ordersgoods.*,httpClient.*,httpClient.download.*,saledealsend.*,uploadtotalgroup.*,installsale.*,product.*,message.*,inventory.*,branchtype.*,user.*,utill.*,locate.*,branch.*,order.*,orderPrint.*,category.*,group.*,grouptype.*"
 	pageEncoding="utf-8"%>
 <%
 	request.setCharacterEncoding("utf-8"); 

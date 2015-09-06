@@ -1,10 +1,10 @@
-<%@ page language="java"  import="java.util.*,company.*;"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java"  import="java.util.*,company.*"  pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 <%
     Company company = CompanyManager.getLocate(); 
 %>
  
 <div  > 
-  <div >
+  <div > 
  <!--  <img src="../style/image/logo.png" /> -->
   
  <input type="hidden" id="refresh"  value=""/>

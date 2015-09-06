@@ -1,21 +1,20 @@
 package com.zhilibao.dao.impl;
 
 
-import java.util.List;
+import java.util.List; 
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
-
 import com.zhilibao.base.LivesBaseDao;
-import com.zhilibao.dao.CarsDao;
 import com.zhilibao.dao.TaxBasicMessageDao;
 import com.zhilibao.model.Cars;
 import com.zhilibao.model.TaxBasicMessage;
-     
-@Repository
-public class TaxBasicMessageDaoImpl extends LivesBaseDao<Cars> implements TaxBasicMessageDao {
+        
+@Repository 
+public class TaxBasicMessageDaoImpl extends LivesBaseDao<TaxBasicMessage> implements TaxBasicMessageDao {
 
 	@Override
-	public int save(Cars cars) {
+	public int save(TaxBasicMessage taxBasicMessage) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -27,22 +26,32 @@ public class TaxBasicMessageDaoImpl extends LivesBaseDao<Cars> implements TaxBas
 	}
 
 	@Override
-	public int update(Cars cars) {
+	public int update(TaxBasicMessage taxBasicMessage) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public Cars getCars(long id) {
+	public TaxBasicMessage getTaxBasicMessage(long id) {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	} 
+
+	@Override  
+	public List<TaxBasicMessage> getList(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return this.getList("getTaxBasicMessageList",params); 
+		
+		  
+	} 
 
 	@Override
-	public TaxBasicMessage getByName(String gfmc) {
+	public int getCount(Map<String, Object> params) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
-  
+ 
+	 
+	 
    
 }

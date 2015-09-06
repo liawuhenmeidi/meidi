@@ -5,6 +5,6 @@ import com.zhilibao.model.TaxBasicMessage;
 import com.zhilibao.utill.QueryResult;
  
 public interface TaxBasicMessageService extends BaseService<TaxBasicMessage> {
-   
-	
+     
+	public TaxBasicMessage getByName(String gfmc);
 }

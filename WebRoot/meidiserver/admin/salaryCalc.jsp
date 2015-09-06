@@ -1,7 +1,7 @@
 <%@page import="utill.StringUtill"%>
 <%@page import="org.apache.poi.util.StringUtil"%>
 <%@page import="wilson.salaryCalc.SalaryCalcManager"%>
-<%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,wilson.salaryCalc.*,order.*,orderproduct.*,user.*,wilson.catergory.*;" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,wilson.upload.*,wilson.matchOrder.*,wilson.salaryCalc.*,order.*,orderproduct.*,user.*,wilson.catergory.*" pageEncoding="UTF-8"  contentType="text/html;charset=utf-8"%>
 
 <%
 	request.setCharacterEncoding("utf-8");
