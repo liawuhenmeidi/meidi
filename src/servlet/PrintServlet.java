@@ -2299,9 +2299,11 @@ public class PrintServlet extends HttpServlet {
 		HSSFRow row = sheet.createRow((int) count);
 		row.setHeight((short) (2 * 256));
 		HSSFCell cell = null;
-		count++;
-		int x = 0;
-
+		count++;  
+		int x = 0; 
+		cell = row.createCell((short) x++);
+		cell.setCellValue("单号");
+		cell.setCellStyle(style);
 		cell = row.createCell((short) x++);
 		cell.setCellValue("门店");
 		cell.setCellStyle(style);
@@ -2361,18 +2363,35 @@ public class PrintServlet extends HttpServlet {
 						}
 						
 						 
-						 
+						  
 						if (og.getRealnum() > 0) {
 							row = sheet.createRow((int) count);
 							if (j == 0) {
 								// logger.info(count+"___"+(count+listog.size()-1));
 								sheet.addMergedRegion(new Region(count,
-										(short) 9, count + listog.size() - 1,
-										(short) 9));
+										(short) 10, count + listog.size() - 1,
+										(short) 10));
+								
+								sheet.addMergedRegion(new Region(count,
+										(short) 0, count + listog.size() - 1,
+										(short) 0)); 
+								
 							}
 
 							count++; 
 							int y = 0;
+							
+							if (j == 0) {
+								cell = row.createCell((short) y++);
+
+								cell.setCellValue(o.getOm().getId());
+								cell.setCellStyle(style);
+							} else {
+								cell = row.createCell((short) y++);
+
+								cell.setCellValue("");
+								cell.setCellStyle(style);
+							}
 							cell = row.createCell((short) y++);
 							cell.setCellValue(branch.getLocateName());
 							cell.setCellStyle(style);
