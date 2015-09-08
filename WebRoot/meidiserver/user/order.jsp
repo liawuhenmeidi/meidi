@@ -144,6 +144,7 @@ if(null != conorderprice){
 	initphone();
 	initproduct();
 	
+	
 	init();   
 	initmessage("#productsta0");
 	setMessage("必填");
@@ -408,11 +409,18 @@ if(null != conorderprice){
 	  var cid = $("#ordercategory0").val();
       initAndate("#andate0",cid);
       
+      
+      
+      $("#dingma_c").css("display","block");
+	  $("#dingma_no").css("display","block");
+	  
+	  $("#dingmachek").attr("checked","checked"); 
+	  $("#dingma").css("display","block");
+	   
 		  $('input:radio').change(function() {
-			  $("#dingma_c").css("display","block");
-			  $("#dingma_no").css("display","block");
-			
-			     if(this.checked){
+			  
+			 
+			     if(this.checked){ 
 			    	 var a = $(this).val();
 			    	 if(1==a){ 
 			    		 $("#dingma").css("display","block");	    		   
@@ -421,6 +429,8 @@ if(null != conorderprice){
 			    	 } 	  
 			 }
 	      }) ;  
+		    
+		  // $('input:radio').val(1); 
       } 
  
  
