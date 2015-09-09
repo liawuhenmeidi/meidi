@@ -703,8 +703,8 @@ if(null != conorderprice){
 	 var locate = $("#quyu").val();
 	 var locations = $("#locations").val();
 	 var remark = $("#remark").val();
-	 var radio = $('input:radio[name="Statues"]:checked').val();
-	
+	// var radio = $('input:radio[name="Statues"]:checked').val();
+	var radio = 1; 
 
 	 
      if(saledate == "" || saledate == null || saledate == "null"){
@@ -735,11 +735,13 @@ if(null != conorderprice){
 			 return false;
 		 } 
      }
-     
+     /*
 	 if(radio == "" || radio == null || radio == "null"){
 		 alert("请选择是否顶码销售");  
 		 return false;
 	 } 
+	 */
+	 
 	 
 	 if("1"== radio){
 		 var dingmatype = $("#dingmatype").val();
@@ -903,16 +905,16 @@ if(null != conorderprice){
 		 if(locations == "" || locations == null || locations == "null"){
 			 alert("详细地址不能为空");
 			 return false;
-		 }
+		 } 
 	 }
 	 $('input[name="permission"]:checked').each(function(){ 
 		    alert($(this).val());  
 	 });
 	 $("#submit").css("display","none"); 
 	 return true ; 
- }
- 
-</script>
+ } 
+  
+</script>  
 
 
 </head>
