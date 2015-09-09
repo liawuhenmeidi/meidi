@@ -413,13 +413,14 @@ if(null != conorderprice){
       
       $("#dingma_c").css("display","block");
 	  $("#dingma_no").css("display","block");
-	  
-	  $("#dingmachek").attr("checked","checked"); 
+	    
+	 // $("#dingmachek").attr("checked","checked"); 
 	  $("#dingma").css("display","block");
 	   
+	  /*
 		  $('input:radio').change(function() {
 			  
-			 
+			
 			     if(this.checked){ 
 			    	 var a = $(this).val();
 			    	 if(1==a){ 
@@ -429,7 +430,7 @@ if(null != conorderprice){
 			    	 } 	  
 			 }
 	      }) ;  
-		    
+		 */    
 		  // $('input:radio').val(1); 
       } 
  
@@ -446,12 +447,13 @@ if(null != conorderprice){
  
     
     function addrow(listo){
+    	/*
     	 var radio = $('input:radio[name="Statues"]:checked').val();
     	 if(radio == "" || radio == null || radio == "null"){
     		 alert("请选择是否顶码销售");  
     		 return false;
-    	 } 
-    	
+    	 }  
+    	*/
     	var sele = "";
     	var display = ""; 
         rows.push(row);
@@ -934,6 +936,8 @@ if(null != conorderprice){
 <input type="hidden" id="sailIdremark" name="sailidremark" value="0"/>
 <input type="hidden" name="orderid" value="<%=id %>"/>
 <input type="hidden" name="token" value="<%=token%>"/> 
+    
+ <input type="hidden"  name="Statues" value="1"  />
  
 <div class="s_main_tit">销售报单<span class="qiangdan"></span></div>
 <div class="s_main_tit">门店:<span class="qian"><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %></span></div>  
@@ -980,7 +984,7 @@ if(null != conorderprice){
    
    %>
  
- 
+ <!--  
   <tr >
     <td width="25%" class="center">顶码销售<span style="color:red">*</span></td>
     <td width="50%" class="">  是
@@ -990,6 +994,7 @@ if(null != conorderprice){
 		<input type="radio" name="Statues" value="0"  id="dingma_nochek" <%=isdisabel %>/></td>
     <td width="25%"> </td>
   </tr>
+  -->
   </table>
   
   <div id = "productDIV" <%=isdisabel %>>
