@@ -470,7 +470,7 @@ public class InventoryModelDownLoad extends HttpServlet implements DownLoad {
 
 			}
             
-			MyMainClient.map.put("InventoryModelDownLoadstatue",statusCode+"");  
+			MyMainClient.mapreturn.put("InventoryModelDownLoadstatue",statusCode+"");  
 			
 			HttpEntity entity = response2.getEntity();
 

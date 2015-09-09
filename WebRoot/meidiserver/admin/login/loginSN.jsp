@@ -242,7 +242,7 @@ function clear(){
                 	%>  
                 	  
                 	 <td align="center">  
-        	  订单信息更新完毕。
+        	  订货订单信息更新完毕。
         	  </td>  
         	         <% 
                  }else {   

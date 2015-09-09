@@ -1,5 +1,7 @@
 package httpClient;
 
+import inventory.InventoryBranchManager;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,9 +18,11 @@ import org.apache.http.impl.client.HttpClients;
 import utill.TimeUtill;
 
 public class MyMainClient { 
+	 
 	static public Map<String,String> map = new HashMap<String,String>(); 
-	
-	  
+	 
+	static public Map<String,String> mapreturn  = new HashMap<String,String>(); 
+	 
 	protected static Log logger = LogFactory.getLog(MyMainClient.class);
 	public static MyMainClient instance = new MyMainClient();
 	private static BasicCookieStore cookieStore = new BasicCookieStore();
@@ -55,31 +59,22 @@ public class MyMainClient {
 	public static void main(String[] args) {
 
 		MyMainClient mc = getinstance();
-		// String branch = StringUtill.toUtf8String("天津宁河店");
-		// branch = "天津宁河店";
-		// branch = "";
+	
 		mc.run();   
-		// List<String> s = InventorySN.getinventory("122707928","9367");
-		// List<String> s = InventorySN.getinventoryModel("105057044",branch,);
-		// List<String> s = InventorySN.getinventoryModel("105057044","");
-		// logger.info(s);
+		
 	}    
                   
 	public  synchronized Map<String,String>  run() {
 		try {                             
 		   startinventoryIN(this);
-		 
-			//round(this);      
-			// sdi.selectDeliverInform(new
-			// URI("http://scs.suning.com/sps/PurchaseOrderDelivery/orderDelivery.action?menuid=100000111&scspageexptime=1427005676454"),"","",this);
 		} catch (Exception e) { 
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
 		 
-		  return map; 
+		  return mapreturn; 
 	}      
-     
+      
+	// 出入库数据更新
 	public synchronized void initInventoryInAndOut(String time){
 		
 		 
@@ -103,11 +98,11 @@ public class MyMainClient {
 			 }
 			  
 			    
-			  
-			//	inventoryOut.get(starttime, endtime);  
+			   
+				inventoryOut.get(starttime, endtime);  
 				                     
 			
-			//	inventoryModelOut.get(starttime, endtime);
+				inventoryModelOut.get(starttime, endtime);
 				      
 		      
 			    inventoryIN.get(starttime, endtime);  
@@ -141,9 +136,9 @@ public class MyMainClient {
 	
 	public  synchronized Map<String,String>  run(Map<String,String> maps) {
 		try { 
-			map.clear(); 
+			map.clear();  
 			verifyCode = maps.get("verifyCode"); 
-		   startinventoryIN(this); 
+		    startinventoryIN(this); 
 		   
 			//round(this);        
 			// sdi.selectDeliverInform(new
@@ -156,51 +151,7 @@ public class MyMainClient {
 		  return map; 
 	}     
 	
-	public  void refresh(){
-		String starttime = TimeUtill.getdateString();
-		String endtime = TimeUtill.getdateString();
-                               
-		endtime = TimeUtill.getdateString(); 
-		starttime = TimeUtill.dataAdd(endtime, -8);       
-		while (TimeUtill.compare(starttime,"2013-01-01"))  {                             
-			int num = -10;                               
-		      
-		    inventoryOrder.getinventoryOut(starttime, endtime,this);
-		    inventoryOrder.getinventoryOutModel(starttime, endtime, this); 
-			 
-			
-			starttime = TimeUtill.dataAdd(starttime, num);
-			endtime = TimeUtill.dataAdd(endtime, num);
-			   
-		} 
-	}
 	
-	
-	public static void round(MyMainClient mc) {
-		String starttime = TimeUtill.getdateString();
-		String endtime = TimeUtill.getdateString();
-                                    
-		//starttime = "2015-08-01";    
-		//endtime = "2015-08-09";         
-		while (TimeUtill.compare(starttime,"2013-07-30"))  {                             
-			int num = -10;       
-			//SaleDownLoad.saveDB(starttime, endtime);  
-		//	count++;              
-			///inventoryOut.get(starttime, endtime);  
-			//inventoryModelOut.getinventoryOutModel(start, endtime, mc);
-			//inventoryModelOut.get(starttime, endtime);
-			     
-	       // inventoryIN.getinventoryIN(start, endtime, mc);
-		  // inventoryIN.get(starttime, endtime);  
-			inventoryOrder.getinventoryOut(starttime, endtime, mc);
-			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
-			
-			
-			starttime = TimeUtill.dataAdd(starttime, num);
-			endtime = TimeUtill.dataAdd(endtime, num);
-			   
-		} 
-	}     
        
 	//  库存下载   
 	public void Inventory(){
@@ -208,54 +159,54 @@ public class MyMainClient {
 		InventoryDownLoad.save();   
          
 		InventoryModelDownLoad.save();
-		// 坏品    
+		// 坏品     
 		InventoryBadGoodsDownLoad.save();
-	} 
+	}  
 	
+	public void inventoryOutAndIn(String starttime,String endtime){
+		//inventoryOut.getinventoryOut(start, endtime, mc); 
+		inventoryOut.get(starttime, endtime);   
+		                      
+		//inventoryModelOut.getinventoryOutModel(start, endtime, mc);
+		inventoryModelOut.get(starttime, endtime);
+		      
+       // inventoryIN.getinventoryIN(start, endtime, mc);
+	    inventoryIN.get(starttime, endtime);  
+		// 开始    
+	}
 	
 	public synchronized void startinventoryIN(MyMainClient mc) {
-		try {     
+		try {      
+			 
+			mapreturn.clear(); 
+			 
 			String starttime = TimeUtill.getdateString(); 
 			//String start = TimeUtill.dataAdd(starttime, -6); 
 			String endtime = TimeUtill.getdateString();  
-			   
-			Inventory(); 
+			             
+			 //库存更新  
+			//Inventory();  
+			             
+			 // 出入库更新  
+			// inventoryOutAndIn(starttime,endtime);
+			     
+			// 订货订单更新   
+			OrderDownLoad.saveDB(starttime, endtime);
 			 
-			// int count = 0 ;  
-			//starttime = "2015-08-09"; 
-			//endtime = "2015-08-09";       
-                                   
-			// 异常退货订单           
-			//inventoryOrder.getinventoryOut(starttime, endtime, mc);
-			//inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
-                    
-			// 入库退货信息            
-                    
-			//inventoryOut.getinventoryOut(start, endtime, mc); 
-			inventoryOut.get(starttime, endtime);  
-			                     
-			//inventoryModelOut.getinventoryOutModel(start, endtime, mc);
-			inventoryModelOut.get(starttime, endtime);
-			      
-	       // inventoryIN.getinventoryIN(start, endtime, mc);
-		    inventoryIN.get(starttime, endtime);  
-			// 开始    
-			
+			// 异常退货订单            
+			inventoryOrder.getinventoryOut(starttime, endtime, mc);
+			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
+			 
 			
 			// InventoryModelDownLoad.saveDB();
 			
-			 //InventoryChange.compare("2015-05-01","2015-05-03");
+			//InventoryChange.compare("2015-05-01","2015-05-03");
      
 			// 更新过期订单(系统内)   
-			//InventoryBranchManager.initOrderNumSN();
-       
-			logger.info("更新订单加订单号"); 
+			InventoryBranchManager.initOrderNumSN();
+        
+			//logger.info("更新订单加订单号"); 
 			// 更新订单信息    
-			
-			
-			OrderDownLoad.saveDB(starttime, endtime);
-			
-			
            //           
 			//ProductSN.save(mc); 
 			// 销售数据                            

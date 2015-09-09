@@ -75,12 +75,12 @@ public class InventoryDownLoad extends HttpServlet implements DownLoad {
 				//String locationURL = response2.getHeaders("location")[0].toString();
 				//logger.info(locationURL); 
 				statusCode = response2.getStatusLine().getStatusCode();
-				 
+				  
 			} 
-			 
-		  
+			  
+		   
 		      
-			MyMainClient.map.put("InventoryDownLoadstatue",statusCode+"");  
+			MyMainClient.mapreturn.put("InventoryDownLoadstatue",statusCode+"");  
            logger.info(statusCode);
 			HttpEntity entity = response2.getEntity();
             

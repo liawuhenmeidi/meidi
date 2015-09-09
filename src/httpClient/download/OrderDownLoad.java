@@ -122,15 +122,24 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 		} // 跳过表头 如果需要表头的话，不要写这句。
 		return map; 
 	}        
-	        
+	         
 	public static void saveDB(String starttime,String endtime){
+		 
+		 
+		//  订单处理
 		 List<OrderSN > list = get(starttime,endtime); 
 		//logger.info(StringUtill.GetJson(list));      
 		 List<String> listsql = OrderSNManager.save(list,starttime,endtime);
-		    
+		     
 		// logger.info(StringUtill.GetJson(listsql)); 
 		     
 		 DBUtill.sava(listsql ); 
+		 
+		 
+		 // 退单处理
+		 
+		 
+		 
 		  
 	} 
 	
@@ -396,14 +405,11 @@ HttpEntity entity = response2.getEntity();
 					.addParameter("tabClick", "false")
 					  
 					// .addParameter("buyerProductcode", "101123403")
-					.build();  
- //logger.info(123); 	      
+					.build();          
+ //logger.info(123);  	      
 			CloseableHttpResponse response2 = MyMainClient.getHttpclient()
 					.execute(request); 
-		
-			
-			
-			
+
 			int statusCode = response2.getStatusLine().getStatusCode();
  logger.info(statusCode); 
 			if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY
@@ -429,13 +435,13 @@ HttpEntity entity = response2.getEntity();
 			logger.info(tempPath); 
 			tempPath +="data" + File.separator + "DownloadOrder"+File.separator+"SuNing";  
 		 
-			
-			logger.info(tempPath);   
+			 
+			logger.info(tempPath);    
 			  
-			File file = new File(tempPath);
-			if (!file.exists()) { 
+			File file = new File(tempPath); 
+			if (!file.exists()) {  
 				file.mkdirs();  
-			}  
+			}   
     
 			File file2 = new File(tempPath + File.separator + 
 					"order.csv");  

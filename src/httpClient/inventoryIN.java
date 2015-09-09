@@ -179,7 +179,7 @@ public class inventoryIN {
 			}
  
 			HttpEntity entity = response2.getEntity(); 
-			MyMainClient.map.put("InventoryInstatue",statusCode+"");  
+			MyMainClient.mapreturn.put("InventoryInstatue",statusCode+"");  
 			// EntityUtils.consume(entity); 
 			/*
 			 * if (entity != null) { String str = EntityUtils.toString(entity,

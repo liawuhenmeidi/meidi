@@ -52,9 +52,9 @@
  
 
      <session-config>      
-       <session-timeout>120</session-timeout>   
-     </session-config> 
-    
+       <session-timeout>1440</session-timeout>   
+     </session-config>   
+     
     <filter>
   	<filter-name>EncodingFilter</filter-name>
   	<filter-class>

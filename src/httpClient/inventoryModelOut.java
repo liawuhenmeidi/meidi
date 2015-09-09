@@ -241,7 +241,7 @@ public class inventoryModelOut {
 
 			} 
 			 
-			MyMainClient.map.put("InventoryModeloutstatue",statusCode+"");  
+			MyMainClient.mapreturn.put("InventoryModeloutstatue",statusCode+"");  
 			
 			HttpEntity entity = response2.getEntity();
 

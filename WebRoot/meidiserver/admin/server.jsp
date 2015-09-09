@@ -821,8 +821,8 @@
 		} else if ("InitInventorySN".equals(method)) { 
 			
 			
-	   Map<String,String> map = MyMainClient.getinstance().run();
-	  // String src = map.get("src");   
+	   Map<String,String> map = MyMainClient.getinstance().run(); 
+	  // String src = map.get("src");    
       // System.out.println("login/loginSN.jsp?src="+src); 
 	  // response.sendRedirect("login/loginSN.jsp?src="+src);
 	    
