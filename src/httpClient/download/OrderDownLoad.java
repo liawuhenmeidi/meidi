@@ -126,14 +126,14 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 	public static void saveDB(String starttime,String endtime){
 		 
 		 
-		//  订单处理
+		//  订单处理 
 		 List<OrderSN > list = get(starttime,endtime); 
-		//logger.info(StringUtill.GetJson(list));      
+		 logger.info(StringUtill.GetJson(list));      
 		 List<String> listsql = OrderSNManager.save(list,starttime,endtime);
+		         
+		 logger.info(StringUtill.GetJson(listsql)); 
 		     
-		// logger.info(StringUtill.GetJson(listsql)); 
-		     
-		 DBUtill.sava(listsql ); 
+		 DBUtill.sava(listsql );  
 		 
 		 
 		 // 退单处理
@@ -227,13 +227,16 @@ public class OrderDownLoad extends HttpServlet implements DownLoad {
 	
 	public static List<OrderSN > get(String starttime,String endtime) {
 		// startTime = "2015-05-03"; 
-		save(starttime, endtime);  
-		  
 		List<OrderSN> list = new ArrayList<OrderSN>();
-		
 		if(StringUtill.isNull(starttime) || StringUtill.isNull(endtime)){
 			return list ;
 		} 
+		 
+		save(starttime, endtime);  
+		  
+		
+		
+		
 		try { 
 			String tempPath =PathUtill.getXMLpath();
  

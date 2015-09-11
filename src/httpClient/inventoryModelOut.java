@@ -182,10 +182,12 @@ public class inventoryModelOut {
 	
 	public static void get(String starttime, String endtime) {
 		// startTime = "2015-05-03"; 
-		save(starttime, endtime);
 		if (StringUtill.isNull(starttime) || StringUtill.isNull(endtime)) {
 			return; 
 		}
+		
+		save(starttime, endtime);
+		
 		try { 
 			String tempPath = PathUtill.getXMLpath();
 

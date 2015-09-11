@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 import java.util.List;  
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import product.ProductService;
+import utill.TimeUtill;
 
 import branch.BranchService;
 
@@ -64,7 +66,7 @@ public class OrderSNManager {
 		 List<String> listsql = new ArrayList<String>();
 		try{
 		 Map<String,OrderSN> map = getMapAll(starttime,endtime);
-		  
+		   
 		 //logger.info(list.size());
 		
 		   if(!list.isEmpty()){     
@@ -72,35 +74,45 @@ public class OrderSNManager {
 			   while(it.hasNext()){   
 				   OrderSN sn = it.next(); 
 				   boolean flag = false ;
+				   boolean effective = false ;
 				  // logger.info(123);
 				  if(null == map){
 					  flag = true; 
 				  }else {
 					  OrderSN sndb = map.get(sn.getUuid()); 
-					  if(null == sndb){
-						  flag = true ;
-					  }  
-				  }
-				  
-				  //logger.info(flag);    
+					  if(null == sndb){ 
+						  flag = true ;  
+					  }    
+				  } 
 				   
-				   if(flag){    
+				  long enddays = TimeUtill.GetTimeminus(TimeUtill.getdateString(),sn.getEndtime())/1000/60/60/24;
+				  long startdays = TimeUtill.GetTimeminus(TimeUtill.getdateString(),sn.getStarttime())/1000/60/60/24; 
+				  //logger.info(enddays);    
+				  if(enddays < 0 && startdays >0){ 
+					  effective = true ; 
+				  }  
+				    
+				  //logger.info(flag);    
+				      
+				   if(flag){     
 					   List<String> sql = save(sn); 
-					 //  logger.info(sql); 
-					   listsql.addAll(sql);   
+					   logger.info(sql);  
+					  listsql.addAll(sql);    
 					  // logger.info(sn.getBranchName());
+					   if( effective)  {  
+						   int tid = ProductService.gettypeNUmmap().get(sn.getGoodNum()).getId();
+						   
+						   int bid = BranchService.getNameSNMap().get(sn.getBranchName()).getId();
+						       
+						  String sqlin = InventoryBranchManager.updateSNMessage(tid, bid, sn.getGoodtypeStatues(), sn.getOrderNum(),sn.getEndtime());
+					                
+						 // logger.info(sqlin);   
+						  String sqlog = OrderGoodsManager.updateOid(tid, bid, sn);    
+						// logger.info(sqlog); 
+						  listsql.add(sqlog);   
+						  listsql.add(sqlin);  
+					   }
 					     
-					   int tid = ProductService.gettypeNUmmap().get(sn.getGoodNum()).getId();
-					   
-					   int bid = BranchService.getNameSNMap().get(sn.getBranchName()).getId();
-					     
-					  String sqlin = InventoryBranchManager.updateSNMessage(tid, bid, sn.getGoodtypeStatues(), sn.getOrderNum(),sn.getEndtime());
-				             
-					 // logger.info(sqlin);   
-					  String sqlog = OrderGoodsManager.updateOid(tid, bid, sn);    
-					// logger.info(sqlog); 
-					  listsql.add(sqlog);   
-					  listsql.add(sqlin);    
 				 //  logger.info(listsql); 
 				   } 
 			   }
@@ -139,8 +151,38 @@ public class OrderSNManager {
 
 		return map;
 	}
+ 
+	public static LinkedHashMap<String,List<OrderSN>> getMapAllOrderSn(String starttime,
+			String endtime) {       
+		LinkedHashMap<String, List<OrderSN>> map = new LinkedHashMap<String, List<OrderSN>>();
+		String sql = " select * from mdordersn where  starttime BETWEEN  '"
+				+ starttime + "'  and '" + endtime + "' order by starttime desc"; 
+		logger.info(sql);       
+		Connection conn = DB.getConn();     
+		Statement stmt = DB.getStatement(conn);
 
-	
+		ResultSet rs = DB.getResultSet(stmt, sql);
+		try {
+			while (rs.next()) {
+				OrderSN as = getOrderSNFromRs(rs);
+				List<OrderSN> li = map.get(as.getOrderNum());
+				if(null == li){
+					li = new ArrayList<OrderSN>();
+					map.put(as.getOrderNum(), li);
+				}
+				
+				li.add(as);
+			} 
+		} catch (SQLException e) {
+			logger.info(e); 
+		} finally {
+			DB.close(stmt);
+			DB.close(rs);
+			DB.close(conn);
+		}
+
+		return map;
+	}
 
 	
 

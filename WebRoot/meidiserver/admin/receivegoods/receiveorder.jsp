@@ -17,7 +17,7 @@ if (null != list) {
 
 Map<String, OrderReceiptAll> map = new LinkedHashMap<String, OrderReceiptAll>();
 
-if (null != list) { 
+if (null != list) {  
 	for (int i = 0; i < list.size(); i++) {
 		OrderReceipt or = list.get(i);
 		if(StringUtill.isNull(branch) || !StringUtill.isNull(branch) && branch.equals(or.getBranchName())){
@@ -158,19 +158,20 @@ String type= request.getParameter("type");
 				<td align="center">退货订单日期</td>
 				<td align="center">退货订单有效期</td>
 				<td align="center">是否打印</td>
-			</tr>
+			</tr> 
 			<%
-				if (null != map) {
+				if (null != map) { 
 					Set<Map.Entry<String, OrderReceiptAll>> set = map.entrySet();
 					Iterator<Map.Entry<String, OrderReceiptAll>> it = set
 							.iterator();
 					while (it.hasNext()) {
 						Map.Entry<String, OrderReceiptAll> mapent = it.next();
 						String buyid = mapent.getKey();
-						OrderReceiptAll or = mapent.getValue();
-			%>
-
-			<tr class="asc"
+						OrderReceiptAll or = mapent.getValue(); 
+						if(TimeUtill.GetTimeminus(or.getActiveordertiem(),TimeUtill.getdateString()) > 0){
+			%> 
+  
+			<tr class="asc"  
 				ondblclick="detail('receiveorderdetail.jsp?buyid=<%=or.getBuyid()%>&branch=<%=branch%>')">
 				<td align="center"><%=or.getBuyid()%></td>
 				<td align="center"><%=or.getCheckNum()%></td>
@@ -180,6 +181,7 @@ String type= request.getParameter("type");
 			</tr>
 			<%
 				}
+					}
 				}
 			%>
 

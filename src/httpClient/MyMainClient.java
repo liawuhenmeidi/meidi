@@ -18,7 +18,7 @@ import org.apache.http.impl.client.HttpClients;
 import utill.TimeUtill;
 
 public class MyMainClient { 
-	 
+	   
 	static public Map<String,String> map = new HashMap<String,String>(); 
 	 
 	static public Map<String,String> mapreturn  = new HashMap<String,String>(); 
@@ -87,12 +87,12 @@ public class MyMainClient {
 		} 
 		 for(int i=1;i<ro;i++){ 
 			 
-			 String starttime =  time+"-"+getStartday(i);
+			 String starttime =  time+"-"+TimeUtill.getStartday(i);
 			 
 			   
 			 String endtime = ""; 
 			 if(i<5){
-				 endtime = time+"-"+getendday(i);
+				 endtime = time+"-"+TimeUtill.getendday(i);
 			 }else { 
 				 endtime =time + "-"+max ; 
 			 }
@@ -107,9 +107,6 @@ public class MyMainClient {
 		      
 			    inventoryIN.get(starttime, endtime);  
 			 
-			 
-			 
-			 
 			 logger.info(starttime+"***"+endtime);
 			 
 		 }
@@ -117,22 +114,71 @@ public class MyMainClient {
 		
 	}
 	
-	private static String getendday(int i ){
-		int m = (6*(i)+i);
-		if(m<10){ 
-			return "0"+m;
+	// 订单数据
+		public synchronized void initInventoryInOrder(String time){
+			
+			 
+			 
+			 
+			int max = TimeUtill.getMax(time);
+			int ro = 6 ;
+			if(max < 30){ 
+				ro = 5 ; 
+			} 
+			 for(int i=1;i<ro;i++){ 
+				 
+				 String starttime =  time+"-"+TimeUtill.getStartday(i);
+				  
+				    
+				 String endtime = ""; 
+				 if(i<5){
+					 endtime = time+"-"+TimeUtill.getendday(i);
+				 }else {  
+					 endtime =time + "-"+max ; 
+				 } 
+   
+				 OrderDownLoad.saveDB(starttime, endtime);
+
+				 logger.info(starttime+"***"+endtime);
+				 
+			 }
+			//System.out.print("initInventoryInAndOut:"+time); 
+			
 		}
-		return m+"" ;
-	}
+		// 退货订单数据
+		
+				public synchronized void InitInventoryOutOrder(String time){
+					
+					 
+					 
+					 
+					int max = TimeUtill.getMax(time);
+					int ro = 6 ;
+					if(max < 30){ 
+						ro = 5 ; 
+					} 
+					 for(int i=1;i<ro;i++){ 
+						  
+						 String starttime =  time+"-"+TimeUtill.getStartday(i);
+						   
+						   
+						 String endtime = ""; 
+						 if(i<5){
+							 endtime = time+"-"+TimeUtill.getendday(i);
+						 }else { 
+							 endtime =time + "-"+max ; 
+						 }
+		   
+						 inventoryOrder.getinventoryOut(starttime, endtime);
+						 inventoryOrder.getinventoryOutModel(starttime, endtime);
+
+						 logger.info(starttime+"***"+endtime);
+						 
+					 }
+					//System.out.print("initInventoryInAndOut:"+time); 
+					
+				}	
 	
-	 
-	private static String getStartday(int i ){
-		int m = (6*(i-1)+i);
-		if(m<10){ 
-			return "0"+m;
-		}
-		return m+"" ;
-	}
 	
 	public  synchronized Map<String,String>  run(Map<String,String> maps) {
 		try { 
@@ -161,12 +207,12 @@ public class MyMainClient {
 		InventoryModelDownLoad.save();
 		// 坏品     
 		InventoryBadGoodsDownLoad.save();
-	}  
-	
+	}   
+	 
 	public void inventoryOutAndIn(String starttime,String endtime){
 		//inventoryOut.getinventoryOut(start, endtime, mc); 
 		inventoryOut.get(starttime, endtime);   
-		                      
+		                         
 		//inventoryModelOut.getinventoryOutModel(start, endtime, mc);
 		inventoryModelOut.get(starttime, endtime);
 		      
@@ -174,7 +220,7 @@ public class MyMainClient {
 	    inventoryIN.get(starttime, endtime);  
 		// 开始    
 	}
-	
+	 
 	public synchronized void startinventoryIN(MyMainClient mc) {
 		try {      
 			 
@@ -185,17 +231,17 @@ public class MyMainClient {
 			String endtime = TimeUtill.getdateString();  
 			             
 			 //库存更新  
-			//Inventory();  
-			             
+			Inventory();  
+			               
 			 // 出入库更新  
-			// inventoryOutAndIn(starttime,endtime);
+		    inventoryOutAndIn(starttime,endtime);
 			     
 			// 订货订单更新   
 			OrderDownLoad.saveDB(starttime, endtime);
 			 
 			// 异常退货订单            
-			inventoryOrder.getinventoryOut(starttime, endtime, mc);
-			inventoryOrder.getinventoryOutModel(starttime, endtime, mc);
+			inventoryOrder.getinventoryOut(starttime, endtime); 
+			inventoryOrder.getinventoryOutModel(starttime, endtime);
 			 
 			
 			// InventoryModelDownLoad.saveDB();

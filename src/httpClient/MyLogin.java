@@ -79,12 +79,12 @@ public class MyLogin {
 	        	HttpEntity entity = response2.getEntity();
                 if (entity != null) {  
                     String str = EntityUtils.toString(entity, "UTF-8");
-                    logger.info(str); 
+                    //logger.info(str); 
                     Document doc = MyJsoup.getDocumnetByStr(str); 
     				Element en = doc.getElementById("vcodeimg1");
-    				logger.info(en);
+    				//logger.info(en); 
     				String src = en.attr("src"); 
-    				logger.info(src); 
+    			//	logger.info(src); 
     				if(!StringUtill.isNull(src)){
     					String[] me = src.split("=");
     					String uid = me[1]; 

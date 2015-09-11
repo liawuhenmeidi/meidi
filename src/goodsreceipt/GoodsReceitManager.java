@@ -1113,18 +1113,21 @@ public static boolean saveOutModel(CsvReader reader,String starttime,String endt
  
 	public static boolean saveOut(Map<String, GoodsReceipt> map,String starttime, String endtime) {
 		boolean flag = false; 
-		 logger.info(map.size()); 
+		 
+		logger.info(map.size()); 
+		   
 		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryBranchManager
-				.getInventoryMap();  
-		  
+				.getInventoryMap();   
+		     
 		Set<String> setup = new HashSet<String>();
 		List<String> list = new ArrayList<String>();
 		
-		
+		 
 		Map<String, GoodsReceipt> mapdb = getMapAll(starttime,
-				endtime);  
-		
+				endtime);   
+		  
 		Set<Map.Entry<String, GoodsReceipt>> en = map.entrySet();
+		
 		if (!en.isEmpty()) { 
 			Iterator<Map.Entry<String, GoodsReceipt>> it = en.iterator();
 			while (it.hasNext()) { 

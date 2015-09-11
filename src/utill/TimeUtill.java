@@ -141,6 +141,24 @@ public class TimeUtill {
 		}
     	return false ;
     }
+    
+    public static long GetTimeminus(String date1,String date2){
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    	long result = 0 ;
+    	try {  
+			Date d1 =sdf.parse(date1);
+			Date d2 =sdf.parse(date2);
+			
+			result =d1.getTime() - d2.getTime();
+		  
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return result;
+    }
+    
+    
     public static String  dataAdd(String data,int count){    
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String putdate =  ""; 
@@ -217,5 +235,22 @@ public class TimeUtill {
     	return flag;
     }
     
+    public static String getendday(int i ){
+		int m = (6*(i)+i);
+		if(m<10){ 
+			return "0"+m;
+		}
+		return m+"" ;
+	}
+	 
+	  
+    public static String getStartday(int i ){
+		int m = (6*(i-1)+i);
+		if(m<10){ 
+			return "0"+m;
+		}
+		return m+"" ;
+	}
+	
     
 } 

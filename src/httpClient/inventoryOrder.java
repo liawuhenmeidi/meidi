@@ -74,7 +74,7 @@ public class inventoryOrder {
 	}  
   
 	public static String getHtmlStringOut(URI uri, String starttime,
-			String endtime, String page, MyMainClient mc) {
+			String endtime, String page) {
 		String str = ""; 
 		// logger.info(starttime);
 		// logger.info(endtime);
@@ -126,11 +126,11 @@ logger.info("statusCode2"+statusCode);
 		}
 
 		return str;
-	}
+	} 
 
 	public static String getHtmlStringOutModel(URI uri, String starttime,
-			String endtime, int page, MyMainClient mc) {
-		String str = "";
+			String endtime, int page) {
+		String str = ""; 
 		// logger.info(starttime);
 		// logger.info(endtime);
 		try {
@@ -278,28 +278,27 @@ logger.info("statusCode2"+statusCode);
 			e.printStackTrace();
 		}
 		return true;
-	}
+	} 
 
-	public static boolean getinventoryOut(String starttime, String endtime,
-			MyMainClient mc) {
+	public static boolean getinventoryOut(String starttime, String endtime) {
 		try { 
 			logger.info("getinventoryOrder"+starttime+"****"+endtime);
 			URI uri = new URI(inventoryOrder.url);
-  
+   
 			String responseContent = getHtmlStringOut(uri, starttime, endtime,
-					"", mc);     
+					"");     
 			 
 			logger.info(StringUtill.isNull(responseContent));
 			int num = getNum(responseContent);
 			// logger.info(num);  
-			for (int i = 1; i <= num; i++) { 
-				responseContent = getHtmlStringOut(uri, starttime, endtime, i+"",
-						mc);
+			for (int i = 1; i <= num; i++) {  
+				responseContent = getHtmlStringOut(uri, starttime, endtime, i+""
+						); 
 				Document doc = MyJsoup.getDocumnetByStr(responseContent);
 				Element en = doc.getElementById("gridTable");
 				// logger.info(en);
 				Elements tr = en.getElementsByTag("tr");
-				// logger.info(tr);
+				// logger.info(tr); 
 				OrderReceitManager.saveOut(tr, starttime, endtime);
 			}
 
@@ -427,19 +426,19 @@ logger.info("statusCode2"+statusCode);
 	}
 	
 	public static boolean getinventoryOutModel(String starttime,
-			String endtime, MyMainClient mc) {
+			String endtime) {
 		try { 
 			logger.info("getinventoryOrderModel"+starttime+"***"+endtime);
 			URI uri = new URI(inventoryOrder.urlModel);
 			
 			String responseContent = getHtmlStringOutModel(uri, starttime,
-					endtime, 1, mc);
+					endtime, 1);
 			// logger.info(responseContent);
 			int num = getNum(responseContent);
 			// logger.info(num);
 			for (int i = 1; i <= num; i++) {
 				responseContent = getHtmlStringOutModel(uri, starttime,
-						endtime, i, mc);
+						endtime, i);
 				Document doc = MyJsoup.getDocumnetByStr(responseContent);
 				Element en = doc.getElementById("gridTable");
 				// logger.info(en);

@@ -200,8 +200,6 @@ function clear(){
         	  <%
           }
         %>
-         
-
              </tr>
                
              
@@ -210,17 +208,16 @@ function clear(){
         	 
                  if(((String)StringUtill.getJSONObject(data).get("InventoryInstatue")).equals(200+"")){
                 	%>  
-                	  
+                	       
                 	 <td align="center">  
-        	  入库信息更新完毕。
-        	  </td> 
+        	  入库信息更新完毕。 
+        	  </td>  
         	         <%
-                 }else { 
+                 }else {    
                 	 %> 
                 	 <td align="center"> 
-        	  入库信息更新失败。 
+        	          入库信息更新失败。 
         	  </td>  
-                	   
                 	 <%
                  }    
           }else {
@@ -232,18 +229,18 @@ function clear(){
           }
         %>
          
-
-             </tr>       
-                    <tr class="asc">
-                    <td> </td>
-          <%if(((String)StringUtill.getJSONObject(data).get("OrderDownLoad")) != null){ 
+ 
+             </tr>         
+                    <tr class="asc">  
+                    <td align="center"> <a href="../date/inventoryIn.jsp" >订货订单管理</a></td>
+          <%if(((String)StringUtill.getJSONObject(data).get("OrderDownLoad")) != null){  
         	 
                  if(((String)StringUtill.getJSONObject(data).get("OrderDownLoad")).equals(200+"")){
                 	%>  
                 	  
                 	 <td align="center">  
-        	  订货订单信息更新完毕。
-        	  </td>  
+        	  订货订单信息更新完毕。 
+        	  </td>   
         	         <% 
                  }else {   
                 	 %>  
@@ -265,7 +262,36 @@ function clear(){
 
              </tr>      
                      
-                     
+            <tr class="asc"> 
+                    <td align="center"> <a href="../date/inventoryOut.jsp" >退货订单管理</a></td>
+          <%if(((String)StringUtill.getJSONObject(data).get("OrderDownLoad")) != null){ 
+        	 
+                 if(((String)StringUtill.getJSONObject(data).get("OrderDownLoad")).equals(200+"")){
+                	%>  
+                	  
+                	 <td align="center">  
+        	  退货订单更新完毕。 
+        	  </td>   
+        	         <% 
+                 }else {   
+                	 %>  
+                	 <td align="center"> 
+        	退货订单更新失败。 
+        	  </td>  
+                	   
+                	 <%
+                 }    
+          }else { 
+        	  %>  
+        	  <td align="center" > 
+        	      退货订单更新失败。  
+        	  </td>
+        	  <%
+          }
+        %>
+          
+
+             </tr>                
                      
                      
                      
