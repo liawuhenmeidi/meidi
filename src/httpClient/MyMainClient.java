@@ -76,15 +76,12 @@ public class MyMainClient {
       
 	// 出入库数据更新
 	public synchronized void initInventoryInAndOut(String time){
-		
-		 
-		 
 		 
 		int max = TimeUtill.getMax(time);
 		int ro = 6 ;
 		if(max < 30){ 
 			ro = 5 ; 
-		} 
+		}  
 		 for(int i=1;i<ro;i++){ 
 			 
 			 String starttime =  time+"-"+TimeUtill.getStartday(i);
@@ -145,7 +142,7 @@ public class MyMainClient {
 			//System.out.print("initInventoryInAndOut:"+time); 
 			
 		}
-		// 退货订单数据
+		// 退货订单数据 
 		
 				public synchronized void InitInventoryOutOrder(String time){
 					
@@ -153,10 +150,10 @@ public class MyMainClient {
 					 
 					 
 					int max = TimeUtill.getMax(time);
-					int ro = 6 ;
-					if(max < 30){ 
+					int ro = 2 ; 
+					if(max < 30){  
 						ro = 5 ; 
-					} 
+					}  
 					 for(int i=1;i<ro;i++){ 
 						  
 						 String starttime =  time+"-"+TimeUtill.getStartday(i);
@@ -168,9 +165,11 @@ public class MyMainClient {
 						 }else { 
 							 endtime =time + "-"+max ; 
 						 }
-		   
+		    
 						 inventoryOrder.getinventoryOut(starttime, endtime);
-						 inventoryOrder.getinventoryOutModel(starttime, endtime);
+						  
+						 
+						// inventoryOrder.getinventoryOutModel(starttime, endtime);
 
 						 logger.info(starttime+"***"+endtime);
 						 

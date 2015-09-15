@@ -78,7 +78,7 @@ public class inventoryOrder {
 		String str = ""; 
 		// logger.info(starttime);
 		// logger.info(endtime);
-		try { 
+		try {   
 			HttpUriRequest selectPost = RequestBuilder.post().setUri(uri)
 					.addParameter("flage", "1")
 					.addParameter("formName", "reportQueryConditon")
@@ -287,7 +287,9 @@ logger.info("statusCode2"+statusCode);
    
 			String responseContent = getHtmlStringOut(uri, starttime, endtime,
 					"");     
-			 
+			  
+			
+			logger.info(responseContent); 
 			logger.info(StringUtill.isNull(responseContent));
 			int num = getNum(responseContent);
 			// logger.info(num);  

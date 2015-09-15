@@ -66,10 +66,14 @@ public class MyLogin {
 	        if(null != header){
 	        	for(int i=0;i<header.length;i++){
 	        		logger.info(header[i]); 
-	        	}
+	        	} 
 	        }*/
-	        
+	       // HttpEntity entity2 = response2.getEntity();
+	      //  String str2 = EntityUtils.toString(entity2, "UTF-8");
+          //  logger.info(str2);  
 	          
+	      //  logger.info(response2.)
+	         
 	        int statusCode = response2.getStatusLine().getStatusCode();
 	         
             logger.info(statusCode);
@@ -82,7 +86,7 @@ public class MyLogin {
                     //logger.info(str); 
                     Document doc = MyJsoup.getDocumnetByStr(str); 
     				Element en = doc.getElementById("vcodeimg1");
-    				//logger.info(en); 
+    				logger.info(en);   
     				String src = en.attr("src"); 
     			//	logger.info(src); 
     				if(!StringUtill.isNull(src)){
@@ -90,12 +94,12 @@ public class MyLogin {
     					String uid = me[1]; 
         				logger.info(uid);  
         				MyMainClient.setUuid(uid);
-    				}
-    				
+    				} 
+    				logger.info(src); 
     				MyMainClient.map.put("src", src);
-    				
-    			
     				 EntityUtils.consume(entity);
+    				return false ; 
+    				 
                  }  
 	        	}
 	           

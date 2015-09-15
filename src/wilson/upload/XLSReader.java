@@ -517,7 +517,7 @@ public class XLSReader {
 			File srcFile = new File(filepath,fileName); 
 			logger.info(srcFile.getAbsolutePath()); 
 			logger.info(srcFile.getPath());  
-			Workbook wb = null; 
+			Workbook wb = null;  
 			try {   
 				wb = Workbook.getWorkbook(srcFile);
 			} catch (BiffException e) {
