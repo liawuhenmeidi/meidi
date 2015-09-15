@@ -47,8 +47,10 @@ public class InventoryMerger {
     	// 苏宁 库存       
     	Collection<SNInventory> coc = InventoryChange.get(TimeUtill.dataAdd(endtime, 1));
         // 苏宁样机 
+    	 
     	Collection<SNInventory> com =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd(endtime, 1)).values(); 
-        // 苏宁坏机 
+    	logger.info(StringUtill.GetJson(com));
+    	// 苏宁坏机  
         Collection<SNInventory> cob = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd(endtime, 1)).values();
           
         List<SNInventory> cos = null ;

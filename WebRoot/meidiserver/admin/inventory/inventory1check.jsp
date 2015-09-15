@@ -6,7 +6,7 @@ request.setCharacterEncoding("utf-8");
 User user = (User)session.getAttribute("user"); 
 String category = request.getParameter("category"); 
 String branch = request.getParameter("branch");
-String time = request.getParameter("time");
+String time = request.getParameter("time"); 
 String[] typestatues = request.getParameterValues("typestatues"); 
 String typestatuess = StringUtill.GetJson(typestatues);
 
