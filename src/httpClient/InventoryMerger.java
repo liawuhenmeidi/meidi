@@ -49,7 +49,7 @@ public class InventoryMerger {
         // 苏宁样机 
     	 
     	Collection<SNInventory> com =InventoryModelDownLoad.getMap(user, TimeUtill.dataAdd(endtime, 1)).values(); 
-    	logger.info(StringUtill.GetJson(com));
+    	//logger.info(StringUtill.GetJson(com));
     	// 苏宁坏机  
         Collection<SNInventory> cob = InventoryBadGoodsDownLoad.getMap(user, TimeUtill.dataAdd(endtime, 1)).values();
           
@@ -61,8 +61,8 @@ public class InventoryMerger {
         // 销量  
        // logger.info(123); 
         Collection<SNInventory> coin = InventoryAllManager.get(user,category, branch, endtime).values();
-           
-        //logger.info(coin);   
+              
+        //logger.info(StringUtill.GetJson(coin));   
         logger.info(" branchnum"+ branchnum);
         
         
@@ -198,9 +198,12 @@ public class InventoryMerger {
   	         
         	Iterator<SNInventory> it = coin.iterator();
         	//int count = 0 ;   
-        	while(it.hasNext()){   
-        		 SNInventory sn = it.next();        
-        		 String tnum = sn.getProduct().getEncoded();       
+        	while(it.hasNext()){      
+        		 SNInventory sn = it.next(); 
+        		// logger.info(StringUtill.GetJson(sn.getProduct()));
+        		// logger.info(sn.getProduct()); 
+        		 String tnum = sn.getProduct().getEncoded();
+        		// logger.info(tnum);
         		 String bnum = BranchService.getMap().get(sn.getBranchid()).getEncoded();
         		 //logger.info(bnum+"**"+tnum);           
         		 if(bnum.equals(branchnum)){ 

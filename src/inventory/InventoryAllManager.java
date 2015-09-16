@@ -74,7 +74,8 @@ public class InventoryAllManager {
 				SNInventory in = map.get(key);
 				if (null == in) { 
 					in = new SNInventory();  
-					 
+					 //logger.info(inm.getBranchid());
+					// logger.info(inm.getTypeid()); 
 					in.setBranchid(inm.getBranchid()); 
 					in.setTypeid(inm.getTypeid()); 
 					if(inm.getTypeStatues() == 1 || inm.getTypeStatues() == 2){
@@ -85,13 +86,13 @@ public class InventoryAllManager {
 					if(inm.getOperatortype() == 10){
 						in.getMap().put(inm.getTypeStatues(), inm.getTime());
 					}
-					
+					//logger.info(StringUtill.GetJson(in)); 
 					//in.setTypeStatues(inm.getTypeStatues());
 					//in.setRealcount(inm.getAllotRealcount());
 					//in.setPapercount(inm.getAllotPapercount());
 					map.put(key, in);
 				} else {
-    
+     
 					/*
 					 * if(inm.getTypeid().equals("3376")){
 					 * logger.info(in.getPapercount());

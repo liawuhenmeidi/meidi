@@ -252,9 +252,12 @@ public class InventoryBranch {
 	} 
     
 	public Product getProduct() {   
-		if(!StringUtill.isNull(this.getTypeid())){
+		if(!StringUtill.isNull(this.getTypeid())){  
+			//System.out.println(this.getTypeid());  
+			//System.out.println(StringUtill.GetJson(ProductService.getIDmap().get(Integer.valueOf(this.getTypeid()))));  
 			product = ProductService.getIDmap().get(Integer.valueOf(this.getTypeid()));
-		}
+			return product; 
+		} 
 		 
 		return new Product(); 
 	}
