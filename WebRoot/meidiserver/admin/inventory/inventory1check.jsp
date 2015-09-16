@@ -383,25 +383,32 @@ function serchclick(category,type,branchid,obj){
             		// System.out.println("in.getCid()"+in.getCid());
             		 String tname =in.getGoodpName();
             		 boolean flag = true ;
-            		 int tid = 0 ; 
+            		 int tid = 0 ;  
             		  
             		 try { 
+            			System.out.println("in.getGoodNum()"+in.getGoodNum()); 
       					tid = ProductService.gettypeNUmmap().get(in.getGoodNum())
-      							.getId();
-      				} catch (Exception e) {
+      							.getId(); 
+      					System.out.println("tid"+tid); 
+      				} catch (Exception e) {  
+      					System.out.println("Exception"); 
       					//tname = in.getGoodpName();
       					flag = false ;
-      				} 
-            		  
-            		 try{    
-            			 if(StringUtill.isNull(cname)){  
+      				}  
+            		       
+            		 try{     
+            			 if(StringUtill.isNull(cname)){   
+            				 if(tid == 0 ){ 
+            					 tid = in.getProduct().getId();
+                    			 flag = true ; 
+            				 }    
+            				// System.out.println("in.getProduct().getId()"+in.getProduct().getId()); 
             				// System.out.println("in.getCid()"+StringUtill.GetJson(in.getProduct()));
-            				  
+            				   
                 			 cname = in.getProduct().getCname(); 
-                			 tid = in.getProduct().getId();
-                			 flag = true ; 
-                		 } 
-            			  
+                			   
+                		 }  
+            			   
             			 if(StringUtill.isNull(tname)){ 
             				// System.out.println("*******"+tname+"****"+in.getProduct().getType());  
             				 tname = in.getProduct().getType(); 

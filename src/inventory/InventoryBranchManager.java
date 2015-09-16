@@ -1054,9 +1054,9 @@ logger.info(sql);
 	public static int update(User user ,String branchid,String[] types,String time,String[] typestatuess){
 		   Map<Integer,Map<String,Map<Integer,InventoryBranch>>> map = InventoryBranchManager.getInventoryMap(); 
 		 //  logger.info(map); 
-		   int count = -1 ;       
+		   int count = -1 ;        
 		   List<String> listsql = new ArrayList<String>();  
-		      
+		        
 		   for(int i=0;i<types.length;i++){  
 			   String type = types[i];  
 			
@@ -1078,6 +1078,8 @@ logger.info(sql);
 				   if(null != in){  
 					   sql = "update mdinventorybranch  set  isquery = 1 , querymonth = '"+time+"' where branchid = "+ branchid + " and type = '" + type+"' and typestatues = "+sta;   
 				   }else {
+					   logger.info(Integer.valueOf(type));  
+					   logger.info(ProductService.getIDmap().get(Integer.valueOf(type)));
 					   int cid = ProductService.getIDmap().get(Integer.valueOf(type)).getCategoryID();
 					   
 					   sql = "insert into  mdinventorybranch (id,inventoryid,type,realcount,papercount, branchid,typestatues)"
