@@ -324,10 +324,10 @@ public class OrderGoods {
 		}else if (10 == statues) {
 			statuesName = "店外样机退货";
 		}else if (11 == statues) {
-			statuesName = "常规机订货";
+			statuesName = "常规只生成订单不发货";
 		} else if (12 == statues) { 
-			statuesName = "特价机订货";
-		}  
+			statuesName = "特价只生成订单不发货";
+		}   
 		return statuesName;
 	}
 
@@ -351,7 +351,13 @@ public class OrderGoods {
 			statuesName = "已入库特价退货";
 		} else if (9 == statues) {
 			statuesName = "已入库样机退货";
-		}
+		}else if (10 == statues) { 
+			statuesName = "店外样机退货";
+		}else if (11 == statues) {
+			statuesName = "常规只生成订单不发货";
+		} else if (12 == statues) { 
+			statuesName = "特价只生成订单不发货";
+		} 
 		return statuesName;
 	}
 

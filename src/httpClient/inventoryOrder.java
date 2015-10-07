@@ -288,9 +288,9 @@ logger.info("statusCode2"+statusCode);
 			String responseContent = getHtmlStringOut(uri, starttime, endtime,
 					"");     
 			  
-			
-			logger.info(responseContent); 
-			logger.info(StringUtill.isNull(responseContent));
+			 
+			//logger.info(responseContent); 
+			//logger.info(StringUtill.isNull(responseContent));
 			int num = getNum(responseContent);
 			// logger.info(num);  
 			for (int i = 1; i <= num; i++) {  

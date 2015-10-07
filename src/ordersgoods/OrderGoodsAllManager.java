@@ -692,8 +692,8 @@ public class OrderGoodsAllManager {
 		Connection conn = DB.getConn();
  
 		String sql = " select * from mdordergoods,mdordermessage  where mdordermessage.id in "
-				+ ids
-				+ " and mdordergoods.mid = mdordermessage.id  and mdordergoods.billingstatues = "
+				+ ids 
+				+ " and mdordergoods.mid = mdordermessage.id  and mdordergoods.statues not in (11,12)  and mdordergoods.billingstatues = "
 				+ billingstatues
 				+ "  and mdordermessage.submitid in ("
 				+ listids.toString().substring(1,
