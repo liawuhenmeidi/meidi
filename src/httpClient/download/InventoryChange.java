@@ -50,7 +50,7 @@ public class InventoryChange {
 		}
 		Map<String, Map<String, List<GoodsReceipt>>> mapgr = GoodsReceitManager
 				.getMapGoodNum(startTime, endTime);
-
+ 
 		logger.info(mapgr.size());
 
 		Collection<SNInventory> liststart = get(startTime);
@@ -59,12 +59,12 @@ public class InventoryChange {
 
 		Collection<SNInventory> listend = get(TimeUtill.dataAdd(endTime, 1));
 
-		logger.info(liststart.size());
-		logger.info(listend.size());
+		logger.info(null==liststart?null:liststart.size());
+		logger.info(null==listend?null:listend.size());
 
-		int samecount = 0;
-
-		if (!listend.isEmpty()) {
+		int samecount = 0; 
+ 
+		if (null != listend && !listend.isEmpty()) {
 			Iterator<SNInventory> it = listend.iterator();
 			while (it.hasNext()) {
 				SNInventory inend = it.next();
@@ -198,19 +198,22 @@ public class InventoryChange {
 		// logger.info("list" + list.size());
 		return list;
 	}
-
+ 
 	public static Map<String, SNInventory> changeMap(Collection<SNInventory> list) {
 		Map<String, SNInventory> map = new HashMap<String, SNInventory>();
-		if (!list.isEmpty()) {
-			Iterator<SNInventory> it = list.iterator();
-			while (it.hasNext()) {
-				SNInventory in = it.next();
-				String key = StringUtill.getStringNocn(in.getBranchName())
-						+ "_" + in.getGoodNum();
-				map.put(key, in);
+		if(null != list){
+			if (!list.isEmpty()) {
+				Iterator<SNInventory> it = list.iterator();
+				while (it.hasNext()) {
+					SNInventory in = it.next();
+					String key = StringUtill.getStringNocn(in.getBranchName())
+							+ "_" + in.getGoodNum();
+					map.put(key, in);
+				}
 			}
-		}
 
+		}
+		
 		// logger.info(map.size());
 		return map;
 	}
