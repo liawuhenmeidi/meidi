@@ -1,8 +1,6 @@
 package httpClient;
 
-import inventory.InventoryBranchManager;
-
-import java.util.Date;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import httpClient.download.InventoryBadGoodsDownLoad;
@@ -104,7 +102,7 @@ public class MyMainClient {
 		      
 			    inventoryIN.get(starttime, endtime);  
 			 
-			 logger.info(starttime+"***"+endtime);
+			    logger.info(starttime+"***"+endtime);
 			 
 		 }
 		//System.out.print("initInventoryInAndOut:"+time); 
@@ -222,37 +220,40 @@ public class MyMainClient {
 	 
 	public synchronized void startinventoryIN(MyMainClient mc) {
 		try {      
-			 
+			  
 			mapreturn.clear(); 
-			 
+		 	  
 			String starttime = TimeUtill.getdateString(); 
 			//String start = TimeUtill.dataAdd(starttime, -6); 
 			String endtime = TimeUtill.getdateString();  
-			             
+			   
+		//  登陆  	 
+		//	MyLogin.loginpost(new URI(MyLogin.url));
+			 
 			 //库存更新  
-			Inventory();  
-			               
+		//	Inventory();  
+			                
 			 // 出入库更新  
-		    inventoryOutAndIn(starttime,endtime);
+		  ///  inventoryOutAndIn(starttime,endtime);
 			     
 			// 订货订单更新   
-			OrderDownLoad.saveDB(starttime, endtime);
+		///	OrderDownLoad.saveDB(starttime, endtime);
 			 
 			// 异常退货订单            
-			inventoryOrder.getinventoryOut(starttime, endtime); 
-			inventoryOrder.getinventoryOutModel(starttime, endtime);
+		///	inventoryOrder.getinventoryOut(starttime, endtime); 
+		///	inventoryOrder.getinventoryOutModel(starttime, endtime);
 			 
 			
 			// InventoryModelDownLoad.saveDB();
 			
 			//InventoryChange.compare("2015-05-01","2015-05-03");
-     
+      
 			// 更新过期订单(系统内)   
-			InventoryBranchManager.initOrderNumSN();
+		///	InventoryBranchManager.initOrderNumSN();
         
 			//logger.info("更新订单加订单号"); 
 			// 更新订单信息    
-           //           
+           //            
 			//ProductSN.save(mc); 
 			// 销售数据                            
 			//SaleDownLoad.saveDB(starttime, endtime);  

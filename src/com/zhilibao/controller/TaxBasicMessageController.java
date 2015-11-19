@@ -28,7 +28,7 @@ import com.zhilibao.utill.QueryResult;
 @Controller  //类似Struts的Action  
 @RequestMapping("/meidiserver/admin/tax/")
 public class TaxBasicMessageController {    
-	 @Resource 
+	 @Resource  
 	private TaxBasicMessageService taxBasicMessageService;
 	 
 	protected static Log logger = LogFactory.getLog(TaxBasicMessageController.class);
@@ -53,8 +53,8 @@ public class TaxBasicMessageController {
 	    	
 	    	} 
 	    	return modelAndView;  // 采用重定向方式跳转页面  
-	    } 
-	     
+	    }  
+	      
 	    @RequestMapping("save.do")  // 请求url地址映射，类似Struts的action-mapping             
 	    public ModelAndView save(TaxBasicMessage tbm){  
 	    	//taxBasicMessageDao.delete(tbm);   

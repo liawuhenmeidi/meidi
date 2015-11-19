@@ -36,10 +36,10 @@ function clear(){
 	
   }
   </script> 
-</head> 
+</head>  
  <body> 
     
-    <% if(!StringUtill.isNull((String)StringUtill.getJSONObject(data).get("src"))){
+    <% if(StringUtill.isNull((String)StringUtill.getJSONObject(data).get("src"))){
     	%>   
     	数据同步完毕 
     	 

@@ -23,7 +23,7 @@ function reloadopned(src){
 	$("#main",window.parent.document).find("#contentpage").attr("src",src);
 		//$("#contentpage").attr("src");
   }    
-    
+     
 function getInventory(){
 	 
 	var mydate = new Date();  
@@ -43,13 +43,15 @@ function getInventory(){
 		         url: "server.jsp", 
 		         data:"method=InitInventorySN", 
 		         dataType: "json",         
-		         success: function (data) {   
-		        	// alert(data.src); 
+		         success: function (data) {     
+		        	// alert(data.src);   
 		        	 if(null != data.src || "" != data.src){
+		        		// alert(123);  
 		        		 var aToStr=JSON.stringify(data); 
 		        		// alert(aToStr);
 		        		 $("#main",window.parent.document).find("#contentpage").attr("src","login/loginSN.jsp?data="+aToStr);
-		        	 }   
+		        	 }  
+		        	// alert(456); 
 		        	 date = dates; 
 		        	  
 		        	 $("#initInventory").html("与苏宁数据同步");
@@ -302,11 +304,12 @@ function getInventory(){
               <p ><a href="javascript:void(0);"  onclick="reloadopned('ordergoods/SNOrder.jsp')">查看苏宁采购订单</a></p> 
             </div>
           </li>  
-           
-          <li>    
-            <h4 >苏宁同步数据管理</h4> 
-            <div class="list-item none"> 
-             <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">与苏宁数据同步</a></p> 
+            
+          <li>     
+            <h4 >苏宁同步数据管理</h4>  
+            <div class="list-item none">   
+              <p ><a href="javascript:void(0);"  onclick="reloadopned('SNUserPassword.do')">苏宁用户名密码</a></p> 
+             <p ><a href="javascript:void(0);"  onclick="getInventory();" id="initInventory">与苏宁数据同步</a></p>  
              
             </div>
           </li> 

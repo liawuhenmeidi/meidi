@@ -1066,10 +1066,10 @@ logger.info(sql);
 				   logger.info(branchid);   
 				   if(!StringUtill.isNull(sta)){
 				   InventoryBranch in = null ;   
-				   try{   
-					   logger.info(map.get(Integer.valueOf(branchid)));
+				   try{    
+					  // logger.info(map.get(Integer.valueOf(branchid)));
 					   in = map.get(Integer.valueOf(branchid)).get(type).get(Integer.valueOf(sta)) ;
-					   logger.info(map);
+					  // logger.info(map);
 				   }catch(Exception e){ 
 					   in = null ;  
 				   }  

@@ -155,9 +155,10 @@ public class LogisticsMessageManager {
 		  List<LogisticsMessage> list = new ArrayList<LogisticsMessage>();
 		  Connection conn = DB.getConn();  
 		  String type ="";
-			String sql = "select * from  mdlogistics  where  (statues in (4)  or advancestatues =  1)" ;
+			//String sql = "select * from  mdlogistics  where  (statues in (4)  or advancestatues =  1)" ;
+			String sql = "select * from  mdlogistics  where  1 = 1" ;
 			      if(!StringUtill.isNull(chargetype)){
-			    	  type = chargetype;  
+			    	  type = chargetype;   
 			      }   
 			        
 			      if(!StringUtill.isNull(starttime)){

@@ -874,7 +874,7 @@ public class OrderGoodsAllManager {
 		Map<Integer, Map<String, Map<Integer, InventoryBranch>>> mapin = InventoryBranchManager
 				.getInventoryMap(user);
 
-		logger.info(mapin);
+		//logger.info(mapin);
 
 		Set<String> setinit = new HashSet<String>();
 		List<String> listsql = new ArrayList<String>();

@@ -4,27 +4,20 @@ package httpClient;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import utill.StringUtill;
    
@@ -41,7 +34,7 @@ public class MyLogin {
         	if(StringUtill.isNull(MyMainClient.getUuid())){
         		uuid = UUID.randomUUID().toString();
         	}else {
-        		logger.info("uuid is not null"); 
+        		//logger.info("uuid is not null"); 
         		uuid = MyMainClient.getUuid();
         	} 
       logger.info(uuid);
@@ -57,8 +50,6 @@ public class MyLogin {
             .addParameter("password", MyMainClient.getCachePassword())
             .addParameter("verifyCode",MyMainClient.getVerifyCode())
             .build();      
-        	
-        	
       
 	//logger.info("executing request " + login.getURI());  
 	        CloseableHttpResponse response2 = MyMainClient.getHttpclient().execute(login);
