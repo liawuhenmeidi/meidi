@@ -9,8 +9,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory; 
 import org.springframework.stereotype.Service;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import com.zhilibao.dao.CarsDao;
 import com.zhilibao.model.Cars;
 import com.zhilibao.service.CarsService;

@@ -25,8 +25,6 @@ import branch.Branch;
 import branch.BranchManager;
 import branchtype.BranchType;
 import branchtype.BranchTypeManager;
-
-import com.google.common.collect.Maps;
 import com.zhilibao.dao.CarsDao;
 import com.zhilibao.dao.LogisticsMessageDao;
 import com.zhilibao.model.Cars;
