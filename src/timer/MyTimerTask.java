@@ -10,6 +10,6 @@ public class MyTimerTask extends TimerTask{
 	protected static Log logger = LogFactory.getLog(MyTimerTask .class); 
         public void run() { 
         	logger.info("MyTimerTask");    
-        	MyMainClient.getinstance().run();
+        	//MyMainClient.getinstance().run();
         } 
 }

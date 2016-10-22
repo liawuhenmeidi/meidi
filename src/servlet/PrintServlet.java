@@ -75,7 +75,7 @@ import category.CategoryService;
 import company.Company;
 import company.CompanyManager;
 import comparator.BranchComparator;
-
+import enums.SaleModel;
 import branch.Branch;
 import branch.BranchService;
 import branchtype.BranchType;
@@ -687,6 +687,9 @@ public class PrintServlet extends HttpServlet {
 		cell.setCellValue("单号");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) x++);
+		cell.setCellValue("所属公司");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
 		cell.setCellValue("销售门店");
 		cell.setCellStyle(style);
 		cell = row.createCell((short) x++);
@@ -820,8 +823,31 @@ public class PrintServlet extends HttpServlet {
 					row.createCell((short) y++).setCellValue(
 							order.getPrintlnid() == null ? "" : order
 									.getPrintlnid());
+					String com = "待定";
+					
+					if(order.getBranchType(order.getBranch()).getSaletype() == SaleModel.GuoMei){
+						if(!StringUtill.isNull(order.getSaleTime())){
+							if(TimeUtill.compare(order.getSaleTime(), "2016-10-23")){
+								com = "恒通";
+							}else {
+								com = "美丰";
+							} 
+						}else { 
+							com = "待定";
+						}
+						
+						
+					}else {
+						com = "美丰";
+					} 
+					
+					row.createCell((short) y++).setCellValue(
+							com);
+					
 					row.createCell((short) y++).setCellValue(
 							order.getbranchName(order.getBranch()));
+					
+					
 					row.createCell((short) y++).setCellValue(
 							usermap.get(order.getSaleID()).getUsername());
 					row.createCell((short) y++).setCellValue(

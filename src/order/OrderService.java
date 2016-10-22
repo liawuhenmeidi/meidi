@@ -16,10 +16,11 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jsoup.helper.StringUtil;
 
 import category.Category;
 import category.CategoryService;
-
+import enums.SaleModel;
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
@@ -30,10 +31,11 @@ import user.UserManager;
 import user.UserService;
 import utill.BasicUtill;
 import utill.StringUtill;
-
+import utill.TimeUtill;
 import aftersale.AfterSale;
 import aftersale.AftersaleAll;
 import branch.BranchService;
+import branchtype.BranchType;
 
 public class OrderService {
 	 
@@ -44,6 +46,14 @@ public class OrderService {
 			return BranchService.getMap().get(id).getLocateName();
 		}else{
 			return "";
+		}
+	}
+	
+	public static BranchType getBranchType(int id){
+		if(BranchService.getMap().containsKey(id)){
+			return BranchService.getMap().get(id).getBranchtype();
+		}else{
+			return null;
 		}
 	}
 	 
@@ -1370,6 +1380,24 @@ public class OrderService {
 				} 
 				
 				html.append("<td align=\"center\">"+o.getbranchName(o.getBranch())+"</td>");
+				
+				if(o.getBranchType(o.getBranch()).getSaletype() == SaleModel.GuoMei){
+					if(!StringUtill.isNull(o.getSaleTime())){
+						if(TimeUtill.compare(o.getSaleTime(), "2016-10-23")){
+							html.append("<td align=\"center\">恒通</td>");
+						}else {
+							html.append("<td align=\"center\">美丰</td>");
+						} 
+					}else {
+						html.append("<td align=\"center\">待定</td>");
+					}
+					
+					
+				}else {
+					html.append("<td align=\"center\">美丰</td>");
+				}
+				
+				
 				
 				html.append("<td align=\"center\">"+usermap.get(o.getSaleID()).getUsername()+"</p>"+usermap.get(o.getSaleID()).getPhone()+"</td>");
 				

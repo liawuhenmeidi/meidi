@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import branchtype.BranchType;
 import category.Category;
 
 import category.CategoryService;
@@ -190,6 +192,10 @@ public class Order {
   
   public String getbranchName(int branchid){
 		return OrderService.getBranchName(branchid);
+	} 
+  
+  public BranchType getBranchType(int branchid){
+		return OrderService.getBranchType(branchid);
 	} 
 	
   public String getBranchname() {

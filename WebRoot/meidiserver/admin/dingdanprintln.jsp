@@ -188,6 +188,7 @@ function orderPrint(id,statues,type,deliveryStatues){
 			<%} %>
 			<td align="center">单号</td>
 			<td align="center">门店</td>
+			<td align="center">所属公司</td>
 			<td align="center">销售员</td>
 			<td align="center">pos(厂送)单号</td>
 			<td align="center">OMS订单号</td>
