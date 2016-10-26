@@ -1384,9 +1384,9 @@ public class OrderService {
 				if(o.getBranchType(o.getBranch()).getSaletype() == SaleModel.GuoMei){
 					if(!StringUtill.isNull(o.getSaleTime())){
 						if(TimeUtill.compare(o.getSaleTime(), "2016-10-23")){
-							html.append("<td align=\"center\">恒通</td>");
-						}else {
 							html.append("<td align=\"center\">美丰</td>");
+						}else {
+							html.append("<td align=\"center\">恒通</td>");
 						} 
 					}else {
 						html.append("<td align=\"center\">待定</td>");

@@ -828,9 +828,9 @@ public class PrintServlet extends HttpServlet {
 					if(order.getBranchType(order.getBranch()).getSaletype() == SaleModel.GuoMei){
 						if(!StringUtill.isNull(order.getSaleTime())){
 							if(TimeUtill.compare(order.getSaleTime(), "2016-10-23")){
-								com = "恒通";
-							}else {
 								com = "美丰";
+							}else {
+								com = "恒通";
 							} 
 						}else { 
 							com = "待定";
