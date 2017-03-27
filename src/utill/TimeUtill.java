@@ -152,6 +152,26 @@ public class TimeUtill {
    	 } 
    	 
    	 return str ;
+    }  
+    
+    public static String getsearchtime(String starttime,String endtime,String property){
+    	boolean flag = false ; 
+    	String str = ""; 
+    	//logger.info(starttime+endtime); 
+    	if(starttime != null && starttime != "" && starttime != "null"){
+   		   str += " and "+property+"  BETWEEN  '" + starttime + "'  and  ";
+   	       flag = true ;
+   	    } 
+   	 
+   	 if(endtime != null && endtime != "" && endtime != "null"){
+   		 if(flag){
+   			str += " ' " + endtime + "'";
+   		 }
+   	 }else if(flag){
+   		 str += "now()";
+   	 } 
+   	 
+   	 return str ;
     }
     
     public static String getPrintlnTime(){

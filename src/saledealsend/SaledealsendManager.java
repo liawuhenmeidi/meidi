@@ -101,14 +101,14 @@ public class SaledealsendManager {
 	 public static List<Saledealsend> getList(User user ,String startTime, String endTime ,String dealsendid,int type){
 		  
 		 List<Saledealsend> list = new ArrayList<Saledealsend>();  
-		 String search =  TimeUtill.getsearchtime(startTime,endTime);
+		 String search =  TimeUtill.getsearchtime(startTime,endTime,"submittime");
 		 if(BasicUtill.dealsend == type){
 			 if(!StringUtill.isNull(dealsendid)){
-				 search += " and dealsendid = "+ dealsendid;
+				 search += " and dealsendid = "+ dealsendid; 
 			 }else { 
 				 search += " and dealsendid in ( select id from mduser where charge = " +user.getId()+ " ) ";   
 			 }  
-		 }else {
+		 }else { 
 			 if(!StringUtill.isNull(dealsendid)){
 				 search += " and dealsendid = "+ dealsendid;
 			 }else {

@@ -188,6 +188,9 @@ public class MatchOrder {
 		
 		double similarityRatio = 0.0;
 		
+		if(dbOrderShopNames.size() == 0){
+			return "";
+		}
 		//找出相似度最高的店名组合
 		for(int i = 0 ; i < dbOrderShopNames.size() ; i ++){
 			for(int j = 0 ; j < uploadOrderShopNames.size() ; j ++){
