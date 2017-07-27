@@ -295,18 +295,14 @@ if(total){ %>
 		}   
 		   
 		 //System.out.println(sain.getId());
-		 String sendtypestr = sain.getSendType();
-		 String[] sendtypestrs = sendtypestr.split(",");
-		 for(int j=0;j<sendtypestrs.length;j++){
-			 String sendtype = sendtypestrs[j];
-			// System.out.println(sendtypestrs[j]);
-			 String[] sendtypes = sendtype.split(":");
-			 String realtype = sendtypes[0]; 
-			 int realcount = Integer.valueOf(sendtypes[1]);
-			 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
-			 count += realcount;  
-			 moneycount += prince*realcount;
-			 bpmoneycount += prince*realcount*(1-sain.getBackPoint()/100);
+		List<SendType> sendTypes = sain.getSendType();
+
+		for(int j=0;j<sendTypes.size();j++){
+			SendType st = sendTypes.get(j);
+
+			 count += st.getNum();
+			 moneycount += st.getSalePrice()*st.getNum();
+			 bpmoneycount += st.getSalePrice()*st.getNum()*(1-sain.getBackPoint()/100);
 			 
 	%>
 	<tr class="asc"  onclick="updateClass(this)"> 
@@ -324,29 +320,24 @@ if(total){ %>
 					
 					<td align="center"><%=sain.getSaleTime() %></td>
 					<td align="center"><%=tpe %></td> 
-					<td align="center"><%=realtype %></td> 
+					<td align="center"><%=st.getType() %></td>
 					
-					<% 
-					  String re = map.get(realtype);
-					  if(null == re){
-						  re = map.get(realtype.trim());
-					  }
-					  if(null==re){
+					<% if(null==map.get(st.getType())){
 						%>
-						<td align="center" bgcolor="red"><%=realtype%></td>
+						<td align="center" bgcolor="red"><%=st.getType()%></td>
 					  <% 
 					}else { 
 						%> 
-						<td align="center" ><%=re %></td>
+						<td align="center" ><%=map.get(st.getType()) %></td>
 					<%
 					}%>    
 					
-					<td align="center"><%=realcount %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(prince)  %></td>  
-					<td align="center"><%=DoubleUtill.getdoubleTwo(prince*realcount) %></td>  
+					<td align="center"><%=st.getNum() %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(st.getSalePrice())  %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(st.getSalePrice()*st.getNum()) %></td>
 					<td align="center"><%=sain.getBackPoint() %></td>  
-					<td align="center"><%=DoubleUtill.getdoubleTwo(prince*(1-sain.getBackPoint()/100)) %></td>
-					<td align="center"><%=DoubleUtill.getdoubleTwo(prince*realcount*(1-sain.getBackPoint()/100)) %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(st.getSalePrice()*(1-sain.getBackPoint()/100)) %></td>
+					<td align="center"><%=DoubleUtill.getdoubleTwo(st.getSalePrice()*st.getNum()*(1-sain.getBackPoint()/100)) %></td>
 	</tr>
 	<%
 		 }
@@ -468,18 +459,13 @@ if(total){ %>
 					
 					<td align="center" class="noprinln3"><%=tpe%></td>
 					<td align="center" class="noprinln4"><%=up.getType()%></td>
-					<% 
-					String re = map.get(up.getType());
-					  if(null == re){
-						  re = map.get(up.getType().trim());
-					  }
-					if(null==re){
+					<% if(null==map.get(up.getType())){
 						%>
 						<td align="center" bgcolor="red" class="noprinln10"><%=up.getType()%></td>
 					  <% 
 					}else {
 						%> 
-						<td align="center"  class="noprinln10"><%=re %></td>
+						<td align="center"  class="noprinln10"><%=map.get(up.getType()) %></td>
 					<%
 					}%>  
 					<td align="center" class="noprinln6"><%=up.getCount() %></td>  
@@ -642,7 +628,7 @@ if(total){ %>
 	    </tr>
 	   <%
       } 
-  }  
+  } 
 
    if(null != maptypeinit){
 	   Set<Map.Entry<String, List<UploadTotal>>> setmaptype =  maptypeinit.entrySet();
@@ -659,7 +645,7 @@ if(total){ %>
 				Iterator<String> it = jsObj.keys();
 				while(it.hasNext()){ 
 					String t = it.next();
-					if(key.equals(t)){  
+					if(key.equals(t)){ 
 						key = jsObj.getString(key);
 					}
 				}

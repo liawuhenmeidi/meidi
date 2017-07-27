@@ -1,28 +1,20 @@
 package change;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import database.DB;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import branch.Branch;
-
 import utill.DBUtill;
 import utill.StringCompare;
 import utill.StringUtill;
 import wilson.matchOrder.MatchOrder;
+import wilson.upload.SendType;
 import wilson.upload.UploadOrder;
-import database.DB;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
 
 public class UploadChangeManager {
 	protected static Log logger = LogFactory.getLog(UploadChangeManager.class);
@@ -160,53 +152,38 @@ public class UploadChangeManager {
     
 	public static Set<String> getsetbranch(List<UploadOrder> right,int type){
 		Map<String,String> mapnew  = BranchTypeChange.getinstance().getMap();
-		// logger.info(mapnew); 
+		
 		Set<String> rightb = new HashSet<String>();
 		Set<String> rightt = new HashSet<String>();
-		   
+		
 		Iterator<UploadOrder> it = right.iterator();
-		 
-		Set<String> set = mapnew.keySet();
-    	logger.info(set);  
-    	 
-		while (it.hasNext()) { 
+		while (it.hasNext()) {
 			UploadOrder up = it.next();
-			//logger.info(up.getShop()); 
+			
 			if(null != mapnew){
-		    	
+		    	Set<String> set = mapnew.keySet();
 		    	if(!set.contains(up.getShop())){
 		    		rightb.add(up.getShop());
 		    	}
-		    	  
-		    	String sendtypestr = up.getSendType();
-		    	//logger.info(sendtypestr);
-				String[] sendtypestrs = sendtypestr.split(",");
-				for (int j = 0; j < sendtypestrs.length; j++) {
-					String sendtype = sendtypestrs[j];
-					// System.out.println(sendtypestrs[j]);
-					String[] sendtypes = sendtype.split(":");
-					String realtype = sendtypes[0];
-					if(!set.contains(realtype)){ 
-						//logger.info(realtype); 
-						//set.add(realtype); 
-						rightt.add(realtype.trim());
+
+				List<SendType> sendTypes = up.getSendType();
+
+				for (int j = 0; j < sendTypes.size(); j++) {
+					SendType sendType = sendTypes.get(j);
+					if(!set.contains(sendType.getType())){
+						rightt.add(sendType.getType());
 					}
 				}
 		    }else {
 		    	rightb.add(up.getShop());
- 
-				String sendtypestr = up.getSendType();
-				String[] sendtypestrs = sendtypestr.split(",");
-				for (int j = 0; j < sendtypestrs.length; j++) {
-					String sendtype = sendtypestrs[j];
-					// System.out.println(sendtypestrs[j]);
-					String[] sendtypes = sendtype.split(":");
-					String realtype = sendtypes[0].trim();
-					rightt.add(realtype.trim());
+
+				List<SendType> sendTypes = up.getSendType();
+
+				for (int j = 0; j < sendTypes.size(); j++) {
+					SendType sendType = sendTypes.get(j);
+					rightt.add(sendType.getType());
 				}
 		    }
-			
-
 		}
 		
 		if(0  == type){
@@ -268,8 +245,8 @@ public class UploadChangeManager {
 					realname = StringUtill.getStringNocn(br);
 				} else if ("en".equals(statues)) {
 					realname = StringUtill.getNumbers(br);
-				} 
-				//logger.info(realname);
+				}
+				// logger.info(realname);
 				UploadChange up = mapletfb.get(realname);
 				if (null != up) {
 					map.put(br, up.getName());
@@ -298,12 +275,11 @@ public class UploadChangeManager {
 				if ("all".equals(statues)) {
 					realtype =mc.getName();
 				} else if ("cn".equals(statues)) {
-					
 					realtype = StringUtill.getStringNocn(mc.getName());
 				} else if ("en".equals(statues)) {
 					realtype =StringUtill.getNumbers(mc.getName()); 
 				} 
-				 
+				
 				//logger.info(realtype);  
 				if(!StringUtill.isNull(realtype)){
 					mapletft.put(realtype, mc); 

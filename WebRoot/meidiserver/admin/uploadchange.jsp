@@ -23,7 +23,6 @@
 	 
 	List<UploadChange> uploadOrders = UploadChangeManager.getUnCheckedUploadOrders();
 	List<String>  orderNames= UploadChangeManager.getAllUploadOrderNames(uploadOrders);
-	//System.out.println(orderNames); 
 	String selectOrderName1 = ""; 
 	String selectOrderName2 = "";  
 	String checkBoxStatus = "";    
@@ -54,19 +53,18 @@
 	             source = StringUtill.GetJson(leftnew.getBranch());
 		}else if(Integer.valueOf(statues) == 1){
 	             source = StringUtill.GetJson(leftnew.getTypes());
-		}   
+		} 
 		//System.out.println("source"+source); 
-	    right = UploadManager.getTotalUploadOrders(selectOrderName2,-1+"",BasicUtill.send);
-	// System.out.println(" right"+right);  
+	    right = UploadManager.getTotalUploadOrders(selectOrderName2,-1+"",BasicUtill.send); 
 		checkBoxStatus = request.getParameter("ridiocheck");
 		//初始化要对比的orders      
 		ri = UploadChangeManager.getsetbranch(right,Integer.valueOf(statues));
-		 System.out.println("ri"+ri);  
+		  // System.out.println(ri.size());
 		Map<String,String> mapchange = UploadChangeManager.getmatch(left, ri,checkBoxStatus,statues); 
 		//System.out.println(StringUtill.GetJson(mapchange)); 
-		change = StringUtill.GetJson(mapchange);   
-		map.putAll(mapchange);    
-		//System.out.println(map);
+		change = StringUtill.GetJson(mapchange);  
+		map.putAll(mapchange);  
+		
 		//System.out.println(StringUtill.GetJson(mapchange));
 	}else if("RightSerach".equals(method)){
 		showright = true ;
@@ -606,14 +604,12 @@ function addleft(num){
 				UploadOrder up = it.next();
 				rightb.add(up.getShop());
 
-				String sendtypestr = up.getSendType();
-				String[] sendtypestrs = sendtypestr.split(",");
-				for (int j = 0; j < sendtypestrs.length; j++) {
-					String sendtype = sendtypestrs[j];
+				List<SendType> sendTypes = up.getSendType();
+
+				for(int j=0;j<sendTypes.size();j++){
+					SendType st = sendTypes.get(j);
 					// System.out.println(sendtypestrs[j]);
-					String[] sendtypes = sendtype.split(":");
-					String realtype = sendtypes[0];
-					rightt.add(realtype);
+					rightt.add(st.getType());
 				}
 
 			}
@@ -710,22 +706,20 @@ function addleft(num){
 				UploadOrder up = it.next();
 //System.out.println(up.getShop());
 				if (!db.contains(up.getShop())) {
-					rightb.add(up.getShop().trim());
+					rightb.add(up.getShop());
 				}
 
-				String sendtypestr = up.getSendType();
-				String[] sendtypestrs = sendtypestr.split(",");
-				for (int j = 0; j < sendtypestrs.length; j++) {
-					String sendtype = sendtypestrs[j];
+				List<SendType> sendTypes = up.getSendType();
+
+				for(int j=0;j<sendTypes.size();j++){
+					SendType st = sendTypes.get(j);
 					// System.out.println(sendtypestrs[j]);
-					String[] sendtypes = sendtype.split(":");
-					String realtype = sendtypes[0];
-					if (!db.contains(realtype) && !db.contains(realtype.trim())) {
-						rightt.add(realtype); 
+					if (!db.contains(st.getType())) {
+						rightt.add(st.getType());
 					}
 				}
 
-			} 
+			}
 			
     	   if( 0 == Integer.valueOf(statues)){
     		   %>
