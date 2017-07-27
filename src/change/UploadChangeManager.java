@@ -1,28 +1,20 @@
 package change;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import database.DB;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import branch.Branch;
-
 import utill.DBUtill;
 import utill.StringCompare;
 import utill.StringUtill;
 import wilson.matchOrder.MatchOrder;
+import wilson.upload.SendType;
 import wilson.upload.UploadOrder;
-import database.DB;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
 
 public class UploadChangeManager {
 	protected static Log logger = LogFactory.getLog(UploadChangeManager.class);
@@ -173,33 +165,25 @@ public class UploadChangeManager {
 		    	if(!set.contains(up.getShop())){
 		    		rightb.add(up.getShop());
 		    	}
-		    	 
-		    	String sendtypestr = up.getSendType();
-				String[] sendtypestrs = sendtypestr.split(",");
-				for (int j = 0; j < sendtypestrs.length; j++) {
-					String sendtype = sendtypestrs[j];
-					// System.out.println(sendtypestrs[j]);
-					String[] sendtypes = sendtype.split(":");
-					String realtype = sendtypes[0];
-					if(!set.contains(realtype)){
-						rightt.add(realtype);
+
+				List<SendType> sendTypes = up.getSendType();
+
+				for (int j = 0; j < sendTypes.size(); j++) {
+					SendType sendType = sendTypes.get(j);
+					if(!set.contains(sendType.getType())){
+						rightt.add(sendType.getType());
 					}
 				}
 		    }else {
 		    	rightb.add(up.getShop());
 
-				String sendtypestr = up.getSendType();
-				String[] sendtypestrs = sendtypestr.split(",");
-				for (int j = 0; j < sendtypestrs.length; j++) {
-					String sendtype = sendtypestrs[j];
-					// System.out.println(sendtypestrs[j]);
-					String[] sendtypes = sendtype.split(":");
-					String realtype = sendtypes[0];
-					rightt.add(realtype);
+				List<SendType> sendTypes = up.getSendType();
+
+				for (int j = 0; j < sendTypes.size(); j++) {
+					SendType sendType = sendTypes.get(j);
+					rightt.add(sendType.getType());
 				}
 		    }
-			
-
 		}
 		
 		if(0  == type){

@@ -604,14 +604,12 @@ function addleft(num){
 				UploadOrder up = it.next();
 				rightb.add(up.getShop());
 
-				String sendtypestr = up.getSendType();
-				String[] sendtypestrs = sendtypestr.split(",");
-				for (int j = 0; j < sendtypestrs.length; j++) {
-					String sendtype = sendtypestrs[j];
+				List<SendType> sendTypes = up.getSendType();
+
+				for(int j=0;j<sendTypes.size();j++){
+					SendType st = sendTypes.get(j);
 					// System.out.println(sendtypestrs[j]);
-					String[] sendtypes = sendtype.split(":");
-					String realtype = sendtypes[0];
-					rightt.add(realtype);
+					rightt.add(st.getType());
 				}
 
 			}
@@ -711,15 +709,13 @@ function addleft(num){
 					rightb.add(up.getShop());
 				}
 
-				String sendtypestr = up.getSendType();
-				String[] sendtypestrs = sendtypestr.split(",");
-				for (int j = 0; j < sendtypestrs.length; j++) {
-					String sendtype = sendtypestrs[j];
+				List<SendType> sendTypes = up.getSendType();
+
+				for(int j=0;j<sendTypes.size();j++){
+					SendType st = sendTypes.get(j);
 					// System.out.println(sendtypestrs[j]);
-					String[] sendtypes = sendtype.split(":");
-					String realtype = sendtypes[0];
-					if (!db.contains(realtype)) {
-						rightt.add(realtype);
+					if (!db.contains(st.getType())) {
+						rightt.add(st.getType());
 					}
 				}
 

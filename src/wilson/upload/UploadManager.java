@@ -1,36 +1,15 @@
 package wilson.upload;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
-import net.sf.json.JSONObject;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import change.BranchTypeChange;
-import change.ChangeManager;
 import change.UploadChangeAll;
 import change.UploadChangeManager;
-
+import database.DB;
+import net.sf.json.JSONObject;
 import order.Order;
 import order.OrderManager;
-import orderPrint.OrderPrintlnService;
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import product.ProductService;
 import uploadtotal.UploadTotal;
 import uploadtotalgroup.UploadTotalGroup;
@@ -40,7 +19,11 @@ import utill.BasicUtill;
 import utill.StringUtill;
 import wilson.matchOrder.AfterMatchOrder;
 
-import database.DB;
+import javax.servlet.http.HttpServletRequest;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Date;
 
 public class UploadManager {
 	private static XLSReader xlsreader = new XLSReader();
@@ -786,23 +769,27 @@ public class UploadManager {
 	public static UploadOrder getUploadOrderFromRS(ResultSet rs) throws SQLException{
 		UploadOrder uo = new UploadOrder(); 
 		
-		uo.setId(rs.getInt("id"));
-		uo.setName(rs.getString("name"));
-		uo.setSaleManName(rs.getString("salesman"));
-		uo.setShop(rs.getString("shop"));
-		uo.setPosNo(rs.getString("posno"));
+		uo.setId(rs.getInt("uploadorder.id"));
+		uo.setName(rs.getString("uploadorder.name"));
+		uo.setSaleManName(rs.getString("uploadorder.salesman"));
+		uo.setShop(rs.getString("uploadorder.shop"));
+		uo.setPosNo(rs.getString("uploadorder.posno"));
 		if(uo.getPosNo()==null||uo.getPosNo().equals("")){
 			uo.setPosNo("");
 		}
-		uo.setSaleTime(rs.getString("saletime"));
-		uo.setType(rs.getString("type"));
-		uo.setNum(rs.getInt("num"));
-		uo.setSalePrice(rs.getDouble("saleprice"));
+		uo.setSaleTime(rs.getString("uploadorder.saletime"));
+		uo.setType(rs.getString("uploadorder.type"));
+		uo.setNum(rs.getInt("uploadorder.num"));
+		uo.setSalePrice(rs.getDouble("uploadorder.saleprice"));
 		uo.setFileName(rs.getString("filename"));
-		uo.setChecked(rs.getInt("checked"));
-		uo.setCheckedTime(rs.getString("checkedtime"));
-		uo.setCheckOrderId(rs.getInt("checkorderid"));
-		uo.setBackPoint(rs.getDouble("backpoint"));
+		uo.setChecked(rs.getInt("uploadorder.checked"));
+		uo.setCheckedTime(rs.getString("uploadorder.checkedtime"));
+		uo.setCheckOrderId(rs.getInt("uploadorder.checkorderid"));
+		uo.setBackPoint(rs.getDouble("uploadorder.backpoint"));
+
+
+		Order order = OrderManager.gerOrderFromRs(rs);
+		uo.getOrders().add(order);
 		return uo;
 		
 	}
@@ -968,7 +955,8 @@ public class UploadManager {
 	}
 	
 	public static List<UploadOrder> getTotalUploadOrders(String id){
-		List <UploadOrder> checkedUploadOrders = new ArrayList<UploadOrder>();
+		Map<Integer,UploadOrder> map= new TreeMap();
+
 		Connection conn = DB.getConn();  
 		String str = "";
 		if(isBackUped(id)){
@@ -978,14 +966,19 @@ public class UploadManager {
 		}    
 		 
 		String sql = "select * from uploadorder where dealtime is null and name = '"+id+"' "+str+" order by shop";
-logger.info(sql); 
+        logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
 		UploadOrder uo = new UploadOrder();
 		try {     
 			while (rs.next()) {
 				uo = getUploadOrderFromRS(rs);
-				checkedUploadOrders.add(uo); 
+
+				if(null == map.get(uo.getId())){
+                   map.put(uo.getId(),uo);
+				}else{
+					map.get(uo.getId()).getOrders().addAll(uo.getOrders());
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -994,45 +987,47 @@ logger.info(sql);
 			DB.close(stmt);
 			DB.close(conn);
 		}	
-		return checkedUploadOrders;
+		return new ArrayList<>(map.values());
 	}
 	
 	public static List<UploadOrder> getTotalUploadOrders(String id,String statues,int totaltype){
-		List <UploadOrder> checkedUploadOrders = new ArrayList<UploadOrder>();
- 
+		Map<Integer,UploadOrder> map= new TreeMap();
+
 		Connection conn = DB.getConn();
 		String search = "";
 		if(!StringUtill.isNull(statues)){
 			if(Integer.valueOf(statues) == 1){
-				search = " and checked in (1,3) ";
+				search = " and uploadorder.checked in (1,3) ";
 			}else if(Integer.valueOf(statues) == 0){ 
-				search = " and checked in (0,2) "; 
+				search = " and uploadorder.checked in (0,2) ";
 			} 
-		}  
-		
-		  
-		
-		String str = "  and  checked !=  5"; 
+		}
+
+		String str = "  and  uploadorder.checked !=  5";
          
 		if(BasicUtill.sale == totaltype){
 			if(isBackUped(id)){
-				str = "  and  checked =  5";
+				str = "  and  uploadorder.checked =  5";
 			}else { 
-				str = "  and  checked !=  5";
+				str = "  and  uploadorder.checked !=  5";
 			}  
 		}
 		
 		
-		String sql = "select * from uploadorder where dealtime is null and name = '"+id+"' "+str + search+" order by shop";
-   logger.info(sql);
+		//String sql = "select * from uploadorder where dealtime is null and name = '"+id+"' "+str + search+" order by shop";
+        String sql = "select * from uploadorder  LEFT JOIN mdorder on mdorder.pos = uploadorder.posno where dealtime is null and name = '"+id+"'   "+str + search+" order by shop";
+		logger.info(sql);
 		Statement stmt = DB.getStatement(conn); 
 		ResultSet rs = DB.getResultSet(stmt, sql);
-		UploadOrder uo = new UploadOrder();
+		UploadOrder uo =null;
 		try {     
 			while (rs.next()) {
 				uo = getUploadOrderFromRS(rs);
-				checkedUploadOrders.add(uo);
-				uo = new UploadOrder();
+				if(null == map.get(uo.getId())){
+					map.put(uo.getId(),uo);
+				}else{
+					map.get(uo.getId()).getOrders().addAll(uo.getOrders());
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1041,7 +1036,7 @@ logger.info(sql);
 			DB.close(stmt);
 			DB.close(conn);
 		}	
-		return checkedUploadOrders;
+		return new ArrayList<>(map.values());
 	}
 	
 	public static Map<String,Map<String,List<UploadTotal>>> getTotalOrdersGroup(String id,int totaltype,String checked){
@@ -1176,16 +1171,10 @@ logger.info(sql);
 					
 					
 			    }else if(BasicUtill.send == totaltype){
-			    	 String sendtypestr = up.getSendType(); 
-					 String[] sendtypestrs = sendtypestr.split(",");
-					 for(int j=0;j<sendtypestrs.length;j++){
-						 String sendtype = sendtypestrs[j]; 
-						// System.out.println(sendtypestrs[j]);
-						 String[] sendtypes = sendtype.split(":");
-						 relatype = sendtypes[0];  
-						 int realcount = Integer.valueOf(sendtypes[1]);
-						 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
-						 
+					List<SendType> sendTypes = up.getSendType();
+					for(int j=0;j<sendTypes.size();j++){
+						SendType st = sendTypes.get(j);
+
 						 String tpe = "";
 					    	
 							if(null != mapus){
@@ -1228,8 +1217,8 @@ logger.info(sql);
 							uptt.setName(up.getName());
 							uptt.setType(relatype);
 							uptt.setPos(up.getPosNo()); 
-							uptt.setTotalcount(Math.abs(prince)*realcount);
-							uptt.setTatalbreakcount(Math.abs(prince)*realcount*(1-up.getBackPoint()/100));
+							uptt.setTotalcount(Math.abs(st.getSalePrice())*st.getNum());
+							uptt.setTatalbreakcount(Math.abs(st.getSalePrice())*st.getNum()*(1-up.getBackPoint()/100));
 							uplist.add(uptt); 
 
 					 }
@@ -1339,15 +1328,10 @@ logger.info(sql);
 						upt.setTatalbreakcount(upt.getTatalbreakcount()+Math.abs(up.getSalePrice())*up.getNum()*(1-up.getBackPoint()/100));
 					} 
 			    }else if(BasicUtill.send == totaltype){
-			    	String sendtypestr = up.getSendType(); 
-					 String[] sendtypestrs = sendtypestr.split(",");
-					 for(int j=0;j<sendtypestrs.length;j++){
-						 String sendtype = sendtypestrs[j];
+					List<SendType> sendTypes = up.getSendType();
+					 for(int j=0;j<sendTypes.size();j++){
+						 SendType st = sendTypes.get(j);
 						// System.out.println(sendtypestrs[j]);
-						 String[] sendtypes = sendtype.split(":");
-						 relatype = sendtypes[0];  
-						 int realcount = Integer.valueOf(sendtypes[1]);
-						 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
 					     UploadTotal upt = branchname.get(relatype);
 							if(null == upt){
 								upt = new UploadTotal();
@@ -1355,13 +1339,13 @@ logger.info(sql);
 								upt.setCount(up.getNum());
 								upt.setName(up.getName());
 								upt.setType(relatype);
-								upt.setTotalcount(prince*realcount);
-								upt.setTatalbreakcount(prince*realcount*(1-up.getBackPoint()/100));
+								upt.setTotalcount(st.getSalePrice()*st.getNum());
+								upt.setTatalbreakcount(st.getSalePrice()*st.getNum()*(1-up.getBackPoint()/100));
 								branchname.put(relatype,upt); 
 							}else {
-								upt.setCount(upt.getCount()+realcount);
-								upt.setTotalcount(upt.getTotalcount()+prince*realcount);  
-								upt.setTatalbreakcount(upt.getTatalbreakcount()+prince*realcount*(1-up.getBackPoint()/100));
+								upt.setCount(upt.getCount()+st.getNum());
+								upt.setTotalcount(upt.getTotalcount()+st.getSalePrice()*st.getNum());
+								upt.setTatalbreakcount(upt.getTatalbreakcount()+st.getSalePrice()*st.getNum()*(1-up.getBackPoint()/100));
 							}
 							
 							
@@ -1449,15 +1433,10 @@ logger.info(sql);
 					}
 					
 			    }else if(BasicUtill.send == totaltype){
-			    	 String sendtypestr = up.getSendType(); 
-					 String[] sendtypestrs = sendtypestr.split(",");
-					 for(int j=0;j<sendtypestrs.length;j++){
-						 String sendtype = sendtypestrs[j]; 
+					 List<SendType> sendTypes = up.getSendType();
+					 for(int j=0;j<sendTypes.size();j++){
+						 SendType st = sendTypes.get(j);
 						// System.out.println(sendtypestrs[j]);
-						 String[] sendtypes = sendtype.split(":");
-						 relatype = sendtypes[0];  
-						 int realcount = Integer.valueOf(sendtypes[1]);
-						 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
 						 
 						 HashMap<String, UploadTotal> branchname= map.get(relatype);
 							if(null == branchname){
@@ -1469,16 +1448,16 @@ logger.info(sql);
 							if(null == upt){
 								upt = new UploadTotal();
 								upt.setBranchname(up.getShop());
-								upt.setCount(realcount);
+								upt.setCount(st.getNum());
 								upt.setName(up.getName()); 
 								upt.setType(relatype);
-								upt.setTotalcount(prince*realcount);
-								upt.setTatalbreakcount(prince*realcount*(1-up.getBackPoint()/100));
+								upt.setTotalcount(st.getSalePrice()*st.getNum());
+								upt.setTatalbreakcount(st.getSalePrice()*st.getNum()*(1-up.getBackPoint()/100));
 								branchname.put(up.getShop(),upt);  
 							}else { 
-								upt.setCount(upt.getCount()+realcount);
-								upt.setTotalcount(upt.getTotalcount()+prince*realcount);  
-								upt.setTatalbreakcount(upt.getTatalbreakcount()+prince*realcount*(1-up.getBackPoint()/100));
+								upt.setCount(upt.getCount()+st.getNum());
+								upt.setTotalcount(upt.getTotalcount()+st.getSalePrice()*st.getNum());
+								upt.setTatalbreakcount(upt.getTatalbreakcount()+st.getSalePrice()*st.getNum()*(1-up.getBackPoint()/100));
 							}
 							
 							
@@ -1573,30 +1552,24 @@ logger.info(sql);
 					}
 					
 			    }else if(BasicUtill.send == totaltype){
-			    	 String sendtypestr = up.getSendType(); 
-					 String[] sendtypestrs = sendtypestr.split(",");
-					 for(int j=0;j<sendtypestrs.length;j++){
-						 String sendtype = sendtypestrs[j]; 
-						// System.out.println(sendtypestrs[j]);
-						 String[] sendtypes = sendtype.split(":");
-						 relatype = sendtypes[0];  
-						 int realcount = Integer.valueOf(sendtypes[1]); 
-						 Double prince = Math.abs(Double.valueOf(sendtypes[2]));
-			             
+					List<SendType> sendTypes = up.getSendType();
+
+					 for(int j=0;j<sendTypes.size();j++){
+						 SendType st = sendTypes.get(j);
 						 UploadTotal upt = map.get(relatype);
 							if(null == upt){
 								upt = new UploadTotal(); 
 								upt.setBranchname(up.getShop());
-								upt.setCount(realcount);
+								upt.setCount(st.getNum());
 								upt.setName(up.getName());
 								upt.setType(relatype); 
-								upt.setTotalcount(prince*realcount);
-								upt.setTatalbreakcount(prince*realcount*(1-up.getBackPoint()/100));
+								upt.setTotalcount(st.getNum()*st.getSalePrice());
+								upt.setTatalbreakcount(st.getNum()*st.getSalePrice()*(1-up.getBackPoint()/100));
 								map.put(relatype,upt); 
 							}else { 
-								upt.setCount(upt.getCount()+realcount);
-								upt.setTotalcount(upt.getTotalcount()+prince*realcount);
-								upt.setTatalbreakcount(upt.getTatalbreakcount()+prince*realcount*(1-up.getBackPoint()/100));
+								upt.setCount(upt.getCount()+st.getNum());
+								upt.setTotalcount(upt.getTotalcount()+st.getNum()*st.getSalePrice());
+								upt.setTatalbreakcount(upt.getTatalbreakcount()+st.getNum()*st.getSalePrice()*(1-up.getBackPoint()/100));
 							}
 							
 					 }

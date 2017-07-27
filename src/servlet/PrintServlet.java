@@ -1,74 +1,35 @@
 package servlet;
 
-import gift.Gift;
-import gift.GiftManager;
-import gift.GiftService;
+import branch.BranchService;
+import category.Category;
+import category.CategoryService;
 import group.Group;
-
-import inventory.Inventory;
-import inventory.InventoryBranch;
-import inventory.InventoryBranchManager;
-import inventory.InventoryManager;
-import inventory.InventoryMessage;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import inventory.*;
 import net.sf.json.JSONObject;
 import order.Order;
 import order.OrderManager;
-import order.OrderStatues;
-import orderPrint.OrderPrintln;
-import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
-import orderproduct.OrderProductManager;
-import orderproduct.OrderProductService;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
 import uploadtotal.UploadTotal;
 import uploadtotalgroup.UploadTotalGroup;
 import uploadtotalgroup.UploadTotalGroupManager;
 import user.User;
 import user.UserManager;
-import utill.BasicUtill;
-import utill.DoubleUtill;
-import utill.HttpRequestUtill;
-import utill.StringUtill;
-import utill.TimeUtill;
+import utill.*;
 import wilson.upload.UploadManager;
+import wilson.upload.UploadOrder;
 import wilson.upload.UploadSalaryModel;
 
-import java.io.FileOutputStream;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-
-import branch.BranchService;
-
-import category.Category;
-import category.CategoryManager;
-import category.CategoryService;
+import java.util.*;
  
 
 /**
@@ -93,7 +54,7 @@ public class PrintServlet extends HttpServlet {
 		logger.info(method); 
 		if("exportall".equals(method)){
 			exportOrders( request,response); 
-		}else if("total".equals(method) || "totalcategory".equals(method) || "typetotal".equals(method) ){
+		}else if("check".equals(method) || "total".equals(method) || "totalcategory".equals(method) || "typetotal".equals(method) ){
 			exporttotalExport(request,response);
 		}else if("database".equals(method)){
 			exportDatabase(request,response);
@@ -116,10 +77,13 @@ public class PrintServlet extends HttpServlet {
 		Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
 		
 		Map<String,Map<String,List<UploadTotal>>> mapt = null ;
+
 		Map<String,Map<String,List<UploadTotal>>> mapc = null ;
 		HashMap<String, List<UploadTotal>> maptypeinit = null;
-		
-		if("total".equals(method)){
+		List<UploadOrder> li = null;
+		if("check".equals(method)){
+			li = UploadManager.getTotalUploadOrders(id, 0+"", BasicUtill.send);
+		}else if("total".equals(method)){
 			mapt = UploadManager.getTotalOrdersGroup(id,statues,"");
 		}else if("typetotal".equals(method)){   
 			maptypeinit = UploadManager.getTotalOrdersGroup(id,"type",statues,"");
