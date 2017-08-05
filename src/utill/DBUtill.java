@@ -1,16 +1,11 @@
 package utill;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-import java.sql.PreparedStatement;
- 
+import database.DB;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import database.DB;
+import java.sql.*;
+import java.util.List;
  
 public class DBUtill {
   protected static Log logger = LogFactory.getLog(DBUtill.class);

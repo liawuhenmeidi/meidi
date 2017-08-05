@@ -1,22 +1,20 @@
 package order;
 
+import category.Category;
+import category.CategoryService;
 import gift.Gift;
 import gift.GiftService;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import category.Category;
-
-import category.CategoryService;
-
 import orderproduct.OrderProduct;
-
 import orderproduct.OrderProductService;
 import product.ProductService;
 import user.User;
 import user.UserService;
 import utill.StringUtill;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
  
 public class Order {
   
@@ -93,10 +91,12 @@ public class Order {
   private String mail ;    // 邮箱 
    
   private int shipmentStatues;   //出货状态     0 未出货     1 出货    
-    
+
+	// 9 减去门店库存
   private int deliveryStatues;    //送货状态  0 表示未送货   1 表示已送货   2 送货成功（送货安装） 
                                    // 3  表示退货  (无安装和派送)  4  表示退货（送回） 5 表示退货  （安装）
                                    //   7 安装同意释放了     // 8 已自提      9  只安装(门店提货)  10 只安装(顾客已提)
+	// 11 退货  12 退货  13 退货
                                     // 20   换货
   private int deliverytype ;      //   1 表示是一个人既送货又安装   2  表示送货安装不是一个人
   

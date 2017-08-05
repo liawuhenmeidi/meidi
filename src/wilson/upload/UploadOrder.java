@@ -58,7 +58,7 @@ public class UploadOrder {
 
     private List<SendType> sendType;
 
-    private List<Order> orders = new ArrayList<>();
+    private List<Order> orders = new ArrayList<Order>();
 
     public List<Order> getOrders() {
         return orders;
@@ -278,7 +278,7 @@ public class UploadOrder {
     }
 
     public List<SendType> getSendType() {
-        List<SendType> li = new ArrayList<>();
+        List<SendType> li = new ArrayList<SendType>();
 
         if (StringUtill.isNull(this.saleManName)) {
             SendType st = new SendType();

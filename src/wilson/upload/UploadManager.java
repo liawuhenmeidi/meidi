@@ -539,8 +539,8 @@ public class UploadManager {
 			return false;
 		}
 		
-		int DBOrderID = 0;
-		int UploadOrderID = 0;
+		int DBOrderID;
+		int UploadOrderID;
 		boolean flag = false;
 		Connection conn = DB.getConn();
 		
@@ -787,9 +787,6 @@ public class UploadManager {
 		uo.setCheckOrderId(rs.getInt("uploadorder.checkorderid"));
 		uo.setBackPoint(rs.getDouble("uploadorder.backpoint"));
 
-
-		Order order = OrderManager.gerOrderFromRs(rs);
-		uo.getOrders().add(order);
 		return uo;
 		
 	}
@@ -987,7 +984,7 @@ public class UploadManager {
 			DB.close(stmt);
 			DB.close(conn);
 		}	
-		return new ArrayList<>(map.values());
+		return new ArrayList<UploadOrder>(map.values());
 	}
 	
 	public static List<UploadOrder> getTotalUploadOrders(String id,String statues,int totaltype){
@@ -1023,6 +1020,10 @@ public class UploadManager {
 		try {     
 			while (rs.next()) {
 				uo = getUploadOrderFromRS(rs);
+
+				Order order = OrderManager.gerOrderFromRs(rs);
+				uo.getOrders().add(order);
+
 				if(null == map.get(uo.getId())){
 					map.put(uo.getId(),uo);
 				}else{
@@ -1036,7 +1037,7 @@ public class UploadManager {
 			DB.close(stmt);
 			DB.close(conn);
 		}	
-		return new ArrayList<>(map.values());
+		return new ArrayList<UploadOrder>(map.values());
 	}
 	
 	public static Map<String,Map<String,List<UploadTotal>>> getTotalOrdersGroup(String id,int totaltype,String checked){
@@ -1437,7 +1438,7 @@ public class UploadManager {
 					 for(int j=0;j<sendTypes.size();j++){
 						 SendType st = sendTypes.get(j);
 						// System.out.println(sendtypestrs[j]);
-						 
+						 relatype = st.getType();
 						 HashMap<String, UploadTotal> branchname= map.get(relatype);
 							if(null == branchname){
 								branchname = new HashMap<String, UploadTotal>();
@@ -1556,6 +1557,7 @@ public class UploadManager {
 
 					 for(int j=0;j<sendTypes.size();j++){
 						 SendType st = sendTypes.get(j);
+						 relatype = st.getType();
 						 UploadTotal upt = map.get(relatype);
 							if(null == upt){
 								upt = new UploadTotal(); 
