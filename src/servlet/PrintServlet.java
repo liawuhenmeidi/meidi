@@ -1,124 +1,209 @@
 package servlet;
 
-import exportModel.ExportModel;
-import goodsreceipt.OrderReceipt;
-import goodsreceipt.OrderReceitManager;
+import branch.BranchService;
+import category.Category;
+import category.CategoryService;
 import group.Group;
-
-import inventory.InventoryBranch;
-import inventory.InventoryBranchManager;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import inventory.*;
 import net.sf.json.JSONObject;
 import order.Order;
 import order.OrderManager;
 import orderproduct.OrderProduct;
-import ordersgoods.OrderGoods;
-import ordersgoods.OrderGoodsAll;
-import ordersgoods.OrderGoodsAllManager;
-import ordersgoods.OrderMessage;
-import ordersgoods.OrderMessageManager;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
 import uploadtotal.UploadTotal;
 import uploadtotalgroup.UploadTotalGroup;
 import uploadtotalgroup.UploadTotalGroupManager;
 import user.User;
 import user.UserManager;
-import utill.DBUtill;
-import utill.DoubleUtill;
-import utill.HttpRequestUtill;
-import utill.StringUtill;
-import utill.TimeUtill;
+import utill.*;
 import wilson.upload.UploadManager;
+import wilson.upload.UploadOrder;
 import wilson.upload.UploadSalaryModel;
-import writeExcel.WriteExcel;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.hssf.util.Region;
-import org.apache.poi.ss.usermodel.Font;
-
-import product.Product;
-import product.ProductService;
-
-import category.Category;
-import category.CategoryService;
-
-import company.Company;
-import company.CompanyManager;
-import comparator.BranchComparator;
-import enums.SaleModel;
-import branch.Branch;
-import branch.BranchService;
-import branchtype.BranchType;
-import branchtype.BranchTypeManager;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+ 
 
 /**
  * 核心请求处理类
  * 
  * @author liufeng
  * @date 2013-05-18
- */
+ */ 
 public class PrintServlet extends HttpServlet {
 	private static final long serialVersionUID = 4440739483644821986L;
-	protected static Log logger = LogFactory.getLog(PrintServlet.class);
-
+	 protected static Log logger = LogFactory.getLog(PrintServlet.class); 
 	/**
 	 * 确认请求来自微信服务器
 	 */
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("UTF-8"); 
 		response.setCharacterEncoding("UTF-8");
-
+		 
 		String method = request.getParameter("method");
-		logger.info(method);
-		if ("exportall".equals(method)) {
-			exportOrders(request, response);
-		} else if ("check".equals(method) || "total".equals(method) || "totalcategory".equals(method)
-				|| "typetotal".equals(method)) {
-			exporttotalExport(request, response);
-		} else if ("OrderGoodssend".equals(method)) {
-			OrderGoodssend(request, response);
-		} else if ("OrderGoodsSN".equals(method)) {
-			OrderGoodsSN(request, response);
-		} else if ("billing".equals(method)) {
-			OrderGoodsbilling(request, response);
+		logger.info(method); 
+		if("exportall".equals(method)){
+			exportOrders( request,response); 
+		}else if("check".equals(method) || "total".equals(method) || "totalcategory".equals(method) || "typetotal".equals(method) ){
+			exporttotalExport(request,response);
+		}else if("database".equals(method)){
+			exportDatabase(request,response);
+		}else if("inventory".equals(method)){
+			exportInventory(request,response);
+		}  
+    }
 
-		}else if("billingsencond".equals(method)){
-			OrderGoodsbillingsencond(request, response);
+
+	public void exportCheck(List<UploadOrder> list,HttpServletRequest request, HttpServletResponse response){
+
+		Map<String, UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
+		SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMddHH");
+		Date date1 = new Date();
+		String printlntime = df2.format(date1);
+
+		// 第一步，创建一个webbook，对应一个Excel文件
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+		HSSFSheet sheet = wb.createSheet("销售统计表");
+		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+		HSSFRow row = sheet.createRow((int) 0);
+		// 第四步，创建单元格，并设置值表头 设置表头居中
+		HSSFCellStyle style = wb.createCellStyle();
+
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+		int x = 0 ;
+		HSSFCell cell = row.createCell((short) x++);
+		cell.setCellValue("序号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("pos序号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("pos单号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("销售门店");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("销售日期");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("品类");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("送货型号");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("单价");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("送货数量");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("送货状态");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("供价");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("扣点后单价");
+		cell.setCellStyle(style);
+		cell = row.createCell((short) x++);
+		cell.setCellValue("扣点后价格");
+		cell.setCellStyle(style);
+
+		int count = 0;
+		double moneycount = 0;
+		double bpmoneycount = 0;
+		int index = 0;
+		if (null != list) {
+			for (int i = 0; i < list.size(); i++) {
+				UploadOrder sain = list.get(i);
+				String tpe = "";
+				StringBuffer sendStatues = new StringBuffer();  // 送货状态
+				if (null != mapus) {
+					UploadSalaryModel up = mapus.get(StringUtill.getStringNocn(sain.getType()));
+					if (null != up) {
+						tpe = up.getCatergory();
+					}
+				}
+
+				if (sain.getOrders().size() > 0) {
+					for (Order order : sain.getOrders()) {
+						sendStatues.append(order.getPrintlnid() + ":" + OrderManager.getDeliveryStatues(order)).append("<Br>");
+					}
+				}
+				//System.out.println(sain.getId());
+				List<SendType> sendTypes = sain.getSendType();
+				for (int j = 0; j < sendTypes.size(); j++) {
+					index++;
+					SendType st = sendTypes.get(j);
+					count += st.getNum();
+					moneycount += st.getNum() * st.getSalePrice();
+					bpmoneycount += st.getNum() * st.getSalePrice() * (1 - sain.getBackPoint() / 100);
+
+
+					row = sheet.createRow(index);
+					int y = 0 ;
+					// 第四步，创建单元格，并设置值
+					row.createCell((short) y++).setCellValue(index );
+					row.createCell((short) y++).setCellValue(i + 1 );
+					row.createCell((short) y++).setCellValue(sain.getPosNo());
+					row.createCell((short) y++).setCellValue(sain.getShop() );
+					row.createCell((short) y++).setCellValue(sain.getSaleTime());
+					row.createCell((short) y++).setCellValue(tpe);
+					row.createCell((short) y++).setCellValue(st.getType());
+					row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(st.getSalePrice()));
+					row.createCell((short) y++).setCellValue(st.getNum());
+					row.createCell((short) y++).setCellValue(sendStatues.toString() );
+					row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(st.getSalePrice() * st.getNum()));
+					row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(st.getSalePrice() * (1 - sain.getBackPoint() / 100)));
+					row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(st.getSalePrice() * st.getNum() * (1 - sain.getBackPoint() / 100)));
+
+				}
+
+
+			}
+		}
+		int y = 0 ;
+		index++;
+		row = sheet.createRow(index);
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue(count);
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(moneycount));
+		row.createCell((short) y++).setCellValue("");
+		row.createCell((short) y++).setCellValue(DoubleUtill.getdoubleTwo(bpmoneycount));
+
+		try{
+			response.setContentType("APPLICATION/OCTET-STREAM");
+			response.setHeader("Content-Disposition", "attachment; filename=\""+ printlntime + ".xls\"");
+			//FileOutputStream fout = new FileOutputStream("E:/报装单"+printlntime+".xls");
+			wb.write(response.getOutputStream());
+			response.getOutputStream().close();
+
+		}
+		catch (Exception e){
+			e.printStackTrace();
 		}
 	}
-
 	/**
 	 * 处理微信服务器发来的消息
 	 */ 
@@ -134,6 +219,7 @@ public class PrintServlet extends HttpServlet {
 		Map<String,UploadSalaryModel> mapus = UploadManager.getSalaryModelsAll();
 		
 		Map<String,Map<String,List<UploadTotal>>> mapt = null ;
+
 		Map<String,Map<String,List<UploadTotal>>> mapc = null ;
 		HashMap<String, List<UploadTotal>> maptypeinit = null;
 		List<UploadOrder> li = null;
@@ -149,10 +235,10 @@ public class PrintServlet extends HttpServlet {
 		
 		
 		String message = "";
-
+		 
 		UploadTotalGroup upt = UploadTotalGroupManager.getUploadTotalGroup();
-		if (upt != null) {
-			message = upt.getCategoryname();
+		if(upt != null){
+		   message = upt.getCategoryname();
 		}
 		// 第一步，创建一个webbook，对应一个Excel文件
 		HSSFWorkbook wb = new HSSFWorkbook();

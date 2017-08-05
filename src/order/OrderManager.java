@@ -1,10 +1,11 @@
 package order;
 
+import database.DB;
 import gift.GiftManager;
-import group.Group; 
+import group.Group;
 import group.GroupManager;
 import group.GroupService;
- 
+
 import inventory.InventoryBranchManager;
 
 import java.sql.Connection;
@@ -27,14 +28,17 @@ import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductManager;
- 
-import database.DB;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import user.User;
 import user.UserManager;
 import utill.DBUtill;
-import utill.NumbleUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
+
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class OrderManager {
 	 protected static Log logger = LogFactory.getLog(OrderManager.class);
@@ -186,7 +190,23 @@ public class OrderManager {
 		
 		
 	}
-	 
+	
+	
+	public static Map<String,String> getDeliveryStatuesMap(){
+		Map<String,String> map = new HashMap<String,String>();
+		map.put(0+"", "需配送安装");
+		map.put(1+"", "已送货");
+		map.put(8+"", "已自提 ");
+		map.put(9+"", "只安装(门店提货)");
+		map.put(10+"", "只安装(顾客已提) ");
+		map.put(-1+"", "调拨单"); 
+		map.put(20+"", "换货单"); 
+		
+		return map ;
+		
+		
+	}
+	  
 	//by wilsonlee
 	/*public static int updateStatues(String method ,String statues,String id) {
 		return updateStatues(new User(),method,statues,id);
@@ -321,13 +341,13 @@ logger.info(sql);
 		}	
     	return flag;
     }
-	 
+	
 	// 判断是不是顶码
-	/*public static boolean Check(int oid){
+	public static boolean Check(int oid){
     	boolean flag = false ;
 		Connection conn = DB.getConn(); 
-		 
-		 
+		
+		
 		String	sql = "select * from mdorderproduct where statues = 1 and orderid = "+ oid;  
 		
 logger.info(sql);    
@@ -345,7 +365,7 @@ logger.info(sql);
 			DB.close(conn);
 		}	
     	return flag;
-    }*/
+    }
 	
 
 public static void updateSendstat(int statues,int sid, int oid) {
@@ -587,7 +607,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 
 	}
     
-   
+  
     public static List<Order> getOrderlist(User user ,int type,int statues ,int num,int page,String sort,String search){
 	   
 	  boolean f = UserManager.checkPermissions(user, Group.Manger);  
@@ -613,7 +633,6 @@ public static void updateSendstat(int statues,int sid, int oid) {
 			   } 
 		   }else if(Group.sale == type){
 			   if(Order.serach == statues){
-				  
 				   sql = "select * from  mdorder where  1 =1 "+ str + " order by id desc ";
 			   }
 		   }else if(Group.dealSend == type){ 
@@ -622,7 +641,7 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and andate is not null  and deliveryStatues not in (3,4,5,11,12,13) or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4,10) ))  "+search+"  order by  "+sort+str ;  
 			  }if(Order.repareorderDispatching == statues){    
 				 // sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5)  and  ( mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3)))  or id in (select orderid from mdorderupdateprint where statues = 0 and mdtype in (0 ,1,2,4) ))  "+search+"  order by  "+sort+"  limit " + ((page-1)*num)+","+ page*num ;  
-				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and andate is null  and oderStatus not in (8) and deliveryStatues not in (3,4,5,11,12,13))  "+search+"  order by  "+sort+str ;  
+				  sql = "select * from  mdorder  where  (dealSendid = 0   and sendId = 0 and printSatues = 0  and andate is null  and orderStatus not in (8) and deliveryStatues not in (3,4,5,11,12,13))  "+search+"  order by  "+sort+str ;  
 			  }else if(Order.neworder == statues){
 				  sql = "select * from  mdorder  where  dealSendid = 0   and sendId = 0 and printSatues = 0  and deliveryStatues not in (3,4,5,11,12,13)  and mdorder.id in (select orderid from mdorderproduct where salestatues in (0,1,2,3))   "+search+"  order by "+sort+" ";   
 			  }else if(Order.motify == statues){
@@ -679,12 +698,12 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   sql = "select * from  mdorder where  ( deliveryStatues in (0,9,10) and sendid != 0  or  installid  != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0 ) and printSatuesp = 1   order by " + sort+str;
 					   //returnid = "+user.getId() + " and returnstatues =0  and returnprintstatues = 1 
 				   }            
-		     }  
-		 }else{         
+		     } 
+		 }else{        
 			   if(flag && Group.send == type){ 
 				   if(!StringUtill.isNull(search)){
 					   sql = "select * from  mdorder where ( sendId = "+user.getId() + " or  installid = "+user.getId()+ " ) " +  search;
-				   }else {  
+				   }else { 
 					   if(Order.serach == statues){ // 待送货 
 						   sql = "select * from  mdorder where  sendId = "+user.getId() + " and deliveryStatues in (0,9)   and printSatuesp = 1  or  installid = "+user.getId() + " and deliveryStatues in (1,10)  and printSatuesp = 1   "+search+"  order by "+sort + str;
 					   }else if(Order.orderDispatching == statues){   // 待安装
@@ -694,24 +713,24 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   }else if(Order.returns == statues){ // 已安装
 						   sql = "select * from  mdorder where  (sendId = "+user.getId() + " and installid = 0  or  installid = "+user.getId() + " )  and deliveryStatues in (2,5)    " +search+"  order by "+sort + str;
 					   }
-				   } 
-			   }else if(flag && Group.sale == type){      
-				   String products = user.getProductIDS();  
-				   if(!StringUtill.isNull(search)){  
-					   sql = "select * from  mdorder where  orderbranch = "+  user.getBranch() +search+"  and id in (select orderid from mdorderproduct where categoryID in "+products+") order by "+sort + str;
-				   }else {   
+				   }
+				   
+			   }else if(flag && Group.sale == type){
+				   if(!StringUtill.isNull(search)){ 
+					   sql = "select * from  mdorder where  orderbranch = "+  user.getBranch() +search+"  order by "+sort + str;
+				   }else { 
 					   if(Order.serach == statues){
-						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and id in (select orderid from mdorderproduct where categoryID in "+products+")  and deliveryStatues in (0,9,10) " +search+"  order by "+sort + str;
+						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (0,9,10) " +search+"  order by "+sort + str;
 					   }else if(Order.orderDispatching == statues){ 
-						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and id in (select orderid from mdorderproduct where categoryID in "+products+")  and deliveryStatues in (1)  "+search+"  order by "+sort + str;
+						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (1)  "+search+"  order by "+sort + str;
 					   }else if(Order.over == statues){
-						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and id in (select orderid from mdorderproduct where categoryID in "+products+")  and deliveryStatues in (2)  "+search+"  order by "+sort + str;
+						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (2)  "+search+"  order by "+sort + str;
 					   }else if(Order.returns == statues){
-						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and id in (select orderid from mdorderproduct where categoryID in "+products+")  and deliveryStatues in (3,4,5,11,12,13)  "+search+"  order by "+sort + str;
+						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (3,4,5,11,12,13)  "+search+"  order by "+sort + str;
 					   }else if(Order.come == statues){
-						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and id in (select orderid from mdorderproduct where categoryID in "+products+")  and deliveryStatues in (8)  "+search+"  order by "+sort + str; 
-					   }  
-				   } 
+						   sql = "select * from  mdorder where  orderbranch = '"+  user.getBranch() +"' and deliveryStatues in (8)  "+search+"  order by "+sort + str; 
+					   } 
+				   }
 				  
 			   }else if(flag && Group.tuihuo == type){
 				   if(Order.unquery == statues){  // 
@@ -768,10 +787,11 @@ public static void updateSendstat(int statues,int sid, int oid) {
 				   }else if(Order.release == statues){     
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and  mdorder.id in (select orderid from mdorderupdateprint where mdtype in (3,4,5) and pGroupId = "+ user.getUsertype()+ " )  "+search+" order by "+sort+  str; 
 				   }else if(Order.dispatch == statues){ 
-					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and printSatues = 1 and printSatuesp = 0  and sendId = 0  and  deliveryStatues in (0,9)  and mdorder.id not in (select orderid from mdorderupdateprint where statues = 2 and mdtype = 6 )  "+search+" order by "+sort+str;  
-				   }else if(Order.porderDispatching == statues){  
+					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and printSatues = 1 and printSatuesp = 0  and sendId = 0  and  deliveryStatues in (0,9)  and mdorder.id not in (select orderid from mdorderupdateprint where statues = 2 and mdtype = 6 )  "+search+" order by "+sort+str; 
+				   }else if(Order.porderDispatching == statues){ 
+					   //sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( printSatues = 1 and printSatuesp = 0    and installid = 0 and  deliveryStatues in (1,10)  and statuesinstall = 0  and returnid = 0  or (mdorder.id in (select orderid from mdorderupdateprint where mdtype in (3,4,5) and (pGroupId = "+ user.getUsertype()+ "  or groupid = "+user.getUsertype()+"  )and statues = 0 )) )"  + " order by "+sort+str; 
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( printSatues = 1 and printSatuesp = 0    and installid = 0 and  deliveryStatues in (1,10)  and statuesinstall = 0  and returnid = 0  or (mdorder.id in (select orderid from mdorderupdateprint where mdtype in (3,4,5) and statues = 0 )) )"  + " order by "+sort+str; 
-				   }else if(Order.installonly == statues){ 
+				   }else if(Order.installonly == statues){  
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and printSatues = 1 and printSatuesp = 0    and installid = 0 and  deliveryStatues in (1,10)  and statuesinstall = 0  "  + " order by "+sort+str;  
 				   }else if(Order.orderPrint == statues){   
 					   sql = "select * from  mdorder where  (sendId != 0  and printSatuesp = 0   and  deliveryStatues = 0  or  returnid != 0 and  returnprintstatues = 0 ) and  dealSendid = "+user.getId()+"  "+search+"  order by "+sort+str;
@@ -789,13 +809,10 @@ public static void updateSendstat(int statues,int sid, int oid) {
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+" and   deliveryStatues in (1,2,4,5)  and deliverytype = 2  and statuespaigong  = 0 and oderStatus not in (30) "+search+"  order by "+sort+str ; 
 				   }else if(Order.orderquery == statues){  
 					   sql = "select * from  mdorder where  dealSendid = "+user.getId()+"  and ( deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )      "+search+"  order by "+sort+str;    
-				   }          
-			   }else if(Group.aftersalerepare == type){  
-				   String prodectsp = GroupService.getidMap().get(user.getUsertype()).getProducts(); 
-				  String pp = prodectsp.replace("_", ",");  
-				   if(Order.aftersalerepare == statues){  
-					    
-					   sql = "select * from mdorder where deliveryStatues in (2) and id in (select orderid from mdorderproduct where issubmit is null and categoryID in ( "+pp+" ))"+search+"  order by "+sort+str;
+				   }         
+			   }else if(Group.aftersalerepare == type){
+				   if(Order.aftersalerepare == statues){ 
+					   sql = "select * from mdorder where deliveryStatues in (2) and id in (select orderid from mdorderproduct where issubmit is null)"+search+"  order by "+sort+str;
 				   } 
 			   }                    
 	    }      
@@ -823,29 +840,7 @@ logger.info(sql);
 			return Orders; 
 	 }
     
-    public static List<Order> getNoSend(){
-		   //Map<Integer,List<OrderProduct>> Orders = new HashMap<Integer,List<OrderProduct>>();
-		   List<Order> list = new ArrayList<Order>();
-		    Connection conn = DB.getConn(); 
-			Statement stmt = DB.getStatement(conn);
-			String sql = "select * from  mdorderproduct where orderid in (select id from mdorder where dealSendid = 0 and printSatues = 0) ";
-			ResultSet rs = DB.getResultSet(stmt, sql); 
-			try { 
-				while (rs.next()) {
-					Order Order = gerOrderFromRs(rs);
-					list.add(Order);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				DB.close(stmt);
-				DB.close(rs);
-				DB.close(conn);
-			 }
-			return list;
-	   }
-    
-    
+     
     public static int getOrderlistcount(User user ,int type,int statues ,int num,int page,String sort,String search){
     	
   	  boolean f = UserManager.checkPermissions(user, Group.Manger);  
@@ -997,12 +992,12 @@ logger.info(sql);
 					   sql = "select count(*) from  mdorder where  dealSendid = "+user.getId()+"  and (deliveryStatues in (0,9,10)   and sendid != 0  or  installid != 0  and deliveryStatues in (1,10,9)  or returnid != 0  and returnstatues =0  )  and printSatuesp = 1    "+search ; 
 				   }    
 			   }else if(Group.aftersalerepare == type){
-				      String prodectsp = GroupService.getidMap().get(user.getUsertype()).getProducts(); 
-					  String pp = prodectsp.replace("_", ",");  
 				   if(Order.aftersalerepare == statues){
-					   sql = "select count(*) from mdorder where deliveryStatues in (2) and id in (select orderid from mdorderproduct where issubmit is null and categoryID in ( "+pp+" ) ) "+search ; 
+					   sql = "select count(*) from mdorder where deliveryStatues in (2) and id in (select orderid from mdorderproduct where issubmit is null) "+search ; 
 				   }
-			   }                        
+			   }                       
+
+				
 	    }       
   	  if("".equals(sql)){ 
   		   count =  0; 
@@ -1575,7 +1570,7 @@ public static Map<String,Order> getOrdermapByIds(User user ,String id){
 				opstatues = OrderPrintln.salereleasereturn ;
 			}
 		} 
-  
+
 	   return opstatues;
    } 
    
@@ -1583,60 +1578,60 @@ public static Map<String,Order> getOrdermapByIds(User user ,String id){
 	   Order p = null;
 		try { 
 			p = new Order();
-			p.setId(rs.getInt("mdorder.id")); 
-			p.setLocate(rs.getString("mdorder.locates"));
-			p.setLocateDetail(rs.getString("mdorder.locateDetail"));
-			p.setSaleTime(rs.getString("mdorder.saledate"));
-			p.setSaleID(rs.getInt("mdorder.saleID"));
-			p.setSendId(rs.getInt("mdorder.sendID"));
-			p.setOdate(rs.getString("mdorder.andate"));
-			p.setPhone1(rs.getString("mdorder.phone1")); 
-			p.setPhone2(rs.getString("mdorder.phone2")); 
-			p.setUsername(rs.getString("mdorder.username"));
-			p.setPrintSatues(rs.getInt("mdorder.printSatues"));
-			p.setDeliveryStatues(rs.getInt("mdorder.deliveryStatues"));
-			p.setPos(rs.getString("mdorder.pos"));
-			p.setSailId(rs.getString("mdorder.sailId"));
-			p.setCheck(rs.getString("mdorder.checked"));
-			p.setRemark(rs.getString("mdorder.remark"));
-			p.setBranch(rs.getInt("mdorder.orderbranch")); 
-			p.setCategoryID(rs.getString("mdorder.categoryID"));
-			p.setDealsendId(rs.getInt("mdorder.dealSendid"));
-			p.setStatues1(rs.getInt("mdorder.statues1"));
-			p.setStatues2(rs.getInt("mdorder.statues2")); 
-			p.setStatues3(rs.getInt("mdorder.statues3"));
-			p.setStatues4(rs.getInt("mdorder.statues4"));    
-			p.setPrintSatuesP(rs.getInt("mdorder.printSatuesp"));   
-			p.setStatuesDingma(rs.getInt("mdorder.statuesdingma"));  
-			p.setInstallid(rs.getInt("mdorder.installid")); 
-			p.setPrintlnid(rs.getString("mdorder.printlnid"));  
-			p.setStatuescallback(rs.getInt("mdorder.statuescallback")); 
-		    p.setStatuesPaigong(rs.getInt("mdorder.statuespaigong")); 
-		    p.setDayremark(rs.getInt("mdorder.dayremark")); 
-		    p.setDayID(rs.getInt("mdorder.dayID"));    
-		    p.setPhoneRemark(rs.getInt("mdorder.phoneRemark")); 
-		    p.setInstalltime(rs.getString("mdorder.installTime"));
-		    p.setSendtime(rs.getString("mdorder.sendTime"));
-		    p.setDeliverytype(rs.getInt("mdorder.deliverytype"));
-		    p.setPosremark(rs.getInt("mdorder.posRemark"));
-		    p.setSailidrecked(rs.getInt("mdorder.sailIdremark"));
-		    p.setReckedremark(rs.getInt("mdorder.checkedremark")); 
-		    p.setStatuesinstall(rs.getInt("mdorder.statuesinstall"));
-		    p.setReturnid(rs.getInt("mdorder.returnid")); 
-		    p.setSubmitTime(rs.getString("mdorder.submitTime"));
-		    p.setReturnstatuse(rs.getInt("mdorder.returnstatues"));
-		    p.setReturntime(rs.getString("mdorder.returntime"));  
-		    p.setReturnprintstatues(rs.getInt("mdorder.returnprintstatues")); 
-		    p.setReturnwenyuan(rs.getInt("mdorder.returnwenyuan")); 
-		    p.setPrintdingma(rs.getInt("mdorder.printdingma"));  
-		    p.setDealSendTime(rs.getString("mdorder.dealsendTime"));
-		    p.setWenyuancallback(rs.getInt("mdorder.wenyuancallback"));
-		    p.setOderStatus(rs.getString("mdorder.oderStatus")); 
-		    p.setImagerUrl(rs.getString("mdorder.imagerUrl")); 
-		    p.setChargeDealsendtime(rs.getString("mdorder.chargeDealsendtime"));
-		    p.setChargeSendtime(rs.getString("mdorder.chargeSendtime"));
-		    p.setChargeInstalltime(rs.getString("mdorder.chargeInstalltime"));
-		    p.setStatuesCharge(rs.getString("mdorder.statuesChargeSale")); 
+			p.setId(rs.getInt("id")); 
+			p.setLocate(rs.getString("locates"));
+			p.setLocateDetail(rs.getString("locateDetail"));
+			p.setSaleTime(rs.getString("saledate"));
+			p.setSaleID(rs.getInt("saleID"));
+			p.setSendId(rs.getInt("sendID"));
+			p.setOdate(rs.getString("andate"));
+			p.setPhone1(rs.getString("phone1")); 
+			p.setPhone2(rs.getString("phone2")); 
+			p.setUsername(rs.getString("username"));
+			p.setPrintSatues(rs.getInt("printSatues"));
+			p.setDeliveryStatues(rs.getInt("deliveryStatues"));
+			p.setPos(rs.getString("pos"));
+			p.setSailId(rs.getString("sailId"));
+			p.setCheck(rs.getString("checked"));
+			p.setRemark(rs.getString("remark"));
+			p.setBranch(rs.getInt("orderbranch")); 
+			p.setCategoryID(rs.getString("categoryID"));
+			p.setDealsendId(rs.getInt("dealSendid"));
+			p.setStatues1(rs.getInt("statues1"));
+			p.setStatues2(rs.getInt("statues2")); 
+			p.setStatues3(rs.getInt("statues3"));
+			p.setStatues4(rs.getInt("statues4"));    
+			p.setPrintSatuesP(rs.getInt("printSatuesp"));   
+			p.setStatuesDingma(rs.getInt("statuesdingma"));  
+			p.setInstallid(rs.getInt("installid")); 
+			p.setPrintlnid(rs.getString("printlnid"));  
+			p.setStatuescallback(rs.getInt("statuescallback")); 
+		    p.setStatuesPaigong(rs.getInt("statuespaigong")); 
+		    p.setDayremark(rs.getInt("dayremark")); 
+		    p.setDayID(rs.getInt("dayID"));    
+		    p.setPhoneRemark(rs.getInt("phoneRemark")); 
+		    p.setInstalltime(rs.getString("installTime"));
+		    p.setSendtime(rs.getString("sendTime"));
+		    p.setDeliverytype(rs.getInt("deliverytype"));
+		    p.setPosremark(rs.getInt("posRemark"));
+		    p.setSailidrecked(rs.getInt("sailIdremark"));
+		    p.setReckedremark(rs.getInt("checkedremark")); 
+		    p.setStatuesinstall(rs.getInt("statuesinstall"));
+		    p.setReturnid(rs.getInt("returnid")); 
+		    p.setSubmitTime(rs.getString("submitTime"));
+		    p.setReturnstatuse(rs.getInt("returnstatues"));
+		    p.setReturntime(rs.getString("returntime"));  
+		    p.setReturnprintstatues(rs.getInt("returnprintstatues")); 
+		    p.setReturnwenyuan(rs.getInt("returnwenyuan")); 
+		    p.setPrintdingma(rs.getInt("printdingma"));  
+		    p.setDealSendTime(rs.getString("dealsendTime"));
+		    p.setWenyuancallback(rs.getInt("wenyuancallback"));
+		    p.setOderStatus(rs.getString("oderStatus"));
+		    p.setImagerUrl(rs.getString("imagerUrl")); 
+		    p.setChargeDealsendtime(rs.getString("chargeDealsendtime"));
+		    p.setChargeSendtime(rs.getString("chargeSendtime"));
+		    p.setChargeInstalltime(rs.getString("chargeInstalltime"));
+		    p.setStatuesCharge(rs.getString("statuesChargeSale")); 
 		} catch (SQLException e) {  
 			e.printStackTrace();
 		} 

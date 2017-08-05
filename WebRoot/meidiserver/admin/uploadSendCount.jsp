@@ -35,6 +35,8 @@
     //HashMap<String, UploadTotal> maptypeinit = null;
     HashMap<String, List<UploadTotal>> maptypeinit = null;
     List<UploadOrder> list = null;
+    System.out.println(id+"____"+type+"______"+checkedStatus);
+
     if ("check".equals(type)) {
         checkedStatus = request.getParameter("checkedStatus");
         list = UploadManager.getTotalUploadOrders(id, checkedStatus, BasicUtill.send);
@@ -50,6 +52,7 @@
     } else if ("totalcategory".equals(type)) {
         total = true;
         checkedStatus = request.getParameter("realcheckedStatus");
+        System.out.println(id+"____"+type+"______"+checkedStatus);
         mapc = UploadManager.getTotalOrdersCategoryGroup(id, BasicUtill.send, checkedStatus);
     }
 
@@ -141,6 +144,7 @@
     <input type="button" value="查看" class="noprint" onclick="checkedorder()"/>
 
     <% if (check) { %>
+    <input type="hidden" name="method" id="method" value=""/>
 
     <input type="button" class="button" value="设置标准" onclick="amortization('saleCountGroup.jsp')"></input>
     <input type="submit" value="品类门店统计"
@@ -321,8 +325,11 @@
         <td align="center"></td>
         <td align="center"></td>
         <td align="center"></td>
+        <td align="center"></td>
+        <td align="center"></td>
         <td align="center"><%=count %>
         </td>
+        <td align="center"></td>
         <td align="center"><%=DoubleUtill.getdoubleTwo(moneycount)%>
         </td>
         <td align="center"></td>
