@@ -150,13 +150,20 @@ if(list != null){
  		<td align="left"><%=category.getLocateName() %></td> 
  		<td align="left"><%=count%></td>
 		<td align="left">  
-		        <%  
+		        <%   
 		           String message = category.getMessage(); 
 		          if (StringUtill.isNull(message)){
 		        	  message = "无"; 
-		          }else{
-		        	  message = message.replaceAll("pos","pos(厂送)单号").replace("sailId", "OMS订单号").replace("checked", "验证码(联保单)");
-		        	 
+		          }else{ 
+		        	  try{
+		        		  Set<String> perm = StringUtill.GetSetByObject(message);
+		        		  // System.out.println(perm);
+			        	   message = StringUtill.GetJson(perm);
+		        	  }catch(Exception e){
+		        		  //message = message.replaceAll("pos","pos(厂送)单号").replace("sailId", "OMS订单号").replace("checked", "验证码(联保单)").replace("min", "最小长度").replace("max", "最大长度");
+		        	  } 
+		        	   
+		        	  message = message.replaceAll("pos","pos(厂送)单号").replace("sailId", "OMS订单号").replace("checked", "验证码(联保单)").replace("min", "最小长度").replace("max", "最大长度");  
 		          }
 		        
 		        %> 

@@ -53,7 +53,7 @@ String mapjosn = StringUtill.GetJson(map);
 <link href="css/mobiscroll.android-ics-2.6.2.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 
-var jsonmap = '<%=mapjosn%>';   
+var jsonmap = <%=mapjosn%>;   
 var jsong = '<%=mapgg%>';
 //alert(jsong); 
 var jsons = <%=mapgroupg%>;  // 二次组
@@ -129,12 +129,12 @@ $(function () {
 	        	 $("#zhuguan").html(options);   
 			 }); 
     
-		  
+		   
 		  $("#branchtype").change(function(){
 			  $("#branch").html(""); 
 			  var num = ($("#branchtype").children('option:selected').val());
-			  var jsons =  $.parseJSON(jsonmap);
-		
+			 // var jsons =  $.parseJSON(jsonmap);
+		      var jsons =  jsonmap; 
 			  var json = jsons[num];
 			  //alert(json);
 	          var options = '<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>'; 

@@ -1,67 +1,93 @@
 package branch;
 
-public class Branch {
-   private String locateName;
-   private int id ;
-   private int pid ;
-   private String message ;   // 门店订单需要的号，是否需要pos号，等
-   private int statues ;   //  是否作为总库
-   private String branchids ;
-   private int disable ;
-   
-public int getDisable() {
-	return disable;
-}
+public class Branch
+{
+	private String locateName;
+	private int id;
+	private int pid;
+	private String message;
+	private int statues;
+	private String branchids;
+	private int disable;
+	private int TopYardMust;
 
-public void setDisable(int disable) {
-	this.disable = disable;
-}
+	public int getDisable()
+	{
+		return this.disable;
+	}
 
-public String getBranchids() {
-	return branchids;
-}
+	public void setDisable(int disable)
+	{
+		this.disable = disable;
+	}
 
-public void setBranchids(String branchids) {
-	this.branchids = branchids;
-}
+	public String getBranchids()
+	{
+		return this.branchids;
+	}
 
-public int getStatues() {
-	return statues;
-}
+	public void setBranchids(String branchids)
+	{
+		this.branchids = branchids;
+	}
 
-public void setStatues(int statues) {
-	this.statues = statues;
-}
+	public int getStatues()
+	{
+		return this.statues;
+	}
 
-public int getId() {
-	return id;
-}
+	public void setStatues(int statues)
+	{
+		this.statues = statues;
+	}
 
-public int getPid() {
-	return pid;
-}
+	public int getId()
+	{
+		return this.id;
+	}
 
-public void setPid(int pid) {
-	this.pid = pid;
-}
+	public int getPid()
+	{
+		return this.pid;
+	}
 
-public String getMessage() {
-	return message;
-}
+	public void setPid(int pid)
+	{
+		this.pid = pid;
+	}
 
-public void setMessage(String message) {
-	this.message = message;
-}
+	public String getMessage()
+	{
+		return this.message;
+	}
 
-public void setId(int id) {
-	this.id = id;
-}
+	public void setMessage(String message)
+	{
+		this.message = message;
+	}
 
-public String getLocateName() {
-	return locateName;
-}
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 
-public void setLocateName(String locateName) {
-	this.locateName = locateName;
-}
+	public String getLocateName()
+	{
+		return this.locateName;
+	}
+
+	public void setLocateName(String locateName)
+	{
+		this.locateName = locateName;
+	}
+
+	public int getTopYardMust()
+	{
+		return this.TopYardMust;
+	}
+
+	public void setTopYardMust(int topYardMust)
+	{
+		this.TopYardMust = topYardMust;
+	}
 }

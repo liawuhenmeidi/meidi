@@ -6,28 +6,33 @@ User user = (User)session.getAttribute("user");
 String pid = request.getParameter("pid");
 String id = request.getParameter("id"); 
 String type = request.getParameter("type");
-
+ 
 HashMap<String,List<User>> map = UserService.getMapBranchid();
 System.out.println(StringUtill.GetJson(map.get(id)));
-Branch branchold = null;
+Branch branchold = null; 
 String branchoidname = "";
 String message = null;
 String branchids = null;
 String[] permission = null ;
-String[] branchid = null;
-if(!StringUtill.isNull(id)){
+String topYardMust = "0"; 
+Set<String> perm = null ;
+String[] branchid = null;  
+if(!StringUtill.isNull(id)){ 
 	branchold= BranchManager.getLocatebyid(id);
 	branchoidname = branchold.getLocateName();
 	message = branchold.getMessage();
+	topYardMust = branchold.getTopYardMust()+"";  
 	branchids = branchold.getBranchids();
 	if(!StringUtill.isNull(message)){
-		permission = message.split("_");
+		//perm = StringUtill.GetSetByObject(message);
+		System.out.println(perm);
+		//permission = message.split("_");
 	}
-} 
+}  
  
 
-
-String json = StringUtill.GetJson(permission);
+ 
+//String json = StringUtill.GetJson(message);
 
 String action = request.getParameter("action");
 if("add".equals(action)){
@@ -35,36 +40,43 @@ if("add".equals(action)){
 	//System.out.println(branchname);
 	permission = request.getParameterValues("permission");
 	branchid = request.getParameterValues("branchid");
-    String messagenew = "";
+	topYardMust = request.getParameter("topYardMust");
+    String messagenew = "[";
     String branchidsnew = "";
-    if(permission != null ){  
+    if(permission != null ){     
 		for(int i = 0;i<permission.length;i++){
-			if(!StringUtill.isNull(permission[i])){
-				messagenew += permission[i]+"_";
-			}
-		} 
+			if(!StringUtill.isNull(permission[i])){ 
+				 String minnum = request.getParameter("min"+permission[i]);
+				 String maxnum = request.getParameter("max"+permission[i]);
+				 messagenew += "{\""+permission[i]+"\":{\"min\":\""+minnum+"\",\"max\":\""+maxnum+"\"}},";  
+				//messagenew += permission[i]+"_";   
+			}       
+		}      
+		   
 		messagenew = messagenew.substring(0, messagenew.length() -1);
+		messagenew +="]"; 
     }
-    if(branchid != null ){  
+    if(branchid != null ){   
   		for(int i = 0;i<branchid.length;i++){
   			if(!StringUtill.isNull(branchid[i])){
   				branchidsnew += branchid[i]+"_";
   			} 
   		}  
-      }
+      } 
 	Branch branch = new Branch(); 
 	if(!StringUtill.isNull(id)){
 		branch.setId(Integer.valueOf(id)); 
 	}
-	
+	  
 	branch.setLocateName(branchname);
 	branch.setPid(Integer.valueOf(pid));
 	branch.setMessage(messagenew); 
 	branch.setBranchids(branchidsnew);  
-	                        
-	BranchManager.save(branch); 
+	branch.setTopYardMust(Integer.valueOf(topYardMust));  
+	// System.out.println(messagenew);                       
+	BranchManager.save(branch);  
 	response.sendRedirect("branch1.jsp?id="+pid); 
-}
+} 
 
 BranchType branch = BranchTypeManager.getLocate(Integer.valueOf(pid)); 
 
@@ -79,16 +91,45 @@ BranchType branch = BranchTypeManager.getLocate(Integer.valueOf(pid));
 <link rel="stylesheet" type="text/css" rev="stylesheet" href="../style/css/bass.css" />
   
 <script type="text/javascript">
-var pid = "<%=pid%>";
-var json = "<%=message%>";
-var jsons = "<%=branchids%>";
-var products = new Array();
-var branchid = new Array();
-$(document).ready(function(){
-	products = json.split("_"); 
-	 for(var i=0;i<products.length;i++){
-		 $("#"+products[i]).attr("checked","checked");
-	 }
+var pid = "<%=pid%>"; 
+var message = '<%=message%>';     
+//var products = '[{"pos":{"minpos":"12","maxpos":"12"}},{"checked":{"minchecked":"12","maxchecked":"12"}}]';
+var topYardMust = '<%=topYardMust%>' ;    
+  
+var jsons = "<%=branchids%>";  
+var branchid = new Array();    
+$(document).ready(function(){ 
+	/*
+	$.each(products,function(key,val){
+		alert(key);
+		alert(val);
+	}); 
+	*/ 
+	//alert(products.length); 
+	try{
+		var products = $.parseJSON(message);
+		 for(var i=0;i<products.length;i++){
+			 for(var key in products[i]){   
+			       //alert(key+':'+products[i][key]);  
+			       $("#"+key).attr("checked","checked");
+			       
+			       $("#min"+key).val(products[i][key]["min"]);
+			       $("#max"+key).val(products[i][key]["max"]);
+			   }   
+			  
+		 } 
+	}catch(e){   
+		var pro = message.split("_"); 
+		//alert(pro.length);
+		for(var i=0;i<pro.length;i++){    
+		       //alert(key+':'+products[i][key]);
+		       //alert("#"+pro[i]); 
+		       $("#"+pro[i]).attr("checked","checked");
+		       
+		       
+		   } 
+	}
+	
 	branchid = jsons.split("_"); 
 	for(var i=0;i<branchid.length;i++){
 		 $("#"+branchid[i]).attr("checked","checked");
@@ -98,12 +139,14 @@ $(document).ready(function(){
   $("#locate").focus(function(){
       $("#locate").css("background-color","#FFFFCC");
   }); 
-  
+   
   $("#locate").blur(function(){
 	   changes();
-   }); 
-
-   });
+   });  
+//alert(topYardMust);
+  $("#topYardMust"+topYardMust).attr("checked","checked");
+  
+   });    
 
 function changes(){
 	var str1 = $("#locate").val();
@@ -148,7 +191,7 @@ function changes(){
    <div class="weizhi_head">现在位置：<%=branch.getName()%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="branch1.jsp?id=<%=pid %>"><font style="color:blue;font-size:20px;" >返回</font></a></div>     
         
      <div> 
-      <table width="60%"  cellspacing="1" id="table" >
+      <table width=80%  cellspacing="1" id="table" >
       <%  if(null != map){
     	      List<User> list = map.get(id);
     	      if(null != list){
@@ -156,8 +199,8 @@ function changes(){
     	    		  User u = list.get(i);
     	    		  %>
     	    		  <tr class="asc">
-    	    		      <td><%=u.getUsername() %></td>
-    	    		      <td><%=u.getPhone() %></td>
+    	    		      <td align="center"> <%=u.getUsername() %></td>
+    	    		      <td align="center"> <%=u.getPhone() %></td>
     	    		  </tr>
     	    		  <%
     	    	  }
@@ -174,30 +217,82 @@ function changes(){
       <input type="hidden" name="action" value="add"/>
       <input type="hidden" name="pid" value="<%=pid%>"/> 
        <input type="hidden" name="id" value="<%=id%>"/> 
-          门店名称<span style="color:red">*</span>&nbsp;&nbsp;&nbsp;&nbsp;：
-      <input type="text"  id="locate" value="<%=branchoidname %>" name="locate" /> <br />     
-       门店报装单需要信息<span style="color:red">*</span>:  
-     <ul class="juese_add">  
-        <li><input type="checkbox" value="pos" name = "permission" id="pos" />&nbsp;pos(厂送)单号</li>
-        <li><input type="checkbox" value="sailId" name = "permission" id="sailId" />&nbsp;OMS订单号</li>
-        <li><input type="checkbox" value="checked" name = "permission" id="checked" />&nbsp;验证码(联保单)</li>
-     </ul> 
-     </p>  
-     允许门店可查看库存：
- <ul class="juese_add">  
+     <table cellspacing="1" id="table" width=80%>
+       <tr class="asc">  
+       <td align="center"> 门店名称<span style="color:red">*</span></td>
+       <td align="center">     <input type="text"  id="locate" value="<%=branchoidname %>" name="locate" /> <br /> </td>
+       </tr>
+       <tr class="asc">
+       <td align="center"> 门店报装单需要信息<span style="color:red">*</span>:  </td>
+       <td align="center"> 
+         <table width=100%>
+          <tr><td><input type="checkbox" value="pos" name = "permission" id="pos" />&nbsp;pos(厂送)单号</td>
+          <td> 
+           <input type="text" id="minpos" name="minpos" style="width: 50px" placeholder="最小位数"/>--<input type="text" id="maxpos" name="maxpos" style="width: 50px" placeholder="最大位数"/>
+          </td> 
+  
+          </tr> 
+         <tr><td><input type="checkbox" value="sailId" name = "permission" id="sailId" />&nbsp;OMS订单号</td>
+         
+           <td> <input type="text" id="minsailId" name="minsailId" style="width: 50px" placeholder="最小位数"/>--<input type="text" id="maxsailId" name="maxsailId" style="width: 50px" placeholder="最大位数"/>  </td> 
+         </tr> 
+         <tr><td><input type="checkbox" value="checked" name = "permission" id="checked" />&nbsp;验证码(联保单)</td>
+          <td><input type="text" id="minchecked" name="minchecked" style="width: 50px" placeholder="最小位数"/>--<input type="text" id="maxchecked" name="maxchecked" style="width: 50px" placeholder="最大位数"/> </td> 
+         </tr>
+         </table>  
+       
+       </td>
+       </tr>
+       <tr class="asc">
+       <td align="center">  
+         是否必须顶码上报： 
+       </td> 
+       <td align="center"> 
+       <table width=100%> 
+       <tr><td>    必须：<input type="radio" value=1 name="topYardMust" id="topYardMust1"/></td></tr>
+       <tr><td>     非必须： <input type="radio" value=0 name="topYardMust" id="topYardMust0"/></td></tr>
+       </table> 
+      
+    
+       </td>
+       </tr> 
+       
+       <tr class="asc">
+       <td align="center">  
+         允许门店可查看库存：
+       </td>
+       <td align="center">  
+         <table width=100%>
         <% List<Branch> list = BranchManager.getLocate(1);
         for(int i =0 ;i<list.size();i++){
         	Branch b = list.get(i);
-        %>      
-        <li><input type="checkbox" value="<%=b.getId() %>" name = "branchid" id="<%=b.getId() %>" /><%=b.getLocateName() %></li>
+        %>        
+        <tr><td>  
+        <input type="checkbox" value="<%=b.getId() %>" name = "branchid" id="<%=b.getId() %>" /><%=b.getLocateName() %>
+        </td></tr>
+       
         <%
         }
         %>
-        
-            </ul> 
-      <% if(UserManager.checkPermissions(user, Group.branch,"w")){%>      
+     </table>
+       </td>
+       </tr> 
+       
+       
+       <tr class="asc"> 
+       <td colspan="2" align="center"> 
+        <% if(UserManager.checkPermissions(user, Group.branch,"w")){%>      
       <input type="submit" value="提  交" />
       <%}  %>
+       </td>
+       </tr>
+       
+       
+     </table>
+
+   
+ 
+     
  </form>
  <%} %>
      </div>

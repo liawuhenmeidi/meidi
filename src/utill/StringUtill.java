@@ -1,21 +1,14 @@
 package utill;
 
 import group.Group;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import category.CategoryManager;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtill {
 	protected static Log logger = LogFactory.getLog(StringUtill.class);
@@ -26,7 +19,24 @@ public class StringUtill {
     	}
     	return flag ;
     }
-    
+
+	public static Set<String> GetSetByObject(String object)
+	{
+		JSONArray jsonArray = null;
+		Set<String> set = new HashSet();
+		if (object != null)
+		{
+			jsonArray = JSONArray.fromObject(object);
+			System.out.println(jsonArray);
+			for (int i = 0; i < jsonArray.size(); i++)
+			{
+				JSONObject jsObj = jsonArray.getJSONObject(i);
+
+				set.addAll(jsObj.keySet());
+			}
+		}
+		return set;
+	}
     public static String GetJson(String[] list) {  
         // java 转数组  
     	 

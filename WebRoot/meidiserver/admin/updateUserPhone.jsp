@@ -8,6 +8,8 @@ if(!UserManager.checkPermissions(user, Group.ManagerUser,"w")){
 }
 List<BranchType> listb = BranchTypeManager.getLocate();
 Map<String,List<Branch>> map = BranchManager.getLocateMapBranch(); 
+
+//System.out.println(map); 
 String mapjosn = StringUtill.GetJson(map);
 
 String uid = request.getParameter("uid");
@@ -24,17 +26,18 @@ User u = UserService.getMapId().get(Integer.valueOf(uid));
 <script type="text/javascript" src="../js/calendar.js"></script> 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
-var jsonmap = '<%=mapjosn%>';  
+var jsonmap = <%=mapjosn%>;  
 
 $(function () {
     
 		  $("#branchtype").change(function(){
 			  $("#branch").html(""); 
 			  var num = ($("#branchtype").children('option:selected').val());
-			  var jsons =  $.parseJSON(jsonmap);
-		
-			  var json = jsons[num];
-			  //alert(json);
+			 // alert(jsonmap);
+			 // var jsons =  $.parseJSON(jsonmap);
+		     // alert(jsons ); 
+			  var json = jsonmap[num];
+			 // alert(json); 
 	          var options = '<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>'; 
 	          for(var i=0; i<json.length; i++) 
 	        	 {

@@ -144,7 +144,7 @@ if("deleOrder".equals(method)){
 	int ncount = OrderManager.getOrderlistcount(user,Group.dealSend,Order.neworder,0,0,"id",""); 
 	int recount = OrderManager.getOrderlistcount(user,Group.dealSend,Order.returns,0,0,"id",""); 
 	int hcount = OrderManager.getOrderlistcount(user,Group.dealSend,Order.huanhuo,0,0,"id",""); 
-	int inventory = InventoryManager.getCategory(user,"unconfirmed","","").size(); 
+	int inventory = InventoryManager.getCategory(user,"unconfirmed").size(); 
 	int analyInventory = InventoryManager.getCategoryAnalyze(user, "confirmed").size();
 	
 	map.put("ucount", ucount);
@@ -169,9 +169,9 @@ if("deleOrder".equals(method)){
 	List<User> ulist = UserManager.getUserszhuce(user);
 	int hcount = 0 ;       
 	if(ulist != null){   
-		hcount = UserManager.getUserszhuce(user).size();  
+		hcount = UserManager.getUserszhuce(user).size(); 
 	} 
-	int inventory = InventoryManager.getCategory(user,"unconfirmed","","").size(); 
+	int inventory = InventoryManager.getCategory(user,"unconfirmed").size(); 
 	int analyInventory = InventoryManager.getCategoryAnalyze(user, "confirmed").size();
 	int rcount = OrderManager.getOrderlistcount(user,Group.sencondDealsend,Order.release,0,0,"id",""); 
 	map.put("dcount", dcount);

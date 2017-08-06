@@ -15,8 +15,14 @@ List<Locate> listl = LocateManager.getLocate();
 HashMap<String,ArrayList<String>> listt = ProductService.gettypeName();
 
 String plist = StringUtill.GetJson(listt);
-
+ 
 Branch branch = BranchService.getMap().get(Integer.valueOf(user.getBranch())); 
+  
+String contol = "";  
+if(branch.getTopYardMust() == 1){   
+	contol = "onclick= \"alert('您所在门店只能选择顶码'); this.checked=false ;\"";
+} 
+
 
 
 String id = request.getParameter("id");
@@ -51,12 +57,23 @@ if(!StringUtill.isNull(id)){
 String  branchmessage = branch.getMessage();
 if(StringUtill.isNull( branchmessage)){ 
 	 branchmessage = "";
-}   
-String[] branlist =  branchmessage.split("_");
+}    
+ 
+Set<String> branlist = new HashSet<String>();
+try{  
+	branlist = StringUtill.GetSetByObject(branchmessage);
+	System.out.println(branlist); 
+}catch(Exception e){  
+	branlist = new HashSet(Arrays.asList(branchmessage.split("_"))); 
+}
+
+
+
+
 boolean flagorderprince = false ;
 
 Config conorderprice = ConfigManager.getinstance().map.get(Config.orderprince);  
-if(null != conorderprice){
+if(null != conorderprice){ 
     if(conorderprice.getStatues() == Config.isok){
     	flagorderprince = true;
       }
@@ -109,7 +126,7 @@ if(null != conorderprice){
    var order = <%=strorder%>;
    
    var flagop = <%=flagorderprince%>;
-   
+   var contol = '<%=branch.getTopYardMust()%>';
   //alert(order);
    if(order != null && order != "" && (statues == null || statues == "")){
 	  
@@ -117,15 +134,42 @@ if(null != conorderprice){
 	   var listgg = '<%=listgg%> ';
 	   listop =  $.parseJSON(listopp);
 	   listg =  $.parseJSON(listgg);
-
+  
    }
 
-   var branch = new Array();
-   var branchmessage = "<%=branchmessage%>";
+   var branch = new Array(); 
+   var branchmessage = '<%=branchmessage%>';
    
-   var disable = '<%=isdisabel %>';
+   var disable = '<%=isdisabel %>'; 
+   var products = null;
+   var posmin = 9; 
+   var posmax = 9;   
+   try{ 
+		products = $.parseJSON(branchmessage);
+		 for(var i=0;i<products.length;i++){
+			 for(var key in products[i]){ 
+				// alert(key); 
+				 branch.push(key); 
+				 if("pos" == key){
+					 posmin = products[i][key]["min"];
+					 posmax = products[i][key]["max"];
+				 }
+				 
+			       //alert(key+':'+products[i][key]);  
+			       //$("#"+key).attr("checked","checked");
+			        
+			      // $("#min"+key).val(products[i][key]["min"]);
+			       //$("#max"+key).val(products[i][key]["max"]);
+			   }   
+			  
+		 } 
+	}catch(e){   
+		branch = branchmessage.split("_"); 
+		//alert(pro.length);
+		
+	}
+   
   
-   branch = branchmessage.split("_");
        
    rows.push(0);
 
@@ -408,29 +452,36 @@ if(null != conorderprice){
 	 
 	  var cid = $("#ordercategory0").val();
       initAndate("#andate0",cid);
-      
-      
-      
-      $("#dingma_c").css("display","block");
-	  $("#dingma_no").css("display","block");
+ 
 	    
-	 // $("#dingmachek").attr("checked","checked"); 
-	  $("#dingma").css("display","block");
 	   
-	  /*
 		  $('input:radio').change(function() {
+			  if(contol == 0){
+				  $("#dingma_c").css("display","block");
+				  $("#dingma_no").css("display","block");
+			  }
 			  
 			
 			     if(this.checked){ 
-			    	 var a = $(this).val();
-			    	 if(1==a){ 
-			    		 $("#dingma").css("display","block");	    		   
-			    	 }else { 	    		 
-			    		 $("#dingma").css("display","none"); 
-			    	 } 	  
+			    	 var a = $(this).val(); 
+			    	 
+			    	 if(contol == 0){
+			    		 if(1==a){   
+				    		 $("#dingma").css("display","block");	    		   
+				    	 }else { 	    		 
+				    		 $("#dingma").css("display","none"); 
+				    	 } 	 
+			    	 }else{
+			    		 if(1==a){  
+			    			 $("#dingma_c").css("display","block");
+							  $("#dingma_no").css("display","block");
+				    		 $("#dingma").css("display","block");	    		   
+				    	 }
+			    	 }
+			    	  
 			 }
 	      }) ;  
-		 */    
+		      
 		  // $('input:radio').val(1); 
       } 
  
@@ -699,26 +750,36 @@ if(null != conorderprice){
 	 var check = $("#checked").val();
 	 var username = $("#username").val();
 	 var phone1 = $("#phone1").val();
-	 var phone2 = $("#phone2").val();
+	 var phone2 = $("#phone2").val(); 
 	 var locate = $("#quyu").val();
 	 var locations = $("#locations").val();
 	 var remark = $("#remark").val();
-	// var radio = $('input:radio[name="Statues"]:checked').val();
-	var radio = 1; 
-
-	 
+	 var radio = $('input:radio[name="Statues"]:checked').val();
+	//var radio = 1;  
+ 
+	  
      if(saledate == "" || saledate == null || saledate == "null"){
 		 alert("开票日期不能为空");
 		 return false;
 	 }
 	 
      if($.inArray("pos", branch) != -1){
+    	  
+    	 //alert(products); 
 		 if(pos == "" || pos == null || pos == "null"){
 			 alert("pos(厂送)单号不能为空");
 			 return false;
-		 }else if(pos.length != 9){
-			 alert("pos(厂送)单号必须是九位数");
-			 return false ;
+		 }else {   
+			 //alert(posmin); 
+			 //alert(posmax); 
+			 if(pos.length > posmax){
+				 alert("pos(厂送)单号小于等于"+posmax+"位数");
+				 return false ;
+			 }else if(pos.length < posmin){
+				 alert("pos(厂送)单号大于等于"+posmax+"位数");
+				 return false ; 
+			 } 
+			
 		 }
      } 
      
@@ -735,12 +796,12 @@ if(null != conorderprice){
 			 return false;
 		 } 
      }
-     /*
+     
 	 if(radio == "" || radio == null || radio == "null"){
 		 alert("请选择是否顶码销售");  
-		 return false;
-	 } 
-	 */
+		 return false; 
+	 }  
+	 
 	 
 	 
 	 if("1"== radio){
@@ -913,7 +974,7 @@ if(null != conorderprice){
 	 $("#submit").css("display","none"); 
 	 return true ; 
  } 
-  
+   
 </script>  
 
 
@@ -928,23 +989,22 @@ if(null != conorderprice){
 
 <div class="s_main_tit"><span class="qiangdan"><a href="serch_list.jsp">订单查询</a></span><span class="qiangdan"><a href="welcom.jsp">返回</a></span></div>
 <form action="OrderServlet"  method ="post"  id="form"   onsubmit="return checkedd()"  > 
-<!--  头 单种类  -->  
+<!--  头 单种类  -->   
 
 <input type="hidden" name="gift" value="0"/>
-<input type="hidden" name="product" value="0"/>  
+<input type="hidden" name="product" value="0"/>   
 <input type="hidden" id="phoneremark" name="phoneRemark" value="0"/>
 <input type="hidden" id="posremark" name="posremark" value="0"/> 
 <input type="hidden" id="checkedremark" name="chekedremark" value="0"/>
 <input type="hidden" id="sailIdremark" name="sailidremark" value="0"/>
 <input type="hidden" name="orderid" value="<%=id %>"/>
 <input type="hidden" name="token" value="<%=token%>"/> 
-    
- <input type="hidden"  name="Statues" value="1"  />
+ 
  
 <div class="s_main_tit">销售报单<span class="qiangdan"></span></div>
-<div class="s_main_tit">门店:<span class="qian"><%=BranchService.getMap().get(Integer.valueOf(user.getBranch())).getLocateName() %></span></div>  
+<div class="s_main_tit">门店:<span class="qian"><%=branch.getLocateName() %></span></div>  
 <!--  订单详情  -->  
-<div class="s_dan_box"> </div>
+<div class="s_dan_box"> </div> 
 
 <table style="width:100% "> 
  
@@ -953,49 +1013,57 @@ if(null != conorderprice){
     <td width="50%" class=""><input class="date" type="text" name="saledate" placeholder="必填"  id = "serviceDate" onclick="new Calendar().show(this);" readonly="readonly" style="width:90% "></input>   </td>
     <td width="25%" class="center"></td>
   </tr>
-   <% 
-    for(int i = 0; i<branlist.length;i++){
-    	if("pos".equals(branlist[i])){
+   <%  
+    if(null != branlist){
+  // Iterator<String> it =  branlist.iterator();
+   // while(it.hasNext()){ 
+    //	String str = it.next(); 
+    	if(branlist.contains("pos")){ 
     		%>
-    <tr> 
+    <tr>  
     <td width="25%" class="center">pos(厂送)单号 <span style="color:red">*</span></td>
     <td width="50%" class=""> <input type="text"  id="pos" name="POS" style="width:90% "/></td>
     <td width="25%" class="center"> </td>
    </tr> 
-    		<%
-    	}else if("sailId".equals(branlist[i])){
-    		%>
+    		<% 
+    	}
+    	if(branlist.contains("sailId")){
+    		%>  
      <tr>
     <td width="25%" class="center">OMS订单号 <span style="color:red">*</span></td> 
     <td width="50%" class=""><input type="text"  id="sailId" name="sailId" style="width:90% " /></td>
     <td width="25%" class="center"></td>
   </tr>		
     		
-    		<%
-    	}else if("checked".equals(branlist[i])){
+    		<%  
+    	}
+     if(branlist.contains("checked")){ 
     		%>
     <tr>
     <td width="25%" class="center">验证码(联保单)<span style="color:red">*</span></td>
     <td width="50%" class=""> <input type="text"  id="checked" name="check" style="width:90% " /></td>
     <td width="25%"></td>
   </tr> 		
-    		
+    		 
     		<%
-    	}
-    }
-   
+    	} 
+    } 
+    //}
    %>
  
- <!--  
-  <tr >
+
+	 <tr >
     <td width="25%" class="center">顶码销售<span style="color:red">*</span></td>
     <td width="50%" class="">  是
-		<input type="radio"  name="Statues" value="1"  id="dingmachek" <%=isdisabel %>/>
+		<input type="radio"  name="Statues" value="1"  id="dingmachek" <%=isdisabel %> />
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		否
-		<input type="radio" name="Statues" value="0"  id="dingma_nochek" <%=isdisabel %>/></td>
+		<input type="radio" name="Statues" value="0"  id="dingma_nochek" <%=isdisabel %> <%=contol %>/></td>
     <td width="25%"> </td>
-  </tr>
+  </tr>  
+ 
+ <!--  
+  
   -->
   </table>
   
@@ -1172,7 +1240,7 @@ if(null != conorderprice){
 		%>	
 		 <option value="<%=lo.getLocateName()%>"><%=lo.getLocateName()%></option>
 		<%
-		 } 
+		 }  
 		%>
 	</select>
 	</td>

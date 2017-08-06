@@ -26,7 +26,7 @@ function checkedd(){
 				var name = $(input).attr("name");
 				if(name != null && name != "" && name != undefined)
 				sear += "&"+name+"="+value;
-			}
+			} 
 		}else if("radio" == inputType){
 			var flag = $(input).is(':checked');
 			if(flag){
@@ -75,8 +75,8 @@ function checkedd(){
 	
 	if(sear != null && sear != ""){
 		sear += "&searched=searched";
-	}
-	
+	} 
+	 
 	initOrder(type,statues,num,page,sort,sear);
 	
 	$("#wrapsearch").css("display","none"); 
@@ -206,10 +206,13 @@ function checkedd(){
                                          至
 			<input class="date2" name="installTimeend" type="text" id="installTimeend" onclick="new Calendar().show(this);" />
 			</td>
-			<td align="center" ></td>
-			<td align="center" colspan=2 > 
 			
-			</td>	 
+			<td align="center" >预约日期</td>
+			<td align="center" colspan=2>
+			<input class="date2" name="andatestart" type="text" id="andatestart" onclick="new Calendar().show(this);" />
+			   至
+			<input class="date2" name="andateend" type="text" id="andateend" onclick="new Calendar().show(this);" />
+			</td> 
 		</tr>
 		<tr class="bsc">
 		    <td align="center" >送货名称</td>
@@ -259,12 +262,13 @@ function checkedd(){
 			</td>	 
 		</tr>
 		<tr class="bsc">
-			<td align="center" >预约日期</td>
-			<td align="center" ><input class="date2" name="andate" type="text" id="andate" onclick="new Calendar().show(this);" /></td>
+			
 			<td align="center" >送货地区</td>
 			<td align="center" > <input type="text"  name="locates" id="locates" value=""  /></td>
 			<td align="center" >送货地址</td>
 			<td align="center" ><input type="text"  name="locateDetail" id="locateDetail" value=""  /></td>
+			<td align="center" ></td>
+			<td align="center" ></td>
 		</tr>
 		
 		<tr class="bsc">	 
