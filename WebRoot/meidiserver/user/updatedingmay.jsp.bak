@@ -1,0 +1,74 @@
+
+   
+   
+   function initproductSerch(str,str2){ 
+	    cid = $(str).val();
+		$(str2).autocomplete({
+			 source: jsons[cid]
+		    });
+
+		$(str).change(function(){
+			$(str2).val("");
+			cid = $(str).val();
+			$(str2).autocomplete({
+				 source: jsons[cid]
+			    });	
+			var time ;
+			
+			for(var i=0;i<json.length;i++){
+         	   var jo = json[i];
+         	   if(jo.id == cid){
+         		   time = jo.time ;
+         	   }
+			}
+			
+			if(timefirst){
+				 $("#andates").append(time); 
+				 timefirst = false ;
+			}
+			
+			 var timeold = $("#andates").html();
+			 if(time<timeold){
+				 $("#andates").html("");
+				 $("#andates").append(time); 
+			 }
+			 
+			}) ;
+       }  
+   // 大 返回true 
+   function compare(andate,str2){
+	  // alert(0*365);
+	 //  alert("andate"+andate);
+	 //  alert(str2);
+	   var Astr1 = new Array();
+	  // var Astr2 = new Array();
+	   Astr1 = andate.split("-");
+	  // Astr2 = str2.split("-");
+	   var date = new Date();
+	   var year = date.getFullYear();
+	   var month = date.getMonth()+1;
+	 
+	   var day = date.getDate();
+	 
+	   if((Astr1[0]-year)*365+(Astr1[1]-month)*30+(Astr1[2]-day)*1 > str2){
+		   return true ;
+	   }
+	  return false ;
+   }
+   
+   function compareBeifen(){
+	   var Astr1 = new Array();
+	   var Astr2 = new Array();
+	   Astr1 = str1.split("-");
+	   Astr2 = str2.split("-");
+	   if(Astr1[0] >Astr2[0]){
+		   return true ;
+	   }else if(Astr1[0] == Astr2[0] && Astr1[1] >Astr2[1]){
+		   return true ;
+	   }else if(Astr1[0] == Astr2[0] && Astr1[1] == Astr2[1] && Astr1[2] > Astr2[2]){
+		   return true ;
+	   }
+	  return false ;  
+   }
+   
+  
