@@ -1,5 +1,9 @@
 package inventory;
 
+import branch.Branch;
+import branch.BranchService;
+import user.UserService;
+
 import java.io.Serializable;
 
 public class InventoryBranchMessage implements Serializable{
@@ -55,9 +59,9 @@ public class InventoryBranchMessage implements Serializable{
     private int id;
     private int inventoryid;  // 所包含的产品入库信息
     private int branchid;
+    private Branch branch;
     private String time;
-
-
+    private String typeid;
     private String type;
 
     private int allotRealcount;
@@ -69,9 +73,6 @@ public class InventoryBranchMessage implements Serializable{
     private int realcount = 0 ;  //  实际库存
 
     private int papercount = 0 ;  //  虚拟库存
-
-    private String typeid;
-
     private int sendUser;
 
     private int receiveuser;
@@ -85,6 +86,22 @@ public class InventoryBranchMessage implements Serializable{
     private int oldpapercount;
 
     private String remark;
+
+    private int typeStatues; // 1常规 2 特价 3 样机 4 换货 5 赠品
+
+    private int isOverStatues;  //    0  已完成    1  未完成
+    private String isOverStatuesName;  //    0  已完成    1  未完成
+
+    public Branch getBranch() {
+        if(branchid != 0){
+            branch = BranchService.getMap().get(branchid);
+        }
+        return branch;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
 
     public String getRemark() {
         return remark;
@@ -231,5 +248,80 @@ public class InventoryBranchMessage implements Serializable{
         this.allotPapercount = allotPapercount;
     }
 
+    public int getTypeStatues() {
+        return typeStatues;
+    }
+
+    public void setTypeStatues(int typeStatues) {
+        this.typeStatues = typeStatues;
+    }
+
+    public String getMessage(){
+        String strtype = "";
+        if(operatortype.getIndex() == 0 ){
+            strtype = getBranch().getLocateName()+"出库";
+        }else if(operatortype.getIndex() == 1){
+            strtype = getBranch().getLocateName()+"入库";
+        }else if(operatortype.getIndex() == 3){
+            strtype = getBranch().getLocateName()+"账面调货";
+        }else if(operatortype.getIndex() == 2){
+            strtype = UserService.getMapId().get(sendUser).getBranchName()+"派工给"+UserService.getMapId().get(receiveuser).getBranchName();
+        }else if(operatortype.getIndex() == 20){
+            strtype = UserService.getMapId().get(receiveuser).getBranchName()+"释放";
+        }else if(operatortype.getIndex() == 11){
+            strtype =UserService.getMapId().get(sendUser).getBranchName()+"派工给"+UserService.getMapId().get(receiveuser).getUsername();
+        }else if(operatortype.getIndex() == 6){
+            // System.out.println(in.getReceiveuser());
+            strtype = UserService.getMapId().get(receiveuser).getUsername()+"释放给"+UserService.getMapId().get(sendUser).getBranchName();
+        }else if(operatortype.getIndex() == 7){
+            //strtype = "退货员"+usermap.get(in.getReceiveuser()).getUsername()+"拉回给"+usermap.get(in.getSendUser()).getBranchName();
+            strtype = "退货员"+UserService.getMapId().get(receiveuser).getUsername()+"拉回给"+BranchService.getMap().get(branchid).getLocateName();
+        } else if(operatortype.getIndex() == 8){
+            strtype = UserService.getMapId().get(sendUser).getBranchName()+"同意"+UserService.getMapId().get(receiveuser).getBranchName()+"退货";
+        } else if(operatortype.getIndex() == 9 ) {
+            strtype = "退货员"+UserService.getMapId().get(receiveuser).getUsername()+"释放给"+UserService.getMapId().get(sendUser).getBranchName();
+        }else if(operatortype.getIndex() == 12){
+            strtype = "退货员"+UserService.getMapId().get(receiveuser).getUsername()+"拉回次品给"+UserService.getMapId().get(sendUser).getBranchName();
+        }else if(operatortype.getIndex() == 13){
+            strtype = "卖场入库";
+        }else if(operatortype.getIndex() == 14){
+            strtype = "导购收货";
+        }else if(operatortype.getIndex() == 16){
+            strtype = "导购退货";
+        }else if(operatortype.getIndex() == 15){
+            strtype = "卖场退货";
+        }else if(operatortype.getIndex() == 17){
+            strtype = "导购换货";
+        }else if(operatortype.getIndex() == 18){
+            strtype = "实发退货库存修正";
+        }else if(operatortype.getIndex() == 19){
+            strtype = "卖场出库";
+        } else if(operatortype.getIndex() == 21){
+            strtype = "卖场入库";
+        }
+
+        return strtype ;
+    }
+
+    public int getIsOverStatues() {
+        return isOverStatues;
+    }
+
+    public void setIsOverStatues(int isOverStatues) {
+        this.isOverStatues = isOverStatues;
+    }
+
+    public String getIsOverStatuesName() {
+        if(1 == isOverStatues){
+            isOverStatuesName = "未修改";
+        }else {
+            isOverStatuesName = "已修改确认";
+        }
+        return isOverStatuesName;
+    }
+
+    public void setIsOverStatuesName(String isOverStatuesName) {
+        this.isOverStatuesName = isOverStatuesName;
+    }
 
 }

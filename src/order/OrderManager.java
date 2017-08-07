@@ -4,26 +4,6 @@ import database.DB;
 import gift.GiftManager;
 import group.Group;
 import group.GroupManager;
-import group.GroupService;
-
-import inventory.InventoryBranchManager;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import orderPrint.OrderPrintln;
 import orderPrint.OrderPrintlnManager;
 import orderproduct.OrderProduct;
@@ -62,8 +42,33 @@ public class OrderManager {
 			DB.close(conn);
 		} 
 		return flag ;
-	}  
-	
+	}
+
+	//wrote by wilsonlee 2014-11-21
+	//未结款的Order
+	public static List<Order> getOrdersBySql(String sql) {
+		List<Order> Orders = new ArrayList<Order>();
+
+		Connection conn = DB.getConn();
+		Statement stmt = DB.getStatement(conn);
+		ResultSet rs = DB.getResultSet(stmt, sql);
+
+		try {
+			while (rs.next()) {
+				Order p = gerOrderFromRs(rs);
+				Orders.add(p);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DB.close(stmt);
+			DB.close(rs);
+			DB.close(conn);
+		}
+		return Orders;
+
+	}
+
 	public static int updateMessage(String phone1,String andate,String locations,String POS,String sailId,String check,String oid,String remark,String saledate,String diqu) {
 		int flag = -1 ;  
 		List<String> sqls = new ArrayList<String>();
@@ -114,59 +119,61 @@ public class OrderManager {
 			DB.close(conn);
 		} 
 		return flag ;
-	}  
-	
-	
-	public static String getDeliveryStatues(Order o){
-		int statues = o.getDeliveryStatues();
+	}
+
+	public static String getDeliveryStatues(int statues,String oderStatus){
 		String str = "";
 		String remark = "";
-		if((20+"").equals(o.getOderStatus())){
+		if((20+"").equals(oderStatus)){
 			remark = "换货单";
-		   }
+		}
 		// 0 表示未送货  1 表示正在送  2 送货成功
-		 if(0 == statues){
-		   if((20+"").equals(o.getOderStatus())){ 
-			   str = "换货单";
-		   }else {
-			   str = "需派送";
-		   }
-          }else if(1 == statues){
-        	  str = "已送货"+remark;
-		
-          }else if(2 == statues){
-		      
-        	  str = "已安装"+remark;
-		
-          }else if(3 == statues || 11 == statues || 13 == statues || 12 == statues){
-        	  str = "已退货";
-		
-          }else if( 4 == statues){ 
-		
-        	  str = "已送货退货 ";
-		
-          }else if( 5 == statues){ 
-		
-        	  str = "已安装退货";
-		
-          }else if( 8 == statues){ 
-		
-        	  str = "已自提 ";
-		
-          }else if(9 == statues){
-		
-        	  str = "只安装(门店提货)";
-		
-		
-            }else if(10 == statues){
-        		
-        		str = "只安装(顾客已提) ";
-        		 
-            }
-        		
-		
-		
+		if(0 == statues){
+			if((20+"").equals(oderStatus)){
+				str = "换货单";
+			}else {
+				str = "需派送";
+			}
+		}else if(1 == statues){
+			str = "已送货"+remark;
+
+		}else if(2 == statues){
+
+			str = "已安装"+remark;
+
+		}else if(3 == statues || 11 == statues || 13 == statues || 12 == statues){
+			str = "已退货";
+
+		}else if( 4 == statues){
+
+			str = "已送货退货 ";
+
+		}else if( 5 == statues){
+
+			str = "已安装退货";
+
+		}else if( 8 == statues){
+
+			str = "已自提 ";
+
+		}else if(9 == statues){
+
+			str = "只安装(门店提货)";
+
+
+		}else if(10 == statues){
+
+			str = "只安装(顾客已提) ";
+
+		}
+
 		return str ;
+	}
+
+	public static String getDeliveryStatues(Order o){
+		int statues = o.getDeliveryStatues();
+		
+		return getDeliveryStatues(statues,o.getOderStatus()) ;
 		
 		
 	}

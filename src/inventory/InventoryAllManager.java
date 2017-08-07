@@ -1,30 +1,23 @@
 package inventory;
  
-import httpClient.download.InventoryChange;
-import httpClient.download.InventoryModelDownLoad;
-import httpClient.download.SNInventory;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map; 
-import java.util.Set;
- 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import category.Category;
-import category.CategoryManager;
-import product.Product;
-import product.ProductService;
 import branch.Branch;
 import branch.BranchManager;
 import branch.BranchService;
+import category.Category;
+import category.CategoryManager;
+import httpClient.download.InventoryChange;
+import httpClient.download.InventoryModelDownLoad;
+import httpClient.download.SNInventory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import product.Product;
+import product.ProductService;
 import user.User;
 import utill.NumbleUtill;
 import utill.StringUtill;
 import utill.TimeUtill;
+
+import java.util.*;
 
 public class InventoryAllManager {
 	protected static Log logger = LogFactory
@@ -82,7 +75,7 @@ public class InventoryAllManager {
 					}else { 
 						in.setInmodelnum(inm.getAllotPapercount());
 					} 
-					if(inm.getOperatortype() == 10){
+					if(inm.getOperatortype().getIndex() == 10){
 						in.getMap().put(inm.getTypeStatues(), inm.getTime());
 					}
 					
@@ -105,7 +98,7 @@ public class InventoryAllManager {
 					}  
 					  
 					//in.setRealcount(in.getRealcount() + inm.getAllotRealcount());
-					if (inm.getOperatortype() == 10) {
+					if (inm.getOperatortype().getIndex() == 10) {
 						in.getMap().put(inm.getTypeStatues(), inm.getTime());
 					} 
 					   
@@ -177,7 +170,7 @@ public class InventoryAllManager {
 					in.setTypeStatues(inm.getTypeStatues());
 					in.setRealcount(inm.getAllotRealcount());
 					in.setPapercount(inm.getAllotPapercount());
-					if (inm.getOperatortype() == 10) {
+					if (inm.getOperatortype().getIndex() == 10) {
 						in.setQuerymonth(inm.getTime());
 					} 
 					mapbt.put(inm.getTypeStatues(), in);
@@ -195,7 +188,7 @@ public class InventoryAllManager {
 					in.setPapercount(in.getPapercount()
 							+ inm.getAllotPapercount());
 					in.setRealcount(in.getRealcount() + inm.getAllotRealcount());
-					if (inm.getOperatortype() == 10) {
+					if (inm.getOperatortype().getIndex() == 10) {
 						in.setQuerymonth(inm.getTime());
 					}
 					 

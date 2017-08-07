@@ -1,36 +1,15 @@
 package wilson.upload;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
-import net.sf.json.JSONObject;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import change.BranchTypeChange;
-import change.ChangeManager;
 import change.UploadChangeAll;
 import change.UploadChangeManager;
-
+import database.DB;
+import net.sf.json.JSONObject;
 import order.Order;
 import order.OrderManager;
-import orderPrint.OrderPrintlnService;
 import orderproduct.OrderProduct;
 import orderproduct.OrderProductService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import product.ProductService;
 import uploadtotal.UploadTotal;
 import uploadtotalgroup.UploadTotalGroup;
@@ -40,7 +19,11 @@ import utill.BasicUtill;
 import utill.StringUtill;
 import wilson.matchOrder.AfterMatchOrder;
 
-import database.DB;
+import javax.servlet.http.HttpServletRequest;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Date;
 
 public class UploadManager {
 	private static XLSReader xlsreader = new XLSReader();
