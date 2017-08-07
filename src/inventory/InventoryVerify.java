@@ -144,6 +144,9 @@ public class InventoryVerify {
         Response response = new Response();
         response.setSuccess(true);
 
+        if(this.getInventoryString().startsWith("H")){
+            return response;
+        }
         // 已送货或者安装
         if(COMPLETE.equals(isComplete())){
             if(realCount == paperCount){
